@@ -39,9 +39,6 @@ export default function Categories() {
           slidesToScroll: 1,
           variableWidth: true,
           arrows: false,
-
-          //   centerMode: true,
-          //   infinite: false,
         },
       },
     ],
@@ -60,10 +57,7 @@ export default function Categories() {
               className="px-1 overflow-hidden "
               style={{ width: '300px' }}
             >
-              <div
-                // style={{ minHeight: '300px' }}
-                className="  overflow-hidden  relative  rounded-lg  "
-              >
+              <div className="  overflow-hidden  relative  rounded-lg  ">
                 <img
                   src={item.main}
                   alt="something"

@@ -31,8 +31,7 @@ import phones from '../assets/cat/phones.png';
 import tabs from '../assets/cat/tabs.png';
 import tv from '../assets/cat/tv.png';
 import writing from '../assets/cat/writing.png';
-// import color from '../assets/cat/color.png'
-import phonesbig from '../assets/cat/phonesbig.jpg';
+
 import school from '../assets/cat/school.jpg';
 import smartphones from '../assets/cat/smartphones.jpg';
 import electronics from '../assets/cat/electronics.jpg';

@@ -33,7 +33,6 @@ export default function BestSeller() {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          //   variableWidth:true
         },
       },
     ],
