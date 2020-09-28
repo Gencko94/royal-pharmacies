@@ -29,16 +29,17 @@ export default function BestSeller() {
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 320,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          //   variableWidth:true
         },
       },
     ],
   };
   return (
-    <div className="p-0">
+    <div className="mb-6">
       <div className="flex items-center mb-4">
         <h1 className="text-xl font-semibold flex-grow">Best Sellers</h1>
         <button className="p-1">See all</button>

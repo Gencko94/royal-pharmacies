@@ -12,6 +12,8 @@ export default function MainCarousel() {
     centerPadding: isTabletOrAbove ? '150px' : '50px',
     arrows: false,
     infinite: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
     slidesToShow: 1,
     slidesToScroll: 1,
     variableWidth: isTabletOrAbove && true,
