@@ -8,13 +8,21 @@
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-icons": "^3.11.0",
+    "react-loadable": "^5.5.0",
+    "react-responsive": "^8.1.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "react-slick": "^0.27.11",
+    "slick-carousel": "^1.8.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "yarn run watch-css && react-scripts start",
+    "build": "yarn run build-css && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-css": "postcss src/css/tailwind.css -o src/css/main.css",
+    "watch-css": "postcss src/css/tailwind.css -o src/css/main.css"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -30,5 +38,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "9",
+    "postcss-cli": "^8.0.0",
+    "tailwindcss": "^1.8.10"
   }
 }
