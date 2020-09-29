@@ -13,16 +13,16 @@ export default function MobileNavbar() {
   const sideMenuRef = React.useRef(null);
   useClickAway(sideMenuRef, () => {
     if (sideMenuOpen) {
-      inputRef.current.classList.add('mt-n54p');
+      inputRef.current.classList.add('mt-n57p');
       setSearchBarOpen(false);
     }
   });
   const toggleSearchBar = () => {
     if (searchBarOpen) {
-      inputRef.current.classList.add('mt-n54p');
+      inputRef.current.classList.add('mt-n57p');
       setSearchBarOpen(false);
     } else {
-      inputRef.current.classList.remove('mt-n54p');
+      inputRef.current.classList.remove('mt-n57p');
       setSearchBarOpen(true);
     }
   };
@@ -39,7 +39,7 @@ export default function MobileNavbar() {
   };
   return (
     <>
-      <nav className="sticky top-0 z-10  left-0 p-2 flex items-center bg-red-400 text-white">
+      <nav className="sticky top-0 z-10  left-0 p-2 flex items-center bg-gradient-to-tr from-nav-gradient-from to-nav-gradient-to text-white">
         <Hamburger toggleSideMenu={toggleSideMenu} />
         <Logo />
         <MobileIcons

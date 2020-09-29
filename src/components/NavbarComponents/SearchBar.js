@@ -12,7 +12,7 @@ export default function SearchBar() {
         type="text"
         placeholder="What are you looking for ?"
       />
-      <button className="p-2 font-bold uppercase rounded-lg text-sm text-nav-primary border-l-2 border-nav-primary   hover:text-nav-secondary hover:bg-red-400 transition duration-150">
+      <button className="p-2 font-bold uppercase rounded-lg text-sm text-nav-primary border-l-2 border-nav-primary   hover:text-nav-secondary hover:bg-red-600 transition duration-150">
         search
       </button>
     </div>

@@ -7,7 +7,7 @@ import SearchBar from './NavbarComponents/SearchBar';
 
 export default function Navbar() {
   return (
-    <nav className=" z-20 sticky  top-0 left-0  bg-gradient-to-tr from-red-400 to-red-700 text-white">
+    <nav className=" z-20 sticky  top-0 left-0  bg-gradient-to-tr from-nav-gradient-from to-nav-gradient-to text-white">
       <div className="flex items-center justify-end py-2 px-4">
         <Flag />
         <Language />

@@ -4,13 +4,13 @@ export default function MobileSearchbar({ inputRef }) {
   return (
     <div
       ref={inputRef}
-      className="flex sticky  mt-n54p z-9 w-full bg-red-500 items-center p-2  transition-all duration-200 "
+      className="flex sticky  mt-n57p z-9 w-full bg-gradient-to-r  from-nav-gradient-from to-nav-gradient-to items-center px-2 py-3  transition-all duration-200 "
     >
       <input
-        className=" bg-white rounded flex-grow  p-1  "
+        className=" bg-white rounded flex-grow  p-1 placeholder-gray-600  "
         placeholder="Search for something..."
       />
-      <button className="py-1 px-2 bg-red-400 rounded ml-3 text-white hover:text-red-400  transition duration-150 ">
+      <button className="py-1 px-2 bg-nav-primary rounded ml-3 text-white hover:bg-red-600  transition duration-150 ">
         Search
       </button>
     </div>

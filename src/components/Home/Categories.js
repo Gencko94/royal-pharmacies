@@ -61,14 +61,14 @@ export default function Categories() {
                 <img
                   src={item.main}
                   alt="something"
-                  className=" h-auto w-full rounded mb-1  "
+                  className=" h-auto w-full rounded mb-0  "
                 />
                 <span
                   style={{
                     maxWidth: '50%',
-                    top: isTabletOrAbove ? '20%' : '10%',
+                    top: isTabletOrAbove ? '16%' : '10%',
                   }}
-                  className="absolute  font-semibold left-10 text-xl sm:text-xl md:'text-2xl"
+                  className="absolute  font-semibold left-10 text-xl sm:text-xl md:text-2xl "
                 >
                   {item.title}
                 </span>
@@ -80,9 +80,10 @@ export default function Categories() {
                     gap: isMobile ? '6px' : '8px',
                   }}
                 >
-                  {item.sub.map(photo => {
+                  {item.sub.map((photo, j) => {
                     return (
                       <div
+                        key={j + i}
                         className=" mt-2  rounded "
                         style={{
                           backgroundColor: item.color,
@@ -99,7 +100,7 @@ export default function Categories() {
                             className="max-w-full max-h-full"
                           />
                         </div>
-                        <h1 className="text-center text-xs font-bold sm:text-xs md:text-sm  ">
+                        <h1 className="text-center text-xs font-semibold sm:text-xs md:text-sm lg:text-lg  ">
                           {photo.title}
                         </h1>
                       </div>

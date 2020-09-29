@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <MainCarousel />
-      <div className="bg-gray-00 px-2 py-4 sm:px-2 lg:px-8">
+      <div className="bg-gray-100 px-2 py-4 sm:px-2 md:px-4 lg:px-8 xl:px-8">
         <Categories />
         <BestSeller />
         <Banner />

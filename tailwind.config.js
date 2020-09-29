@@ -15,9 +15,11 @@ module.exports = {
       },
       colors: {
         'cadet-blue': '#5F9EA0',
-        'nav-primary': '#f56565',
+        'nav-primary': '#c82e2e',
         'nav-secondary': '#fff',
         teal: '#008080 ',
+        'nav-gradient-from': '#eaaeae',
+        'nav-gradient-to': '#9d0707',
       },
       spacing: {
         '1p': '1px',
@@ -29,7 +31,7 @@ module.exports = {
         '25p': '25px',
         '30p': '30px',
         '35p': '35px',
-        n54p: '-54px',
+        n57p: '-57px',
         '54p': '54px',
       },
       inset: {
@@ -37,12 +39,15 @@ module.exports = {
         '33p': '33%',
         '36p': '36%',
         10: '10px',
+        8: '8px',
         n2: '-2px',
         2: '2px',
         n1: '-1px',
         1: '1px',
         50: '50px',
         100: '100%',
+        n25: '-25px',
+        n42: '-42px',
       },
       translate: {
         'n1/2': '-50%',

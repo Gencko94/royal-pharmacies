@@ -1,17 +1,17 @@
 import React from 'react';
-// import photo1 from '../assets/mainCarousel/1.gif';
-// import photo2 from '../assets/mainCarousel/2.png';
-// import photo3 from '../assets/mainCarousel/3.png';
-// import photo4 from '../assets/mainCarousel/4.gif';
-// import photo5 from '../assets/mainCarousel/5.png';
-// import photo6 from '../assets/mainCarousel/6.gif';
-// import photo7 from '../assets/mainCarousel/7.png';
-import photo8 from '../assets/mainCarousel/beverages.png';
-import photo9 from '../assets/mainCarousel/cooking.png';
-import photo10 from '../assets/mainCarousel/food.png';
-import photo11 from '../assets/mainCarousel/homecare.png';
-import photo12 from '../assets/mainCarousel/laundry.png';
-import photo13 from '../assets/mainCarousel/mattress.jpg';
+import baby from '../assets/mainCarousel/baby.gif';
+import bigdeal from '../assets/mainCarousel/bigdeal.png';
+import emaar from '../assets/mainCarousel/emaar.png';
+import jaguar from '../assets/mainCarousel/jaguar.png';
+import poco from '../assets/mainCarousel/poco.png';
+import watch from '../assets/mainCarousel/watch.png';
+import mbbaby from '../assets/mainCarousel/mbbaby.gif';
+import mbjaguar from '../assets/mainCarousel/mbjaguar.png';
+import mbpoco from '../assets/mainCarousel/mbpoco.png';
+import mbwatch from '../assets/mainCarousel/mbwatch.png';
+import mbbigdeal from '../assets/mainCarousel/mbbigdeal.png';
+import mbemaar from '../assets/mainCarousel/mbemaar.png';
+// import photo13 from '../assets/mainCarousel/mattress.jpg';
 import flaker from '../assets/offers/flaker.jpg';
 import mask from '../assets/offers/mask.jpg';
 import skin from '../assets/offers/skin.jpg';
@@ -40,20 +40,32 @@ export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const [country, setCountry] = React.useState('Kuwait');
 
-  const mainCarouselItems = [
-    { src: photo8 },
-    { src: photo9 },
-    { src: photo10 },
-    { src: photo11 },
-    { src: photo12 },
-    { src: photo13 },
+  const mainCarouselItemsDesktop = [
+    { src: bigdeal },
+    { src: watch },
+    { src: poco },
+    { src: emaar },
+    { src: jaguar },
+    { src: baby },
+  ];
+  const mainCarouselItemsMobile = [
+    { src: mbbigdeal },
+    { src: mbwatch },
+    { src: mbpoco },
+    { src: mbemaar },
+    { src: mbjaguar },
+    { src: mbbaby },
   ];
   const bestSeller = [
     { src: flaker },
+    { src: mask },
     { src: water },
     { src: skin },
     { src: mask },
-    { src: mask },
+
+    { src: water },
+    { src: flaker },
+    { src: skin },
   ];
   const categories = [
     {
@@ -86,7 +98,7 @@ export default function DataContextProvider({ children }) {
         { src: paper, title: 'Paper Supplies' },
       ],
       color: '#f3f3f3',
-      title: 'Beauty & Personal Care',
+      title: 'Stationary & School supplies',
     },
     {
       main: beauty,
@@ -97,13 +109,20 @@ export default function DataContextProvider({ children }) {
         { src: makeup, title: 'Makeup & Nails' },
       ],
       color: '#f7def1',
-      title: 'Stationary & School supplies',
+      title: 'Beauty & Personal Care',
     },
   ];
 
   return (
     <DataProvider.Provider
-      value={{ mainCarouselItems, country, setCountry, bestSeller, categories }}
+      value={{
+        mainCarouselItemsDesktop,
+        mainCarouselItemsMobile,
+        country,
+        setCountry,
+        bestSeller,
+        categories,
+      }}
     >
       {children}
     </DataProvider.Provider>
