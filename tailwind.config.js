@@ -20,6 +20,7 @@ module.exports = {
         teal: '#008080 ',
         'nav-gradient-from': '#eaaeae',
         'nav-gradient-to': '#9d0707',
+        aliceblue: '#F0F8FF',
       },
       spacing: {
         '1p': '1px',

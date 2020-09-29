@@ -27,7 +27,7 @@ export default function Flag() {
     }
   };
   return (
-    <div className=" flex items-center relative  ">
+    <div className=" flex items-center relative ">
       <img
         src={mapCountryToFlags[country]}
         alt="flag"

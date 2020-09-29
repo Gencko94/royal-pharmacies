@@ -7,11 +7,11 @@ import Home from './pages/Home';
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
-    <div className="font-body antialiased overflow-hidden">
+    <>
       {isTabletOrAbove ? <Navbar /> : <MobileNavbar />}
 
-      <Route path="/" component={Home} />
-    </div>
+      <Route exact path="/" component={Home} />
+    </>
   );
 }
 
