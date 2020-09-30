@@ -6,7 +6,7 @@ import { TiShoppingCart } from 'react-icons/ti';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 
-const RightArrow = ({ className, style, onClick }) => {
+const RightArrow = ({ onClick }) => {
   return (
     <div
       className="hover:bg-gray-300 rounded-full grid place-items-center absolute top-1/2 right-n25 lg:right-n42 w-8 h-8 lg:h-12 lg:w-12 z-1 transform -translate-x-1/2 -translate-y-1/2 bg-white transition duration-150 shadow-2xl border border-gray-300"
@@ -34,7 +34,7 @@ export default function BestSeller() {
     arrows: true,
     infinite: true,
     slidesToShow: 7,
-    slidesToScroll: 1,
+    slidesToScroll: 4,
     nextArrow: <RightArrow />,
     prevArrow: <LeftArrow />,
 

@@ -4,14 +4,16 @@ import logo from '../assets/logo.png';
 export default function Register() {
   return (
     <div className="w-full text-gray-900 grid place-items-center bg-aliceblue  h-screen">
-      <div className="container w-1/2 mx-auto rounded pb-1  bg-gray-100 shadow-2xl   overflow-hidden">
+      <div className="container w-1/3 mx-auto rounded pb-1  bg-gray-100 shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
-          <img
-            src={logo}
-            alt="logo"
-            className="rounded-full shadow-2xl mb-3"
-            style={{ width: '125px', height: '125px' }}
-          />
+          <Link to="/">
+            <img
+              src={logo}
+              alt="logo"
+              className="rounded-full shadow-2xl mb-3"
+              style={{ width: '125px', height: '125px' }}
+            />
+          </Link>
           <h2 className="text-3xl text-gray-900">Register for Al AttiahMall</h2>
         </div>
         <hr />
@@ -19,9 +21,17 @@ export default function Register() {
         <div className="flex flex-col items-center px-4 py-2   bg-gray-100">
           {/* input  */}
           <div className="w-full mb-4 ">
+            <h1 className="  text-md font-semibold">Username</h1>
+            <input
+              className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
+              type="text"
+              placeholder="Enter your Username"
+            />
+          </div>
+          {/* input  */}
+          <div className="w-full mb-4 ">
             <h1 className="  text-md font-semibold">Email</h1>
             <input
-              id="email"
               className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
               type="text"
               placeholder="Enter your email address"
@@ -32,7 +42,6 @@ export default function Register() {
             <h1 className="text-md  font-semibold">Password</h1>
 
             <input
-              id="password"
               className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
               type="password"
               placeholder="Enter your Password"

@@ -112,6 +112,188 @@ export default function DataContextProvider({ children }) {
       title: 'Beauty & Personal Care',
     },
   ];
+  const navCategories = [
+    {
+      title: 'Electronics & Appliances',
+      data: [
+        [
+          {
+            title: 'Batteries & Power',
+            sub: [
+              'Batteries',
+              'Extenstion Leads & Cables',
+              'Power Adaptors & Sockets',
+            ],
+          },
+          {
+            title: 'Cameras & Camcorders',
+            sub: [
+              'Action & Instant Cameras',
+              'Cameras Accessories',
+              'Camcorders',
+              'Cameras Bags',
+            ],
+          },
+          {
+            title: 'TVs & Projectors',
+            sub: [
+              'Projectors',
+              'Reviever & Sattelite Accessories',
+              'TV Accessories',
+              'TVs',
+            ],
+          },
+        ],
+
+        [
+          {
+            title: 'Home Cinema & Audio',
+            sub: [
+              'Audio Portable Devices',
+              'Audio Cables & Accessories',
+              'Blu Ray & Media Streaming',
+              'Car Audio',
+              'Home Cinema Systems',
+            ],
+          },
+          {
+            title: 'Small Appliances',
+            sub: [
+              'Accessories & Spare Parts',
+              'Coolers, Heaters & Air Treatment',
+              'Food Preperation',
+              'Irons & Steamers',
+              'Kettles & Coffee Machines',
+              'Microwave Ovens & Portable Ports',
+              'Sewing Machines',
+              'Toasters & Grills',
+            ],
+          },
+        ],
+      ],
+    },
+    {
+      title: 'Fresh Food',
+      data: [
+        [
+          {
+            title: 'Fruits & Vegetables',
+            sub: [
+              'Fresh Boxes',
+              'Fruits',
+              'Herbs',
+              'Vegetables',
+              'Hydroponic Farming',
+            ],
+          },
+          {
+            title: 'Chilled Food Counter',
+            sub: [
+              'Cold Cuts & Meat Snacks',
+              'Dips,Spreads & Pate',
+              'Olives & Antipasti',
+              'Seafood & Caviar',
+              'Tofu',
+            ],
+          },
+          {
+            title: 'Dairy & Eggs',
+            sub: [
+              'Butter & Margarine',
+              'Cheese & Labaneh',
+              'Chilled Desserts',
+              'Cream',
+              'Eggs',
+              'Milk & Laban',
+              'Yoghurt',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Food To Go',
+            sub: ['Appetizers & Bites', 'Ready Meals To Go', 'Salads & Soup'],
+          },
+          {
+            title: 'Meat & Poultry',
+            sub: ['Beef', 'Chicken', 'Lamb', 'Variety Meat'],
+          },
+          {
+            title: 'Ready to Cook',
+            sub: ['Puff Pastry,Dough & Pizza Bases', 'Paste,Gnocchi & Sauces'],
+          },
+        ],
+      ],
+    },
+    {
+      title: 'Cleaning & Household',
+      data: [
+        [
+          {
+            title: 'Candles & Air Fresheners',
+            sub: [
+              'Autosprays & Refills',
+              'Candles,Diffusers & Incense',
+              'Sprays,Gels Air Fresheners',
+            ],
+          },
+          {
+            title: 'Cleaning Supplies',
+            sub: [
+              'Carpet & Floor Cleaning',
+              'Dishwashing Liquids & Tablets',
+              'Disinfectents & Wipes',
+              'Drain Unblockers',
+              'Glass & Wood Cleaning',
+              'Kitchen & Oven Cleaning',
+              'Multi Purpose Cleaning',
+              'Mops,Brooms & Dusters',
+              'Rubber Gloves',
+              'Shoe Polish',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Laundry & Detergants',
+            sub: [
+              'Detergants',
+              'Fabric Softener',
+              'Stain Removers & Fabric Care',
+            ],
+          },
+          {
+            title: 'Tissues',
+            sub: [
+              'Facial Tissues',
+              'Pocket Tissues',
+              'Refreshing Wet Wipes',
+              'Single & Convenience Tissues',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Laundry & Detergants',
+            sub: [
+              'Detergants',
+              'Fabric Softener',
+              'Stain Removers & Fabric Care',
+            ],
+          },
+          {
+            title: 'Tissues',
+            sub: [
+              'Facial Tissues',
+              'Pocket Tissues',
+              'Refreshing Wet Wipes',
+              'Single & Convenience Tissues',
+            ],
+          },
+        ],
+      ],
+    },
+  ];
 
   return (
     <DataProvider.Provider
@@ -122,6 +304,7 @@ export default function DataContextProvider({ children }) {
         setCountry,
         bestSeller,
         categories,
+        navCategories,
       }}
     >
       {children}

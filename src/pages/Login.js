@@ -4,14 +4,16 @@ import logo from '../assets/logo.png';
 export default function Login() {
   return (
     <div className="w-full text-gray-900 grid place-items-center bg-aliceblue  h-screen relative">
-      <div className="container w-1/2 mx-auto rounded z-2 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
+      <div className="container w-1/3 mx-auto rounded z-2 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
-          <img
-            src={logo}
-            alt="logo"
-            className="rounded-full  border-red-500 shadow-2xl mb-3"
-            style={{ width: '125px', height: '125px' }}
-          />
+          <Link to="/">
+            <img
+              src={logo}
+              alt="logo"
+              className="rounded-full  border-red-500 shadow-2xl mb-3"
+              style={{ width: '125px', height: '125px' }}
+            />
+          </Link>
           <h2 className="text-3xl text-gray-900">Login to Al AttiahMall</h2>
         </div>
         <hr />
@@ -21,7 +23,6 @@ export default function Login() {
           <div className="w-full mb-4 ">
             <h1 className="  text-md font-semibold">Email</h1>
             <input
-              id="email"
               className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
               type="text"
               placeholder="Enter your email address"
@@ -36,7 +37,6 @@ export default function Login() {
               </button>
             </div>
             <input
-              id="password"
               className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
               type="password"
               placeholder="Enter your Password"
@@ -51,7 +51,7 @@ export default function Login() {
         </div>
         <div className="px-4 py-2">
           <h1 className="text-sm">
-            Don't have an account ?{' '}
+            Are you new to the family ?{' '}
             <Link className="text-red-400" to="/app/register">
               Join us here
             </Link>

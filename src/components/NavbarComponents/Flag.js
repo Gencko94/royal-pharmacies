@@ -33,7 +33,7 @@ export default function Flag() {
         alt="flag"
         className="w-25p h-25p mr-2"
       />
-      <div className="relative">
+      <div className="">
         <button
           onClick={toggleCountryList}
           className="  flex items-center rounded p-1 hover:bg-red-300 transition duration-100"
@@ -45,15 +45,36 @@ export default function Flag() {
         </button>
         <div
           ref={countryListRef}
-          className="absolute transform z-20 scale-0 mt-1  w-full rounded overflow-hidden  top-100  transition duration-150 origin-top"
+          className="absolute transform z-20 scale-0 mt-1  w-full rounded overflow-hidden left-0  top-100  transition duration-150 origin-top"
+          style={{ width: '200px' }}
         >
+          <button
+            onClick={() => {
+              setCountry('Kuwait');
+              toggleCountryList();
+            }}
+            className="py-2 flex px-6 items-center  w-full bg-nav-secondary text-nav-primary hover:bg-nav-primary hover:text-nav-secondary"
+          >
+            <input
+              type="checkbox"
+              className="form-checkbox rounded-full text-red-500 mr-2"
+              checked={country === 'Kuwait'}
+            />
+            <img src={kuwait} className="w-20p h-20p mr-2 " alt="uae" />
+            Kuwait
+          </button>
           <button
             onClick={() => {
               setCountry('UAE');
               toggleCountryList();
             }}
-            className="py-2 flex px-6  w-full bg-nav-secondary text-nav-primary hover:bg-nav-primary hover:text-nav-secondary"
+            className="py-2 flex px-6 items-center  w-full bg-nav-secondary text-nav-primary hover:bg-nav-primary hover:text-nav-secondary"
           >
+            <input
+              type="checkbox"
+              className="form-checkbox rounded-full text-red-500 mr-2"
+              checked={country === 'UAE'}
+            />
             <img src={uae} className="w-20p h-20p mr-2 " alt="uae" />
             UAE
           </button>
@@ -62,8 +83,13 @@ export default function Flag() {
               setCountry('Qatar');
               toggleCountryList();
             }}
-            className=" py-2 flex px-6  w-full bg-nav-secondary text-nav-primary hover:bg-nav-primary hover:text-nav-secondary"
+            className=" py-2 flex items-center px-6  w-full bg-nav-secondary text-nav-primary hover:bg-nav-primary hover:text-nav-secondary"
           >
+            <input
+              type="checkbox"
+              className="form-checkbox rounded-full text-red-500 mr-2"
+              checked={country === 'Qatar'}
+            />
             <img src={qatar} className="w-20p h-20p mr-2 " alt="qatar" />
             Qatar
           </button>

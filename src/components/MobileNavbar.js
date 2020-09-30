@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import useClickAway from '../hooks/useClickAway';
 import Hamburger from './NavbarComponents/Hamburger';
 import Logo from './NavbarComponents/Logo';
@@ -46,6 +47,7 @@ export default function MobileNavbar() {
           toggleSearchBar={toggleSearchBar}
           searchBarOpen={searchBarOpen}
         />
+        <Link to="/user/account">account</Link>
       </nav>
       <MobileSearchbar inputRef={inputRef} />
       <SideMenu toggleSideMenu={toggleSideMenu} sideMenuRef={sideMenuRef} />

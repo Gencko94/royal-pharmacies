@@ -14,6 +14,7 @@ export default function MainCarousel() {
     : mainCarouselItemsMobile;
   const settings = {
     className: '',
+    dots: true,
     centerMode: true,
     centerPadding: '50px',
     arrows: false,
@@ -51,7 +52,7 @@ export default function MainCarousel() {
     ],
   };
   return (
-    <div className="md:my-4">
+    <div className="md:my-4 my-6">
       <Slider className="" {...settings}>
         {data.map((item, i) => {
           return (

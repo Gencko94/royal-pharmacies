@@ -100,7 +100,7 @@ export default function Categories() {
                             className="max-w-full max-h-full"
                           />
                         </div>
-                        <h1 className="text-center text-xs font-semibold sm:text-xs md:text-sm lg:text-lg  ">
+                        <h1 className="text-center text-xs font-semibold sm:text-xs md:text-sm lg:text-base  ">
                           {photo.title}
                         </h1>
                       </div>
