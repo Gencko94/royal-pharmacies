@@ -10,10 +10,7 @@ export default function MobileTabs({ selectedIndex, setSelectedIndex }) {
   ];
   return (
     <div className="overflow-hidden">
-      <ul
-        className=" mobile-tabs overflow-x-scroll  whitespace-no-wrap bg-red-100 p-2"
-        // style={{ marginBottom: '-20px' }}
-      >
+      <ul className=" mobile-tabs overflow-x-scroll  whitespace-no-wrap bg-red-100 p-2">
         {options.map((option, i) => {
           return (
             <li className="inline-block  ">
