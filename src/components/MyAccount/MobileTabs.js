@@ -3,17 +3,16 @@ import React from 'react';
 export default function MobileTabs({ selectedIndex, setSelectedIndex }) {
   const options = [
     'My Profile',
+    'My Addresses',
     'My Orders',
     'My Payment Details',
-    'Language',
     'Order History',
-    'Addresses',
   ];
   return (
     <div className="overflow-hidden">
       <ul
-        className="overflow-x-scroll  whitespace-no-wrap bg-red-100"
-        style={{ marginBottom: '-20px', paddingBottom: '20px' }}
+        className=" mobile-tabs overflow-x-scroll  whitespace-no-wrap bg-red-100 p-2"
+        // style={{ marginBottom: '-20px' }}
       >
         {options.map((option, i) => {
           return (
@@ -21,8 +20,8 @@ export default function MobileTabs({ selectedIndex, setSelectedIndex }) {
               <button
                 onClick={() => setSelectedIndex(i)}
                 className={`p-3 ${
-                  selectedIndex === i ? 'bg-red-300' : 'bg-red-100'
-                } hover:bg-red-300 transition duration-150 font-semibold `}
+                  selectedIndex === i ? 'bg-red-500 text-white' : 'bg-red-100'
+                } hover:bg-red-300 transition duration-150 font-semibold rounded`}
               >
                 {option}
               </button>

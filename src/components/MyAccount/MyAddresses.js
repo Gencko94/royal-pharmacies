@@ -1,11 +1,12 @@
 import React from 'react';
 import lostManWallet from '../../assets/illustrations/lostManWallet.svg';
-export default function MyOrders() {
+
+export default function MyAddresses() {
   const orders = [];
   return (
     <div className="text-black  ">
       <div className="px-3 py-3   ">
-        <h1 className="text-xl font-semibold text-center">Orders</h1>
+        <h1 className="text-xl font-semibold text-center">Addresses</h1>
       </div>
       <hr />
       {orders.length === 0 && (

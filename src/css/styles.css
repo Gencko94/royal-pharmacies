@@ -1,0 +1,10 @@
+button,
+select {
+  outline: none;
+}
+.mobile-tabs {
+  scrollbar-width: none;
+}
+.mobile-tabs::-webkit-scrollbar {
+  display: none;
+}

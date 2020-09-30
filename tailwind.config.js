@@ -5,6 +5,25 @@ module.exports = {
   },
   purge: [],
   theme: {
+    // customForms: theme => ({
+    //   dark: {
+    //     input: {
+    //       color: theme('colors.gray.100'),
+    //     },
+    //   },
+    //   default: {
+    //     select: {
+    //       borderColor: theme('colors.red.600'),
+    //       backgroundColor: theme('colors.red.600'),
+    //       color: theme('colors.gray.100'),
+
+    //       '&:focus': {
+    //         boxShadow: `0 0 0 1px ${theme('colors.red.600')}`,
+    //         borderColor: theme('colors.red.600'),
+    //       },
+    //     },
+    //   },
+    // }),
     extend: {
       screens: {
         xs: '320px',

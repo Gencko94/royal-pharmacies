@@ -1,11 +1,12 @@
 import React from 'react';
-import lostManWallet from '../../assets/illustrations/lostManWallet.svg';
-export default function MyOrders() {
+import shoppingLost from '../../assets/illustrations/shoppingLost.svg';
+
+export default function PaymentDetails() {
   const orders = [];
   return (
     <div className="text-black  ">
       <div className="px-3 py-3   ">
-        <h1 className="text-xl font-semibold text-center">Orders</h1>
+        <h1 className="text-xl font-semibold text-center">Payment Details</h1>
       </div>
       <hr />
       {orders.length === 0 && (
@@ -13,13 +14,13 @@ export default function MyOrders() {
           className="  flex flex-col justify-around items-center p-4 "
           style={{ minHeight: '500px' }}
         >
-          <h1 className="text-lg text-center font-bold">
-            You've Not added any orders yet !
+          <h1 className="text-lg font-bold text-center">
+            You've Not added any Payment Details yet !
           </h1>
           <img
             style={{ height: '200px' }}
-            src={lostManWallet}
-            alt="lostManWallet"
+            src={shoppingLost}
+            alt="shoppingLost"
           />
         </div>
       )}
