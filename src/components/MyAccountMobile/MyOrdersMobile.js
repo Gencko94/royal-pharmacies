@@ -11,7 +11,7 @@ export default function MyOrdersMobile() {
       <hr />
       {orders.length === 0 && (
         <div
-          className="  flex flex-col justify-around items-center p-4 "
+          className="  flex flex-col justify-center items-center p-4 "
           style={{ minHeight: '500px' }}
         >
           <div className="flex flex-col items-center justify-center">
@@ -26,6 +26,7 @@ export default function MyOrdersMobile() {
             </button>
           </div>
           <img
+            className="mt-5"
             style={{ height: '200px' }}
             src={shoppingLost}
             alt="lostManWallet"

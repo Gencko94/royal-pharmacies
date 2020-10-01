@@ -47,7 +47,7 @@ export default function MobileNavbar() {
           toggleSearchBar={toggleSearchBar}
           searchBarOpen={searchBarOpen}
         />
-        <Link to="/user/account">account</Link>
+        <Link to="/user/account/profile">My Account</Link>
       </nav>
       <MobileSearchbar inputRef={inputRef} />
       <SideMenu toggleSideMenu={toggleSideMenu} sideMenuRef={sideMenuRef} />

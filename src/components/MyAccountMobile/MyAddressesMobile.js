@@ -25,7 +25,12 @@ export default function MyAddressesMobile() {
               Add new Address
             </button>
           </div>
-          <img style={{ height: '300px' }} src={manWithMap} alt="manWithMap" />
+          <img
+            style={{ height: '300px' }}
+            className="mt-5"
+            src={manWithMap}
+            alt="manWithMap"
+          />
         </div>
       )}
     </div>

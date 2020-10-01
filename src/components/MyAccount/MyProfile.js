@@ -4,7 +4,10 @@ export default function MyProfile() {
   const [language, setLanguage] = React.useState('English');
   const languages = ['Arabic', 'English'];
   return (
-    <div className="rounded-lg overflow-hidden shadow-2xl">
+    <div
+      className="rounded-lg overflow-y-auto shadow-2xl "
+      style={{ maxHeight: 'calc(100vh - 200px)' }}
+    >
       <div className="">
         <div className="px-3 py-3 flex  text-gray-900">
           <h1 className="text-2xl font-semibold"> General Information</h1>

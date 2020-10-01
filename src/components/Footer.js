@@ -1,5 +1,14 @@
 import React from 'react';
-import logo from '../assets/logo.png';
+
+import FirstSection from './Footer/FirstSection';
+import SecondSection from './Footer/SecondSection';
+import ThirdSection from './Footer/ThirdSection';
 export default function Footer() {
-  return <div></div>;
+  return (
+    <div className="w-full">
+      <FirstSection />
+      <SecondSection />
+      <ThirdSection />
+    </div>
+  );
 }

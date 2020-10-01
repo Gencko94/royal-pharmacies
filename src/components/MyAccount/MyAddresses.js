@@ -4,7 +4,10 @@ import { FaMapMarkedAlt } from 'react-icons/fa';
 
 export default function MyAddresses() {
   return (
-    <div className="rounded-lg overflow-hidden shadow-2xl">
+    <div
+      className="rounded-lg overflow-hidden shadow-2xl"
+      style={{ minHeight: 'calc(100vh - 200px' }}
+    >
       <div className="px-3 py-3 flex  text-gray-900">
         <h1 className="text-2xl font-semibold"> Addresses</h1>
         <button className="px-4 py-1 ml-auto font-semibold bg-red-600 text-gray-100 rounded">
@@ -12,10 +15,7 @@ export default function MyAddresses() {
         </button>
       </div>
       <hr />
-      <div
-        style={{ minHeight: '470px' }}
-        className="flex flex-col justify-center"
-      >
+      <div className="flex flex-col justify-center items-center h-full">
         <div className="flex flex-col items-center">
           <h1 className="text-lg text-center font-semibold">
             You've not added any addresses yet !
@@ -27,7 +27,7 @@ export default function MyAddresses() {
             Add new Address
           </button>
         </div>
-        <img src={manWithMap} alt="map" style={{ height: '300px' }} />
+        <img src={manWithMap} alt="map" style={{ height: '250px' }} />
       </div>
     </div>
   );

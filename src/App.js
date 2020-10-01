@@ -12,7 +12,9 @@ import MobileFooter from './components/MobileFooter';
 function App() {
   const Home = Loadable({
     loader: () => import('./pages/Home'),
-    loading: () => 'Loading',
+    loading: () => (
+      <div style={{ minHeight: 'calc(100vh - 140px)' }}>Loading</div>
+    ),
   });
   const MyAccount = Loadable({
     loader: () => import('./pages/MyAccount'),

@@ -20,7 +20,7 @@ export default function NavCategory() {
     <>
       <div
         ref={buttonRef}
-        className="sticky   top-0 left-0 z-10 bg-gray-200 py-0 px-4 flex items-center justify-center text-gray-900 "
+        className="sticky   top-0 left-0 z-10 bg-gray-100 py-0 px-4 flex items-center justify-center text-gray-900 "
       >
         {navCategories.map((button, i) => (
           <button

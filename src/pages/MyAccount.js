@@ -23,14 +23,18 @@ export default function MyAccount({
     payment: 3,
     order_history: 4,
   };
-  const [selectedIndex, setSelectedIndex] = React.useState(
-    mapPageToIndex[page]
-  );
+  const [selectedIndex, setSelectedIndex] = React.useState(() => {
+    if (page) {
+      return mapPageToIndex[page];
+    } else {
+      return 0;
+    }
+  });
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
   return (
     <>
       {!isTabletOrAbove ? (
-        <>
+        <div style={{ minHeight: 'calc(100vh - 56px)' }}>
           <MobileTabs
             selectedIndex={selectedIndex}
             setSelectedIndex={setSelectedIndex}
@@ -41,11 +45,14 @@ export default function MyAccount({
             {selectedIndex === 2 && <MyOrdersMobile />}
             {selectedIndex === 3 && <PaymentDetailsMobile />}
           </div>
-        </>
+        </div>
       ) : (
-        <>
-          <h1 className="text-2xl my-2 mx-8 font-bold">My Personal Account</h1>
-          <div className="myaccount__grid px-8 py-0">
+        <div
+          style={{ minHeight: 'calc(100vh - 140px)' }}
+          className="mb-4 pt-2 px-8"
+        >
+          <h1 className="text-2xl mb-2 font-bold">My Personal Account</h1>
+          <div className="myaccount__grid ">
             <SideTabs
               selectedIndex={selectedIndex}
               setSelectedIndex={setSelectedIndex}
@@ -56,7 +63,7 @@ export default function MyAccount({
             {selectedIndex === 2 && <MyOrders />}
             {selectedIndex === 3 && <PaymentDetails />}
           </div>
-        </>
+        </div>
       )}
     </>
   );
