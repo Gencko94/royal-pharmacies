@@ -12,6 +12,7 @@ export default function Navbar() {
       <div className="flex items-center justify-start py-2 pb-1 px-4">
         <Language />
         <Flag />
+
         <LoginRegister />
       </div>
       <div className="flex items-center py-2 px-4">

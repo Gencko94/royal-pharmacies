@@ -1,10 +1,15 @@
 button,
 select {
-  outline: none;
+  outline: none !important;
 }
 .mobile-tabs {
   scrollbar-width: none;
 }
 .mobile-tabs::-webkit-scrollbar {
   display: none;
+}
+.myaccount__grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 250px) minmax(400px, 1fr);
+  gap: 1em;
 }

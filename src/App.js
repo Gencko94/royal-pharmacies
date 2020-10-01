@@ -3,11 +3,12 @@ import { useMediaQuery } from 'react-responsive';
 import { Route } from 'react-router-dom';
 import MobileNavbar from './components/MobileNavbar';
 import Navbar from './components/Navbar';
-// import Home from './pages/Home';
-// import MyAccount from './pages/MyAccount';
+
 import Loadable from 'react-loadable';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Footer from './components/Footer';
+import MobileFooter from './components/MobileFooter';
 function App() {
   const Home = Loadable({
     loader: () => import('./pages/Home'),
@@ -24,7 +25,8 @@ function App() {
       {isTabletOrAbove ? <Navbar /> : <MobileNavbar />}
 
       <Route exact path="/" component={Home} />
-      <Route exact path="/user/account" component={MyAccount} />
+      <Route exact path="/user/account/:page" component={MyAccount} />
+      {isTabletOrAbove ? <Footer /> : <MobileFooter />}
     </div>
   );
 }

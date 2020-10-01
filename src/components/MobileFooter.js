@@ -1,5 +1,5 @@
 import React from 'react';
 
-export default function MyOrders() {
+export default function MobileFooter() {
   return <div></div>;
 }
