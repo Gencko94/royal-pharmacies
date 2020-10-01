@@ -15,7 +15,7 @@ export default function Navbar() {
           <Language />
           <Flag />
           <LoginRegister />
-          <Link className="ml-2" to="user/account/profile">
+          <Link className="ml-2" to="/user/account/profile">
             My Account
           </Link>
         </div>
