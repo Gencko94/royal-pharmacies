@@ -13,7 +13,7 @@ ReactDOM.render(
       <div className="font-body antialiased  overflow-x-hidden overflow-y-hidden">
         <Route exact path="/app/register" component={Register} />
         <Route exact path="/app/login" component={Login} />
-        <Route component={App} />
+        <Route exact path="/" component={App} />
       </div>
     </Router>
   </DataContextProvider>,

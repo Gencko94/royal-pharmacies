@@ -11,7 +11,6 @@ import mbpoco from '../assets/mainCarousel/mbpoco.png';
 import mbwatch from '../assets/mainCarousel/mbwatch.png';
 import mbbigdeal from '../assets/mainCarousel/mbbigdeal.png';
 import mbemaar from '../assets/mainCarousel/mbemaar.png';
-// import photo13 from '../assets/mainCarousel/mattress.jpg';
 import flaker from '../assets/offers/flaker.jpg';
 import mask from '../assets/offers/mask.jpg';
 import skin from '../assets/offers/skin.jpg';
@@ -36,10 +35,30 @@ import school from '../assets/cat/school.jpg';
 import smartphones from '../assets/cat/smartphones.jpg';
 import electronics from '../assets/cat/electronics.jpg';
 import beauty from '../assets/cat/beauty.jpg';
+import usa from '../assets/flags/usa.svg';
+import korea from '../assets/flags/korea.svg';
+import uk from '../assets/flags/uk.svg';
+import jp from '../assets/flags/japan.svg';
+import kuwait from '../assets/flags/kuwait.svg';
+import qatar from '../assets/flags/qatar.svg';
+import uae from '../assets/flags/uae.svg';
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
-  const [country, setCountry] = React.useState('Kuwait');
+  const [selectedCountry, setSelectedCountry] = React.useState('Kuwait');
+  const [currentStore, setCurrentStore] = React.useState('kuwait');
+  const [selectedStore, setSelectedStore] = React.useState('Kuwait');
+  const countryList = ['Kuwait', 'UAE', 'Qatar'];
 
+  const stores = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
+  const storesFlags = {
+    usa: usa,
+    korea: korea,
+    uk: uk,
+    jp: jp,
+    kuwait: kuwait,
+    qatar: qatar,
+    uae: uae,
+  };
   const mainCarouselItemsDesktop = [
     { src: bigdeal },
     { src: watch },
@@ -293,6 +312,210 @@ export default function DataContextProvider({ children }) {
         ],
       ],
     },
+    {
+      title: 'Gift Cards',
+      data: [
+        [
+          {
+            title: 'Candles & Air Fresheners',
+            sub: [
+              'Autosprays & Refills',
+              'Candles,Diffusers & Incense',
+              'Sprays,Gels Air Fresheners',
+            ],
+          },
+          {
+            title: 'Cleaning Supplies',
+            sub: [
+              'Carpet & Floor Cleaning',
+              'Dishwashing Liquids & Tablets',
+              'Disinfectents & Wipes',
+              'Drain Unblockers',
+              'Glass & Wood Cleaning',
+              'Kitchen & Oven Cleaning',
+              'Multi Purpose Cleaning',
+              'Mops,Brooms & Dusters',
+              'Rubber Gloves',
+              'Shoe Polish',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Laundry & Detergants',
+            sub: [
+              'Detergants',
+              'Fabric Softener',
+              'Stain Removers & Fabric Care',
+            ],
+          },
+          {
+            title: 'Tissues',
+            sub: [
+              'Facial Tissues',
+              'Pocket Tissues',
+              'Refreshing Wet Wipes',
+              'Single & Convenience Tissues',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Laundry & Detergants',
+            sub: [
+              'Detergants',
+              'Fabric Softener',
+              'Stain Removers & Fabric Care',
+            ],
+          },
+          {
+            title: 'Tissues',
+            sub: [
+              'Facial Tissues',
+              'Pocket Tissues',
+              'Refreshing Wet Wipes',
+              'Single & Convenience Tissues',
+            ],
+          },
+        ],
+      ],
+    },
+    {
+      title: 'Fashion & Jewellary',
+      data: [
+        [
+          {
+            title: 'Candles & Air Fresheners',
+            sub: [
+              'Autosprays & Refills',
+              'Candles,Diffusers & Incense',
+              'Sprays,Gels Air Fresheners',
+            ],
+          },
+          {
+            title: 'Cleaning Supplies',
+            sub: [
+              'Carpet & Floor Cleaning',
+              'Dishwashing Liquids & Tablets',
+              'Disinfectents & Wipes',
+              'Drain Unblockers',
+              'Glass & Wood Cleaning',
+              'Kitchen & Oven Cleaning',
+              'Multi Purpose Cleaning',
+              'Mops,Brooms & Dusters',
+              'Rubber Gloves',
+              'Shoe Polish',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Laundry & Detergants',
+            sub: [
+              'Detergants',
+              'Fabric Softener',
+              'Stain Removers & Fabric Care',
+            ],
+          },
+          {
+            title: 'Tissues',
+            sub: [
+              'Facial Tissues',
+              'Pocket Tissues',
+              'Refreshing Wet Wipes',
+              'Single & Convenience Tissues',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Laundry & Detergants',
+            sub: [
+              'Detergants',
+              'Fabric Softener',
+              'Stain Removers & Fabric Care',
+            ],
+          },
+          {
+            title: 'Tissues',
+            sub: [
+              'Facial Tissues',
+              'Pocket Tissues',
+              'Refreshing Wet Wipes',
+              'Single & Convenience Tissues',
+            ],
+          },
+        ],
+      ],
+    },
+    {
+      title: 'Baby Care',
+      data: [
+        [
+          {
+            title: 'Candles & Air Fresheners',
+            sub: [
+              'Autosprays & Refills',
+              'Candles,Diffusers & Incense',
+              'Sprays,Gels Air Fresheners',
+            ],
+          },
+          {
+            title: 'Cleaning Supplies',
+            sub: [
+              'Carpet & Floor Cleaning',
+              'Dishwashing Liquids & Tablets',
+              'Disinfectents & Wipes',
+              'Drain Unblockers',
+              'Glass & Wood Cleaning',
+              'Kitchen & Oven Cleaning',
+              'Multi Purpose Cleaning',
+              'Mops,Brooms & Dusters',
+              'Rubber Gloves',
+              'Shoe Polish',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Laundry & Detergants',
+            sub: [
+              'Detergants',
+              'Fabric Softener',
+              'Stain Removers & Fabric Care',
+            ],
+          },
+          {
+            title: 'Tissues',
+            sub: [
+              'Facial Tissues',
+              'Pocket Tissues',
+              'Refreshing Wet Wipes',
+              'Single & Convenience Tissues',
+            ],
+          },
+        ],
+        [
+          {
+            title: 'Laundry & Detergants',
+            sub: [
+              'Detergants',
+              'Fabric Softener',
+              'Stain Removers & Fabric Care',
+            ],
+          },
+          {
+            title: 'Tissues',
+            sub: [
+              'Facial Tissues',
+              'Pocket Tissues',
+              'Refreshing Wet Wipes',
+              'Single & Convenience Tissues',
+            ],
+          },
+        ],
+      ],
+    },
   ];
 
   return (
@@ -300,11 +523,18 @@ export default function DataContextProvider({ children }) {
       value={{
         mainCarouselItemsDesktop,
         mainCarouselItemsMobile,
-        country,
-        setCountry,
+        selectedCountry,
+        setSelectedCountry,
         bestSeller,
         categories,
         navCategories,
+        countryList,
+        selectedStore,
+        setSelectedStore,
+        stores,
+        storesFlags,
+        currentStore,
+        setCurrentStore,
       }}
     >
       {children}
