@@ -16,6 +16,7 @@ export default function NavCategory() {
     dropDownbgRef.current.classList.add('hidden');
     node.classList.add('hidden');
   };
+
   return (
     <>
       <div
@@ -24,6 +25,7 @@ export default function NavCategory() {
       >
         {navCategories.map((button, i) => (
           <button
+            id="navButton"
             key={i}
             onMouseEnter={() => openDropDown(i)}
             onMouseLeave={() => closeDropDown(i)}

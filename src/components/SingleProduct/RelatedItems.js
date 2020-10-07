@@ -1,10 +1,8 @@
 import React from 'react';
-import Slider from 'react-slick';
-import { DataProvider } from '../../contexts/DataContext';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import zalo from '../../assets/offers/zalo.png';
-import { TiShoppingCart } from 'react-icons/ti';
-import { BsChevronRight } from 'react-icons/bs';
-import { BsChevronLeft } from 'react-icons/bs';
+
+import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 
 const RightArrow = ({ onClick }) => {
@@ -27,19 +25,12 @@ const LeftArrow = ({ className, style, onClick }) => {
     </div>
   );
 };
-
-export default function BestSeller() {
-  const {
-    bestSeller,
-    cartItems,
-    removeItemFromCart,
-    addItemToCart,
-  } = React.useContext(DataProvider);
+export default function RelatedItems({ data }) {
   const settings = {
     className: '',
     arrows: true,
     infinite: true,
-    slidesToShow: bestSeller.length,
+    slidesToShow: data.length - 1,
     slidesToScroll: 4,
     nextArrow: <RightArrow />,
     prevArrow: <LeftArrow />,
@@ -55,48 +46,37 @@ export default function BestSeller() {
         breakpoint: 600,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 3,
         },
       },
       {
         breakpoint: 450,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2,
         },
       },
       {
         breakpoint: 320,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2,
         },
       },
     ],
   };
-  const isItemInCart = data => {
-    const itemInCart = cartItems.find(item => data.id === item.id);
-    if (itemInCart !== undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+
   return (
-    <div className="mb-6">
-      <div className="flex items-center mb-4">
-        <h1 className="text-xl font-semibold flex-grow">Best Sellers</h1>
-        <button className="p-1">See all</button>
+    <div className="mb-2">
+      <div className="mb-1 text-lg font-semibold">
+        <h1>Related Items</h1>
       </div>
       <Slider className="" {...settings}>
-        {bestSeller.map((item, i) => {
+        {data.map((item, i) => {
           return (
-            <div key={i} className="px-2 ">
+            <div key={i} className="px-2  ">
               <div
                 style={{ minHeight: '250px' }}
-                className=" bg-white overflow-hidden flex flex-col relative  rounded-lg shadow-lg "
+                className=" bg-white border overflow-hidden flex flex-col relative  rounded-lg shadow-lg "
               >
-                <Link to={`products/${item.id}`}>
+                <Link to={`/products/${item.id}`}>
                   <img
                     src={item.photos.small}
                     alt="something"
@@ -104,7 +84,7 @@ export default function BestSeller() {
                   />
                 </Link>
 
-                <div className=" relative flex flex-col pt-8 p-1 bg-white text-black">
+                <div className=" relative flex flex-col pt-8 p-3 bg-white text-black">
                   <img
                     src={zalo}
                     alt="playstore"
@@ -126,24 +106,6 @@ export default function BestSeller() {
                   <p className="text-base font-bold">
                     {item.price} <span className="text-sm">KD</span>
                   </p>
-                  {isItemInCart(item) ? (
-                    <button
-                      onClick={() => removeItemFromCart(item)}
-                      className="bg-red-700 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold "
-                    >
-                      Remove From Cart
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => addItemToCart({ data: item })}
-                      className="bg-blue-700 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold"
-                    >
-                      <span>
-                        <TiShoppingCart className="w-25p h-25p mr-2" />
-                      </span>
-                      Add to Cart
-                    </button>
-                  )}
                 </div>
               </div>
             </div>

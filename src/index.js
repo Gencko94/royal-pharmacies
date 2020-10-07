@@ -7,13 +7,19 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import DataContextProvider from './contexts/DataContext';
 import Register from './pages/Register';
 import Login from './pages/Login';
+
+const localCart = localStorage.getItem('cartItems');
+if (!localCart) {
+  localStorage.setItem('cartItems', JSON.stringify([]));
+}
+
 ReactDOM.render(
   <DataContextProvider>
     <Router>
-      <div className="font-body antialiased  overflow-x-hidden overflow-y-hidden">
+      <div className="font-body antialiased relative ">
         <Route exact path="/app/register" component={Register} />
         <Route exact path="/app/login" component={Login} />
-        <Route exact path="/" component={App} />
+        <Route component={App} />
       </div>
     </Router>
   </DataContextProvider>,

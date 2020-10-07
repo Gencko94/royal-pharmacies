@@ -2,17 +2,237 @@ import React from 'react';
 
 import Hamburger from './Hamburger';
 import Logo from './Logo';
+import { BsChevronRight } from 'react-icons/bs';
+import { AiOutlineApartment } from 'react-icons/ai';
+import { AiOutlineHistory } from 'react-icons/ai';
+import { HiOutlineShoppingBag } from 'react-icons/hi';
+import { CgProfile } from 'react-icons/cg';
+import { AiOutlineHeart } from 'react-icons/ai';
+import { AiOutlineEye } from 'react-icons/ai';
+import { MdLocationOn } from 'react-icons/md';
+import { RiCustomerServiceFill } from 'react-icons/ri';
+import { DataProvider } from '../../contexts/DataContext';
+import { Link } from 'react-router-dom';
 
 export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
+  const { sidebarCategories } = React.useContext(DataProvider);
+  const [products, setProducts] = React.useState(false);
+  const [page, setPage] = React.useState(0);
+  const [subPage, setSubPage] = React.useState(0);
+  const [secondSubPage, setSecondSubPage] = React.useState(0);
+  const innerRef = React.useRef(null);
+
+  const handleClickBackFirst = () => {
+    setPage(page - 1);
+    setTimeout(() => {
+      setProducts(false);
+    }, 400);
+  };
+  const handleClickBackSecond = i => {
+    setPage(page - 1);
+    setSecondSubPage(i);
+  };
+  const handleClickNextZero = () => {
+    setPage(page + 1);
+    setProducts(true);
+  };
+  const handleClickNextFirst = i => {
+    setPage(page + 1);
+    setSubPage(i);
+  };
+  const handleClickNextSecond = i => {
+    setPage(page + 1);
+    setSecondSubPage(i);
+  };
+
+  React.useEffect(() => {
+    if (innerRef.current) {
+      innerRef.current.classList.remove(`page${page + 1}`);
+      innerRef.current.classList.remove(`page${page}`);
+      innerRef.current.classList.remove(`page${page - 1}`);
+      innerRef.current.classList.add(`page${page}`);
+    }
+  }, [page]);
   return (
-    <section
+    <div
       ref={sideMenuRef}
-      className="z-20 transform -translate-x-full transition-transform duration-300 absolute top-0 left-0 min-w-75p h-screen bg-gray-400 p-2 "
+      className=" text-gray-900 z-20 transform -translate-x-full transition-transform duration-300 absolute top-0 left-0 min-w-75p h-screen bg-gray-100 p-2 "
+      style={{ maxWidth: '75%' }}
     >
-      <div className="flex items-center ">
+      <div className="flex items-center mb-2 ">
         <Hamburger toggleSideMenu={toggleSideMenu} color={'#555'} />
-        <Logo />
+        <Logo withTypography={false} />
       </div>
-    </section>
+      <div className="flex place-content-center   mb-2">
+        <Link
+          to="/app/login"
+          className=" text-lg font-bold rounded p-1 text-center"
+        >
+          Hello,Sign in
+        </Link>
+      </div>
+      <hr />
+      <div className="relative overflow-hidden mt-2">
+        <div ref={innerRef} className="sidebar__inner">
+          <div className="sidebar-first ">
+            <button
+              onClick={handleClickNextZero}
+              className="py-2 px-1 mb-2 flex items-center justify-between text-lg"
+            >
+              <div className="flex items-center">
+                <AiOutlineApartment className="mr-2 w-25p h-25p" />
+                <h1>All Products</h1>
+              </div>
+              <BsChevronRight />
+            </button>
+
+            <Link
+              to="/cart"
+              onClick={toggleSideMenu}
+              className="py-2 px-1 mb-2  text-lg  "
+            >
+              <div className="flex  items-center">
+                <HiOutlineShoppingBag className="mr-2 w-25p h-25p" />
+                <h1>Cart</h1>
+              </div>
+            </Link>
+            <Link
+              to="/user/account/profile"
+              className="py-2 px-1 mb-2  text-lg  "
+              onClick={toggleSideMenu}
+            >
+              <div className=" flex items-center">
+                <CgProfile className="mr-2 w-25p h-25p" />
+                <h1>Account</h1>
+              </div>
+            </Link>
+            <button
+              onClick={toggleSideMenu}
+              className="py-2 px-1 mb-2 text-lg  "
+            >
+              <div className=" flex items-center">
+                <AiOutlineHistory className="mr-2 w-25p h-25p" />
+                <h1>Order History</h1>
+              </div>
+            </button>
+            <hr />
+            <button
+              onClick={toggleSideMenu}
+              className="py-2 px-1 mb-2  text-lg  "
+            >
+              <div className=" flex items-center">
+                <AiOutlineHeart className="mr-2 w-25p h-25p" />
+                <h1>Wishlist</h1>
+              </div>
+            </button>
+            <button
+              onClick={toggleSideMenu}
+              className="py-2 px-1 mb-2  text-lg  "
+            >
+              <div className=" flex items-center">
+                <AiOutlineEye className="mr-2 w-25p h-25p" />
+                <h1>Viewed Items</h1>
+              </div>
+            </button>
+            <hr />
+            <button
+              onClick={toggleSideMenu}
+              className="py-2 px-1 mb-2  text-lg  "
+            >
+              <div className=" flex items-center">
+                <MdLocationOn className="mr-2 w-25p h-25p" />
+                <h1>Ship to : Kuwait</h1>
+              </div>
+            </button>
+            <button
+              onClick={toggleSideMenu}
+              className="py-2 px-1 mb-2  text-lg  "
+            >
+              <div className=" flex items-center">
+                <RiCustomerServiceFill className="mr-2 w-25p h-25p" />
+                <h1>Customer Service</h1>
+              </div>
+            </button>
+          </div>
+          {products && (
+            <>
+              <div className="sidebar-second">
+                <button
+                  onClick={handleClickBackFirst}
+                  className="py-2 px-1 mb-2  text-lg font-semibold "
+                >
+                  Go Back
+                </button>
+                <hr />
+                {sidebarCategories.map((category, i) => {
+                  return (
+                    <button
+                      onClick={() => handleClickNextFirst(i)}
+                      key={category.title}
+                      className="py-2 px-1 mb-2 flex items-center font-semibold justify-between"
+                    >
+                      <div className=" flex items-center">
+                        <CgProfile className="mr-2 w-25p h-25p" />
+                        <h1>{category.title}</h1>
+                      </div>
+                      <BsChevronRight />
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="sidebar-second">
+                <button
+                  onClick={() => handleClickBackSecond(subPage)}
+                  className="py-2 px-1 mb-2  text-lg font-semibold "
+                >
+                  Go Back
+                </button>
+                <hr />
+                {sidebarCategories[subPage].sub.map((category, i) => {
+                  return (
+                    <button
+                      onClick={() => handleClickNextSecond(i)}
+                      key={i}
+                      className="py-2 px-1 mb-2 flex items-center font-semibold justify-between"
+                    >
+                      <div className=" flex items-center">
+                        <CgProfile className="mr-2 w-25p h-25p" />
+                        <h1>{category.title}</h1>
+                      </div>
+                      <BsChevronRight />
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="sidebar-second">
+                {/* third flex div aka third page */}
+                <button
+                  onClick={() => handleClickBackSecond(secondSubPage)}
+                  className="py-2 px-1 mb-2  text-lg font-semibold "
+                >
+                  Go Back
+                </button>
+                <hr />
+                {sidebarCategories[subPage].sub[secondSubPage].sub.map(
+                  (category, i) => {
+                    return (
+                      <button
+                        key={i}
+                        className="py-2 px-1 mb-2 flex items-center font-semibold justify-between"
+                      >
+                        <div className=" flex items-center">
+                          <CgProfile className="mr-2 w-25p h-25p" />
+                          <h1>{category}</h1>
+                        </div>
+                      </button>
+                    );
+                  }
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

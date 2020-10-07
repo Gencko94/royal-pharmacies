@@ -29,7 +29,7 @@ export default function MainCarousel() {
         breakpoint: 1024,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 3,
+          slidesToScroll: 1,
           centerMode: false,
         },
       },

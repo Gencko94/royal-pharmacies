@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function MegaMenu({ data, id }) {
-  console.log(data);
   return (
     <div
       id={`dd${id}`}

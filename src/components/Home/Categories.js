@@ -20,7 +20,7 @@ export default function Categories() {
         breakpoint: 1024,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 3,
+          slidesToScroll: 2,
         },
       },
       {
