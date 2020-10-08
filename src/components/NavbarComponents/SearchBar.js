@@ -5,7 +5,7 @@ import OrderFrom from './OrderFrom';
 export default function SearchBar() {
   return (
     <div className="flex  mr-3  relative bg-gray-200  rounded-lg  ">
-      <div className="grid items-center p-1 text-red-700 ">
+      <div className="grid place-items-center p-1 text-red-700 ">
         <BiSearch className=" w-5 h-5" />
       </div>
       <input

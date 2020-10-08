@@ -59,6 +59,16 @@ import liss3 from '../assets/products/liss3.jpg';
 import liss4 from '../assets/products/liss4.jpg';
 import pump from '../assets/products/pump.jpg';
 import pumpsm from '../assets/products/pumpsm.jpg';
+
+import a20s from '../assets/phones/a20s.jpg';
+import a51 from '../assets/phones/a51.jpg';
+import iphone7 from '../assets/phones/iphone7.jpg';
+import iphone11 from '../assets/phones/iphone11.jpg';
+import iphoneblack from '../assets/phones/iphoneblack.jpg';
+import m30 from '../assets/phones/m30.jpg';
+import note10 from '../assets/phones/note10.jpg';
+import taba from '../assets/phones/taba.jpg';
+
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState('kuwait');
@@ -135,6 +145,8 @@ export default function DataContextProvider({ children }) {
       id: '1',
 
       name: 'Babyliss Hair Dryer 6730 SDE',
+      sale: true,
+      priceBefore: '500.00',
       price: '399.00',
       soldBy: 'Atiah Mall',
       condition: 'New',
@@ -143,22 +155,13 @@ export default function DataContextProvider({ children }) {
       technicalDetails: null,
       photos: { small: lisssm, main: [liss, liss2, liss3, liss4] },
     },
-    {
-      id: '1',
 
-      name: 'Babyliss Hair Dryer 6730 SDE',
-      price: '399.00',
-      soldBy: 'Atiah Mall',
-      condition: 'New',
-      description: null,
-      reasonsToBuy: null,
-      technicalDetails: null,
-      photos: { small: lisssm, main: [liss, liss2, liss3, liss4] },
-    },
     {
       id: '2',
 
       name: 'Black&Decker Air Fryer AF220-B5',
+      sale: true,
+      priceBefore: '400.00',
       price: '218.50',
       soldBy: 'Sell Star Electronics',
       condition: 'New',
@@ -175,6 +178,8 @@ export default function DataContextProvider({ children }) {
     {
       id: '3',
       name: ' Kenwood Kitchen Machine KVL4230S',
+      sale: true,
+      priceBefore: '2100.00',
       price: '1899.00',
       soldBy: 'Carrefour',
       condition: 'New',
@@ -193,6 +198,8 @@ export default function DataContextProvider({ children }) {
       id: '4',
       name:
         'Namson Rechargeable Touch Water Dispenser , Size-6.5 X 17.5Cm , Silicone Hose Included',
+      sale: true,
+      priceBefore: '200.00',
       price: '99.00',
       soldBy: 'DubaiGallery',
       condition: 'New',
@@ -204,6 +211,8 @@ export default function DataContextProvider({ children }) {
     {
       id: '5',
       name: 'Babyliss Hair Dryer 6730 SDE',
+      sale: true,
+      priceBefore: '500.00',
       price: '399.00',
       soldBy: 'Atiah Mall',
       condition: 'New',
@@ -217,6 +226,8 @@ export default function DataContextProvider({ children }) {
       id: '6',
 
       name: 'Yamaha RX-V385 + NS-PA40 4K Hometheatre Package',
+      sale: true,
+      priceBefore: '2500.00',
       price: '1999.00',
       soldBy: 'Carrefour',
       condition: 'New',
@@ -231,6 +242,72 @@ export default function DataContextProvider({ children }) {
       ],
       reasonsToBuy: null,
       photos: { small: audiosm, main: [audio, audio2] },
+    },
+  ];
+  const phones = [
+    {
+      id: 7,
+      name: 'iPhone 11 With FaceTime Black 128GB 4G LTE - International Specs',
+      sale: true,
+      priceBefore: '3159.00',
+      price: '2769.00',
+      photos: { small: iphone11 },
+    },
+    {
+      id: 8,
+      name: 'Galaxy Note10 Plus Dual SIM Aura White 256GB 12GB RAM 4G LTE',
+      sale: true,
+      priceBefore: '3750.00',
+      price: '2899.00',
+      photos: { small: note10 },
+    },
+    {
+      id: 9,
+      name: 'Apple iPhone 11 Pro With FaceTime Midnight Green 128GB',
+      sale: true,
+      priceBefore: '3750.00',
+      price: '2899.00',
+      photos: { small: iphoneblack },
+    },
+    {
+      id: 10,
+      name: 'Galaxy A20s Dual SIM Black 3GB RAM 32GB 4G LTE',
+      sale: true,
+      priceBefore: '3750.00',
+      price: '2899.00',
+      photos: { small: a20s },
+    },
+    {
+      id: 11,
+      name: 'Galaxy A51 Dual SIM Prism Crush Black 6GB RAM 128GB 4G LTE',
+      sale: true,
+      priceBefore: '3750.00',
+      price: '2899.00',
+      photos: { small: a51 },
+    },
+    {
+      id: 12,
+      name: 'Galaxy Tab A (2019) 8.0 Inch, 32GB, 2GB RAM, Wi-Fi, 4G LTE, Black',
+      sale: true,
+      priceBefore: '3750.00',
+      price: '2899.00',
+      photos: { small: taba },
+    },
+    {
+      id: 13,
+      name: 'Refurbished - iPhone 7 With FaceTime Gold 128GB 4G LTE',
+      sale: true,
+      priceBefore: '3750.00',
+      price: '2899.00',
+      photos: { small: iphone7 },
+    },
+    {
+      id: 14,
+      name: 'Galaxy M30 Single Sim Black 4GB 64GB 4G LTE',
+      sale: true,
+      priceBefore: '3750.00',
+      price: '2899.00',
+      photos: { small: m30 },
     },
   ];
   const categories = [
@@ -835,6 +912,7 @@ export default function DataContextProvider({ children }) {
         removeItemFromCart,
         cartItems,
         EditItemFromCart,
+        phones,
       }}
     >
       {children}

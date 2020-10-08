@@ -19,6 +19,17 @@ export default function SingleProduct({
 
   const [detailsTab, setDetailsTab] = React.useState(0);
 
+  React.useEffect(() => {
+    // Add item to localStorage //
+    const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+    const isItemInHistory = visitedItems.find(item => item.id === data[0].id);
+    if (isItemInHistory !== undefined) {
+      return;
+    } else {
+      visitedItems.push(data[0]);
+      localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
+    }
+  }, []);
   return (
     <div className=" px-4 ">
       <Breadcrumbs />

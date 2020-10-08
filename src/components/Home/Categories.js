@@ -27,8 +27,7 @@ export default function Categories() {
         breakpoint: 600,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 2,
-          variableWidth: true,
+          slidesToScroll: 1,
           arrows: false,
         },
       },
@@ -37,7 +36,6 @@ export default function Categories() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          variableWidth: true,
           arrows: false,
         },
       },
@@ -52,11 +50,7 @@ export default function Categories() {
       <Slider className="" {...settings}>
         {categories.map((item, i) => {
           return (
-            <div
-              key={i}
-              className="px-1 overflow-hidden "
-              style={{ width: '300px' }}
-            >
+            <div key={i} className="px-1 overflow-hidden ">
               <div className="  overflow-hidden  relative  rounded-lg  ">
                 <img
                   src={item.main}

@@ -1,4 +1,5 @@
 import React from 'react';
+import RecentlyViewedHorizontal from '../components/RecentlyViewedHorizontal';
 import { DataProvider } from '../contexts/DataContext';
 
 export default function Cart() {
@@ -13,8 +14,21 @@ export default function Cart() {
     return price;
   };
   return (
-    <div className="cart py-2 px-4">
-      <div className="">
+    <div className=" cart py-2 px-4 relative">
+      <div className="font-semibold float-right">
+        <div className=" rounded border bg-gray-100 p-2 flex justify-start flex-col mb-2 ">
+          <h1 className="text-base font-semibold mb-2 ">
+            Subtotal ({cartItems.length}{' '}
+            {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
+            {calculateItemsPrice(cartItems)} KD
+          </h1>
+          <button className="p-1 rounded text-gray-100 bg-green-600">
+            Proceed to Checkout
+          </button>
+        </div>
+        <RecentlyViewedHorizontal />
+      </div>
+      <div className="cart__container">
         <div className="cart__title font-semibold">
           <h1 className="text-xl font-bold ">Shopping Cart</h1>
           <h1 className="text-center">Price</h1>
@@ -23,7 +37,7 @@ export default function Cart() {
         {cartItems.map((item, i) => {
           return (
             <>
-              <div key={i} className=" py-2 cart__item">
+              <div className="cart__item py-2" key={i}>
                 <img
                   className=""
                   style={{ maxHeight: '', maxWidth: '' }}
@@ -70,8 +84,7 @@ export default function Cart() {
             </>
           );
         })}
-        <hr />
-        <div className="flex justify-end pr-2">
+        <div className="flex justify-end pr-2 mt-2">
           <h1 className="text-lg font-semibold">
             Subtotal ({cartItems.length}{' '}
             {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
@@ -79,18 +92,7 @@ export default function Cart() {
           </h1>
         </div>
       </div>
-      <div className="font-semibold">
-        <div className=" rounded border bg-gray-100 p-2 flex justify-start flex-col ">
-          <h1 className="text-base font-semibold mb-2 ">
-            Subtotal ({cartItems.length}{' '}
-            {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
-            {calculateItemsPrice(cartItems)} KD
-          </h1>
-          <button className="p-1 rounded text-gray-100 bg-green-600">
-            Proceed to Checkout
-          </button>
-        </div>
-      </div>
+
       <h1 className="text-sm">
         The price and availability of items at AlAtiah.com are subject to
         change. The Cart is a temporary place to store a list of your items and

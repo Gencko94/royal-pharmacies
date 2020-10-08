@@ -2,11 +2,10 @@ import React from 'react';
 import Slider from 'react-slick';
 import { DataProvider } from '../../contexts/DataContext';
 import zalo from '../../assets/offers/zalo.png';
-import { TiShoppingCart } from 'react-icons/ti';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-
+import MultiClamp from 'react-multi-clamp';
 const RightArrow = ({ onClick }) => {
   return (
     <div
@@ -28,48 +27,60 @@ const LeftArrow = ({ className, style, onClick }) => {
   );
 };
 
-export default function BestSeller() {
-  const {
-    bestSeller,
-    cartItems,
-    removeItemFromCart,
-    addItemToCart,
-  } = React.useContext(DataProvider);
+export default function ItemsSlider({ data, miniLogo = false, title }) {
+  const { cartItems, removeItemFromCart, addItemToCart } = React.useContext(
+    DataProvider
+  );
   const settings = {
     className: '',
     arrows: true,
     infinite: true,
-    slidesToShow: bestSeller.length,
+    slidesToShow: 6,
     slidesToScroll: 4,
     nextArrow: <RightArrow />,
     prevArrow: <LeftArrow />,
 
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1200,
         settings: {
           slidesToShow: 5,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
         },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToScroll: 1,
         },
       },
       {
         breakpoint: 450,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToScroll: 1,
         },
       },
       {
         breakpoint: 320,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToScroll: 1,
         },
       },
     ],
@@ -83,50 +94,69 @@ export default function BestSeller() {
     }
   };
   return (
-    <div className="mb-6">
+    <div className="my-6">
       <div className="flex items-center mb-4">
-        <h1 className="text-xl font-semibold flex-grow">Best Sellers</h1>
-        <button className="p-1">See all</button>
+        <h1 className="text-xl font-semibold flex-grow">{title}</h1>
+        <button className="p-0">See all</button>
       </div>
       <Slider className="" {...settings}>
-        {bestSeller.map((item, i) => {
+        {data.map((item, i) => {
           return (
-            <div key={i} className="px-2 ">
+            <div key={i} className="pb-2 px-1 ">
               <div
                 style={{ minHeight: '250px' }}
                 className=" bg-white overflow-hidden flex flex-col relative  rounded-lg shadow-lg "
               >
-                <Link to={`products/${item.id}`}>
+                <Link to={`/products/${item.id}`}>
                   <img
                     src={item.photos.small}
                     alt="something"
-                    className=" h-auto w-full  "
+                    className=" w-full object-cover "
                   />
                 </Link>
 
-                <div className=" relative flex flex-col pt-8 p-1 bg-white text-black">
-                  <img
-                    src={zalo}
-                    alt="playstore"
-                    className="absolute rounded-full shadow-xl "
-                    style={{
-                      width: '50px',
-                      height: '50px',
-                      top: '-25px',
-                      left: '18px',
-                    }}
-                  />
-                  <h3 className="text-sm lg:text-base sm:text-sm font-semibold truncate">
+                <div
+                  className={`relative flex flex-col ${
+                    miniLogo ? 'pt-8' : 'pt-2'
+                  } px-1 py-1 bg-white text-black`}
+                >
+                  {miniLogo && (
+                    <img
+                      src={zalo}
+                      alt="playstore"
+                      className="absolute rounded-full shadow-xl "
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        top: '-25px',
+                        left: '18px',
+                      }}
+                    />
+                  )}
+                  <MultiClamp
+                    className="text-sm lg:text-sm sm:text-sm font-semibold"
+                    clamp={2}
+                    ellipsis="..."
+                  >
                     {item.name}
-                  </h3>
-                  <p className="text-xs line-through text-gray-500  font-bold">
-                    {' '}
-                    18.99 <span className="">KD</span>
-                  </p>
-                  <p className="text-base font-bold">
-                    {item.price} <span className="text-sm">KD</span>
-                  </p>
-                  {isItemInCart(item) ? (
+                  </MultiClamp>
+                  {/* <h3 className="text-sm lg:text-base sm:text-sm font-semibold truncate ">
+                    {item.name}
+                  </h3> */}
+                  <div className="flex items-center">
+                    <p className=" mr-4 text-sm font-bold text-red-700">
+                      {item.price}{' '}
+                      <span className="text-sm font-semibold">KD</span>
+                    </p>
+                    {item.sale && (
+                      <p className="text-xs line-through text-gray-500  font-bold">
+                        {' '}
+                        {item.priceBefore}{' '}
+                        <span className="font-normal">KD</span>
+                      </p>
+                    )}
+                  </div>
+                  {/* {isItemInCart(item) ? (
                     <button
                       onClick={() => removeItemFromCart(item)}
                       className="bg-red-700 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold "
@@ -143,7 +173,7 @@ export default function BestSeller() {
                       </span>
                       Add to Cart
                     </button>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
