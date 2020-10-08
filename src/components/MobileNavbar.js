@@ -43,7 +43,7 @@ export default function MobileNavbar() {
   };
   React.useEffect(() => {
     window.addEventListener('scroll', () => {
-      if (window.scrollY >= 70) {
+      if (window.scrollY >= 55) {
         setWindowScrolled(true);
       } else {
         setWindowScrolled(false);
@@ -54,24 +54,22 @@ export default function MobileNavbar() {
     };
   }, []);
   return (
-    <div className="sticky w-full left-0 top-0 z-10">
-      {!windowScrolled && (
-        <>
-          <nav className="    p-2  flex items-center bg-red-700 text-white">
-            <Hamburger toggleSideMenu={toggleSideMenu} />
-            <Logo withTypography={false} />
-            <MobileIcons
-              toggleSearchBar={toggleSearchBar}
-              searchBarOpen={searchBarOpen}
-            />
-          </nav>
-          <MobileSearchbar inputRef={inputRef} />
-          <SideMenu toggleSideMenu={toggleSideMenu} sideMenuRef={sideMenuRef} />
-        </>
-      )}
+    <>
+      <div className=" w-full left-0 top-0 z-10">
+        <nav className="    p-2  flex items-center bg-red-700 text-white">
+          <Hamburger toggleSideMenu={toggleSideMenu} />
+          <Logo withTypography={false} />
+          <MobileIcons
+            toggleSearchBar={toggleSearchBar}
+            searchBarOpen={searchBarOpen}
+          />
+        </nav>
+        <MobileSearchbar inputRef={inputRef} />
+        <SideMenu toggleSideMenu={toggleSideMenu} sideMenuRef={sideMenuRef} />
+      </div>
       {windowScrolled && (
         <>
-          <nav className="  sticky  p-2  flex items-center bg-red-700 text-white">
+          <nav className="  fixed w-full z-10 top-0 left-0  p-2  flex items-center bg-red-700 text-white">
             <Hamburger toggleSideMenu={toggleSideMenu} />
             <Logo withTypography={false} />
             <MobileIcons
@@ -83,6 +81,6 @@ export default function MobileNavbar() {
           <SideMenu toggleSideMenu={toggleSideMenu} sideMenuRef={sideMenuRef} />
         </>
       )}
-    </div>
+    </>
   );
 }
