@@ -2,6 +2,7 @@ import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
 import Slider from 'react-slick';
 import { useMediaQuery } from 'react-responsive';
+import MultiClamp from 'react-multi-clamp';
 
 export default function Categories() {
   const { categories } = React.useContext(DataProvider);
@@ -94,9 +95,13 @@ export default function Categories() {
                             className="max-w-full max-h-full"
                           />
                         </div>
-                        <h1 className="text-center text-xs font-semibold sm:text-xs md:text-sm lg:text-base  ">
+                        <MultiClamp
+                          className="text-center text-sm font-semibold sm:text-sm md:text-sm lg:text-base"
+                          clamp={2}
+                          ellipsis="..."
+                        >
                           {photo.title}
-                        </h1>
+                        </MultiClamp>
                       </div>
                     );
                   })}
