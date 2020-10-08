@@ -29,7 +29,7 @@ export default function SingleProduct({
       visitedItems.push(data[0]);
       localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
     }
-  }, []);
+  });
   return (
     <div className=" px-4 ">
       <Breadcrumbs />

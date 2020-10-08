@@ -244,7 +244,7 @@ export default function DataContextProvider({ children }) {
       photos: { small: audiosm, main: [audio, audio2] },
     },
   ];
-  const phones = [
+  const phone = [
     {
       id: 7,
       name: 'iPhone 11 With FaceTime Black 128GB 4G LTE - International Specs',
@@ -912,7 +912,7 @@ export default function DataContextProvider({ children }) {
         removeItemFromCart,
         cartItems,
         EditItemFromCart,
-        phones,
+        phone,
       }}
     >
       {children}

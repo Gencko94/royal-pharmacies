@@ -1,6 +1,5 @@
 import React from 'react';
 import MainCarousel from '../components/Home/MainCarousel';
-import garnier from '../assets/offers/garnier.png';
 import ipad from '../assets/banners/ipad.jpg';
 import earbuds from '../assets/banners/earbuds.jpg';
 import offer from '../assets/banners/offer.png';
@@ -19,7 +18,7 @@ import { useMediaQuery } from 'react-responsive';
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
 
-  const { bestSeller, phones } = React.useContext(DataProvider);
+  const { bestSeller, phone } = React.useContext(DataProvider);
   return (
     <div className="mb-5" style={{ minHeight: 'calc(100vh - 140px)' }}>
       <MainCarousel />
@@ -32,10 +31,11 @@ export default function Home() {
           title="Mobiles & Electronics"
         />
         <ItemsSlider
-          data={phones}
+          data={phone}
           miniLogo={false}
           title="Save Big with Phones & Tablets"
         />
+        {!isTabletOrAbove && <Banner img={earbuds} />}
         {isTabletOrAbove && <Banner img={offer} />}
       </div>
     </div>

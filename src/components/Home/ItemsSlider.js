@@ -1,11 +1,18 @@
 import React from 'react';
 import Slider from 'react-slick';
-import { DataProvider } from '../../contexts/DataContext';
 import zalo from '../../assets/offers/zalo.png';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import MultiClamp from 'react-multi-clamp';
+// const isItemInCart = data => {
+//   const itemInCart = cartItems.find(item => data.id === item.id);
+//   if (itemInCart !== undefined) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 const RightArrow = ({ onClick }) => {
   return (
     <div
@@ -16,7 +23,7 @@ const RightArrow = ({ onClick }) => {
     </div>
   );
 };
-const LeftArrow = ({ className, style, onClick }) => {
+const LeftArrow = ({ onClick }) => {
   return (
     <div
       className="hover:bg-gray-300 rounded-full flex justify-center w-8 h-8  lg:h-12 lg:w-12    items-center absolute left-8 top-1/2   z-1 transform -translate-x-1/2 -translate-y-1/2 bg-white transition-colors duration-150 shadow-2xl border border-gray-300"
@@ -28,9 +35,6 @@ const LeftArrow = ({ className, style, onClick }) => {
 };
 
 export default function ItemsSlider({ data, miniLogo = false, title }) {
-  const { cartItems, removeItemFromCart, addItemToCart } = React.useContext(
-    DataProvider
-  );
   const settings = {
     className: '',
     arrows: true,
@@ -85,14 +89,7 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
       },
     ],
   };
-  const isItemInCart = data => {
-    const itemInCart = cartItems.find(item => data.id === item.id);
-    if (itemInCart !== undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+
   return (
     <div className="my-6">
       <div className="flex items-center mb-4">
