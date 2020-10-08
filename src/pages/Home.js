@@ -22,7 +22,10 @@ export default function Home() {
   return (
     <div className="mb-5" style={{ minHeight: 'calc(100vh - 140px)' }}>
       <MainCarousel />
-      <div className="bg-gray-100 mt-8 px-2 py-4 sm:px-2 md:px-4 lg:px-8 xl:px-8">
+      <div
+        className="bg-nav-secondary mt-8 px-2 py-4 sm:px-2 md:px-4 lg:px-8 xl:px-8 mx-auto"
+        style={{ maxWidth: '1366px' }}
+      >
         <Categories />
         <ItemsSlider data={bestSeller} miniLogo={true} title="Best Sellers" />
         {!isTabletOrAbove && <Banner img={ipad} />}

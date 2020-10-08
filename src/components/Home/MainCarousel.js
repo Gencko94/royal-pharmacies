@@ -52,8 +52,8 @@ export default function MainCarousel() {
     ],
   };
   return (
-    <div className="md:my-4 my-6">
-      <Slider className="" {...settings}>
+    <div className="md:my-0 my-6 bg-nav-secondary">
+      <Slider className="bg-nav-secondary" {...settings}>
         {data.map((item, i) => {
           return (
             <div key={i} className="px-0 md:px-1">

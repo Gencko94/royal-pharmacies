@@ -25,6 +25,9 @@ module.exports = {
     //   },
     // }),
     extend: {
+      boxShadow: {
+        navCategory: '0 5px 4px 0 rgba(0,0,0,0.18)',
+      },
       screens: {
         xs: '320px',
       },
@@ -34,7 +37,7 @@ module.exports = {
       },
       colors: {
         'cadet-blue': '#5F9EA0',
-        'nav-primary': '#c82e2e',
+        'nav-primary': '#cb3c2c',
         'nav-secondary': '#fff',
         teal: '#008080 ',
         'nav-gradient-from': '#eaaeae',

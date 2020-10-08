@@ -4,10 +4,10 @@ import { BiCaretDown } from 'react-icons/bi';
 import { DataProvider } from '../../contexts/DataContext';
 import useClickAway from '../../hooks/useClickAway';
 export default function OrderFrom({
-  px = '2',
-  py = '3',
+  px = '1',
+  py = '2',
   border = true,
-  color = 'red-700',
+  color = 'gray-900',
 }) {
   const { selectedStore, setSelectedStore, flags, stores } = React.useContext(
     DataProvider
@@ -28,12 +28,12 @@ export default function OrderFrom({
     }
   };
   return (
-    <div className="relative">
+    <div className="relative text-gray-900">
       <button
         onClick={toggleCountryList}
         className={`  flex items-center  ${
           border ? 'border-l' : ''
-        } border-red-700 py-${py} px-${px}  hover:bg-red-300 transition duration-100`}
+        }  py-${py} px-${px}  hover:shadow-sm transition duration-100`}
       >
         <div className={`flex items-center text-${color}  mr-1`}>
           <h1 className="font-semibold mr-1">Order From</h1>
@@ -54,7 +54,7 @@ export default function OrderFrom({
                 setSelectedStore(country);
                 toggleCountryList();
               }}
-              className="py-2 uppercase flex px-2 items-center font-semibold  w-full text-nav-primary hover:bg-nav-primary hover:text-nav-secondary"
+              className="py-2 uppercase flex px-2 items-center font-semibold  w-full  hover:bg-nav-primary hover:text-nav-secondary"
             >
               <input
                 type="checkbox"

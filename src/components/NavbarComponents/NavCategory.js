@@ -21,7 +21,8 @@ export default function NavCategory() {
     <>
       <div
         ref={buttonRef}
-        className="sticky   top-0 left-0 z-10 bg-gray-200 py-0 px-4 flex items-center justify-center text-gray-900 "
+        className="sticky   top-0 left-0 z-10  py-0 px-4 flex items-center justify-center text-gray-900 "
+        style={{ backgroundColor: '#f7f7fa' }}
       >
         {navCategories.map((button, i) => (
           <button
@@ -29,7 +30,7 @@ export default function NavCategory() {
             key={i}
             onMouseEnter={() => openDropDown(i)}
             onMouseLeave={() => closeDropDown(i)}
-            className="p-2   font-semibold hover:bg-gray-300 "
+            className="p-2   font-bold hover:shadow-navCategory hover:bg-white "
           >
             {button.title}
             <MegaMenu id={i} data={button.data} />

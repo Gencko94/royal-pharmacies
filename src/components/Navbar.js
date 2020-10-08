@@ -10,15 +10,15 @@ import NavCategory from './NavbarComponents/NavCategory';
 export default function Navbar() {
   return (
     <div>
-      <nav className=" z-20   top-0 left-0  bg-gradient-to-tr bg-white text-black">
-        <div className="flex items-center justify-between font-semibold py-1 text-gray-100 bg-red-700 text-sm px-4">
+      <nav className=" z-20 sticky   top-0 left-0  bg-gradient-to-tr bg-white text-black">
+        <div className="flex items-center justify-between font-semibold py-1 text-gray-100 bg-gray-800 text-sm px-4">
           <ShipTo />
           <div className="flex justify items-center">
             <LoginRegister />
             <Language />
           </div>
         </div>
-        <div className="flex items-center  justify-evenly py-4 px-20">
+        <div className="flex items-center bg-nav-primary text-nav-secondary  justify-evenly py-4 px-20">
           <Logo />
           <SearchBar />
           <NavIcons />
