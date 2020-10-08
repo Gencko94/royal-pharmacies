@@ -43,7 +43,7 @@ export default function MobileNavbar() {
   };
   React.useEffect(() => {
     window.addEventListener('scroll', () => {
-      if (window.scrollY >= 55) {
+      if (window.scrollY >= 54) {
         setWindowScrolled(true);
       } else {
         setWindowScrolled(false);
