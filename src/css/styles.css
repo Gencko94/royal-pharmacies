@@ -122,3 +122,22 @@ select {
   grid-template-columns: 100px 150px;
   gap: 6px;
 }
+.mobile-nav__secondary-enter {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.mobile-nav__secondary-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 400ms;
+}
+.mobile-nav__secondary-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+.mobile-nav__secondary-exit-active {
+  transform: translateY(-100%);
+
+  opacity: 0;
+  transition: all 200ms;
+}

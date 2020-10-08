@@ -20,7 +20,10 @@ export default function Home() {
 
   const { bestSeller, phone } = React.useContext(DataProvider);
   return (
-    <div className="mb-5" style={{ minHeight: 'calc(100vh - 140px)' }}>
+    <div
+      className="mb-5 overflow-hidden"
+      style={{ minHeight: 'calc(100vh - 140px)' }}
+    >
       <MainCarousel />
       <div
         className="bg-nav-secondary mt-8 px-2 py-4 sm:px-2 md:px-4 lg:px-8 xl:px-8 mx-auto"
