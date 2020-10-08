@@ -144,7 +144,7 @@ export default function DataContextProvider({ children }) {
     {
       id: '1',
 
-      name: 'Babyliss Hair Dryer 6730 SDE',
+      name: 'Babyliss Hair Dryer 6730 SDE 1800W',
       sale: true,
       priceBefore: '500.00',
       price: '399.00',
@@ -210,7 +210,7 @@ export default function DataContextProvider({ children }) {
     },
     {
       id: '5',
-      name: 'Babyliss Hair Dryer 6730 SDE',
+      name: 'Babyliss Hair Dryer 6730 SDE 1800W',
       sale: true,
       priceBefore: '500.00',
       price: '399.00',
