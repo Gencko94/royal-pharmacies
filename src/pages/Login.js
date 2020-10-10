@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 export default function Login() {
   return (
-    <div className="w-full text-gray-900 flex justify-center items-center bg-aliceblue  h-screen relative">
-      <div className="rounded z-2 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
+    <div className="font-body antialiased text-gray-900 flex justify-center items-center bg-aliceblue  h-screen relative">
+      <div className=" rounded z-2 w-6/12 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
           <Link to="/">
             <img
@@ -14,7 +14,9 @@ export default function Login() {
               style={{ width: '125px', height: '125px' }}
             />
           </Link>
-          <h2 className="text-3xl text-gray-900">Login to Al AttiahMall</h2>
+          <h2 className="text-2xl text-center text-gray-900">
+            Login to Al AttiahMall
+          </h2>
         </div>
         <hr />
         {/* inputs */}
@@ -30,7 +32,7 @@ export default function Login() {
           </div>
           {/* input */}
           <div className=" w-full mb-0 ">
-            <div className="flex items-center">
+            <div className="flex">
               <h1 className="text-md  font-semibold">Password</h1>
               <button className=" ml-auto text-sm text-red-400">
                 Forgot Password ?
@@ -57,27 +59,7 @@ export default function Login() {
             </Link>
           </h1>
         </div>
-        {/* <div className="px-4 py-2">
-          <h1 className="text-xs">
-            By clicking “Create an account”, you agree to our Terms of Service
-            and Privacy Statement. We’ll occasionally send you account related
-            emails.
-          </h1>
-        </div> */}
       </div>
-      {/* <img
-        className="absolute"
-        src={logo}
-        style={{
-          width: '400px',
-          height: '400px',
-          opacity: '0.2',
-          zIndex: '1',
-          left: '77%',
-          top: '33%',
-        }}
-        alt="logo"
-      /> */}
     </div>
   );
 }
