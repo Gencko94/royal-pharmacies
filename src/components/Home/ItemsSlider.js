@@ -91,7 +91,7 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
   };
 
   return (
-    <div className="my-6">
+    <div className="my-6 ">
       <div className="flex items-center mb-4">
         <h1 className="text-xl font-semibold flex-grow">{title}</h1>
         <button className="p-0">See all</button>
@@ -99,11 +99,8 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
       <Slider className="" {...settings}>
         {data.map((item, i) => {
           return (
-            <div key={i} className="pb-2 px-1 ">
-              <div
-                style={{ minHeight: '250px' }}
-                className=" bg-white overflow-hidden flex flex-col relative  rounded-lg shadow-lg "
-              >
+            <div key={i} className="mb-2  px-1 ">
+              <div className=" bg-white overflow-hidden flex flex-col relative   rounded-lg shadow-lg  ">
                 <Link to={`/products/${item.id}`}>
                   <img
                     src={item.photos.small}
@@ -113,7 +110,7 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
                 </Link>
 
                 <div
-                  className={`relative flex flex-col ${
+                  className={`relative flex flex-col  ${
                     miniLogo ? 'pt-8' : 'pt-2'
                   } px-1 py-1 bg-white text-black`}
                 >
@@ -137,9 +134,7 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
                   >
                     {item.name}
                   </MultiClamp>
-                  {/* <h3 className="text-sm lg:text-base sm:text-sm font-semibold truncate ">
-                    {item.name}
-                  </h3> */}
+
                   <div className="flex items-center">
                     <p className=" mr-4 text-sm font-bold text-red-700">
                       {item.price}{' '}
@@ -153,6 +148,7 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
                       </p>
                     )}
                   </div>
+
                   {/* {isItemInCart(item) ? (
                     <button
                       onClick={() => removeItemFromCart(item)}

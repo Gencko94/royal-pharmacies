@@ -30,7 +30,7 @@ export default function NavCategory() {
             key={i}
             onMouseEnter={() => openDropDown(i)}
             onMouseLeave={() => closeDropDown(i)}
-            className="p-2   font-bold hover:shadow-navCategory hover:bg-white "
+            className="p-2   font-semibold hover:shadow-navCategory hover:bg-white "
           >
             {button.title}
             <MegaMenu id={i} data={button.data} />
