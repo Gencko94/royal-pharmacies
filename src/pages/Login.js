@@ -4,7 +4,7 @@ import logo from '../assets/logo.png';
 export default function Login() {
   return (
     <div className="font-body antialiased text-gray-900 flex justify-center items-center bg-aliceblue  h-screen relative">
-      <div className=" rounded z-2 w-6/12 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
+      <div className=" rounded z-2  max-w-screen-md w-5/6 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
           <Link to="/">
             <img

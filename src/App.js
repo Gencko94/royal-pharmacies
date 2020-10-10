@@ -39,7 +39,7 @@ function App() {
 
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
-    <div className="relative font-body antialiased relative">
+    <div className="font-body antialiased relative">
       {isTabletOrAbove ? <Navbar /> : <MobileNavbar />}
 
       <Route exact path="/" component={Home} />

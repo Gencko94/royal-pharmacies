@@ -4,7 +4,7 @@ import logo from '../assets/logo.png';
 export default function Register() {
   return (
     <div className=" font-body antialiased  text-gray-900 flex items-center justify-center bg-aliceblue relative  h-screen">
-      <div className=" max-w-screen-md w-6/12 rounded pb-1  bg-gray-100 shadow-2xl   overflow-hidden">
+      <div className=" max-w-screen-md w-5/6 rounded pb-1  bg-gray-100 shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
           <Link to="/">
             <img
