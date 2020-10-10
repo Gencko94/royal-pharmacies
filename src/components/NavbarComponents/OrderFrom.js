@@ -44,7 +44,7 @@ export default function OrderFrom({
       <div
         ref={countryListRef}
         className="absolute p-2 transform z-20 scale-0 mt-1 text-gray-900 font-semibold   bg-nav-secondary w-full  overflow-hidden left-0  top-100  transition duration-150 origin-top"
-        style={{ width: '200px' }}
+        // style={{ width: '200px' }}
       >
         {stores.map((country, i) => {
           return (

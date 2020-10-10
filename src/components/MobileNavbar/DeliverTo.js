@@ -1,0 +1,78 @@
+import React from 'react';
+import { BiCaretDown } from 'react-icons/bi';
+import { DataProvider } from '../../contexts/DataContext';
+import useClickAway from '../../hooks/useClickAway';
+import { CSSTransition } from 'react-transition-group';
+
+export default function DeliverTo() {
+  const {
+    deliveryCountry,
+    setDeliveryCountry,
+    flags,
+    countries,
+  } = React.useContext(DataProvider);
+
+  const [countryListOpen, setCountryListOpen] = React.useState(false);
+  const countryListRef = React.useRef(null);
+  useClickAway(countryListRef, () => {
+    // if (countryListOpen) {
+    //   countryListRef.current.classList.replace('scale-100', 'scale-0');
+    setCountryListOpen(false);
+    // }
+  });
+  const toggleCountryList = () => {
+    // if (countryListRef.current) {
+    //   countryListRef.current.classList.replace('scale-0', 'scale-100');
+    setCountryListOpen(true);
+    // }
+  };
+  return (
+    <div className=" ml-auto ">
+      <button
+        onClick={toggleCountryList}
+        className=" relative flex items-center justify-center rounded-full  hover:bg-red-300 transition duration-100"
+      >
+        <img src={flags[deliveryCountry]} className="w-25p h-25p" alt="uae" />
+      </button>
+      <CSSTransition
+        in={countryListOpen}
+        timeout={200}
+        unmountOnExit={true}
+        classNames="deliver-to"
+      >
+        <div
+          ref={countryListRef}
+          className="absolute rounded    z-20 mt-2 text-gray-900 font-semibold   bg-nav-secondary    "
+          style={{ right: '60px' }}
+        >
+          <h1 className="p-2">Deliver To</h1>
+          <hr className="my-0" />
+          {countries.map((country, i) => {
+            return (
+              <button
+                key={i}
+                onClick={() => {
+                  setDeliveryCountry(country);
+                  toggleCountryList();
+                }}
+                className=" flex p-2  items-center w-full font-semibold text-sm text-nav-primary hover:bg-nav-primary hover:text-nav-secondary"
+              >
+                <input
+                  type="checkbox"
+                  className="form-checkbox rounded-full text-red-500 mr-2"
+                  checked={deliveryCountry === country}
+                />
+                <img
+                  src={flags[country]}
+                  className="w-25p h-25p mr-2 "
+                  alt="uae"
+                />
+                <h1 className="uppercase">{country}</h1>
+              </button>
+            );
+          })}
+        </div>
+      </CSSTransition>
+    </div>
+  );
+}

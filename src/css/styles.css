@@ -141,3 +141,23 @@ select {
   opacity: 0;
   transition: all 200ms;
 }
+
+.deliver-to-enter {
+  opacity: 0;
+  /* transform: translateY(-100%); */
+}
+.deliver-to-enter-active {
+  opacity: 1;
+  /* transform: translateY(0); */
+  transition: all 200ms;
+}
+.deliver-to-enter-exit {
+  /* transform: translateY(0); */
+  opacity: 1;
+}
+.deliver-to-enter-exit-active {
+  /* transform: translateY(-100%); */
+
+  opacity: 0;
+  transition: all 200ms;
+}

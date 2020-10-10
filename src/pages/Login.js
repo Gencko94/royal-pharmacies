@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 export default function Login() {
   return (
-    <div className="w-full text-gray-900 grid place-items-center bg-aliceblue  h-screen relative">
-      <div className="container w-1/3 mx-auto rounded z-2 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
+    <div className="w-full text-gray-900 flex justify-center items-center bg-aliceblue  h-screen relative">
+      <div className="rounded z-2 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
           <Link to="/">
             <img

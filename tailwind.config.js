@@ -32,7 +32,7 @@ module.exports = {
         xs: '320px',
       },
       fontFamily: {
-        body: ['Nunito'],
+        body: ['Open Sans'],
         cairo: ['Cairo'],
       },
       colors: {
