@@ -8,7 +8,6 @@ export default function MobileIcons() {
 
   return (
     <div className=" items-center ">
-      {/* <div className="text-gray-100 rounded-full p-1 grid place-items-center"></div> */}
       <div className="text-nav-secondary">
         <Link to="/cart" className="p-1 flex   relative">
           <HiOutlineShoppingBag className="w-25p h-25p" />

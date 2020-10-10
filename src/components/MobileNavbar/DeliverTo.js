@@ -1,5 +1,4 @@
 import React from 'react';
-import { BiCaretDown } from 'react-icons/bi';
 import { DataProvider } from '../../contexts/DataContext';
 import useClickAway from '../../hooks/useClickAway';
 import { CSSTransition } from 'react-transition-group';
@@ -15,16 +14,10 @@ export default function DeliverTo() {
   const [countryListOpen, setCountryListOpen] = React.useState(false);
   const countryListRef = React.useRef(null);
   useClickAway(countryListRef, () => {
-    // if (countryListOpen) {
-    //   countryListRef.current.classList.replace('scale-100', 'scale-0');
     setCountryListOpen(false);
-    // }
   });
   const toggleCountryList = () => {
-    // if (countryListRef.current) {
-    //   countryListRef.current.classList.replace('scale-0', 'scale-100');
     setCountryListOpen(true);
-    // }
   };
   return (
     <div className=" ml-auto ">
