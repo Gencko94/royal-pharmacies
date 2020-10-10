@@ -99,8 +99,8 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
       <Slider className="" {...settings}>
         {data.map((item, i) => {
           return (
-            <div key={i} className="mb-2  px-1 ">
-              <div className=" bg-white overflow-hidden flex flex-col relative   rounded-lg shadow-lg  ">
+            <div key={i} className="my-4  px-1 ">
+              <div className=" bg-white overflow-hidden flex flex-col relative border  rounded-lg shadow-sm  ">
                 <Link to={`/products/${item.id}`}>
                   <img
                     src={item.photos.small}

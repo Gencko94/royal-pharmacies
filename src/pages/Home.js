@@ -14,6 +14,7 @@ import Categories from '../components/Home/Categories';
 import { DataProvider } from '../contexts/DataContext';
 import PhotoCategories from '../components/Home/PhotoCategories';
 import { useMediaQuery } from 'react-responsive';
+import AnimatedSlides from '../components/Home/AnimatedSlides';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
@@ -36,6 +37,7 @@ export default function Home() {
           data={[mobiles, tablets, computers, audiovideo]}
           title="Mobiles & Electronics"
         />
+        <AnimatedSlides data={[mobiles, tablets, computers, audiovideo]} />
         <ItemsSlider
           data={phone}
           miniLogo={false}

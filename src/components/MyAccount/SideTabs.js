@@ -25,7 +25,7 @@ export default function SideTabs({ selectedIndex, setSelectedIndex }) {
             onClick={() => history.push(`${mapNametoPage[option]}`)}
             className={`px-6 py-4 w-full ${
               selectedIndex === i ? 'bg-red-500 text-gray-100' : ''
-            }  text-lg hover:bg-red-500 hover:text-gray-100 font-semibold`}
+            }   hover:bg-red-500 hover:text-gray-100 `}
           >
             {option}
           </button>

@@ -51,7 +51,7 @@ export default function MyAccount({
           style={{ minHeight: 'calc(100vh - 140px)' }}
           className="mb-4 pt-2 px-8"
         >
-          <h1 className="text-2xl mb-2 font-bold">My Personal Account</h1>
+          <h1 className="text-xl mb-2 font-semibold">My Personal Account</h1>
           <div className="myaccount__grid ">
             <SideTabs
               selectedIndex={selectedIndex}

@@ -27,7 +27,7 @@ export default function MobileTabs({ selectedIndex, setSelectedIndex }) {
                 onClick={() => history.push(`${mapNametoPage[option]}`)}
                 className={`p-3 ${
                   selectedIndex === i ? 'bg-red-700 text-white' : 'bg-red-100'
-                } hover:bg-red-700 hover:text-white transition duration-150 font-semibold rounded`}
+                } hover:bg-red-700 hover:text-white transition duration-150  rounded`}
               >
                 {option}
               </button>
