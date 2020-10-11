@@ -267,7 +267,7 @@ select {
 }
 .after__addToCart-details {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.3fr;
+  grid-template-columns: 0.2fr 1fr 0.3fr;
   gap: 8px;
 }
 .after__addToCart-enter {

@@ -55,17 +55,13 @@ export default function SingleProductMobile({
         classNames="after__addToCart"
       >
         <div className="after__addToCart-container">
-          <div className=" after__addToCart-details mb-3  ">
+          <div className=" after__addToCart-details mb-1  ">
             <img
               src={data[0].photos.small}
               alt={data[0].name}
               className="max-w-full h-auto"
             />
-            <MultiClamp
-              className="text-sm  lg:text-sm sm:text-sm font-semibold"
-              clamp={2}
-              ellipsis="..."
-            >
+            <MultiClamp className="font-semibold" clamp={2} ellipsis="...">
               {data[0].name}
             </MultiClamp>
             <div className="flex flex-col  items-center">
