@@ -15,6 +15,7 @@ import { DataProvider } from '../contexts/DataContext';
 import { TiShoppingCart } from 'react-icons/ti';
 import { useInView } from 'react-intersection-observer';
 import { CSSTransition } from 'react-transition-group';
+import MultiClamp from 'react-multi-clamp';
 export default function SingleProductMobile({
   match: {
     params: { id },
@@ -25,14 +26,17 @@ export default function SingleProductMobile({
     addItemToCart,
     cartItems,
     removeItemFromCart,
+    calculateItemsPrice,
   } = React.useContext(DataProvider);
   const data = bestSeller.filter(item => item.id === id);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [quantity, setQuantity] = React.useState(1);
   const [detailsTab, setDetailsTab] = React.useState(0);
+  // const [animateIcon, setAnimateIcon] = React.useState(false);
+  const [showAddedToCart, setShowAddedToCart] = React.useState(false);
 
   const [triggerRef, inView] = useInView();
-
+  // const animationIconRef = React.useRef(null);
   const isItemInCart = () => {
     const itemInCart = cartItems.find(item => data[0].id === item.id);
     if (itemInCart !== undefined) {
@@ -44,6 +48,43 @@ export default function SingleProductMobile({
 
   return (
     <div className=" bg-gray-100">
+      <CSSTransition
+        in={showAddedToCart}
+        timeout={200}
+        unmountOnExit
+        classNames="after__addToCart"
+      >
+        <div className="after__addToCart-container">
+          <div className=" after__addToCart-details mb-3  ">
+            <img
+              src={data[0].photos.small}
+              alt={data[0].name}
+              className="max-w-full h-auto"
+            />
+            <MultiClamp
+              className="text-sm  lg:text-sm sm:text-sm font-semibold"
+              clamp={2}
+              ellipsis="..."
+            >
+              {data[0].name}
+            </MultiClamp>
+            <div className="flex flex-col  items-center">
+              <h1 className="text-sm">Cart Total</h1>
+              <h1 className="text-sm font-semibold">
+                {calculateItemsPrice()} KD
+              </h1>
+            </div>
+          </div>
+          <div className="  text-nav-secondary ">
+            <button className="p-2 text-sm bg-blue-600 w-full font-semibold  rounded mr-2">
+              Checkout
+            </button>
+            {/* <button className="p-1 bg-nav-secondary flex-1  rounded">
+              Continue shopping
+            </button> */}
+          </div>
+        </div>
+      </CSSTransition>
       <div className="flex px-3 py-5 items-center flex-wrap">
         <h1>Home</h1>
         <BiChevronRight />
@@ -167,8 +208,8 @@ export default function SingleProductMobile({
             </span>
             Add to Wishlist
           </button>
-          <div className="flex items-center ">
-            <div className="mr-2 flex items-center">
+          <div className="flex relative items-center ">
+            <div className="  mr-2 flex items-center">
               <h1 className=" mr-2 font-semibold">Quantity : </h1>
               <select
                 value={quantity}
@@ -180,28 +221,41 @@ export default function SingleProductMobile({
                 <option>3</option>
               </select>
             </div>
+            <div className="relative flex-1">
+              {isItemInCart() ? (
+                <button
+                  onClick={() => removeItemFromCart(data[0])}
+                  className="bg-red-700 text-gray-100  w-full  p-1 rounded   flex items-center justify-center font-semibold "
+                >
+                  <span>
+                    <TiShoppingCart className="w-25p h-25p mr-2" />
+                  </span>
+                  Remove From Cart
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    setShowAddedToCart(true);
+                    setTimeout(() => {
+                      setShowAddedToCart(false);
+                    }, 3000);
 
-            {isItemInCart() ? (
-              <button
-                onClick={() => removeItemFromCart(data[0])}
-                className="bg-red-700 text-gray-100  flex-1  p-1 rounded   flex items-center justify-center font-semibold "
-              >
-                <span>
-                  <TiShoppingCart className="w-25p h-25p mr-2" />
+                    addItemToCart({ data: data[0], quantity });
+                  }}
+                  className=" bg-blue-700 text-gray-100 w-full  p-1 rounded   flex items-center justify-center font-semibold"
+                >
+                  <span>
+                    <TiShoppingCart className="w-25p h-25p mr-2" />
+                  </span>
+                  Add to Cart
+                </button>
+              )}
+              {/* {animateIcon && (
+                <span ref={animationIconRef} className="cart__icon__animate">
+                  <TiShoppingCart />
                 </span>
-                Remove From Cart
-              </button>
-            ) : (
-              <button
-                onClick={() => addItemToCart({ data: data[0], quantity })}
-                className="bg-blue-700 text-gray-100 flex-1  p-1 rounded   flex items-center justify-center font-semibold"
-              >
-                <span>
-                  <TiShoppingCart className="w-25p h-25p mr-2" />
-                </span>
-                Add to Cart
-              </button>
-            )}
+              )} */}
+            </div>
           </div>
         </div>
       </div>

@@ -3,16 +3,13 @@ import RecentlyViewedHorizontal from '../components/RecentlyViewedHorizontal';
 import { DataProvider } from '../contexts/DataContext';
 
 export default function Cart() {
-  const { cartItems, removeItemFromCart, EditItemFromCart } = React.useContext(
-    DataProvider
-  );
-  const calculateItemsPrice = cartItems => {
-    let price = 0;
-    cartItems.forEach(item => {
-      price = price + item.quantity * item.price;
-    });
-    return price;
-  };
+  const {
+    cartItems,
+    removeItemFromCart,
+    EditItemFromCart,
+    calculateItemsPrice,
+  } = React.useContext(DataProvider);
+
   return (
     <div className=" cart py-2 px-4 relative">
       <div className="font-semibold float-right">

@@ -112,7 +112,13 @@ export default function DataContextProvider({ children }) {
     setCartItems(cartCopy);
     localStorage.setItem('cartItems', JSON.stringify(cartCopy));
   };
-
+  const calculateItemsPrice = () => {
+    let price = 0;
+    cartItems.forEach(item => {
+      price = price + item.quantity * item.price;
+    });
+    return price;
+  };
   const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const stores = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const flags = {
@@ -913,6 +919,7 @@ export default function DataContextProvider({ children }) {
         cartItems,
         EditItemFromCart,
         phone,
+        calculateItemsPrice,
       }}
     >
       {children}
