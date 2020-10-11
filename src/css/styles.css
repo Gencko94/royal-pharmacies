@@ -161,6 +161,32 @@ select {
   opacity: 0;
   transition: all 200ms;
 }
+.floating-button {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0px;
+  padding: 0.5em;
+  z-index: 999;
+}
+.floating-cart-button-enter {
+  bottom: -48px;
+}
+.floating-cart-button-enter-active {
+  bottom: 0px;
+
+  transition: bottom 200ms;
+}
+.floating-cart-button-exit {
+  bottom: 0px;
+}
+.floating-cart-button-exit-active {
+  bottom: -48px;
+
+  transition: bottom 200ms;
+}
 
 /* Animated Slides */
 .animated__slides-container {
