@@ -43,7 +43,7 @@ export default function Categories() {
     ],
   };
   return (
-    <div className="mb-6">
+    <div className="mb-6 text-body-text-light">
       <div className="flex items-center mb-4">
         <h1 className="text-xl font-semibold flex-grow">Categories</h1>
         <button className="p-1">See all</button>
@@ -58,15 +58,15 @@ export default function Categories() {
                   alt="something"
                   className=" h-auto w-full rounded mb-0  "
                 />
-                <span
+                <h1
                   style={{
                     maxWidth: '50%',
                     top: isTabletOrAbove ? '16%' : '10%',
                   }}
-                  className="absolute  font-semibold left-10 text-xl sm:text-xl md:text-2xl "
+                  className="absolute text-center  font-semibold left-10 text-base sm:text-lg md:text-2xl "
                 >
                   {item.title}
-                </span>
+                </h1>
                 <div
                   className=""
                   style={{
@@ -79,24 +79,25 @@ export default function Categories() {
                     return (
                       <div
                         key={j + i}
-                        className=" mt-2  rounded "
+                        className=" mt-2 grid grid-cols-1  pt-2  rounded  justify-center "
                         style={{
                           backgroundColor: item.color,
-                          height: '120px',
+                          maxHeight: '120px',
+                          minHeight: '120px',
                         }}
                       >
                         <div
-                          style={{ height: '70px' }}
-                          className="pt-2 p-1 flex justify-center items-center"
+                          style={{ maxHeight: '70px' }}
+                          className=" flex justify-center items-center"
                         >
                           <img
                             src={photo.src}
                             alt="ima"
-                            className="max-w-full max-h-full"
+                            className="max-w-full h-auto"
                           />
                         </div>
                         <MultiClamp
-                          className="text-center text-sm font-semibold sm:text-sm md:text-sm lg:text-base"
+                          className="text-center text-xs font-semibold"
                           clamp={2}
                           ellipsis="..."
                         >

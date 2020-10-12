@@ -1,13 +1,17 @@
 import React from 'react';
 
-export default function MegaMenu({ data, id }) {
+export default function MegaMenu({ data, id, isLightTheme }) {
   return (
     <div
       id={`dd${id}`}
       className="absolute z-10 hidden top-100 left-0 min-w-full  cursor-default"
     >
       <div
-        className={`mx-auto w-full p-2  bg-nav-secondary  grid grid-cols-${data.length} text-center  `}
+        className={`mx-auto w-full p-2  ${
+          isLightTheme
+            ? 'bg-nav-cat-light text-nav-cat-text-light'
+            : 'bg-second-nav-dark text-nav-cat-text-dark'
+        }  grid grid-cols-${data.length} text-center  `}
       >
         {data.map((group, i) => (
           <div key={i} className="">

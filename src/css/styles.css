@@ -111,9 +111,9 @@ select {
   gap: 0.5em;
 }
 
-.btn-sticky {
+.cart__checkout-sticky {
   position: sticky !important;
-  top: 109px;
+  top: 49px;
   left: 0;
   right: 0;
 }
@@ -190,12 +190,25 @@ select {
 
 /* Animated Slides */
 .animated__slides-container {
-  margin: 3em 0;
+  margin: 0.5em 0;
   display: flex;
   flex-wrap: wrap;
   min-height: 380px;
   align-items: center;
   justify-content: space-evenly;
+}
+.animated__slides-title {
+  background: #c31432; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #240b36,
+    #c31432
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #240b36,
+    #c31432
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .animated__slides-card {
   position: relative;
@@ -208,23 +221,42 @@ select {
   justify-items: center;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
   transition: 0.3s ease-in-out;
+  border-radius: 5px;
+  background: #fc466b; /* fallback for old browsers */
+  background: #ef3b36; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #ffffff,
+    #ef3b36
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #ef3b36
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .animated__slides-card:hover {
   height: 280px;
 }
 .animated__slides-card .imgBx {
   position: relative;
+  background: transparent;
   width: 150px;
   height: 150px;
   top: -70px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); */
 }
 .animated__slides-card .imgBx img {
   max-width: 100%;
   border-radius: 10px;
+}
+.animated__slides-card .title {
+  text-align: center;
+  position: relative;
+  top: -50px;
 }
 .animated__slides-card .content {
   position: relative;
@@ -277,7 +309,7 @@ select {
   transform: translateY(0);
   transition: transform 200ms ease;
 }
-.after__addToCart-enter-exit {
+.after__addToCart-exit {
   transform: translateY(0);
 }
 .after__addToCart-exit-active {
@@ -309,4 +341,24 @@ select {
     left: 90%;
     transform: rotate(360deg);
   }
+}
+
+/* Profile Edit Modal */
+.profileEditModal-enter {
+  opacity: 0;
+  transform: translateY(-20%);
+}
+.profileEditModal-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: 200ms ease;
+}
+.profileEditModal-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+.profileEditModal-exit-active {
+  transform: translateY(-20%);
+  opacity: 0;
+  transition: 200ms ease;
 }

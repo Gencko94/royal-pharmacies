@@ -20,6 +20,10 @@ function App() {
     loader: () => import('./pages/MyAccount'),
     loading: () => 'Loading',
   });
+  const MyAccountMobile = Loadable({
+    loader: () => import('./pages/MyAccountMobile'),
+    loading: () => 'Loading',
+  });
   const SingleProduct = Loadable({
     loader: () => import('./pages/SingleProduct'),
     loading: () => 'Loading',
@@ -46,7 +50,17 @@ function App() {
       {isTabletOrAbove ? <Navbar /> : <MobileNavbar />}
 
       <Route exact path="/" component={Home} />
-      <Route exact path="/user/account/:page" component={MyAccount} />
+      <Route
+        exact
+        path="/user/account/:page"
+        render={props => {
+          if (isTabletOrAbove) {
+            return <MyAccount {...props} />;
+          } else {
+            return <MyAccountMobile {...props} />;
+          }
+        }}
+      />
       <Route
         exact
         path="/cart"

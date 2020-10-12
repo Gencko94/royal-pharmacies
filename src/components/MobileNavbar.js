@@ -7,8 +7,10 @@ import MobileSearchbar from './NavbarComponents/MobileSearchbar';
 import SideMenu from './NavbarComponents/SideMenu';
 import { CSSTransition } from 'react-transition-group';
 import DeliverTo from './MobileNavbar/DeliverTo';
+import { DataProvider } from '../contexts/DataContext';
 
 export default function MobileNavbar() {
+  const { isLightTheme } = React.useContext(DataProvider);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [sideMenuOpenSecond, setSideMenuSecondOpen] = React.useState(false);
   const [windowScrolled, setWindowScrolled] = React.useState(false);
@@ -67,10 +69,18 @@ export default function MobileNavbar() {
   return (
     <>
       <div className=" w-full left-0 top-0 z-10 ">
-        <nav className=" relative   p-2  flex items-center  bg-nav-primary text-white">
+        <nav
+          className={` relative   p-2  flex items-center  ${
+            isLightTheme
+              ? 'bg-second-nav-light text-second-nav-text-light'
+              : 'bg-nav-cat-dark text-nav-cat-text-dark'
+          }`}
+        >
           <Hamburger toggleSideMenu={toggleSideMenu} />
           <Logo withTypography={false} />
-
+          {/* <button className="mr-2" onClick={() => setLightTheme(!isLightTheme)}>
+            Light Theme Toggle
+          </button> */}
           <DeliverTo />
           <div className="ml-2">
             <button className=" font-semibold  font-cairo transition duration-100 hover:text-gray-300">
@@ -78,10 +88,20 @@ export default function MobileNavbar() {
             </button>
           </div>
           <MobileIcons />
-          <SideMenu toggleSideMenu={toggleSideMenu} sideMenuRef={sideMenuRef} />
+          <SideMenu
+            toggleSideMenu={toggleSideMenu}
+            sideMenuRef={sideMenuRef}
+            isLightTheme={isLightTheme}
+          />
         </nav>
-        <div className="p-2 bg-nav-primary">
-          <MobileSearchbar />
+        <div
+          className={`p-2 ${
+            isLightTheme
+              ? 'bg-second-nav-light text-second-nav-text-light'
+              : 'bg-nav-cat-dark text-nav-cat-text-dark'
+          }`}
+        >
+          <MobileSearchbar isLightTheme={isLightTheme} />
         </div>
       </div>
       <CSSTransition
@@ -90,11 +110,21 @@ export default function MobileNavbar() {
         classNames="mobile-nav__secondary"
         unmountOnExit={true}
       >
-        <div className="  fixed w-full flex  bg-nav-primary p-2  z-10 top-0 left-0 ">
+        <div
+          className={`fixed w-full flex   ${
+            isLightTheme
+              ? 'bg-second-nav-light text-second-nav-text-light'
+              : 'bg-nav-cat-dark text-nav-cat-text-dark'
+          } p-2  z-10 top-0 left-0 `}
+        >
           <Hamburger toggleSideMenu={toggleSideMenuSecond} />
 
           <input
-            className="placeholder-gray-600 px-1 flex-1 rounded "
+            className={`${
+              isLightTheme
+                ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
+                : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500'
+            } px-1 flex-1 rounded `}
             placeholder="Search..."
           />
           <MobileIcons />
@@ -102,6 +132,7 @@ export default function MobileNavbar() {
           <SideMenu
             toggleSideMenu={toggleSideMenuSecond}
             sideMenuRef={sideMenuRefSecond}
+            isLightTheme={isLightTheme}
           />
         </div>
       </CSSTransition>

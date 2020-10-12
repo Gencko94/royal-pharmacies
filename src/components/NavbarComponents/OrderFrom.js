@@ -4,14 +4,18 @@ import { BiCaretDown } from 'react-icons/bi';
 import { DataProvider } from '../../contexts/DataContext';
 import useClickAway from '../../hooks/useClickAway';
 export default function OrderFrom({
-  px = '1',
+  px = '2',
   py = '2',
   border = true,
   color = 'gray-900',
 }) {
-  const { selectedStore, setSelectedStore, flags, stores } = React.useContext(
-    DataProvider
-  );
+  const {
+    selectedStore,
+    setSelectedStore,
+    flags,
+    stores,
+    isLightTheme,
+  } = React.useContext(DataProvider);
 
   const [countryListOpen, setCountryListOpen] = React.useState(false);
   const countryListRef = React.useRef(null);
@@ -28,23 +32,32 @@ export default function OrderFrom({
     }
   };
   return (
-    <div className="relative text-gray-900">
+    <div
+      className={`relative ${
+        isLightTheme
+          ? 'bg-nav-cat-light text-nav-cat-text-light'
+          : 'bg-nav-cat-dark text-nav-cat-text-dark'
+      }`}
+    >
       <button
         onClick={toggleCountryList}
         className={`  flex items-center  ${
           border ? 'border-l' : ''
-        }  py-${py} px-${px}  hover:shadow-sm transition duration-100`}
+        }  py-${py} px-${px}   hover:shadow-sm transition duration-100`}
       >
-        <div className={`flex items-center text-${color}  mr-1`}>
-          <h1 className="font-semibold mr-1">Order From</h1>
+        <div className={`flex items-center  mr-1`}>
+          <h1 className="font-semibold text-sm mr-1">Order From</h1>
           <img className="w-25p h-25p" src={flags[selectedStore]} alt="flag" />
         </div>
-        <BiCaretDown className={`text-${color}`} />
+        <BiCaretDown />
       </button>
       <div
         ref={countryListRef}
-        className="absolute p-2 transform z-20 scale-0 mt-1 text-gray-900 font-semibold   bg-nav-secondary w-full  overflow-hidden left-0  top-100  transition duration-150 origin-top"
-        // style={{ width: '200px' }}
+        className={`absolute p-2 transform z-20 scale-0 mt-1 text-gray-900 font-semibold   ${
+          isLightTheme
+            ? 'bg-nav-cat-light text-nav-cat-text-light'
+            : 'bg-nav-cat-dark text-nav-cat-text-dark'
+        } w-full  overflow-hidden left-0  top-100  transition duration-150 origin-top`}
       >
         {stores.map((country, i) => {
           return (
@@ -54,7 +67,11 @@ export default function OrderFrom({
                 setSelectedStore(country);
                 toggleCountryList();
               }}
-              className="py-2 uppercase flex px-2 items-center font-semibold  w-full  hover:bg-nav-primary hover:text-nav-secondary"
+              className={`p-2 uppercase flex items-center font-semibold transition duration-150  w-full  ${
+                isLightTheme
+                  ? 'hover:bg-second-nav-light hover:text-second-nav-text-light'
+                  : 'hover:bg-body-dark : hover:text-body-text-dark'
+              } `}
             >
               <input
                 type="checkbox"

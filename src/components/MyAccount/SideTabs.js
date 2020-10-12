@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-export default function SideTabs({ selectedIndex, setSelectedIndex }) {
+export default function SideTabs({ selectedIndex, isLightTheme }) {
   const history = useHistory();
   const options = [
     'My Profile',
@@ -18,13 +18,23 @@ export default function SideTabs({ selectedIndex, setSelectedIndex }) {
     'My Order History': 'order_history',
   };
   return (
-    <div className="flex flex-col  rounded overflow-hidden shadow-lg">
+    <div
+      className={`flex flex-col  rounded overflow-hidden ${
+        isLightTheme ? 'shadow-itemsSlider-shallow' : 'shadow-itemsSlider-wide'
+      }`}
+    >
       {options.map((option, i) => (
         <div key={i}>
           <button
             onClick={() => history.push(`${mapNametoPage[option]}`)}
             className={`px-6 py-4 w-full ${
-              selectedIndex === i ? 'bg-red-500 text-gray-100' : ''
+              selectedIndex === i
+                ? isLightTheme
+                  ? 'bg-btn-primary-light text-btn-secondary-light'
+                  : 'bg-btn-primary-dark text-btn-secondary-dark'
+                : isLightTheme
+                ? 'bg-btn-secondary-light'
+                : 'bg-first-nav-light text-first-nav-text-light'
             }   hover:bg-red-500 hover:text-gray-100 `}
           >
             {option}

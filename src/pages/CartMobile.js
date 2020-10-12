@@ -14,7 +14,7 @@ export default function CartMobile() {
   };
   return (
     <div className=" py-2 px-2">
-      <div className="py-1 px-2 bg-white btn-sticky mb-2 border-b -mx-3">
+      <div className="py-1 px-2 bg-white cart__checkout-sticky mb-2 border-b -mx-3">
         <h1 className="text-lg font-semibold mb-1 ">
           Subtotal ({cartItems.length}{' '}
           {cartItems.length === 1 ? 'item' : 'items'}) :{' '}

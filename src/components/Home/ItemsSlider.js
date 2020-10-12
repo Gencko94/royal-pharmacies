@@ -3,7 +3,6 @@ import Slider from 'react-slick';
 import zalo from '../../assets/offers/zalo.png';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
 import MultiClamp from 'react-multi-clamp';
 // const isItemInCart = data => {
 //   const itemInCart = cartItems.find(item => data.id === item.id);
@@ -34,7 +33,12 @@ const LeftArrow = ({ onClick }) => {
   );
 };
 
-export default function ItemsSlider({ data, miniLogo = false, title }) {
+export default function ItemsSlider({
+  data,
+  miniLogo = false,
+  title,
+  isLightTheme,
+}) {
   const settings = {
     className: '',
     arrows: true,
@@ -91,7 +95,7 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
   };
 
   return (
-    <div className="my-6 ">
+    <div className="my-6   ">
       <div className="flex items-center mb-4">
         <h1 className="text-xl font-semibold flex-grow">{title}</h1>
         <button className="p-0">See all</button>
@@ -99,20 +103,31 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
       <Slider className="" {...settings}>
         {data.map((item, i) => {
           return (
-            <div key={i} className="my-4  px-1 ">
-              <div className=" bg-white overflow-hidden flex flex-col relative border  rounded-lg shadow-sm  ">
-                <Link to={`/products/${item.id}`}>
+            <div key={i} className="my-4  px-2   ">
+              <div
+                className={`  overflow-hidden flex flex-col relative ${
+                  isLightTheme
+                    ? 'shadow-itemsSlider-shallow'
+                    : 'shadow-itemsSlider'
+                } rounded`}
+              >
+                <a href={`/products/${item.id}`}>
                   <img
                     src={item.photos.small}
                     alt="something"
                     className=" w-full object-cover "
                   />
-                </Link>
+                </a>
+                <hr />
 
                 <div
                   className={`relative flex flex-col  ${
                     miniLogo ? 'pt-8' : 'pt-2'
-                  } px-1 py-1 bg-white text-black`}
+                  } px-2 py-1 ${
+                    isLightTheme
+                      ? 'bg-body-light text-body-text-light'
+                      : 'bg-body-dark text-body-text-dark'
+                  }`}
                 >
                   {miniLogo && (
                     <img
@@ -128,7 +143,7 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
                     />
                   )}
                   <MultiClamp
-                    className="text-sm lg:text-sm sm:text-sm font-semibold"
+                    className="text-sm  font-semibold"
                     clamp={2}
                     ellipsis="..."
                   >
@@ -136,12 +151,11 @@ export default function ItemsSlider({ data, miniLogo = false, title }) {
                   </MultiClamp>
 
                   <div className="flex items-center">
-                    <p className=" mr-4 text-sm font-bold text-red-700">
-                      {item.price}{' '}
-                      <span className="text-sm font-semibold">KD</span>
+                    <p className=" mr-4  text-xs font-semibold text-red-700">
+                      {item.price} <span className="text-xs ">KD</span>
                     </p>
                     {item.sale && (
-                      <p className="text-xs line-through text-gray-500  font-bold">
+                      <p className="text-xs  line-through text-gray-500  font-bold">
                         {' '}
                         {item.priceBefore}{' '}
                         <span className="font-normal">KD</span>

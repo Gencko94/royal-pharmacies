@@ -5,7 +5,7 @@ import MegaMenu from './MegaMenu';
 export default function NavCategory() {
   const buttonRef = React.useRef(null);
   const dropDownbgRef = React.useRef(null);
-  const { navCategories } = React.useContext(DataProvider);
+  const { navCategories, isLightTheme } = React.useContext(DataProvider);
   const openDropDown = i => {
     const node = buttonRef.current.querySelector(`#dd${i}`);
     node.classList.remove('hidden');
@@ -21,8 +21,11 @@ export default function NavCategory() {
     <>
       <div
         ref={buttonRef}
-        className="sticky   top-0 left-0 z-10  py-0 px-4 flex items-center justify-center text-gray-900 "
-        style={{ backgroundColor: '#f7f7fa' }}
+        className={`sticky   top-0 left-0 z-10  py-0 px-4 flex items-center justify-center ${
+          isLightTheme
+            ? 'bg-nav-cat-light text-nav-cat-text-light'
+            : 'bg-nav-cat-dark text-nav-cat-text-dark'
+        } `}
       >
         {navCategories.map((button, i) => (
           <button
@@ -30,10 +33,14 @@ export default function NavCategory() {
             key={i}
             onMouseEnter={() => openDropDown(i)}
             onMouseLeave={() => closeDropDown(i)}
-            className="p-2 text-sm  font-semibold hover:shadow-navCategory hover:bg-white "
+            className={`p-2 text-sm  font-semibold hover:shadow-navCategory ${
+              isLightTheme
+                ? 'hover:bg-second-nav-text-light'
+                : 'hover:bg-second-nav-dark'
+            }`}
           >
             {button.title}
-            <MegaMenu id={i} data={button.data} />
+            <MegaMenu id={i} data={button.data} isLightTheme={isLightTheme} />
           </button>
         ))}
       </div>

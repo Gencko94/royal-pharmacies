@@ -14,7 +14,11 @@ import { RiCustomerServiceFill } from 'react-icons/ri';
 import { DataProvider } from '../../contexts/DataContext';
 import { Link } from 'react-router-dom';
 
-export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
+export default function SideMenu({
+  toggleSideMenu,
+  sideMenuRef,
+  isLightTheme,
+}) {
   const { sidebarCategories } = React.useContext(DataProvider);
   const [products, setProducts] = React.useState(false);
   const [page, setPage] = React.useState(0);
@@ -56,28 +60,43 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   return (
     <div
       ref={sideMenuRef}
-      className=" text-gray-900 z-20 transform -translate-x-full transition-transform duration-300 absolute top-0 left-0 min-w-75p h-screen bg-gray-100 p-2 "
+      className={`${
+        isLightTheme
+          ? 'bg-side-light text-side-light-text'
+          : 'bg-side-dark text-side-dark-text'
+      }  z-20 transform -translate-x-full transition-transform duration-300 absolute top-0 left-0 min-w-75p h-screen`}
       style={{ maxWidth: '75%' }}
     >
-      <div className="flex items-center mb-2 ">
-        <Hamburger toggleSideMenu={toggleSideMenu} color={'#555'} />
-        <Logo withTypography={false} />
+      <div
+        className={`${
+          isLightTheme
+            ? 'bg-second-nav-light text-second-nav-text-light'
+            : 'bg-second-nav-dark text-second-nav-text-dark'
+        } p-1`}
+        style={{ minHeight: '105px' }}
+      >
+        <div className={`flex items-center p-1 `}>
+          <Hamburger toggleSideMenu={toggleSideMenu} />
+          <div className="relative " style={{ left: '100px' }}>
+            <Logo withTypography={false} />
+          </div>
+        </div>
+        <div className="flex place-content-center p-2 ">
+          <Link
+            to="/app/login"
+            className=" font-semibold p-1 rounded text-center "
+          >
+            Hello,Sign in
+          </Link>
+        </div>
       </div>
-      <div className="flex place-content-center   mb-2">
-        <Link
-          to="/app/login"
-          className=" text-lg font-bold rounded p-1 text-center"
-        >
-          Hello,Sign in
-        </Link>
-      </div>
-      <hr />
-      <div className="relative overflow-hidden mt-2">
-        <div ref={innerRef} className="sidebar__inner">
+      {/* <hr /> */}
+      <div className="relative overflow-hidden mt-2 ">
+        <div ref={innerRef} className="sidebar__inner  ">
           <div className="sidebar-first ">
             <button
               onClick={handleClickNextZero}
-              className="py-2 px-1 mb-2 flex items-center justify-between text-lg"
+              className="py-2 px-2 mb-2 flex items-center justify-between "
             >
               <div className="flex items-center">
                 <AiOutlineApartment className="mr-2 w-25p h-25p" />
@@ -89,7 +108,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
             <Link
               to="/cart"
               onClick={toggleSideMenu}
-              className="py-2 px-1 mb-2  text-lg  "
+              className="py-2 px-2 mb-2   "
             >
               <div className="flex  items-center">
                 <HiOutlineShoppingBag className="mr-2 w-25p h-25p" />
@@ -98,7 +117,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
             </Link>
             <Link
               to="/user/account/profile"
-              className="py-2 px-1 mb-2  text-lg  "
+              className="py-2 px-2 mb-2    "
               onClick={toggleSideMenu}
             >
               <div className=" flex items-center">
@@ -106,48 +125,33 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 <h1>Account</h1>
               </div>
             </Link>
-            <button
-              onClick={toggleSideMenu}
-              className="py-2 px-1 mb-2 text-lg  "
-            >
+            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2  ">
               <div className=" flex items-center">
                 <AiOutlineHistory className="mr-2 w-25p h-25p" />
                 <h1>Order History</h1>
               </div>
             </button>
             <hr />
-            <button
-              onClick={toggleSideMenu}
-              className="py-2 px-1 mb-2  text-lg  "
-            >
+            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2    ">
               <div className=" flex items-center">
                 <AiOutlineHeart className="mr-2 w-25p h-25p" />
                 <h1>Wishlist</h1>
               </div>
             </button>
-            <button
-              onClick={toggleSideMenu}
-              className="py-2 px-1 mb-2  text-lg  "
-            >
+            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2    ">
               <div className=" flex items-center">
                 <AiOutlineEye className="mr-2 w-25p h-25p" />
                 <h1>Viewed Items</h1>
               </div>
             </button>
             <hr />
-            <button
-              onClick={toggleSideMenu}
-              className="py-2 px-1 mb-2  text-lg  "
-            >
+            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2    ">
               <div className=" flex items-center">
                 <MdLocationOn className="mr-2 w-25p h-25p" />
                 <h1>Ship to : Kuwait</h1>
               </div>
             </button>
-            <button
-              onClick={toggleSideMenu}
-              className="py-2 px-1 mb-2  text-lg  "
-            >
+            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2    ">
               <div className=" flex items-center">
                 <RiCustomerServiceFill className="mr-2 w-25p h-25p" />
                 <h1>Customer Service</h1>
@@ -159,7 +163,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               <div className="sidebar-second">
                 <button
                   onClick={handleClickBackFirst}
-                  className="py-2 px-1 mb-2  text-lg font-semibold "
+                  className="py-2 px-2 mb-2  font-semibold "
                 >
                   Go Back
                 </button>
@@ -169,7 +173,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                     <button
                       onClick={() => handleClickNextFirst(i)}
                       key={category.title}
-                      className="py-2 px-1 mb-2 flex items-center font-semibold justify-between"
+                      className="py-2 px-2 mb-2 flex items-center font-semibold justify-between"
                     >
                       <div className=" flex items-center">
                         <CgProfile className="mr-2 w-25p h-25p" />
@@ -183,7 +187,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               <div className="sidebar-second">
                 <button
                   onClick={() => handleClickBackSecond(subPage)}
-                  className="py-2 px-1 mb-2  text-lg font-semibold "
+                  className="py-2 px-2 mb-2   font-semibold "
                 >
                   Go Back
                 </button>
@@ -193,7 +197,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                     <button
                       onClick={() => handleClickNextSecond(i)}
                       key={i}
-                      className="py-2 px-1 mb-2 flex items-center font-semibold justify-between"
+                      className="py-2 px-2 mb-2 flex items-center font-semibold justify-between"
                     >
                       <div className=" flex items-center">
                         <CgProfile className="mr-2 w-25p h-25p" />
@@ -208,7 +212,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 {/* third flex div aka third page */}
                 <button
                   onClick={() => handleClickBackSecond(secondSubPage)}
-                  className="py-2 px-1 mb-2  text-lg font-semibold "
+                  className="py-2 px-2 mb-2   font-semibold "
                 >
                   Go Back
                 </button>
@@ -218,7 +222,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                     return (
                       <button
                         key={i}
-                        className="py-2 px-1 mb-2 flex items-center font-semibold justify-between"
+                        className="py-2 px-2 mb-2 flex items-center font-semibold justify-between"
                       >
                         <div className=" flex items-center">
                           <CgProfile className="mr-2 w-25p h-25p" />

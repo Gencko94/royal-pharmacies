@@ -73,6 +73,7 @@ export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState('kuwait');
   const [selectedStore, setSelectedStore] = React.useState('kuwait');
+  const [isLightTheme, setLightTheme] = React.useState(true);
   const localItems = localStorage.getItem('cartItems');
   const [cartItems, setCartItems] = React.useState(() => {
     if (localItems) {
@@ -333,6 +334,7 @@ export default function DataContextProvider({ children }) {
       sub: [
         { src: phones, title: 'Smartphones' },
         { src: tabs, title: 'Tablets & E-Readers' },
+        { src: accessories, title: 'Mobile Accessories' },
         { src: accessories, title: 'Mobile Accessories' },
       ],
       color: '#9adbf3',
@@ -920,6 +922,8 @@ export default function DataContextProvider({ children }) {
         EditItemFromCart,
         phone,
         calculateItemsPrice,
+        isLightTheme,
+        setLightTheme,
       }}
     >
       {children}

@@ -1,13 +1,32 @@
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
 
-export default function MobileSearchbar() {
+export default function MobileSearchbar({ isLightTheme }) {
   return (
-    <div className="bg-nav-primary">
-      <div className=" rounded flex items-center   bg-white p-1 text-red-700 ">
-        <BiSearch className=" w-25p h-25p mr-2 " />
-        <input className="placeholder-gray-600 " placeholder="Search..." />
+    <div
+      className={`${
+        isLightTheme
+          ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700 '
+          : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500 shadow-itemsSlider-shallow'
+      } rounded flex items-center overflow-hidden  `}
+    >
+      <div
+        className={`${
+          isLightTheme
+            ? 'bg-nav-cat-light text-nav-cat-text-light'
+            : 'bg-nav-cat-dark text-nav-cat-text-dark'
+        }  p-1  `}
+      >
+        <BiSearch className=" w-25p h-25p " />
       </div>
+      <input
+        className={` ${
+          isLightTheme
+            ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
+            : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500'
+        } p-1`}
+        placeholder="Search..."
+      />
     </div>
   );
 }
