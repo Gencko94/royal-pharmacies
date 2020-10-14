@@ -45,7 +45,7 @@ function App() {
   return (
     <div
       className="font-body antialiased relative"
-      style={{ maxWidth: '1366px' }}
+      // style={{ maxWidth: '1366px' }}
     >
       {isTabletOrAbove ? <Navbar /> : <MobileNavbar />}
 

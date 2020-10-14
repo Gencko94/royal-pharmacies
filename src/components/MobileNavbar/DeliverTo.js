@@ -9,6 +9,7 @@ export default function DeliverTo() {
     setDeliveryCountry,
     flags,
     countries,
+    isLightTheme,
   } = React.useContext(DataProvider);
 
   const [countryListOpen, setCountryListOpen] = React.useState(false);
@@ -35,7 +36,11 @@ export default function DeliverTo() {
       >
         <div
           ref={countryListRef}
-          className="absolute rounded    z-20 mt-2 text-gray-900 font-semibold   bg-nav-secondary    "
+          className={`absolute rounded z-20 mt-2 font-semibold ${
+            isLightTheme
+              ? 'bg-second-nav-text-light text-second-nav-dark'
+              : 'bg-second-nav-dark text-second-nav-text-dark'
+          }`}
           style={{ right: '60px' }}
         >
           <h1 className="p-2">Deliver To</h1>
@@ -48,7 +53,7 @@ export default function DeliverTo() {
                   setDeliveryCountry(country);
                   toggleCountryList();
                 }}
-                className=" flex p-2  items-center w-full font-semibold text-sm text-nav-primary hover:bg-nav-primary hover:text-nav-secondary"
+                className=" flex p-2  items-center w-full font-semibold text-sm "
               >
                 <input
                   type="checkbox"

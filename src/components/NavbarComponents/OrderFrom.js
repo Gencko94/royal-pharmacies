@@ -37,7 +37,7 @@ export default function OrderFrom({
         isLightTheme
           ? 'bg-nav-cat-light text-nav-cat-text-light'
           : 'bg-nav-cat-dark text-nav-cat-text-dark'
-      }`}
+      } text-sm`}
     >
       <button
         onClick={toggleCountryList}
@@ -46,7 +46,7 @@ export default function OrderFrom({
         }  py-${py} px-${px}   hover:shadow-sm transition duration-100`}
       >
         <div className={`flex items-center  mr-1`}>
-          <h1 className="font-semibold text-sm mr-1">Order From</h1>
+          <h1 className="font-semibold  mr-1">Order From</h1>
           <img className="w-25p h-25p" src={flags[selectedStore]} alt="flag" />
         </div>
         <BiCaretDown />

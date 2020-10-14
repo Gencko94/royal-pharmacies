@@ -13,7 +13,7 @@ export default function Navbar() {
   const { isLightTheme } = React.useContext(DataProvider);
   return (
     <div>
-      <nav className="z-20 sticky top-0 left-0  ">
+      <nav className="z-10 top-0 left-0  ">
         <div
           className={`flex items-center justify-between font-semibold py-1  ${
             isLightTheme
@@ -29,7 +29,9 @@ export default function Navbar() {
             >
               Light Theme Toggle
             </button> */}
-            <Link to="/user/account/profile">My Account</Link>
+            <Link className="mr-2" to="/user/account/profile">
+              My Account
+            </Link>
             <LoginRegister />
             <Language />
           </div>

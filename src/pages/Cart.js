@@ -27,7 +27,8 @@ export default function Cart() {
       </div>
       <div className="cart__container">
         <div className="cart__title font-semibold">
-          <h1 className="text-xl font-bold ">Shopping Cart</h1>
+          <h1 className="text-lg  ">Shopping Cart</h1>
+          <h1 className="text-lg  ">Item</h1>
           <h1 className="text-center">Price</h1>
         </div>
         <hr />
@@ -42,8 +43,8 @@ export default function Cart() {
                   alt={item.name}
                 />
                 <div className="">
-                  <h1 className="font-semibold text-xl">{item.name}</h1>
-                  <h1 className=" font-semibold mb-1 text-green-700">
+                  <h1 className="font-semibold ">{item.name}</h1>
+                  <h1 className=" font-semibold text-sm mb-1 text-green-700">
                     In Stock
                   </h1>
                   <div className=" mr-2 flex items-center mb-1">

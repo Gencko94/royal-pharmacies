@@ -64,7 +64,7 @@ export default function SideMenu({
         isLightTheme
           ? 'bg-side-light text-side-light-text'
           : 'bg-side-dark text-side-dark-text'
-      }  z-20 transform -translate-x-full transition-transform duration-300 absolute top-0 left-0 min-w-75p h-screen`}
+      }  z-20 transform -translate-x-full transition-transform duration-300 absolute top-0 left-0 min-w-75p h-screen sm:text-lg`}
       style={{ maxWidth: '75%' }}
     >
       <div
@@ -163,7 +163,7 @@ export default function SideMenu({
               <div className="sidebar-second">
                 <button
                   onClick={handleClickBackFirst}
-                  className="py-2 px-2 mb-2  font-semibold "
+                  className="py-2 px-2 mb-2   "
                 >
                   Go Back
                 </button>
@@ -173,7 +173,7 @@ export default function SideMenu({
                     <button
                       onClick={() => handleClickNextFirst(i)}
                       key={category.title}
-                      className="py-2 px-2 mb-2 flex items-center font-semibold justify-between"
+                      className="py-2 px-2 mb-2 flex items-center  justify-between"
                     >
                       <div className=" flex items-center">
                         <CgProfile className="mr-2 w-25p h-25p" />
@@ -187,7 +187,7 @@ export default function SideMenu({
               <div className="sidebar-second">
                 <button
                   onClick={() => handleClickBackSecond(subPage)}
-                  className="py-2 px-2 mb-2   font-semibold "
+                  className="py-2 px-2 mb-2    "
                 >
                   Go Back
                 </button>
@@ -197,7 +197,7 @@ export default function SideMenu({
                     <button
                       onClick={() => handleClickNextSecond(i)}
                       key={i}
-                      className="py-2 px-2 mb-2 flex items-center font-semibold justify-between"
+                      className="py-2 px-2 mb-2 flex items-center  justify-between"
                     >
                       <div className=" flex items-center">
                         <CgProfile className="mr-2 w-25p h-25p" />
@@ -212,7 +212,7 @@ export default function SideMenu({
                 {/* third flex div aka third page */}
                 <button
                   onClick={() => handleClickBackSecond(secondSubPage)}
-                  className="py-2 px-2 mb-2   font-semibold "
+                  className="py-2 px-2 mb-2    "
                 >
                   Go Back
                 </button>
@@ -222,7 +222,7 @@ export default function SideMenu({
                     return (
                       <button
                         key={i}
-                        className="py-2 px-2 mb-2 flex items-center font-semibold justify-between"
+                        className="py-2 px-2 mb-2 flex items-center  justify-between"
                       >
                         <div className=" flex items-center">
                           <CgProfile className="mr-2 w-25p h-25p" />

@@ -10,7 +10,7 @@ export default function Categories() {
   const isMobile = useMediaQuery({ query: '(min-width: 360px)' });
   const settings = {
     className: '',
-    autoplay: true,
+    // autoplay: true,
     autoplaySpeed: 3000,
     infinite: true,
     slidesToShow: 2,
@@ -63,7 +63,7 @@ export default function Categories() {
                     maxWidth: '50%',
                     top: isTabletOrAbove ? '16%' : '10%',
                   }}
-                  className="absolute text-center  font-semibold left-10 text-base sm:text-lg md:text-2xl "
+                  className="absolute text-center  font-semibold left-10 text-base sm:text-lg md:text-xl lg:text-2xl "
                 >
                   {item.title}
                 </h1>
@@ -79,25 +79,25 @@ export default function Categories() {
                     return (
                       <div
                         key={j + i}
-                        className=" mt-2 grid grid-cols-1  pt-2  rounded  justify-center "
+                        className=" mt-2 grid grid-cols-1 rounded  justify-center "
                         style={{
                           backgroundColor: item.color,
-                          maxHeight: '120px',
+                          // maxHeight: '120px',
                           minHeight: '120px',
                         }}
                       >
                         <div
-                          style={{ maxHeight: '70px' }}
-                          className=" flex justify-center items-center"
+                          // style={{ maxHeight: '70px' }}
+                          className=" flex justify-center items-center py-1"
                         >
                           <img
                             src={photo.src}
-                            alt="ima"
-                            className="max-w-full h-auto"
+                            alt={photo.title}
+                            className="max-w-full h-auto py-1"
                           />
                         </div>
                         <MultiClamp
-                          className="text-center text-xs font-semibold"
+                          className="text-center text-xs p-1 font-semibold"
                           clamp={2}
                           ellipsis="..."
                         >

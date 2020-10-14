@@ -13,7 +13,7 @@ export default function CartMobile() {
     return price;
   };
   return (
-    <div className=" py-2 px-2">
+    <div className=" py-1 px-2">
       <div className="py-1 px-2 bg-white cart__checkout-sticky mb-2 border-b -mx-3">
         <h1 className="text-lg font-semibold mb-1 ">
           Subtotal ({cartItems.length}{' '}
@@ -22,7 +22,7 @@ export default function CartMobile() {
             {calculateItemsPrice(cartItems)} KD
           </span>
         </h1>
-        <button className="p-2 rounded font-semibold text-lg  w-full text-gray-100 bg-green-600">
+        <button className="p-2 rounded font-semibold   w-full text-gray-100 bg-green-600">
           Proceed to Checkout
         </button>
       </div>
@@ -37,10 +37,10 @@ export default function CartMobile() {
                   src={item.photo}
                   alt={item.name}
                 />
-                <div className="">
-                  <h1 className="font-semibold text">{item.name}</h1>
+                <div className="text-sm">
+                  <h1 className="font-semibold ">{item.name}</h1>
                   <h1 className=" font-semibold text-green-700">In Stock</h1>
-                  <div className="text-red-700 font-bold">
+                  <div className="text-red-700 font-bold text-base">
                     {item.price * item.quantity} KD
                   </div>
                   <div className=" flex items-center ">
@@ -57,7 +57,7 @@ export default function CartMobile() {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center   items-center my-2 ">
+              <div className="flex justify-center text-sm  items-center my-2 ">
                 <button
                   onClick={() => removeItemFromCart(item)}
                   className="py-1 px-2 bg-gray-100 rounded border font-semibold mr-2 "

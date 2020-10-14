@@ -4,6 +4,7 @@ import zalo from '../../assets/offers/zalo.png';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 import MultiClamp from 'react-multi-clamp';
+import { Link } from 'react-router-dom';
 // const isItemInCart = data => {
 //   const itemInCart = cartItems.find(item => data.id === item.id);
 //   if (itemInCart !== undefined) {
@@ -113,14 +114,16 @@ export default function ItemsSlider({
               >
                 <a href={`/products/${item.id}`}>
                   <img
+                  title={item.name}
                     src={item.photos.small}
-                    alt="something"
+                    alt={item.name}
                     className=" w-full object-cover "
                   />
                 </a>
                 <hr />
 
                 <div
+               
                   className={`relative flex flex-col  ${
                     miniLogo ? 'pt-8' : 'pt-2'
                   } px-2 py-1 ${
@@ -131,6 +134,7 @@ export default function ItemsSlider({
                 >
                   {miniLogo && (
                     <img
+                    
                       src={zalo}
                       alt="playstore"
                       className="absolute rounded-full shadow-xl "
@@ -146,8 +150,9 @@ export default function ItemsSlider({
                     className="text-sm  font-semibold"
                     clamp={2}
                     ellipsis="..."
+                    
                   >
-                    {item.name}
+                    <Link  title={item.name} className='hover:underline' to={`/products/${item.id}`}>{item.name}</Link>
                   </MultiClamp>
 
                   <div className="flex items-center">
