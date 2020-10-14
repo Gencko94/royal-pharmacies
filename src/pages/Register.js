@@ -92,7 +92,7 @@ export default function Register() {
         <div className="px-4 py-2">
           <h1 className="text-sm">
             Already have an Account ?{' '}
-            <Link className="text-red-400" to="/app/login">
+            <Link className="text-second-nav-light" to="/app/login">
               Log in instead
             </Link>
           </h1>
@@ -101,8 +101,8 @@ export default function Register() {
         <div className="px-4 w-full py-2 ">
           <h1 className="text-xs">
             By clicking “Create an account”, you agree to our{' '}
-            <span className="text-red-400">Terms of Service</span> and{' '}
-            <span className="text-red-400">Privacy Statement</span>. We’ll
+            <span className="text-second-nav-light">Terms of Service</span> and{' '}
+            <span className="text-second-nav-light">Privacy Statement</span>. We’ll
             occasionally send you account related emails.
           </h1>
         </div>

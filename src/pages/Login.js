@@ -81,11 +81,11 @@ export default function Login() {
         <div className="px-4 py-2">
           <h1 className="text-sm">
             Are you new to the family ?{' '}
-            <Link className="text-red-400" to="/app/register">
+            <Link className="text-second-nav-light" to="/app/register">
               Join us here
             </Link>
           </h1>
-          <button className=" text-sm text-red-400">
+          <button className=" text-smtext-second-nav-light">
                 Forgot Password ?
               </button>
         </div>
