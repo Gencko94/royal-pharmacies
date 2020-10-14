@@ -2,15 +2,37 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 export default function Login() {
+  const [credentials,setCredentials] = React.useState({
+    email:'',
+    password:''
+  })
+  const [activeLabel,setActiveLabel] = React.useState({
+    email:false,
+    password:false
+  })
+   
+  
+  
+  const checkEmptyInput = (type)=>{
+    if (credentials[type] === ''){
+      setActiveLabel({...activeLabel,[type]:false})
+    }
+  }
+  const handleInputChange =(e,type)=>{
+    setCredentials({
+      ...credentials,
+      [type]:e.target.value
+    })
+  }
   return (
-    <div className="font-body antialiased text-gray-900 flex justify-center items-center bg-aliceblue  h-screen relative">
-      <div className=" rounded z-2  max-w-screen-md w-5/6 pb-1 bg-gray-100 shadow-2xl   overflow-hidden">
+    <div className="font-body antialiased text-gray-900 flex justify-center items-center   h-screen relative">
+      <div className=" rounded z-2  max-w-screen-sm w-5/6 pb-1  shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
           <Link to="/">
             <img
               src={logo}
               alt="logo"
-              className="rounded-full  border-red-500 shadow-2xl mb-3"
+              className="rounded-full   shadow-2xl mb-3"
               style={{ width: '125px', height: '125px' }}
             />
           </Link>
@@ -20,34 +42,39 @@ export default function Login() {
         </div>
         <hr />
         {/* inputs */}
-        <div className="flex flex-col items-center px-4 py-2   bg-gray-100">
+        <div className="flex flex-col items-center px-4 py-2  ">
           {/* input  */}
-          <div className="w-full mb-4 ">
-            <h1 className="  text-md font-semibold">Email</h1>
+          <div className="w-full mb-4 relative  ">
+            <span  className={`${activeLabel.email ? 'form__label-active' : 'form__label'} text-md font-semibold text-gray-700`}>Email</span>
             <input
-              className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
+            onBlur={()=>checkEmptyInput('email')}
+              className=" mt-1 w-full rounded border-b   p-2 pt-5"
               type="text"
-              placeholder="Enter your email address"
+              value={credentials.email}
+              onClick={()=>setActiveLabel({...activeLabel,email:true})}
+              onFocus={()=>setActiveLabel({...activeLabel,email:true})}
+              onChange={(e)=>handleInputChange(e,'email')}
             />
           </div>
           {/* input */}
-          <div className=" w-full mb-0 ">
-            <div className="flex">
-              <h1 className="text-md  font-semibold">Password</h1>
-              <button className=" ml-auto text-sm text-red-400">
-                Forgot Password ?
-              </button>
-            </div>
+          <div className="relative w-full mb-0 ">
+           
+            <span  className={`${activeLabel.password ? 'form__label-active' : 'form__label'} text-md font-semibold text-gray-700`}>Password</span>
+
             <input
-              className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
+              className=" mt-1 w-full rounded border-b  p-2 pt-5 "
               type="password"
-              placeholder="Enter your Password"
+              onBlur={()=>checkEmptyInput('password')}
+              value={credentials.password}
+              onClick={()=>setActiveLabel({...activeLabel,password:true})}
+              onFocus={()=>setActiveLabel({...activeLabel,password:true})}
+              onChange={(e)=>handleInputChange(e,'password')}
             />
           </div>
         </div>
 
         <div className="px-4 py-1">
-          <button className="w-full rounded text-gray-100 bg-red-500 p-2 font-semibold hover:bg-red-400 transition duration-150 ">
+          <button className={`w-full rounded text-second-nav-text-light bg-second-nav-light p-2 font-semibold hover:bg-red-800 transition duration-150 `}>
             Log in
           </button>
         </div>
@@ -58,6 +85,9 @@ export default function Login() {
               Join us here
             </Link>
           </h1>
+          <button className=" text-sm text-red-400">
+                Forgot Password ?
+              </button>
         </div>
       </div>
     </div>

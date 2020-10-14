@@ -2,7 +2,7 @@ import React from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import Rating from 'react-rating';
 
-export default function RecentlyViewedHorizontal() {
+export default function RecentlyViewedVertical() {
   const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
 
   return (

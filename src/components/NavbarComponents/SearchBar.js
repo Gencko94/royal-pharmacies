@@ -1,13 +1,13 @@
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { DataProvider } from '../../contexts/DataContext';
-import OrderFrom from './OrderFrom';
+// import OrderFrom from './OrderFrom';
 
 export default function SearchBar() {
   const { isLightTheme } = React.useContext(DataProvider);
   return (
     <div
-      className={`flex  mr-3 py-0  relative  ${
+      className={`flex  mr-3 py-2  relative  ${
         isLightTheme
           ? 'bg-nav-cat-light text-nav-cat-text-light'
           : 'bg-nav-cat-dark text-nav-cat-text-dark'
@@ -26,7 +26,7 @@ export default function SearchBar() {
         type="text"
         placeholder="What are you looking for ?"
       />
-      <OrderFrom />
+      {/* <OrderFrom /> */}
     </div>
   );
 }

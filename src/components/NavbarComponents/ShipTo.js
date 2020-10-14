@@ -32,8 +32,12 @@ export default function ShipTo() {
         className="  flex items-center rounded p-1 hover:bg-second-nav-light  transition duration-100"
       >
         <span className="text-sm uppercase mr-2">
-          Deliver to <span className="font-bold">{deliveryCountry}</span>
+          Deliver to  
         </span>
+        <img src={flags[deliveryCountry]}
+                className="w-20p h-20p mr-2 "
+                alt="uae"
+              />
         <BiCaretDown />
       </button>
       <div

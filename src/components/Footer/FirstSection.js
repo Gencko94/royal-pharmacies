@@ -5,11 +5,11 @@ export default function FirstSection() {
   return (
     <div
       //   style={{ minHeight: '133px' }}
-      className="flex  justify-evenly items-center p-8 bg-red-500  "
+      className={`flex  justify-evenly items-center p-8 bg-second-nav-light text-second-nav-text-light `}
     >
-      <div className="text-center text-gray-100 font-bold">
+      <div className="text-center  font-bold">
         <h1 className="text-lg">We're Always here to help</h1>
-        <h1 className="text-sm text-gray-800 font-semibold">
+        <h1 className="text-sm  font-semibold">
           Reach out to us through any of these support channels
         </h1>
       </div>

@@ -1,17 +1,19 @@
 import React from 'react';
-import RecentlyViewedHorizontal from '../components/RecentlyViewedHorizontal';
+import CartItem from '../components/Cart/CartItem';
+import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
+import RecentlyViewedVertical from '../components/RecentlyViewedVertical';
 import { DataProvider } from '../contexts/DataContext';
-
+import cartBag from '../assets/illustrations/cartBag.svg'
+import { Link } from 'react-router-dom';
 export default function Cart() {
   const {
     cartItems,
-    removeItemFromCart,
-    EditItemFromCart,
+    
     calculateItemsPrice,
   } = React.useContext(DataProvider);
 
   return (
-    <div className=" cart py-2 px-4 relative">
+    <div className=" cart py-2 px-4 relative" style={{maxWidth:'1560px',margin:'0 auto'}}>
       <div className="font-semibold float-right">
         <div className=" rounded border bg-gray-100 p-2 flex justify-start flex-col mb-2 ">
           <h1 className="text-base font-semibold mb-2 ">
@@ -23,79 +25,51 @@ export default function Cart() {
             Proceed to Checkout
           </button>
         </div>
-        <RecentlyViewedHorizontal />
+        <RecentlyViewedVertical />
       </div>
       <div className="cart__container">
-        <div className="cart__title font-semibold">
-          <h1 className="text-lg  ">Shopping Cart</h1>
-          <h1 className="text-lg  ">Item</h1>
+       {cartItems.length !== 0 && <>
+       <div className="cart__title font-semibold text-lg">
+          <h1 className="  ">Shopping Cart</h1>
+          <h1 className="  ">Item</h1>
           <h1 className="text-center">Price</h1>
         </div>
         <hr />
-        {cartItems.map((item, i) => {
+        </>}
+        {cartItems.length === 0 && (
+          <div className='p-2 flex'>
+            <img src={cartBag} alt='Empty Cart Bag' className=' h-32 mr-10'/>
+            <div>
+
+
+            <h1 className='text-2xl font-bold '>Oops, Your Cart is Empty !</h1>
+            <Link to='/' className='text-sm text-blue-600 hover:underline'>Check today deals</Link>
+            </div>
+          </div>
+        )}
+        {cartItems.length !== 0 && cartItems.map((item, i) => {
           return (
-            <>
-              <div className="cart__item py-2" key={i}>
-                <img
-                  className=""
-                  style={{ maxHeight: '', maxWidth: '' }}
-                  src={item.photo}
-                  alt={item.name}
-                />
-                <div className="">
-                  <h1 className="font-semibold ">{item.name}</h1>
-                  <h1 className=" font-semibold text-sm mb-1 text-green-700">
-                    In Stock
-                  </h1>
-                  <div className=" mr-2 flex items-center mb-1">
-                    <h1 className=" mr-2 font-semibold">Quantity : </h1>
-                    <select
-                      value={item.quantity}
-                      onChange={e => EditItemFromCart(e.target.value, item)}
-                      className="pr-8 py-0 form-select border-gray-400 border rounded"
-                    >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                    </select>
-                  </div>
-                  <div className="flex text-sm  items-center ">
-                    <button
-                      onClick={() => removeItemFromCart(item)}
-                      className="p-1 text-red-700 font-semibold hover:underline"
-                    >
-                      Remove from cart
-                    </button>
-                    <button
-                      onClick={() => removeItemFromCart(item)}
-                      className="p-1 text-blue-700 font-semibold hover:underline"
-                    >
-                      Add to wishlist
-                    </button>
-                  </div>
-                </div>
-                <div className="text-center font-bold">
-                  {item.price * item.quantity} KD
-                </div>
-              </div>
-              <hr />
-            </>
+            <div key={i}>
+            <CartItem item={item} />
+              
+            </div>
           );
         })}
-        <div className="flex justify-end pr-2 mt-2">
+        {cartItems.length !== 0 && <div className="flex justify-end pr-2 mt-2">
           <h1 className="text-lg font-semibold">
             Subtotal ({cartItems.length}{' '}
             {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
             {calculateItemsPrice(cartItems)} KD
           </h1>
-        </div>
-      </div>
-
+        </div>}
       <h1 className="text-sm">
         The price and availability of items at AlAtiah.com are subject to
         change. The Cart is a temporary place to store a list of your items and
         reflects each item's most recent price.
       </h1>
+      <RecentlyVisitedHorizontal/>
+<hr/>
+      </div>
     </div>
   );
 }

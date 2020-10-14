@@ -2,9 +2,30 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 export default function Register() {
+  const [credentials,setCredentials] = React.useState({
+    username:'',
+    email:'',
+    password:''
+  })
+  const [activeLabel,setActiveLabel] = React.useState({
+    username:false,
+    email:false,
+    password:false
+  })
+  const checkEmptyInput = (type)=>{
+    if (credentials[type] === ''){
+      setActiveLabel({...activeLabel,[type]:false})
+    }
+  }
+  const handleInputChange =(e,type)=>{
+    setCredentials({
+      ...credentials,
+      [type]:e.target.value
+    })
+  }
   return (
-    <div className=" font-body antialiased  text-gray-900 flex items-center justify-center bg-aliceblue relative  h-screen">
-      <div className=" max-w-screen-md w-5/6 rounded pb-1  bg-gray-100 shadow-2xl   overflow-hidden">
+    <div className="font-body antialiased text-gray-900 flex justify-center items-center   h-screen relative">
+      <div className=" rounded z-2  max-w-screen-sm w-5/6 pb-1  shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
           <Link to="/">
             <img
@@ -18,41 +39,53 @@ export default function Register() {
             Register for Al AttiahMall
           </h2>
         </div>
-        <hr />
         {/* inputs */}
-        <div className="flex flex-col items-center px-4 py-2   bg-gray-100">
+        <div className="flex flex-col items-center px-4 py-2">
           {/* input  */}
-          <div className="w-full mb-4 ">
-            <h1 className="  text-md font-semibold">Username</h1>
+          <div className="w-full mb-4 relative">
+          <span  className={`${activeLabel.username ? ' pointer-events-none z-1 form__label-active' : 'form__label'} text-md font-semibold text-gray-700`}>Username</span>
             <input
-              className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
+              className="  w-full rounded border-b   p-2 pt-5"
               type="text"
-              placeholder="Enter your Username"
+              onBlur={()=>checkEmptyInput('username')}
+              value={credentials.username}
+              onClick={()=>setActiveLabel({...activeLabel,username:true})}
+              onFocus={()=>setActiveLabel({...activeLabel,username:true})}
+              onChange={(e)=>handleInputChange(e,'username')}
             />
           </div>
           {/* input  */}
-          <div className="w-full mb-4 ">
-            <h1 className="  text-md font-semibold">Email</h1>
+          <div className="w-full mb-4 relative ">
+          <span  className={`${activeLabel.email ? '  form__label-active' : 'form__label'} text-md font-semibold text-gray-700`}>Email</span>
+
             <input
-              className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
+              className="  w-full rounded border-b   p-2 pt-5"
               type="text"
-              placeholder="Enter your email address"
+              onBlur={()=>checkEmptyInput('email')}
+              value={credentials.email}
+              onClick={()=>setActiveLabel({...activeLabel,email:true})}
+              onFocus={()=>setActiveLabel({...activeLabel,email:true})}
+              onChange={(e)=>handleInputChange(e,'email')}
             />
           </div>
           {/* input */}
-          <div className=" w-full mb-0 ">
-            <h1 className="text-md  font-semibold">Password</h1>
+          <div className=" w-full mb-0 relative">
+          <span className={`${activeLabel.password ? '  form__label-active' : 'form__label'} text-md font-semibold text-gray-700`}>Password</span>
 
             <input
-              className=" mt-1 w-full rounded bg-gray-200 placeholder-gray-700 p-2 "
+              className="  w-full rounded border-b   p-2 pt-5"
               type="password"
-              placeholder="Enter your Password"
+              onBlur={()=>checkEmptyInput('password')}
+              value={credentials.password}
+              onClick={()=>setActiveLabel({...activeLabel,password:true})}
+              onFocus={()=>setActiveLabel({...activeLabel,password:true})}
+              onChange={(e)=>handleInputChange(e,'password')}
             />
           </div>
         </div>
 
         <div className="px-4 py-1">
-          <button className="w-full rounded text-gray-100 bg-red-500 p-2 font-semibold hover:bg-red-400 transition duration-150 ">
+        <button className={`w-full rounded text-second-nav-text-light bg-second-nav-light p-2 font-semibold hover:bg-red-400 transition duration-150 `}>
             Create an account
           </button>
         </div>
