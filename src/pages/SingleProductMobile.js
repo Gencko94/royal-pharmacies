@@ -222,7 +222,7 @@ export default function SingleProductMobile({
               {isItemInCart() ? (
                 <button
                   onClick={() => removeItemFromCart(data[0])}
-                  className="bg-red-700 text-gray-100    p-1 rounded   flex items-center justify-center font-semibold "
+                  className="bg-red-700 text-gray-100    p-1 rounded px-2  flex items-center justify-center font-semibold "
                 >
                   <span>
                     <TiShoppingCart className="w-25p h-25p mr-2" />
@@ -239,7 +239,7 @@ export default function SingleProductMobile({
 
                     addItemToCart({ data: data[0], quantity });
                   }}
-                  className=" bg-blue-700 flex-1 text-gray-100   p-1 rounded   flex items-center justify-center font-semibold"
+                  className=" bg-blue-700 flex-1 text-gray-100   p-1 px-2 rounded   flex items-center justify-center font-semibold"
                 >
                   <span>
                     <TiShoppingCart className="w-25p h-25p mr-2" />
