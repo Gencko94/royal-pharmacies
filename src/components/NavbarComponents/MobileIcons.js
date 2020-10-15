@@ -22,9 +22,9 @@ export default function MobileIcons() {
             {cartItems.length}
           </span>
         </Link>
-        <Link to="/user/account/profile" className="p-1 ml-1 ">
+        {/* <Link to="/user/account/profile" className="p-1 ml-1 ">
           <MdAccountCircle className="w-25p h-25p" />
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
