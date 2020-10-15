@@ -198,8 +198,8 @@ export default function SingleProductMobile({
               original Darksiders, exploring the origin of the Seven seals{' '}
             </li>
           </ul>
-          
-        <div className="relative  ">
+
+          <div className="relative  ">
             <div className="  my-2 flex items-center">
               <h1 className=" mr-2 font-semibold">Quantity : </h1>
               <select
@@ -211,14 +211,14 @@ export default function SingleProductMobile({
                 <option>2</option>
                 <option>3</option>
               </select>
-          </div>
-          <div className="relative flex items-center">
-            <button className="bg-green-400 p-1 rounded mr-2 flex-1  text-white flex items-center justify-center font-semibold ">
-              <span>
-                <AiOutlineHeart className="w-25p h-25p mr-2" />
-              </span>
-              Add to Wishlist
-            </button>
+            </div>
+            <div className="relative flex items-center">
+              <button className="bg-green-400 p-1 rounded mr-2 flex-1  text-white flex items-center justify-center font-semibold ">
+                <span>
+                  <AiOutlineHeart className="w-25p h-25p mr-2" />
+                </span>
+                Add to Wishlist
+              </button>
               {isItemInCart() ? (
                 <button
                   onClick={() => removeItemFromCart(data[0])}
@@ -287,7 +287,7 @@ export default function SingleProductMobile({
         unmountOnExit={true}
         classNames="floating-cart-button"
       >
-        <div className={`floating-button bg-second-nav-text-light`}  >
+        <div className={`floating-button bg-second-nav-text-light`}>
           <div className="mr-2 flex items-center">
             <h1 className=" mr-2 font-semibold">Quantity : </h1>
             <select

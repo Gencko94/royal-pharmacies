@@ -3,11 +3,18 @@ import Helmet from 'react-helmet';
 import MainCarousel from '../components/Home/MainCarousel';
 import ipad from '../assets/banners/ipad.jpg';
 import earbuds from '../assets/banners/earbuds.jpg';
+import fashionbanner from '../assets/banners/fashionbanner.gif';
 import offer from '../assets/banners/offer.png';
 import audiovideo from '../assets/photoCategories/audiovideo.jpg';
 import computers from '../assets/photoCategories/computers.jpg';
 import mobiles from '../assets/photoCategories/mobiles.jpg';
 import tablets from '../assets/photoCategories/tablets.jpg';
+import homeapp from '../assets/photoCategories/homeapp.jpg';
+import kitchen from '../assets/photoCategories/kitchen.jpg';
+import appliances from '../assets/photoCategories/appliances.jpg';
+import men from '../assets/photoCategories/men.png';
+import women from '../assets/photoCategories/women.png';
+import kids from '../assets/photoCategories/kids.png';
 // import iphonered from '../assets/phones/iphonered.png';
 // import a51 from '../assets/phones/a51.jpg';
 // import iphonepng from '../assets/phones/iphonepng.png';
@@ -24,7 +31,9 @@ import { useMediaQuery } from 'react-responsive';
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
 
-  const { bestSeller, phone, isLightTheme } = React.useContext(DataProvider);
+  const { bestSeller, phone, isLightTheme, home, fashion } = React.useContext(
+    DataProvider
+  );
   return (
     <>
       <Helmet>
@@ -59,6 +68,7 @@ export default function Home() {
             data={[mobiles, tablets, computers, audiovideo]}
             title="Mobiles & Electronics"
           />
+
           {/* <AnimatedSlides
             data={[
               { title: 'iPhone 11', photo: iphonepng },
@@ -75,6 +85,24 @@ export default function Home() {
           />
           {!isTabletOrAbove && <Banner img={earbuds} />}
           {isTabletOrAbove && <Banner img={offer} />}
+          <PhotoCategories data={[homeapp, kitchen, appliances]} />
+          <ItemsSlider
+            data={home}
+            miniLogo={false}
+            isLightTheme={isLightTheme}
+            title="Explore our Household Collection"
+          />
+          {/* Fashion Section */}
+          {/* <div className="bg-red-200"> */}
+          {isTabletOrAbove && <Banner img={fashionbanner} />}
+          <PhotoCategories data={[men, women, kids]} />
+          <ItemsSlider
+            data={fashion}
+            miniLogo={false}
+            isLightTheme={isLightTheme}
+            title="Check out the latest fashion trends"
+          />
+          {/* </div> */}
         </div>
       </div>
     </>

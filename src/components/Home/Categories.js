@@ -10,11 +10,11 @@ export default function Categories() {
   const isMobile = useMediaQuery({ query: '(min-width: 360px)' });
   const settings = {
     className: '',
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 3000,
     infinite: true,
     slidesToShow: 2,
-    slidesToScroll: 1,
+    slidesToScroll: 2,
 
     responsive: [
       {

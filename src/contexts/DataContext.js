@@ -78,6 +78,22 @@ import shield from '../assets/healthcare/shield.jpg';
 import blackmask from '../assets/healthcare/blackmask.jpg';
 import omega3 from '../assets/healthcare/omega3.jpg';
 
+import milk from '../assets/home/milk.jpg';
+import scale from '../assets/home/scale.jpg';
+import patsry from '../assets/home/patsry.jpg';
+import holder from '../assets/home/holder.jpg';
+import spoon from '../assets/home/spoon.jpg';
+import opalina from '../assets/home/opalina.jpg';
+import bowl from '../assets/home/bowl.jpg';
+
+import olive from '../assets/fashion/olive.jpg';
+import brave from '../assets/fashion/brave.jpg';
+import denim from '../assets/fashion/denim.jpg';
+import trendyol from '../assets/fashion/trendyol.jpg';
+import yong from '../assets/fashion/yong.jpg';
+import streets from '../assets/fashion/streets.jpg';
+import adidas from '../assets/fashion/adidas.jpg';
+
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState('kuwait');
@@ -908,120 +924,323 @@ export default function DataContextProvider({ children }) {
       ],
     },
   ];
-const healthCare = [
-  {
-    id: '20',
+  const healthCare = [
+    {
+      id: '20',
 
-    name: 'Reusable Washable Anti-Viral Face Mask With Virus Neutralization ISO18184 Medium Black',
-    sale: false,
-    priceBefore: null,
-    price: '99.00',
-    soldBy: 'Atiah Mall',
-    condition: 'New',
-    description: null,
-    reasonsToBuy: null,
-    technicalDetails: null,
-    photos: { small: filtermask, main: [filtermask] },
-  },
-  {
-    id: '21',
+      name:
+        'Reusable Washable Anti-Viral Face Mask With Virus Neutralization ISO18184 Medium Black',
+      sale: false,
+      priceBefore: null,
+      price: '99.00',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: filtermask, main: [filtermask] },
+    },
+    {
+      id: '21',
 
-    name: 'Omega 3-6-9',
-    sale: false,
-    priceBefore: null,
-    price: '60.00',
-    soldBy: 'Atiah Mall',
-    condition: 'New',
-    description: null,
-    reasonsToBuy: null,
-    technicalDetails: null,
-    photos: { small: omega3, main: [omega3] },
-  },
-  {
-    id: '22',
+      name: 'Omega 3-6-9',
+      sale: false,
+      priceBefore: null,
+      price: '60.00',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: omega3, main: [omega3] },
+    },
+    {
+      id: '22',
 
-    name: 'Pack Of 50 Disposable 3-Ply Face Mask',
-    sale: false,
-    priceBefore: null,
-    price: '21.50',
-    soldBy: 'Atiah Mall',
-    condition: 'New',
-    description: null,
-    reasonsToBuy: null,
-    technicalDetails: null,
-    photos: { small: greenmask, main: [greenmask] },
-  },
-  {
-    id: '23',
+      name: 'Pack Of 50 Disposable 3-Ply Face Mask',
+      sale: false,
+      priceBefore: null,
+      price: '21.50',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: greenmask, main: [greenmask] },
+    },
+    {
+      id: '23',
 
-    name: 'Adjustable Anti-Smoke Face Shield Mask',
-    sale: false,
-    priceBefore: null,
-    price: '3.50',
-    soldBy: 'Atiah Mall',
-    condition: 'New',
-    description: null,
-    reasonsToBuy: null,
-    technicalDetails: null,
-    photos: { small: shield, main: [shield] },
-  },
-  {
-    id: '24',
+      name: 'Adjustable Anti-Smoke Face Shield Mask',
+      sale: false,
+      priceBefore: null,
+      price: '3.50',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: shield, main: [shield] },
+    },
+    {
+      id: '24',
 
-    name: 'Scented Antibacterial Hand Sanitizer 70% Alcohol Clear - 500ml',
-    sale: true,
-    priceBefore: '57.00',
-    price: '19.00',
-    soldBy: 'Atiah Mall',
-    condition: 'New',
-    description: null,
-    reasonsToBuy: null,
-    technicalDetails: null,
-    photos: { small: sanitizer, main: [sanitizer] },
-  },
-  {
-    id: '25',
+      name: 'Scented Antibacterial Hand Sanitizer 70% Alcohol Clear - 500ml',
+      sale: true,
+      priceBefore: '57.00',
+      price: '19.00',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: sanitizer, main: [sanitizer] },
+    },
+    {
+      id: '25',
 
-    name: 'Respirator Safety Face Mask Black/White',
-    sale: false,
-    priceBefore: null,
-    price: '2.85',
-    soldBy: 'Atiah Mall',
-    condition: 'New',
-    description: null,
-    reasonsToBuy: null,
-    technicalDetails: null,
-    photos: { small: pandamask, main: [pandamask] },
-  },
-  {
-    id: '26',
+      name: 'Respirator Safety Face Mask Black/White',
+      sale: false,
+      priceBefore: null,
+      price: '2.85',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: pandamask, main: [pandamask] },
+    },
+    {
+      id: '26',
 
-    name: 'Chennai Super Kings Reusable and Washable Face Mask',
-    sale: true,
-    priceBefore: '57.00',
-    price: '24.95',
-    soldBy: 'Atiah Mall',
-    condition: 'New',
-    description: null,
-    reasonsToBuy: null,
-    technicalDetails: null,
-    photos: { small: bluemask, main: [bluemask] },
-  },
-  {
-    id: '26',
+      name: 'Chennai Super Kings Reusable and Washable Face Mask',
+      sale: true,
+      priceBefore: '57.00',
+      price: '24.95',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: bluemask, main: [bluemask] },
+    },
+    {
+      id: '26',
 
-    name: 'Royal Challengers Bangalore Reusable and Washable Face Mask',
-    sale: true,
-    priceBefore: '59.00',
-    price: '24.95',
-    soldBy: 'Atiah Mall',
-    condition: 'New',
-    description: null,
-    reasonsToBuy: null,
-    technicalDetails: null,
-    photos: { small: blackmask, main: [blackmask] },
-  },
-]
+      name: 'Royal Challengers Bangalore Reusable and Washable Face Mask',
+      sale: true,
+      priceBefore: '59.00',
+      price: '24.95',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: blackmask, main: [blackmask] },
+    },
+  ];
+  const home = [
+    {
+      id: '30',
+
+      name:
+        'Stainless Steel Milk Foam Measuring Cup H15954S Silver 10.5 x 7.5 x 9centimeter',
+      sale: true,
+      priceBefore: '69.00',
+      price: '14.80',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: milk, main: [milk] },
+    },
+    {
+      id: '31',
+
+      name: 'LCD Display Coffee Drip Scale H21401 Black',
+      sale: false,
+      priceBefore: null,
+      price: '47.90',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: scale, main: [scale] },
+    },
+    {
+      id: '32',
+
+      name: 'Pattiserie Glass Footed Cake Stand With Dome Clear 187millimeter',
+      sale: false,
+      priceBefore: null,
+      price: '19.00',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: patsry, main: [patsry] },
+    },
+    {
+      id: '34',
+
+      name: 'Coffee Capsule Holder And Stand Black/Silver 39centimeter',
+      sale: false,
+      priceBefore: null,
+      price: '19.00',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: holder, main: [holder] },
+    },
+    {
+      id: '35',
+
+      name: 'Single Spoon Rest With Dish Gold/Grey 10x18x10centimeter',
+      sale: true,
+      priceBefore: '99.00',
+      price: '32.00',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: spoon, main: [spoon] },
+    },
+    {
+      id: '36',
+
+      name:
+        'Rectangle Shape Stainless Steel Tray With Handle Gold 38x15centimeter',
+      sale: false,
+      priceBefore: null,
+      price: '32.00',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: opalina, main: [opalina] },
+    },
+    {
+      id: '37',
+
+      name: 'Blooming Opulence Fine Bone China Bowl Multicolour 14centimeter',
+      sale: true,
+      priceBefore: '27.00',
+      price: '20.00',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: bowl, main: [bowl] },
+    },
+  ];
+  const fashion = [
+    {
+      id: '40',
+
+      name: 'JACK & JONES Lightweight Quilted Jacket in Olive',
+      sale: true,
+      priceBefore: '299.00',
+      price: '123.80',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: olive, main: [olive] },
+    },
+    {
+      id: '41',
+
+      name: 'JACK & JONES Alvin AGI 004 Denim Jacket in Blue',
+      sale: true,
+      priceBefore: '299.00',
+      price: '123.80',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: denim, main: [denim] },
+    },
+    {
+      id: '42',
+
+      name: 'BRAVE SOUL Elasticated Cuff Detail Long Sleeve Jacket',
+      sale: true,
+      priceBefore: '299.00',
+      price: '123.80',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: brave, main: [brave] },
+    },
+    {
+      id: '43',
+
+      name: 'TRENDYOL Double Breasted Longline Coat in Black',
+      sale: true,
+      priceBefore: '599.00',
+      price: '323.80',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: trendyol, main: [trendyol] },
+    },
+    {
+      id: '44',
+
+      name: 'Jacqueline de Yong Exaggerated Lapel Coat in Grey',
+      sale: true,
+      priceBefore: '599.00',
+      price: '323.80',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: yong, main: [yong] },
+    },
+    {
+      id: '45',
+
+      name: 'High Streets Stripe Detailed Longline Jacket',
+      sale: true,
+      priceBefore: '599.00',
+      price: '323.80',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: streets, main: [streets] },
+    },
+    {
+      id: '46',
+
+      name: 'ADIDAS Comfortable Long Sleeves E 3S TT TRIC Jacket',
+      sale: true,
+      priceBefore: '249.00',
+      price: '173.80',
+      soldBy: 'Atiah Mall',
+      condition: 'New',
+      description: null,
+      reasonsToBuy: null,
+      technicalDetails: null,
+      photos: { small: adidas, main: [adidas] },
+    },
+  ];
   return (
     <DataProvider.Provider
       value={{
@@ -1046,7 +1265,9 @@ const healthCare = [
         calculateItemsPrice,
         isLightTheme,
         setLightTheme,
-        healthCare
+        healthCare,
+        home,
+        fashion,
       }}
     >
       {children}

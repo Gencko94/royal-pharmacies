@@ -54,7 +54,7 @@ export default function ItemsSlider({
         breakpoint: 1200,
         settings: {
           slidesToShow: 5,
-          slidesToScroll: 3,
+          slidesToScroll: 4,
         },
       },
       {
@@ -68,21 +68,21 @@ export default function ItemsSlider({
         breakpoint: 800,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 1,
+          slidesToScroll: 3,
         },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToScroll: 3,
         },
       },
       {
         breakpoint: 450,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
         },
       },
       {
@@ -98,8 +98,10 @@ export default function ItemsSlider({
   return (
     <div className="my-6 overflow-hidden   ">
       <div className="flex items-center mb-4">
-        <h1 className="text-xl font-semibold flex-grow">{title}</h1>
-        <button className="p-0">See all</button>
+        <h1 className="text-xl font-bold ">{title}</h1>
+        <button className="py-1 px-2 ml-auto bg-second-nav-light text-second-nav-text-light rounded whitespace-no-wrap">
+          See all
+        </button>
       </div>
       <Slider className="" {...settings}>
         {data.map((item, i) => {
@@ -114,7 +116,7 @@ export default function ItemsSlider({
               >
                 <a href={`/products/${item.id}`}>
                   <img
-                  title={item.name}
+                    title={item.name}
                     src={item.photos.small}
                     alt={item.name}
                     className=" w-full object-cover "
@@ -123,7 +125,6 @@ export default function ItemsSlider({
                 <hr />
 
                 <div
-               
                   className={`relative flex flex-col  ${
                     miniLogo ? 'pt-8' : 'pt-2'
                   } px-2 py-1 ${
@@ -131,11 +132,10 @@ export default function ItemsSlider({
                       ? 'bg-body-light text-body-text-light'
                       : 'bg-body-dark text-body-text-dark'
                   }`}
-                  style={{minHeight:'72px'}}
+                  style={{ minHeight: '72px' }}
                 >
                   {miniLogo && (
                     <img
-                    
                       src={zalo}
                       alt="playstore"
                       className="absolute rounded-full shadow-xl "
@@ -147,14 +147,19 @@ export default function ItemsSlider({
                       }}
                     />
                   )}
-                  
+
                   <MultiClamp
                     className="text-sm  font-semibold"
                     clamp={2}
                     ellipsis="..."
-                    
                   >
-                    <Link  title={item.name} className='hover:underline' to={`/products/${item.id}`}>{item.name}</Link>
+                    <Link
+                      title={item.name}
+                      className="hover:underline"
+                      to={`/products/${item.id}`}
+                    >
+                      {item.name}
+                    </Link>
                   </MultiClamp>
 
                   <div className="flex items-center">
