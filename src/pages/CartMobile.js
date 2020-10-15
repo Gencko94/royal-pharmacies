@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { DataProvider } from '../contexts/DataContext';
 import cartBag from '../assets/illustrations/cartBag.svg'
 import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
+import ItemsSlider from '../components/Home/ItemsSlider';
 
 export default function CartMobile() {
-  const { cartItems, removeItemFromCart, EditItemFromCart } = React.useContext(
+  const { cartItems, removeItemFromCart, EditItemFromCart,phone,isLightTheme } = React.useContext(
     DataProvider
   );
   const calculateItemsPrice = cartItems => {
@@ -15,6 +16,8 @@ export default function CartMobile() {
     });
     return price;
   };
+  const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+
   return (
     <div className=" py-1 px-2">
       {cartItems.length === 0 && (
@@ -28,8 +31,8 @@ export default function CartMobile() {
             </div>
         </div>
           <div className='flex flex-col justify-center p-2'>
-            <Link to='/app/login' className={` rounded p-2 bg-green-700 text-second-nav-text-light `}>Sign in to your account</Link>
-            <Link to='/app/register' className={` rounded p-2 bg-blue-700 text-second-nav-text-light mt-2 `}>Sign up now</Link>
+            <Link to='/app/login' className={`  text-center rounded p-2 bg-green-700 text-second-nav-text-light `}>Sign in to your account</Link>
+            <Link to='/app/register' className={` text-center  rounded p-2 bg-blue-700 text-second-nav-text-light mt-2 `}>Sign up now</Link>
           </div>
           
           </div>
@@ -106,7 +109,12 @@ export default function CartMobile() {
         reflects each item's most recent price.
       </h1>
       <hr />
-      <RecentlyVisitedHorizontal/>
+      {visitedItems.length > 7 ? <RecentlyVisitedHorizontal visitedItems={visitedItems}/> :   <ItemsSlider
+            data={phone}
+            miniLogo={false}
+            isLightTheme={isLightTheme}
+            title="Save Big with Phones & Tablets"
+          />}
     </div>
   );
 }

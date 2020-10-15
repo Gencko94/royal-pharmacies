@@ -51,9 +51,9 @@ export default function Cart() {
 
             <h1 className='text-2xl font-bold '>Oops, Your Cart is Empty !</h1>
               <Link to='/' className='text-sm text-blue-600 hover:underline'>Check today deals</Link>
-              <div className='flex items-center mt-2'>
-              <Link to='/app/login' className={` rounded p-2 bg-green-700 text-second-nav-text-light mr-3 `}>Sign in to your account</Link>
-            <Link to='/app/register' className={` rounded p-2 bg-blue-700 text-second-nav-text-light  `}>Sign up now</Link>
+              <div className='flex items-center flex-wrap'>
+              <Link to='/app/login' className={` rounded p-2 mt-2 bg-green-700 text-second-nav-text-light mr-3 `}>Sign in to your account</Link>
+            <Link to='/app/register' className={` rounded p-2 mt-2 bg-blue-700 text-second-nav-text-light  `}>Sign up now</Link>
               </div>
             </div>
           </div>
