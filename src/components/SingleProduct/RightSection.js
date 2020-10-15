@@ -23,7 +23,7 @@ export default function RightSection({ data }) {
     }
   };
   return (
-    <div className="border  px-2 pb-2 pt-1 rounded shadow-sm ">
+    <div className="border  px-2 pt-1 rounded shadow-sm ">
       <div className="py-1">
         <h1>
           Sold By <span className="font-semibold">MRG</span>

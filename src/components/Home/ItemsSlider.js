@@ -163,11 +163,11 @@ export default function ItemsSlider({
                   </MultiClamp>
 
                   <div className="flex items-center">
-                    <p className=" mr-4  text-xs font-semibold text-red-700">
+                    <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">
                       {item.price} <span className="text-xs ">KD</span>
                     </p>
                     {item.sale && (
-                      <p className="text-xs  line-through text-gray-500  font-bold">
+                      <p className="text-xs  line-through text-gray-500  font-bold whitespace-no-wrap">
                         {' '}
                         {item.priceBefore}{' '}
                         <span className="font-normal">KD</span>

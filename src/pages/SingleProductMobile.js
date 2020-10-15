@@ -16,6 +16,7 @@ import { TiShoppingCart } from 'react-icons/ti';
 import { useInView } from 'react-intersection-observer';
 import { CSSTransition } from 'react-transition-group';
 import MultiClamp from 'react-multi-clamp';
+import RelatedItems from '../components/SingleProduct/RelatedItems';
 export default function SingleProductMobile({
   match: {
     params: { id },
@@ -27,6 +28,7 @@ export default function SingleProductMobile({
     cartItems,
     removeItemFromCart,
     calculateItemsPrice,
+    deliveryCountry,
   } = React.useContext(DataProvider);
   const data = bestSeller.filter(item => item.id === id);
   const [currentSlide, setCurrentSlide] = React.useState(0);
@@ -165,17 +167,39 @@ export default function SingleProductMobile({
           </div>
 
           <h1 className=" font-semibold mb-1 text-green-600">In Stock</h1>
+          <h1 className="text-sm   mb-1 text-gray-700">
+            Model Number : NK2O-4952
+          </h1>
+
           <hr />
-          <div className=" mb-1   font-semibold">
-            <h1 className=" mr-2 ">
-              Price :{' '}
-              <span className=" text-xl font-bold text-red-700">
-                {data[0].price} KD
+          <div className=" mb-1 text-sm  font-bold">
+            <h1 className=" ">
+              Price Before :{' '}
+              <span className=" text-base italic  line-through text-gray-700">
+                {data[0].priceBefore} KD
               </span>{' '}
             </h1>
-          </div>
 
-          <ul className="text-sm list-disc pl-4 mb-2">
+            <h1 className=" mr-5   ">
+              Price Now :{' '}
+              <span className=" text-xl  text-red-700">{data[0].price} KD</span>{' '}
+              <span className=" font-normal  text-gray-700">
+                (VAT Inclusive)
+              </span>
+            </h1>
+
+            <h1 className="   ">
+              You Save : <span className=" text-xl  text-red-700">18%</span>{' '}
+            </h1>
+            <button
+              className={`my-2 px-2 text-sm bg-green-200 rounded font-semibold`}
+            >
+              Free Delivery To {deliveryCountry}
+            </button>
+          </div>
+          <hr />
+
+          {/* <ul className="text-sm list-disc pl-4 mb-2">
             <li>
               The nephilim Edition contains all the loot from the Collector's
               Edition as well as the Limited Edition Darksiders: the forbidden
@@ -197,7 +221,7 @@ export default function SingleProductMobile({
               Experience a brand new story campaign that takes place before the
               original Darksiders, exploring the origin of the Seven seals{' '}
             </li>
-          </ul>
+          </ul> */}
 
           <div className="relative  ">
             <div className="  my-2 flex items-center">
@@ -222,12 +246,12 @@ export default function SingleProductMobile({
               {isItemInCart() ? (
                 <button
                   onClick={() => removeItemFromCart(data[0])}
-                  className="bg-red-700 text-gray-100    p-1 rounded px-2  flex items-center justify-center font-semibold "
+                  className="bg-red-700 text-gray-100 flex-1   p-1 rounded px-2  flex items-center justify-center font-semibold "
                 >
                   <span>
                     <TiShoppingCart className="w-25p h-25p mr-2" />
                   </span>
-                  Remove From Cart
+                  Remove
                 </button>
               ) : (
                 <button
@@ -323,6 +347,8 @@ export default function SingleProductMobile({
           )}
         </div>
       </CSSTransition>
+      <hr />
+      <RelatedItems data={bestSeller} />
     </div>
   );
 }

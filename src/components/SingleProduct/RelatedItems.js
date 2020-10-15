@@ -1,9 +1,9 @@
 import React from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import zalo from '../../assets/offers/zalo.png';
 
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
+import MultiClamp from 'react-multi-clamp';
 
 const RightArrow = ({ onClick }) => {
   return (
@@ -65,8 +65,8 @@ export default function RelatedItems({ data }) {
 
   return (
     <div className="mb-2">
-      <div className="mb-1 text-lg font-semibold">
-        <h1>You may also like</h1>
+      <div className=" mb-2 p-2">
+        <h1 className="text-xl font-bold ">You may also like</h1>
       </div>
       <Slider className="" {...settings}>
         {data.map((item, i) => {
@@ -83,29 +83,35 @@ export default function RelatedItems({ data }) {
                     className=" h-auto w-full  "
                   />
                 </Link>
+                <hr />
 
-                <div className=" relative flex flex-col pt-8 p-3 bg-white text-black">
-                  <img
-                    src={zalo}
-                    alt="playstore"
-                    className="absolute rounded-full shadow-xl "
-                    style={{
-                      width: '50px',
-                      height: '50px',
-                      top: '-25px',
-                      left: '18px',
-                    }}
-                  />
-                  <h3 className="text-sm lg:text-base sm:text-sm font-semibold truncate">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs line-through text-gray-500  font-bold">
-                    {' '}
-                    18.99 <span className="">KD</span>
-                  </p>
-                  <p className="text-base font-bold">
-                    {item.price} <span className="text-sm">KD</span>
-                  </p>
+                <div className=" relative flex flex-col pt-2 p-3 bg-white text-black">
+                  <MultiClamp
+                    className="text-sm  font-semibold"
+                    clamp={2}
+                    ellipsis="..."
+                  >
+                    <Link
+                      title={item.name}
+                      className="hover:underline"
+                      to={`/products/${item.id}`}
+                    >
+                      {item.name}
+                    </Link>
+                  </MultiClamp>
+
+                  <div className="flex items-center">
+                    <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">
+                      {item.price} <span className="text-xs ">KD</span>
+                    </p>
+                    {item.sale && (
+                      <p className="text-xs  line-through text-gray-500  font-bold whitespace-no-wrap">
+                        {' '}
+                        {item.priceBefore}{' '}
+                        <span className="font-normal">KD</span>
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
