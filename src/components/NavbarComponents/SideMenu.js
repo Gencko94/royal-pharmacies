@@ -75,9 +75,9 @@ export default function SideMenu({
         } p-1`}
         style={{ minHeight: '105px' }}
       >
-        <div className={`flex items-center p-1 `}>
+        <div className={`p-1 flex items-center `}>
           <Hamburger toggleSideMenu={toggleSideMenu} />
-          <div className="relative " style={{ left: '100px' }}>
+          <div className="inline-flex flex-1 justify-center " style={{ }}>
             <Logo withTypography={false} />
           </div>
         </div>
