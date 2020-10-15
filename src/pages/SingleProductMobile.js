@@ -164,7 +164,7 @@ export default function SingleProductMobile({
             <h1 className="text-sm">36 Ratings</h1>
           </div>
 
-          <h1 className=" font-semibold mb-1">In Stock</h1>
+          <h1 className=" font-semibold mb-1 text-green-600">In Stock</h1>
           <hr />
           <div className=" mb-1   font-semibold">
             <h1 className=" mr-2 ">
@@ -198,14 +198,9 @@ export default function SingleProductMobile({
               original Darksiders, exploring the origin of the Seven seals{' '}
             </li>
           </ul>
-          <button className="bg-green-400 p-1 rounded mb-2  text-white flex items-center justify-center font-semibold ">
-            <span>
-              <AiOutlineHeart className="w-25p h-25p mr-2" />
-            </span>
-            Add to Wishlist
-          </button>
-          <div className="flex relative items-center ">
-            <div className="  mr-2 flex items-center">
+          
+        <div className="relative  ">
+            <div className="  my-2 flex items-center">
               <h1 className=" mr-2 font-semibold">Quantity : </h1>
               <select
                 value={quantity}
@@ -216,12 +211,18 @@ export default function SingleProductMobile({
                 <option>2</option>
                 <option>3</option>
               </select>
-            </div>
-            <div className="relative flex-1">
+          </div>
+          <div className="relative flex items-center">
+            <button className="bg-green-400 p-1 rounded mr-2 flex-1  text-white flex items-center justify-center font-semibold ">
+              <span>
+                <AiOutlineHeart className="w-25p h-25p mr-2" />
+              </span>
+              Add to Wishlist
+            </button>
               {isItemInCart() ? (
                 <button
                   onClick={() => removeItemFromCart(data[0])}
-                  className="bg-red-700 text-gray-100  w-full  p-1 rounded   flex items-center justify-center font-semibold "
+                  className="bg-red-700 text-gray-100    p-1 rounded   flex items-center justify-center font-semibold "
                 >
                   <span>
                     <TiShoppingCart className="w-25p h-25p mr-2" />
@@ -238,7 +239,7 @@ export default function SingleProductMobile({
 
                     addItemToCart({ data: data[0], quantity });
                   }}
-                  className=" bg-blue-700 text-gray-100 w-full  p-1 rounded   flex items-center justify-center font-semibold"
+                  className=" bg-blue-700 flex-1 text-gray-100   p-1 rounded   flex items-center justify-center font-semibold"
                 >
                   <span>
                     <TiShoppingCart className="w-25p h-25p mr-2" />
@@ -286,7 +287,7 @@ export default function SingleProductMobile({
         unmountOnExit={true}
         classNames="floating-cart-button"
       >
-        <div className=" bg-nav-secondary  floating-button">
+        <div className={`floating-button bg-second-nav-text-light`}  >
           <div className="mr-2 flex items-center">
             <h1 className=" mr-2 font-semibold">Quantity : </h1>
             <select

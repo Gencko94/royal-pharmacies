@@ -1,14 +1,16 @@
 import React from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import Rating from 'react-rating';
+import { DataProvider } from '../../contexts/DataContext';
 
-export default function RecentlyViewedVertical({visitedItems}) {
+export default function FeaturedItemsVertical() {
+    const {bestSeller} = React.useContext(DataProvider)
 
   return (
     <div className="border rounded p-2 bg-gray-100">
-      <h1 className="mb-1">Your recently visited items</h1>
+      <h1 className="mb-1">Featured Items</h1>
       <hr />
-      {visitedItems.slice(0, 4).map((item, i) => {
+      {bestSeller.slice(0, 4).map((item, i) => {
         return (
           <>
             <div key={i} className="recent-items__container mb-1 ">
@@ -27,7 +29,7 @@ export default function RecentlyViewedVertical({visitedItems}) {
                 </button>
               </div>
             </div>
-            {i !== visitedItems.length - 1 && <hr />}
+            {i !== bestSeller.length - 1 && <hr />}
           </>
         );
       })}

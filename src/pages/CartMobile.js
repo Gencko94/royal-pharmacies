@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { DataProvider } from '../contexts/DataContext';
+import cartBag from '../assets/illustrations/cartBag.svg'
+import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
 
 export default function CartMobile() {
   const { cartItems, removeItemFromCart, EditItemFromCart } = React.useContext(
@@ -14,7 +17,26 @@ export default function CartMobile() {
   };
   return (
     <div className=" py-1 px-2">
-      <div className="py-1 px-2 bg-white cart__checkout-sticky mb-2 border-b -mx-3">
+      {cartItems.length === 0 && (
+        <>
+        <div>
+          <div className='p-2 flex flex-col justify-center'>
+            <img src={cartBag} alt='Empty Cart Bag' className=' h-32'/>
+            <div className='text-center'>
+              <h1 className='text-2xl font-bold  '>Oops, Your Cart is Empty !</h1>
+              <Link to='/' className='text-sm text-blue-600 hover:underline'>Check today deals</Link>
+            </div>
+        </div>
+          <div className='flex flex-col justify-center p-2'>
+            <Link to='/app/login' className={` rounded p-2 bg-green-700 text-second-nav-text-light `}>Sign in to your account</Link>
+            <Link to='/app/register' className={` rounded p-2 bg-blue-700 text-second-nav-text-light mt-2 `}>Sign up now</Link>
+          </div>
+          
+          </div>
+          
+          </>
+        )}
+      {cartItems.length !== 0 && <div className="py-1 px-2 bg-white cart__checkout-sticky z-10 mb-2 border-b -mx-3">
         <h1 className="text-lg font-semibold mb-1 ">
           Subtotal ({cartItems.length}{' '}
           {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
@@ -25,9 +47,9 @@ export default function CartMobile() {
         <button className="p-2 rounded font-semibold   w-full text-gray-100 bg-green-600">
           Proceed to Checkout
         </button>
-      </div>
+      </div>}
       <div className="mb-2">
-        {cartItems.map((item, i) => {
+        { cartItems.length !== 0 && cartItems.map((item, i) => {
           return (
             <>
               <div key={i} className=" py-2 cart__item-mobile">
@@ -78,11 +100,13 @@ export default function CartMobile() {
         <hr />
       </div>
 
-      <h1 className="text-sm">
+      <h1 className="text-xs my-2">
         The price and availability of items at AlAtiah.com are subject to
         change. The Cart is a temporary place to store a list of your items and
         reflects each item's most recent price.
       </h1>
+      <hr />
+      <RecentlyVisitedHorizontal/>
     </div>
   );
 }

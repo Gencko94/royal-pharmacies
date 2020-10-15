@@ -62,6 +62,14 @@ export default function SingleProduct({
           >
             Specifications
           </button>
+          <button
+            onClick={() => setDetailsTab(2)}
+            className={`text-lg py-2 flex-1 text-center   ${
+              detailsTab === 2 && 'border-red-700 border-b-2 text-red-700'
+            }   bg-gray-400`}
+          >
+            Reviews
+          </button>
         </div>
         <div className="px-2 text-sm">{data[0].description}</div>
       </div>

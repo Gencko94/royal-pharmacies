@@ -43,6 +43,7 @@ export default function ShipTo() {
       <div
         ref={countryListRef}
         className="absolute p-2 transform z-20 scale-0 mt-1 text-gray-900 font-semibold   bg-gray-100 w-full  overflow-hidden left-0  top-100  transition duration-150 origin-top"
+      style={{width:'200px'}}
       >
         {countries.map((country, i) => {
           return (

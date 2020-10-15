@@ -26,7 +26,7 @@ export default function Login() {
   }
   return (
     <div className="font-body antialiased text-gray-900 flex justify-center items-center   h-screen relative">
-      <div className=" rounded z-2  max-w-screen-sm w-5/6 pb-1  shadow-2xl   overflow-hidden">
+      <div className=" rounded z-2  max-w-screen-xs w-5/6 pb-1  shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 ">
           <Link to="/">
             <img
@@ -85,7 +85,7 @@ export default function Login() {
               Join us here
             </Link>
           </h1>
-          <button className=" text-smtext-second-nav-light">
+          <button className=" text-sm text-second-nav-light">
                 Forgot Password ?
               </button>
         </div>

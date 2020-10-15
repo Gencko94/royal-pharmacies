@@ -96,7 +96,7 @@ export default function ItemsSlider({
   };
 
   return (
-    <div className="my-6   ">
+    <div className="my-6 overflow-hidden   ">
       <div className="flex items-center mb-4">
         <h1 className="text-xl font-semibold flex-grow">{title}</h1>
         <button className="p-0">See all</button>
@@ -131,6 +131,7 @@ export default function ItemsSlider({
                       ? 'bg-body-light text-body-text-light'
                       : 'bg-body-dark text-body-text-dark'
                   }`}
+                  style={{minHeight:'72px'}}
                 >
                   {miniLogo && (
                     <img
@@ -146,6 +147,7 @@ export default function ItemsSlider({
                       }}
                     />
                   )}
+                  
                   <MultiClamp
                     className="text-sm  font-semibold"
                     clamp={2}

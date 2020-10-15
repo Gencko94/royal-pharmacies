@@ -69,6 +69,15 @@ import m30 from '../assets/phones/m30.jpg';
 import note10 from '../assets/phones/note10.jpg';
 import taba from '../assets/phones/taba.jpg';
 
+import filtermask from '../assets/healthcare/filtermask.jpg';
+import bluemask from '../assets/healthcare/bluemask.jpg';
+import greenmask from '../assets/healthcare/greenmask.jpg';
+import pandamask from '../assets/healthcare/pandamask.jpg';
+import sanitizer from '../assets/healthcare/sanitizer.jpg';
+import shield from '../assets/healthcare/shield.jpg';
+import blackmask from '../assets/healthcare/blackmask.jpg';
+import omega3 from '../assets/healthcare/omega3.jpg';
+
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState('kuwait');
@@ -899,7 +908,120 @@ export default function DataContextProvider({ children }) {
       ],
     },
   ];
+const healthCare = [
+  {
+    id: '20',
 
+    name: 'Reusable Washable Anti-Viral Face Mask With Virus Neutralization ISO18184 Medium Black',
+    sale: false,
+    priceBefore: null,
+    price: '99.00',
+    soldBy: 'Atiah Mall',
+    condition: 'New',
+    description: null,
+    reasonsToBuy: null,
+    technicalDetails: null,
+    photos: { small: filtermask, main: [filtermask] },
+  },
+  {
+    id: '21',
+
+    name: 'Omega 3-6-9',
+    sale: false,
+    priceBefore: null,
+    price: '60.00',
+    soldBy: 'Atiah Mall',
+    condition: 'New',
+    description: null,
+    reasonsToBuy: null,
+    technicalDetails: null,
+    photos: { small: omega3, main: [omega3] },
+  },
+  {
+    id: '22',
+
+    name: 'Pack Of 50 Disposable 3-Ply Face Mask',
+    sale: false,
+    priceBefore: null,
+    price: '21.50',
+    soldBy: 'Atiah Mall',
+    condition: 'New',
+    description: null,
+    reasonsToBuy: null,
+    technicalDetails: null,
+    photos: { small: greenmask, main: [greenmask] },
+  },
+  {
+    id: '23',
+
+    name: 'Adjustable Anti-Smoke Face Shield Mask',
+    sale: false,
+    priceBefore: null,
+    price: '3.50',
+    soldBy: 'Atiah Mall',
+    condition: 'New',
+    description: null,
+    reasonsToBuy: null,
+    technicalDetails: null,
+    photos: { small: shield, main: [shield] },
+  },
+  {
+    id: '24',
+
+    name: 'Scented Antibacterial Hand Sanitizer 70% Alcohol Clear - 500ml',
+    sale: true,
+    priceBefore: '57.00',
+    price: '19.00',
+    soldBy: 'Atiah Mall',
+    condition: 'New',
+    description: null,
+    reasonsToBuy: null,
+    technicalDetails: null,
+    photos: { small: sanitizer, main: [sanitizer] },
+  },
+  {
+    id: '25',
+
+    name: 'Respirator Safety Face Mask Black/White',
+    sale: false,
+    priceBefore: null,
+    price: '2.85',
+    soldBy: 'Atiah Mall',
+    condition: 'New',
+    description: null,
+    reasonsToBuy: null,
+    technicalDetails: null,
+    photos: { small: pandamask, main: [pandamask] },
+  },
+  {
+    id: '26',
+
+    name: 'Chennai Super Kings Reusable and Washable Face Mask',
+    sale: true,
+    priceBefore: '57.00',
+    price: '24.95',
+    soldBy: 'Atiah Mall',
+    condition: 'New',
+    description: null,
+    reasonsToBuy: null,
+    technicalDetails: null,
+    photos: { small: bluemask, main: [bluemask] },
+  },
+  {
+    id: '26',
+
+    name: 'Royal Challengers Bangalore Reusable and Washable Face Mask',
+    sale: true,
+    priceBefore: '59.00',
+    price: '24.95',
+    soldBy: 'Atiah Mall',
+    condition: 'New',
+    description: null,
+    reasonsToBuy: null,
+    technicalDetails: null,
+    photos: { small: blackmask, main: [blackmask] },
+  },
+]
   return (
     <DataProvider.Provider
       value={{
@@ -924,6 +1046,7 @@ export default function DataContextProvider({ children }) {
         calculateItemsPrice,
         isLightTheme,
         setLightTheme,
+        healthCare
       }}
     >
       {children}

@@ -4,10 +4,10 @@ import { MdEmail } from 'react-icons/md';
 
 export default function FirstSection() {
   return (
-    <div className="flex flex-col justify-evenly px-4 py-4 bg-red-500  ">
+    <div className={`flex flex-col justify-evenly px-4 py-4 bg-second-nav-light  `}>
       <div className="text-center text-gray-100 font-bold">
         <h1 className="text-lg">We're Always here to help</h1>
-        <h1 className="text-sm text-gray-800 font-semibold">
+        <h1 className="text-sm  font-semibold">
           Reach out to us through any of these support channels
         </h1>
       </div>

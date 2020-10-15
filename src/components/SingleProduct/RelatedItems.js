@@ -30,7 +30,7 @@ export default function RelatedItems({ data }) {
     className: '',
     arrows: true,
     infinite: true,
-    slidesToShow: data.length - 1,
+    slidesToShow: 6,
     slidesToScroll: 4,
     nextArrow: <RightArrow />,
     prevArrow: <LeftArrow />,
@@ -66,7 +66,7 @@ export default function RelatedItems({ data }) {
   return (
     <div className="mb-2">
       <div className="mb-1 text-lg font-semibold">
-        <h1>Related Items</h1>
+        <h1>You may also like</h1>
       </div>
       <Slider className="" {...settings}>
         {data.map((item, i) => {
