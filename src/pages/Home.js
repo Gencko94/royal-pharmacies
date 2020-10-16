@@ -37,7 +37,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Attiah Mall</title>
+        <title>MRG</title>
       </Helmet>
       <div
         className={`mb-5 overflow-hidden ${

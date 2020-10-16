@@ -68,7 +68,7 @@ export default function SingleProductMobile({
   return (
     <>
       <Helmet>
-        <title>{data[0].name}</title>
+        <title>{data[0].name} | MRG</title>
       </Helmet>
       <div className="overflow-hidde">
         <CSSTransition

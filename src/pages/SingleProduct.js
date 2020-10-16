@@ -87,7 +87,7 @@ export default function SingleProduct({
   return (
     <>
       <Helmet>
-        <title>{data[0].name}</title>
+        <title>{data[0].name} | MRG </title>
       </Helmet>
       <div onClick={handleCloseMenu} className="side__addCart-bg"></div>
       <div className="side__addCart-container ">
