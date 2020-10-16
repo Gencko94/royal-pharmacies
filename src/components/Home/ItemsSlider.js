@@ -114,14 +114,14 @@ export default function ItemsSlider({
                     : 'shadow-itemsSlider'
                 } rounded`}
               >
-                <a href={`/products/${item.id}`}>
+                <Link to={`/products/${item.id}`}>
                   <img
                     title={item.name}
                     src={item.photos.small}
                     alt={item.name}
                     className=" w-full object-cover "
                   />
-                </a>
+                </Link>
                 <hr />
 
                 <div

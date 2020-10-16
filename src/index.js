@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import DataContextProvider from './contexts/DataContext';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import ScrollToTopOnMount from './helpers/ScrollToTopOnMount';
 
 const localCart = localStorage.getItem('cartItems');
 if (!localCart) {
@@ -20,6 +21,7 @@ if (!visitedItems) {
 ReactDOM.render(
   <DataContextProvider>
     <Router>
+      <ScrollToTopOnMount />
       <Switch>
         <Route exact path="/app/register" component={Register} />
         <Route exact path="/app/login" component={Login} />

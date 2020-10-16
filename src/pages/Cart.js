@@ -117,7 +117,6 @@ export default function Cart() {
             title="Save Big with Phones & Tablets"
           />
         )}
-        <hr />
       </div>
       <ItemsSlider
         data={healthCare}

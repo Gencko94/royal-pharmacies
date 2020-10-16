@@ -64,7 +64,7 @@ export default function RelatedItems({ data }) {
   };
 
   return (
-    <div className="mb-2">
+    <div className="mb-2 overflow-hidden">
       <div className=" mb-2 p-2">
         <h1 className="text-xl font-bold ">You may also like</h1>
       </div>

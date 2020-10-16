@@ -6,14 +6,14 @@ import { MdLocationOn } from 'react-icons/md';
 
 import { DataProvider } from '../../contexts/DataContext';
 
-export default function RightSection({ data }) {
-  const [quantity, setQuantity] = React.useState(1);
-  const {
-    addItemToCart,
-    removeItemFromCart,
-    cartItems,
-    deliveryCountry,
-  } = React.useContext(DataProvider);
+export default function RightSection({
+  data,
+  handleAddToCart,
+  quantity,
+  setQuantity,
+  handleRemoveFromCart,
+}) {
+  const { cartItems, deliveryCountry } = React.useContext(DataProvider);
   const isItemInCart = () => {
     const itemInCart = cartItems.find(item => data.id === item.id);
     if (itemInCart !== undefined) {
@@ -86,7 +86,7 @@ export default function RightSection({ data }) {
         </button>
         {isItemInCart() ? (
           <button
-            onClick={() => removeItemFromCart(data)}
+            onClick={handleRemoveFromCart}
             className="bg-red-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold "
           >
             <span>
@@ -96,7 +96,7 @@ export default function RightSection({ data }) {
           </button>
         ) : (
           <button
-            onClick={() => addItemToCart({ data, quantity })}
+            onClick={handleAddToCart}
             className="bg-blue-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold "
           >
             <span>

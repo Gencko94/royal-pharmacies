@@ -1,6 +1,12 @@
 import React from 'react';
 import { BiChevronRight } from 'react-icons/bi';
-import { AiFillStar, AiOutlineHeart, AiOutlineStar } from 'react-icons/ai';
+import {
+  AiFillStar,
+  AiOutlineHeart,
+  AiOutlineStar,
+  AiOutlinePlusCircle,
+  AiOutlineMinusCircle,
+} from 'react-icons/ai';
 import Rating from 'react-rating';
 
 import {
@@ -17,6 +23,8 @@ import { useInView } from 'react-intersection-observer';
 import { CSSTransition } from 'react-transition-group';
 import MultiClamp from 'react-multi-clamp';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
+import { Helmet } from 'react-helmet';
+
 export default function SingleProductMobile({
   match: {
     params: { id },
@@ -47,159 +55,174 @@ export default function SingleProductMobile({
       return false;
     }
   };
+  const handleSubstractQuantity = () => {
+    if (quantity === 1) {
+      return;
+    }
+    setQuantity(quantity - 1);
+  };
+  const handleAddQuantity = () => {
+    setQuantity(quantity + 1);
+  };
 
   return (
-    <div className=" bg-gray-100">
-      <CSSTransition
-        in={showAddedToCart}
-        timeout={200}
-        unmountOnExit
-        classNames="after__addToCart"
-      >
-        <div className="after__addToCart-container">
-          <div className=" after__addToCart-details mb-1  ">
-            <img
-              src={data[0].photos.small}
-              alt={data[0].name}
-              className="max-w-full h-auto"
-            />
-            <MultiClamp className="font-semibold" clamp={2} ellipsis="...">
-              {data[0].name}
-            </MultiClamp>
-            <div className="flex flex-col  items-center">
-              <h1 className="text-sm">Cart Total</h1>
-              <h1 className="text-sm font-semibold">
-                {calculateItemsPrice()} KD
-              </h1>
+    <>
+      <Helmet>
+        <title>{data[0].name}</title>
+      </Helmet>
+      <div className="overflow-hidde">
+        <CSSTransition
+          in={showAddedToCart}
+          timeout={200}
+          unmountOnExit
+          classNames="after__addToCart-mobile"
+        >
+          <div className="after__addToCart-container-mobile">
+            <div className=" after__addToCart-details-mobile mb-1   ">
+              <img
+                src={data[0].photos.small}
+                alt={data[0].name}
+                className="max-w-full h-auto"
+              />
+              <MultiClamp className="font-semibold" clamp={2} ellipsis="...">
+                {data[0].name}
+              </MultiClamp>
+              <div className="flex flex-col  items-center">
+                <h1 className="text-sm">Cart Total</h1>
+                <h1 className="text-sm font-semibold">
+                  {calculateItemsPrice()} KD
+                </h1>
+              </div>
             </div>
-          </div>
-          <div className="  text-nav-secondary ">
-            <button className="p-2 text-sm bg-blue-600 w-full font-semibold  rounded mr-2">
-              Checkout
-            </button>
-            {/* <button className="p-1 bg-nav-secondary flex-1  rounded">
+            <div className="  text-nav-secondary ">
+              <button className="p-2 text-sm bg-blue-600 w-full font-semibold  rounded mr-2">
+                Checkout
+              </button>
+              {/* <button className="p-1 bg-nav-secondary flex-1  rounded">
               Continue shopping
             </button> */}
+            </div>
           </div>
+        </CSSTransition>
+        <div className="flex px-3 py-5 items-center flex-wrap">
+          <h1>Home</h1>
+          <BiChevronRight />
+          <h1>Home & Garden</h1>
+          <BiChevronRight />
+          <h1>Bathroom & Laundry</h1>
+          <BiChevronRight />
+          <h1>Drying Racks & Pegs</h1>
         </div>
-      </CSSTransition>
-      <div className="flex px-3 py-5 items-center flex-wrap">
-        <h1>Home</h1>
-        <BiChevronRight />
-        <h1>Home & Garden</h1>
-        <BiChevronRight />
-        <h1>Bathroom & Laundry</h1>
-        <BiChevronRight />
-        <h1>Drying Racks & Pegs</h1>
-      </div>
 
-      <div className="details__container-mobile">
-        <CarouselProvider
-          naturalSlideHeight={480}
-          naturalSlideWidth={480}
-          totalSlides={4}
-          visibleSlides={1}
-          currentSlide={currentSlide}
-          className="bg-white"
-          lockOnWindowScroll={true}
-        >
-          <Slider className="">
-            {data[0].photos.main.map((photo, i) => {
-              return (
-                <Slide index={i} key={i} innerClassName="">
-                  <div
-                    className=" "
-                    style={{
-                      minHeight: '300px',
+        <div className="details__container-mobile">
+          <CarouselProvider
+            naturalSlideHeight={480}
+            naturalSlideWidth={480}
+            totalSlides={4}
+            visibleSlides={1}
+            currentSlide={currentSlide}
+            className="bg-white"
+            lockOnWindowScroll={true}
+          >
+            <Slider className="">
+              {data[0].photos.main.map((photo, i) => {
+                return (
+                  <Slide index={i} key={i} innerClassName="">
+                    <div
+                      className=" "
+                      style={{
+                        minHeight: '300px',
 
-                      minWidth: '300px',
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  >
-                    <ImageWithZoom src={photo} alt="g" />
-                  </div>
-                </Slide>
-              );
-            })}
-          </Slider>
-          <DotGroup
-            className="mt-2"
-            renderDots={() => (
-              <div
-                className="flex 
+                        minWidth: '300px',
+                        width: '100%',
+                        height: '100%',
+                      }}
+                    >
+                      <ImageWithZoom src={photo} alt="g" />
+                    </div>
+                  </Slide>
+                );
+              })}
+            </Slider>
+            <DotGroup
+              className="mt-2"
+              renderDots={() => (
+                <div
+                  className="flex 
                  
                  justify-evenly"
-              >
-                {data[0].photos.main.map((photo, i) => {
-                  return (
-                    <button
-                      className="mb-1"
-                      key={i}
-                      onClick={() => setCurrentSlide(i)}
-                    >
-                      <img
-                        style={{ width: '50px', height: '50px' }}
-                        src={photo}
-                        alt={photo}
-                        className={`${
-                          currentSlide === i ? 'border border-red-700' : ''
-                        }`}
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          />
-        </CarouselProvider>
-        <hr />
-        <div className="flex flex-col w-full  px-3 py-2 bg-white">
-          <h1 className="font-semibold text-xl">{data[0].name}</h1>
-          <div className="flex items-center ">
-            <Rating
-              initialRating={4.5}
-              emptySymbol={<AiOutlineStar className="text-red-700" />}
-              fullSymbol={<AiFillStar className="text-red-700" />}
-              className="mr-2 pt-1"
+                >
+                  {data[0].photos.main.map((photo, i) => {
+                    return (
+                      <button
+                        className="mb-1"
+                        key={i}
+                        onClick={() => setCurrentSlide(i)}
+                      >
+                        <img
+                          style={{ width: '50px', height: '50px' }}
+                          src={photo}
+                          alt={photo}
+                          className={`${
+                            currentSlide === i ? 'border border-red-700' : ''
+                          }`}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             />
-            <h1 className="text-sm">36 Ratings</h1>
-          </div>
-
-          <h1 className=" font-semibold mb-1 text-green-600">In Stock</h1>
-          <h1 className="text-sm   mb-1 text-gray-700">
-            Model Number : NK2O-4952
-          </h1>
-
+          </CarouselProvider>
           <hr />
-          <div className=" mb-1 text-sm  font-bold">
-            <h1 className=" ">
-              Price Before :{' '}
-              <span className=" text-base italic  line-through text-gray-700">
-                {data[0].priceBefore} KD
-              </span>{' '}
+          <div className="flex flex-col w-full  px-3 py-2 bg-white">
+            <h1 className="font-semibold text-xl">{data[0].name}</h1>
+            <div className="flex items-center ">
+              <Rating
+                initialRating={4.5}
+                emptySymbol={<AiOutlineStar className="text-red-700" />}
+                fullSymbol={<AiFillStar className="text-red-700" />}
+                className="mr-2 pt-1"
+              />
+              <h1 className="text-sm">36 Ratings</h1>
+            </div>
+
+            <h1 className=" font-semibold mb-1 text-green-600">In Stock</h1>
+            <h1 className="text-sm   mb-1 text-gray-700">
+              Model Number : NK2O-4952
             </h1>
 
-            <h1 className=" mr-5   ">
-              Price Now :{' '}
-              <span className=" text-xl  text-red-700">{data[0].price} KD</span>{' '}
-              <span className=" font-normal  text-gray-700">
-                (VAT Inclusive)
-              </span>
-            </h1>
+            <hr />
+            <div className=" mb-1 text-sm  font-bold">
+              <h1 className=" ">
+                Price Before :{' '}
+                <span className=" text-base italic  line-through text-gray-700">
+                  {data[0].priceBefore} KD
+                </span>{' '}
+              </h1>
 
-            <h1 className="   ">
-              You Save : <span className=" text-xl  text-red-700">18%</span>{' '}
-            </h1>
-            <button
-              className={`my-2 px-2 text-sm bg-green-200 rounded font-semibold`}
-            >
-              Free Delivery To {deliveryCountry}
-            </button>
-          </div>
-          <hr />
+              <h1 className=" mr-5   ">
+                Price Now :{' '}
+                <span className=" text-xl  text-red-700">
+                  {data[0].price} KD
+                </span>{' '}
+                <span className=" font-normal  text-gray-700">
+                  (VAT Inclusive)
+                </span>
+              </h1>
 
-          {/* <ul className="text-sm list-disc pl-4 mb-2">
+              <h1 className="   ">
+                You Save : <span className=" text-xl  text-red-700">18%</span>{' '}
+              </h1>
+              <button
+                className={`my-2 px-2 text-sm bg-green-200 rounded font-semibold`}
+              >
+                Free Delivery To {deliveryCountry}
+              </button>
+            </div>
+            <hr />
+
+            {/* <ul className="text-sm list-disc pl-4 mb-2">
             <li>
               The nephilim Edition contains all the loot from the Collector's
               Edition as well as the Limited Edition Darksiders: the forbidden
@@ -223,132 +246,135 @@ export default function SingleProductMobile({
             </li>
           </ul> */}
 
-          <div className="relative  ">
-            <div className="  my-2 flex items-center">
-              <h1 className=" mr-2 font-semibold">Quantity : </h1>
-              <select
-                value={quantity}
-                onChange={e => setQuantity(e.target.value)}
-                className="select-mobile border-gray-400 border py-1 px-2 rounded"
-              >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
-            </div>
-            <div className="relative flex items-center">
-              <button className="bg-green-400 p-1 rounded mr-2 flex-1  text-white flex items-center justify-center font-semibold ">
-                <span>
-                  <AiOutlineHeart className="w-25p h-25p mr-2" />
-                </span>
-                Add to Wishlist
-              </button>
-              {isItemInCart() ? (
-                <button
-                  onClick={() => removeItemFromCart(data[0])}
-                  className="bg-red-700 text-gray-100 flex-1   p-1 rounded px-2  flex items-center justify-center font-semibold "
+            <div className="relative  ">
+              <div className="  my-2 flex items-center">
+                <h1 className=" mr-2 font-semibold">Quantity : </h1>
+                <select
+                  value={quantity}
+                  onChange={e => setQuantity(e.target.value)}
+                  className="select-mobile border-gray-400 border py-1 px-2 rounded"
                 >
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+              </div>
+              <div className="relative flex items-center">
+                <button className="bg-green-400 p-1 rounded mr-2 flex-1  text-white flex items-center justify-center font-semibold ">
                   <span>
-                    <TiShoppingCart className="w-25p h-25p mr-2" />
+                    <AiOutlineHeart className="w-25p h-25p mr-2" />
                   </span>
-                  Remove
+                  Add to Wishlist
                 </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    setShowAddedToCart(true);
-                    setTimeout(() => {
-                      setShowAddedToCart(false);
-                    }, 3000);
+                {isItemInCart() ? (
+                  <button
+                    onClick={() => removeItemFromCart(data[0])}
+                    className="bg-red-700 text-gray-100 flex-1   p-1 rounded px-2  flex items-center justify-center font-semibold "
+                  >
+                    <span>
+                      <TiShoppingCart className="w-25p h-25p mr-2" />
+                    </span>
+                    Remove
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowAddedToCart(true);
+                      setTimeout(() => {
+                        setShowAddedToCart(false);
+                      }, 3000);
 
-                    addItemToCart({ data: data[0], quantity });
-                  }}
-                  className=" bg-blue-700 flex-1 text-gray-100   p-1 px-2 rounded   flex items-center justify-center font-semibold"
-                >
-                  <span>
-                    <TiShoppingCart className="w-25p h-25p mr-2" />
-                  </span>
-                  Add to Cart
-                </button>
-              )}
-              {/* {animateIcon && (
+                      addItemToCart({ data: data[0], quantity });
+                    }}
+                    className=" bg-blue-700 flex-1 text-gray-100   p-1 px-2 rounded   flex items-center justify-center font-semibold"
+                  >
+                    <span>
+                      <TiShoppingCart className="w-25p h-25p mr-2" />
+                    </span>
+                    Add to Cart
+                  </button>
+                )}
+                {/* {animateIcon && (
                 <span ref={animationIconRef} className="cart__icon__animate">
                   <TiShoppingCart />
                 </span>
               )} */}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div ref={triggerRef}>
-        <div id="details" className="py-2">
-          <h1 className="text-xl font-semibold mb-1 px-3">Product Details</h1>
-          <div className="flex justify-center mb-2">
-            <button
-              onClick={() => setDetailsTab(0)}
-              className={`text-lg py-2 flex-1 text-center   ${
-                detailsTab === 0 && 'border-red-700 border-b-2 text-red-700'
-              }   bg-gray-400`}
-            >
-              Description
-            </button>
+        <div ref={triggerRef}>
+          <div id="details" className="py-2">
+            <h1 className="text-xl font-semibold mb-1 px-3">Product Details</h1>
+            <div className="flex justify-center mb-2">
+              <button
+                onClick={() => setDetailsTab(0)}
+                className={`text-lg py-2 flex-1 text-center   ${
+                  detailsTab === 0 && 'border-red-700 border-b-2 text-red-700'
+                }   bg-gray-400`}
+              >
+                Description
+              </button>
 
-            <button
-              onClick={() => setDetailsTab(1)}
-              className={`text-lg py-2 flex-1 text-center   ${
-                detailsTab === 1 && 'border-red-700 border-b-2 text-red-700'
-              }   bg-gray-400`}
-            >
-              Specifications
-            </button>
+              <button
+                onClick={() => setDetailsTab(1)}
+                className={`text-lg py-2 flex-1 text-center   ${
+                  detailsTab === 1 && 'border-red-700 border-b-2 text-red-700'
+                }   bg-gray-400`}
+              >
+                Specifications
+              </button>
+            </div>
+            <div className="px-3 text-sm">{data[0].description}</div>
           </div>
-          <div className="px-3 text-sm">{data[0].description}</div>
         </div>
+        <CSSTransition
+          in={inView}
+          timeout={200}
+          unmountOnExit={true}
+          classNames="floating-cart-button"
+        >
+          <div className={`floating-button border-t bg-second-nav-text-light`}>
+            <div className=" flex items-center justify-center flex-1">
+              <button onClick={handleSubstractQuantity} className="p-1 mr-2">
+                <AiOutlineMinusCircle
+                  className={`w-6 h-6 ${
+                    quantity === 1 ? 'text-gray-700' : 'text-blue-700'
+                  }`}
+                />
+              </button>
+              <span className="mr-2">{quantity}</span>
+              <button onClick={handleAddQuantity} className="p-1">
+                <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
+              </button>
+            </div>
+            <div className="p-1 text-center">{quantity * data[0].price} KD</div>
+            {isItemInCart() ? (
+              <button
+                onClick={() => removeItemFromCart(data[0])}
+                className="text-sm bg-red-700 text-gray-100  flex-1  py-1 px-2 rounded   flex items-center justify-center font-semibold "
+              >
+                <span>
+                  <TiShoppingCart className="w-25p h-25p mr-2" />
+                </span>
+                Remove
+              </button>
+            ) : (
+              <button
+                onClick={() => addItemToCart({ data: data[0], quantity })}
+                className="text-sm bg-blue-700 text-gray-100 flex-1  py-1 px-2 rounded  flex items-center justify-center font-semibold"
+              >
+                <span>
+                  <TiShoppingCart className="w-25p h-25p mr-2" />
+                </span>
+                Add to Cart
+              </button>
+            )}
+          </div>
+        </CSSTransition>
+        <hr />
+        <RelatedItems data={bestSeller} />
       </div>
-      <CSSTransition
-        in={inView}
-        timeout={200}
-        unmountOnExit={true}
-        classNames="floating-cart-button"
-      >
-        <div className={`floating-button bg-second-nav-text-light`}>
-          <div className="mr-2 flex items-center">
-            <h1 className=" mr-2 font-semibold">Quantity : </h1>
-            <select
-              value={quantity}
-              onChange={e => setQuantity(e.target.value)}
-              className="select-mobile border-gray-400 border py-1 px-2 rounded"
-            >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-            </select>
-          </div>
-          {isItemInCart() ? (
-            <button
-              onClick={() => removeItemFromCart(data[0])}
-              className="bg-red-700 text-gray-100  flex-1  p-1 rounded   flex items-center justify-center font-semibold "
-            >
-              <span>
-                <TiShoppingCart className="w-25p h-25p mr-2" />
-              </span>
-              Remove From Cart
-            </button>
-          ) : (
-            <button
-              onClick={() => addItemToCart({ data: data[0], quantity })}
-              className="bg-blue-700 text-gray-100 flex-1  p-1 rounded  flex items-center justify-center font-semibold"
-            >
-              <span>
-                <TiShoppingCart className="w-25p h-25p mr-2" />
-              </span>
-              Add to Cart
-            </button>
-          )}
-        </div>
-      </CSSTransition>
-      <hr />
-      <RelatedItems data={bestSeller} />
-    </div>
+    </>
   );
 }
