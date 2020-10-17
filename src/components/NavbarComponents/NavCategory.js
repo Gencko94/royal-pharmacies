@@ -1,9 +1,9 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
 import MegaMenu from './MegaMenu';
-import { gsap } from 'gsap';
+// import { gsap } from 'gsap';
 export default function NavCategory() {
-  const tl = gsap.timeline({ defaults: { duration: 0.5, paused: true } });
+  // const tl = gsap.timeline({ defaults: { duration: 0.5, paused: true } });
   const buttonRef = React.useRef(null);
   const dropDownbgRef = React.useRef(null);
   const { navCategories, isLightTheme } = React.useContext(DataProvider);
