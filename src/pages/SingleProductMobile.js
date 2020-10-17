@@ -364,7 +364,7 @@ export default function SingleProductMobile({
             </div>
           </div>
         </div>
-        <div ref={triggerRef}>
+        <div>
           <div id="details" className="py-2">
             <h1 className="text-xl font-semibold mb-1 px-3">Product Details</h1>
             <div className="flex justify-center mb-2">
@@ -436,16 +436,18 @@ export default function SingleProductMobile({
           </div>
         </CSSTransition>
         <hr />
-        {related && <RelatedItems relatedData={related} />}
-        {isFetching && <div>Loading ...</div>}
-        <InView
-          as="div"
-          onChange={(inView, entry) => {
-            handleLoadMore(inView);
-          }}
-        >
-          <div></div>
-        </InView>
+        <div ref={triggerRef}>
+          {related && <RelatedItems relatedData={related} />}
+          {isFetching && <div>Loading ...</div>}
+          <InView
+            as="div"
+            onChange={(inView, entry) => {
+              handleLoadMore(inView);
+            }}
+          >
+            <div></div>
+          </InView>
+        </div>
       </div>
     </>
   );

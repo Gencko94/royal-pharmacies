@@ -118,15 +118,15 @@ export default function MobileNavbar() {
           } p-2  z-10 top-0 left-0 `}
         >
           <Hamburger toggleSideMenu={toggleSideMenuSecond} />
-
-          <input
+          <MobileSearchbar isLightTheme={isLightTheme} />
+          {/* <input
             className={`${
               isLightTheme
                 ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
                 : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500'
             } px-1 flex-1 rounded `}
             placeholder="Search..."
-          />
+          /> */}
           <MobileIcons />
 
           <SideMenu

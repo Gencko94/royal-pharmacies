@@ -169,7 +169,8 @@ input {
   right: 0;
   left: 0;
   bottom: 0px;
-  padding: 0.5em;
+  padding: 1em;
+  padding-bottom: 1.2em;
   z-index: 999;
 }
 .floating-cart-button-enter {

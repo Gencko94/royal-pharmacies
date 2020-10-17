@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Route } from 'react-router-dom';
 import MobileNavbar from './components/MobileNavbar';
@@ -9,75 +9,76 @@ import 'slick-carousel/slick/slick-theme.css';
 import Footer from './components/Footer';
 import MobileFooter from './components/MobileFooter';
 
-function App() {
-  const Home = Loadable({
-    loader: () => import('./pages/Home'),
-    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
-  });
-  const MyAccount = Loadable({
-    loader: () => import('./pages/MyAccount'),
-    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
-  });
-  const MyAccountMobile = Loadable({
-    loader: () => import('./pages/MyAccountMobile'),
-    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
-  });
-  const SingleProduct = Loadable({
-    loader: () => import('./pages/SingleProduct'),
-    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
-  });
-  const SingleProductMobile = Loadable({
-    loader: () => import('./pages/SingleProductMobile'),
-    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
-  });
-  const Cart = Loadable({
-    loader: () => import('./pages/Cart'),
-    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
-  });
-  const CartMobile = Loadable({
-    loader: () => import('./pages/CartMobile'),
-    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
-  });
+const Home = React.lazy(() => import('./pages/Home'));
+const MyAccount = React.lazy(() => import('./pages/MyAccount'));
+const MyAccountMobile = React.lazy(() => import('./pages/MyAccountMobile'));
+const SingleProduct = React.lazy(() => import('./pages/SingleProduct'));
+const SingleProductMobile = React.lazy(() =>
+  import('./pages/SingleProductMobile')
+);
+const Cart = React.lazy(() => import('./pages/Cart'));
+const CartMobile = React.lazy(() => import('./pages/CartMobile'));
 
+function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
     <div className="font-body antialiased">
       {isTabletOrAbove ? <Navbar /> : <MobileNavbar />}
 
-      <Route exact path="/" component={Home} />
-      <Route
-        exact
-        path="/user/account/:page"
-        render={props => {
-          if (isTabletOrAbove) {
-            return <MyAccount {...props} />;
-          } else {
-            return <MyAccountMobile {...props} />;
-          }
-        }}
-      />
-      <Route
-        exact
-        path="/cart"
-        render={props => {
-          if (isTabletOrAbove) {
-            return <Cart {...props} />;
-          } else {
-            return <CartMobile {...props} />;
-          }
-        }}
-      />
-      <Route
-        exact
-        path="/products/:id"
-        render={props => {
-          if (isTabletOrAbove) {
-            return <SingleProduct {...props} />;
-          } else {
-            return <SingleProductMobile {...props} />;
-          }
-        }}
-      />
+      <Suspense
+        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
+      >
+        <Route exact path="/" component={Home} />
+      </Suspense>
+
+      <Suspense
+        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
+      >
+        <Route
+          exact
+          path="/user/account/:page"
+          render={props => {
+            if (isTabletOrAbove) {
+              return <MyAccount {...props} />;
+            } else {
+              return <MyAccountMobile {...props} />;
+            }
+          }}
+        />
+      </Suspense>
+
+      <Suspense
+        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
+      >
+        <Route
+          exact
+          path="/cart"
+          render={props => {
+            if (isTabletOrAbove) {
+              return <Cart {...props} />;
+            } else {
+              return <CartMobile {...props} />;
+            }
+          }}
+        />
+      </Suspense>
+
+      <Suspense
+        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
+      >
+        <Route
+          exact
+          path="/products/:id"
+          render={props => {
+            if (isTabletOrAbove) {
+              return <SingleProduct {...props} />;
+            } else {
+              return <SingleProductMobile {...props} />;
+            }
+          }}
+        />
+      </Suspense>
+
       {isTabletOrAbove ? <Footer /> : <MobileFooter />}
     </div>
   );

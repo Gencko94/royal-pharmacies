@@ -8,7 +8,7 @@ export default function MobileSearchbar({ isLightTheme }) {
         isLightTheme
           ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700 '
           : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500 shadow-itemsSlider-shallow'
-      } rounded flex items-center overflow-hidden  `}
+      } rounded flex items-center overflow-hidden flex-1 `}
     >
       <div
         className={`${
