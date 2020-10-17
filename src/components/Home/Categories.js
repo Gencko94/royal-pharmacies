@@ -3,8 +3,9 @@ import { DataProvider } from '../../contexts/DataContext';
 import Slider from 'react-slick';
 import { useMediaQuery } from 'react-responsive';
 import MultiClamp from 'react-multi-clamp';
-
+import ContentLoader from 'react-content-loader';
 export default function Categories() {
+  const [data, setData] = React.useState(null);
   const { categories } = React.useContext(DataProvider);
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const isMobile = useMediaQuery({ query: '(min-width: 360px)' });
@@ -42,6 +43,11 @@ export default function Categories() {
       },
     ],
   };
+  React.useEffect(() => {
+    setTimeout(() => {
+      setData([categories]);
+    }, 3000);
+  }, [categories]);
   return (
     <div className="mb-6 text-body-text-light">
       <div className="flex items-center mb-4">
@@ -52,62 +58,78 @@ export default function Categories() {
         {categories.map((item, i) => {
           return (
             <div key={i} className="px-1 overflow-hidden ">
-              <div className="  overflow-hidden  relative  rounded-lg  ">
-                <img
-                  src={item.main}
-                  alt="something"
-                  className=" h-auto w-full rounded mb-0  "
-                />
-                <h1
-                  style={{
-                    maxWidth: '50%',
-                    top: isTabletOrAbove ? '16%' : '10%',
-                  }}
-                  className="absolute text-center  font-semibold left-10 text-base sm:text-lg md:text-xl lg:text-2xl "
+              {!data && (
+                <ContentLoader
+                  speed={2}
+                  viewBox="0 0 400 210"
+                  backgroundColor="#f3f3f3"
+                  foregroundColor="#ecebeb"
                 >
-                  {item.title}
-                </h1>
-                <div
-                  className=""
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit,minmax(50px,1fr)',
-                    gap: isMobile ? '6px' : '8px',
-                  }}
-                >
-                  {item.sub.map((photo, j) => {
-                    return (
-                      <div
-                        key={j + i}
-                        className=" mt-2 grid grid-cols-1 rounded  justify-center "
-                        style={{
-                          backgroundColor: item.color,
-                          // maxHeight: '120px',
-                          minHeight: '120px',
-                        }}
-                      >
+                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="125" />
+                  <rect x="0" y="130" rx="5" ry="5" width="24%" height="80" />
+                  <rect x="100" y="130" rx="5" ry="5" width="24%" height="80" />
+                  <rect x="200" y="130" rx="5" ry="5" width="24%" height="80" />
+                  <rect x="300" y="130" rx="5" ry="5" width="24%" height="80" />
+                </ContentLoader>
+              )}
+              {data && (
+                <div className="  overflow-hidden  relative  rounded-lg  ">
+                  <img
+                    src={item.main}
+                    alt="something"
+                    className=" h-auto w-full rounded mb-0  "
+                  />
+                  <h1
+                    style={{
+                      maxWidth: '50%',
+                      top: isTabletOrAbove ? '16%' : '10%',
+                    }}
+                    className="absolute text-center  font-semibold left-10 text-base sm:text-lg md:text-xl lg:text-2xl "
+                  >
+                    {item.title}
+                  </h1>
+                  <div
+                    className=""
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit,minmax(50px,1fr)',
+                      gap: isMobile ? '6px' : '8px',
+                    }}
+                  >
+                    {item.sub.map((photo, j) => {
+                      return (
                         <div
-                          // style={{ maxHeight: '70px' }}
-                          className=" flex justify-center items-center py-1"
+                          key={j + i}
+                          className=" mt-2 grid grid-cols-1 rounded  justify-center "
+                          style={{
+                            backgroundColor: item.color,
+                            // maxHeight: '120px',
+                            minHeight: '120px',
+                          }}
                         >
-                          <img
-                            src={photo.src}
-                            alt={photo.title}
-                            className="max-w-full h-auto py-1"
-                          />
+                          <div
+                            // style={{ maxHeight: '70px' }}
+                            className=" flex justify-center items-center py-1"
+                          >
+                            <img
+                              src={photo.src}
+                              alt={photo.title}
+                              className="max-w-full h-auto py-1"
+                            />
+                          </div>
+                          <MultiClamp
+                            className="text-center text-xs p-1 font-semibold"
+                            clamp={2}
+                            ellipsis="..."
+                          >
+                            {photo.title}
+                          </MultiClamp>
                         </div>
-                        <MultiClamp
-                          className="text-center text-xs p-1 font-semibold"
-                          clamp={2}
-                          ellipsis="..."
-                        >
-                          {photo.title}
-                        </MultiClamp>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           );
         })}

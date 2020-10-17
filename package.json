@@ -9,6 +9,7 @@
     "gsap": "^3.5.1",
     "pure-react-carousel": "^1.27.4",
     "react": "^16.13.1",
+    "react-content-loader": "^5.1.2",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
     "react-icons": "^3.11.0",

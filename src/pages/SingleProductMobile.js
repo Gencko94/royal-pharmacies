@@ -24,6 +24,7 @@ import { CSSTransition } from 'react-transition-group';
 import MultiClamp from 'react-multi-clamp';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
+import ContentLoader from 'react-content-loader';
 
 export default function SingleProductMobile({
   match: {
@@ -38,17 +39,21 @@ export default function SingleProductMobile({
     calculateItemsPrice,
     deliveryCountry,
   } = React.useContext(DataProvider);
-  const data = bestSeller.filter(item => item.id === id);
+  const items = bestSeller.filter(item => item.id === id);
+  const [data, setData] = React.useState(null);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [quantity, setQuantity] = React.useState(1);
   const [detailsTab, setDetailsTab] = React.useState(0);
-  // const [animateIcon, setAnimateIcon] = React.useState(false);
   const [showAddedToCart, setShowAddedToCart] = React.useState(false);
 
+  React.useEffect(() => {
+    setTimeout(() => {
+      setData(items[0]);
+    }, 5000);
+  }, [items]);
   const [triggerRef, inView] = useInView();
-  // const animationIconRef = React.useRef(null);
   const isItemInCart = () => {
-    const itemInCart = cartItems.find(item => data[0].id === item.id);
+    const itemInCart = cartItems.find(item => items[0].id === item.id);
     if (itemInCart !== undefined) {
       return true;
     } else {
@@ -68,7 +73,7 @@ export default function SingleProductMobile({
   return (
     <>
       <Helmet>
-        <title>{data[0].name} | MRG</title>
+        <title>{items[0].name} | MRG</title>
       </Helmet>
       <div className="overflow-hidde">
         <CSSTransition
@@ -80,12 +85,12 @@ export default function SingleProductMobile({
           <div className="after__addToCart-container-mobile">
             <div className=" after__addToCart-details-mobile mb-1   ">
               <img
-                src={data[0].photos.small}
-                alt={data[0].name}
+                src={items[0].photos.small}
+                alt={items[0].name}
                 className="max-w-full h-auto"
               />
               <MultiClamp className="font-semibold" clamp={2} ellipsis="...">
-                {data[0].name}
+                {items[0].name}
               </MultiClamp>
               <div className="flex flex-col  items-center">
                 <h1 className="text-sm">Cart Total</h1>
@@ -124,182 +129,212 @@ export default function SingleProductMobile({
             className="bg-white"
             lockOnWindowScroll={true}
           >
-            <Slider className="">
-              {data[0].photos.main.map((photo, i) => {
-                return (
-                  <Slide index={i} key={i} innerClassName="">
-                    <div
-                      className=" "
-                      style={{
-                        minHeight: '300px',
-
-                        minWidth: '300px',
-                        width: '100%',
-                        height: '100%',
-                      }}
-                    >
-                      <ImageWithZoom src={photo} alt="g" />
-                    </div>
-                  </Slide>
-                );
-              })}
-            </Slider>
-            <DotGroup
-              className="mt-2"
-              renderDots={() => (
-                <div
-                  className="flex 
-                 
-                 justify-evenly"
-                >
-                  {data[0].photos.main.map((photo, i) => {
+            {!data && (
+              <ContentLoader
+                speed={2}
+                viewBox="0 0 420 480"
+                backgroundColor="#f3f3f3"
+                foregroundColor="#ecebeb"
+              >
+                <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
+              </ContentLoader>
+            )}
+            {data && (
+              <>
+                <Slider className="">
+                  {items[0].photos.main.map((photo, i) => {
                     return (
-                      <button
-                        className="mb-1"
-                        key={i}
-                        onClick={() => setCurrentSlide(i)}
-                      >
-                        <img
-                          style={{ width: '50px', height: '50px' }}
-                          src={photo}
-                          alt={photo}
-                          className={`${
-                            currentSlide === i ? 'border border-red-700' : ''
-                          }`}
-                        />
-                      </button>
+                      <Slide index={i} key={i} innerClassName="">
+                        <div
+                          className=" "
+                          style={{
+                            minHeight: '300px',
+
+                            minWidth: '300px',
+                            width: '100%',
+                            height: '100%',
+                          }}
+                        >
+                          <ImageWithZoom src={photo} alt="g" />
+                        </div>
+                      </Slide>
                     );
                   })}
-                </div>
-              )}
-            />
+                </Slider>
+                <DotGroup
+                  className="mt-2"
+                  renderDots={() => (
+                    <div
+                      className="flex 
+                 
+                 justify-evenly"
+                    >
+                      {items[0].photos.main.map((photo, i) => {
+                        return (
+                          <button
+                            className="mb-1"
+                            key={i}
+                            onClick={() => setCurrentSlide(i)}
+                          >
+                            <img
+                              style={{ width: '50px', height: '50px' }}
+                              src={photo}
+                              alt={photo}
+                              className={`${
+                                currentSlide === i
+                                  ? 'border border-red-700'
+                                  : ''
+                              }`}
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                />
+              </>
+            )}
           </CarouselProvider>
           <hr />
           <div className="flex flex-col w-full  px-3 py-2 bg-white">
-            <h1 className="font-semibold text-xl">{data[0].name}</h1>
-            <div className="flex items-center ">
-              <Rating
-                initialRating={4.5}
-                emptySymbol={<AiOutlineStar className="text-red-700" />}
-                fullSymbol={<AiFillStar className="text-red-700" />}
-                className="mr-2 pt-1"
-              />
-              <h1 className="text-sm">36 Ratings</h1>
-            </div>
-
-            <h1 className=" font-semibold mb-1 text-green-600">In Stock</h1>
-            <h1 className="text-sm   mb-1 text-gray-700">
-              Model Number : NK2O-4952
-            </h1>
-
-            <hr />
-            <div className=" mb-1 text-sm  font-bold">
-              <h1 className=" ">
-                Price Before :{' '}
-                <span className=" text-base italic  line-through text-gray-700">
-                  {data[0].priceBefore} KD
-                </span>{' '}
-              </h1>
-
-              <h1 className=" mr-5   ">
-                Price Now :{' '}
-                <span className=" text-xl  text-red-700">
-                  {data[0].price} KD
-                </span>{' '}
-                <span className=" font-normal  text-gray-700">
-                  (VAT Inclusive)
-                </span>
-              </h1>
-
-              <h1 className="   ">
-                You Save : <span className=" text-xl  text-red-700">18%</span>{' '}
-              </h1>
-              <button
-                className={`my-2 px-2 text-sm bg-green-200 rounded font-semibold`}
+            {!data && (
+              <ContentLoader
+                speed={2}
+                viewBox="0 0 480 470"
+                backgroundColor="#f3f3f3"
+                foregroundColor="#ecebeb"
               >
-                Free Delivery To {deliveryCountry}
-              </button>
-            </div>
-            <hr />
+                <rect x="0" y="0" rx="5" ry="5" width="100%" height="40" />
+                <rect x="0" y="60" rx="5" ry="5" width="90%" height="40" />
+                <rect x="0" y="120" rx="5" ry="5" width="80%" height="40" />
+                <rect x="0" y="180" rx="5" ry="5" width="70%" height="35" />
+                <rect x="0" y="240" rx="5" ry="5" width="60%" height="35" />
+                <rect x="0" y="300" rx="5" ry="5" width="40%" height="35" />
+                <rect x="0" y="360" rx="5" ry="5" width="60%" height="35" />
+                <rect x="0" y="420" rx="5" ry="5" width="40%" height="35" />
+              </ContentLoader>
+            )}
+            {data && (
+              <>
+                <h1 className="font-semibold text-xl">{items[0].name}</h1>
+                <div className="flex items-center ">
+                  <Rating
+                    initialRating={4.5}
+                    emptySymbol={<AiOutlineStar className="text-red-700" />}
+                    fullSymbol={<AiFillStar className="text-red-700" />}
+                    className="mr-2 pt-1"
+                  />
+                  <h1 className="text-sm">36 Ratings</h1>
+                </div>
 
-            {/* <ul className="text-sm list-disc pl-4 mb-2">
-            <li>
-              The nephilim Edition contains all the loot from the Collector's
-              Edition as well as the Limited Edition Darksiders: the forbidden
-              land board game!{' '}
-            </li>
-            <li>
-              Blast Angels and demons as the gunslinging Horseman strife,
-              playable for the first time
-            </li>
-            <li>
-              Swap between the powerful swordsman war and strife instantly in
-              frenetic, single-player gameplay
-            </li>
-            <li>
-              Explore the epic world of Darksiders and wreak havoc with a friend
-              in two-player cooperative mode{' '}
-            </li>
-            <li>
-              Experience a brand new story campaign that takes place before the
-              original Darksiders, exploring the origin of the Seven seals{' '}
-            </li>
-          </ul> */}
+                <h1 className=" font-semibold mb-1 text-green-600">In Stock</h1>
+                <h1 className="text-sm   mb-1 text-gray-700">
+                  Model Number : NK2O-4952
+                </h1>
+
+                <hr />
+                <div className=" mb-1 text-sm  font-bold">
+                  <h1 className=" ">
+                    Price Before :{' '}
+                    <span className=" text-base italic  line-through text-gray-700">
+                      {items[0].priceBefore} KD
+                    </span>{' '}
+                  </h1>
+
+                  <h1 className=" mr-5   ">
+                    Price Now :{' '}
+                    <span className=" text-xl  text-red-700">
+                      {items[0].price} KD
+                    </span>{' '}
+                    <span className=" font-normal  text-gray-700">
+                      (VAT Inclusive)
+                    </span>
+                  </h1>
+
+                  <h1 className="   ">
+                    You Save :{' '}
+                    <span className=" text-xl  text-red-700">18%</span>{' '}
+                  </h1>
+                  <button
+                    className={`my-2 px-2 text-sm bg-green-200 rounded font-semibold`}
+                  >
+                    Free Delivery To {deliveryCountry}
+                  </button>
+                </div>
+              </>
+            )}
+            <hr />
 
             <div className="relative  ">
-              <div className="  my-2 flex items-center">
-                <h1 className=" mr-2 font-semibold">Quantity : </h1>
-                <select
-                  value={quantity}
-                  onChange={e => setQuantity(e.target.value)}
-                  className="select-mobile border-gray-400 border py-1 px-2 rounded"
+              {!data && (
+                <ContentLoader
+                  speed={2}
+                  viewBox="0 0 480 100"
+                  backgroundColor="#f3f3f3"
+                  foregroundColor="#ecebeb"
                 >
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                </select>
-              </div>
-              <div className="relative flex items-center">
-                <button className="bg-green-400 p-1 rounded mr-2 flex-1  text-white flex items-center justify-center font-semibold ">
-                  <span>
-                    <AiOutlineHeart className="w-25p h-25p mr-2" />
-                  </span>
-                  Add to Wishlist
-                </button>
-                {isItemInCart() ? (
-                  <button
-                    onClick={() => removeItemFromCart(data[0])}
-                    className="bg-red-700 text-gray-100 flex-1   p-1 rounded px-2  flex items-center justify-center font-semibold "
-                  >
-                    <span>
-                      <TiShoppingCart className="w-25p h-25p mr-2" />
-                    </span>
-                    Remove
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setShowAddedToCart(true);
-                      setTimeout(() => {
-                        setShowAddedToCart(false);
-                      }, 3000);
+                  <rect x="0" y="20" rx="5" ry="5" width="100%" height="25" />
+                  <rect x="0" y="60" rx="5" ry="5" width="49%" height="25" />
+                  <rect x="50%" y="60" rx="5" ry="5" width="50%" height="25" />
+                </ContentLoader>
+              )}
+              {data && (
+                <>
+                  <div className="  my-2 flex items-center">
+                    <h1 className=" mr-2 font-semibold">Quantity : </h1>
+                    <select
+                      value={quantity}
+                      onChange={e => setQuantity(e.target.value)}
+                      className="select-mobile border-gray-400 border py-1 px-2 rounded"
+                    >
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                    </select>
+                  </div>
+                  <div className="relative flex items-center">
+                    <button className="bg-green-400 p-1 rounded mr-2 flex-1  text-white flex items-center justify-center font-semibold ">
+                      <span>
+                        <AiOutlineHeart className="w-25p h-25p mr-2" />
+                      </span>
+                      Add to Wishlist
+                    </button>
+                    {isItemInCart() ? (
+                      <button
+                        onClick={() => removeItemFromCart(items[0])}
+                        className="bg-red-700 text-gray-100 flex-1   p-1 rounded px-2  flex items-center justify-center font-semibold "
+                      >
+                        <span>
+                          <TiShoppingCart className="w-25p h-25p mr-2" />
+                        </span>
+                        Remove
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setShowAddedToCart(true);
+                          setTimeout(() => {
+                            setShowAddedToCart(false);
+                          }, 3000);
 
-                      addItemToCart({ data: data[0], quantity });
-                    }}
-                    className=" bg-blue-700 flex-1 text-gray-100   p-1 px-2 rounded   flex items-center justify-center font-semibold"
-                  >
-                    <span>
-                      <TiShoppingCart className="w-25p h-25p mr-2" />
-                    </span>
-                    Add to Cart
-                  </button>
-                )}
-                {/* {animateIcon && (
+                          addItemToCart({ data: items[0], quantity });
+                        }}
+                        className=" bg-blue-700 flex-1 text-gray-100   p-1 px-2 rounded   flex items-center justify-center font-semibold"
+                      >
+                        <span>
+                          <TiShoppingCart className="w-25p h-25p mr-2" />
+                        </span>
+                        Add to Cart
+                      </button>
+                    )}
+                    {/* {animateIcon && (
                 <span ref={animationIconRef} className="cart__icon__animate">
                   <TiShoppingCart />
                 </span>
               )} */}
-              </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -325,7 +360,7 @@ export default function SingleProductMobile({
                 Specifications
               </button>
             </div>
-            <div className="px-3 text-sm">{data[0].description}</div>
+            <div className="px-3 text-sm">{items[0].description}</div>
           </div>
         </div>
         <CSSTransition
@@ -348,10 +383,12 @@ export default function SingleProductMobile({
                 <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
               </button>
             </div>
-            <div className="p-1 text-center">{quantity * data[0].price} KD</div>
+            <div className="p-1 text-center">
+              {quantity * items[0].price} KD
+            </div>
             {isItemInCart() ? (
               <button
-                onClick={() => removeItemFromCart(data[0])}
+                onClick={() => removeItemFromCart(items[0])}
                 className="text-sm bg-red-700 text-gray-100  flex-1  py-1 px-2 rounded   flex items-center justify-center font-semibold "
               >
                 <span>
@@ -361,7 +398,7 @@ export default function SingleProductMobile({
               </button>
             ) : (
               <button
-                onClick={() => addItemToCart({ data: data[0], quantity })}
+                onClick={() => addItemToCart({ data: items[0], quantity })}
                 className="text-sm bg-blue-700 text-gray-100 flex-1  py-1 px-2 rounded  flex items-center justify-center font-semibold"
               >
                 <span>

@@ -5,6 +5,7 @@ import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 import MultiClamp from 'react-multi-clamp';
 import { Link } from 'react-router-dom';
+import ContentLoader from 'react-content-loader';
 // const isItemInCart = data => {
 //   const itemInCart = cartItems.find(item => data.id === item.id);
 //   if (itemInCart !== undefined) {
@@ -95,6 +96,12 @@ export default function ItemsSlider({
     ],
   };
 
+  const [items, setItems] = React.useState(null);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setItems(data);
+    }, 5000);
+  });
   return (
     <div className="my-6 overflow-hidden   ">
       <div className="flex items-center mb-4">
@@ -107,75 +114,88 @@ export default function ItemsSlider({
         {data.map((item, i) => {
           return (
             <div key={i} className="my-4  px-2   ">
-              <div
-                className={`  overflow-hidden flex flex-col relative ${
-                  isLightTheme
-                    ? 'shadow-itemsSlider-shallow'
-                    : 'shadow-itemsSlider'
-                } rounded`}
-              >
-                <Link to={`/products/${item.id}`}>
-                  <img
-                    title={item.name}
-                    src={item.photos.small}
-                    alt={item.name}
-                    className=" w-full object-cover "
-                  />
-                </Link>
-                <hr />
-
-                <div
-                  className={`relative flex flex-col  ${
-                    miniLogo ? 'pt-8' : 'pt-2'
-                  } px-2 py-1 ${
-                    isLightTheme
-                      ? 'bg-body-light text-body-text-light'
-                      : 'bg-body-dark text-body-text-dark'
-                  }`}
-                  style={{ minHeight: '72px' }}
+              {!items && (
+                <ContentLoader
+                  speed={2}
+                  viewBox="0 0 400 480"
+                  backgroundColor="#f3f3f3"
+                  foregroundColor="#ecebeb"
                 >
-                  {miniLogo && (
+                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="370" />
+                  <rect x="0" y="400" rx="5" ry="5" width="100%" height="30" />
+                  <rect x="0" y="450" rx="5" ry="5" width="50%" height="30" />
+                </ContentLoader>
+              )}
+              {items && (
+                <div
+                  className={`  overflow-hidden flex flex-col relative ${
+                    isLightTheme
+                      ? 'shadow-itemsSlider-shallow'
+                      : 'shadow-itemsSlider'
+                  } rounded`}
+                >
+                  <Link to={`/products/${item.id}`}>
                     <img
-                      src={zalo}
-                      alt="playstore"
-                      className="absolute rounded-full shadow-xl "
-                      style={{
-                        width: '50px',
-                        height: '50px',
-                        top: '-25px',
-                        left: '18px',
-                      }}
-                    />
-                  )}
-
-                  <MultiClamp
-                    className="text-sm  font-semibold"
-                    clamp={2}
-                    ellipsis="..."
-                  >
-                    <Link
                       title={item.name}
-                      className="hover:underline"
-                      to={`/products/${item.id}`}
-                    >
-                      {item.name}
-                    </Link>
-                  </MultiClamp>
+                      src={item.photos.small}
+                      alt={item.name}
+                      className=" w-full object-cover "
+                    />
+                  </Link>
+                  <hr />
 
-                  <div className="flex items-center">
-                    <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">
-                      {item.price} <span className="text-xs ">KD</span>
-                    </p>
-                    {item.sale && (
-                      <p className="text-xs  line-through text-gray-500  font-bold whitespace-no-wrap">
-                        {' '}
-                        {item.priceBefore}{' '}
-                        <span className="font-normal">KD</span>
-                      </p>
+                  <div
+                    className={`relative flex flex-col  ${
+                      miniLogo ? 'pt-8' : 'pt-2'
+                    } px-2 py-1 ${
+                      isLightTheme
+                        ? 'bg-body-light text-body-text-light'
+                        : 'bg-body-dark text-body-text-dark'
+                    }`}
+                    style={{ minHeight: '72px' }}
+                  >
+                    {miniLogo && (
+                      <img
+                        src={zalo}
+                        alt="playstore"
+                        className="absolute rounded-full shadow-xl "
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          top: '-25px',
+                          left: '18px',
+                        }}
+                      />
                     )}
-                  </div>
 
-                  {/* {isItemInCart(item) ? (
+                    <MultiClamp
+                      className="text-sm  font-semibold"
+                      clamp={2}
+                      ellipsis="..."
+                    >
+                      <Link
+                        title={item.name}
+                        className="hover:underline"
+                        to={`/products/${item.id}`}
+                      >
+                        {item.name}
+                      </Link>
+                    </MultiClamp>
+
+                    <div className="flex items-center">
+                      <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">
+                        {item.price} <span className="text-xs ">KD</span>
+                      </p>
+                      {item.sale && (
+                        <p className="text-xs  line-through text-gray-500  font-bold whitespace-no-wrap">
+                          {' '}
+                          {item.priceBefore}{' '}
+                          <span className="font-normal">KD</span>
+                        </p>
+                      )}
+                    </div>
+
+                    {/* {isItemInCart(item) ? (
                     <button
                       onClick={() => removeItemFromCart(item)}
                       className="bg-red-700 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold "
@@ -193,8 +213,9 @@ export default function ItemsSlider({
                       Add to Cart
                     </button>
                   )} */}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           );
         })}

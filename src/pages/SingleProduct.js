@@ -14,6 +14,7 @@ import MultiClamp from 'react-multi-clamp';
 import { Link } from 'react-router-dom';
 import Rating from 'react-rating';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import ContentLoader from 'react-content-loader';
 
 export default function SingleProduct({
   match: {
@@ -34,8 +35,8 @@ export default function SingleProduct({
   } = React.useContext(DataProvider);
 
   const [quantity, setQuantity] = React.useState(1);
-  const data = bestSeller.filter(item => item.id === id);
-
+  const items = bestSeller.filter(item => item.id === id);
+  const [data, setData] = React.useState(null);
   const [detailsTab, setDetailsTab] = React.useState(0);
   const handleAddToCart = () => {
     addItemToCart({ data: data[0], quantity });
@@ -50,11 +51,11 @@ export default function SingleProduct({
   // Add item to localStorage //
   React.useEffect(() => {
     const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-    const isItemInHistory = visitedItems.find(item => item.id === data[0].id);
+    const isItemInHistory = visitedItems.find(item => item.id === items[0].id);
     if (isItemInHistory !== undefined) {
       return;
     } else {
-      visitedItems.push(data[0]);
+      visitedItems.push(items[0]);
       localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
     }
   });
@@ -83,11 +84,15 @@ export default function SingleProduct({
         '-=0.5'
       );
   });
-
+  React.useEffect(() => {
+    setTimeout(() => {
+      setData(items[0]);
+    }, 5000);
+  }, [items]);
   return (
     <>
       <Helmet>
-        <title>{data[0].name} | MRG </title>
+        <title>{items[0].name} | MRG </title>
       </Helmet>
       <div onClick={handleCloseMenu} className="side__addCart-bg"></div>
       <div className="side__addCart-container ">
@@ -96,14 +101,14 @@ export default function SingleProduct({
             <div className=" after__addToCart-grid mb-2">
               <div className=" grid place-items-center">
                 <img
-                  src={data[0].photos.small}
-                  alt={data[0].name}
+                  src={items[0].photos.small}
+                  alt={items[0].name}
                   className="max-w-full h-auto"
                 />
               </div>
               <div className="after__addToCart-details ">
                 <MultiClamp className="font-semibold " clamp={4} ellipsis="...">
-                  {data[0].name}
+                  {items[0].name}
                 </MultiClamp>
               </div>
             </div>
@@ -180,12 +185,22 @@ export default function SingleProduct({
 
           <div className="details__container">
             <div className="relative ">
-              <ImageZoom data={data[0]} />
+              {!data && (
+                <ContentLoader
+                  speed={2}
+                  viewBox="0 0 480 480"
+                  backgroundColor="#f3f3f3"
+                  foregroundColor="#ecebeb"
+                >
+                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
+                </ContentLoader>
+              )}
+              {data && <ImageZoom data={data} />}
             </div>
 
-            <MiddleSection data={data[0]} deliveryCountry={deliveryCountry} />
+            <MiddleSection data={data} deliveryCountry={deliveryCountry} />
             <RightSection
-              data={data[0]}
+              data={data}
               quantity={quantity}
               setQuantity={setQuantity}
               handleAddToCart={handleAddToCart}
@@ -223,7 +238,7 @@ export default function SingleProduct({
                 Reviews
               </button>
             </div>
-            <div className="px-2 text-sm">{data[0].description}</div>
+            <div className="px-2 text-sm">{items[0].description}</div>
           </div>
           <RelatedItems data={bestSeller} />
         </div>

@@ -1,15 +1,14 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
 import MegaMenu from './MegaMenu';
-
+import { gsap } from 'gsap';
 export default function NavCategory() {
+  const tl = gsap.timeline({ defaults: { duration: 0.5, paused: true } });
   const buttonRef = React.useRef(null);
   const dropDownbgRef = React.useRef(null);
   const { navCategories, isLightTheme } = React.useContext(DataProvider);
   const openDropDown = i => {
     const button = document.querySelector(`#navButton${i}`);
-    // const button = document.querySelector(`#dd${i}`);
-    console.log(button);
     setTimeout(() => {
       const parentHeight = button.offsetParent.offsetHeight;
       const parentTop = button.offsetParent.offsetTop;
@@ -27,7 +26,7 @@ export default function NavCategory() {
         dropDownbgRef.current.classList.remove('hidden');
         // openDropDown(id);
       }
-    }, 250);
+    }, 100);
   };
   const closeDropDown = i => {
     const button = buttonRef.current.querySelector(`#dd${i}`);
@@ -47,6 +46,7 @@ export default function NavCategory() {
       document.removeEventListener('mousemove', onMouseUpdate);
     };
   });
+  React.useEffect(() => {});
   return (
     <>
       <div

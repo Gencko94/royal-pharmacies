@@ -12,33 +12,31 @@ import MobileFooter from './components/MobileFooter';
 function App() {
   const Home = Loadable({
     loader: () => import('./pages/Home'),
-    loading: () => (
-      <div style={{ minHeight: 'calc(100vh - 140px)' }}>Loading</div>
-    ),
+    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
   });
   const MyAccount = Loadable({
     loader: () => import('./pages/MyAccount'),
-    loading: () => 'Loading',
+    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
   });
   const MyAccountMobile = Loadable({
     loader: () => import('./pages/MyAccountMobile'),
-    loading: () => 'Loading',
+    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
   });
   const SingleProduct = Loadable({
     loader: () => import('./pages/SingleProduct'),
-    loading: () => 'Loading',
+    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
   });
   const SingleProductMobile = Loadable({
     loader: () => import('./pages/SingleProductMobile'),
-    loading: () => 'Loading',
+    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
   });
   const Cart = Loadable({
     loader: () => import('./pages/Cart'),
-    loading: () => 'Loading',
+    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
   });
   const CartMobile = Loadable({
     loader: () => import('./pages/CartMobile'),
-    loading: () => 'Loading',
+    loading: () => <div style={{ minHeight: 'calc(100vh - 140px)' }}></div>,
   });
 
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
