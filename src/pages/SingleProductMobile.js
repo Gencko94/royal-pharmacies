@@ -19,12 +19,13 @@ import {
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import { DataProvider } from '../contexts/DataContext';
 import { TiShoppingCart } from 'react-icons/ti';
-import { useInView } from 'react-intersection-observer';
+import InView, { useInView } from 'react-intersection-observer';
 import { CSSTransition } from 'react-transition-group';
 import MultiClamp from 'react-multi-clamp';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
 import ContentLoader from 'react-content-loader';
+import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 
 export default function SingleProductMobile({
   match: {
@@ -38,6 +39,7 @@ export default function SingleProductMobile({
     removeItemFromCart,
     calculateItemsPrice,
     deliveryCountry,
+    relatedItems,
   } = React.useContext(DataProvider);
   const items = bestSeller.filter(item => item.id === id);
   const [data, setData] = React.useState(null);
@@ -45,6 +47,11 @@ export default function SingleProductMobile({
   const [quantity, setQuantity] = React.useState(1);
   const [detailsTab, setDetailsTab] = React.useState(0);
   const [showAddedToCart, setShowAddedToCart] = React.useState(false);
+
+  const [isFetching, setFetching] = React.useState(true);
+  const [page, setPage] = React.useState(0);
+  const [relatedData, hasMore] = useLazyLoadFetch(relatedItems, page);
+  const [related, setRelated] = React.useState(null);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -70,6 +77,25 @@ export default function SingleProductMobile({
     setQuantity(quantity + 1);
   };
 
+  const handleLoadMore = inView => {
+    if (inView) {
+      if (hasMore) {
+        setFetching(true);
+        setPage(page + 1);
+      }
+    }
+  };
+  const fetchData = () => {
+    setTimeout(() => {
+      setRelated(relatedData);
+
+      setFetching(false);
+    }, 2000);
+  };
+  React.useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
   return (
     <>
       <Helmet>
@@ -410,7 +436,16 @@ export default function SingleProductMobile({
           </div>
         </CSSTransition>
         <hr />
-        <RelatedItems data={bestSeller} />
+        {related && <RelatedItems relatedData={related} />}
+        {isFetching && <div>Loading ...</div>}
+        <InView
+          as="div"
+          onChange={(inView, entry) => {
+            handleLoadMore(inView);
+          }}
+        >
+          <div></div>
+        </InView>
       </div>
     </>
   );

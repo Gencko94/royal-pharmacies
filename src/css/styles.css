@@ -415,3 +415,11 @@ input {
   grid-template-columns: 0.5fr 1fr;
   gap: 4px;
 }
+/* related Items */
+
+.related__items-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1em;
+  padding: 0.5em;
+}

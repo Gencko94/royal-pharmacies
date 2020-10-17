@@ -15,6 +15,8 @@ import { Link } from 'react-router-dom';
 import Rating from 'react-rating';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import ContentLoader from 'react-content-loader';
+import InView from 'react-intersection-observer';
+import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 
 export default function SingleProduct({
   match: {
@@ -32,12 +34,26 @@ export default function SingleProduct({
     calculateItemsPrice,
     addItemToCart,
     removeItemFromCart,
+    relatedItems,
   } = React.useContext(DataProvider);
 
   const [quantity, setQuantity] = React.useState(1);
   const items = bestSeller.filter(item => item.id === id);
+  const [isFetching, setFetching] = React.useState(true);
+  const [page, setPage] = React.useState(0);
+  const [relatedData, hasMore] = useLazyLoadFetch(relatedItems, page);
   const [data, setData] = React.useState(null);
+  const [related, setRelated] = React.useState(null);
   const [detailsTab, setDetailsTab] = React.useState(0);
+
+  const handleLoadMore = inView => {
+    if (inView) {
+      if (hasMore) {
+        setFetching(true);
+        setPage(page + 1);
+      }
+    }
+  };
   const handleAddToCart = () => {
     addItemToCart({ data: data[0], quantity });
     tl.play();
@@ -48,6 +64,17 @@ export default function SingleProduct({
   const handleCloseMenu = () => {
     tl.reverse(0.5);
   };
+  const fetchData = () => {
+    setTimeout(() => {
+      setRelated(relatedData);
+
+      setFetching(false);
+    }, 1500);
+  };
+  React.useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
   // Add item to localStorage //
   React.useEffect(() => {
     const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
@@ -240,7 +267,16 @@ export default function SingleProduct({
             </div>
             <div className="px-2 text-sm">{items[0].description}</div>
           </div>
-          <RelatedItems data={bestSeller} />
+          {related && <RelatedItems relatedData={related} />}
+          {isFetching && <div>Loading ...</div>}
+          <InView
+            as="div"
+            onChange={(inView, entry) => {
+              handleLoadMore(inView);
+            }}
+          >
+            <div></div>
+          </InView>
         </div>
       </div>
     </>
