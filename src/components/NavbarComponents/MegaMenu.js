@@ -1,9 +1,10 @@
 import React from 'react';
 
-export default function MegaMenu({ data, id, isLightTheme }) {
+export default function MegaMenu({ data, isLightTheme, menuRef }) {
   return (
     <div
-      id={`dd${id}`}
+      id="mega-menu"
+      ref={menuRef}
       className="absolute z-10 hidden top-100 left-0 min-w-full  cursor-default"
     >
       <div

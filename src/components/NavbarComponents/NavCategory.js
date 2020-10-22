@@ -1,37 +1,51 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
 import MegaMenu from './MegaMenu';
-// import { gsap } from 'gsap';
 export default function NavCategory() {
-  // const tl = gsap.timeline({ defaults: { duration: 0.5, paused: true } });
   const buttonRef = React.useRef(null);
   const dropDownbgRef = React.useRef(null);
+  const menuRef = React.useRef(null);
   const { navCategories, isLightTheme } = React.useContext(DataProvider);
-  const openDropDown = i => {
-    const button = document.querySelector(`#navButton${i}`);
+  // const [dropDownOpen, setDropDownOpen] = React.useState(false);
+  const [catData, setCatData] = React.useState([]);
+  const triggerDropDownOpen = () => {
+    const trigger = document.querySelector('#menu-trigger');
+    console.log(trigger);
+    const menu = document.querySelector('#mega-menu');
+    const triggerHeight = trigger.offsetHeight;
+    const parentTop = trigger.offsetParent.offsetTop;
+    const leftSpaceOfButton = trigger.offsetLeft;
+    const triggerWidth = trigger.offsetWidth;
+    const rightSpaceOfButton = trigger.offsetLeft + triggerWidth;
     setTimeout(() => {
-      const parentHeight = button.offsetParent.offsetHeight;
-      const parentTop = button.offsetParent.offsetTop;
-      const leftSpaceOfButton = button.offsetLeft;
-      const buttonWidth = button.offsetWidth;
-      const rightSpaceOfButton = button.offsetLeft + buttonWidth;
-
       if (
         x <= rightSpaceOfButton &&
         x >= leftSpaceOfButton &&
-        y >= parentTop &&
-        y < parentTop + parentHeight
+        y > parentTop &&
+        y < parentTop + triggerHeight
       ) {
-        document.querySelector(`#dd${i}`).classList.remove('hidden');
+        console.log(y);
+        menu.classList.remove('hidden');
         dropDownbgRef.current.classList.remove('hidden');
-        // openDropDown(id);
       }
-    }, 100);
+    }, 250);
+  };
+  const triggerDropDownClose = () => {
+    const menu = document.querySelector('#mega-menu');
+
+    menu.classList.add('hidden');
+    // tl.reverse();
+    dropDownbgRef.current.classList.add('hidden');
+    setCatData([]);
+  };
+  const openDropDown = i => {
+    // const button = document.querySelector(`#navButton${i}`);
+    setCatData(navCategories[i].data);
   };
   const closeDropDown = i => {
-    const button = buttonRef.current.querySelector(`#dd${i}`);
-    dropDownbgRef.current.classList.add('hidden');
-    button.classList.add('hidden');
+    // const button = buttonRef.current.querySelector(`#dd${i}`);
+    // dropDownbgRef.current.classList.add('hidden');
+    // button.classList.add('hidden');
   };
   let x;
   let y;
@@ -41,12 +55,7 @@ export default function NavCategory() {
   }
   React.useEffect(() => {
     document.addEventListener('mousemove', onMouseUpdate, false);
-
-    return () => {
-      document.removeEventListener('mousemove', onMouseUpdate);
-    };
   });
-  React.useEffect(() => {});
   return (
     <>
       <div
@@ -58,22 +67,35 @@ export default function NavCategory() {
         } `}
         style={{ top: '72px' }}
       >
-        {navCategories.map((button, i) => (
-          <button
-            id={`navButton${i}`}
-            key={i}
-            onMouseEnter={() => openDropDown(i)}
-            onMouseLeave={() => closeDropDown(i)}
-            className={`p-2 text-sm  font-semibold hover:shadow-navCategory ${
-              isLightTheme
-                ? 'hover:bg-second-nav-text-light'
-                : 'hover:bg-second-nav-dark'
-            }`}
-          >
-            {button.title}
-            <MegaMenu id={i} data={button.data} isLightTheme={isLightTheme} />
-          </button>
-        ))}
+        <div
+          id="menu-trigger"
+          onMouseEnter={triggerDropDownOpen}
+          onMouseLeave={triggerDropDownClose}
+          className="flex items-center justify-center"
+        >
+          {navCategories.map((button, i) => (
+            <button
+              id={`navButton${i}`}
+              key={i}
+              onMouseEnter={() => openDropDown(i)}
+              onMouseLeave={() => closeDropDown(i)}
+              className={`p-2 text-sm  font-semibold hover:shadow-navCategory ${
+                isLightTheme
+                  ? 'hover:bg-second-nav-text-light'
+                  : 'hover:bg-second-nav-dark'
+              }`}
+            >
+              {button.title}
+            </button>
+          ))}
+          {catData !== [] && (
+            <MegaMenu
+              menuRef={menuRef}
+              data={catData}
+              isLightTheme={isLightTheme}
+            />
+          )}
+        </div>
       </div>
       <div
         ref={dropDownbgRef}

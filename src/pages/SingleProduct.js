@@ -34,14 +34,14 @@ export default function SingleProduct({
     calculateItemsPrice,
     addItemToCart,
     removeItemFromCart,
-    relatedItems,
+    allItems,
   } = React.useContext(DataProvider);
 
   const [quantity, setQuantity] = React.useState(1);
   const items = bestSeller.filter(item => item.id === id);
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
-  const [relatedData, hasMore] = useLazyLoadFetch(relatedItems, page);
+  const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
   const [data, setData] = React.useState(null);
   const [related, setRelated] = React.useState(null);
   const [detailsTab, setDetailsTab] = React.useState(0);
@@ -55,11 +55,11 @@ export default function SingleProduct({
     }
   };
   const handleAddToCart = () => {
-    addItemToCart({ data: data[0], quantity });
+    addItemToCart({ data: items[0], quantity });
     tl.play();
   };
   const handleRemoveFromCart = () => {
-    removeItemFromCart(data[0]);
+    removeItemFromCart(items[0]);
   };
   const handleCloseMenu = () => {
     tl.reverse(0.5);
@@ -115,7 +115,8 @@ export default function SingleProduct({
     setTimeout(() => {
       setData(items[0]);
     }, 5000);
-  }, [items]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <Helmet>

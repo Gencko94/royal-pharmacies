@@ -3,11 +3,11 @@ import { useMediaQuery } from 'react-responsive';
 import { Route } from 'react-router-dom';
 import MobileNavbar from './components/MobileNavbar';
 import Navbar from './components/Navbar';
-import Loadable from 'react-loadable';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Footer from './components/Footer';
 import MobileFooter from './components/MobileFooter';
+import CategoryMobile from './pages/CategoryMobile';
 
 const Home = React.lazy(() => import('./pages/Home'));
 const MyAccount = React.lazy(() => import('./pages/MyAccount'));
@@ -19,6 +19,7 @@ const SingleProductMobile = React.lazy(() =>
 const Cart = React.lazy(() => import('./pages/Cart'));
 const CartMobile = React.lazy(() => import('./pages/CartMobile'));
 
+const Category = React.lazy(() => import('./pages/Category'));
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
@@ -74,6 +75,21 @@ function App() {
               return <SingleProduct {...props} />;
             } else {
               return <SingleProductMobile {...props} />;
+            }
+          }}
+        />
+      </Suspense>
+      <Suspense
+        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
+      >
+        <Route
+          exact
+          path="/search/q=:query"
+          render={props => {
+            if (isTabletOrAbove) {
+              return <Category {...props} />;
+            } else {
+              return <CategoryMobile {...props} />;
             }
           }}
         />

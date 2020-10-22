@@ -59,6 +59,7 @@ export default function DeliverTo() {
                   type="checkbox"
                   className="form-checkbox rounded-full text-red-500 mr-2"
                   checked={deliveryCountry === country}
+                  readOnly={true}
                 />
                 <img
                   src={flags[country]}

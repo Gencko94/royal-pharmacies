@@ -167,20 +167,19 @@ export default function ItemsSlider({
                         }}
                       />
                     )}
-
-                    <MultiClamp
-                      className="text-sm  font-semibold"
-                      clamp={2}
-                      ellipsis="..."
+                    <Link
+                      title={item.name}
+                      className="hover:underline"
+                      to={`/products/${item.id}`}
                     >
-                      <Link
-                        title={item.name}
-                        className="hover:underline"
-                        to={`/products/${item.id}`}
+                      <MultiClamp
+                        className="text-sm  font-semibold"
+                        clamp={2}
+                        ellipsis="..."
                       >
                         {item.name}
-                      </Link>
-                    </MultiClamp>
+                      </MultiClamp>
+                    </Link>
 
                     <div className="flex items-center">
                       <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">

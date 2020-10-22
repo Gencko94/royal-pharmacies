@@ -39,7 +39,8 @@ export default function SingleProductMobile({
     removeItemFromCart,
     calculateItemsPrice,
     deliveryCountry,
-    relatedItems,
+
+    allItems,
   } = React.useContext(DataProvider);
   const items = bestSeller.filter(item => item.id === id);
   const [data, setData] = React.useState(null);
@@ -50,7 +51,7 @@ export default function SingleProductMobile({
 
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
-  const [relatedData, hasMore] = useLazyLoadFetch(relatedItems, page);
+  const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
   const [related, setRelated] = React.useState(null);
 
   React.useEffect(() => {

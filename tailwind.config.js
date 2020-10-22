@@ -106,6 +106,9 @@ module.exports = {
         '50p': '50%',
         '75p': '75%',
       },
+      maxWidth: {
+        default: '1560px',
+      },
       minHeight: {
         243: '243px',
       },

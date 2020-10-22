@@ -20,7 +20,10 @@ export default function Navbar() {
             : 'bg-first-nav-dark text-first-nav-text-dark'
         } text-sm px-4`}
       >
-        <ShipTo />
+        <div className="flex items-center">
+          <Language />
+          <ShipTo />
+        </div>
         <div className="flex justify items-center">
           {/* <button
               className="mr-2"
@@ -32,7 +35,6 @@ export default function Navbar() {
             My Account
           </Link>
           <LoginRegister />
-          <Language />
         </div>
       </div>
       <div

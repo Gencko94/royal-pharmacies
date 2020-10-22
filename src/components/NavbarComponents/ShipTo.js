@@ -31,19 +31,18 @@ export default function ShipTo() {
         onClick={toggleCountryList}
         className="  flex items-center rounded p-1 hover:bg-second-nav-light  transition duration-100"
       >
-        <span className="text-sm uppercase mr-2">
-          Deliver to  
-        </span>
-        <img src={flags[deliveryCountry]}
-                className="w-20p h-20p mr-2 "
-                alt="uae"
-              />
+        <span className="text-sm uppercase mr-2">Deliver to</span>
+        <img
+          src={flags[deliveryCountry]}
+          className="w-20p h-20p mr-2 "
+          alt="uae"
+        />
         <BiCaretDown />
       </button>
       <div
         ref={countryListRef}
         className="absolute p-2 transform z-20 scale-0 mt-1 text-gray-900 font-semibold   bg-gray-100 w-full  overflow-hidden left-0  top-100  transition duration-150 origin-top"
-      style={{width:'200px'}}
+        style={{ width: '200px' }}
       >
         {countries.map((country, i) => {
           return (
@@ -59,6 +58,7 @@ export default function ShipTo() {
                 type="checkbox"
                 className="form-checkbox rounded-full text-red-500 mr-2"
                 checked={deliveryCountry === country}
+                readOnly={true}
               />
               <img
                 src={flags[country]}
