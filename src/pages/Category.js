@@ -54,8 +54,6 @@ export default function Category({
   };
 
   const handleSettingCategories = () => {
-    if (filtersApplied) return;
-
     let categories = {};
     let numberOfItems = {};
 
@@ -131,7 +129,6 @@ export default function Category({
         );
       }
     } else {
-      console.log(sortBy);
       if (sortBy === 'Price (Low to High)') {
         setQueryData(
           queryData.sort((a, b) => parseInt(a.price) > parseInt(b.price))
@@ -155,7 +152,6 @@ export default function Category({
         setBrandFilters(brands);
       }
     } else {
-      console.log('pushed');
       brands.push(name);
       setBrandFilters(brands);
     }
@@ -164,7 +160,6 @@ export default function Category({
     setSubCategoryFilter(name);
   };
   React.useEffect(() => {
-    console.log(queryData);
     if (loading) return;
     if (filtersApplied) {
       setFilteredData(filterQueryData(queryData, filters));
@@ -191,7 +186,6 @@ export default function Category({
     return subCategory === subCategoryFilter;
   }
   React.useEffect(() => {
-    console.log(subCategoryFilter);
     if (!queryData) {
       return;
     }
@@ -202,7 +196,6 @@ export default function Category({
       });
       setFiltersApplied(false);
     } else if (brandFilters.length === 0 && subCategoryFilter) {
-      console.log('go here');
       setFiltersApplied(true);
       setFilters({ subCategory: sortBysubCategory, brand: null });
     } else if (brandFilters.length > 0 && !subCategoryFilter) {
@@ -212,7 +205,6 @@ export default function Category({
         brand: sortByBrand,
       });
     } else {
-      console.log('cool');
       setFilters({
         subCategory: sortBysubCategory,
         brand: sortByBrand,

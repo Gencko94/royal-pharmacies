@@ -14,7 +14,6 @@ export default function CategoryMobile({
   const [loading, setLoading] = React.useState(true);
   const [queryData, setQueryData] = React.useState([]);
   const [filteredData, setFilteredData] = React.useState([]);
-  const [filteredItems, setFilteredItems] = React.useState([]);
   const [categories, setCategories] = React.useState(null);
   const [brands, setBrands] = React.useState([]);
   const [numberOfItems, setNumberOfItems] = React.useState(null);
@@ -46,7 +45,6 @@ export default function CategoryMobile({
   }, [queryData]);
 
   const filterQueryData = (data, filter) => {
-    console.log(filter, 'filter function');
     if (!filter) return;
     const filterKeys = Object.keys(filter);
     return data.filter(item => {
@@ -60,7 +58,6 @@ export default function CategoryMobile({
     });
   };
   React.useEffect(() => {
-    console.log(queryData);
     if (loading) return;
     if (filtersApplied) {
       setFilteredData(filterQueryData(queryData, filters));
@@ -72,15 +69,16 @@ export default function CategoryMobile({
     setCategoryFilter(name);
   };
   const handleSortByChange = sortBy => {
-    if (sortBy === 'Popularity') return;
+    // if (sortBy === 'Popularity') return;
+    console.log(sortBy);
     if (filtersApplied) {
       if (sortBy === 'Price (Low to High)') {
-        setFilteredItems(
-          filteredItems.sort((a, b) => parseInt(a.price) < parseInt(b.price))
+        setFilteredData(
+          filteredData.sort((a, b) => parseInt(a.price) < parseInt(b.price))
         );
       } else if (sortBy === 'Price (High to Low)') {
-        setFilteredItems(
-          filteredItems.sort((a, b) => parseInt(a.price) > parseInt(b.price))
+        setFilteredData(
+          filteredData.sort((a, b) => parseInt(a.price) > parseInt(b.price))
         );
       }
     } else {

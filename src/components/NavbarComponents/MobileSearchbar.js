@@ -29,7 +29,7 @@ export default function MobileSearchbar({ isLightTheme }) {
       >
         <BiSearch className=" w-25p h-25p " />
       </div>
-      <form onSubmit={handleSearch}>
+      <form onSubmit={handleSearch} className="flex-1">
         <input
           value={searchBarValue}
           onChange={e => setSearchBarValue(e.target.value)}
@@ -38,7 +38,7 @@ export default function MobileSearchbar({ isLightTheme }) {
             isLightTheme
               ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
               : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500'
-          } p-1`}
+          } p-1 w-full `}
           placeholder="Search..."
         />
       </form>
