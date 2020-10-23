@@ -94,6 +94,39 @@ import yong from '../assets/fashion/yong.jpg';
 import streets from '../assets/fashion/streets.jpg';
 import adidas from '../assets/fashion/adidas.jpg';
 
+import apple from '../assets/brands/apple.png';
+import adidaslogo from '../assets/brands/adidaslogo.png';
+import adidas2 from '../assets/brands/adidas2.png';
+import black from '../assets/brands/black.png';
+import bose from '../assets/brands/bose.jpg';
+import homebox from '../assets/brands/homebox.png';
+import homes from '../assets/brands/homes.png';
+import huawei from '../assets/brands/huawei.jpg';
+// import intex from '../assets/brands/intex.png';
+import jysx from '../assets/brands/jysx.png';
+import kalvin from '../assets/brands/kalvin.png';
+import lenovo from '../assets/brands/lenovo.png';
+import mango from '../assets/brands/mango.png';
+import mi from '../assets/brands/mi.png';
+import nike from '../assets/brands/nike.png';
+import noon from '../assets/brands/noon.png';
+import pan from '../assets/brands/pan.png';
+import philips from '../assets/brands/philips.png';
+import prestige from '../assets/brands/prestige.png';
+import reebok from '../assets/brands/reebok.png';
+import royalford from '../assets/brands/royalford.png';
+import samsung from '../assets/brands/samsung.jpg';
+import sony from '../assets/brands/sony.png';
+import tommy from '../assets/brands/tommy.png';
+import trendyollogo from '../assets/brands/trendyollogo.png';
+import veromoda from '../assets/brands/veromoda.png';
+import pcs from '../assets/navCategories/pcs.jpg';
+import gaming from '../assets/navCategories/gaming.jpg';
+import kitchen from '../assets/navCategories/kitchen.jpg';
+import bedding from '../assets/navCategories/bedding.jpg';
+import menphoto from '../assets/navCategories/menphoto.jpg';
+import women from '../assets/navCategories/women.jpg';
+
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState('kuwait');
@@ -1158,387 +1191,381 @@ export default function DataContextProvider({ children }) {
   ];
   const navCategories = [
     {
-      title: 'Electronics & Appliances',
-      data: [
-        [
-          {
-            title: 'Batteries & Power',
-            sub: [
-              'Batteries',
-              'Extenstion Leads & Cables',
-              'Power Adaptors & Sockets',
-            ],
-          },
-          {
-            title: 'Cameras & Camcorders',
-            sub: [
-              'Action & Instant Cameras',
-              'Cameras Accessories',
-              'Camcorders',
-              'Cameras Bags',
-            ],
-          },
-          {
-            title: 'TVs & Projectors',
-            sub: [
-              'Projectors',
-              'Reviever & Sattelite Accessories',
-              'TV Accessories',
-              'TVs',
-            ],
-          },
-        ],
-
-        [
-          {
-            title: 'Home Cinema & Audio',
-            sub: [
-              'Audio Portable Devices',
-              'Audio Cables & Accessories',
-              'Blu Ray & Media Streaming',
-              'Car Audio',
-              'Home Cinema Systems',
-            ],
-          },
-          {
-            title: 'Small Appliances',
-            sub: [
-              'Accessories & Spare Parts',
-              'Coolers, Heaters & Air Treatment',
-              'Food Preperation',
-              'Irons & Steamers',
-              'Kettles & Coffee Machines',
-              'Microwave Ovens & Portable Ports',
-              'Sewing Machines',
-              'Toasters & Grills',
-            ],
-          },
-        ],
+      category: 'Electronics & Mobiles',
+      subCategories: [
+        'Mobiles',
+        'Computers',
+        'Video Games',
+        'Televisions',
+        'Power Banks',
+        'Speakers',
+        'Home Appliances',
+      ],
+      brands: [apple, samsung, huawei, lenovo, mi, noon, sony, bose, philips],
+      images: [pcs, gaming],
+    },
+    {
+      category: 'Fashion',
+      subCategories: [
+        'Women Fashion',
+        'Women Shoes',
+        'Men Fashion',
+        'Men Shoes',
+        'Kids Fashion',
+        'Jewellery',
+      ],
+      brands: [
+        adidaslogo,
+        adidas2,
+        veromoda,
+        nike,
+        kalvin,
+        trendyollogo,
+        reebok,
+        mango,
+        tommy,
+      ],
+      images: [women, menphoto],
+    },
+    {
+      category: 'Home & Kitchen',
+      subCategories: [
+        'Bedding',
+        'Bath',
+        'Home Decor',
+        'Kitchen & Dining',
+        'Home Appliances',
+        'Furniture',
+        'Pet Supplies',
+      ],
+      brands: [
+        prestige,
+        pan,
+        royalford,
+        noon,
+        philips,
+        black,
+        homes,
+        homebox,
+        jysx,
+      ],
+      images: [kitchen, bedding],
+    },
+    {
+      category: 'Sports & Outdoors',
+      subCategories: [
+        'Cardio Training',
+        'Strength Equipment',
+        'Yoga',
+        'Team Sports',
+        'Running & Training',
+        'Boxing & MMA',
+        'Cycling',
+        'Camping & Hiking',
+        'Swimming & Water Sports',
+      ],
+      brands: [apple, samsung, huawei, lenovo, mi, noon, sony, bose, philips],
+      images: [pcs, gaming],
+    },
+    {
+      category: 'Toys & Games',
+      subCategories: [
+        'Building Toys',
+        'Arts & Crafts',
+        'Dolls & Accessories',
+        'Figures & Statues',
+        'Sports & Outdoor Play',
+        'Remote Control & Play Vehicles',
+        'Board Games',
+        'Baby & Toddler Toys',
+      ],
+      brands: [
+        adidaslogo,
+        adidas2,
+        veromoda,
+        nike,
+        kalvin,
+        trendyollogo,
+        reebok,
+        mango,
+        tommy,
+      ],
+      images: [women, menphoto],
+    },
+    {
+      category: 'Baby Products',
+      subCategories: [
+        'Baby Transport',
+        'Feeding',
+        'Bathing & Skin Care',
+        'Diapering',
+        'Baby Clothing & Shoes',
+        'Matertinty Clothing',
+      ],
+      brands: [
+        prestige,
+        pan,
+        royalford,
+        noon,
+        philips,
+        black,
+        homes,
+        homebox,
+        jysx,
+      ],
+      images: [kitchen, bedding],
+    },
+    {
+      category: 'Grocery',
+      subCategories: [
+        'Beverages',
+        'Canned, Dry & Packaged Food',
+        'Snack Food',
+        'Breakfast Food',
+        'Baby Food',
+        'Cooking Essentials',
+      ],
+      brands: [apple, samsung, huawei, lenovo, mi, noon, sony, bose, philips],
+      images: [pcs, gaming],
+    },
+    {
+      category: 'Stationary & Office Supplies',
+      subCategories: [
+        'Printers',
+        'Inks & Toners',
+        'Arts & Crafts Supplies',
+        'Pens & Refills',
+        'Markers & Highlighters',
+      ],
+      brands: [
+        adidaslogo,
+        adidas2,
+        veromoda,
+        nike,
+        kalvin,
+        trendyollogo,
+        reebok,
+        mango,
+        tommy,
+      ],
+      images: [women, menphoto],
+    },
+  ];
+  const allCategories = [
+    {
+      category: 'Electronics & Mobiles',
+      mostPopular: [
+        'Mobiles',
+        'Computers',
+        'Video Games',
+        'Televisions',
+        'Power Banks',
+        'Speakers',
+        'Home Appliances',
+      ],
+      topBrands: [
+        'Apple',
+        'Samsung',
+        'Sony',
+        'Dell',
+        'HP',
+        'Kenwood',
+        'Philips',
+        'Canon',
+        'Huawei',
       ],
     },
     {
-      title: 'Fresh Food',
-      data: [
-        [
-          {
-            title: 'Fruits & Vegetables',
-            sub: [
-              'Fresh Boxes',
-              'Fruits',
-              'Herbs',
-              'Vegetables',
-              'Hydroponic Farming',
-            ],
-          },
-          {
-            title: 'Chilled Food Counter',
-            sub: [
-              'Cold Cuts & Meat Snacks',
-              'Dips,Spreads & Pate',
-              'Olives & Antipasti',
-              'Seafood & Caviar',
-              'Tofu',
-            ],
-          },
-          {
-            title: 'Dairy & Eggs',
-            sub: [
-              'Butter & Margarine',
-              'Cheese & Labaneh',
-              'Chilled Desserts',
-              'Cream',
-              'Eggs',
-              'Milk & Laban',
-              'Yoghurt',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Food To Go',
-            sub: ['Appetizers & Bites', 'Ready Meals To Go', 'Salads & Soup'],
-          },
-          {
-            title: 'Meat & Poultry',
-            sub: ['Beef', 'Chicken', 'Lamb', 'Variety Meat'],
-          },
-          {
-            title: 'Ready to Cook',
-            sub: ['Puff Pastry,Dough & Pizza Bases', 'Paste,Gnocchi & Sauces'],
-          },
-        ],
+      category: 'Fashion',
+      mostPopular: [
+        'Women Fashion',
+        'Women Shoes',
+        'Men Fashion',
+        'Men Shoes',
+        'Kids Fashion',
+        'Jewellery',
+      ],
+      topBrands: [
+        'Burberry',
+        'Calvin Klein',
+        'Davidoff',
+        'Babyliss',
+        'Hugo Boss',
+        'Maybelline New York',
+        'Max Factor',
       ],
     },
     {
-      title: 'Cleaning & Household',
-      data: [
-        [
-          {
-            title: 'Candles & Air Fresheners',
-            sub: [
-              'Autosprays & Refills',
-              'Candles,Diffusers & Incense',
-              'Sprays,Gels Air Fresheners',
-            ],
-          },
-          {
-            title: 'Cleaning Supplies',
-            sub: [
-              'Carpet & Floor Cleaning',
-              'Dishwashing Liquids & Tablets',
-              'Disinfectents & Wipes',
-              'Drain Unblockers',
-              'Glass & Wood Cleaning',
-              'Kitchen & Oven Cleaning',
-              'Multi Purpose Cleaning',
-              'Mops,Brooms & Dusters',
-              'Rubber Gloves',
-              'Shoe Polish',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Laundry & Detergants',
-            sub: [
-              'Detergants',
-              'Fabric Softener',
-              'Stain Removers & Fabric Care',
-            ],
-          },
-          {
-            title: 'Tissues',
-            sub: [
-              'Facial Tissues',
-              'Pocket Tissues',
-              'Refreshing Wet Wipes',
-              'Single & Convenience Tissues',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Laundry & Detergants',
-            sub: [
-              'Detergants',
-              'Fabric Softener',
-              'Stain Removers & Fabric Care',
-            ],
-          },
-          {
-            title: 'Tissues',
-            sub: [
-              'Facial Tissues',
-              'Pocket Tissues',
-              'Refreshing Wet Wipes',
-              'Single & Convenience Tissues',
-            ],
-          },
-        ],
+      category: 'Home & Kitchen',
+      mostPopular: [
+        'Bedding',
+        'Bath',
+        'Home Decor',
+        'Kitchen & Dining',
+        'Home Appliances',
+        'Furniture',
+        'Pet Supplies',
+      ],
+      topBrands: [
+        'Penguen',
+        'Intex',
+        'Opalina',
+        'Lock & Lock',
+        'RAJ',
+        'Luminarc',
+        'Prestige',
+        'Dinewell',
       ],
     },
     {
-      title: 'Gift Cards',
-      data: [
-        [
-          {
-            title: 'Candles & Air Fresheners',
-            sub: [
-              'Autosprays & Refills',
-              'Candles,Diffusers & Incense',
-              'Sprays,Gels Air Fresheners',
-            ],
-          },
-          {
-            title: 'Cleaning Supplies',
-            sub: [
-              'Carpet & Floor Cleaning',
-              'Dishwashing Liquids & Tablets',
-              'Disinfectents & Wipes',
-              'Drain Unblockers',
-              'Glass & Wood Cleaning',
-              'Kitchen & Oven Cleaning',
-              'Multi Purpose Cleaning',
-              'Mops,Brooms & Dusters',
-              'Rubber Gloves',
-              'Shoe Polish',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Laundry & Detergants',
-            sub: [
-              'Detergants',
-              'Fabric Softener',
-              'Stain Removers & Fabric Care',
-            ],
-          },
-          {
-            title: 'Tissues',
-            sub: [
-              'Facial Tissues',
-              'Pocket Tissues',
-              'Refreshing Wet Wipes',
-              'Single & Convenience Tissues',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Laundry & Detergants',
-            sub: [
-              'Detergants',
-              'Fabric Softener',
-              'Stain Removers & Fabric Care',
-            ],
-          },
-          {
-            title: 'Tissues',
-            sub: [
-              'Facial Tissues',
-              'Pocket Tissues',
-              'Refreshing Wet Wipes',
-              'Single & Convenience Tissues',
-            ],
-          },
-        ],
+      category: 'Sports & Outdoors',
+      mostPopular: [
+        'Cardio Training',
+        'Strength Equipment',
+        'Yoga',
+        'Team Sports',
+        'Running & Training',
+        'Boxing & MMA',
+        'Cycling',
+        'Camping & Hiking',
+        'Swimming & Water Sports',
+      ],
+      topBrands: [
+        'Nike',
+        'Adidas',
+        'Reebok',
+        'Puma',
+        'Trendyol',
+        'Ray-ban',
+        'Casio',
+        'Skechers',
       ],
     },
     {
-      title: 'Fashion & Jewellary',
-      data: [
-        [
-          {
-            title: 'Candles & Air Fresheners',
-            sub: [
-              'Autosprays & Refills',
-              'Candles,Diffusers & Incense',
-              'Sprays,Gels Air Fresheners',
-            ],
-          },
-          {
-            title: 'Cleaning Supplies',
-            sub: [
-              'Carpet & Floor Cleaning',
-              'Dishwashing Liquids & Tablets',
-              'Disinfectents & Wipes',
-              'Drain Unblockers',
-              'Glass & Wood Cleaning',
-              'Kitchen & Oven Cleaning',
-              'Multi Purpose Cleaning',
-              'Mops,Brooms & Dusters',
-              'Rubber Gloves',
-              'Shoe Polish',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Laundry & Detergants',
-            sub: [
-              'Detergants',
-              'Fabric Softener',
-              'Stain Removers & Fabric Care',
-            ],
-          },
-          {
-            title: 'Tissues',
-            sub: [
-              'Facial Tissues',
-              'Pocket Tissues',
-              'Refreshing Wet Wipes',
-              'Single & Convenience Tissues',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Laundry & Detergants',
-            sub: [
-              'Detergants',
-              'Fabric Softener',
-              'Stain Removers & Fabric Care',
-            ],
-          },
-          {
-            title: 'Tissues',
-            sub: [
-              'Facial Tissues',
-              'Pocket Tissues',
-              'Refreshing Wet Wipes',
-              'Single & Convenience Tissues',
-            ],
-          },
-        ],
+      category: 'Toys & Games',
+      mostPopular: [
+        'Building Toys',
+        'Arts & Crafts',
+        'Dolls & Accessories',
+        'Figures & Statues',
+        'Sports & Outdoor Play',
+        'Remote Control & Play Vehicles',
+        'Board Games',
+        'Baby & Toddler Toys',
+      ],
+      topBrands: ['Marshal Fitness', 'Reebok', 'Adidas', 'Nike', 'Speedo'],
+    },
+    {
+      category: 'Baby Products',
+      mostPopular: [
+        'Baby Transport',
+        'Feeding',
+        'Bathing & Skin Care',
+        'Diapering',
+        'Baby Clothing & Shoes',
+        'Matertinty Clothing',
+      ],
+      topBrands: [
+        'Baby Joy',
+        'Pampers',
+        'Huggies',
+        'WaterPipes',
+        'Chicco',
+        'PureBorn',
       ],
     },
     {
-      title: 'Baby Care',
-      data: [
-        [
-          {
-            title: 'Candles & Air Fresheners',
-            sub: [
-              'Autosprays & Refills',
-              'Candles,Diffusers & Incense',
-              'Sprays,Gels Air Fresheners',
-            ],
-          },
-          {
-            title: 'Cleaning Supplies',
-            sub: [
-              'Carpet & Floor Cleaning',
-              'Dishwashing Liquids & Tablets',
-              'Disinfectents & Wipes',
-              'Drain Unblockers',
-              'Glass & Wood Cleaning',
-              'Kitchen & Oven Cleaning',
-              'Multi Purpose Cleaning',
-              'Mops,Brooms & Dusters',
-              'Rubber Gloves',
-              'Shoe Polish',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Laundry & Detergants',
-            sub: [
-              'Detergants',
-              'Fabric Softener',
-              'Stain Removers & Fabric Care',
-            ],
-          },
-          {
-            title: 'Tissues',
-            sub: [
-              'Facial Tissues',
-              'Pocket Tissues',
-              'Refreshing Wet Wipes',
-              'Single & Convenience Tissues',
-            ],
-          },
-        ],
-        [
-          {
-            title: 'Laundry & Detergants',
-            sub: [
-              'Detergants',
-              'Fabric Softener',
-              'Stain Removers & Fabric Care',
-            ],
-          },
-          {
-            title: 'Tissues',
-            sub: [
-              'Facial Tissues',
-              'Pocket Tissues',
-              'Refreshing Wet Wipes',
-              'Single & Convenience Tissues',
-            ],
-          },
-        ],
+      category: 'Grocery',
+      mostPopular: [
+        'Beverages',
+        'Canned, Dry & Packaged Food',
+        'Snack Food',
+        'Breakfast Food',
+        'Baby Food',
+        'Cooking Essentials',
+      ],
+      topBrands: [
+        'Ariel',
+        'Aptamil',
+        'Waitrose',
+        'Nescafe',
+        'Dettol',
+        'Downy',
+        'Kelloggs',
+        'Lays',
+        'Head & Shoulders',
+      ],
+    },
+    {
+      category: 'Automotive',
+      mostPopular: [
+        'Car Electronics',
+        'Vehicle GPS',
+        'Snack Car Exterior Accessories',
+        'Car Interior Accessories',
+        'Motorcycle Accessories',
+        'Motorcycle Clothing & Gear',
+      ],
+      topBrands: ['Kenwood', 'Dainse', 'Sparco', 'Pioneer', 'Kenco'],
+    },
+    {
+      category: 'Tools & Home Improvement',
+      mostPopular: [
+        'Power Tools',
+        'Hand Tools',
+        'Light Bulbs',
+        'Safety & Security',
+      ],
+      topBrands: [
+        'Stanley',
+        'Bosch',
+        'Osram',
+        'National',
+        'Tactix',
+        'Makita',
+        'Philips',
+        'Master Lock',
+      ],
+    },
+    {
+      category: 'Pet Supplies',
+      mostPopular: [
+        'Dog Grooming',
+        'Dog Collars,Harnesses & Leashes',
+        'Dog Feeding & Watering Supplies',
+        'Car Frooming',
+      ],
+      topBrands: [
+        'Red Dingo Pet Adventure',
+        'Petstages',
+        'Four Paws',
+        'Drymate',
+        'The Company Of Animals',
+        'Nutra Pet',
+        'Kaytee',
+        'Master Lock',
+      ],
+    },
+    {
+      category: 'Stationary & Office Supplies',
+      mostPopular: [
+        'Printers',
+        'Inks & Toners',
+        'Arts & Crafts Supplies',
+        'Pens & Refills',
+        'Markers & Highlighters',
+      ],
+      topBrands: [
+        'Aibecy',
+        'Casio',
+        'FIS',
+        'Brother',
+        'Faber Castell',
+        'HP',
+        'Daler Rowney',
+        'Canon',
+        'Dell',
+        'Epson',
       ],
     },
   ];
@@ -1951,6 +1978,7 @@ export default function DataContextProvider({ children }) {
         home,
         fashion,
         allItems,
+        allCategories,
       }}
     >
       {children}

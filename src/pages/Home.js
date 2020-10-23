@@ -53,8 +53,8 @@ export default function Home() {
             isLightTheme
               ? 'bg-body-light text-body-text-light'
               : 'bg-body-dark text-body-text-dark'
-          } mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto`}
-          style={{ maxWidth: '1560px' }}
+          } mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
+          // style={{ maxWidth: '1560px' }}
         >
           <Categories />
           <ItemsSlider

@@ -440,7 +440,7 @@ input {
 }
 .search-page-items__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 228px);
+  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
   gap: 1em;
 }
 .search-page-items-mobile__grid {
@@ -507,4 +507,20 @@ input {
   transform: translateY(70%);
   opacity: 0;
   transition: 200ms ease;
+}
+.all-categories__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+}
+
+.nav-category__grid {
+  display: grid;
+  grid-template-columns: 0.1fr 0.2fr 0.7fr;
+  gap: 1em;
+}
+.nav-category-brands__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5em;
 }
