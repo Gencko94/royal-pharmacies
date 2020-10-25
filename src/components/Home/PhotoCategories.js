@@ -16,7 +16,7 @@ export default function PhotoCategories({ data, title }) {
     }`,
     gap: '8px',
   };
-
+  console.log('hello');
   return (
     <div className="py-6">
       {title && (

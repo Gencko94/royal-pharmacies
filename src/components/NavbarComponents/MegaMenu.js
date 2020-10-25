@@ -50,7 +50,7 @@ export default function MegaMenu({ data, isLightTheme, menuRef }) {
               }}
             >
               {data.images.map((img, i) => (
-                <div className=" mr-2 ">
+                <div key={i} className=" mr-2 ">
                   <img className="" src={img} alt="hi" key={i} />
                 </div>
               ))}

@@ -4,8 +4,8 @@ import zalo from '../../assets/offers/zalo.png';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 import MultiClamp from 'react-multi-clamp';
-import { Link } from 'react-router-dom';
 import ContentLoader from 'react-content-loader';
+
 // const isItemInCart = data => {
 //   const itemInCart = cartItems.find(item => data.id === item.id);
 //   if (itemInCart !== undefined) {
@@ -98,10 +98,11 @@ export default function ItemsSlider({
 
   const [items, setItems] = React.useState(null);
   React.useEffect(() => {
-    setTimeout(() => {
+    let timeout = setTimeout(() => {
       setItems(data);
     }, 5000);
-  });
+    return () => clearTimeout(timeout);
+  }, [data]);
   return (
     <div className="my-6 overflow-hidden   ">
       <div className="flex items-center mb-4">
@@ -134,14 +135,19 @@ export default function ItemsSlider({
                       : 'shadow-itemsSlider'
                   } rounded`}
                 >
-                  <Link to={`/products/${item.id}`}>
+                  <a
+                    href={`/products/${item.category.replace(
+                      /\s|%|,/g,
+                      '-'
+                    )}/${item.name.replace(/\s|%|,/g, '-')}/${item.id}`}
+                  >
                     <img
                       title={item.name}
                       src={item.photos.small}
                       alt={item.name}
                       className=" w-full object-cover "
                     />
-                  </Link>
+                  </a>
                   <hr />
 
                   <div
@@ -167,10 +173,13 @@ export default function ItemsSlider({
                         }}
                       />
                     )}
-                    <Link
+                    <a
                       title={item.name}
                       className="hover:underline"
-                      to={`/products/${item.id}`}
+                      href={`/products/${item.category.replace(
+                        /\s|%|,/g,
+                        '-'
+                      )}/${item.name.replace(/\s|%|,/g, '-')}/${item.id}`}
                     >
                       <MultiClamp
                         className="text-sm  font-semibold"
@@ -179,7 +188,7 @@ export default function ItemsSlider({
                       >
                         {item.name}
                       </MultiClamp>
-                    </Link>
+                    </a>
 
                     <div className="flex items-center">
                       <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">

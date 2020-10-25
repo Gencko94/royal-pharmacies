@@ -1,8 +1,12 @@
 import React from 'react';
+import Select from 'react-select';
 
 export default function MyProfileMobile() {
-  const [language, setLanguage] = React.useState('English');
-  const languages = ['Arabic', 'English'];
+  const languages = [
+    { value: 'Arabic', label: 'Arabic' },
+    { value: 'English', label: 'English' },
+  ];
+  const [language, setLanguage] = React.useState(languages[1]);
   return (
     <div>
       <div className="">
@@ -58,15 +62,12 @@ export default function MyProfileMobile() {
         <div className="">
           <div className="py-4 px-3 flex items-center ">
             <h1 className=" font-semibold w-2/4">Preffered Language</h1>
-            <select
-              value={language}
-              onChange={e => setLanguage(e.target.value)}
-              className="form-select"
-            >
-              {languages.map((language, i) => {
-                return <option key={i}>{language}</option>;
-              })}
-            </select>
+            <Select
+              defaultValue={language}
+              onChange={e => setLanguage(e)}
+              options={languages}
+              className="flex-1 text-center"
+            />
           </div>
         </div>
       </div>

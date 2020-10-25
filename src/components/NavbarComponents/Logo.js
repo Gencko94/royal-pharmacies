@@ -1,11 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/logomrg.png';
+import logo from '../../assets/mrgnavlogo.png';
+// import MrgLogo from '../../assets/MrgLogo';
 export default function Logo({ withTypography = false }) {
   return (
-    <div className="mr-2 px-1 flex  items-center text-sm  ">
-      <Link to="/">
-        <img src={logo} alt="alattiah" className="w-32 h-10" />
+    <div
+      className=" grid place-items-center   text-sm  "
+      style={{ flexBasis: '15%' }}
+    >
+      <Link to="/" className="text-second-nav-light">
+        <img src={logo} alt="MRG-logo" className="w-24" />
+        {/* <MrgLogo /> */}
       </Link>
       {withTypography && (
         <div className="flex flex-col font-bold ml-2">

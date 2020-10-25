@@ -21,7 +21,10 @@ export default function AllCategoriesMegaMenu({
         <div className="">
           <div className="flex justify-between items-center py-2 px-3">
             <h1 className=" font-semibold">{selectedCategory.category}</h1>
-            <Link className="text-sm font-normal hover:text-btn-primary-light hover:underline flex items-center ">
+            <Link
+              to="/"
+              className="text-sm font-normal hover:text-btn-primary-light hover:underline flex items-center "
+            >
               See all {selectedCategory.category}
               <span className="ml-2 ">
                 <BiCaretRight />
@@ -38,6 +41,7 @@ export default function AllCategoriesMegaMenu({
               {selectedCategory.mostPopular.map((item, i) => {
                 return (
                   <Link
+                    to="/"
                     key={i}
                     className="px-2 py-1  block text-sm hover:text-btn-primary-light"
                   >
@@ -51,6 +55,7 @@ export default function AllCategoriesMegaMenu({
               {selectedCategory.topBrands.map((item, i) => {
                 return (
                   <Link
+                    to="/"
                     key={i}
                     className="px-2 py-1 text-sm block hover:text-btn-primary-light"
                   >

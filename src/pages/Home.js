@@ -1,5 +1,6 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import LazyLoad from 'react-lazyload';
 import MainCarousel from '../components/Home/MainCarousel';
 import ipad from '../assets/banners/ipad.jpg';
 import earbuds from '../assets/banners/earbuds.jpg';
@@ -54,7 +55,6 @@ export default function Home() {
               ? 'bg-body-light text-body-text-light'
               : 'bg-body-dark text-body-text-dark'
           } mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
-          // style={{ maxWidth: '1560px' }}
         >
           <Categories />
           <ItemsSlider
@@ -64,6 +64,7 @@ export default function Home() {
             isLightTheme={isLightTheme}
           />
           {!isTabletOrAbove && <Banner img={ipad} />}
+
           <PhotoCategories
             data={[mobiles, tablets, computers, audiovideo]}
             title="Mobiles & Electronics"
@@ -77,12 +78,14 @@ export default function Home() {
               { title: 'iPhone Red', photo: iphonered },
             ]}
           /> */}
+
           <ItemsSlider
             data={phone}
             miniLogo={false}
             isLightTheme={isLightTheme}
             title="Save Big with Phones & Tablets"
           />
+
           {!isTabletOrAbove && <Banner img={earbuds} />}
           {isTabletOrAbove && <Banner img={offer} />}
           <PhotoCategories data={[homeapp, kitchen, appliances]} />
@@ -95,7 +98,9 @@ export default function Home() {
           {/* Fashion Section */}
           {/* <div className="bg-red-200"> */}
           {isTabletOrAbove && <Banner img={fashionbanner} />}
-          <PhotoCategories data={[men, women, kids]} />
+          <LazyLoad>
+            <PhotoCategories data={[men, women, kids]} />
+          </LazyLoad>
           <ItemsSlider
             data={fashion}
             miniLogo={false}

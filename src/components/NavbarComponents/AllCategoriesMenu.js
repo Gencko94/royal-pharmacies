@@ -18,6 +18,7 @@ export default function AllCategoriesMenu({
           {categories.map((item, i) => {
             return (
               <Link
+                to="/"
                 key={i}
                 onMouseEnter={() => handleChangeCategory(item.category)}
                 className={`px-4 py-2 font-semibold block ${

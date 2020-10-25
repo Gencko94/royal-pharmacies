@@ -25,7 +25,7 @@ export default function ThirdSection() {
         <img src={logomrg} alt="logo" className="w-32 h-10 mr-2" />
 
         <h1 className=" font-semibold text-sm">
-          &copy; 2020 AlattiahMall . All Rights Reserved
+          &copy; 2020 MRG . All Rights Reserved
         </h1>
       </div>
     </div>

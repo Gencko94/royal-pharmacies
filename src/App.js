@@ -8,6 +8,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import Footer from './components/Footer';
 import MobileFooter from './components/MobileFooter';
 import CategoryMobile from './pages/CategoryMobile';
+import GuestCheckOut from './pages/GuestCheckOut';
+import GuestCheckOutMobile from './pages/GuestCheckOutMobile';
 
 const Home = React.lazy(() => import('./pages/Home'));
 const MyAccount = React.lazy(() => import('./pages/MyAccount'));
@@ -23,7 +25,7 @@ const Category = React.lazy(() => import('./pages/Category'));
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
-    <div className="font-body antialiased">
+    <div className="font-body antialiased relative">
       {isTabletOrAbove ? <Navbar /> : <MobileNavbar />}
 
       <Suspense
@@ -69,7 +71,7 @@ function App() {
       >
         <Route
           exact
-          path="/products/:id"
+          path="/products/:category/:name/:id"
           render={props => {
             if (isTabletOrAbove) {
               return <SingleProduct {...props} />;
@@ -90,6 +92,21 @@ function App() {
               return <Category {...props} />;
             } else {
               return <CategoryMobile {...props} />;
+            }
+          }}
+        />
+      </Suspense>
+      <Suspense
+        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
+      >
+        <Route
+          exact
+          path="/checkout/quickcheckout"
+          render={props => {
+            if (isTabletOrAbove) {
+              return <GuestCheckOut {...props} />;
+            } else {
+              return <GuestCheckOutMobile {...props} />;
             }
           }}
         />

@@ -16,14 +16,16 @@ export default function MyAccountMobile({
     payment: 3,
     order_history: 4,
   };
-  const [selectedIndex, setSelectedIndex] = React.useState(() => {
-    if (page) {
-      return mapPageToIndex[page];
-    } else {
-      return 0;
-    }
-  });
-
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  React.useEffect(() => {
+    setSelectedIndex(() => {
+      if (page) {
+        return mapPageToIndex[page];
+      } else {
+        return 0;
+      }
+    });
+  }, [mapPageToIndex, page]);
   return (
     <div style={{ minHeight: 'calc(100vh - 56px)' }}>
       <MobileTabs

@@ -19,6 +19,7 @@ input {
   display: grid;
   grid-template-columns: minmax(150px, 250px) minmax(400px, 1fr);
   gap: 1em;
+  /* height: calc(100vh - 100px); */
 }
 
 .details__container {
@@ -436,16 +437,16 @@ input {
 .search-page__container {
   display: grid;
   grid-template-columns: 300px 1fr;
-  gap: 1em;
+  gap: 1.5em;
 }
 .search-page-items__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
-  gap: 1em;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.5em;
 }
 .search-page-items-mobile__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 
   gap: 0.5em;
 }
@@ -523,4 +524,43 @@ input {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 0.5em;
+}
+
+.modal-enter {
+  transform: translateY(-40px);
+  opacity: 0;
+}
+.modal-enter-active {
+  transform: translateY(0px);
+  opacity: 1;
+  transition: 400ms ease;
+}
+.modal-exit {
+  transform: translateY(0px);
+  opacity: 1;
+}
+.modal-exit-active {
+  transform: translateY(-40px);
+  opacity: 0;
+  transition: 400ms ease;
+}
+.modal-bg-enter {
+  opacity: 0;
+}
+.modal-bg-enter-active {
+  opacity: 0.5;
+  transition: 400ms ease;
+}
+.modal-bg-exit {
+  opacity: 0.5;
+}
+.modal-bg-exit-active {
+  opacity: 0;
+  transition: 400ms ease;
+}
+
+.quick-checkout-personal-info__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
 }

@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import ItemsSlider from '../components/Home/ItemsSlider';
 import FeaturedItemsVertical from '../components/Cart/FeaturedItemsVertical';
 import { Helmet } from 'react-helmet';
+import CheckoutModal from '../components/Cart/CheckoutModal';
+import useClickAway from '../hooks/useClickAway';
 export default function Cart() {
   const {
     cartItems,
@@ -17,16 +19,17 @@ export default function Cart() {
     phone,
   } = React.useContext(DataProvider);
   const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-
+  const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
+  const modalRef = React.useRef();
+  useClickAway(modalRef, () => {
+    setCheckOutModalOpen(false);
+  });
   return (
     <>
       <Helmet>
         <title>Cart | MRG</title>
       </Helmet>
-      <div
-        className=" cart py-2 px-4 relative"
-        style={{ maxWidth: '1560px', margin: '0 auto' }}
-      >
+      <div className=" cart py-2 px-4 relative max-w-default mx-auto">
         <div className="font-semibold float-right">
           <div className=" rounded border bg-gray-100 p-2 flex justify-start flex-col mb-2 ">
             <h1 className="text-base font-semibold mb-2 ">
@@ -35,6 +38,7 @@ export default function Cart() {
               {calculateItemsPrice(cartItems)} KD
             </h1>
             <button
+              onClick={() => setCheckOutModalOpen(true)}
               className={`${
                 cartItems.length === 0
                   ? 'cursor-not-allowed bg-gray-600'
@@ -130,6 +134,12 @@ export default function Cart() {
           isLightTheme={isLightTheme}
         />
       </div>
+      <CheckoutModal
+        checkoutModalOpen={checkoutModalOpen}
+        isLightTheme={isLightTheme}
+        modalRef={modalRef}
+        setCheckOutModalOpen={setCheckOutModalOpen}
+      />
     </>
   );
 }

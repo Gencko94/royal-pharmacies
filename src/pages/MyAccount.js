@@ -20,27 +20,30 @@ export default function MyAccount({
     payment: 3,
     order_history: 4,
   };
-  const [selectedIndex, setSelectedIndex] = React.useState(() => {
-    if (page) {
-      return mapPageToIndex[page];
-    } else {
-      return 0;
-    }
-  });
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  React.useEffect(() => {
+    setSelectedIndex(() => {
+      if (page) {
+        return mapPageToIndex[page];
+      } else {
+        return 0;
+      }
+    });
+  }, [mapPageToIndex, page]);
   return (
     <>
       <Helmet>
-        <title>My Account | Attiah Mall</title>
+        <title>My Account | MRG</title>
       </Helmet>
       <div
-        style={{ minHeight: 'calc(100vh - 140px)' }}
+        // style={{ minHeight: 'calc(100vh - 52px)' }}
         className={`mb-4 pt-2 px-8 ${
           isLightTheme
-            ? 'bg-body-light text-body-text-light'
+            ? 'bg-nav-cat-light text-body-text-light'
             : 'bg-body-dark text-body-text-dark'
         }`}
       >
-        <h1 className="text-xl mb-2 font-semibold">My Personal Account</h1>
+        {/* <h1 className="text-xl mb-2 font-semibold">My Personal Account</h1> */}
         <div className="myaccount__grid ">
           <SideTabs
             isLightTheme={isLightTheme}

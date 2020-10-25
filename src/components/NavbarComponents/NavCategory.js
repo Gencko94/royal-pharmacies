@@ -94,7 +94,7 @@ export default function NavCategory() {
             ? 'bg-nav-cat-light text-nav-cat-text-light'
             : 'bg-nav-cat-dark text-nav-cat-text-dark'
         }  `}
-        style={{ top: '72px' }}
+        style={{ top: '62px' }}
       >
         <div className="max-w-default mx-auto items-center flex px-6   ">
           <AllCategories dropDownbgRef={dropDownbgRef} />

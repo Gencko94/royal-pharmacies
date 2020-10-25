@@ -3,15 +3,17 @@ import { FaFacebook } from 'react-icons/fa';
 import { FaTwitter } from 'react-icons/fa';
 import { FaInstagram } from 'react-icons/fa';
 import { FaLinkedin } from 'react-icons/fa';
-import logomrg from '../../assets/logomrg.png';
+import logomrg from '../../assets/mrg.png';
 export default function ThirdSection() {
   return (
-    <div className={`pt-4 px-8 pb-2 bg-first-nav-light text-first-nav-text-light  flex items-center justify-between  `}>
+    <div
+      className={`pt-4 px-8 pb-2 bg-first-nav-light text-first-nav-text-light  flex items-center justify-between  `}
+    >
       <div className="flex items-center ">
         <img src={logomrg} alt="logo" className="w-32 h-10 mr-2" />
 
         <h1 className=" font-semibold text-sm">
-          &copy; 2020 AlattiahMall . All Rights Reserved
+          &copy; 2020 MRG . All Rights Reserved
         </h1>
       </div>
       <div className="flex justify-evenly">

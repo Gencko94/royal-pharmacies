@@ -11,23 +11,20 @@ import { Helmet } from 'react-helmet';
 import { gsap } from 'gsap';
 import { Power2 } from 'gsap';
 import MultiClamp from 'react-multi-clamp';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Rating from 'react-rating';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import ContentLoader from 'react-content-loader';
 import InView from 'react-intersection-observer';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 
-export default function SingleProduct({
-  match: {
-    params: { id },
-  },
-}) {
+export default function SingleProduct() {
   let tl = gsap.timeline({
     defaults: { duration: 0.5, ease: Power2.easeOut },
     paused: true,
   });
-
+  const { id, category } = useParams();
+  console.log(id, category);
   const {
     bestSeller,
     deliveryCountry,

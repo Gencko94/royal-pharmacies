@@ -217,7 +217,7 @@ export default function Category({
       <Helmet>
         <title>Search</title>
       </Helmet>
-      <div className="max-w-default px-4">
+      <div className="max-w-default mx-auto px-4">
         <Breadcrumbs />
         <div className="search-page__container">
           <CategoryLeftSide

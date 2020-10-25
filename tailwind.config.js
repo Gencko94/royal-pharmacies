@@ -33,6 +33,7 @@ module.exports = {
       },
       screens: {
         xs: '320px',
+        xxl: '1440px',
       },
       fontFamily: {
         body: ['Open Sans'],
