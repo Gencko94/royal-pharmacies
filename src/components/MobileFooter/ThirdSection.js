@@ -3,7 +3,7 @@ import { FaFacebook } from 'react-icons/fa';
 import { FaTwitter } from 'react-icons/fa';
 import { FaInstagram } from 'react-icons/fa';
 import { FaLinkedin } from 'react-icons/fa';
-import logomrg from '../../assets/logomrg.png';
+import logomrg from '../../assets/mrgnavlogo.png';
 export default function ThirdSection() {
   return (
     <div className="p-4 pb-2 text-gray-100 bg-gray-900 ">
@@ -21,10 +21,10 @@ export default function ThirdSection() {
           <FaLinkedin className="h-25p w-20p text-blue-600" />
         </button>
       </div>
-      <div className="flex items-center">
-        <img src={logomrg} alt="logo" className="w-32 h-10 mr-2" />
+      <div className="flex justify-start items-end ">
+        <img src={logomrg} alt="logo" className="w-24 mr-5" />
 
-        <h1 className=" font-semibold text-sm">
+        <h1 className=" font-semibold text-xs text-right">
           &copy; 2020 MRG . All Rights Reserved
         </h1>
       </div>

@@ -1,38 +1,48 @@
 import React from 'react';
-import shoppingLost from '../../assets/illustrations/shoppingLost.svg';
-import { AiFillShopping } from 'react-icons/ai';
+import { DataProvider } from '../../contexts/DataContext';
+import NoOrdersMobile from './MyOrdersMobile/NoOrdersMobile';
+import OrderMobile from './MyOrdersMobile/OrderMobile';
+import OrderDetailsMobile from './MyOrdersMobile/OrderDetailsMobile';
 export default function MyOrdersMobile() {
-  const orders = [];
+  const { orderedItems } = React.useContext(DataProvider);
+  const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false);
+  const [selectedOrder, setSelectedOrder] = React.useState(null);
+  const handleOrderDetailsClose = () => {
+    setSelectedOrder(null);
+  };
+  React.useEffect(() => {
+    if (selectedOrder) {
+      setOrderDetailsOpen(true);
+    } else {
+      setOrderDetailsOpen(false);
+    }
+  }, [selectedOrder]);
   return (
-    <div className="text-black  ">
-      <div className="px-3 py-3   ">
+    <div className="  ">
+      <div className="p-2">
         <h1 className="text-xl font-semibold text-center">Orders</h1>
       </div>
-      <hr />
-      {orders.length === 0 && (
-        <div
-          className="  flex flex-col justify-center items-center p-4 "
-          style={{ minHeight: '500px' }}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-lg text-center font-bold">
-              You've not placed any Orders yet !
-            </h1>
-            <button className=" mt-3 font-semibold flex items-center rounded px-3 py-1 bg-red-600 text-gray-100">
-              <span className="mr-1 text-white ">
-                <AiFillShopping className="w-20p h-20p" />
-              </span>
-              Start shopping now !
-            </button>
-          </div>
-          <img
-            className="mt-5"
-            style={{ height: '200px' }}
-            src={shoppingLost}
-            alt="lostManWallet"
-          />
+      {orderedItems.length === 0 ? (
+        <NoOrdersMobile />
+      ) : (
+        <div className="p-2">
+          {orderedItems.map((order, i) => {
+            return (
+              <div key={i}>
+                <OrderMobile
+                  order={order}
+                  setSelectedOrder={setSelectedOrder}
+                />
+              </div>
+            );
+          })}
         </div>
       )}
+      <OrderDetailsMobile
+        selectedOrder={selectedOrder}
+        handleOrderDetailsClose={handleOrderDetailsClose}
+        orderDetailsOpen={orderDetailsOpen}
+      />
     </div>
   );
 }

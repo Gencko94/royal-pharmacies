@@ -5,7 +5,7 @@ import { AiOutlineFileDone } from 'react-icons/ai';
 import { MdDone } from 'react-icons/md';
 export default function Stepper({ selectedStep, stepDone }) {
   return (
-    <div className="p-4 mb-10 md:max-w-screen-md xxl:max-w-xl  mx-auto">
+    <div className="p-4 mb-10 xs:max-w-screen-xs md:max-w-screen-md xxl:max-w-xl  mx-auto">
       <div className="">
         <div className="flex items-center ">
           <div className="flex items-center   relative">

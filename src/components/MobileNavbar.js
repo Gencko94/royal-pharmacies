@@ -1,13 +1,13 @@
 import React from 'react';
 import useClickAway from '../hooks/useClickAway';
 import Hamburger from './NavbarComponents/Hamburger';
-import Logo from './NavbarComponents/Logo';
 import MobileIcons from './NavbarComponents/MobileIcons';
 import MobileSearchbar from './NavbarComponents/MobileSearchbar';
 import SideMenu from './NavbarComponents/SideMenu';
 import { CSSTransition } from 'react-transition-group';
 import DeliverTo from './MobileNavbar/DeliverTo';
 import { DataProvider } from '../contexts/DataContext';
+import NavLogoMobile from './MobileNavbar/NavLogoMobile';
 
 export default function MobileNavbar() {
   const { isLightTheme } = React.useContext(DataProvider);
@@ -77,7 +77,7 @@ export default function MobileNavbar() {
           }`}
         >
           <Hamburger toggleSideMenu={toggleSideMenu} />
-          <Logo withTypography={false} />
+          <NavLogoMobile />
           {/* <button className="mr-2" onClick={() => setLightTheme(!isLightTheme)}>
             Light Theme Toggle
           </button> */}
@@ -119,14 +119,7 @@ export default function MobileNavbar() {
         >
           <Hamburger toggleSideMenu={toggleSideMenuSecond} />
           <MobileSearchbar isLightTheme={isLightTheme} />
-          {/* <input
-            className={`${
-              isLightTheme
-                ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
-                : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500'
-            } px-1 flex-1 rounded `}
-            placeholder="Search..."
-          /> */}
+
           <MobileIcons />
 
           <SideMenu

@@ -40,6 +40,8 @@ module.exports = {
         cairo: ['Cairo'],
       },
       colors: {
+        'main-color': '#b72b2b',
+        'main-text': '#fff',
         'cadet-blue': '#5F9EA0',
         'body-light': '#fff',
         'body-text-light': '#252525',

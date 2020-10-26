@@ -1,7 +1,7 @@
 import React from 'react';
-import Address from '../components/Cart/GuestCheckout/Address';
-import OrderPlaced from '../components/Cart/GuestCheckout/OrderPlaced';
-import PersonalInformation from '../components/Cart/GuestCheckout/PersonalInformation';
+import AddressMobile from '../components/Cart/GuestCheckoutMobile/AddressMobile';
+import OrderPlacedMobile from '../components/Cart/GuestCheckoutMobile/OrderPlacedMobile';
+import PersonalInformationMobile from '../components/Cart/GuestCheckoutMobile/PersonalInformationMobile';
 import Stepper from '../components/Cart/Stepper';
 
 export default function GuestCheckOutMobile() {
@@ -38,16 +38,16 @@ export default function GuestCheckOutMobile() {
       <Stepper selectedStep={selectedStep} stepDone={stepDone} />
       <div className="mb-3" style={{ minHeight: 'calc(100vh - 180px)' }}>
         {selectedStep === 0 && (
-          <Address handleStepForward={handleStepForward} />
+          <AddressMobile handleStepForward={handleStepForward} />
         )}
         {selectedStep === 1 && (
-          <PersonalInformation
+          <PersonalInformationMobile
             handleStepForward={handleStepForward}
             handleStepBack={handleStepBack}
           />
         )}
         {selectedStep === 2 && (
-          <OrderPlaced
+          <OrderPlacedMobile
             handleStepForward={handleStepForward}
             handleStepBack={handleStepBack}
           />

@@ -564,3 +564,22 @@ input {
   grid-template-columns: 1fr 1fr;
   gap: 1em;
 }
+.quick-checkout-personal-info-mobile__container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1em;
+}
+.order-items__mobile-enter {
+  transform: translateY(100%);
+}
+.order-items__mobile-enter-active {
+  transform: translateY(0);
+  transition: 200ms ease;
+}
+.order-items__mobile-exit {
+  transform: translateY(0);
+}
+.order-items__mobile-exit-active {
+  transform: translatex(100%);
+  transition: 200ms ease;
+}

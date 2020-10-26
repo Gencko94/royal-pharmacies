@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Hamburger from './Hamburger';
-import Logo from './Logo';
 import { BsChevronRight } from 'react-icons/bs';
 import { AiOutlineApartment } from 'react-icons/ai';
 import { AiOutlineHistory } from 'react-icons/ai';
@@ -13,6 +11,7 @@ import { MdLocationOn } from 'react-icons/md';
 import { RiCustomerServiceFill } from 'react-icons/ri';
 import { DataProvider } from '../../contexts/DataContext';
 import { Link } from 'react-router-dom';
+import TopSection from '../SideMenuMobile/TopSection';
 
 export default function SideMenu({
   toggleSideMenu,
@@ -67,29 +66,8 @@ export default function SideMenu({
       }  z-20 transform -translate-x-full transition-transform duration-300 absolute top-0 left-0 min-w-75p h-screen sm:text-lg`}
       style={{ maxWidth: '75%' }}
     >
-      <div
-        className={`${
-          isLightTheme
-            ? 'bg-second-nav-light text-second-nav-text-light'
-            : 'bg-second-nav-dark text-second-nav-text-dark'
-        } p-1`}
-        style={{ minHeight: '105px' }}
-      >
-        <div className={`p-1 flex items-center `}>
-          <Hamburger toggleSideMenu={toggleSideMenu} />
-          <div className="inline-flex flex-1 justify-center " style={{ }}>
-            <Logo withTypography={false} />
-          </div>
-        </div>
-        <div className="flex place-content-center p-2 ">
-          <Link
-            to="/app/login"
-            className=" font-semibold p-1 rounded text-center "
-          >
-            Hello,Sign in
-          </Link>
-        </div>
-      </div>
+      <TopSection isLightTheme={isLightTheme} toggleSideMenu={toggleSideMenu} />
+
       {/* <hr /> */}
       <div className="relative overflow-hidden mt-2 ">
         <div ref={innerRef} className="sidebar__inner  ">
