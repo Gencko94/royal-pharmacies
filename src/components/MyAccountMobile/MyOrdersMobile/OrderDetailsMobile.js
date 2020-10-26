@@ -21,8 +21,11 @@ export default function OrderDetailsMobile({
       unmountOnExit
     >
       <div className="absolute top-0 left-0 right-0 bottom-0  bg-body-light z-30 max-w-full overflow-y-auto">
-        <div className=" sticky top-0 p-2 flex items-center bg-main-color text-main-text">
-          <button className="text-white mr-4" onClick={handleOrderDetailsClose}>
+        <div className=" sticky top-0 p-3 flex items-center bg-main-color text-main-text">
+          <button
+            className="text-white text-center mr-4"
+            onClick={handleOrderDetailsClose}
+          >
             <AiOutlineArrowLeft className="w-6 h-6 " />
           </button>
           <h1 className="font-semibold text-lg">Order Details</h1>
