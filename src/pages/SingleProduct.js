@@ -117,7 +117,10 @@ export default function SingleProduct() {
     <>
       <Helmet>
         <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
-        <meta name="description" content={`Shop ${name} | MRG`} />
+        <meta
+          name="description"
+          content={`Shop  ${name.split('-').join(' ')} | MRG`}
+        />
       </Helmet>
       <div onClick={handleCloseMenu} className="side__addCart-bg"></div>
       <div className="side__addCart-container ">
