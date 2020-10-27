@@ -29,7 +29,7 @@ import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 
 export default function SingleProductMobile({
   match: {
-    params: { id },
+    params: { id, name },
   },
 }) {
   const {
@@ -99,10 +99,10 @@ export default function SingleProductMobile({
   return (
     <>
       <Helmet>
-        <title>{`${data && data.name} | MRG`} </title>
-        <meta name="description" content={`${data && data.name} | MRG`} />
+        <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
+        <meta name="description" content={`${name} | MRG`} />
       </Helmet>
-      <div className="overflow-hidde">
+      <div className="overflow-hidden">
         <CSSTransition
           in={showAddedToCart}
           timeout={200}

@@ -23,8 +23,7 @@ export default function SingleProduct() {
     defaults: { duration: 0.5, ease: Power2.easeOut },
     paused: true,
   });
-  const { id, category } = useParams();
-  console.log(id, category);
+  const { id, name } = useParams();
   const {
     bestSeller,
     deliveryCountry,
@@ -117,8 +116,8 @@ export default function SingleProduct() {
   return (
     <>
       <Helmet>
-        <title>{`${data && data.name} | MRG`} </title>
-        <meta name="description" content={`${data && data.name} | MRG`} />
+        <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
+        <meta name="description" content={`Shop ${name} | MRG`} />
       </Helmet>
       <div onClick={handleCloseMenu} className="side__addCart-bg"></div>
       <div className="side__addCart-container ">
