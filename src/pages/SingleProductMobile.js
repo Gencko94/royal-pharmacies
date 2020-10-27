@@ -99,7 +99,8 @@ export default function SingleProductMobile({
   return (
     <>
       <Helmet>
-        <title>{items[0].name} | MRG</title>
+        <title>{`${data && data.name} | MRG`} </title>
+        <meta name="description" content={`${data && data.name} | MRG`} />
       </Helmet>
       <div className="overflow-hidde">
         <CSSTransition
