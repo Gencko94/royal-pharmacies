@@ -100,7 +100,10 @@ export default function SingleProductMobile({
     <>
       <Helmet>
         <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
-        <meta name="description" content={`${name} | MRG`} />
+        <meta
+          name="description"
+          content={`${name.split('-').join(' ')} | MRG`}
+        />
       </Helmet>
       <div className="overflow-hidden">
         <CSSTransition
