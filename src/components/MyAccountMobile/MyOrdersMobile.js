@@ -4,7 +4,7 @@ import NoOrdersMobile from './MyOrdersMobile/NoOrdersMobile';
 import OrderMobile from './MyOrdersMobile/OrderMobile';
 import OrderDetailsMobile from './MyOrdersMobile/OrderDetailsMobile';
 export default function MyOrdersMobile() {
-  const { orderedItems } = React.useContext(DataProvider);
+  const { orderedItems, isLightTheme } = React.useContext(DataProvider);
   const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
   const handleOrderDetailsClose = () => {
@@ -30,6 +30,7 @@ export default function MyOrdersMobile() {
             return (
               <div key={i}>
                 <OrderMobile
+                  isLightTheme={isLightTheme}
                   order={order}
                   setSelectedOrder={setSelectedOrder}
                 />
@@ -42,6 +43,7 @@ export default function MyOrdersMobile() {
         selectedOrder={selectedOrder}
         handleOrderDetailsClose={handleOrderDetailsClose}
         orderDetailsOpen={orderDetailsOpen}
+        isLightTheme={isLightTheme}
       />
     </div>
   );

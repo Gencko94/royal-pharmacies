@@ -33,7 +33,6 @@ export default function SingleProductMobile({
   },
 }) {
   const {
-    bestSeller,
     addItemToCart,
     cartItems,
     removeItemFromCart,
@@ -42,7 +41,7 @@ export default function SingleProductMobile({
 
     allItems,
   } = React.useContext(DataProvider);
-  const items = bestSeller.filter(item => item.id === id);
+  const items = allItems.filter(item => item.id === id);
   const [data, setData] = React.useState(null);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [quantity, setQuantity] = React.useState(1);

@@ -111,13 +111,14 @@ export default function SingleProduct() {
   React.useEffect(() => {
     setTimeout(() => {
       setData(items[0]);
-    }, 5000);
+    }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
       <Helmet>
-        <title>{items[0].name} | MRG </title>
+        <title>{`${data && data.name} | MRG`} </title>
+        <meta name="description" content={`${data && data.name} | MRG`} />
       </Helmet>
       <div onClick={handleCloseMenu} className="side__addCart-bg"></div>
       <div className="side__addCart-container ">

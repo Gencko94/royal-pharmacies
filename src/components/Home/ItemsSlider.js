@@ -1,6 +1,5 @@
 import React from 'react';
 import Slider from 'react-slick';
-import zalo from '../../assets/offers/zalo.png';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 import MultiClamp from 'react-multi-clamp';
@@ -160,19 +159,6 @@ export default function ItemsSlider({
                     }`}
                     style={{ minHeight: '72px' }}
                   >
-                    {miniLogo && (
-                      <img
-                        src={zalo}
-                        alt="playstore"
-                        className="absolute rounded-full shadow-xl "
-                        style={{
-                          width: '50px',
-                          height: '50px',
-                          top: '-25px',
-                          left: '18px',
-                        }}
-                      />
-                    )}
                     <a
                       title={item.name}
                       className="hover:underline"

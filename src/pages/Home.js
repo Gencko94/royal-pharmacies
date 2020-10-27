@@ -39,6 +39,10 @@ export default function Home() {
     <>
       <Helmet>
         <title>MRG</title>
+        <meta
+          name="description"
+          content="MRG is the Kuwait homegrown online marketplace. Buy your favourate fashion, beauty, home appliances"
+        />
       </Helmet>
       <div
         className={`mb-5 overflow-hidden ${
