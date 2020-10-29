@@ -10,6 +10,7 @@ import FeaturedItemsVertical from '../components/Cart/FeaturedItemsVertical';
 import { Helmet } from 'react-helmet';
 import CheckoutModal from '../components/Cart/CheckoutModal';
 import useClickAway from '../hooks/useClickAway';
+import Layout from '../components/Layout';
 export default function Cart() {
   const {
     cartItems,
@@ -25,7 +26,7 @@ export default function Cart() {
     setCheckOutModalOpen(false);
   });
   return (
-    <>
+    <Layout>
       <Helmet>
         <title>Cart | MRG</title>
       </Helmet>
@@ -140,6 +141,6 @@ export default function Cart() {
         modalRef={modalRef}
         setCheckOutModalOpen={setCheckOutModalOpen}
       />
-    </>
+    </Layout>
   );
 }

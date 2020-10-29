@@ -1,24 +1,27 @@
 import React from 'react';
 import { HiOutlineShoppingBag } from 'react-icons/hi';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { DataProvider } from '../../contexts/DataContext';
+import { useIntl } from 'react-intl';
 export default function NavIcons({ color = 'nav-secondary' }) {
   const { cartItems, isLightTheme } = React.useContext(DataProvider);
-  const history = useHistory();
+  const { formatMessage, locale } = useIntl();
   return (
     <div
-      className={`flex items-center justify-between  text-${color}`}
-      style={{ flexBasis: '15%' }}
+      className={`flex items-center justify-evenly  text-${color}`}
+      style={{ flexBasis: '220px' }}
     >
-      <button
-        onClick={() => history.push('/cart')}
+      <Link
+        to={`/${locale}/cart`}
         className="flex p-1  items-center font-semibold   relative"
       >
-        <h1 className="mr-2 text-sm ">Cart</h1>
-        <HiOutlineShoppingBag className="w-30p h-30p " />
+        <h1 className=" text-sm ">{formatMessage({ id: 'nav.cart' })}</h1>
+        <HiOutlineShoppingBag className="w-30p h-30p mx-1 " />
         <span
-          className={`h-4 w-4  font-bold rounded-full absolute top-0 right-0 text-xs grid place-items-center ${
+          className={`absolute ${
+            locale === 'ar' ? 'rtl-cart-icon' : 'right-0'
+          } h-4 w-4  font-bold rounded-full  top-0 text-xs flex items-center justify-center ${
             isLightTheme
               ? 'bg-second-nav-text-light text-second-nav-light'
               : 'bg-second-nav-dark text-second-nav-text-dark'
@@ -26,12 +29,12 @@ export default function NavIcons({ color = 'nav-secondary' }) {
         >
           {cartItems.length}
         </span>
-      </button>
+      </Link>
 
-      <button className="p-1 flex items-center font-semibold  ">
-        <h1 className="mr-2 text-sm ">Wishlist</h1>
-        <AiOutlineHeart className="w-30p h-30p" />
-      </button>
+      <Link to="/" className="p-1 flex items-center font-semibold  ">
+        <h1 className=" text-sm ">{formatMessage({ id: 'nav.wishlist' })}</h1>
+        <AiOutlineHeart className="w-30p h-30p mx-1" />
+      </Link>
     </div>
   );
 }

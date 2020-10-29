@@ -2,12 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/main.css';
 import './css/styles.css';
+import './css/rtl.css';
 import App from './App';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import DataContextProvider from './contexts/DataContext';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import ScrollToTopOnMount from './helpers/ScrollToTopOnMount';
+
 import SearchContext from './contexts/SearchContext';
 
 const localCart = localStorage.getItem('cartItems');
@@ -18,19 +16,18 @@ const visitedItems = localStorage.getItem('visitedItems');
 if (!visitedItems) {
   localStorage.setItem('visitedItems', JSON.stringify([]));
 }
-
+const prefferedLanguage = localStorage.getItem('prefferedLanguage');
+if (!prefferedLanguage) {
+  localStorage.setItem('prefferedLanguage', 'en');
+}
 ReactDOM.render(
   <DataContextProvider>
     <SearchContext>
-      <Router>
-        <ScrollToTopOnMount />
-        <Switch>
-          <Route exact path="/app/register" component={Register} />
-          <Route exact path="/app/login" component={Login} />
-          <Route component={App} />
-        </Switch>
-      </Router>
+      <div className={` antialiased relative`}>
+        <App />
+      </div>
     </SearchContext>
   </DataContextProvider>,
+
   document.getElementById('root')
 );

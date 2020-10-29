@@ -1,11 +1,10 @@
 import React from 'react';
 import useClickAway from '../hooks/useClickAway';
-import Hamburger from './NavbarComponents/Hamburger';
-import MobileIcons from './NavbarComponents/MobileIcons';
-import MobileSearchbar from './NavbarComponents/MobileSearchbar';
+import Hamburger from './MobileNavbar/Hamburger';
+import MobileIcons from './MobileNavbar/MobileIcons';
+import MobileSearchbar from './MobileNavbar/MobileSearchbar';
 import SideMenu from './NavbarComponents/SideMenu';
 import { CSSTransition } from 'react-transition-group';
-import DeliverTo from './MobileNavbar/DeliverTo';
 import { DataProvider } from '../contexts/DataContext';
 import NavLogoMobile from './MobileNavbar/NavLogoMobile';
 
@@ -81,12 +80,8 @@ export default function MobileNavbar() {
           {/* <button className="mr-2" onClick={() => setLightTheme(!isLightTheme)}>
             Light Theme Toggle
           </button> */}
-          <DeliverTo />
-          <div className="ml-2">
-            <button className=" font-semibold  font-cairo transition duration-100 hover:text-gray-300">
-              العربية
-            </button>
-          </div>
+          {/* <DeliverTo /> */}
+
           <MobileIcons />
           <SideMenu
             toggleSideMenu={toggleSideMenu}
@@ -118,9 +113,11 @@ export default function MobileNavbar() {
           } p-2  z-10 top-0 left-0 `}
         >
           <Hamburger toggleSideMenu={toggleSideMenuSecond} />
-          <MobileSearchbar isLightTheme={isLightTheme} />
+          <div className="mx-2 flex-1">
+            <MobileSearchbar isLightTheme={isLightTheme} />
+          </div>
 
-          <MobileIcons />
+          <MobileIcons withoutLanguage={true} withoutFlag={true} />
 
           <SideMenu
             toggleSideMenu={toggleSideMenuSecond}

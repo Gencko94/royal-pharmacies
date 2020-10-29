@@ -1,4 +1,6 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
+import LayoutMobile from '../components/LayoutMobile';
 import MobileTabs from '../components/MyAccountMobile/MobileTabs';
 import MyAddressesMobile from '../components/MyAccountMobile/MyAddressesMobile';
 import MyOrdersMobile from '../components/MyAccountMobile/MyOrdersMobile';
@@ -27,17 +29,22 @@ export default function MyAccountMobile({
     });
   }, [mapPageToIndex, page]);
   return (
-    <div style={{ minHeight: 'calc(100vh - 56px)' }}>
-      <MobileTabs
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
-      />
-      <div className="py-0 ">
-        {selectedIndex === 0 && <MyProfileMobile />}
-        {selectedIndex === 1 && <MyAddressesMobile />}
-        {selectedIndex === 2 && <MyOrdersMobile />}
-        {selectedIndex === 3 && <PaymentDetailsMobile />}
+    <LayoutMobile>
+      <Helmet>
+        <title>My Account | MRG</title>
+      </Helmet>
+      <div style={{ minHeight: 'calc(100vh - 56px)' }}>
+        <MobileTabs
+          selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
+        />
+        <div className="py-0 ">
+          {selectedIndex === 0 && <MyProfileMobile />}
+          {selectedIndex === 1 && <MyAddressesMobile />}
+          {selectedIndex === 2 && <MyOrdersMobile />}
+          {selectedIndex === 3 && <PaymentDetailsMobile />}
+        </div>
       </div>
-    </div>
+    </LayoutMobile>
   );
 }

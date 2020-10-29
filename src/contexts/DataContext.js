@@ -133,7 +133,14 @@ export default function DataContextProvider({ children }) {
   const [selectedStore, setSelectedStore] = React.useState('kuwait');
   const [isLightTheme, setLightTheme] = React.useState(true);
   const localItems = localStorage.getItem('cartItems');
-
+  const prefferedLanguage = localStorage.getItem('prefferedLanguage');
+  const [language, setLanguage] = React.useState(() => {
+    if (prefferedLanguage) {
+      return prefferedLanguage;
+    } else {
+      return 'en';
+    }
+  });
   const [cartItems, setCartItems] = React.useState(() => {
     if (localItems) {
       return JSON.parse(localItems);
@@ -141,6 +148,10 @@ export default function DataContextProvider({ children }) {
       return [];
     }
   });
+  const handleLanguageChange = lang => {
+    localStorage.setItem('prefferedLanguage', lang);
+    setLanguage(lang);
+  };
   const addItemToCart = item => {
     const cartCopy = [...cartItems];
     const newItem = {
@@ -2260,6 +2271,8 @@ export default function DataContextProvider({ children }) {
         allItems,
         allCategories,
         orderedItems,
+        language,
+        handleLanguageChange,
       }}
     >
       {children}

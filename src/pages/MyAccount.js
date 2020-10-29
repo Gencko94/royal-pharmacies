@@ -6,6 +6,7 @@ import MyAddresses from '../components/MyAccount/MyAddresses';
 import MyOrders from '../components/MyAccount/MyOrders';
 import PaymentDetails from '../components/MyAccount/PaymentDetails';
 import { DataProvider } from '../contexts/DataContext';
+import Layout from '../components/Layout';
 
 export default function MyAccount({
   match: {
@@ -31,19 +32,17 @@ export default function MyAccount({
     });
   }, [mapPageToIndex, page]);
   return (
-    <>
+    <Layout>
       <Helmet>
         <title>My Account | MRG</title>
       </Helmet>
       <div
-        // style={{ minHeight: 'calc(100vh - 52px)' }}
         className={`mb-4 pt-2 px-8 ${
           isLightTheme
             ? 'bg-nav-cat-light text-body-text-light'
             : 'bg-body-dark text-body-text-dark'
         }`}
       >
-        {/* <h1 className="text-xl mb-2 font-semibold">My Personal Account</h1> */}
         <div className="myaccount__grid ">
           <SideTabs
             isLightTheme={isLightTheme}
@@ -59,6 +58,6 @@ export default function MyAccount({
           )}
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

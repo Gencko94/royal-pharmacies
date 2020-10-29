@@ -27,16 +27,18 @@ import Categories from '../components/Home/Categories';
 import { DataProvider } from '../contexts/DataContext';
 import PhotoCategories from '../components/Home/PhotoCategories';
 import { useMediaQuery } from 'react-responsive';
+import Layout from '../components/Layout';
+import { useIntl } from 'react-intl';
 // import AnimatedSlides from '../components/Home/AnimatedSlides';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
-
+  const { formatMessage } = useIntl();
   const { bestSeller, phone, isLightTheme, home, fashion } = React.useContext(
     DataProvider
   );
   return (
-    <>
+    <Layout>
       <Helmet>
         <title>MRG</title>
         <meta
@@ -64,14 +66,14 @@ export default function Home() {
           <ItemsSlider
             data={bestSeller}
             miniLogo={false}
-            title="Best Sellers"
+            title={formatMessage({ id: 'bestSellers' })}
             isLightTheme={isLightTheme}
           />
           {!isTabletOrAbove && <Banner img={ipad} />}
 
           <PhotoCategories
             data={[mobiles, tablets, computers, audiovideo]}
-            title="Mobiles & Electronics"
+            title={formatMessage({ id: 'mobilesElectronics' })}
           />
 
           {/* <AnimatedSlides
@@ -114,6 +116,6 @@ export default function Home() {
           {/* </div> */}
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import NavLogoMobile from '../MobileNavbar/NavLogoMobile';
-import Hamburger from '../NavbarComponents/Hamburger';
+import Hamburger from '../MobileNavbar/Hamburger';
 import { AiFillHome } from 'react-icons/ai';
 import { FaHeart } from 'react-icons/fa';
 import { BsBagFill } from 'react-icons/bs';

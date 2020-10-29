@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { BiCaretDown } from 'react-icons/bi';
+import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
 import useClickAway from '../../hooks/useClickAway';
 export default function ShipTo() {
@@ -25,16 +26,19 @@ export default function ShipTo() {
       setCountryListOpen(true);
     }
   };
+  const { formatMessage } = useIntl();
   return (
     <div className="relative">
       <button
         onClick={toggleCountryList}
-        className="  flex items-center rounded p-1 hover:bg-second-nav-light  transition duration-100"
+        className=" p-1 flex items-center rounded hover:bg-main-color  transition duration-100"
       >
-        <span className="text-sm uppercase mr-2">Deliver to</span>
+        <h1 className="text-sm uppercase ">
+          {formatMessage({ id: 'nav.shipTo' })}
+        </h1>
         <img
           src={flags[deliveryCountry]}
-          className="w-20p h-20p mr-2 "
+          className="w-20p h-20p mx-1 "
           alt="uae"
         />
         <BiCaretDown />

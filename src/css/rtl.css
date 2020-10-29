@@ -1,0 +1,7 @@
+.rtl {
+  direction: rtl;
+}
+
+.rtl .rtl-cart-icon {
+  left: 0 !important;
+}

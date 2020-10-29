@@ -21,7 +21,7 @@ export default function DeliverTo() {
     setCountryListOpen(true);
   };
   return (
-    <div className=" ml-auto ">
+    <div className=" p-1">
       <button
         onClick={toggleCountryList}
         className=" relative flex items-center justify-center rounded-full  hover:bg-red-300 transition duration-100"

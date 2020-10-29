@@ -16,13 +16,11 @@ export default function PhotoCategories({ data, title }) {
     }`,
     gap: '8px',
   };
-  console.log('hello');
   return (
     <div className="py-6">
       {title && (
         <div className="flex items-center mb-4">
-          <h1 className="text-2xl font-bold ">{title}</h1>
-          <button className="p-0 ml-auto">See all</button>
+          <h1 className="text-2xl font-bold flex-1 ">{title}</h1>
         </div>
       )}
       {isTabletOrAbove && (

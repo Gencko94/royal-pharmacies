@@ -1,16 +1,16 @@
 import React, { Suspense } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Route } from 'react-router-dom';
-import MobileNavbar from './components/MobileNavbar';
-import Navbar from './components/Navbar';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Footer from './components/Footer';
-import MobileFooter from './components/MobileFooter';
 import CategoryMobile from './pages/CategoryMobile';
 import GuestCheckOut from './pages/GuestCheckOut';
 import GuestCheckOutMobile from './pages/GuestCheckOutMobile';
-
+import Register from './pages/Register';
+import Login from './pages/Login';
+import ScrollToTopOnMount from './helpers/ScrollToTopOnMount';
+import { LocalizedSwitch, LocalizedRouter, appStrings } from './modules/i18n/';
+import { appLanguages } from './modules/const';
 const Home = React.lazy(() => import('./pages/Home'));
 const MyAccount = React.lazy(() => import('./pages/MyAccount'));
 const MyAccountMobile = React.lazy(() => import('./pages/MyAccountMobile'));
@@ -25,95 +25,86 @@ const Category = React.lazy(() => import('./pages/Category'));
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
-    <div className="font-body antialiased relative">
-      {isTabletOrAbove ? <Navbar /> : <MobileNavbar />}
+    <Suspense
+      fallback={
+        <div style={{ minHeight: 'calc(100vh - 140px)' }}>Loading...</div>
+      }
+    >
+      <LocalizedRouter
+        RouterComponent={Router}
+        languages={appLanguages}
+        appStrings={appStrings}
+      >
+        <ScrollToTopOnMount />
 
-      <Suspense
-        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
-      >
-        <Route exact path="/" component={Home} />
-      </Suspense>
+        <LocalizedSwitch>
+          <Route path="/app/register" component={Register} />
+          <Route path="/app/login" component={Login} />
 
-      <Suspense
-        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
-      >
-        <Route
-          exact
-          path="/user/account/:page"
-          render={props => {
-            if (isTabletOrAbove) {
-              return <MyAccount {...props} />;
-            } else {
-              return <MyAccountMobile {...props} />;
-            }
-          }}
-        />
-      </Suspense>
+          <Route exact path="/" component={Home} />
 
-      <Suspense
-        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
-      >
-        <Route
-          exact
-          path="/cart"
-          render={props => {
-            if (isTabletOrAbove) {
-              return <Cart {...props} />;
-            } else {
-              return <CartMobile {...props} />;
-            }
-          }}
-        />
-      </Suspense>
+          <Route
+            path="/user/account/:page"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <MyAccount {...props} />;
+              } else {
+                return <MyAccountMobile {...props} />;
+              }
+            }}
+          />
 
-      <Suspense
-        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
-      >
-        <Route
-          exact
-          path="/products/:category/:name/:id"
-          render={props => {
-            if (isTabletOrAbove) {
-              return <SingleProduct {...props} />;
-            } else {
-              return <SingleProductMobile {...props} />;
-            }
-          }}
-        />
-      </Suspense>
-      <Suspense
-        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
-      >
-        <Route
-          exact
-          path="/search/q=:query"
-          render={props => {
-            if (isTabletOrAbove) {
-              return <Category {...props} />;
-            } else {
-              return <CategoryMobile {...props} />;
-            }
-          }}
-        />
-      </Suspense>
-      <Suspense
-        fallback={<div style={{ minHeight: 'calc(100vh - 140px)' }}></div>}
-      >
-        <Route
-          exact
-          path="/checkout/quickcheckout"
-          render={props => {
-            if (isTabletOrAbove) {
-              return <GuestCheckOut {...props} />;
-            } else {
-              return <GuestCheckOutMobile {...props} />;
-            }
-          }}
-        />
-      </Suspense>
+          <Route
+            path="/cart"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <Cart {...props} />;
+              } else {
+                return <CartMobile {...props} />;
+              }
+            }}
+          />
 
-      {isTabletOrAbove ? <Footer /> : <MobileFooter />}
-    </div>
+          <Route
+            exact
+            path="/:category/:name/:id"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <SingleProduct {...props} />;
+              } else {
+                return <SingleProductMobile {...props} />;
+              }
+            }}
+          />
+
+          <Route
+            path="/search/q=:query"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <Category {...props} />;
+              } else {
+                return <CategoryMobile {...props} />;
+              }
+            }}
+          />
+
+          <Route
+            path="/checkout/quickcheckout"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <GuestCheckOut {...props} />;
+              } else {
+                return <GuestCheckOutMobile {...props} />;
+              }
+            }}
+          />
+
+          <Route>
+            <div>not found !</div>
+          </Route>
+        </LocalizedSwitch>
+      </LocalizedRouter>
+    </Suspense>
   );
 }
 

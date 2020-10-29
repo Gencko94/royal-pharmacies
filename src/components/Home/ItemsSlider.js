@@ -4,6 +4,7 @@ import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 import MultiClamp from 'react-multi-clamp';
 import ContentLoader from 'react-content-loader';
+import { useIntl } from 'react-intl';
 
 // const isItemInCart = data => {
 //   const itemInCart = cartItems.find(item => data.id === item.id);
@@ -40,6 +41,7 @@ export default function ItemsSlider({
   title,
   isLightTheme,
 }) {
+  const { formatMessage, locale } = useIntl();
   const settings = {
     className: '',
     arrows: true,
@@ -105,9 +107,9 @@ export default function ItemsSlider({
   return (
     <div className="my-6 overflow-hidden   ">
       <div className="flex items-center mb-4">
-        <h1 className="text-xl font-bold ">{title}</h1>
-        <button className="py-1 px-2 ml-auto bg-second-nav-light text-second-nav-text-light rounded whitespace-no-wrap">
-          See all
+        <h1 className="text-xl font-bold flex-1 ">{title}</h1>
+        <button className="py-1 px-2  bg-second-nav-light text-second-nav-text-light rounded whitespace-no-wrap">
+          {formatMessage({ id: 'seeAll' })}
         </button>
       </div>
       <Slider className="" {...settings}>
@@ -135,10 +137,10 @@ export default function ItemsSlider({
                   } rounded`}
                 >
                   <a
-                    href={`/products/${item.category.replace(
+                    href={`/${locale}/${item.category.replace(
                       /\s|%|,/g,
                       '-'
-                    )}/${item.name.replace(/\s|%|,/g, '-')}/${item.id}`}
+                    )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
                   >
                     <img
                       title={item.name}
@@ -162,10 +164,10 @@ export default function ItemsSlider({
                     <a
                       title={item.name}
                       className="hover:underline"
-                      href={`/products/${item.category.replace(
+                      href={`/${locale}/${item.category.replace(
                         /\s|%|,/g,
                         '-'
-                      )}/${item.name.replace(/\s|%|,/g, '-')}/${item.id}`}
+                      )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
                     >
                       <MultiClamp
                         className="text-sm  font-semibold"

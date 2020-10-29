@@ -8,6 +8,7 @@ import SearchBar from './NavbarComponents/SearchBar';
 import NavCategory from './NavbarComponents/NavCategory';
 import { DataProvider } from '../contexts/DataContext';
 import { Link, useLocation } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 // import Promos from './NavbarComponents/Promos';
 
 export default function Navbar() {
@@ -15,6 +16,7 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const specialPages =
     pathname.includes('/user/account') || pathname.includes('/quickcheckout');
+  const { formatMessage, locale } = useIntl();
   return (
     <>
       {!specialPages && (
@@ -26,8 +28,9 @@ export default function Navbar() {
           } text-sm `}
         >
           <div className="max-w-default mx-auto flex items-center justify-between px-6">
-            <div className="flex items-center">
+            <div className="flex">
               <Language />
+              <span className="border-r mx-1  border-gray-300 opacity-50"></span>
               <ShipTo />
             </div>
             {/* <Promos /> */}
@@ -38,8 +41,8 @@ export default function Navbar() {
             >
               Light Theme Toggle
             </button> */}
-              <Link className="mr-2" to="/user/account/profile">
-                My Account
+              <Link className="mr-2" to={`/${locale}/user/account/profile`}>
+                {formatMessage({ id: 'nav.account' })}
               </Link>
               <LoginRegister />
             </div>

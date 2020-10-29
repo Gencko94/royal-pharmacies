@@ -1,10 +1,12 @@
 import React from 'react';
 import { BiSearch } from 'react-icons/bi';
+import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 export default function MobileSearchbar({ isLightTheme }) {
   const history = useHistory();
   const [searchBarValue, setSearchBarValue] = React.useState('');
+  const { formatMessage } = useIntl();
   const handleSearch = e => {
     if (!searchBarValue) {
       return;
@@ -27,7 +29,7 @@ export default function MobileSearchbar({ isLightTheme }) {
             : 'bg-nav-cat-dark text-nav-cat-text-dark'
         }  p-1  `}
       >
-        <BiSearch className=" w-25p h-25p " />
+        <BiSearch className=" w-5 h-5 " />
       </div>
       <form onSubmit={handleSearch} className="flex-1">
         <input
@@ -39,7 +41,7 @@ export default function MobileSearchbar({ isLightTheme }) {
               ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
               : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500'
           } p-1 w-full `}
-          placeholder="Search..."
+          placeholder={formatMessage({ id: 'nav.search.placeholder' })}
         />
       </form>
     </div>

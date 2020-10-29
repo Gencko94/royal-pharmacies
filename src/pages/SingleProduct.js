@@ -17,6 +17,7 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import ContentLoader from 'react-content-loader';
 import InView from 'react-intersection-observer';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
+import Layout from '../components/Layout';
 
 export default function SingleProduct() {
   let tl = gsap.timeline({
@@ -114,7 +115,7 @@ export default function SingleProduct() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <>
+    <Layout>
       <Helmet>
         <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
         <meta
@@ -208,7 +209,7 @@ export default function SingleProduct() {
         </div>
       </div>
       <div className=" px-4 ">
-        <div className="mx-auto" style={{ maxWidth: '1560px ' }}>
+        <div className="mx-auto max-w-default">
           <Breadcrumbs />
 
           <div className="details__container">
@@ -280,6 +281,6 @@ export default function SingleProduct() {
           </InView>
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

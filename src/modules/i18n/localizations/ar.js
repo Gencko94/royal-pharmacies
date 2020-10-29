@@ -1,0 +1,20 @@
+export const ar = {
+  // 'routes.home': '/',
+  // 'routes.cart': '/cart',
+  // 'routes.register': '/app/register',
+  // 'routes.login': '/app/login',
+  // 'routes.singleProduct': '/products/:category/:name/:id',
+  /** Page content */
+  'nav.cart': 'عربة التسوق',
+  'nav.wishlist': 'المفضلة',
+  'nav.register': 'اشترك معنا',
+  'nav.login': 'تسجيل الدخول',
+  'nav.shipTo': 'توصيل الى',
+  'nav.search.placeholder': 'ما الذي تبحث عنه ؟',
+  'nav.account': 'حسابي',
+  categories: 'الفئات',
+  allCategories: 'جميع الفئات',
+  seeAll: 'الكل',
+  bestSellers: 'الأكثر مبيعا',
+  mobilesElectronics: 'الموبايلات والإلكترونيات',
+};

@@ -26,6 +26,7 @@ import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
 import ContentLoader from 'react-content-loader';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
+import LayoutMobile from '../components/LayoutMobile';
 
 export default function SingleProductMobile({
   match: {
@@ -97,7 +98,7 @@ export default function SingleProductMobile({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
   return (
-    <>
+    <LayoutMobile>
       <Helmet>
         <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
         <meta
@@ -453,6 +454,6 @@ export default function SingleProductMobile({
           </InView>
         </div>
       </div>
-    </>
+    </LayoutMobile>
   );
 }
