@@ -1,4 +1,5 @@
 import React from 'react';
+import GoogleMapsAddress from '../../GoogleMapsAddress';
 
 export default function Address({ handleStepForward }) {
   return (
@@ -9,6 +10,7 @@ export default function Address({ handleStepForward }) {
           style={{ height: '430px' }}
         >
           <h1 className="text-lg">Google Maps here</h1>
+          <GoogleMapsAddress />
         </div>
         <div className="flex justify-end items-center p-2">
           <button

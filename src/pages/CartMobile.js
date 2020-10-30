@@ -5,9 +5,11 @@ import cartBag from '../assets/illustrations/cartBag.svg';
 import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
 import ItemsSlider from '../components/Home/ItemsSlider';
 import LayoutMobile from '../components/LayoutMobile';
+import { useIntl } from 'react-intl';
 
 export default function CartMobile() {
   const history = useHistory();
+  const { locale } = useIntl();
   const {
     cartItems,
     removeItemFromCart,
@@ -71,7 +73,7 @@ export default function CartMobile() {
               </span>
             </h1>
             <button
-              onClick={() => history.push('/checkout/quickcheckout')}
+              onClick={() => history.push(`/${locale}/checkout/quickcheckout`)}
               className="p-2 rounded font-semibold   w-full text-gray-100 bg-green-600"
             >
               Proceed to Checkout

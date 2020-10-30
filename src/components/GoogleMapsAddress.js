@@ -6,7 +6,7 @@ export default function GoogleMapsAddress() {
     longitude: null,
   });
   const [locationSet, setLocationSet] = React.useState(false);
-  const apikey = 'AIzaSyCb2QSa-SBSOA0fsBxC8HZfc-OMVJkW_74';
+  const apikey = 'AIzaSyAYprqr3Vrnmhwx9UQozUNNks7CVH9m3Xg';
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -20,6 +20,7 @@ export default function GoogleMapsAddress() {
     setCoordinates({ latitude, longitude });
     setLocationSet(true);
   };
+
   const locationError = error => {
     switch (error.code) {
       case error.PERMISSION_DENIED:
@@ -39,6 +40,7 @@ export default function GoogleMapsAddress() {
         alert('An Unknown Error has Occured.');
     }
   };
+
   React.useEffect(() => {
     fetch(
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=51.165690999999995,10.451526&key=${apikey}`
