@@ -35,7 +35,7 @@ export default function PlacesSearch({ panTo, markerAddress }) {
   const locationSuccess = position => {
     const { latitude, longitude } = position.coords;
     panTo({ lat: latitude, lng: longitude });
-    setValue();
+    // setValue();
   };
 
   const locationError = error => {
