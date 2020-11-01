@@ -8,3 +8,12 @@
 .rtl .rtl-form-label {
   right: 0 !important;
 }
+.rtl .rtl-stepper-icon_1 {
+  right: -7px;
+}
+.rtl .rtl-stepper-icon_2 {
+  right: -19px;
+}
+.rtl .rtl-stepper-icon_3 {
+  right: -3px;
+}

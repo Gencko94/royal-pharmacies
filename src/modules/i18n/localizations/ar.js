@@ -8,6 +8,9 @@ export const ar = {
   // general
   next: 'التالي',
   back: 'الخلف',
+  'add-to-cart': 'أضف إلى السلة',
+  'added-to-cart': 'اضيفت الى السلة',
+  'your-recently-visited-items': 'قمت بزيارتها مسبقا',
 
   'nav.cart': 'عربة التسوق',
   'nav.wishlist': 'المفضلة',

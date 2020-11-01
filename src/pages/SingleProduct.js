@@ -79,7 +79,7 @@ export default function SingleProduct() {
     if (isItemInHistory !== undefined) {
       return;
     } else {
-      visitedItems.push(items[0]);
+      visitedItems.push({ id: items[0].id });
       localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
     }
   });

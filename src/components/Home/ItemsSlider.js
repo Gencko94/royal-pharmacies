@@ -2,18 +2,12 @@ import React from 'react';
 import Slider from 'react-slick';
 import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
+import { TiShoppingCart } from 'react-icons/ti';
 import MultiClamp from 'react-multi-clamp';
 import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
+import { DataProvider } from '../../contexts/DataContext';
 
-// const isItemInCart = data => {
-//   const itemInCart = cartItems.find(item => data.id === item.id);
-//   if (itemInCart !== undefined) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
 const RightArrow = ({ onClick }) => {
   return (
     <div
@@ -96,6 +90,9 @@ export default function ItemsSlider({
       },
     ],
   };
+  const { cartItems, removeItemFromCart, addItemToCart } = React.useContext(
+    DataProvider
+  );
 
   const [items, setItems] = React.useState(null);
   React.useEffect(() => {
@@ -104,6 +101,14 @@ export default function ItemsSlider({
     }, 5000);
     return () => clearTimeout(timeout);
   }, [data]);
+  const isItemInCart = data => {
+    const itemInCart = cartItems.find(item => data.id === item.id);
+    if (itemInCart !== undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <div className="my-6 overflow-hidden   ">
       <div className="flex items-center mb-4">
@@ -179,11 +184,11 @@ export default function ItemsSlider({
                     </a>
 
                     <div className="flex items-center">
-                      <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">
+                      <p className="   text-xs font-semibold text-red-700 whitespace-no-wrap">
                         {item.price} <span className="text-xs ">KD</span>
                       </p>
                       {item.sale && (
-                        <p className="text-xs  line-through text-gray-500  font-bold whitespace-no-wrap">
+                        <p className="text-xs mx-3  line-through text-gray-500  font-bold whitespace-no-wrap">
                           {' '}
                           {item.priceBefore}{' '}
                           <span className="font-normal">KD</span>
@@ -191,24 +196,24 @@ export default function ItemsSlider({
                       )}
                     </div>
 
-                    {/* {isItemInCart(item) ? (
-                    <button
-                      onClick={() => removeItemFromCart(item)}
-                      className="bg-red-700 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold "
-                    >
-                      Remove From Cart
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => addItemToCart({ data: item })}
-                      className="bg-blue-700 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold"
-                    >
-                      <span>
-                        <TiShoppingCart className="w-25p h-25p mr-2" />
-                      </span>
-                      Add to Cart
-                    </button>
-                  )} */}
+                    {isItemInCart(item) ? (
+                      <button
+                        onClick={() => removeItemFromCart(item)}
+                        className="bg-gray-600 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold "
+                      >
+                        {formatMessage({ id: 'added-to-cart' })}
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => addItemToCart({ data: item })}
+                        className="bg-green-700 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold"
+                      >
+                        <span>
+                          <TiShoppingCart className="w-25p h-25p mr-2" />
+                        </span>
+                        {formatMessage({ id: 'add-to-cart' })}
+                      </button>
+                    )}
                   </div>
                 </div>
               )}

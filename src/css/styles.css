@@ -128,7 +128,7 @@ input {
 }
 .recent-items__container {
   display: grid;
-  grid-template-columns: 100px 150px;
+  grid-template-columns: minmax(50px, 100px) 150px;
   gap: 6px;
 }
 .mobile-nav__secondary-enter {

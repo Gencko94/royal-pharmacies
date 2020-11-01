@@ -11,7 +11,9 @@ const baseStrings = {
 
   next: 'Next',
   back: 'Back',
-
+  'add-to-cart': 'Add to Cart',
+  'added-to-cart': 'Added to Cart',
+  'your-recently-visited-items': 'Your Recently visited items',
   'home.title': 'Home',
   'home.content': 'Thank you for visiting this multi-language routing example.',
   'nav.cart': 'Cart',
