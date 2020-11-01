@@ -70,11 +70,12 @@ export default function Home() {
             isLightTheme={isLightTheme}
           />
           {!isTabletOrAbove && <Banner img={ipad} />}
-
-          <PhotoCategories
-            data={[mobiles, tablets, computers, audiovideo]}
-            title={formatMessage({ id: 'mobilesElectronics' })}
-          />
+          <LazyLoad>
+            <PhotoCategories
+              data={[mobiles, tablets, computers, audiovideo]}
+              title={formatMessage({ id: 'mobilesElectronics' })}
+            />
+          </LazyLoad>
 
           {/* <AnimatedSlides
             data={[
@@ -84,35 +85,43 @@ export default function Home() {
               { title: 'iPhone Red', photo: iphonered },
             ]}
           /> */}
-
-          <ItemsSlider
-            data={phone}
-            miniLogo={false}
-            isLightTheme={isLightTheme}
-            title="Save Big with Phones & Tablets"
-          />
-
-          {!isTabletOrAbove && <Banner img={earbuds} />}
+          <LazyLoad offset={200}>
+            <ItemsSlider
+              data={phone}
+              miniLogo={false}
+              isLightTheme={isLightTheme}
+              title="Save Big with Phones & Tablets"
+            />
+          </LazyLoad>
+          <LazyLoad offset={200}>
+            {!isTabletOrAbove && <Banner img={earbuds} />}
+          </LazyLoad>
           {isTabletOrAbove && <Banner img={offer} />}
-          <PhotoCategories data={[homeapp, kitchen, appliances]} />
-          <ItemsSlider
-            data={home}
-            miniLogo={false}
-            isLightTheme={isLightTheme}
-            title="Explore our Household Collection"
-          />
+          <LazyLoad>
+            <PhotoCategories data={[homeapp, kitchen, appliances]} />
+          </LazyLoad>
+          <LazyLoad offset={200}>
+            <ItemsSlider
+              data={home}
+              miniLogo={false}
+              isLightTheme={isLightTheme}
+              title="Explore our Household Collection"
+            />
+          </LazyLoad>
           {/* Fashion Section */}
           {/* <div className="bg-red-200"> */}
           {isTabletOrAbove && <Banner img={fashionbanner} />}
           <LazyLoad>
             <PhotoCategories data={[men, women, kids]} />
           </LazyLoad>
-          <ItemsSlider
-            data={fashion}
-            miniLogo={false}
-            isLightTheme={isLightTheme}
-            title="Check out the latest fashion trends"
-          />
+          <LazyLoad offset={200}>
+            <ItemsSlider
+              data={fashion}
+              miniLogo={false}
+              isLightTheme={isLightTheme}
+              title="Check out the latest fashion trends"
+            />
+          </LazyLoad>
           {/* </div> */}
         </div>
       </div>

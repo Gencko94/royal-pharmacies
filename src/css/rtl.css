@@ -5,3 +5,6 @@
 .rtl .rtl-cart-icon {
   left: 0 !important;
 }
+.rtl .rtl-form-label {
+  right: 0 !important;
+}

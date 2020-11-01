@@ -1,23 +1,24 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 import GoogleMapsAddress from '../../GoogleMapsAddress';
 
-export default function Address({ handleStepForward }) {
+export default function Address({ handleStepForward, address, setAddress }) {
+  const { formatMessage } = useIntl();
   return (
     <div className="h-full">
-      <div className="rounded-lg border mb-2 h-full">
-        <div
-          className="flex justify-center items-center "
-          style={{ height: '430px' }}
-        >
-          <h1 className="text-lg">Google Maps here</h1>
-          <GoogleMapsAddress />
-        </div>
+      <div className="rounded-sm border mb-2 h-full">
+        <GoogleMapsAddress setAddress={setAddress} />
         <div className="flex justify-end items-center p-2">
           <button
-            className="px-3 py-1 bg-btn-primary-light text-btn-secondary-light rounded font-semibold"
+            disabled={!address}
+            className={`px-3 py-1 ${
+              address
+                ? 'bg-btn-primary-light text-btn-secondary-light'
+                : 'bg-gray-500 text-main-text cursor-not-allowed'
+            } rounded font-semibold`}
             onClick={handleStepForward}
           >
-            Next
+            {formatMessage({ id: 'next' })}
           </button>
         </div>
       </div>

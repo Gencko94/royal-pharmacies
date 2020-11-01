@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/mrgnavlogo.png';
 import { Formik, useField } from 'formik';
 import * as Yup from 'yup';
-import { useTranslation } from 'react-i18next';
+import { useIntl } from 'react-intl';
 
 const CustomTextInput = ({ label, value, name, ...props }) => {
   const [activeLabel, setActiveLabel] = React.useState(false);
@@ -14,12 +14,12 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
   };
   const [field, meta] = useField(name);
   return (
-    <div className="w-full mb-2 relative">
+    <div className="w-full mt-10  relative">
       <label
         htmlFor={name}
-        className={`${
+        className={`rtl-form-label   ${
           activeLabel ? 'form__label-active' : 'form__label'
-        } text-sm font-semibold text-gray-700 pointer-events-none`}
+        }  text-gray-700 pointer-events-none`}
       >
         {label}
       </label>
@@ -30,14 +30,14 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
           checkEmptyInput();
           field.onBlur(e);
         }}
-        className=" mt-1 w-full rounded border-b   p-2 pt-5"
+        className=" rounded-sm  w-full border-b   p-1 "
         onClick={() => setActiveLabel(true)}
         onFocus={() => setActiveLabel(true)}
       />
       {meta.touched && meta.error ? (
-        <h1 className="text-xs text-main-color">{meta.error}</h1>
+        <h1 className="text-xs mt-1 text-main-color">{meta.error}</h1>
       ) : (
-        <h1 className="text-xs text-main-color" style={{ height: '18px' }}>
+        <h1 className="text-xs mt-1 text-main-color" style={{ height: '18px' }}>
           {' '}
         </h1>
       )}
@@ -46,17 +46,19 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
 };
 
 export default function Login() {
-  const { t } = useTranslation();
+  const { formatMessage, locale } = useIntl();
 
   const validationSchema = Yup.object({
-    email: Yup.string().email(t('email-validation')).required(t('email-empty')),
-    password: Yup.string().required(t('password-empty')),
+    email: Yup.string()
+      .email(formatMessage({ id: 'email-validation' }))
+      .required(formatMessage({ id: 'email-empty' })),
+    password: Yup.string().required(formatMessage({ id: 'password-empty' })),
   });
   return (
-    <div className="font-body antialiased text-gray-900 flex justify-center items-center   h-screen relative">
+    <div className="  text-gray-900 flex justify-center items-center   h-screen relative">
       <div className=" rounded z-2  max-w-screen-xs w-5/6 pb-1  shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 bg-main-color text-main-text ">
-          <Link to="/">
+          <Link to={`/${locale}/`}>
             <img
               src={logo}
               alt="logo"
@@ -64,7 +66,9 @@ export default function Login() {
               style={{ width: '140px', height: '75px' }}
             />
           </Link>
-          <h2 className="text-xl text-center bold">Login to MRG</h2>
+          <h2 className="text-xl text-center bold">
+            {formatMessage({ id: 'login-to-mrg' })}
+          </h2>
         </div>
         <hr />
 
@@ -76,33 +80,37 @@ export default function Login() {
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setTimeout(() => {
-              console.log(values);
               resetForm();
               setSubmitting(false);
             }, 2000);
           }}
         >
-          {({ handleSubmit, values }) => {
+          {({ handleSubmit, values, isSubmitting }) => {
             return (
               <form className="px-4 py-2" onSubmit={handleSubmit}>
                 <CustomTextInput
-                  label="Email"
+                  label={formatMessage({ id: 'email-label' })}
                   name="email"
                   type="email"
                   value={values.email}
                 />
                 <CustomTextInput
-                  label="Password"
+                  label={formatMessage({ id: 'password-label' })}
                   name="password"
                   type="password"
                   value={values.password}
                 />
-                <div className=" py-1">
+                <div className=" py-1 mt-2">
                   <button
+                    disabled={isSubmitting}
                     type="submit"
-                    className={`w-full rounded text-second-nav-text-light bg-second-nav-light p-2 font-semibold hover:bg-red-800 transition duration-150 `}
+                    className={`${
+                      isSubmitting
+                        ? 'bg-gray-600 cursor-not-allowed'
+                        : 'bg-second-nav-light text-second-nav-text-light hover:bg-red-800'
+                    } w-full rounded   p-2 font-semibold  transition duration-150 `}
                   >
-                    Log in
+                    {formatMessage({ id: 'login-button' })}
                   </button>
                 </div>
               </form>
@@ -112,13 +120,16 @@ export default function Login() {
 
         <div className="px-4 py-2">
           <h1 className="text-sm">
-            Are you new to the family ?{' '}
-            <Link className="text-second-nav-light" to="/app/register">
-              Join us here
+            {formatMessage({ id: 'new-to-family' })}
+            <Link
+              className="text-second-nav-light"
+              to={`/${locale}/app/register`}
+            >
+              {formatMessage({ id: 'join-us-here' })}
             </Link>
           </h1>
           <button className=" text-sm text-second-nav-light">
-            Forgot Password ?
+            {formatMessage({ id: 'forgot-password' })}
           </button>
         </div>
       </div>

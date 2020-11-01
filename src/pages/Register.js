@@ -1,9 +1,9 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import logo from '../assets/mrgnavlogo.png';
 import * as Yup from 'yup';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 const CustomTextInput = ({ label, value, name, ...props }) => {
   const [activeLabel, setActiveLabel] = React.useState(false);
@@ -14,10 +14,10 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
   };
   const [field, meta] = useField(name);
   return (
-    <div className="w-full mb-2 relative">
+    <div className="w-full mt-10 relative">
       <label
         htmlFor={name}
-        className={`${
+        className={`rtl-form-label ${
           activeLabel ? 'form__label-active' : 'form__label'
         } text-sm font-semibold text-gray-700 pointer-events-none`}
       >
@@ -30,14 +30,14 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
           checkEmptyInput();
           field.onBlur(e);
         }}
-        className=" mt-1 w-full rounded border-b   p-2 pt-5"
+        className=" w-full rounded-sm border-b   p-1"
         onClick={() => setActiveLabel(true)}
         onFocus={() => setActiveLabel(true)}
       />
       {meta.touched && meta.error ? (
-        <h1 className="text-xs text-main-color">{meta.error}</h1>
+        <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
       ) : (
-        <h1 className="text-xs text-main-color" style={{ height: '18px' }}>
+        <h1 className="text-xs text-main-color mt-1" style={{ height: '18px' }}>
           {' '}
         </h1>
       )}
@@ -46,17 +46,20 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
 };
 
 export default function Register() {
-  const { t } = useTranslation();
+  const { formatMessage, locale } = useIntl();
 
   const validationSchema = Yup.object({
-    email: Yup.string().email(t('email-validation')).required(t('email-empty')),
+    email: Yup.string()
+      .email(formatMessage({ id: 'email-validation' }))
+      .required(formatMessage({ id: 'email-empty' })),
     password: Yup.string()
-      .required(t('password-empty'))
-      .min(6, t('password-min-6'))
-      .max(15, t('password-max-15')),
+      .required(formatMessage({ id: 'password-empty' }))
+      .min(6, formatMessage({ id: 'password-min-6' }))
+      .max(15, formatMessage({ id: 'password-max-15' })),
+    username: Yup.string().required(formatMessage({ id: 'username-empty' })),
   });
   return (
-    <div className="font-body antialiased text-gray-900 flex justify-center items-center   h-screen relative">
+    <div className=" text-gray-900 flex justify-center items-center   h-screen relative">
       <div className=" rounded z-2  max-w-screen-xs w-5/6 pb-1  shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1  bg-main-color text-main-text ">
           <Link to="/">
@@ -67,7 +70,9 @@ export default function Register() {
               style={{ width: '140px', height: '70px' }}
             />
           </Link>
-          <h2 className="text-xl text-center font-bold">Register for MRG</h2>
+          <h2 className="text-xl text-center font-bold">
+            {formatMessage({ id: 'register-on-mrg' })}
+          </h2>
         </div>
         <Formik
           initialValues={{
@@ -88,26 +93,29 @@ export default function Register() {
             return (
               <form className="px-4 py-2" onSubmit={handleSubmit}>
                 <CustomTextInput
-                  label="Username"
+                  label={formatMessage({ id: 'username-label' })}
                   name="username"
                   value={values.username}
+                  type="text"
                 />
                 <CustomTextInput
-                  label="Email"
+                  label={formatMessage({ id: 'email-label' })}
                   name="email"
                   value={values.email}
+                  type="email"
                 />
                 <CustomTextInput
-                  label="Password"
+                  label={formatMessage({ id: 'password-label' })}
                   name="password"
                   value={values.password}
+                  type="password"
                 />
 
-                <div className="py-1">
+                <div className="py-1 mt-2">
                   <button
                     className={`w-full rounded text-second-nav-text-light bg-second-nav-light p-2 font-semibold hover:bg-red-400 transition duration-150 `}
                   >
-                    Create an account
+                    {formatMessage({ id: 'register-button' })}
                   </button>
                 </div>
               </form>
@@ -117,19 +125,39 @@ export default function Register() {
 
         <div className="px-4 py-2">
           <h1 className="text-sm">
-            Already have an Account ?{' '}
-            <Link className="text-second-nav-light" to="/app/login">
-              Log in instead
-            </Link>
+            <FormattedMessage
+              id="already-have-an-account"
+              values={{
+                link: word => (
+                  <Link
+                    className="text-second-nav-light"
+                    to={`/${locale}/app/login`}
+                  >
+                    {word}
+                  </Link>
+                ),
+              }}
+            />
           </h1>
         </div>
         <hr />
         <div className="px-4 w-full py-2 ">
           <h1 className="text-xs">
-            By clicking “Create an account”, you agree to our{' '}
+            <FormattedMessage
+              id="terms-of-service"
+              values={{
+                link: word => (
+                  <span className="text-second-nav-light">{word}</span>
+                ),
+                tos: word => (
+                  <span className="text-second-nav-light">{word}</span>
+                ),
+              }}
+            />
+            {/* By clicking “Create an account”, you agree to our{' '}
             <span className="text-second-nav-light">Terms of Service</span> and{' '}
             <span className="text-second-nav-light">Privacy Statement</span>.
-            We’ll occasionally send you account related emails.
+            We’ll occasionally send you account related emails. */}
           </h1>
         </div>
       </div>

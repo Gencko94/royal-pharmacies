@@ -1,6 +1,6 @@
 import React from 'react';
 import CartItem from '../components/Cart/CartItem';
-import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
+// import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
 import RecentlyViewedVertical from '../components/RecentlyViewedVertical';
 import { DataProvider } from '../contexts/DataContext';
 import cartBag from '../assets/illustrations/cartBag.svg';
@@ -11,13 +11,14 @@ import { Helmet } from 'react-helmet';
 import CheckoutModal from '../components/Cart/CheckoutModal';
 import useClickAway from '../hooks/useClickAway';
 import Layout from '../components/Layout';
+import { useIntl } from 'react-intl';
 export default function Cart() {
   const {
     cartItems,
     healthCare,
     isLightTheme,
     calculateItemsPrice,
-    phone,
+    // phone,
   } = React.useContext(DataProvider);
   const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
@@ -25,44 +26,22 @@ export default function Cart() {
   useClickAway(modalRef, () => {
     setCheckOutModalOpen(false);
   });
+  const { formatMessage } = useIntl();
   return (
     <Layout>
       <Helmet>
         <title>Cart | MRG</title>
       </Helmet>
-      <div className=" cart py-2 px-4 relative max-w-default mx-auto">
-        <div className="font-semibold float-right">
-          <div className=" rounded border bg-gray-100 p-2 flex justify-start flex-col mb-2 ">
-            <h1 className="text-base font-semibold mb-2 ">
-              Subtotal ({cartItems.length}{' '}
-              {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
-              {calculateItemsPrice(cartItems)} KD
-            </h1>
-            <button
-              onClick={() => setCheckOutModalOpen(true)}
-              className={`${
-                cartItems.length === 0
-                  ? 'cursor-not-allowed bg-gray-600'
-                  : 'bg-green-600'
-              } p-1 rounded text-gray-100 `}
-              disabled={cartItems.length === 0}
-            >
-              Proceed to Checkout
-            </button>
-          </div>
-          {visitedItems.length > 3 ? (
-            <RecentlyViewedVertical visitedItems={visitedItems} />
-          ) : (
-            <FeaturedItemsVertical />
-          )}
-        </div>
-        <div className="cart__container">
+      <div className=" cart py-2 px-4  max-w-default mx-auto">
+        <div className="cart__container ">
           {cartItems.length !== 0 && (
             <>
               <div className="cart__title font-semibold text-lg">
-                <h1 className="  ">Shopping Cart</h1>
-                <h1 className="  ">Item</h1>
-                <h1 className="text-center">Price</h1>
+                <h1 className="  ">{formatMessage({ id: 'shopping-cart' })}</h1>
+                <h1 className="  ">{formatMessage({ id: 'item' })}</h1>
+                <h1 className="text-center">
+                  {formatMessage({ id: 'price' })}
+                </h1>
               </div>
               <hr />
             </>
@@ -72,23 +51,23 @@ export default function Cart() {
               <img src={cartBag} alt="Empty Cart Bag" className=" h-32 mr-10" />
               <div>
                 <h1 className="text-2xl font-bold ">
-                  Oops, Your Cart is Empty !
+                  {formatMessage({ id: 'cart-empty' })}
                 </h1>
                 <Link to="/" className="text-sm text-blue-600 hover:underline">
-                  Check today deals
+                  {formatMessage({ id: 'check-today-deals' })}
                 </Link>
                 <div className="flex items-center flex-wrap">
                   <Link
                     to="/app/login"
                     className={` rounded p-2 mt-2 bg-green-700 text-second-nav-text-light mr-3 `}
                   >
-                    Sign in to your account
+                    {formatMessage({ id: 'login-button' })}
                   </Link>
                   <Link
                     to="/app/register"
                     className={` rounded p-2 mt-2 bg-blue-700 text-second-nav-text-light  `}
                   >
-                    Sign up now
+                    {formatMessage({ id: 'register-button' })}
                   </Link>
                 </div>
               </div>
@@ -105,19 +84,15 @@ export default function Cart() {
           {cartItems.length !== 0 && (
             <div className="flex justify-end pr-2 mt-2">
               <h1 className="text-lg font-semibold">
-                Subtotal ({cartItems.length}{' '}
+                {formatMessage({ id: 'subtotal' })} ({cartItems.length}{' '}
                 {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
                 {calculateItemsPrice(cartItems)} KD
               </h1>
             </div>
           )}
-          <h1 className="text-sm my-4">
-            The price and availability of items at AlAtiah.com are subject to
-            change. The Cart is a temporary place to store a list of your items
-            and reflects each item's most recent price.
-          </h1>
+          <h1 className="text-sm my-4">{formatMessage({ id: 'cart-tos' })}</h1>
           <hr />
-          {visitedItems.length > 7 ? (
+          {/* {visitedItems.length > 7 ? (
             <RecentlyVisitedHorizontal visitedItems={visitedItems} />
           ) : (
             <ItemsSlider
@@ -126,15 +101,45 @@ export default function Cart() {
               isLightTheme={isLightTheme}
               title="Save Big with Phones & Tablets"
             />
+          )} */}
+        </div>
+        <div
+          className="font-semibold  sticky top-0"
+          // style={{ alignSelf: 'start' }}
+        >
+          {cartItems.length !== 0 && (
+            <div className=" rounded border bg-gray-100 p-2 flex justify-start flex-col mb-2 ">
+              <h1 className="text-base font-semibold mb-2 ">
+                {formatMessage({ id: 'subtotal' })} ({cartItems.length}{' '}
+                {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
+                {calculateItemsPrice(cartItems)} KD
+              </h1>
+              <button
+                onClick={() => setCheckOutModalOpen(true)}
+                className={`${
+                  cartItems.length === 0
+                    ? 'cursor-not-allowed bg-gray-600'
+                    : 'bg-green-600'
+                } p-1 rounded text-gray-100 `}
+                disabled={cartItems.length === 0}
+              >
+                Proceed to Checkout
+              </button>
+            </div>
+          )}
+          {visitedItems.length > 3 ? (
+            <RecentlyViewedVertical visitedItems={visitedItems} />
+          ) : (
+            <FeaturedItemsVertical />
           )}
         </div>
-        <ItemsSlider
-          data={healthCare}
-          miniLogo={false}
-          title="Health Care Essentials"
-          isLightTheme={isLightTheme}
-        />
       </div>
+      <ItemsSlider
+        data={healthCare}
+        miniLogo={false}
+        title="Health Care Essentials"
+        isLightTheme={isLightTheme}
+      />
       <CheckoutModal
         checkoutModalOpen={checkoutModalOpen}
         isLightTheme={isLightTheme}

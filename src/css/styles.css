@@ -90,10 +90,12 @@ input {
 }
 
 .cart {
-  /* display: grid; */
+  display: grid;
+  position: relative;
   /* max-width: calc(100vw - 100px); */
   grid-template-columns: minmax(300px, 2.5fr) minmax(250px, 0.5fr);
   gap: 0.5em;
+  align-items: flex-start;
 }
 .cart__container {
   max-width: calc(100vw - 338px);
@@ -376,20 +378,18 @@ input {
 .form__label-active {
   position: absolute;
   top: 0;
-  left: 0;
-  transform: translateY(0) scale(0.9);
+  transform: translateY(-30px);
   transform-origin: top left;
   color: #af0404;
-  transition: transform 0.1s ease;
+  transition: all 0.1s ease-out;
 }
 
 .form__label {
   position: absolute;
   top: 0;
-  left: 0;
-  transform: translateY(25px) scale(1);
+  transform: translateY(5px);
   transform-origin: top left;
-  transition: transform 0.1s ease;
+  transition: all 0.1s ease-out;
 }
 
 .side__addCart-container {

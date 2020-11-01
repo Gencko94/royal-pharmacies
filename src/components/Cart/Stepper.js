@@ -3,12 +3,14 @@ import { FiMap } from 'react-icons/fi';
 import { FaUserAlt } from 'react-icons/fa';
 import { AiOutlineFileDone } from 'react-icons/ai';
 import { MdDone } from 'react-icons/md';
+import { useIntl } from 'react-intl';
 export default function Stepper({ selectedStep, stepDone }) {
+  const { formatMessage } = useIntl();
   return (
-    <div className="p-4 mb-10 xs:max-w-screen-xs md:max-w-screen-md xxl:max-w-xl  mx-auto">
+    <div className="p-4  md:max-w-screen-lg xxl:max-w-xl  mx-auto">
       <div className="">
         <div className="flex items-center ">
-          <div className="flex items-center   relative">
+          <div className="flex items-center flex-wrap   relative">
             <div
               className={`rounded-full ${
                 selectedStep === 0 &&
@@ -25,11 +27,11 @@ export default function Stepper({ selectedStep, stepDone }) {
               )}
             </div>
             <div
-              className={`${
+              className={`mx-1 ${
                 selectedStep === 0 && 'font-bold'
-              } absolute top-0 -ml-10 text-center mt-16 w-32 text-xs  uppercase`}
+              }  text-center text-xs  uppercase`}
             >
-              Address
+              {formatMessage({ id: 'address' })}
             </div>
           </div>
           <div className="flex-auto border-t-2 transition duration-500 ease-in-out "></div>
@@ -50,11 +52,11 @@ export default function Stepper({ selectedStep, stepDone }) {
               )}
             </div>
             <div
-              className={`absolute top-0 -ml-10 text-center mt-16 w-32 text-xs uppercase ${
+              className={`text-center mx-1 text-xs uppercase ${
                 selectedStep === 1 && 'font-bold'
               } `}
             >
-              Personal Information
+              {formatMessage({ id: 'personal-information' })}
             </div>
           </div>
           <div
@@ -79,9 +81,9 @@ export default function Stepper({ selectedStep, stepDone }) {
             <div
               className={`${
                 selectedStep === 2 && 'font-bold'
-              } absolute top-0 -ml-10 text-center mt-16 w-32 text-xs uppercase`}
+              } text-center mx-1 text-xs uppercase`}
             >
-              Order Placed
+              {formatMessage({ id: 'order-placed' })}
             </div>
           </div>
         </div>

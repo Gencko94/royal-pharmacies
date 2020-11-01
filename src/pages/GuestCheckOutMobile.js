@@ -3,9 +3,12 @@ import AddressMobile from '../components/Cart/GuestCheckoutMobile/AddressMobile'
 import OrderPlacedMobile from '../components/Cart/GuestCheckoutMobile/OrderPlacedMobile';
 import PersonalInformationMobile from '../components/Cart/GuestCheckoutMobile/PersonalInformationMobile';
 import Stepper from '../components/Cart/Stepper';
+import LayoutMobile from '../components/LayoutMobile';
 
 export default function GuestCheckOutMobile() {
-  const [selectedStep, setSelectedStep] = React.useState(2);
+  const [selectedStep, setSelectedStep] = React.useState(0);
+  const [address, setAddress] = React.useState(null);
+
   const [stepDone, setStepDone] = React.useState({
     0: false,
     1: false,
@@ -33,12 +36,19 @@ export default function GuestCheckOutMobile() {
       });
     }
   };
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [selectedStep]);
   return (
-    <div className="">
+    <LayoutMobile>
       <Stepper selectedStep={selectedStep} stepDone={stepDone} />
       <div className="mb-3" style={{ minHeight: 'calc(100vh - 180px)' }}>
         {selectedStep === 0 && (
-          <AddressMobile handleStepForward={handleStepForward} />
+          <AddressMobile
+            handleStepForward={handleStepForward}
+            address={address}
+            setAddress={setAddress}
+          />
         )}
         {selectedStep === 1 && (
           <PersonalInformationMobile
@@ -53,6 +63,6 @@ export default function GuestCheckOutMobile() {
           />
         )}
       </div>
-    </div>
+    </LayoutMobile>
   );
 }
