@@ -7,6 +7,9 @@ const baseStrings = {
   // 'routes.singleProduct': '/products/:category/:name/:id',
 
   /** Page content */
+
+  //countries
+
   // general
 
   next: 'Next',
@@ -14,6 +17,32 @@ const baseStrings = {
   'add-to-cart': 'Add to Cart',
   'added-to-cart': 'Added to Cart',
   'your-recently-visited-items': 'Your Recently visited items',
+  'model-number': 'Model Number',
+  ratings: 'Ratings',
+  rating: 'Rating',
+  'in-stock': 'In Stock',
+  'price-before': 'Price Before',
+  'price-now': 'Price Now',
+  'free-delivery': 'Free Delivery',
+  'free-delivery-to': 'Free Delivery to',
+  'you-save': 'You Save',
+  'vat-inclusive': 'vat-inclusive',
+  'add-to-wishlist': 'Add to Wishlist',
+  'remove-from-cart': 'Remove from cart',
+  'additional-details': 'Additional Details',
+  description: 'Description',
+  specifications: 'Specifications',
+  reviews: 'Reviews',
+  'secure-transaction': 'Secure transaction',
+  quantity: 'Quantity',
+  'estimated-delivery': 'Estimated Delivery',
+  'fastest-delivery': 'Fastest Delivery',
+  change: 'Change',
+  'deliver-to': 'Deliver to',
+  'go-to-cart': 'Go to Cart',
+  checkout: 'Checkout',
+
+  //
   'home.title': 'Home',
   'home.content': 'Thank you for visiting this multi-language routing example.',
   'nav.cart': 'Cart',
@@ -52,14 +81,12 @@ const baseStrings = {
     'By clicking “Create an account”, you agree to our <link>Terms of Service</link> and <link>Privacy Statement</link>. We’ll occasionally send you account related emails',
   //end of credentials forms
   //start of cart items
-  quantity: 'Quantity',
   price: 'Price',
   item: 'Item',
   items: 'Items',
   'one-item': 'Item',
   'multiple-items': 'Items',
-  'add-to-wishlist': 'Add to Wishlist',
-  'remove-from-cart': 'Remove from cart',
+
   'cart-tos':
     'The price and availability of items at mrg.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
   subtotal: 'Subtotal',

@@ -3,29 +3,38 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { AiOutlineLock } from 'react-icons/ai';
 import { TiShoppingCart } from 'react-icons/ti';
 import { MdLocationOn } from 'react-icons/md';
-
+import MoonLoader from 'react-spinners/MoonLoader';
+import Select from 'react-select';
 import { DataProvider } from '../../contexts/DataContext';
 import ContentLoader from 'react-content-loader';
-
+import { useIntl } from 'react-intl';
 export default function RightSection({
   data,
   handleAddToCart,
   quantity,
   setQuantity,
   handleRemoveFromCart,
+  quantityOptions,
+  addToCartButtonLoading,
+  loading,
+  itemInCart,
 }) {
-  const { cartItems, deliveryCountry } = React.useContext(DataProvider);
-  const isItemInCart = () => {
-    const itemInCart = cartItems.find(item => data.id === item.id);
-    if (itemInCart !== undefined) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const { formatMessage } = useIntl();
+  const { deliveryCountry } = React.useContext(DataProvider);
+  // const isItemInCart = () => {
+  //   const itemInCart = cartItems.find(item => data.id === item.id);
+  //   if (itemInCart !== undefined) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
   return (
-    <div className="border  px-2 pt-1 rounded shadow-sm ">
-      {!data && (
+    <div
+      className="border  p-2 rounded shadow-sm self-start sticky  "
+      style={{ top: '108px' }}
+    >
+      {loading && (
         <ContentLoader
           speed={2}
           viewBox="0 0 295 480"
@@ -46,9 +55,9 @@ export default function RightSection({
           <rect x="0" y="335" rx="5" ry="5" width="100%" height="25" />
         </ContentLoader>
       )}
-      {data && (
+      {!loading && (
         <>
-          <div className="py-1">
+          <div className="">
             <h1>
               Sold By <span className="font-semibold">MRG</span>
             </h1>
@@ -60,82 +69,101 @@ export default function RightSection({
           <div className={` rounded py-1  my-1 text-sm`}>
             <div className="flex justify-between items-center font-semibold  ">
               <div className="flex items-center ">
-                <h1>
-                  Deliver To :{' '}
-                  <span className="uppercase mr-2">{deliveryCountry}</span>
-                </h1>
-                <MdLocationOn className="w-5 h-5 text-red-800 " />
+                <div className="flex items-center">
+                  <h1>{formatMessage({ id: 'deliver-to' })}</h1>
+                  <h1 className="uppercase mx-2">{deliveryCountry}</h1>
+                  <MdLocationOn className="w-5 h-5 text-red-800 " />
+                </div>
               </div>
               <button className={`py-0 px-2 text-xs bg-gray-200 rounded`}>
-                Change
+                {formatMessage({ id: 'change' })}
               </button>
             </div>
             <div className="">
-              <h1 className="">
-                <span className="text-gray-700">Estimated Delivery : </span>
-                October 8
-              </h1>
+              <div className="flex items-center">
+                <h1 className="text-gray-700">
+                  {formatMessage({ id: 'estimated-delivery' })} :
+                </h1>
+                <h1 className="mx-1">October 8</h1>
+              </div>
 
-              <h1 className="">
-                <span className="text-gray-700">Fastest Delivery : </span>
-                October 6
-              </h1>
+              <div className="flex items-center">
+                <h1 className="text-gray-700">
+                  {formatMessage({ id: 'fastest-delivery' })} :
+                </h1>
+                <h1 className="mx-1">October 6</h1>
+              </div>
             </div>
           </div>
 
           <hr className="mb-2" />
           <div className=" mr-2 flex justify-center items-center mb-2">
-            <h1 className=" mr-2 font-semibold">Quantity : </h1>
-            <select
-              value={quantity}
-              onChange={e => setQuantity(e.target.value)}
-              className="pr-8 py-1 form-select border-gray-400 border rounded"
-            >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-            </select>
+            <h1 className=" mr-2 flex-1 font-semibold">
+              {formatMessage({ id: 'quantity' })} :{' '}
+            </h1>
+            <div className="mx-3 flex-1">
+              <Select
+                onChange={selectedOption => setQuantity(selectedOption)}
+                options={quantityOptions}
+                className="p-1"
+                isSearchable={false}
+                value={quantity}
+              />
+            </div>
           </div>
           <hr />
           <div className="text-gray-700 flex items-center justify-center py-2">
-            <AiOutlineLock className="h-5 w-5 mr-4 " />
             <h1 className="hover:underline cursor-pointer">
-              Secure transaction
+              {formatMessage({ id: 'secure-transaction' })}
             </h1>
+            <AiOutlineLock className="h-5 w-5 mx-1 " />
           </div>
           <div className="flex flex-col">
-            <button className="bg-green-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold ">
-              <span>
-                <TiShoppingCart className="w-25p h-25p mr-2" />
-              </span>
-              Buy now
-            </button>
-            {isItemInCart() ? (
-              <button
-                onClick={handleRemoveFromCart}
-                className="bg-red-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold "
-              >
-                <span>
-                  <TiShoppingCart className="w-25p h-25p mr-2" />
-                </span>
-                Remove from Cart
-              </button>
-            ) : (
-              <button
-                onClick={handleAddToCart}
-                className="bg-blue-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold "
-              >
-                <span>
-                  <TiShoppingCart className="w-25p h-25p mr-2" />
-                </span>
-                Add to Cart
-              </button>
+            <div className="flex items-center justify-center my-1">
+              <MoonLoader
+                size={22}
+                color="#b72b2b"
+                loading={addToCartButtonLoading}
+              />
+            </div>
+            {!addToCartButtonLoading && (
+              <>
+                {itemInCart && (
+                  <button
+                    onClick={() => handleRemoveFromCart(data.id)}
+                    className={`bg-red-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold `}
+                  >
+                    <span>
+                      <TiShoppingCart className="w-25p h-25p " />
+                    </span>
+                    <h1 className="mx-1">
+                      {formatMessage({ id: 'remove-from-cart' })}
+                    </h1>
+                  </button>
+                )}
+                {!itemInCart && (
+                  <button
+                    onClick={handleAddToCart}
+                    className="bg-blue-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold "
+                  >
+                    <span>
+                      <TiShoppingCart className="w-25p h-25p" />
+                    </span>
+                    <h1 className="mx-1">
+                      {formatMessage({ id: 'add-to-cart' })}
+                    </h1>
+                  </button>
+                )}
+              </>
             )}
+
             <button className="bg-blue-500 py-1 px-2 rounded  text-white flex items-center justify-center font-semibold ">
               <span>
-                <AiOutlineHeart className="w-25p h-25p mr-2" />
+                <AiOutlineHeart className="w-25p h-25p" />
               </span>
-              Add to Wishlist
+              <h1 className="mx-1">
+                {formatMessage({ id: 'add-to-wishlist' })}
+              </h1>
             </button>
           </div>
         </>

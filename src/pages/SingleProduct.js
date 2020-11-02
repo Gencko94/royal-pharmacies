@@ -8,41 +8,54 @@ import MiddleSection from '../components/SingleProduct/MiddleSection';
 import RightSection from '../components/SingleProduct/RightSection';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
-import { gsap } from 'gsap';
-import { Power2 } from 'gsap';
-import MultiClamp from 'react-multi-clamp';
-import { Link, useParams } from 'react-router-dom';
-import Rating from 'react-rating';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { useParams } from 'react-router-dom';
 import ContentLoader from 'react-content-loader';
 import InView from 'react-intersection-observer';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 import Layout from '../components/Layout';
+import SideCartMenu from '../components/SingleProduct/SideCartMenu';
+import { CSSTransition } from 'react-transition-group';
 
 export default function SingleProduct() {
-  let tl = gsap.timeline({
-    defaults: { duration: 0.5, ease: Power2.easeOut },
-    paused: true,
-  });
+  // let tl = React.useMemo(
+  //   () =>
+  //     gsap.timeline({
+  //       defaults: { duration: 0.5, ease: Power2.easeOut },
+  //       paused: true,
+  //     }),
+  //   []
+  // );
   const { id, name } = useParams();
   const {
-    bestSeller,
     deliveryCountry,
     calculateItemsPrice,
     addItemToCart,
     removeItemFromCart,
     allItems,
+    isItemInCart,
+    getSingleItemDetails,
   } = React.useContext(DataProvider);
-
-  const [quantity, setQuantity] = React.useState(1);
-  const items = bestSeller.filter(item => item.id === id);
+  const quantityOptions = [
+    { value: 1, label: 1 },
+    { value: 2, label: 2 },
+    { value: 3, label: 3 },
+    { value: 4, label: 4 },
+  ];
+  const [quantity, setQuantity] = React.useState(quantityOptions[0]);
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
+  const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
+  const [cartItems, setCartItems] = React.useState(null);
+
   const [data, setData] = React.useState(null);
   const [related, setRelated] = React.useState(null);
   const [detailsTab, setDetailsTab] = React.useState(0);
-
+  const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
+    false
+  );
+  const [loading, setLoading] = React.useState(true);
+  const [itemInCart, setItemInCart] = React.useState(false);
   const handleLoadMore = inView => {
     if (inView) {
       if (hasMore) {
@@ -51,16 +64,31 @@ export default function SingleProduct() {
       }
     }
   };
-  const handleAddToCart = () => {
-    addItemToCart({ data: items[0], quantity });
-    tl.play();
+  const handleAddToCart = async () => {
+    setAddToCartButtonLoading(true);
+    const result = await addItemToCart({
+      id: data.id,
+      quantity: quantity.value,
+    });
+    if (result.message === 'ok') {
+      setAddToCartButtonLoading(false);
+      setItemInCart(true);
+      setCartItems(result.cartItems);
+      setSideMenuOpen(true);
+    }
   };
-  const handleRemoveFromCart = () => {
-    removeItemFromCart(items[0]);
+  const handleRemoveFromCart = async id => {
+    setAddToCartButtonLoading(true);
+    const result = await removeItemFromCart(id);
+    if (result.message === 'ok') {
+      setAddToCartButtonLoading(false);
+      setItemInCart(false);
+      if (sideMenuOpen) {
+        setCartItems(result.cartItems);
+      }
+    }
   };
-  const handleCloseMenu = () => {
-    tl.reverse(0.5);
-  };
+
   const fetchData = () => {
     setTimeout(() => {
       setRelated(relatedData);
@@ -68,52 +96,44 @@ export default function SingleProduct() {
       setFetching(false);
     }, 1500);
   };
+
   React.useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
+
+  React.useEffect(() => {
+    getSingleItemDetails(id).then(item => {
+      setData(item);
+
+      setLoading(false);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  React.useEffect(() => {
+    isItemInCart(id).then(res => {
+      if (res.message === 'yes') {
+        setItemInCart(true);
+        setAddToCartButtonLoading(false);
+      } else {
+        setItemInCart(false);
+        setAddToCartButtonLoading(false);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // Add item to localStorage //
   React.useEffect(() => {
     const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-    const isItemInHistory = visitedItems.find(item => item.id === items[0].id);
+    const isItemInHistory = visitedItems.find(item => item.id === id);
     if (isItemInHistory !== undefined) {
       return;
     } else {
-      visitedItems.push({ id: items[0].id });
+      visitedItems.push({ id });
       localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
     }
   });
-  React.useEffect(() => {
-    tl.fromTo(
-      '.side__addCart-container ',
-      {
-        visibility: 'hidden',
-        x: '100%',
-      },
-      { visibility: 'visible', x: '0%' }
-    )
-      .fromTo(
-        '.side__addCart-bg',
-        {
-          visibility: 'hidden',
-          opacity: 0,
-        },
-        { visibility: 'visible', opacity: 0.5 },
-        '-=0.3'
-      )
-      .fromTo(
-        '.after__addToCart-related',
-        { x: '100%' },
-        { x: '0%', stagger: '0.1' },
-        '-=0.5'
-      );
-  });
-  React.useEffect(() => {
-    setTimeout(() => {
-      setData(items[0]);
-    }, 1000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
   return (
     <Layout>
       <Helmet>
@@ -123,98 +143,27 @@ export default function SingleProduct() {
           content={`Shop  ${name.split('-').join(' ')} | MRG`}
         />
       </Helmet>
-      <div onClick={handleCloseMenu} className="side__addCart-bg"></div>
-      <div className="side__addCart-container ">
-        <div className=" bg-body-light p-2 ">
-          <div>
-            <div className=" after__addToCart-grid mb-2">
-              <div className=" grid place-items-center">
-                <img
-                  src={items[0].photos.small}
-                  alt={items[0].name}
-                  className="max-w-full h-auto"
-                />
-              </div>
-              <div className="after__addToCart-details ">
-                <MultiClamp className="font-semibold " clamp={4} ellipsis="...">
-                  {items[0].name}
-                </MultiClamp>
-              </div>
-            </div>
-            <div className="flex justify-center items-center">
-              <h1 className="bg-blue-200 px-2 py-1 w-1/2 rounded text-center my-2">
-                Added to Cart !
-              </h1>
-            </div>
-            <hr className="my-1" />
-            <div className="flex justify-between semibold items-center  my-2">
-              <h1 className="">Cart Total</h1>
-              <h1 className=" font-semibold">{calculateItemsPrice()} KD</h1>
-            </div>
-            <hr className="my-1" />
-            <div className=" flex items-center my-2 text-center text-second-nav-text-light ">
-              <button
-                className={`flex-1 py-1  px-2  bg-blue-500 w-full  rounded mr-2`}
-              >
-                Checkout
-              </button>
-              <Link
-                to="/cart"
-                className={`flex-1 py-1 px-2 bg-green-500     rounded`}
-              >
-                Go to Cart
-              </Link>
-            </div>
-          </div>
-          <hr className="my-1" />
-          <div
-            className="overflow-y-auto overflow-x-hidden"
-            style={{ maxHeight: 'calc(100vh - 280px' }}
-          >
-            <h1 className="font-bold">Similar Items</h1>
-            {bestSeller.map((item, i) => {
-              return (
-                <>
-                  <div key={i} className="after__addToCart-related my-1  ">
-                    <img
-                      src={item.photos.small}
-                      alt={item.name}
-                      className="max-w-full h-auto"
-                    />
-                    <div className="text-sm">
-                      <MultiClamp
-                        className="font-semibold "
-                        clamp={2}
-                        ellipsis="..."
-                      >
-                        {item.name}
-                      </MultiClamp>
-                      <Rating
-                        initialRating={Math.round(Math.random() * 5)}
-                        emptySymbol={<AiOutlineStar className="text-red-700" />}
-                        fullSymbol={<AiFillStar className="text-red-700" />}
-                        className="mr-2 pt-1"
-                      />
-                      <h1 className="text-green-700">{item.price} KD</h1>
-                      <button className="p-1 text-xs bg-blue-700 text-white rounded ">
-                        Add to cart
-                      </button>
-                    </div>
-                  </div>
-                  {i !== bestSeller.length - 1 && <hr />}
-                </>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+
+      <CSSTransition
+        timeout={300}
+        classNames="en-add-to-cart__sideMenu"
+        unmountOnExit
+        in={sideMenuOpen}
+      >
+        <SideCartMenu
+          cartItems={cartItems}
+          calculateItemsPrice={calculateItemsPrice}
+          setSideMenuOpen={setSideMenuOpen}
+          handleRemoveFromCart={handleRemoveFromCart}
+        />
+      </CSSTransition>
       <div className=" px-4 ">
         <div className="mx-auto max-w-default">
           <Breadcrumbs />
 
           <div className="details__container">
             <div className="relative ">
-              {!data && (
+              {loading && (
                 <ContentLoader
                   speed={2}
                   viewBox="0 0 480 480"
@@ -224,16 +173,24 @@ export default function SingleProduct() {
                   <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
                 </ContentLoader>
               )}
-              {data && <ImageZoom data={data} />}
+              {!loading && <ImageZoom data={data} />}
             </div>
 
-            <MiddleSection data={data} deliveryCountry={deliveryCountry} />
+            <MiddleSection
+              data={data}
+              deliveryCountry={deliveryCountry}
+              loading={loading}
+            />
             <RightSection
               data={data}
               quantity={quantity}
               setQuantity={setQuantity}
               handleAddToCart={handleAddToCart}
               handleRemoveFromCart={handleRemoveFromCart}
+              quantityOptions={quantityOptions}
+              addToCartButtonLoading={addToCartButtonLoading}
+              loading={loading}
+              itemInCart={itemInCart}
             />
           </div>
           <div id="details" className="py-2 mb-2">
@@ -267,7 +224,7 @@ export default function SingleProduct() {
                 Reviews
               </button>
             </div>
-            <div className="px-2 text-sm">{items[0].description}</div>
+            {!loading && <div className="px-2 text-sm">{data.description}</div>}
           </div>
           {related && <RelatedItems relatedData={related} />}
           {isFetching && <div>Loading ...</div>}

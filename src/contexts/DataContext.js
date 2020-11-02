@@ -152,20 +152,57 @@ export default function DataContextProvider({ children }) {
     localStorage.setItem('prefferedLanguage', lang);
     setLanguage(lang);
   };
-  const addItemToCart = item => {
-    const cartCopy = [...cartItems];
-    const newItem = {
-      id: item.data.id,
-      name: item.data.name,
-      photo: item.data.photos.main[0],
-      price: item.data.price,
-      quantity: item.quantity || 1,
-    };
-    cartCopy.push(newItem);
+  const isItemInCart = id => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const itemInCart = cartItems.find(item => id === item.id);
+        if (itemInCart) {
+          resolve({ message: 'yes' });
+        } else {
+          resolve({ message: 'no' });
+        }
+      }, 500);
+    });
+  };
+  const getCartItems = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(cartItems);
+      }, 500);
+    });
+  };
+  const getSingleItemDetails = id => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const item = allItems.filter(item => item.id === id);
+        if (item[0]) {
+          resolve(item[0]);
+        } else {
+          reject({ message: 'no product' });
+        }
+      }, 2000);
+    });
+  };
+  const addItemToCart = ({ id, quantity }) => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const cartCopy = [...cartItems];
+        const newItem = {
+          id: id,
 
-    setCartItems(cartCopy);
+          quantity: quantity || 1,
+        };
+        cartCopy.push(newItem);
+        const iDs = cartCopy.map(item => item.id);
+        const items = allItems.filter(
+          item => item.id === iDs.find(id => id === item.id)
+        );
+        setCartItems(cartCopy);
 
-    localStorage.setItem('cartItems', JSON.stringify(cartCopy));
+        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
+        resolve({ message: 'ok', cartItems: items });
+      }, 1000);
+    });
   };
 
   const EditItemFromCart = (quantity, item) => {
@@ -178,10 +215,19 @@ export default function DataContextProvider({ children }) {
     setCartItems(cartCopy);
     localStorage.setItem('cartItems', JSON.stringify(cartCopy));
   };
-  const removeItemFromCart = item => {
-    const cartCopy = cartItems.filter(cartItem => item.id !== cartItem.id);
-    setCartItems(cartCopy);
-    localStorage.setItem('cartItems', JSON.stringify(cartCopy));
+  const removeItemFromCart = id => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const cartCopy = cartItems.filter(cartItem => id !== cartItem.id);
+        setCartItems(cartCopy);
+        const iDs = cartCopy.map(item => item.id);
+        const items = allItems.filter(
+          item => item.id === iDs.find(id => id === item.id)
+        );
+        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
+        resolve({ message: 'ok', cartItems: items });
+      }, 1000);
+    });
   };
   const calculateItemsPrice = () => {
     let price = 0;
@@ -2273,6 +2319,9 @@ export default function DataContextProvider({ children }) {
         orderedItems,
         language,
         handleLanguageChange,
+        isItemInCart,
+        getSingleItemDetails,
+        getCartItems,
       }}
     >
       {children}

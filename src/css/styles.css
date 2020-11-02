@@ -392,10 +392,24 @@ input {
   transition: all 0.1s ease-out;
 }
 
+.en-add-to-cart__sideMenu-enter {
+  transform: translateX(100%);
+}
+.en-add-to-cart__sideMenu-enter-active {
+  transform: translateX(0);
+  transition: 300ms ease-out;
+}
+.en-add-to-cart__sideMenu-exit {
+  transform: translateX(0);
+}
+.en-add-to-cart__sideMenu-exit-active {
+  transform: translateX(100%);
+  transition: 300ms ease-out;
+}
+
 .side__addCart-container {
   position: fixed;
   z-index: 20;
-  width: 100%;
   height: 100%;
   top: 0;
   right: 0;
@@ -404,10 +418,9 @@ input {
 }
 .side__addCart-bg {
   position: fixed;
-  z-index: 20;
+  z-index: 19;
   top: 0;
   left: 0;
-  /* width: calc(100vw - 350px); */
   width: 100%;
   height: 100%;
   background-color: gray;

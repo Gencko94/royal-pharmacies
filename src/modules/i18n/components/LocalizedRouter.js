@@ -7,7 +7,7 @@ export const LocalizedRouter = ({
   children,
   RouterComponent,
   appStrings,
-  defaultLanguage = 'ar',
+  defaultLanguage = 'en',
 }) => {
   return (
     <RouterComponent>
@@ -19,7 +19,6 @@ export const LocalizedRouter = ({
            */
           const params = match ? match.params : {};
           const { lang = defaultLanguage || appLanguages.English } = params;
-          console.log(lang);
 
           /**
            * If language is not in route path, redirect to language root

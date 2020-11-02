@@ -10,8 +10,6 @@ export const useLazyLoadFetch = (src, page) => {
   };
   const [relatedData, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  console.log(page);
-  console.log(hasMore);
   useEffect(() => {
     if (src.length > 12) {
       const splittedArr = src.slice(

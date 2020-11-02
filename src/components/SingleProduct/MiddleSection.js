@@ -1,12 +1,14 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { useIntl } from 'react-intl';
 import Rating from 'react-rating';
 import miniBanner from '../../assets/banners/miniBanner.gif';
-export default function MiddleSection({ data, deliveryCountry }) {
+export default function MiddleSection({ data, deliveryCountry, loading }) {
+  const { formatMessage } = useIntl();
   return (
-    <div className="flex flex-col w-full ">
-      {!data && (
+    <div className="flex flex-col w-full self-start ">
+      {loading && (
         <ContentLoader
           speed={2}
           viewBox="0 0 550 480"
@@ -26,48 +28,56 @@ export default function MiddleSection({ data, deliveryCountry }) {
           <rect x="0" y="360" rx="5" ry="5" width="100%" height="120" />
         </ContentLoader>
       )}
-      {data && (
+      {!loading && (
         <>
-          {' '}
-          <h1 className="font-semibold text-xl mb-1">{data.name}</h1>
+          <h1 className="font-semibold text-xl">{data.name}</h1>
           <div className="flex items-center ">
             <Rating
               initialRating={4.5}
               emptySymbol={<AiOutlineStar className="text-red-700" />}
               fullSymbol={<AiFillStar className="text-red-700" />}
-              className="mr-2 pt-1 mb-1"
+              className=" pt-1"
             />
-            <h1 className="text-sm">36 Ratings</h1>
+            <h1 className="text-sm mx-2">
+              36 {formatMessage({ id: 'ratings' })}
+            </h1>
           </div>
-          <h1 className=" font-semibold mb-1 text-green-700">In Stock</h1>
+          <h1 className=" font-semibold mb-1 text-green-700">
+            {formatMessage({ id: 'in-stock' })}
+          </h1>
           <h1 className="text-sm   mb-1 text-gray-700">
-            Model Number : NK2O-4952
+            {formatMessage({ id: 'model-number' })} : NK2O-4952
           </h1>
           <hr className="my-2" />
-          <div className=" mb-1 text-sm  font-bold">
-            <h1 className=" ">
-              Price Before :{' '}
-              <span className=" text-base italic  line-through text-gray-700">
-                {data.priceBefore} KD
-              </span>{' '}
-            </h1>
-            <div className="flex">
-              <h1 className=" mr-5   ">
-                Price Now :{' '}
-                <span className=" text-xl  text-red-700">{data.price} KD</span>{' '}
-                <span className=" font-normal  text-gray-700">
-                  (VAT Inclusive)
-                </span>{' '}
-              </h1>
-              <button
-                className={`py-0 px-2 text-sm bg-green-200 rounded font-semibold`}
-              >
-                Free Delivery To {deliveryCountry}
-              </button>
+          <div className="flex items-start py-1">
+            <div className=" flex-1 text-sm  font-bold">
+              <div className=" flex items-center ">
+                <h1>{formatMessage({ id: 'price-before' })} :</h1>
+                <h1 className=" mx-2 text-base italic  line-through text-gray-700">
+                  {data.priceBefore} KD
+                </h1>{' '}
+              </div>
+              <div className="">
+                <div className="flex items-center flex-1">
+                  <h1 className="    ">
+                    {formatMessage({ id: 'price-now' })} :{' '}
+                  </h1>
+                  <h1 className=" text-xl mx-2  text-red-700">
+                    {data.price} KD
+                  </h1>{' '}
+                  <h1 className=" font-normal  text-gray-700">
+                    ({formatMessage({ id: 'vat-inclusive' })})
+                  </h1>
+                </div>
+                <div className="flex items-center   ">
+                  <h1>{formatMessage({ id: 'you-save' })} :</h1>
+                  <h1 className="text-base text-red-700 mx-2">18%</h1>
+                </div>
+              </div>
             </div>
-            <h1 className="   ">
-              You Save : <span className=" text-xl  text-red-700">18%</span>{' '}
-            </h1>
+            <div className="p-1 text-xs text-main-text bg-green-800 rounded-sm">
+              <h1>{formatMessage({ id: 'free-delivery-to' })} Kuwait</h1>
+            </div>
           </div>
           <hr className="my-2" />
           <img src={miniBanner} alt="offer" className="mt-2" />
