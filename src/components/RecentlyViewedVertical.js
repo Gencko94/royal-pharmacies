@@ -15,14 +15,14 @@ export default function RecentlyViewedVertical({ visitedItems }) {
     setData(visited);
   }, [allItems, visitedItems]);
   return (
-    <div className="border rounded p-2 bg-gray-100">
+    <>
       <h1 className="mb-1">
         {formatMessage({ id: 'your-recently-visited-items' })}
       </h1>
       <hr />
       {data.slice(0, 5).map((item, i) => {
         return (
-          <div key={i} className="recent-items__container mb-1 ">
+          <div key={i} className="recent-items__container mb-2 ">
             <a
               title={item.name}
               className="hover:underline"
@@ -64,6 +64,6 @@ export default function RecentlyViewedVertical({ visitedItems }) {
           </div>
         );
       })}
-    </div>
+    </>
   );
 }

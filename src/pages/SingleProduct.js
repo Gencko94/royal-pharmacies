@@ -28,7 +28,6 @@ export default function SingleProduct() {
   const { id, name } = useParams();
   const {
     deliveryCountry,
-    calculateItemsPrice,
     addItemToCart,
     removeItemFromCart,
     allItems,
@@ -47,7 +46,8 @@ export default function SingleProduct() {
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
   const [cartItems, setCartItems] = React.useState(null);
-
+  const [cartTotal, setCartTotal] = React.useState(0);
+  const [cartEmpty, setCartEmpty] = React.useState(false);
   const [data, setData] = React.useState(null);
   const [related, setRelated] = React.useState(null);
   const [detailsTab, setDetailsTab] = React.useState(0);
@@ -69,22 +69,35 @@ export default function SingleProduct() {
     const result = await addItemToCart({
       id: data.id,
       quantity: quantity.value,
+      price: data.price,
+      name: data.name,
+      photo: data.photos.small,
     });
     if (result.message === 'ok') {
       setAddToCartButtonLoading(false);
       setItemInCart(true);
       setCartItems(result.cartItems);
       setSideMenuOpen(true);
+      setCartTotal(result.cartTotal);
+      setCartEmpty(false);
     }
   };
   const handleRemoveFromCart = async id => {
-    setAddToCartButtonLoading(true);
+    if (id === data.id) {
+      setAddToCartButtonLoading(true);
+    }
     const result = await removeItemFromCart(id);
     if (result.message === 'ok') {
-      setAddToCartButtonLoading(false);
-      setItemInCart(false);
+      if (id === data.id) {
+        setAddToCartButtonLoading(false);
+        setItemInCart(false);
+      }
       if (sideMenuOpen) {
         setCartItems(result.cartItems);
+        setCartTotal(result.cartTotal);
+        if (result.cartItems.length === 0) {
+          setCartEmpty(true);
+        }
       }
     }
   };
@@ -101,6 +114,10 @@ export default function SingleProduct() {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
+
+  /*
+  {entry}
+  */
 
   React.useEffect(() => {
     getSingleItemDetails(id).then(item => {
@@ -152,9 +169,10 @@ export default function SingleProduct() {
       >
         <SideCartMenu
           cartItems={cartItems}
-          calculateItemsPrice={calculateItemsPrice}
+          cartTotal={cartTotal}
           setSideMenuOpen={setSideMenuOpen}
           handleRemoveFromCart={handleRemoveFromCart}
+          cartEmpty={cartEmpty}
         />
       </CSSTransition>
       <div className=" px-4 ">
@@ -173,7 +191,11 @@ export default function SingleProduct() {
                   <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
                 </ContentLoader>
               )}
-              {!loading && <ImageZoom data={data} />}
+              {!loading && (
+                <ImageZoom
+                  data={{ images: data.photos.main, name: data.name }}
+                />
+              )}
             </div>
 
             <MiddleSection

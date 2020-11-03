@@ -11,7 +11,8 @@ const baseStrings = {
   //countries
 
   // general
-
+  login: 'Sign In to your account',
+  register: 'Register Now',
   next: 'Next',
   back: 'Back',
   'add-to-cart': 'Add to Cart',

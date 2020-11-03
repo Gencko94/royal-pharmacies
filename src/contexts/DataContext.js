@@ -167,28 +167,31 @@ export default function DataContextProvider({ children }) {
   const getCartItems = () => {
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve(cartItems);
+        resolve({ cartItems, cartTotal: calculateItemsPrice(cartItems) });
       }, 500);
     });
   };
   const getSingleItemDetails = id => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        const item = allItems.filter(item => item.id === id);
-        if (item[0]) {
-          resolve(item[0]);
+        const item = allItems.find(item => item.id === id);
+        if (item) {
+          resolve(item);
         } else {
           reject({ message: 'no product' });
         }
       }, 2000);
     });
   };
-  const addItemToCart = ({ id, quantity }) => {
+  const addItemToCart = ({ id, quantity, price, name, photo }) => {
     return new Promise(resolve => {
       setTimeout(() => {
         const cartCopy = [...cartItems];
         const newItem = {
-          id: id,
+          id,
+          price,
+          name,
+          photo,
 
           quantity: quantity || 1,
         };
@@ -200,7 +203,11 @@ export default function DataContextProvider({ children }) {
         setCartItems(cartCopy);
 
         localStorage.setItem('cartItems', JSON.stringify(cartCopy));
-        resolve({ message: 'ok', cartItems: items });
+        resolve({
+          message: 'ok',
+          cartItems: items,
+          cartTotal: calculateItemsPrice(cartCopy),
+        });
       }, 1000);
     });
   };
@@ -225,13 +232,17 @@ export default function DataContextProvider({ children }) {
           item => item.id === iDs.find(id => id === item.id)
         );
         localStorage.setItem('cartItems', JSON.stringify(cartCopy));
-        resolve({ message: 'ok', cartItems: items });
+        resolve({
+          message: 'ok',
+          cartItems: items,
+          cartTotal: calculateItemsPrice(cartCopy),
+        });
       }, 1000);
     });
   };
-  const calculateItemsPrice = () => {
+  const calculateItemsPrice = item => {
     let price = 0;
-    cartItems.forEach(item => {
+    item.forEach(item => {
       price = price + item.quantity * item.price;
     });
     return price;

@@ -1,14 +1,13 @@
 import React from 'react';
+import { MdClose } from 'react-icons/md';
 import { useIntl } from 'react-intl';
 import MultiClamp from 'react-multi-clamp';
 import { Link } from 'react-router-dom';
-import { gsap } from 'gsap';
-import { Power2 } from 'gsap';
-import { MdClose } from 'react-icons/md';
-import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
+import { gsap, Power2 } from 'gsap';
 
-export default function SideCartMenu({
+export default function SideCartMenuMobile({
   cartItems,
   handleRemoveFromCart,
   setSideMenuOpen,
@@ -48,13 +47,12 @@ export default function SideCartMenu({
       );
     animation.play();
   }, [animation, locale]);
-
   return (
     <>
       <div
-        className={`side-add-to-cart__container ${
+        className={`side-add-to-cart__container-mobile ${
           locale === 'ar' ? 'right-0' : 'left-0'
-        }`}
+        } `}
       >
         <div className=" bg-body-light p-2 h-full flex flex-col ">
           <div className="flex items-center justify-between">

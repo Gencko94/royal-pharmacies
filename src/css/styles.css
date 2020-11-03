@@ -34,12 +34,7 @@ input {
 
   margin-bottom: 1em;
 }
-.details__container-mobile {
-  position: relative;
-  display: grid;
-  gap: 0.5em;
-  grid-template-columns: 1fr;
-}
+
 .thumbnails__left {
   top: 0;
   left: 0;
@@ -97,9 +92,7 @@ input {
   gap: 0.5em;
   align-items: flex-start;
 }
-.cart__container {
-  max-width: calc(100vw - 338px);
-}
+
 .cart__title {
   display: grid;
   grid-template-columns: 0.6fr 2fr 0.5fr;
@@ -286,6 +279,14 @@ input {
 }
 
 /* after add to cart div */
+
+.side-menu-cart-item__fade-exit {
+  opacity: 1;
+}
+.side-menu-cart-item__fade-exit-active {
+  opacity: 0;
+  transition: 400ms ease-in-out;
+}
 .after__addToCart-container-mobile {
   position: fixed;
   top: 0;
@@ -393,7 +394,7 @@ input {
 }
 
 .en-add-to-cart__sideMenu-enter {
-  transform: translateX(100%);
+  transform: translateX(-100%);
 }
 .en-add-to-cart__sideMenu-enter-active {
   transform: translateX(0);
@@ -403,16 +404,39 @@ input {
   transform: translateX(0);
 }
 .en-add-to-cart__sideMenu-exit-active {
+  transform: translateX(-100%);
+  transition: 300ms ease-out;
+}
+.ar-add-to-cart__sideMenu-enter {
+  transform: translateX(100%);
+}
+.ar-add-to-cart__sideMenu-enter-active {
+  transform: translateX(0);
+  transition: 300ms ease-out;
+}
+.ar-add-to-cart__sideMenu-exit {
+  transform: translateX(0);
+}
+.ar-add-to-cart__sideMenu-exit-active {
   transform: translateX(100%);
   transition: 300ms ease-out;
 }
 
-.side__addCart-container {
+.side-add-to-cart__container {
   position: fixed;
   z-index: 20;
   height: 100%;
   top: 0;
-  right: 0;
+
+  min-width: 350px;
+  max-width: 350px;
+}
+.side-add-to-cart__container-mobile {
+  position: fixed;
+  z-index: 20;
+  height: 100%;
+  top: 0;
+
   min-width: 350px;
   max-width: 350px;
 }
@@ -593,11 +617,18 @@ input {
   transform: translateY(0);
 }
 .order-items__mobile-exit-active {
-  transform: translatex(100%);
+  transform: translateX(100%);
   transition: 200ms ease;
 }
 .order-details-mobile__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 162px));
   gap: 0.7em;
+}
+.cart-item__trans-exit {
+  opacity: 1;
+}
+.cart-item__trans-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
 }

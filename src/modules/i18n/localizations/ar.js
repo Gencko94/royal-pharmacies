@@ -6,6 +6,8 @@ export const ar = {
   // 'routes.singleProduct': '/products/:category/:name/:id',
   /** Page content */
   // general
+  register: 'اشترك معنا',
+  login: 'سجل الدخول',
   next: 'التالي',
   back: 'الخلف',
   'add-to-cart': 'أضف إلى السلة',
@@ -34,7 +36,7 @@ export const ar = {
   change: 'تغيير',
   'deliver-to': 'توصيل إلى',
   'go-to-cart': 'عرض السلة',
-  checkout: 'الدفع',
+  checkout: 'إتمام الشراء',
 
   //
   'nav.cart': 'عربة التسوق',

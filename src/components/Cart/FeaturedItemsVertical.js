@@ -4,10 +4,10 @@ import Rating from 'react-rating';
 import { DataProvider } from '../../contexts/DataContext';
 
 export default function FeaturedItemsVertical() {
-    const {bestSeller} = React.useContext(DataProvider)
+  const { bestSeller } = React.useContext(DataProvider);
 
   return (
-    <div className="border rounded p-2 bg-gray-100">
+    <>
       <h1 className="mb-1">Featured Items</h1>
       <hr />
       {bestSeller.slice(0, 4).map((item, i) => {
@@ -33,6 +33,6 @@ export default function FeaturedItemsVertical() {
           </>
         );
       })}
-    </div>
+    </>
   );
 }

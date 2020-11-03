@@ -1,20 +1,14 @@
 import React from 'react';
 import Slider from 'react-slick';
-// import ReactImageMagnify from 'react-image-magnify';
-// import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-
-// import { useMediaQuery } from 'react-responsive';
-import { useIntl } from 'react-intl';
-export default function ImageZoom({ data: { name, images } }) {
+export default function ImageZoomMobile({ data: { images, name } }) {
   const sliderRef = React.useRef();
 
-  const { locale } = useIntl();
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  // const min1100 = useMediaQuery({ query: '(min-width:1100px)' });
   const mainSettings = {
     arrows: false,
+    dots: false,
     infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -23,13 +17,12 @@ export default function ImageZoom({ data: { name, images } }) {
     sliderRef.current.slickGoTo(i);
     setCurrentSlide(i);
   }, []);
-
   return (
-    <div className="sticky" style={{ alignSelf: 'self-start', top: '130px' }}>
+    <div className="mb-2">
       <Slider
         ref={slider => (sliderRef.current = slider)}
         {...mainSettings}
-        className={`${locale === 'ar' ? 'mr-16' : 'ml-16'}`}
+        className={`mb-2`}
       >
         {images.map((photo, i) => {
           return (
@@ -41,14 +34,10 @@ export default function ImageZoom({ data: { name, images } }) {
           );
         })}
       </Slider>
-      <div
-        className={`absolute top-0  flex flex-col justify-center ${
-          locale === 'ar' ? 'right-0' : 'left-0'
-        }`}
-      >
+      <div className={`flex justify-evenly items-center overflow-x-auto `}>
         {images.map((photo, i) => {
           return (
-            <div key={i}>
+            <div key={i} className="">
               <img
                 onClick={() => handleChangeSlide(i)}
                 src={photo}
