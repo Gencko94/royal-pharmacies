@@ -247,6 +247,32 @@ export default function DataContextProvider({ children }) {
     });
     return price;
   };
+  const getItemsByType = type => {
+    return new Promise((resolve, reject) => {
+      let group;
+      switch (type) {
+        case 'bestSellers':
+          group = bestSeller;
+          break;
+        case 'phone':
+          group = phone;
+          break;
+        case 'home':
+          group = home;
+          break;
+        case 'fashion':
+          group = fashion;
+          break;
+
+        default:
+          reject({ message: 'No group was selected' });
+          break;
+      }
+      setTimeout(() => {
+        resolve(group);
+      }, [3000]);
+    });
+  };
   const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const stores = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const allItems = [
@@ -2333,6 +2359,7 @@ export default function DataContextProvider({ children }) {
         isItemInCart,
         getSingleItemDetails,
         getCartItems,
+        getItemsByType,
       }}
     >
       {children}

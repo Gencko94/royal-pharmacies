@@ -21,7 +21,7 @@ import kids from '../assets/photoCategories/kids.png';
 // import iphonepng from '../assets/phones/iphonepng.png';
 // import note10 from '../assets/phones/note10.jpg';
 
-import ItemsSlider from '../components/Home/ItemsSlider';
+import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
 import Banner from '../components/Home/Banner';
 import Categories from '../components/Home/Categories';
 import { DataProvider } from '../contexts/DataContext';
@@ -34,9 +34,8 @@ import { useIntl } from 'react-intl';
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
   const { formatMessage } = useIntl();
-  const { bestSeller, phone, isLightTheme, home, fashion } = React.useContext(
-    DataProvider
-  );
+  const { isLightTheme } = React.useContext(DataProvider);
+
   return (
     <Layout>
       <Helmet>
@@ -64,7 +63,7 @@ export default function Home() {
         >
           <Categories />
           <ItemsSlider
-            data={bestSeller}
+            type="bestSellers"
             miniLogo={false}
             title={formatMessage({ id: 'bestSellers' })}
             isLightTheme={isLightTheme}
@@ -85,9 +84,9 @@ export default function Home() {
               { title: 'iPhone Red', photo: iphonered },
             ]}
           /> */}
-          <LazyLoad offset={200}>
+          <LazyLoad offset={300}>
             <ItemsSlider
-              data={phone}
+              type="phone"
               miniLogo={false}
               isLightTheme={isLightTheme}
               title="Save Big with Phones & Tablets"
@@ -100,9 +99,9 @@ export default function Home() {
           <LazyLoad>
             <PhotoCategories data={[homeapp, kitchen, appliances]} />
           </LazyLoad>
-          <LazyLoad offset={200}>
+          <LazyLoad offset={300}>
             <ItemsSlider
-              data={home}
+              type="home"
               miniLogo={false}
               isLightTheme={isLightTheme}
               title="Explore our Household Collection"
@@ -114,9 +113,9 @@ export default function Home() {
           <LazyLoad>
             <PhotoCategories data={[men, women, kids]} />
           </LazyLoad>
-          <LazyLoad offset={200}>
+          <LazyLoad offset={300}>
             <ItemsSlider
-              data={fashion}
+              type="fashion"
               miniLogo={false}
               isLightTheme={isLightTheme}
               title="Check out the latest fashion trends"

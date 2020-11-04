@@ -1,9 +1,7 @@
 import React from 'react';
 
-import {} from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import { DataProvider } from '../contexts/DataContext';
-import { TiShoppingCart } from 'react-icons/ti';
 import InView, { useInView } from 'react-intersection-observer';
 import { CSSTransition } from 'react-transition-group';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
@@ -15,7 +13,7 @@ import ImageZoomMobile from '../components/SingleProductMobile/ImageZoomMobile';
 import { useIntl } from 'react-intl';
 import ItemDescription from '../components/SingleProductMobile/ItemDescription';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
+import FloatingAddToCart from '../components/SingleProductMobile/FloatingAddToCart';
 
 export default function SingleProductMobile({
   match: {
@@ -50,7 +48,7 @@ export default function SingleProductMobile({
   const [cartEmpty, setCartEmpty] = React.useState(false);
   const [data, setData] = React.useState(null);
   const [quantity, setQuantity] = React.useState(1);
-  const { formatMessage, locale } = useIntl();
+  const { locale } = useIntl();
 
   const [triggerRef, inView] = useInView();
 
@@ -159,8 +157,8 @@ export default function SingleProductMobile({
           timeout={300}
           classNames={`${
             locale === 'ar'
-              ? 'ar-add-to-cart__sideMenu'
-              : 'en-add-to-cart__sideMenu'
+              ? 'ar-add-to-cart__sideMenu-mobile'
+              : 'en-add-to-cart__sideMenu-mobile'
           }`}
           unmountOnExit
           in={sideMenuOpen}
@@ -269,56 +267,22 @@ export default function SingleProductMobile({
             <div className="px-3 text-sm">{items[0].description}</div>
           </div>
         </div>
-        <CSSTransition
-          in={inView}
-          timeout={200}
-          unmountOnExit={true}
-          classNames="floating-cart-button"
-        >
-          <div className={`floating-button border-t bg-second-nav-text-light`}>
-            <div className=" flex items-center justify-center flex-1">
-              <button onClick={handleSubstractQuantity} className="p-1 mr-2">
-                <AiOutlineMinusCircle
-                  className={`w-6 h-6 ${
-                    quantity === 1 ? 'text-gray-700' : 'text-blue-700'
-                  }`}
-                />
-              </button>
-              <span className="mx-2">{quantity}</span>
-              <button onClick={handleAddQuantity} className="p-1">
-                <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
-              </button>
-            </div>
-            <div className="p-1 text-center">
-              {quantity * items[0].price} KD
-            </div>
-            {isItemInCart() ? (
-              <button
-                onClick={() => handleRemoveFromCart(id)}
-                className="text-sm bg-red-700 text-gray-100  flex-1  py-1 px-2 rounded   flex items-center justify-center font-semibold "
-              >
-                <span>
-                  <TiShoppingCart className="w-25p h-25p" />
-                </span>
-                <h1 className="mx-2 whitespace-no-wrap">
-                  {formatMessage({ id: 'remove-from-cart' })}
-                </h1>
-              </button>
-            ) : (
-              <button
-                onClick={() => handleAddToCart(data.id, quantity)}
-                className="text-sm bg-blue-700 text-gray-100 flex-1  py-1 px-2 rounded  flex items-center justify-center font-semibold"
-              >
-                <span>
-                  <TiShoppingCart className="w-25p h-25p" />
-                </span>
-                <h1 className=" mx-2">
-                  {formatMessage({ id: 'add-to-cart' })}
-                </h1>
-              </button>
-            )}
-          </div>
-        </CSSTransition>
+
+        {!loading && (
+          <FloatingAddToCart
+            handleSubstractQuantity={handleSubstractQuantity}
+            quantity={quantity}
+            handleAddQuantity={handleAddQuantity}
+            handleRemoveFromCart={handleRemoveFromCart}
+            handleAddToCart={handleAddToCart}
+            id={data.id}
+            price={data.price}
+            addToCartButtonLoading={addToCartButtonLoading}
+            inView={inView}
+            itemInCart={itemInCart}
+          />
+        )}
+
         <hr />
         <div ref={triggerRef}>
           {related && <RelatedItems relatedData={related} />}

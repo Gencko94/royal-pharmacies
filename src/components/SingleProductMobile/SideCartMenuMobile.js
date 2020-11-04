@@ -17,7 +17,7 @@ export default function SideCartMenuMobile({
   let animation = React.useMemo(
     () =>
       gsap.timeline({
-        defaults: { duration: 0.5, ease: Power2.easeOut },
+        defaults: { ease: Power2.easeOut },
         paused: true,
       }),
     []
@@ -26,15 +26,16 @@ export default function SideCartMenuMobile({
     animation.reverse();
     setTimeout(() => {
       setSideMenuOpen(false);
-    }, 300);
+    }, 600);
   };
   const { formatMessage, locale } = useIntl();
   React.useEffect(() => {
     animation
       .fromTo(
         '.after__addToCart-related',
-        { x: locale === 'ar' ? '100' : '-100' },
-        { x: '0%', stagger: '0.1' }
+        { x: locale === 'ar' ? '100%' : '-100%' },
+        { x: '0%', stagger: '0.2', duration: 0.6 },
+        '+=0.3'
       )
       .fromTo(
         '.side__addCart-bg',

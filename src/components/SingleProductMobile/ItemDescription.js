@@ -78,15 +78,6 @@ export default function ItemDescription({
         </select>
       </div>
       <div className="relative flex items-center justify-between">
-        <button className="bg-green-600 p-1 rounded flex-1 text-sm  text-white flex items-center justify-center font-semibold ">
-          <span>
-            <AiOutlineHeart className="w-25p h-25p" />
-          </span>
-          <h1 className="mx-2 flex-1 whitespace-no-wrap">
-            {formatMessage({ id: 'add-to-wishlist' })}
-          </h1>
-        </button>
-
         <button
           onClick={() => {
             if (itemInCart) {
@@ -101,7 +92,7 @@ export default function ItemDescription({
               : itemInCart
               ? 'bg-main-color'
               : 'bg-blue-700'
-          } flex-1 text-gray-100 text-sm mx-2   p-1 px-2 rounded   flex items-center justify-center font-semibold`}
+          } flex-1 text-gray-100 text-sm p-1 px-2 rounded   flex items-center justify-center font-semibold`}
         >
           {addToCartButtonLoading ? (
             <MoonLoader size={19} color="#b72b2b" />
@@ -122,6 +113,14 @@ export default function ItemDescription({
               <h1 className="mx-2">{formatMessage({ id: 'add-to-cart' })}</h1>
             </>
           )}
+        </button>
+        <button className="bg-green-600 mx-2 p-1 rounded flex-1 text-sm  text-white flex items-center justify-center font-semibold ">
+          <span>
+            <AiOutlineHeart className="w-25p h-25p" />
+          </span>
+          <h1 className="mx-2 whitespace-no-wrap">
+            {formatMessage({ id: 'add-to-wishlist' })}
+          </h1>
         </button>
       </div>
     </div>

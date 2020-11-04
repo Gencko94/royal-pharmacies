@@ -1,8 +1,13 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { MoonLoader } from 'react-spinners';
 import { DataProvider } from '../../contexts/DataContext';
 
-export default function CartItem({ item, handleRemoveItem }) {
+export default function CartItem({
+  item,
+  handleRemoveItem,
+  loadingRemoveFromCartButton,
+}) {
   const { EditItemFromCart } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
   return (
@@ -34,10 +39,24 @@ export default function CartItem({ item, handleRemoveItem }) {
         </div>
         <div className="flex text-sm  items-center mb-2 ">
           <button
-            onClick={() => handleRemoveItem(item.id)}
-            className="p-1 bg-main-color text-main-text font-semibold rounded"
+            onClick={() => {
+              handleRemoveItem(item.id);
+            }}
+            className={`${
+              loadingRemoveFromCartButton === item.id
+                ? 'bg-gray-300'
+                : 'bg-main-color'
+            }  text-main-text text-sm flex items-center justify-center py-1 px-2 rounded  font-semibold`}
           >
-            {formatMessage({ id: 'remove-from-cart' })}
+            {loadingRemoveFromCartButton === item.id ? (
+              <MoonLoader size={18} color="#b72b2b" />
+            ) : (
+              <>
+                <h1 className="mx-2 whitespace-no-wrap">
+                  {formatMessage({ id: 'remove-from-cart' })}
+                </h1>
+              </>
+            )}
           </button>
           <button
             onClick={() => handleRemoveItem(item.id)}

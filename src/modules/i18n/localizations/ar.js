@@ -95,4 +95,11 @@ export const ar = {
   'order-placed': 'وضع الطلب',
   // maps
   'find-my-position': 'حدد مكاني',
+
+  // checkout modal
+  'not-signed-in': 'لم تقم بتسجيل الدخول ',
+  'you-can': 'بإمكانك',
+  'fly-checkout': 'إتمام الدفع عالطاير',
+  'checkout-modal-tos':
+    'يساعدنا امتلاكك لحساب على mrg.com على تقديم افضل الخدمات لك ولعملائنا الآخرين .',
 };

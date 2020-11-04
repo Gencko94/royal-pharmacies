@@ -119,43 +119,44 @@ export default function RightSection({
             <AiOutlineLock className="h-5 w-5 mx-1 " />
           </div>
           <div className="flex flex-col">
-            <div className="flex items-center justify-center my-1">
-              <MoonLoader
-                size={22}
-                color="#b72b2b"
-                loading={addToCartButtonLoading}
-              />
-            </div>
-            {!addToCartButtonLoading && (
-              <>
-                {itemInCart && (
-                  <button
-                    onClick={() => handleRemoveFromCart(data.id)}
-                    className={`bg-red-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold `}
-                  >
-                    <span>
-                      <TiShoppingCart className="w-25p h-25p " />
-                    </span>
-                    <h1 className="mx-1">
-                      {formatMessage({ id: 'remove-from-cart' })}
-                    </h1>
-                  </button>
-                )}
-                {!itemInCart && (
-                  <button
-                    onClick={handleAddToCart}
-                    className="bg-blue-700 flex-1 mb-2  py-1 px-2 rounded  text-white flex items-center justify-center font-semibold "
-                  >
-                    <span>
-                      <TiShoppingCart className="w-25p h-25p" />
-                    </span>
-                    <h1 className="mx-1">
-                      {formatMessage({ id: 'add-to-cart' })}
-                    </h1>
-                  </button>
-                )}
-              </>
-            )}
+            <button
+              onClick={() => {
+                if (itemInCart) {
+                  handleRemoveFromCart(data.id);
+                } else {
+                  handleAddToCart();
+                }
+              }}
+              className={`${
+                addToCartButtonLoading
+                  ? 'bg-gray-300'
+                  : itemInCart
+                  ? 'bg-main-color'
+                  : 'bg-blue-700'
+              } flex-1 text-main-text  p-1 px-2 rounded mb-2   flex items-center justify-center font-semibold`}
+            >
+              {addToCartButtonLoading ? (
+                <MoonLoader size={19} color="#b72b2b" />
+              ) : itemInCart ? (
+                <>
+                  <span>
+                    <TiShoppingCart className="w-25p h-25p " />
+                  </span>
+                  <h1 className="mx-2 whitespace-no-wrap">
+                    {formatMessage({ id: 'remove-from-cart' })}
+                  </h1>
+                </>
+              ) : (
+                <>
+                  <span>
+                    <TiShoppingCart className="w-25p h-25p" />
+                  </span>
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'add-to-cart' })}
+                  </h1>
+                </>
+              )}
+            </button>
 
             <button className="bg-blue-500 py-1 px-2 rounded  text-white flex items-center justify-center font-semibold ">
               <span>

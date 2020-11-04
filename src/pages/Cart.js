@@ -5,7 +5,7 @@ import RecentlyViewedVertical from '../components/RecentlyViewedVertical';
 import { DataProvider } from '../contexts/DataContext';
 import cartBag from '../assets/illustrations/cartBag.svg';
 import { Link } from 'react-router-dom';
-import ItemsSlider from '../components/Home/ItemsSlider';
+import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
 import FeaturedItemsVertical from '../components/Cart/FeaturedItemsVertical';
 import { Helmet } from 'react-helmet';
 import CheckoutModal from '../components/Cart/CheckoutModal';
@@ -29,12 +29,18 @@ export default function Cart() {
   const [loading, setLoading] = React.useState(true);
   const [cartEmpty, setCartEmpty] = React.useState(false);
   const [cartTotal, setCartTotal] = React.useState(0);
+  const [
+    loadingRemoveFromCartButton,
+    setLoadingRemoveFromCartButton,
+  ] = React.useState(null);
+
   const modalRef = React.useRef();
   useClickAway(modalRef, () => {
     setCheckOutModalOpen(false);
   });
   const { formatMessage, locale } = useIntl();
   const handleRemoveItem = async id => {
+    setLoadingRemoveFromCartButton(id);
     const result = await removeItemFromCart(id);
     if (result.message === 'ok') {
       if (result.cartItems.length === 0) {
@@ -153,6 +159,9 @@ export default function Cart() {
                             <CartItem
                               item={item}
                               handleRemoveItem={handleRemoveItem}
+                              loadingRemoveFromCartButton={
+                                loadingRemoveFromCartButton
+                              }
                             />
                           </CSSTransition>
                         );

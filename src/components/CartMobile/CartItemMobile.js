@@ -1,10 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { MoonLoader } from 'react-spinners';
 
 export default function CartItemMobile({
   item,
   handleRemoveItem,
   EditItemFromCart,
+  loadingRemoveFromCartButton,
 }) {
   const { formatMessage } = useIntl();
   return (
@@ -31,7 +33,7 @@ export default function CartItemMobile({
             <select
               value={item.quantity}
               onChange={e => EditItemFromCart(e.target.value, item)}
-              className="pr-8 mx-2 py-1 form-select border-gray-400 border rounded"
+              className="select-mobile  border-gray-400 border py-1 px-2 rounded mx-2"
             >
               <option>1</option>
               <option>2</option>
@@ -42,14 +44,28 @@ export default function CartItemMobile({
       </div>
       <div className="flex justify-center text-sm  items-center my-2 ">
         <button
-          onClick={() => handleRemoveItem(item.id)}
-          className="py-1 px-2 text-sm bg-main-color text-main-text rounded  font-semibold "
+          onClick={() => {
+            handleRemoveItem(item.id);
+          }}
+          className={`${
+            loadingRemoveFromCartButton === item.id
+              ? 'bg-gray-300'
+              : 'bg-main-color'
+          }  text-main-text text-sm flex items-center justify-center flex-1 py-1 px-2 rounded  font-semibold`}
         >
-          {formatMessage({ id: 'remove-from-cart' })}
+          {loadingRemoveFromCartButton === item.id ? (
+            <MoonLoader size={18} color="#b72b2b" />
+          ) : (
+            <>
+              <h1 className="mx-2 whitespace-no-wrap">
+                {formatMessage({ id: 'remove-from-cart' })}
+              </h1>
+            </>
+          )}
         </button>
         <button
           onClick={() => handleRemoveItem(item.id)}
-          className="py-1 px-2 text-sm bg-blue-600 text-main-text  rounded font-semibold mx-2  "
+          className="py-1 flex-1 px-2 text-sm bg-blue-600 text-main-text  rounded font-semibold mx-2  "
         >
           {formatMessage({ id: 'add-to-wishlist' })}
         </button>

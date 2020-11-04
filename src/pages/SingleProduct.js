@@ -15,16 +15,9 @@ import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { CSSTransition } from 'react-transition-group';
+import { useIntl } from 'react-intl';
 
 export default function SingleProduct() {
-  // let tl = React.useMemo(
-  //   () =>
-  //     gsap.timeline({
-  //       defaults: { duration: 0.5, ease: Power2.easeOut },
-  //       paused: true,
-  //     }),
-  //   []
-  // );
   const { id, name } = useParams();
   const {
     deliveryCountry,
@@ -40,6 +33,7 @@ export default function SingleProduct() {
     { value: 3, label: 3 },
     { value: 4, label: 4 },
   ];
+  const { locale } = useIntl();
   const [quantity, setQuantity] = React.useState(quantityOptions[0]);
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
@@ -163,7 +157,11 @@ export default function SingleProduct() {
 
       <CSSTransition
         timeout={300}
-        classNames="en-add-to-cart__sideMenu"
+        classNames={`${
+          locale === 'ar'
+            ? 'ar-add-to-cart__sideMenu'
+            : 'en-add-to-cart__sideMenu'
+        }`}
         unmountOnExit
         in={sideMenuOpen}
       >

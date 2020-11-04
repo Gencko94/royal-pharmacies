@@ -115,7 +115,7 @@ input {
 
 .cart__checkout-sticky {
   position: sticky !important;
-  top: 49px;
+  top: 52px;
   left: 0;
   right: 0;
 }
@@ -394,7 +394,7 @@ input {
 }
 
 .en-add-to-cart__sideMenu-enter {
-  transform: translateX(-100%);
+  transform: translateX(100%);
 }
 .en-add-to-cart__sideMenu-enter-active {
   transform: translateX(0);
@@ -404,11 +404,11 @@ input {
   transform: translateX(0);
 }
 .en-add-to-cart__sideMenu-exit-active {
-  transform: translateX(-100%);
+  transform: translateX(100%);
   transition: 300ms ease-out;
 }
 .ar-add-to-cart__sideMenu-enter {
-  transform: translateX(100%);
+  transform: translateX(-100%);
 }
 .ar-add-to-cart__sideMenu-enter-active {
   transform: translateX(0);
@@ -418,6 +418,34 @@ input {
   transform: translateX(0);
 }
 .ar-add-to-cart__sideMenu-exit-active {
+  transform: translateX(-100%);
+  transition: 300ms ease-out;
+}
+.en-add-to-cart__sideMenu-mobile-enter {
+  transform: translateX(-100%);
+}
+.en-add-to-cart__sideMenu-mobile-enter-active {
+  transform: translateX(0);
+  transition: 300ms ease-out;
+}
+.en-add-to-cart__sideMenu-mobile-exit {
+  transform: translateX(0);
+}
+.en-add-to-cart__sideMenu-mobile-exit-active {
+  transform: translateX(-100%);
+  transition: 300ms ease-out;
+}
+.ar-add-to-cart__sideMenu-mobile-enter {
+  transform: translateX(100%);
+}
+.ar-add-to-cart__sideMenu-mobile-enter-active {
+  transform: translateX(0);
+  transition: 300ms ease-out;
+}
+.ar-add-to-cart__sideMenu-mobile-exit {
+  transform: translateX(0);
+}
+.ar-add-to-cart__sideMenu-mobile-exit-active {
   transform: translateX(100%);
   transition: 300ms ease-out;
 }

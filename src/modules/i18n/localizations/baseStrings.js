@@ -27,7 +27,7 @@ const baseStrings = {
   'free-delivery': 'Free Delivery',
   'free-delivery-to': 'Free Delivery to',
   'you-save': 'You Save',
-  'vat-inclusive': 'vat-inclusive',
+  'vat-inclusive': 'Vat Inclusive',
   'add-to-wishlist': 'Add to Wishlist',
   'remove-from-cart': 'Remove from cart',
   'additional-details': 'Additional Details',
@@ -102,6 +102,13 @@ const baseStrings = {
   'order-placed': 'Order Placed',
   // maps
   'find-my-position': 'Find my position',
+
+  // checkout modal
+  'not-signed-in': 'You are not signed in',
+  'you-can': 'you can',
+  'fly-checkout': 'Checkout on the fly',
+  'checkout-modal-tos':
+    'Having an account at mrg.com help us make a better user experience for you and other customers.',
 };
 
 export const en = baseStrings;
