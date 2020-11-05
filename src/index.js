@@ -20,6 +20,10 @@ const prefferedLanguage = localStorage.getItem('prefferedLanguage');
 if (!prefferedLanguage) {
   localStorage.setItem('prefferedLanguage', 'en');
 }
+const myLocalLocations = localStorage.getItem('myLocalLocations');
+if (!myLocalLocations) {
+  localStorage.setItem('myLocalLocations', JSON.stringify([]));
+}
 ReactDOM.render(
   <DataContextProvider>
     <SearchContext>

@@ -2,7 +2,9 @@ import React from 'react';
 import ProfileModal from '../Modals/ProfileModal';
 import useClickAway from '../../hooks/useClickAway';
 import Select from 'react-select';
+import { useIntl } from 'react-intl';
 export default function MyProfile({ isLightTheme }) {
+  const { formatMessage } = useIntl();
   const languages = [
     { value: 'Arabic', label: 'Arabic' },
     { value: 'English', label: 'English' },
@@ -10,10 +12,10 @@ export default function MyProfile({ isLightTheme }) {
   const [language, setLanguage] = React.useState(languages[1]);
   const [profileEditModalOpen, setProfileEditModalOpen] = React.useState(false);
   const generalInformationOptions = [
-    { title: 'Full Name', value: 'John Doe' },
-    { title: 'Email Address', value: 'John@Doe.com' },
-    { title: 'Phone Number', value: '+123456789' },
-    { title: 'Date of Birth', value: '1/1/1990' },
+    { title: 'full-name', value: 'John Doe' },
+
+    { title: 'phone-number', value: '+123456789' },
+    { title: 'date-of-birth', value: '1/1/1990' },
   ];
   const profileModalRef = React.useRef(null);
   const profileModalBoxRef = React.useRef(null);
@@ -37,49 +39,47 @@ export default function MyProfile({ isLightTheme }) {
 
   return (
     <div
-      className={`rounded-lg overflow-y-auto ${
+      className={`rounded-lg overflow-y-auto self-stretch ${
         isLightTheme ? 'shadow-itemsSlider-shallow' : 'shadow-itemsSlider-wide'
       }`}
-      // style={{ maxHeight: 'calc(100vh - 200px)' }}
     >
       <div className="">
-        <div className="px-3 py-3 flex">
-          <h1 className="text-xl font-semibold"> General Information</h1>
+        <div className="bg-main-color text-main-text px-3 py-3 flex items center justify-between">
+          <h1 className="text-lg">
+            {formatMessage({ id: 'general-information' })}
+          </h1>
           <button
             onClick={() => setProfileEditModalOpen(true)}
-            className={`px-4 py-1 ml-auto font-semibold ${
-              isLightTheme
-                ? 'bg-btn-primary-light text-btn-secondary-light'
-                : 'bg-btn-primary-dark text-btn-secondary-dark'
-            } rounded`}
+            className={`px-4 text-sm py-1 font-semibold bg-body-light text-btn-primary-light rounded`}
           >
-            Edit
+            {formatMessage({ id: 'edit' })}
           </button>
         </div>
-        <hr />
         <div className=" ">
           {generalInformationOptions.map((option, i) => {
             return (
-              <div
-                key={i}
-                className={`${
-                  i % 2 ? '' : isLightTheme ? 'bg-body-light' : 'bg-body-dark'
-                } py-4 px-3 flex    `}
-              >
-                <h1 className=" font-semibold w-2/4">{option.title}</h1>
-                <h1 className="">{option.value}</h1>
+              <div key={i}>
+                <div
+                  className={`${
+                    i % 2 ? '' : isLightTheme ? 'bg-body-light' : 'bg-body-dark'
+                  } py-4 px-3 flex    `}
+                >
+                  <h1 className="  w-2/4">
+                    {formatMessage({ id: option.title })}
+                  </h1>
+                  <h1 className="">{option.value}</h1>
+                </div>
+                <hr />
               </div>
             );
           })}
         </div>
       </div>
-      <hr className="mt-4 mb-1" />
 
       <div className="">
-        <div className="px-3 py-3">
-          <h1 className="text-xl font-semibold"> Language Preferences</h1>
+        <div className="px-3 py-3 bg-main-color text-main-text">
+          <h1 className="text-lg ">{formatMessage({ id: 'language' })}</h1>
         </div>
-        <hr />
         <div className="">
           <div
             className={`${
@@ -88,50 +88,48 @@ export default function MyProfile({ isLightTheme }) {
                 : 'bg-body-dark text-body-text-dark'
             } py-3 px-3 flex items-center   `}
           >
-            <h1 className=" font-semibold flex-1">Preffered Language</h1>
+            <h1 className=" font-semibold flex-1">
+              {formatMessage({ id: 'preffered-language' })}
+            </h1>
             <Select
               defaultValue={language}
               onChange={e => setLanguage(e)}
               options={languages}
               className="flex-1 text-center"
             />
-            {/* <select
-              value={language}
-              onChange={e => setLanguage(e.target.value)}
-              className={`${
-                !isLightTheme && 'bg-nav-cat-dark text-nav-cat-text-dark'
-              } form-select`}
-            >
-              {languages.map((language, i) => {
-                return <option key={i}>{language}</option>;
-              })}
-            </select> */}
           </div>
         </div>
       </div>
-      <hr className="mb-1" />
 
       <div className="">
-        <div className="px-3 py-3 flex ">
-          <h1 className="text-xl font-semibold"> Change Password</h1>
+        <div className="px-3 py-3 bg-main-color text-main-text flex items-center justify-between ">
+          <h1 className="text-lg">{formatMessage({ id: 'security' })}</h1>
           <button
-            className={`px-4 py-1 ml-auto font-semibold ${
-              isLightTheme
-                ? 'bg-btn-primary-light text-btn-secondary-light'
-                : 'bg-btn-primary-dark text-btn-secondary-dark'
-            } rounded`}
+            className={`px-4 py-1 text-sm font-semibold bg-body-light text-btn-primary-light rounded`}
           >
-            Edit
+            {formatMessage({ id: 'edit' })}
           </button>
         </div>
-        <hr />
         <div className="">
+          <div className="">
+            <div
+              className={`${
+                isLightTheme ? 'bg-nav-cat-light' : 'bg-nav-cat-dark'
+              } py-4 px-3 flex `}
+            >
+              <h1 className="  w-2/4">
+                {formatMessage({ id: 'email-address' })}
+              </h1>
+              <h1 className="">John@doe.com</h1>
+            </div>
+          </div>
+          <hr />
           <div
             className={`${
               isLightTheme ? 'bg-nav-cat-light' : 'bg-nav-cat-dark'
             } py-4 px-3 flex `}
           >
-            <h1 className=" font-semibold w-2/4">Password</h1>
+            <h1 className=" w-2/4">{formatMessage({ id: 'password' })}</h1>
             <h1 className="">**********</h1>
           </div>
         </div>

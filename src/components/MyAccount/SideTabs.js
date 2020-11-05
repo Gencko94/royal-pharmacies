@@ -1,36 +1,30 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
-import guest from '../../assets/svgs/guest.svg';
+import Avatar from './Avatar';
 export default function SideTabs({ selectedIndex, isLightTheme }) {
   const history = useHistory();
+  const { formatMessage } = useIntl();
   const options = [
-    'My Profile',
-    'My Addresses',
-    'My Orders',
-    'My Payment Details',
-    'Order History',
+    'my-profile',
+    'my-addresses',
+    'my-orders',
+    'my-payment-details',
+    'order-history',
   ];
   const mapNametoPage = {
-    'My Profile': 'profile',
-    'My Addresses': 'addresses',
-    'My Orders': 'orders',
-    'My Payment Details': 'payment',
-    'My Order History': 'order_history',
+    'my-profile': 'profile',
+    'my-addresses': 'addresses',
+    'my-orders': 'orders',
+    'my-payment-details': 'payment',
+    'order-history': 'order-history',
   };
   return (
-    <div className=" flex flex-col ">
-      <div className="flex   py-5 px-1 bg-nav-cat-light ">
-        <div className="mr-2" style={{ flexBasis: '20%' }}>
-          <img src={guest} alt="user" />
-        </div>
-        <div className="flex flex-col font-semibold ">
-          <h1>John Doe</h1>
-          <h1 className="text-xs">John@Doe.com</h1>
-        </div>
-      </div>
+    <div className=" flex flex-col self-start ">
+      <Avatar />
 
       <div
-        className={`flex flex-col flex-1 justify-start rounded   overflow-hidden ${
+        className={`flex flex-col rounded-lg   overflow-hidden ${
           isLightTheme
             ? 'shadow-itemsSlider-shallow'
             : 'shadow-itemsSlider-wide'
@@ -50,7 +44,7 @@ export default function SideTabs({ selectedIndex, isLightTheme }) {
                   : 'bg-first-nav-light text-first-nav-text-light '
               }   hover:bg-btn-primary-light  hover:text-btn-secondary-light hover:font-semibold transition duration-150 `}
             >
-              {option}
+              {formatMessage({ id: option })}
             </button>
             <hr />
           </div>

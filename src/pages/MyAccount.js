@@ -19,7 +19,7 @@ export default function MyAccount({
     addresses: 1,
     orders: 2,
     payment: 3,
-    order_history: 4,
+    'order-history': 4,
   };
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   React.useEffect(() => {
@@ -37,26 +37,23 @@ export default function MyAccount({
         <title>My Account | MRG</title>
       </Helmet>
       <div
-        className={`mb-4 pt-2 px-8 ${
+        className={`p-4 pb-3 ${
           isLightTheme
-            ? 'bg-nav-cat-light text-body-text-light'
+            ? 'bg-body-light text-body-text-light'
             : 'bg-body-dark text-body-text-dark'
-        }`}
+        } max-w-default mx-auto myaccount__grid`}
+        style={{ minHeight: 'calc(-62px + 100vh)' }}
       >
-        <div className="myaccount__grid ">
-          <SideTabs
-            isLightTheme={isLightTheme}
-            selectedIndex={selectedIndex}
-            setSelectedIndex={setSelectedIndex}
-          />
+        <SideTabs
+          isLightTheme={isLightTheme}
+          selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
+        />
 
-          {selectedIndex === 0 && <MyProfile isLightTheme={isLightTheme} />}
-          {selectedIndex === 1 && <MyAddresses isLightTheme={isLightTheme} />}
-          {selectedIndex === 2 && <MyOrders isLightTheme={isLightTheme} />}
-          {selectedIndex === 3 && (
-            <PaymentDetails isLightTheme={isLightTheme} />
-          )}
-        </div>
+        {selectedIndex === 0 && <MyProfile isLightTheme={isLightTheme} />}
+        {selectedIndex === 1 && <MyAddresses isLightTheme={isLightTheme} />}
+        {selectedIndex === 2 && <MyOrders isLightTheme={isLightTheme} />}
+        {selectedIndex === 3 && <PaymentDetails isLightTheme={isLightTheme} />}
       </div>
     </Layout>
   );

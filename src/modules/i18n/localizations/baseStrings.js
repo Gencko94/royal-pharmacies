@@ -36,7 +36,9 @@ const baseStrings = {
   'no-addresses-yet': 'You have not added any addresses yet',
   'add-new-address': 'Add new address',
   'add-payment-method': 'ِAdd payment method',
-  'no-payment-method': 'You have not added any payment method ',
+  'no-payment-method': 'You have not added any payment method yet ',
+  'no-orders-placed': 'You have not placed any orders yet',
+  'start-shopping-now': 'Start shopping now',
   'order-history': 'Order History',
   'viewed-items': 'Viewed Items',
   next: 'Next',
@@ -71,6 +73,7 @@ const baseStrings = {
   checkout: 'Checkout',
   'all-categories': 'All Categories',
   'customer-service': 'Customer Service',
+  'search-for-an-area': 'Search for an area...',
 
   //
   'home.title': 'Home',
@@ -137,6 +140,7 @@ const baseStrings = {
   'fly-checkout': 'Checkout on the fly',
   'checkout-modal-tos':
     'Having an account at mrg.com help us make a better user experience for you and other customers.',
+  'confirm-location': 'Confirm Location',
 };
 
 export const en = baseStrings;

@@ -19,7 +19,6 @@ input {
   display: grid;
   grid-template-columns: minmax(150px, 250px) minmax(400px, 1fr);
   gap: 1em;
-  /* height: calc(100vh - 100px); */
 }
 
 .details__container {
@@ -705,4 +704,9 @@ input {
 .ar-side-menu__mobile-exit-active {
   transform: translateX(100%);
   transition: 500ms ease;
+}
+.locations-grid__desktop {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 200px);
+  gap: 0.5em;
 }

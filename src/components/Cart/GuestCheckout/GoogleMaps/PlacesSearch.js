@@ -8,7 +8,7 @@ import AutoSuggest from 'react-autosuggest';
 import { MdLocationOn } from 'react-icons/md';
 import { useIntl } from 'react-intl';
 export default function PlacesSearch({ panTo, markerAddress }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const {
     ready,
     value,
@@ -70,9 +70,7 @@ export default function PlacesSearch({ panTo, markerAddress }) {
       setValue(`${markerAddress.street} ${markerAddress.governate}`, false);
     }
   }, [markerAddress, setValue]);
-  React.useEffect(() => {
-    console.log(loading);
-  }, [loading]);
+
   const renderSuggestions = (data, { query, isHighlighted }) => {
     return (
       status === 'OK' && (
@@ -95,16 +93,16 @@ export default function PlacesSearch({ panTo, markerAddress }) {
   };
   return (
     <>
-      <div
-        className="absolute z-3 top-0  "
-        style={{ width: '96%', left: '2%' }}
-      >
-        <div style={{ position: 'absolute', top: '17px', right: '15px' }}>
+      <div className="absolute z-3 top-0 " style={{ width: '96%', left: '2%' }}>
+        <div
+          style={{ position: 'absolute', top: '19px' }}
+          className={`${locale === 'ar' ? 'left-10' : 'right-10'}`}
+        >
           <PulseLoader size={7} color={'#b72b2b'} loading={loading} />
         </div>
         <AutoSuggest
           inputProps={{
-            placeholder: 'Enter an area to Search',
+            placeholder: formatMessage({ id: 'search-for-an-area' }),
             autoComplete: 'off',
             name: 'search',
             disabled: !ready,
@@ -141,13 +139,11 @@ export default function PlacesSearch({ panTo, markerAddress }) {
       </div>
       <button
         onClick={getLocation}
-        className="z-2 flex items-center absolute text-sm p-2 bg-main-color font-bold text-main-text rounded-full"
-        style={{ left: '2%', top: '60px' }}
+        className="z-2 flex items-center absolute text-sm py-2 px-4 bg-main-color font-bold text-main-text rounded-full"
+        style={{ left: '2%', top: '70px' }}
       >
-        <span className="">
-          <MdLocationOn className="w-5 h-5" />
-        </span>
         <h1>{formatMessage({ id: 'find-my-position' })}</h1>
+        <MdLocationOn className="w-5 h-5" />
       </button>
     </>
   );

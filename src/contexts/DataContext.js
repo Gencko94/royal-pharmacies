@@ -273,6 +273,35 @@ export default function DataContextProvider({ children }) {
       }, [3000]);
     });
   };
+  const getUserLocation = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const myLocalLocations = JSON.parse(
+          localStorage.getItem('myLocalLocations')
+        );
+        if (myLocalLocations.length === 0) {
+          resolve({ message: 'No Locations Found' });
+        } else {
+          resolve({ locations: [...myLocalLocations] });
+        }
+      }, 2000);
+    });
+  };
+  const handleAddLocation = newLocation => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const myLocalLocations = JSON.parse(
+          localStorage.getItem('myLocalLocations')
+        );
+        myLocalLocations.push(newLocation);
+        localStorage.setItem(
+          'myLocalLocations',
+          JSON.stringify(myLocalLocations)
+        );
+        resolve({ message: 'ok' });
+      }, 2000);
+    });
+  };
   const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const stores = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const allItems = [
@@ -2360,6 +2389,8 @@ export default function DataContextProvider({ children }) {
         getSingleItemDetails,
         getCartItems,
         getItemsByType,
+        getUserLocation,
+        handleAddLocation,
       }}
     >
       {children}

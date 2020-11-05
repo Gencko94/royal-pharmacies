@@ -90,7 +90,7 @@ export default function SliderItem({
             } flex-1 text-main-text  p-1 px-2 my-1 rounded text-xs   flex items-center justify-center font-semibold`}
           >
             {loadingButton === data.id ? (
-              <MoonLoader size={17} color="#b72b2b" />
+              <MoonLoader size={15} color="#b72b2b" />
             ) : isItemInCart(data.id) ? (
               <>
                 <h1 className="whitespace-no-wrap">

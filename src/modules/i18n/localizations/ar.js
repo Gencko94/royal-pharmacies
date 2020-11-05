@@ -67,6 +67,9 @@ export const ar = {
   'add-new-address': 'إضافة عنوان',
   'add-payment-method': 'إضافة طريقة دفع',
   'no-payment-method': 'لا يوجد لدينا طرق دفع خاصة بك ',
+  'no-orders-placed': 'لم تقم بطلب اي منتج حتى الآن',
+  'start-shopping-now': 'ابدأ التسوق الآن',
+  'search-for-an-area': 'ابحث عن منطقة ...',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -132,4 +135,5 @@ export const ar = {
   'fly-checkout': 'إتمام الدفع عالطاير',
   'checkout-modal-tos':
     'يساعدنا امتلاكك لحساب على mrg.com على تقديم افضل الخدمات لك ولعملائنا الآخرين .',
+  'confirm-location': 'تأكيد الموقع',
 };
