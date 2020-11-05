@@ -19,9 +19,6 @@ export default function MyOrdersMobile() {
   }, [selectedOrder]);
   return (
     <div className="  ">
-      <div className="p-2">
-        <h1 className="text-xl font-semibold text-center">Orders</h1>
-      </div>
       {orderedItems.length === 0 ? (
         <NoOrdersMobile />
       ) : (

@@ -3,7 +3,6 @@ import { Switch } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 export const LocalizedSwitch = ({ children }) => {
   const { formatMessage, locale } = useIntl();
-
   return (
     <Switch>
       {React.Children.map(children, child =>

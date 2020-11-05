@@ -47,7 +47,8 @@ export default function NavCategory() {
         x <= rightSpaceOfButton &&
         x >= leftSpaceOfButton &&
         y > parentTop &&
-        y < parentTop + triggerHeight
+        y < parentTop + triggerHeight &&
+        dropDownbgRef.current
       ) {
         // menu.classList.remove('hidden');
         setDropDownOpen(true);

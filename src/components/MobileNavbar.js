@@ -7,6 +7,7 @@ import SideMenu from './NavbarComponents/SideMenu';
 import { CSSTransition } from 'react-transition-group';
 import { DataProvider } from '../contexts/DataContext';
 import NavLogoMobile from './MobileNavbar/NavLogoMobile';
+import { useIntl } from 'react-intl';
 
 export default function MobileNavbar() {
   const { isLightTheme } = React.useContext(DataProvider);
@@ -15,6 +16,7 @@ export default function MobileNavbar() {
   const [windowScrolled, setWindowScrolled] = React.useState(false);
   const sideMenuRef = React.useRef(null);
   const sideMenuRefSecond = React.useRef(null);
+  const { locale } = useIntl();
   useClickAway(sideMenuRef, () => {
     if (sideMenuOpen) {
       sideMenuRef.current.classList.add('-translate-x-full');
@@ -29,25 +31,17 @@ export default function MobileNavbar() {
   });
 
   const toggleSideMenu = () => {
-    if (sideMenuRef.current) {
-      if (sideMenuOpen) {
-        sideMenuRef.current.classList.add('-translate-x-full');
-        setSideMenuOpen(false);
-      } else {
-        sideMenuRef.current.classList.remove('-translate-x-full');
-        setSideMenuOpen(true);
-      }
+    if (sideMenuOpen) {
+      setSideMenuOpen(false);
+    } else {
+      setSideMenuOpen(true);
     }
   };
   const toggleSideMenuSecond = () => {
-    if (sideMenuRefSecond.current) {
-      if (sideMenuOpenSecond) {
-        sideMenuRefSecond.current.classList.add('-translate-x-full');
-        setSideMenuSecondOpen(false);
-      } else {
-        sideMenuRefSecond.current.classList.remove('-translate-x-full');
-        setSideMenuSecondOpen(true);
-      }
+    if (sideMenuOpenSecond) {
+      setSideMenuSecondOpen(false);
+    } else {
+      setSideMenuSecondOpen(true);
     }
   };
   React.useEffect(() => {
@@ -83,11 +77,18 @@ export default function MobileNavbar() {
           {/* <DeliverTo /> */}
 
           <MobileIcons />
-          <SideMenu
-            toggleSideMenu={toggleSideMenu}
-            sideMenuRef={sideMenuRef}
-            isLightTheme={isLightTheme}
-          />
+          <CSSTransition
+            in={!windowScrolled && sideMenuOpen}
+            unmountOnExit
+            timeout={500}
+            classNames={`${locale}-side-menu__mobile`}
+          >
+            <SideMenu
+              toggleSideMenu={toggleSideMenu}
+              sideMenuRef={sideMenuRef}
+              isLightTheme={isLightTheme}
+            />
+          </CSSTransition>
         </nav>
         <div
           className={`p-2 ${
@@ -118,12 +119,18 @@ export default function MobileNavbar() {
           </div>
 
           <MobileIcons withoutLanguage={true} withoutFlag={true} />
-
-          <SideMenu
-            toggleSideMenu={toggleSideMenuSecond}
-            sideMenuRef={sideMenuRefSecond}
-            isLightTheme={isLightTheme}
-          />
+          <CSSTransition
+            in={windowScrolled && sideMenuOpenSecond}
+            unmountOnExit
+            timeout={500}
+            classNames={`${locale}-side-menu__mobile`}
+          >
+            <SideMenu
+              toggleSideMenu={toggleSideMenuSecond}
+              sideMenuRef={sideMenuRefSecond}
+              isLightTheme={isLightTheme}
+            />
+          </CSSTransition>
         </div>
       </CSSTransition>
     </>

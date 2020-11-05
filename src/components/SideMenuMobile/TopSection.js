@@ -6,8 +6,24 @@ import { AiFillHome } from 'react-icons/ai';
 import { FaHeart } from 'react-icons/fa';
 import { BsBagFill } from 'react-icons/bs';
 import { MdAccountCircle } from 'react-icons/md';
+import { useIntl } from 'react-intl';
+import { motion } from 'framer-motion';
 
 export default function TopSection({ isLightTheme, toggleSideMenu }) {
+  const { locale, formatMessage } = useIntl();
+  const listContainerVariants = {
+    hidden: {
+      y: -20,
+      opacity: 0,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: 0.2,
+      },
+    },
+  };
   return (
     <div
       className={`${
@@ -22,7 +38,7 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
           <NavLogoMobile />
         </div>
       </div>
-      <div className="  px-1 pt-4 ">
+      <div className="  px-1 my-2 ">
         {/* <div className="grid place-items-center mb-2">
           <Link
             to="/app/login"
@@ -31,40 +47,69 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
             Hello,Sign in
           </Link>
         </div> */}
-        <div className="flex justify-between items-center">
-          <Link
-            to="/"
-            className="px-1 py-1 flex flex-col rounded justify-center items-center shadow"
-            style={{ width: '60px' }}
-          >
-            <AiFillHome className="w-5 h-5 mb-1" />
-            <h1 className="text-xs  font-semibold">Home</h1>
-          </Link>
-          <Link
-            style={{ width: '60px' }}
-            to="/cart"
-            className="px-1 py-1 flex flex-col rounded justify-center items-center shadow"
-          >
-            <BsBagFill className="w-5 h-5 mb-1" />
-            <h1 className="text-xs  font-semibold">Cart</h1>
-          </Link>
-          <Link
-            style={{ width: '60px' }}
-            to="/wishlist"
-            className="px-1 py-1 flex flex-col rounded justify-center items-center shadow"
-          >
-            <FaHeart className="w-5 h-5 mb-1" />
-            <h1 className="text-xs  font-semibold">Wishlist</h1>
-          </Link>
-          <Link
-            style={{ width: '60px' }}
-            to="/wishlist"
-            className="px-1 py-1 flex flex-col rounded justify-center items-center shadow"
-          >
-            <MdAccountCircle className="w-5 h-5 mb-1" />
-            <h1 className="text-xs  font-semibold">Sign in</h1>
-          </Link>
-        </div>
+        <motion.div
+          className="flex justify-between items-center"
+          variants={listContainerVariants}
+          animate="visible"
+          initial="hidden"
+        >
+          <motion.button className="  ">
+            <Link
+              to={`/${locale}`}
+              style={{ width: '60px' }}
+              className="flex flex-col justify-center items-center"
+            >
+              <div className="rounded shadow p-2 mb-1">
+                <AiFillHome className="w-5 h-5 " />
+              </div>
+              <h1 className="text-xs  font-semibold whitespace-no-wrap">
+                {formatMessage({ id: 'home' })}
+              </h1>
+            </Link>
+          </motion.button>
+          <motion.button className="">
+            <Link
+              style={{ width: '60px' }}
+              to={`/${locale}/cart`}
+              className="flex flex-col justify-center items-center"
+            >
+              <div className="mb-1 p-2 rounded shadow">
+                <BsBagFill className="w-5 h-5" />
+              </div>
+              <h1 className="text-xs  font-semibold whitespace-no-wrap">
+                {formatMessage({ id: 'cart' })}
+              </h1>
+            </Link>
+          </motion.button>
+          <motion.button className="">
+            <Link
+              style={{ width: '60px' }}
+              to={`/${locale}/wishlist/`}
+              className="flex flex-col justify-center items-center"
+            >
+              <div className=" rounded  shadow p-2 mb-1">
+                <FaHeart className="w-5 h-5 " />
+              </div>
+              <h1 className="text-xs  font-semibold whitespace-no-wrap">
+                {formatMessage({ id: 'wishlist-short' })}
+              </h1>
+            </Link>
+          </motion.button>
+          <motion.button className="   ">
+            <Link
+              style={{ width: '60px' }}
+              to={`/${locale}/app/login`}
+              className="flex flex-col justify-center items-center"
+            >
+              <div className="rounded shadow p-2 mb-1 ">
+                <MdAccountCircle className="w-5 h-5 " />
+              </div>
+              <h1 className="text-xs  font-semibold whitespace-no-wrap">
+                {formatMessage({ id: 'short-login' })}
+              </h1>
+            </Link>
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );

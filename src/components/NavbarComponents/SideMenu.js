@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BsChevronRight } from 'react-icons/bs';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { AiOutlineApartment } from 'react-icons/ai';
 import { AiOutlineHistory } from 'react-icons/ai';
 import { HiOutlineShoppingBag } from 'react-icons/hi';
@@ -8,11 +8,13 @@ import { CgProfile } from 'react-icons/cg';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiOutlineEye } from 'react-icons/ai';
 import { MdLocationOn } from 'react-icons/md';
+import { FaLanguage } from 'react-icons/fa';
 import { RiCustomerServiceFill } from 'react-icons/ri';
 import { DataProvider } from '../../contexts/DataContext';
 import { Link } from 'react-router-dom';
 import TopSection from '../SideMenuMobile/TopSection';
-
+import { motion } from 'framer-motion';
+import { useIntl } from 'react-intl';
 export default function SideMenu({
   toggleSideMenu,
   sideMenuRef,
@@ -24,6 +26,7 @@ export default function SideMenu({
   const [subPage, setSubPage] = React.useState(0);
   const [secondSubPage, setSecondSubPage] = React.useState(0);
   const innerRef = React.useRef(null);
+  const { locale, formatMessage } = useIntl();
 
   const handleClickBackFirst = () => {
     setPage(page - 1);
@@ -50,12 +53,36 @@ export default function SideMenu({
 
   React.useEffect(() => {
     if (innerRef.current) {
-      innerRef.current.classList.remove(`page${page + 1}`);
-      innerRef.current.classList.remove(`page${page}`);
-      innerRef.current.classList.remove(`page${page - 1}`);
-      innerRef.current.classList.add(`page${page}`);
+      innerRef.current.classList.remove(`${locale}-page${page + 1}`);
+      innerRef.current.classList.remove(`${locale}-page${page}`);
+      innerRef.current.classList.remove(`${locale}-page${page - 1}`);
+      innerRef.current.classList.add(`${locale}-page${page}`);
     }
-  }, [page]);
+  }, [page, locale]);
+
+  const listVariants = {
+    from: {
+      opacity: 0,
+    },
+    to: {
+      opacity: 1,
+      transition: {
+        duration: 0.2,
+        when: 'beforeChildren',
+        staggerChildren: 0.1,
+      },
+    },
+  };
+  const childVariants = {
+    from: {
+      opacity: 0,
+      y: 50,
+    },
+    to: {
+      opacity: 1,
+      y: 0,
+    },
+  };
   return (
     <div
       ref={sideMenuRef}
@@ -63,79 +90,129 @@ export default function SideMenu({
         isLightTheme
           ? 'bg-side-light text-side-light-text'
           : 'bg-side-dark text-side-dark-text'
-      }  z-20 transform -translate-x-full transition-transform duration-300 absolute top-0 left-0 min-w-75p h-screen sm:text-lg`}
+      }  z-20  absolute top-0 ${
+        locale === 'ar' ? 'right-0' : 'left-0'
+      } min-w-75p h-screen sm:text-lg`}
       style={{ maxWidth: '75%' }}
     >
       <TopSection isLightTheme={isLightTheme} toggleSideMenu={toggleSideMenu} />
 
-      {/* <hr /> */}
       <div className="relative overflow-hidden mt-2 ">
         <div ref={innerRef} className="sidebar__inner  ">
-          <div className="sidebar-first ">
-            <button
+          <motion.div
+            variants={listVariants}
+            initial="from"
+            animate="to"
+            className="sidebar-first "
+          >
+            <motion.button
+              variants={childVariants}
               onClick={handleClickNextZero}
               className="py-2 px-2 mb-2 flex items-center justify-between "
             >
               <div className="flex items-center">
-                <AiOutlineApartment className="mr-2 w-25p h-25p" />
-                <h1>All Products</h1>
+                <AiOutlineApartment className=" w-25p h-25p" />
+                <h1 className="mx-2">
+                  {formatMessage({ id: 'all-categories' })}
+                </h1>
               </div>
-              <BsChevronRight />
-            </button>
-
-            <Link
-              to="/cart"
+              {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
+            </motion.button>
+            <motion.button
               onClick={toggleSideMenu}
               className="py-2 px-2 mb-2   "
+              variants={childVariants}
             >
-              <div className="flex  items-center">
-                <HiOutlineShoppingBag className="mr-2 w-25p h-25p" />
-                <h1>Cart</h1>
-              </div>
-            </Link>
-            <Link
-              to="/user/account/profile"
-              className="py-2 px-2 mb-2    "
+              <Link to={`/${locale}/cart`} className="flex items-center">
+                <HiOutlineShoppingBag className=" w-25p h-25p" />
+                <h1 className="mx-2">{formatMessage({ id: 'cart' })}</h1>
+              </Link>
+            </motion.button>
+            <motion.button
+              className="py-2 px-2 mb-2"
               onClick={toggleSideMenu}
+              variants={childVariants}
+            >
+              <Link
+                to={`/${locale}/user/account/profile`}
+                className="flex items-center"
+              >
+                <CgProfile className=" w-25p h-25p" />
+                <h1 className="mx-2">{formatMessage({ id: 'my-account' })}</h1>
+              </Link>
+            </motion.button>
+            <motion.button
+              variants={childVariants}
+              onClick={toggleSideMenu}
+              className="py-2 px-2 mb-2  "
             >
               <div className=" flex items-center">
-                <CgProfile className="mr-2 w-25p h-25p" />
-                <h1>Account</h1>
+                <AiOutlineHistory className=" w-25p h-25p" />
+                <h1 className="mx-2">
+                  {formatMessage({ id: 'order-history' })}
+                </h1>
               </div>
-            </Link>
-            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2  ">
-              <div className=" flex items-center">
-                <AiOutlineHistory className="mr-2 w-25p h-25p" />
-                <h1>Order History</h1>
-              </div>
-            </button>
+            </motion.button>
             <hr />
-            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2    ">
+            <motion.button
+              variants={childVariants}
+              onClick={toggleSideMenu}
+              className="py-2 px-2 mb-2    "
+            >
               <div className=" flex items-center">
-                <AiOutlineHeart className="mr-2 w-25p h-25p" />
-                <h1>Wishlist</h1>
+                <AiOutlineHeart className=" w-25p h-25p" />
+                <h1 className="mx-2">{formatMessage({ id: 'wishlist' })}</h1>
               </div>
-            </button>
-            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2    ">
+            </motion.button>
+            <motion.button
+              variants={childVariants}
+              onClick={toggleSideMenu}
+              className="py-2 px-2 mb-2    "
+            >
               <div className=" flex items-center">
-                <AiOutlineEye className="mr-2 w-25p h-25p" />
-                <h1>Viewed Items</h1>
+                <AiOutlineEye className=" w-25p h-25p" />
+                <h1 className="mx-2 whitespace-no-wrap">
+                  {formatMessage({ id: 'viewed-items' })}
+                </h1>
               </div>
-            </button>
+            </motion.button>
             <hr />
-            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2    ">
+            <motion.button
+              variants={childVariants}
+              onClick={toggleSideMenu}
+              className="py-2 px-2 mb-2    "
+            >
               <div className=" flex items-center">
-                <MdLocationOn className="mr-2 w-25p h-25p" />
-                <h1>Ship to : Kuwait</h1>
+                <MdLocationOn className=" w-25p h-25p" />
+                <h1 className="mx-2">
+                  {formatMessage({ id: 'deliver-to' })} : Kuwait
+                </h1>
               </div>
-            </button>
-            <button onClick={toggleSideMenu} className="py-2 px-2 mb-2    ">
+            </motion.button>
+            <motion.button
+              variants={childVariants}
+              onClick={toggleSideMenu}
+              className="py-2 px-2 mb-2    "
+            >
               <div className=" flex items-center">
-                <RiCustomerServiceFill className="mr-2 w-25p h-25p" />
-                <h1>Customer Service</h1>
+                <RiCustomerServiceFill className=" w-25p h-25p" />
+                <h1 className="mx-2">
+                  {formatMessage({ id: 'customer-service' })}
+                </h1>
               </div>
-            </button>
-          </div>
+            </motion.button>
+            <hr />
+            <motion.button
+              variants={childVariants}
+              onClick={toggleSideMenu}
+              className="py-2 px-2 mb-2    "
+            >
+              <div className=" flex items-center">
+                <FaLanguage className=" w-25p h-25p" />
+                <h1 className="mx-2">{formatMessage({ id: 'language' })}</h1>
+              </div>
+            </motion.button>
+          </motion.div>
           {products && (
             <>
               <div className="sidebar-second">
@@ -143,7 +220,7 @@ export default function SideMenu({
                   onClick={handleClickBackFirst}
                   className="py-2 px-2 mb-2   "
                 >
-                  Go Back
+                  {formatMessage({ id: 'go-back' })}
                 </button>
                 <hr />
                 {sidebarCategories.map((category, i) => {
@@ -157,7 +234,7 @@ export default function SideMenu({
                         <CgProfile className="mr-2 w-25p h-25p" />
                         <h1>{category.title}</h1>
                       </div>
-                      <BsChevronRight />
+                      {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
                     </button>
                   );
                 })}
@@ -167,7 +244,7 @@ export default function SideMenu({
                   onClick={() => handleClickBackSecond(subPage)}
                   className="py-2 px-2 mb-2    "
                 >
-                  Go Back
+                  {formatMessage({ id: 'go-back' })}
                 </button>
                 <hr />
                 {sidebarCategories[subPage].sub.map((category, i) => {
@@ -181,7 +258,7 @@ export default function SideMenu({
                         <CgProfile className="mr-2 w-25p h-25p" />
                         <h1>{category.title}</h1>
                       </div>
-                      <BsChevronRight />
+                      {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
                     </button>
                   );
                 })}
@@ -192,7 +269,7 @@ export default function SideMenu({
                   onClick={() => handleClickBackSecond(secondSubPage)}
                   className="py-2 px-2 mb-2    "
                 >
-                  Go Back
+                  {formatMessage({ id: 'go-back' })}
                 </button>
                 <hr />
                 {sidebarCategories[subPage].sub[secondSubPage].sub.map(

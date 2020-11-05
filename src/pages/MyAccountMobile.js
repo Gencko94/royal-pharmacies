@@ -16,7 +16,7 @@ export default function MyAccountMobile({
     addresses: 1,
     orders: 2,
     payment: 3,
-    order_history: 4,
+    'order-history': 4,
   };
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   React.useEffect(() => {

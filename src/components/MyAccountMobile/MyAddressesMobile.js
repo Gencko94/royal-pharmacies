@@ -1,37 +1,33 @@
 import React from 'react';
 import manWithMap from '../../assets/illustrations/manWithMap.svg';
 import { FaMapMarkedAlt } from 'react-icons/fa';
+import { useIntl } from 'react-intl';
 export default function MyAddressesMobile() {
+  const { formatMessage } = useIntl();
   const orders = [];
   return (
-    <div className="text-black  ">
-      <div className="px-3 py-3   ">
-        <h1 className="text-xl font-semibold text-center">Addresses</h1>
-      </div>
-      <hr />
+    <div
+      className="  flex flex-col justify-center items-center p-4 "
+      style={{ height: 'calc(-173px + 100vh)' }}
+    >
       {orders.length === 0 && (
-        <div
-          className="  flex flex-col justify-center items-center p-4 "
-          style={{ minHeight: '500px' }}
-        >
-          <div className="flex flex-col items-center justify-center">
-            <h1 className="text-lg text-center font-bold">
-              You've Not added any Addresses yet !
-            </h1>
-            <button className=" mt-3 font-semibold flex items-center rounded px-3 py-1 bg-red-600 text-gray-100">
-              <span className="mr-2 text-white ">
-                <FaMapMarkedAlt className="w-20p h-20p" />
-              </span>
-              Add new Address
-            </button>
-          </div>
+        <>
           <img
             style={{ height: '300px' }}
             className="mt-5"
             src={manWithMap}
             alt="manWithMap"
           />
-        </div>
+          <div className="flex flex-col items-center justify-center">
+            <h1 className="text-lg text-center font-bold">
+              {formatMessage({ id: 'no-addresses-yet' })}
+            </h1>
+            <button className=" mt-3 font-semibold flex items-center justify-center rounded px-2 py-1 bg-main-color text-main-text">
+              <h1>{formatMessage({ id: 'add-new-address' })}</h1>
+              <FaMapMarkedAlt className="w-20p h-20p mx-2" />
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

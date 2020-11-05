@@ -56,13 +56,13 @@ export default function ItemsSlider({
         breakpoint: 1024,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 3,
+          slidesToScroll: 4,
         },
       },
       {
         breakpoint: 800,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 3,
         },
       },

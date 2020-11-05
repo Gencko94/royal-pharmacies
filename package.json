@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.21.0",
     "formik": "^2.2.1",
+    "framer-motion": "^2.9.4",
     "gsap": "^3.5.1",
     "i18next": "^19.8.3",
     "i18next-browser-languagedetector": "^6.0.1",

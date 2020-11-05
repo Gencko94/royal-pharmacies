@@ -54,7 +54,7 @@ export default function SliderItem({
             )}/${data.name.replace(/\s|%|,|-/g, '-')}/${data.id}`}
           >
             <MultiClamp
-              className="text-sm  font-semibold"
+              className="text-xs  font-semibold"
               clamp={2}
               ellipsis="..."
             >
@@ -87,47 +87,25 @@ export default function SliderItem({
                 : isItemInCart(data.id)
                 ? 'bg-main-color'
                 : 'bg-blue-700'
-            } flex-1 text-main-text  p-1 px-2 rounded mb-2   flex items-center justify-center font-semibold`}
+            } flex-1 text-main-text  p-1 px-2 my-1 rounded text-xs   flex items-center justify-center font-semibold`}
           >
             {loadingButton === data.id ? (
-              <MoonLoader size={19} color="#b72b2b" />
+              <MoonLoader size={17} color="#b72b2b" />
             ) : isItemInCart(data.id) ? (
               <>
-                <span>
-                  <TiShoppingCart className="w-25p h-25p " />
-                </span>
-                <h1 className="mx-2 whitespace-no-wrap">
+                <h1 className="whitespace-no-wrap">
                   {formatMessage({ id: 'remove-from-cart' })}
                 </h1>
               </>
             ) : (
               <>
                 <span>
-                  <TiShoppingCart className="w-25p h-25p" />
+                  <TiShoppingCart className="w-20p h-20p" />
                 </span>
                 <h1 className="mx-2">{formatMessage({ id: 'add-to-cart' })}</h1>
               </>
             )}
           </button>
-
-          {/* {isItemInCart(data) ? (
-                      <button
-                        onClick={() => handleRemoveItemFromCart(data)}
-                        className="bg-gray-600 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold "
-                      >
-                        {formatMessage({ id: 'added-to-cart' })}
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleAddItemToCart( data )}
-                        className="bg-green-700 py-1 px-2 mt-2 rounded  text-white flex items-center justify-center font-semibold"
-                      >
-                        <span>
-                          <TiShoppingCart className="w-25p h-25p mr-2" />
-                        </span>
-                        {formatMessage({ id: 'add-to-cart' })}
-                      </button>
-                    )} */}
         </div>
       </div>
     </div>
