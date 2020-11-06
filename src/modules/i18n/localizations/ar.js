@@ -136,4 +136,6 @@ export const ar = {
   'checkout-modal-tos':
     'يساعدنا امتلاكك لحساب على mrg.com على تقديم افضل الخدمات لك ولعملائنا الآخرين .',
   'confirm-location': 'تأكيد الموقع',
+  'remove-location': 'إزالة الموقع',
+  'mark-as-default': 'التعيين كموقع افتراضي',
 };

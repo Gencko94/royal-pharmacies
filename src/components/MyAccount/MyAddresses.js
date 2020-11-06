@@ -7,22 +7,41 @@ import NoAddresses from './MyAddresses/NoAddresses';
 
 export default function MyAddresses({ isLightTheme }) {
   const [showMap, setShowMap] = React.useState(false);
-  const [showNoAddresses, setShowNoAddresses] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
-  const { getUserLocation } = React.useContext(DataProvider);
-  const [locationsFound, setLocationsFound] = React.useState();
+  const {
+    getUserLocation,
+    handleAddLocation,
+    handleRemoveLocation,
+  } = React.useContext(DataProvider);
+  const [locations, setLocations] = React.useState([]);
   const handleShowMap = () => {
-    setShowNoAddresses(false);
     setShowMap(true);
+  };
+
+  const handleSaveLocation = location => {
+    handleAddLocation(location).then(res => {
+      if (res.message === 'ok') {
+        setShowMap(false);
+        console.log(res.locations);
+        setLocations(res.locations);
+      }
+    });
+  };
+  const handleDeleteLocation = location => {
+    handleRemoveLocation(location)
+      .then(res => {
+        if (res.message === 'ok') {
+          setLocations(res.locations);
+        }
+      })
+      .catch(err => console.log(err));
   };
   React.useEffect(() => {
     getUserLocation().then(res => {
       if (res.message === 'No Locations Found') {
-        setShowNoAddresses(true);
         setLoading(false);
       } else {
-        setLocationsFound(res.locations);
-        console.log(res.locations);
+        setLocations(res.locations);
         setLoading(false);
       }
     });
@@ -38,14 +57,27 @@ export default function MyAddresses({ isLightTheme }) {
           <BeatLoader size={10} color={'#b72b2b'} />
         </div>
       )}
-      {showNoAddresses && !loading && (
-        <NoAddresses
-          isLightTheme={isLightTheme}
-          handleShowMap={handleShowMap}
+      {!loading &&
+        !showMap &&
+        (locations.length === 0 ? (
+          <NoAddresses
+            isLightTheme={isLightTheme}
+            handleShowMap={handleShowMap}
+          />
+        ) : (
+          <Locations
+            locations={locations}
+            handleDeleteLocation={handleDeleteLocation}
+            handleShowMap={handleShowMap}
+          />
+        ))}
+      {showMap && (
+        <GoogleMapsAddress
+          setShowMap={setShowMap}
+          setLocations={setLocations}
+          handleSaveLocation={handleSaveLocation}
         />
       )}
-      {showMap && <GoogleMapsAddress setShowMap={setShowMap} />}
-      {!loading && locationsFound && <Locations locations={locationsFound} />}
     </div>
   );
 }

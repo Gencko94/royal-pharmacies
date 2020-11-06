@@ -140,7 +140,7 @@ export default function PlacesSearch({ panTo, markerAddress }) {
       <button
         onClick={getLocation}
         className="z-2 flex items-center absolute text-sm py-2 px-4 bg-main-color font-bold text-main-text rounded-full"
-        style={{ left: '2%', top: '70px' }}
+        style={{ left: '2%', top: '65px' }}
       >
         <h1>{formatMessage({ id: 'find-my-position' })}</h1>
         <MdLocationOn className="w-5 h-5" />

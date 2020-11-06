@@ -710,3 +710,8 @@ input {
   grid-template-columns: repeat(auto-fit, 200px);
   gap: 0.5em;
 }
+.btn-disabled {
+  background-color: gray;
+  color: gainsboro;
+  cursor: not-allowed;
+}

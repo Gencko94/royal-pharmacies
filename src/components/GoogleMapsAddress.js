@@ -9,12 +9,11 @@ import {
 } from '@react-google-maps/api';
 import PlacesSearch from './Cart/GuestCheckout/GoogleMaps/PlacesSearch';
 import { useIntl } from 'react-intl';
-import { DataProvider } from '../contexts/DataContext';
 import { MoonLoader } from 'react-spinners';
 const libraries = ['places'];
 const mapContainerStyle = {
   width: '100%',
-  height: 'calc(-90px + 100vh)',
+  height: 'calc(-135px + 100vh)',
 };
 const center = {
   lat: 29.3759,
@@ -25,7 +24,7 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-export default function GoogleMapsAddress({ setAddress, setShowMap }) {
+export default function GoogleMapsAddress({ setAddress, handleSaveLocation }) {
   const { formatMessage } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAYprqr3Vrnmhwx9UQozUNNks7CVH9m3Xg',
@@ -34,7 +33,6 @@ export default function GoogleMapsAddress({ setAddress, setShowMap }) {
   const [defaultLocationChecked, setDefaultLocationChecked] = React.useState(
     false
   );
-  const { handleAddLocation } = React.useContext(DataProvider);
   const [marker, setMarker] = React.useState(null);
   const [markerDetails, setMarkerDetails] = React.useState(null);
   const [markerAddress, setMarkerAddress] = React.useState(null);
@@ -46,8 +44,7 @@ export default function GoogleMapsAddress({ setAddress, setShowMap }) {
   const panTo = React.useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
   }, []);
-  const handleSaveLocation = () => {
-    setDefaultLocationChecked(true);
+  const handleAddLocation = () => {
     setConfirmButtonLoading(true);
     const newLocation = {
       lat: marker.lat,
@@ -56,12 +53,7 @@ export default function GoogleMapsAddress({ setAddress, setShowMap }) {
       street: markerAddress.street,
       governate: markerAddress.governate,
     };
-    handleAddLocation(newLocation).then(res => {
-      if (res.message === 'ok') {
-        setConfirmButtonLoading(false);
-        setShowMap(false);
-      }
-    });
+    handleSaveLocation(newLocation);
   };
   React.useEffect(() => {
     if (marker) {
@@ -105,7 +97,7 @@ export default function GoogleMapsAddress({ setAddress, setShowMap }) {
       </div>
     );
   return (
-    <div className="relative">
+    <div className="relative h-full">
       <PlacesSearch panTo={panTo} markerAddress={markerAddress} />
 
       <GoogleMap
@@ -143,12 +135,26 @@ export default function GoogleMapsAddress({ setAddress, setShowMap }) {
           </InfoWindow>
         )}
       </GoogleMap>
-      <div className="p-2">
+      <div className="p-2 flex items-center justify-between ">
+        <div className="flex items-center">
+          <label>{formatMessage({ id: 'mark-as-default' })}</label>
+          <input
+            className=" mx-2"
+            type="checkbox"
+            checked={defaultLocationChecked}
+            onChange={() => setDefaultLocationChecked(!defaultLocationChecked)}
+          />
+        </div>
         <button
-          onClick={handleSaveLocation}
+          onClick={handleAddLocation}
+          disabled={!markerDetails}
           className={`${
-            confirmButtonLoading ? 'bg-gray-300' : 'bg-main-color'
-          } flex-1 text-main-text  p-1 px-2 rounded mb-2   flex items-center justify-center font-semibold`}
+            !markerDetails
+              ? 'btn-disabled'
+              : confirmButtonLoading
+              ? 'bg-gray-300 text-main-text'
+              : 'bg-main-color text-main-text'
+          }   p-1 px-2 rounded    flex items-center justify-center font-semibold`}
         >
           {confirmButtonLoading ? (
             <MoonLoader size={19} color="#b72b2b" />

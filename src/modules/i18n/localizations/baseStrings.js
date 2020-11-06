@@ -141,6 +141,8 @@ const baseStrings = {
   'checkout-modal-tos':
     'Having an account at mrg.com help us make a better user experience for you and other customers.',
   'confirm-location': 'Confirm Location',
+  'remove-location': 'Remove',
+  'mark-as-default': 'Mark as Default location',
 };
 
 export const en = baseStrings;

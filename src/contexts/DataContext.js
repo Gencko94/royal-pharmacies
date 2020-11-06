@@ -276,9 +276,11 @@ export default function DataContextProvider({ children }) {
   const getUserLocation = () => {
     return new Promise(resolve => {
       setTimeout(() => {
-        const myLocalLocations = JSON.parse(
-          localStorage.getItem('myLocalLocations')
-        );
+        let myLocalLocations = localStorage.getItem('myLocalLocations');
+        if (!myLocalLocations) {
+          localStorage.setItem('myLocalLocations', JSON.stringify([]));
+        }
+        myLocalLocations = JSON.parse(localStorage.getItem('myLocalLocations'));
         if (myLocalLocations.length === 0) {
           resolve({ message: 'No Locations Found' });
         } else {
@@ -290,15 +292,37 @@ export default function DataContextProvider({ children }) {
   const handleAddLocation = newLocation => {
     return new Promise(resolve => {
       setTimeout(() => {
-        const myLocalLocations = JSON.parse(
-          localStorage.getItem('myLocalLocations')
-        );
+        let myLocalLocations = localStorage.getItem('myLocalLocations');
+        if (!myLocalLocations) {
+          localStorage.setItem('myLocalLocations', JSON.stringify([]));
+        }
+        myLocalLocations = JSON.parse(localStorage.getItem('myLocalLocations'));
         myLocalLocations.push(newLocation);
         localStorage.setItem(
           'myLocalLocations',
           JSON.stringify(myLocalLocations)
         );
-        resolve({ message: 'ok' });
+        resolve({ message: 'ok', locations: myLocalLocations });
+      }, 2000);
+    });
+  };
+  const handleRemoveLocation = location => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let myLocalLocations = localStorage.getItem('myLocalLocations');
+        if (!myLocalLocations) {
+          localStorage.setItem('myLocalLocations', JSON.stringify([]));
+          reject({ message: 'No DB Found' });
+        }
+        myLocalLocations = JSON.parse(myLocalLocations);
+        myLocalLocations = myLocalLocations.filter(
+          item => item.lat !== location.lat && item.lng !== location.lng
+        );
+        localStorage.setItem(
+          'myLocalLocations',
+          JSON.stringify(myLocalLocations)
+        );
+        resolve({ message: 'ok', locations: myLocalLocations });
       }, 2000);
     });
   };
@@ -2391,6 +2415,7 @@ export default function DataContextProvider({ children }) {
         getItemsByType,
         getUserLocation,
         handleAddLocation,
+        handleRemoveLocation,
       }}
     >
       {children}
