@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { MoonLoader } from 'react-spinners';
@@ -10,8 +11,30 @@ export default function CartItem({
 }) {
   const { EditItemFromCart } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
+  const variant = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+    },
+    exited: {
+      x: 300,
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+        ease: 'easeOut',
+      },
+    },
+  };
   return (
-    <div className="cart__item py-2">
+    <motion.div
+      variants={variant}
+      initial="hidden"
+      animate="visible"
+      exit="exited"
+      className="cart__item py-2"
+    >
       <img
         className=""
         style={{ maxHeight: '', maxWidth: '' }}
@@ -69,6 +92,6 @@ export default function CartItem({
       <div className="text-center font-bold">
         {item.price * item.quantity} KD
       </div>
-    </div>
+    </motion.div>
   );
 }

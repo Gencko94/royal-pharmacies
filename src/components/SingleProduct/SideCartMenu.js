@@ -90,7 +90,7 @@ export default function SideCartMenu({
                 {cartItems.map((item, i) => {
                   return (
                     <CSSTransition
-                      key={i}
+                      key={item.id}
                       timeout={400}
                       classNames="side-menu-cart-item__fade"
                     >

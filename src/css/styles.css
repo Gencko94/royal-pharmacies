@@ -715,3 +715,33 @@ input {
   color: gainsboro;
   cursor: not-allowed;
 }
+
+/* Nav Categories */
+
+/*All Categories Section  */
+
+.all-categories__container {
+  border-right: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.all-categories__menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  overflow-y: hidden;
+  overflow-x: initial;
+
+  width: 100%;
+}
+.all-categories__megamenu {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  z-index: 19;
+  /* overflow: hidden; */
+  width: 700px;
+  height: 500px;
+}

@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import { BiCaretDown } from 'react-icons/bi';
 import { DataProvider } from '../../../contexts/DataContext';
@@ -7,52 +8,56 @@ export default function AllCategories({ dropDownbgRef }) {
   const { allCategories } = React.useContext(DataProvider);
   const [categories, setCategories] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState({});
+  const [categoriesOpen, setCategoriesOpen] = React.useState(false);
+  const [subCategoriesOpen, setSubCategoriesOpen] = React.useState(false);
 
-  const [loading, setLoading] = React.useState(true);
-  const menuRef = React.useRef();
-  const megaMenuRef = React.useRef();
   const handleMenuOpen = () => {
-    menuRef.current && menuRef.current.classList.remove('hidden');
-    megaMenuRef.current && megaMenuRef.current.classList.remove('hidden');
-    dropDownbgRef.current && dropDownbgRef.current.classList.remove('hidden');
+    setCategoriesOpen(true);
   };
   const handleMenuClose = () => {
-    menuRef.current.classList.add('hidden');
+    setCategoriesOpen(false);
+    setSubCategoriesOpen(false);
+    setSelectedCategory({});
+  };
+  const handleMegaMenuOpen = categoryName => {
+    setSubCategoriesOpen(true);
+    setSelectedCategory(categories.find(cat => cat.category === categoryName));
+  };
 
-    megaMenuRef.current.classList.add('hidden');
-    dropDownbgRef.current.classList.add('hidden');
-  };
-  const handleChangeCategory = name => {
-    setSelectedCategory(categories.filter(cat => cat.category === name)[0]);
-  };
   React.useEffect(() => {
     setCategories(allCategories);
     setSelectedCategory(allCategories[0]);
-    setLoading(false);
   }, [allCategories]);
 
   return (
-    <div
-      onMouseEnter={handleMenuOpen}
-      onMouseLeave={handleMenuClose}
-      className="border-r  grid place-items-center  "
-    >
-      <div className=" px-2 py-2 font-semibold hover:shadow-navCategory flex items-center justify-between relative">
-        <span className="mr-8">All Categories</span>
+    <>
+      <div
+        onMouseEnter={handleMenuOpen}
+        onMouseLeave={handleMenuClose}
+        className="font-semibold  flex  justify-between py-2 px-4 border-r relative"
+        style={{ flexBasis: '250px' }}
+      >
+        <span className="">All Categories</span>
         <BiCaretDown className="w-5 h-5" />
-        <AllCategoriesMenu
-          menuRef={menuRef}
-          categories={categories}
-          handleChangeCategory={handleChangeCategory}
-          selectedCategory={selectedCategory}
-          loading={loading}
-        />
-        <AllCategoriesMegaMenu
-          megaMenuRef={megaMenuRef}
-          selectedCategory={selectedCategory}
-          loading={loading}
-        />
+        <AnimatePresence>
+          {categoriesOpen && (
+            <AllCategoriesMenu
+              categories={categories}
+              selectedCategory={selectedCategory}
+              handleMegaMenuOpen={handleMegaMenuOpen}
+              subCategoriesOpen={subCategoriesOpen}
+            />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {subCategoriesOpen && (
+            <AllCategoriesMegaMenu
+              selectedCategory={selectedCategory}
+              subCategoriesOpen={subCategoriesOpen}
+            />
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+    </>
   );
 }

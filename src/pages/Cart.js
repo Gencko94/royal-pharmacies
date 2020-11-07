@@ -14,6 +14,7 @@ import Layout from '../components/Layout';
 import { useIntl } from 'react-intl';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { AnimatePresence } from 'framer-motion';
 export default function Cart() {
   const {
     cartItems,
@@ -147,26 +148,20 @@ export default function Cart() {
                 )}
                 {!cartEmpty && (
                   <div className=" flex flex-col">
-                    <TransitionGroup component={null}>
-                      {data.map((item, i) => {
+                    <AnimatePresence>
+                      {data.map(item => {
                         return (
-                          <CSSTransition
-                            key={i}
-                            classNames="cart-item__trans"
-                            timeout={500}
-                            unmountOnExit
-                          >
-                            <CartItem
-                              item={item}
-                              handleRemoveItem={handleRemoveItem}
-                              loadingRemoveFromCartButton={
-                                loadingRemoveFromCartButton
-                              }
-                            />
-                          </CSSTransition>
+                          <CartItem
+                            key={item.id}
+                            item={item}
+                            handleRemoveItem={handleRemoveItem}
+                            loadingRemoveFromCartButton={
+                              loadingRemoveFromCartButton
+                            }
+                          />
                         );
                       })}
-                    </TransitionGroup>
+                    </AnimatePresence>
                   </div>
                 )}
                 {!cartEmpty && (

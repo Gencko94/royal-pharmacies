@@ -36,7 +36,6 @@ export default function NavCategory() {
   }, [animation, dropDownOpen]);
   const triggerDropDownOpen = () => {
     const trigger = document.querySelector('#menu-trigger');
-    // const menu = document.querySelector('#mega-menu');
     const triggerHeight = trigger.offsetHeight;
     const parentTop = trigger.offsetParent.offsetTop;
     const leftSpaceOfButton = trigger.offsetLeft;
@@ -97,9 +96,9 @@ export default function NavCategory() {
         }  `}
         style={{ top: '62px' }}
       >
-        <div className="max-w-default mx-auto items-center flex px-6   ">
+        <div className="max-w-default mx-auto items-center flex ">
           <AllCategories dropDownbgRef={dropDownbgRef} />
-          <div id="menu-trigger" className="relative pl-3">
+          <div id="menu-trigger" className="relative">
             <div
               onMouseEnter={triggerDropDownOpen}
               onMouseLeave={triggerDropDownClose}
