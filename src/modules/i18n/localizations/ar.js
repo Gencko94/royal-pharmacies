@@ -138,4 +138,7 @@ export const ar = {
   'confirm-location': 'تأكيد الموقع',
   'remove-location': 'إزالة الموقع',
   'mark-as-default': 'التعيين كموقع افتراضي',
+
+  // category nav bar
+  'top-brands': 'افضل الماركات',
 };

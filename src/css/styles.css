@@ -731,17 +731,14 @@ input {
   top: 100%;
   left: 0;
   z-index: 20;
-  overflow-y: hidden;
-  overflow-x: initial;
+  overflow: hidden;
 
   width: 100%;
 }
 .all-categories__megamenu {
   position: absolute;
   top: 100%;
-  left: 100%;
-  z-index: 19;
-  /* overflow: hidden; */
+  z-index: 24;
   width: 700px;
   height: 500px;
 }

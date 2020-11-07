@@ -143,6 +143,10 @@ const baseStrings = {
   'confirm-location': 'Confirm Location',
   'remove-location': 'Remove',
   'mark-as-default': 'Mark as Default location',
+
+  // category navbar:
+
+  'top-brands': 'Top Brands',
 };
 
 export const en = baseStrings;

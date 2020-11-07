@@ -9775,6 +9775,15 @@ react-helmet@^6.1.0:
     react-fast-compare "^3.1.1"
     react-side-effect "^2.1.0"
 
+react-hover-observer@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-hover-observer/-/react-hover-observer-2.1.1.tgz#49914cbaa17d6ec6aba6d9ff3693763ba30d3d2b"
+  integrity sha512-njZdvhHRAyuvhFRB+uPj/ObRh/tKdRMnasvo0AsYgRFRbEFX6JuInxfCOTRucydtPF3cyUsWTYKXlhBLDDUQ1w==
+  dependencies:
+    object-assign "^4.1.1"
+    object.omit "^3.0.0"
+    prop-types "^15.6.0"
+
 react-i18next@^11.7.3:
   version "11.7.3"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.7.3.tgz#256461c46baf5b3208c3c6860ca4e569fc7ed053"
@@ -9866,6 +9875,13 @@ react-multi-clamp@^2.0.2:
   dependencies:
     multi-clamp "^2.0.2"
     prop-types "^15.7.2"
+
+react-query@^2.26.2:
+  version "2.26.2"
+  resolved "https://registry.yarnpkg.com/react-query/-/react-query-2.26.2.tgz#d6fb2dd0b54934f5d1f5cdd9f8d97808eb012eb7"
+  integrity sha512-tJ3oHifWtI3cwklOLx5jIIj1ZpmvuWpPBg5iaOoi3uuIe80l0t3QCDTEF+nXpE12pYxKMj29NQ5OkTsOOMdP4Q==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
 
 react-rating@^2.0.5:
   version "2.0.5"

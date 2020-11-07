@@ -1,11 +1,43 @@
+import { motion } from 'framer-motion';
 import React from 'react';
+import { useIntl } from 'react-intl';
 
-export default function MegaMenu({ data, isLightTheme, menuRef }) {
+export default function MegaMenu({ data, isLightTheme }) {
+  const { formatMessage } = useIntl();
+  const containerVariants = {
+    hidden: {
+      opacity: 0,
+      clipPath: 'polygon(0 0, 100% 0, 100% 0, 0 0)',
+    },
+    visible: {
+      opacity: 1,
+      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)',
+      transition: {
+        duration: 0.1,
+        staggerChildren: 0.1,
+      },
+    },
+    exited: {
+      opacity: 0,
+    },
+  };
+  const childVariants = {
+    hidden: {
+      y: -30,
+      opacity: 0,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
   return (
-    <div
-      id="mega-menu"
-      ref={menuRef}
-      className={`absolute z-20  top-100 left-0 min-w-full overflow-hidden  cursor-default ${
+    <motion.div
+      variants={containerVariants}
+      animate="visible"
+      initial="hidden"
+      exit="exited"
+      className={`absolute z-20  top-100 left-0 w-full max-w-default overflow-hidden  cursor-default ${
         isLightTheme
           ? 'bg-white text-nav-cat-text-light'
           : 'bg-second-nav-dark text-nav-cat-text-dark'
@@ -17,8 +49,14 @@ export default function MegaMenu({ data, isLightTheme, menuRef }) {
             className={`
              flex   `}
           >
-            <div className="  flex flex-col" style={{ flexBasis: '15%' }}>
-              <h1 className="font-semibold mb-2 ">Categories</h1>
+            <motion.div
+              variants={childVariants}
+              className="  flex flex-col"
+              style={{ flexBasis: '15%' }}
+            >
+              <h1 className="font-semibold mb-2 ">
+                {formatMessage({ id: 'categories' })}
+              </h1>
               <div className="flex flex-col">
                 {data.subCategories.map((subCategory, i) => (
                   <h1 key={i} className="mb-2 text-sm">
@@ -26,9 +64,15 @@ export default function MegaMenu({ data, isLightTheme, menuRef }) {
                   </h1>
                 ))}
               </div>
-            </div>
-            <div className=" pl-4" style={{ flexBasis: '35%' }}>
-              <h1 className="font-semibold mb-2 ">Top Brands</h1>
+            </motion.div>
+            <motion.div
+              variants={childVariants}
+              className=" pl-4"
+              style={{ flexBasis: '35%' }}
+            >
+              <h1 className="font-semibold mb-2 ">
+                {formatMessage({ id: 'top-brands' })}
+              </h1>
 
               <div className="nav-category-brands__grid">
                 {data.brands.map((img, i) => (
@@ -40,8 +84,9 @@ export default function MegaMenu({ data, isLightTheme, menuRef }) {
                   />
                 ))}
               </div>
-            </div>
-            <div
+            </motion.div>
+            <motion.div
+              variants={childVariants}
               className="   pl-4 w-full "
               style={{
                 display: 'grid',
@@ -54,10 +99,10 @@ export default function MegaMenu({ data, isLightTheme, menuRef }) {
                   <img className="" src={img} alt="hi" key={i} />
                 </div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

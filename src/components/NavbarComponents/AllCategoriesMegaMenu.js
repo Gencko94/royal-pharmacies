@@ -2,13 +2,23 @@ import React from 'react';
 import { BiCaretRight } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useIntl } from 'react-intl';
 export default function AllCategoriesMegaMenu({ selectedCategory }) {
+  const { locale } = useIntl();
+  const clipPathHidden =
+    locale === 'ar'
+      ? 'polygon(99% 0, 100% 0, 100% 100%, 99% 100%)'
+      : 'polygon(0 0, 0 0, 0 100%, 0 100%)';
+  const clipPathVisible =
+    locale === 'ar'
+      ? ' polygon(1% 0, 100% 0, 100% 100%, 1% 100%)'
+      : 'polygon(0 0, 100% 0, 100% 100%, 0 100%)';
   const containerVariants = {
     hidden: {
-      clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
+      clipPath: clipPathHidden,
     },
     visible: {
-      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+      clipPath: clipPathVisible,
       transition: {
         duration: 0.3,
       },
@@ -26,7 +36,9 @@ export default function AllCategoriesMegaMenu({ selectedCategory }) {
       animate="visible"
       initial="hidden"
       exit="exit"
-      className={`all-categories__megamenu  bg-white text-nav-cat-text-light  `}
+      className={`all-categories__megamenu  bg-white text-nav-cat-text-light ${
+        locale === 'ar' ? 'right-100' : 'left-100'
+      }  `}
     >
       <div className="">
         <div className="flex justify-between items-center py-2 px-3 ">

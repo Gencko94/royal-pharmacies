@@ -13,7 +13,6 @@ import useClickAway from '../hooks/useClickAway';
 import Layout from '../components/Layout';
 import { useIntl } from 'react-intl';
 import ContentLoader from 'react-content-loader';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { AnimatePresence } from 'framer-motion';
 export default function Cart() {
   const {

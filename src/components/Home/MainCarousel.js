@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import { DataProvider } from '../../contexts/DataContext';
 import { useMediaQuery } from 'react-responsive';
 import ContentLoader from 'react-content-loader';
-export default function MainCarousel() {
+const MainCarousel = React.memo(() => {
   const {
     mainCarouselItemsDesktop,
     mainCarouselItemsMobile,
@@ -87,4 +87,5 @@ export default function MainCarousel() {
       </Slider>
     </div>
   );
-}
+});
+export default MainCarousel;

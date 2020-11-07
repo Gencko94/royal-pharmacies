@@ -1,8 +1,11 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
-import MegaMenu from './MegaMenu';
 import AllCategories from './AllCategories/AllCategories';
 import { gsap } from 'gsap';
+import { AnimatePresence } from 'framer-motion';
+import ReactHoverObserver from 'react-hover-observer';
+import MegaMenu from './MegaMenu';
+import NavCategoriesContainer from './NavCategoriesContainer';
 export default function NavCategory() {
   const buttonRef = React.useRef(null);
   const dropDownbgRef = React.useRef(null);
@@ -34,54 +37,18 @@ export default function NavCategory() {
       animation.reverse();
     }
   }, [animation, dropDownOpen]);
-  const triggerDropDownOpen = () => {
-    const trigger = document.querySelector('#menu-trigger');
-    const triggerHeight = trigger.offsetHeight;
-    const parentTop = trigger.offsetParent.offsetTop;
-    const leftSpaceOfButton = trigger.offsetLeft;
-    const triggerWidth = trigger.offsetWidth;
-    const rightSpaceOfButton = trigger.offsetLeft + triggerWidth;
-    setTimeout(() => {
-      if (
-        x <= rightSpaceOfButton &&
-        x >= leftSpaceOfButton &&
-        y > parentTop &&
-        y < parentTop + triggerHeight &&
-        dropDownbgRef.current
-      ) {
-        // menu.classList.remove('hidden');
-        setDropDownOpen(true);
-        dropDownbgRef.current.classList.remove('hidden');
-      }
-    }, 250);
-  };
-  const triggerDropDownClose = () => {
-    // const menu = document.querySelector('#mega-menu');
 
-    // menu.classList.add('hidden');
-    // tl.reverse();
+  const handleDropDownOpen = id => {
+    console.log(id);
+    const category = data.find(item => item.category === id);
+    console.log(category);
+    setCatData(category);
+  };
+
+  const closeDropDown = () => {
     setDropDownOpen(false);
-    dropDownbgRef.current.classList.add('hidden');
-    // setCatData(null);
   };
-  const openDropDown = i => {
-    // const button = document.querySelector(`#navButton${i}`);
-    setCatData(data[i]);
-  };
-  const closeDropDown = i => {
-    // const button = buttonRef.current.querySelector(`#dd${i}`);
-    // dropDownbgRef.current.classList.add('hidden');
-    // button.classList.add('hidden');
-  };
-  let x;
-  let y;
-  function onMouseUpdate(e) {
-    x = e.pageX;
-    y = e.pageY;
-  }
-  React.useEffect(() => {
-    document.addEventListener('mousemove', onMouseUpdate, false);
-  });
+
   React.useEffect(() => {
     setData(navCategories);
   }, [navCategories]);
@@ -96,39 +63,25 @@ export default function NavCategory() {
         }  `}
         style={{ top: '62px' }}
       >
-        <div className="max-w-default mx-auto items-center flex ">
-          <AllCategories dropDownbgRef={dropDownbgRef} />
-          <div id="menu-trigger" className="relative">
-            <div
-              onMouseEnter={triggerDropDownOpen}
-              onMouseLeave={triggerDropDownClose}
-              className={` ${
-                isLightTheme
-                  ? 'bg-nav-cat-light text-nav-cat-text-light'
-                  : 'bg-nav-cat-dark text-nav-cat-text-dark'
-              } flex items-center   `}
-            >
-              {data.map((button, i) => (
-                <button
-                  id={`navButton${i}`}
-                  key={i}
-                  onMouseEnter={() => openDropDown(i)}
-                  onMouseLeave={() => closeDropDown(i)}
-                  className={`p-2 text-sm  font-semibold hover:shadow-navCategory ${
-                    isLightTheme
-                      ? 'hover:bg-second-nav-text-light'
-                      : 'hover:bg-second-nav-dark'
-                  }`}
-                >
-                  {button.category}
-                </button>
-              ))}
-              <MegaMenu
-                menuRef={menuRef}
-                data={catData}
+        <div className="max-w-default mx-auto  px-4 ">
+          <div className="relative items-center flex">
+            <AllCategories dropDownbgRef={dropDownbgRef} />
+            <ReactHoverObserver hoverDelayInMs={300}>
+              <NavCategoriesContainer
                 isLightTheme={isLightTheme}
+                data={data}
+                handleDropDownOpen={handleDropDownOpen}
+                setCatData={setCatData}
+                closeDropDown={closeDropDown}
+                setDropDownOpen={setDropDownOpen}
+                catData={catData}
               />
-            </div>
+              <AnimatePresence>
+                {dropDownOpen && (
+                  <MegaMenu data={catData} isLightTheme={isLightTheme} />
+                )}
+              </AnimatePresence>
+            </ReactHoverObserver>
           </div>
         </div>
       </div>
