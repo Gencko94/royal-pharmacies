@@ -24,7 +24,11 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-export default function GoogleMapsAddress({ setAddress, handleSaveLocation }) {
+export default function GoogleMapsAddress({
+  setAddress,
+  addMutation,
+  AddButtonLoading,
+}) {
   const { formatMessage } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAYprqr3Vrnmhwx9UQozUNNks7CVH9m3Xg',
@@ -36,7 +40,6 @@ export default function GoogleMapsAddress({ setAddress, handleSaveLocation }) {
   const [marker, setMarker] = React.useState(null);
   const [markerDetails, setMarkerDetails] = React.useState(null);
   const [markerAddress, setMarkerAddress] = React.useState(null);
-  const [confirmButtonLoading, setConfirmButtonLoading] = React.useState(false);
   const mapRef = React.useRef();
   const onMapLoad = React.useCallback(map => {
     mapRef.current = map;
@@ -44,16 +47,18 @@ export default function GoogleMapsAddress({ setAddress, handleSaveLocation }) {
   const panTo = React.useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
   }, []);
-  const handleAddLocation = () => {
-    setConfirmButtonLoading(true);
-    const newLocation = {
-      lat: marker.lat,
-      lng: marker.lng,
-      defaultLocation: defaultLocationChecked,
-      street: markerAddress.street,
-      governate: markerAddress.governate,
-    };
-    handleSaveLocation(newLocation);
+  const handleAddLocation = async () => {
+    try {
+      await addMutation({
+        lat: marker.lat,
+        lng: marker.lng,
+        defaultLocation: defaultLocationChecked,
+        street: markerAddress.street,
+        governate: markerAddress.governate,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   React.useEffect(() => {
     if (marker) {
@@ -151,12 +156,12 @@ export default function GoogleMapsAddress({ setAddress, handleSaveLocation }) {
           className={`${
             !markerDetails
               ? 'btn-disabled'
-              : confirmButtonLoading
+              : AddButtonLoading
               ? 'bg-gray-300 text-main-text'
               : 'bg-main-color text-main-text'
           }   p-1 px-2 rounded    flex items-center justify-center font-semibold`}
         >
-          {confirmButtonLoading ? (
+          {AddButtonLoading ? (
             <MoonLoader size={19} color="#b72b2b" />
           ) : (
             <h1>{formatMessage({ id: 'confirm-location' })}</h1>

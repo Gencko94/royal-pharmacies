@@ -2,7 +2,7 @@ import React from 'react';
 import { FaMapMarkedAlt } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
 import manWithMap from '../../../assets/illustrations/manWithMap.svg';
-export default function NoAddresses({ isLightTheme, handleShowMap }) {
+export default function NoAddresses({ isLightTheme, setShowMap }) {
   const { formatMessage } = useIntl();
   return (
     <div className="flex flex-col justify-center items-center h-full">
@@ -17,7 +17,7 @@ export default function NoAddresses({ isLightTheme, handleShowMap }) {
           {formatMessage({ id: 'no-addresses-yet' })}
         </h1>
         <button
-          onClick={handleShowMap}
+          onClick={() => setShowMap(true)}
           className={` mt-3  font-semibold flex items-center rounded px-4 py-2  ${
             isLightTheme
               ? 'bg-btn-primary-light text-btn-secondary-light'

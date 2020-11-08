@@ -12,11 +12,8 @@ export default function RelatedItems({ relatedData }) {
       <div className="related__items-container">
         {relatedData.map((item, i) => {
           return (
-            <div key={i} className="">
-              <div
-                style={{ minHeight: '250px' }}
-                className=" bg-white border overflow-hidden flex flex-col relative  rounded-lg shadow-lg "
-              >
+            <div key={i} className="" style={{ height: '350px' }}>
+              <div className=" bg-white border overflow-hidden flex flex-col relative  rounded-lg shadow-lg ">
                 <Link to={`/products/${item.id}`}>
                   <img
                     src={item.photos.small}

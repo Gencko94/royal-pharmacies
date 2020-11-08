@@ -4,15 +4,25 @@ import Slider from 'react-slick';
 import { DataProvider } from '../../contexts/DataContext';
 import { useMediaQuery } from 'react-responsive';
 import ContentLoader from 'react-content-loader';
-const MainCarousel = React.memo(() => {
-  const {
-    mainCarouselItemsDesktop,
-    mainCarouselItemsMobile,
-  } = React.useContext(DataProvider);
+import { useQuery } from 'react-query';
+const MainCarousel = () => {
+  const { getMainCarouselItems } = React.useContext(DataProvider);
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 668px)' });
-  const data = isTabletOrAbove
-    ? mainCarouselItemsDesktop
-    : mainCarouselItemsMobile;
+
+  const { data, isLoading } = useQuery(
+    ['mainCarousel', isTabletOrAbove],
+    async (key, desktop) => {
+      if (desktop) {
+        const res = await getMainCarouselItems('desktop');
+        return res;
+      } else {
+        const res = await getMainCarouselItems('mobile');
+        return res;
+      }
+    },
+    { refetchOnWindowFocus: false, retry: true }
+  );
+
   const settings = {
     className: '',
     dots: true,
@@ -21,10 +31,9 @@ const MainCarousel = React.memo(() => {
     arrows: false,
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 5000,
     slidesToShow: 1,
     slidesToScroll: 1,
-    variableWidth: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -52,40 +61,46 @@ const MainCarousel = React.memo(() => {
       },
     ],
   };
-  const [items, setItems] = React.useState(null);
-  React.useEffect(() => {
-    setTimeout(() => {
-      setItems(data);
-    }, 5000);
-  }, [data]);
+
   return (
-    <div className="my-6 bg-nav-secondary">
-      <Slider className="bg-nav-secondary" {...settings}>
-        {data.map((item, i) => {
-          return (
-            <div key={i} className="px-0 md:px-1">
-              {!items && (
+    <div className="my-6 bg-body-light">
+      <Slider className="bg-body-light" {...settings}>
+        {isLoading &&
+          [0, 1, 2].map(i => {
+            return (
+              <div key={i} className="px-1">
                 <ContentLoader
-                  speed={2}
-                  viewBox="0 0 900 200"
+                  speed={4}
+                  viewBox={`0 0 900 ${isTabletOrAbove ? '185' : '340'}`}
                   backgroundColor="#f3f3f3"
                   foregroundColor="#ecebeb"
                 >
-                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="200" />
+                  <rect
+                    x="0"
+                    y="0"
+                    rx="5"
+                    ry="5"
+                    width="100%"
+                    height={`${isTabletOrAbove ? '185' : '340'}`}
+                  />
                 </ContentLoader>
-              )}
-              {items && (
+              </div>
+            );
+          })}
+        {!isLoading &&
+          data.map(item => {
+            return (
+              <div key={item} className="px-0 md:px-1">
                 <img
                   src={item.src}
                   alt="something"
                   className=" md:rounded w-full h-full "
                 />
-              )}
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
       </Slider>
     </div>
   );
-});
+};
 export default MainCarousel;

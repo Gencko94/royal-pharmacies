@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { MoonLoader } from 'react-spinners';
@@ -9,8 +10,27 @@ export default function Location({
 }) {
   const { formatMessage } = useIntl();
   const key = 'AIzaSyAYprqr3Vrnmhwx9UQozUNNks7CVH9m3Xg';
+  const cardVariants = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)',
+    },
+    exited: {
+      opacity: 0,
+      clipPath: 'polygon(0 54%, 100% 53%, 100% 53%, 0 54%)',
+    },
+  };
   return (
-    <div className="rounded border shadow-itemsSlider-shallow bg-body-light">
+    <motion.div
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exited"
+      className="rounded border shadow-itemsSlider-shallow bg-body-light"
+    >
       <div style={{ minHeight: '150px' }}>
         <img
           src={`https://maps.googleapis.com/maps/api/staticmap?center=${data.lat},${data.lng}&zoom=15&size=200x150&key=${key}`}
@@ -35,6 +55,6 @@ export default function Location({
           )}
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

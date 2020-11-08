@@ -263,17 +263,20 @@ export default function DataContextProvider({ children }) {
         case 'fashion':
           group = fashion;
           break;
+        case 'healthCare':
+          group = healthCare;
+          break;
 
         default:
           reject({ message: 'No group was selected' });
           break;
       }
       setTimeout(() => {
-        resolve(group);
-      }, [3000]);
+        resolve({ items: group, cartItems });
+      }, [100]);
     });
   };
-  const getUserLocation = () => {
+  const getUserLocations = () => {
     return new Promise(resolve => {
       setTimeout(() => {
         let myLocalLocations = localStorage.getItem('myLocalLocations');
@@ -281,11 +284,8 @@ export default function DataContextProvider({ children }) {
           localStorage.setItem('myLocalLocations', JSON.stringify([]));
         }
         myLocalLocations = JSON.parse(localStorage.getItem('myLocalLocations'));
-        if (myLocalLocations.length === 0) {
-          resolve({ message: 'No Locations Found' });
-        } else {
-          resolve({ locations: [...myLocalLocations] });
-        }
+
+        resolve({ locations: [...myLocalLocations] });
       }, 2000);
     });
   };
@@ -302,7 +302,7 @@ export default function DataContextProvider({ children }) {
           'myLocalLocations',
           JSON.stringify(myLocalLocations)
         );
-        resolve({ message: 'ok', locations: myLocalLocations });
+        resolve({ message: 'ok', newLocation });
       }, 2000);
     });
   };
@@ -324,6 +324,21 @@ export default function DataContextProvider({ children }) {
         );
         resolve({ message: 'ok', locations: myLocalLocations });
       }, 2000);
+    });
+  };
+
+  /*Home*/
+  // carousel
+
+  const getMainCarouselItems = screen => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        if (screen === 'desktop') {
+          resolve(mainCarouselItemsDesktop);
+        } else {
+          resolve(mainCarouselItemsMobile);
+        }
+      }, 500);
     });
   };
   const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
@@ -2380,8 +2395,7 @@ export default function DataContextProvider({ children }) {
   return (
     <DataProvider.Provider
       value={{
-        mainCarouselItemsDesktop,
-        mainCarouselItemsMobile,
+        getMainCarouselItems,
         deliveryCountry,
         setDeliveryCountry,
         bestSeller,
@@ -2413,7 +2427,7 @@ export default function DataContextProvider({ children }) {
         getSingleItemDetails,
         getCartItems,
         getItemsByType,
-        getUserLocation,
+        getUserLocations,
         handleAddLocation,
         handleRemoveLocation,
       }}

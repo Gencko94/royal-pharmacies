@@ -141,4 +141,8 @@ export const ar = {
 
   // category nav bar
   'top-brands': 'افضل الماركات',
+
+  // item slider buy options
+  'slider.buy-options': 'خيارات الشراء',
+  size: 'المقاس',
 };

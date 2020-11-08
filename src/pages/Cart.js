@@ -362,6 +362,7 @@ export default function Cart() {
         <ItemsSlider
           data={healthCare}
           miniLogo={false}
+          type="healthCare"
           title="Health Care Essentials"
           isLightTheme={isLightTheme}
         />

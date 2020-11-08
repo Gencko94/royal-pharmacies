@@ -25,6 +25,9 @@ module.exports = {
     //   },
     // }),
     extend: {
+      fontSize: {
+        xxs: '0.7rem',
+      },
       boxShadow: {
         navCategory: '0 5px 4px 0 rgba(0,0,0,0.18)',
         'itemsSlider-shallow': '0 5px 10px rgba(0, 0, 0, 0.2)',
@@ -70,6 +73,7 @@ module.exports = {
         teal: '#008080 ',
         'nav-gradient-from': '#eaaeae',
         'nav-gradient-to': '#9d0707',
+        'buy-options-main': '#f64f59',
         aliceblue: '#F0F8FF',
       },
       spacing: {

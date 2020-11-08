@@ -742,3 +742,35 @@ input {
   width: 700px;
   height: 500px;
 }
+
+/* slider item */
+
+.sale-mini__banner {
+  clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
+  width: 35%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.buy-options__itemslider {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  z-index: 2;
+  width: 100%;
+  padding-bottom: 40px;
+  background: #12c2e9; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    0deg,
+    #f64f59,
+    #c471ed,
+    #12c2e9
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    0deg,
+    #f64f59,
+    #c471ed,
+    #12c2e9
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

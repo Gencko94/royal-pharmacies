@@ -6,6 +6,7 @@ import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
 import { DataProvider } from '../../../contexts/DataContext';
 import SliderItem from './SliderItem';
+import { queryCache, useMutation, useQuery } from 'react-query';
 
 const RightArrow = ({ onClick }) => {
   return (
@@ -34,7 +35,6 @@ export default function ItemsSlider({
   isLightTheme,
   type,
 }) {
-  const { formatMessage, locale } = useIntl();
   const settings = {
     className: '',
     arrows: true,
@@ -93,58 +93,94 @@ export default function ItemsSlider({
     removeItemFromCart,
     addItemToCart,
     getItemsByType,
-    getCartItems,
   } = React.useContext(DataProvider);
-  const [cartItems, setCartItems] = React.useState([]);
 
-  const [data, setData] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
+  const { formatMessage, locale } = useIntl();
+  const [size, setSize] = React.useState('xs');
+  const [quantity, setQuantity] = React.useState(1);
+  const [activeBuyOptions, setActiveBuyOptions] = React.useState(null);
+
   const [loadingButton, setLoadingButton] = React.useState(null);
+  const handleBuyOptionsToggle = id => {
+    if (activeBuyOptions === id) {
+      setActiveBuyOptions(null);
+      setQuantity(1);
+      setSize('xs');
+      return;
+    }
+    setActiveBuyOptions(id);
+    setSize('xs');
+    setQuantity(1);
+  };
 
   const isItemInCart = id => {
-    const itemInCart = cartItems.find(item => id === item.id);
-    if (itemInCart !== undefined) {
-      return true;
-    } else {
+    const itemInCart = data.cartItems.find(item => id === item.id);
+    if (!itemInCart) {
       return false;
+    } else {
+      return true;
     }
   };
-  const handleAddItemToCart = data => {
-    setLoadingButton(data.id);
-    addItemToCart({
-      id: data.id,
-      photo: data.photos.small,
-      quantity: 1,
-      price: data.price,
-      name: data.name,
-    }).then(res => {
-      if (res.message === 'ok') {
-        setCartItems(res.cartItems);
-        setLoadingButton(null);
-      }
-    });
-  };
-  const handleRemoveItemFromCart = id => {
-    setLoadingButton(id);
-    removeItemFromCart(id).then(res => {
-      if (res.message === 'ok') {
-        setCartItems(res.cartItems);
-        setLoadingButton(null);
-      }
-    });
-  };
 
-  React.useEffect(() => {
-    getItemsByType(type)
-      .then(items => {
-        getCartItems().then(res => {
-          setData(items);
-          setCartItems(res.cartItems);
-          setLoading(false);
+  /**
+   * Main Fetch
+   */
+  const { data, isLoading, refetch } = useQuery(
+    ['slides', type],
+    async (key, type) => {
+      const res = await getItemsByType(type);
+      return res;
+    },
+    { refetchOnWindowFocus: false }
+  );
+
+  /**
+   * Add to cart Mutation
+   */
+
+  const [addMutation] = useMutation(
+    async item => {
+      setLoadingButton(item.id);
+      const res = await addItemToCart(item);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        setLoadingButton(null);
+        queryCache.setQueryData(['slides', type], prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+          };
         });
-      })
-      .catch(err => console.log(err.message));
-  }, [getCartItems, getItemsByType, type]);
+        refetch();
+      },
+    }
+  );
+  /**
+   * remove from cart Mutation
+   */
+
+  const [removeMutation] = useMutation(
+    async id => {
+      setLoadingButton(id);
+      const res = await removeItemFromCart(id);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        setLoadingButton(null);
+        queryCache.setQueryData(['slides', type], prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+          };
+        });
+        refetch();
+      },
+    }
+  );
+
   return (
     <div className="my-6 overflow-hidden   ">
       <div className="flex items-center mb-4">
@@ -154,7 +190,7 @@ export default function ItemsSlider({
         </button>
       </div>
       <Slider className="" {...settings}>
-        {loading &&
+        {isLoading &&
           [0, 1, 2, 3, 4, 5].map(i => (
             <div key={i} className="px-2 my-4">
               <ContentLoader
@@ -172,17 +208,22 @@ export default function ItemsSlider({
               </ContentLoader>
             </div>
           ))}
-        {!loading &&
-          data.map((item, i) => {
+        {!isLoading &&
+          data.items.map(item => {
             return (
               <SliderItem
-                key={i}
+                key={item.id}
                 loadingButton={loadingButton}
                 isItemInCart={isItemInCart}
                 data={item}
-                handleRemoveItemFromCart={handleRemoveItemFromCart}
-                handleAddItemToCart={handleAddItemToCart}
                 isLightTheme={isLightTheme}
+                activeBuyOptions={activeBuyOptions}
+                setQuantity={setQuantity}
+                handleBuyOptionsToggle={handleBuyOptionsToggle}
+                options={{ size, quantity }}
+                setSize={setSize}
+                addMutation={addMutation}
+                removeMutation={removeMutation}
               />
             );
           })}

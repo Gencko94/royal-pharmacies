@@ -7,76 +7,81 @@ import NoAddresses from './MyAddresses/NoAddresses';
 import { useQuery, useMutation, queryCache } from 'react-query';
 
 export default function MyAddresses({ isLightTheme }) {
-  const { isLoading, data, refetch } = useQuery('addresses', async () => {
-    const res = await getUserLocation();
-    console.log(res);
-    if (res.message === 'No Locations Found') {
-      return [];
-    } else {
+  const [showMap, setShowMap] = React.useState(false);
+  const {
+    getUserLocations,
+    handleAddLocation,
+    handleRemoveLocation,
+  } = React.useContext(DataProvider);
+
+  /* Main Fetching */
+  const { isLoading, data, refetch, isError } = useQuery(
+    'addresses',
+    async () => {
+      const res = await getUserLocations();
       return res.locations;
-    }
-  });
-  const [mutate] = useMutation(
-    async ({ location }) => {
+    },
+    { refetchOnWindowFocus: false }
+  );
+
+  /* Add Mutation */
+  const [addMutation, { isLoading: AddButtonLoading }] = useMutation(
+    async location => {
       const res = await handleAddLocation(location);
+      if (res.message === 'ok') {
+        return res.newLocation;
+      }
+    },
+    {
+      onSuccess: newLocation => {
+        queryCache.setQueryData('addresses', prev => {
+          return [...prev, newLocation];
+        });
+        refetch();
+
+        setShowMap(false);
+      },
+    }
+  );
+
+  /* Delete Mutation */
+  const [deleteMutation] = useMutation(
+    async location => {
+      const res = await handleRemoveLocation(location);
       if (res.message === 'ok') {
         return res.locations;
       }
     },
     {
-      onSuccess: data => {
+      onSuccess: locations => {
         queryCache.setQueryData('addresses', () => {
-          return data;
+          return locations;
         });
         refetch();
+
         setShowMap(false);
       },
     }
   );
-  const [showMap, setShowMap] = React.useState(false);
-  const {
-    getUserLocation,
-    handleAddLocation,
-    handleRemoveLocation,
-  } = React.useContext(DataProvider);
-  const [, setLocations] = React.useState([]);
-  const handleShowMap = () => {
-    setShowMap(true);
-  };
 
-  const handleSaveLocation = async location => {
-    try {
-      await mutate({
-        location,
-      });
-    } catch (error) {}
-    // handleAddLocation(location).then(res => {
-    //   if (res.message === 'ok') {
-    //     setShowMap(false);
-    //     console.log(res.locations);
-    //     setLocations(res.locations);
-    //   }
-    // });
-  };
-  const handleDeleteLocation = location => {
-    handleRemoveLocation(location)
-      .then(res => {
-        if (res.message === 'ok') {
-          setLocations(res.locations);
-        }
-      })
-      .catch(err => console.log(err));
-  };
-  // React.useEffect(() => {
-  //   getUserLocation().then(res => {
-  //     if (res.message === 'No Locations Found') {
-  //       setLoading(false);
-  //     } else {
-  //       setLocations(res.locations);
-  //       setLoading(false);
-  //     }
-  //   });
-  // }, [getUserLocation]);
+  if (isError) {
+    return (
+      <div
+        className={`rounded-lg overflow-hidden ${
+          isLightTheme
+            ? 'shadow-itemsSlider-shallow'
+            : 'shadow-itemsSlider-wide'
+        }`}
+      >
+        <div className="flex h-full justify-center items-center font-semibold">
+          <h1>Oops, Something Went Wrong</h1>
+          <button className="bg-gray-300 rounded px-2 py-1" onClick={refetch}>
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading)
     return (
@@ -101,22 +106,19 @@ export default function MyAddresses({ isLightTheme }) {
       {!isLoading &&
         !showMap &&
         (data.length === 0 ? (
-          <NoAddresses
-            isLightTheme={isLightTheme}
-            handleShowMap={handleShowMap}
-          />
+          <NoAddresses isLightTheme={isLightTheme} setShowMap={setShowMap} />
         ) : (
           <Locations
             locations={data}
-            handleDeleteLocation={handleDeleteLocation}
-            handleShowMap={handleShowMap}
+            setShowMap={setShowMap}
+            deleteMutation={deleteMutation}
           />
         ))}
       {showMap && (
         <GoogleMapsAddress
           setShowMap={setShowMap}
-          setLocations={setLocations}
-          handleSaveLocation={handleSaveLocation}
+          addMutation={addMutation}
+          AddButtonLoading={AddButtonLoading}
         />
       )}
     </div>

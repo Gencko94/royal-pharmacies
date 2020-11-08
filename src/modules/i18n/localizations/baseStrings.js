@@ -147,6 +147,9 @@ const baseStrings = {
   // category navbar:
 
   'top-brands': 'Top Brands',
+  // item slider buy options
+  'slider.buy-options': 'Buy Options',
+  size: 'Size',
 };
 
 export const en = baseStrings;
