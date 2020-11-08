@@ -175,12 +175,14 @@ export default function DataContextProvider({ children }) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const item = allItems.find(item => item.id === id);
+        const isItemInCart = cartItems.find(item => item.id === id);
+
         if (item) {
-          resolve(item);
+          resolve({ item, itemInCart: Boolean(isItemInCart) });
         } else {
           reject({ message: 'no product' });
         }
-      }, 2000);
+      }, 500);
     });
   };
   const addItemToCart = ({ id, quantity, price, name, photo }) => {

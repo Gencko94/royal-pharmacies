@@ -7,7 +7,7 @@ import { DataProvider } from '../../contexts/DataContext';
 export default function CartItem({
   item,
   handleRemoveItem,
-  loadingRemoveFromCartButton,
+  removeButtonLoading,
 }) {
   const { EditItemFromCart } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
@@ -35,12 +35,7 @@ export default function CartItem({
       exit="exited"
       className="cart__item py-2"
     >
-      <img
-        className=""
-        style={{ maxHeight: '', maxWidth: '' }}
-        src={item.photo}
-        alt={item.name}
-      />
+      <img className="" src={item.photo} alt={item.name} />
       <div className="">
         <h1 className="font-semibold ">{item.name}</h1>
         <h1 className=" font-semibold text-sm mb-1 text-green-700">
@@ -66,12 +61,10 @@ export default function CartItem({
               handleRemoveItem(item.id);
             }}
             className={`${
-              loadingRemoveFromCartButton === item.id
-                ? 'bg-gray-300'
-                : 'bg-main-color'
+              removeButtonLoading === item.id ? 'bg-gray-300' : 'bg-main-color'
             }  text-main-text text-sm flex items-center justify-center py-1 px-2 rounded  font-semibold`}
           >
-            {loadingRemoveFromCartButton === item.id ? (
+            {removeButtonLoading === item.id ? (
               <MoonLoader size={18} color="#b72b2b" />
             ) : (
               <>

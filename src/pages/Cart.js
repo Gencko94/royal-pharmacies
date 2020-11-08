@@ -3,8 +3,7 @@ import CartItem from '../components/Cart/CartItem';
 // import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
 import RecentlyViewedVertical from '../components/RecentlyViewedVertical';
 import { DataProvider } from '../contexts/DataContext';
-import cartBag from '../assets/illustrations/cartBag.svg';
-import { Link } from 'react-router-dom';
+
 import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
 import FeaturedItemsVertical from '../components/Cart/FeaturedItemsVertical';
 import { Helmet } from 'react-helmet';
@@ -14,25 +13,50 @@ import Layout from '../components/Layout';
 import { useIntl } from 'react-intl';
 import ContentLoader from 'react-content-loader';
 import { AnimatePresence } from 'framer-motion';
+import { queryCache, useMutation, useQuery } from 'react-query';
+import NoCartItems from '../components/Cart/NoCartItems';
 export default function Cart() {
   const {
-    cartItems,
     healthCare,
     isLightTheme,
-    calculateItemsPrice,
     getCartItems,
     removeItemFromCart,
   } = React.useContext(DataProvider);
+  /**
+   * Main Fetch
+   */
+  const { data, isLoading, refetch } = useQuery('cartItems', async () => {
+    const res = await getCartItems();
+    return res;
+  });
+
+  /**
+   * Remove Mutation
+   */
+  const [removeMutation] = useMutation(
+    async id => {
+      setRemoveButtonLoading(id);
+      const res = await removeItemFromCart(id);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData('cartItems', prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+          };
+        });
+        setRemoveButtonLoading(null);
+        refetch();
+      },
+    }
+  );
+
   const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
-  const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [cartEmpty, setCartEmpty] = React.useState(false);
-  const [cartTotal, setCartTotal] = React.useState(0);
-  const [
-    loadingRemoveFromCartButton,
-    setLoadingRemoveFromCartButton,
-  ] = React.useState(null);
+  const [removeButtonLoading, setRemoveButtonLoading] = React.useState(null);
 
   const modalRef = React.useRef();
   useClickAway(modalRef, () => {
@@ -40,33 +64,14 @@ export default function Cart() {
   });
   const { formatMessage, locale } = useIntl();
   const handleRemoveItem = async id => {
-    setLoadingRemoveFromCartButton(id);
-    const result = await removeItemFromCart(id);
-    if (result.message === 'ok') {
-      if (result.cartItems.length === 0) {
-        setCartEmpty(true);
-        setCartTotal(result.cartTotal);
-        setData([]);
-        return;
-      }
-      setData(data => data.filter(item => item.id !== id));
-      setCartTotal(result.cartTotal);
+    setRemoveButtonLoading(id);
+    try {
+      await removeMutation(id);
+    } catch (error) {
+      console.log(error);
     }
   };
-  React.useEffect(() => {
-    getCartItems().then(items => {
-      if (items.cartItems.length === 0) {
-        setCartEmpty(true);
-        setLoading(false);
-        setData(items.cartItems);
-        setCartTotal(items.cartTotal);
-        return;
-      }
-      setData(items.cartItems);
-      setCartTotal(items.cartTotal);
-      setLoading(false);
-    });
-  });
+
   return (
     <Layout>
       <Helmet>
@@ -75,7 +80,7 @@ export default function Cart() {
       <div className="px-4 py-2 max-w-default mx-auto">
         <div className=" cart  ">
           <div className=" cart__container ">
-            {loading && (
+            {isLoading && (
               <ContentLoader
                 speed={3}
                 viewBox="0 0 400 200"
@@ -99,39 +104,12 @@ export default function Cart() {
               </ContentLoader>
             )}
 
-            {!loading && (
+            {!isLoading && (
               <>
-                {cartEmpty && (
-                  <div className=" flex">
-                    <img src={cartBag} alt="Empty Cart Bag" className=" h-32" />
-                    <div className="mx-5">
-                      <h1 className="text-2xl font-bold ">
-                        {formatMessage({ id: 'cart-empty' })}
-                      </h1>
-                      <Link
-                        to={`/${locale}`}
-                        className="text-sm text-blue-600 hover:underline"
-                      >
-                        {formatMessage({ id: 'check-today-deals' })}
-                      </Link>
-                      <div className="flex items-center flex-wrap">
-                        <Link
-                          to="/app/login"
-                          className={` rounded p-2 mt-2 bg-green-700 text-second-nav-text-light  `}
-                        >
-                          {formatMessage({ id: 'login-button' })}
-                        </Link>
-                        <Link
-                          to="/app/register"
-                          className={` rounded p-2 mt-2 bg-blue-700 text-second-nav-text-light mx-2  `}
-                        >
-                          {formatMessage({ id: 'register-button' })}
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {!cartEmpty && (
+                <AnimatePresence>
+                  {data.cartItems.length === 0 && <NoCartItems />}
+                </AnimatePresence>
+                {data.cartItems.length !== 0 && (
                   <>
                     <div className="cart__title font-semibold text-lg">
                       <h1 className="  ">
@@ -143,38 +121,33 @@ export default function Cart() {
                       </h1>
                     </div>
                     <hr />
+                    <div className=" flex flex-col">
+                      <AnimatePresence>
+                        {data.cartItems.map(item => {
+                          return (
+                            <CartItem
+                              key={item.id}
+                              item={item}
+                              handleRemoveItem={handleRemoveItem}
+                              removeButtonLoading={removeButtonLoading}
+                            />
+                          );
+                        })}
+                      </AnimatePresence>
+                    </div>
+                    <div className="flex justify-end p-2 rounded mt-2 border bg-gray-100">
+                      <h1 className="text-lg font-semibold">
+                        {formatMessage({ id: 'subtotal' })} (
+                        {data.cartItems.length}{' '}
+                        {data.cartItems.length === 1 ? 'item' : 'items'}) :{' '}
+                        {data.cartTotal} KD
+                      </h1>
+                    </div>
+                    <h1 className="text-sm my-4">
+                      {formatMessage({ id: 'cart-tos' })}
+                    </h1>
                   </>
                 )}
-                {!cartEmpty && (
-                  <div className=" flex flex-col">
-                    <AnimatePresence>
-                      {data.map(item => {
-                        return (
-                          <CartItem
-                            key={item.id}
-                            item={item}
-                            handleRemoveItem={handleRemoveItem}
-                            loadingRemoveFromCartButton={
-                              loadingRemoveFromCartButton
-                            }
-                          />
-                        );
-                      })}
-                    </AnimatePresence>
-                  </div>
-                )}
-                {!cartEmpty && (
-                  <div className="flex justify-end p-2 rounded mt-2 border bg-gray-100">
-                    <h1 className="text-lg font-semibold">
-                      {formatMessage({ id: 'subtotal' })} ({cartItems.length}{' '}
-                      {cartItems.length === 1 ? 'item' : 'items'}) : {cartTotal}{' '}
-                      KD
-                    </h1>
-                  </div>
-                )}
-                <h1 className="text-sm my-4">
-                  {formatMessage({ id: 'cart-tos' })}
-                </h1>
               </>
             )}
             <hr />
@@ -193,7 +166,7 @@ export default function Cart() {
             className="font-semibold overflow-hidden  sticky top-0"
             style={{ top: '134px' }}
           >
-            {loading && (
+            {isLoading && (
               <div className=" rounded border bg-gray-100 p-2 flex justify-center flex-col mb-2 ">
                 <ContentLoader
                   speed={3}
@@ -208,27 +181,27 @@ export default function Cart() {
                 </ContentLoader>
               </div>
             )}
-            {!loading && !cartEmpty && (
+            {!isLoading && !data.cartItems.length !== 0 && (
               <div className=" rounded border bg-gray-100 p-2 flex justify-center flex-col mb-2 ">
                 <h1 className="text-base font-semibold mb-2 ">
-                  {formatMessage({ id: 'subtotal' })} ({cartItems.length}{' '}
-                  {cartItems.length === 1 ? 'item' : 'items'}) :{' '}
-                  {calculateItemsPrice(cartItems)} KD
+                  {formatMessage({ id: 'subtotal' })} ({data.cartItems.length}{' '}
+                  {data.cartItems.length === 1 ? 'item' : 'items'}) :{' '}
+                  {data.cartTotal} KD
                 </h1>
                 <button
                   onClick={() => setCheckOutModalOpen(true)}
                   className={`${
-                    cartItems.length === 0
+                    data.cartItems.length === 0
                       ? 'cursor-not-allowed bg-gray-600'
                       : 'bg-green-600'
                   } p-1 rounded text-gray-100 `}
-                  disabled={cartItems.length === 0}
+                  disabled={data.cartItems.length === 0}
                 >
                   {formatMessage({ id: 'checkout' })}
                 </button>
               </div>
             )}
-            {loading && (
+            {isLoading && (
               <div className="border rounded p-2 bg-gray-100">
                 <ContentLoader
                   speed={3}
@@ -348,7 +321,7 @@ export default function Cart() {
                 </ContentLoader>
               </div>
             )}
-            {!loading && (
+            {!isLoading && (
               <div className="border rounded p-2 bg-gray-100">
                 {visitedItems.length > 4 ? (
                   <RecentlyViewedVertical visitedItems={visitedItems} />

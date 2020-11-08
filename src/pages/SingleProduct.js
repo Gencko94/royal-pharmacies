@@ -14,8 +14,8 @@ import InView from 'react-intersection-observer';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
-import { CSSTransition } from 'react-transition-group';
-import { useIntl } from 'react-intl';
+import { queryCache, useMutation, useQuery } from 'react-query';
+import { AnimatePresence } from 'framer-motion';
 
 export default function SingleProduct() {
   const { id, name } = useParams();
@@ -24,7 +24,7 @@ export default function SingleProduct() {
     addItemToCart,
     removeItemFromCart,
     allItems,
-    isItemInCart,
+
     getSingleItemDetails,
   } = React.useContext(DataProvider);
   const quantityOptions = [
@@ -33,23 +33,79 @@ export default function SingleProduct() {
     { value: 3, label: 3 },
     { value: 4, label: 4 },
   ];
-  const { locale } = useIntl();
+
+  /**
+   * Main Fetch
+   */
+  const { data, isLoading } = useQuery(
+    ['singleProduct', id],
+    async (key, id) => {
+      const res = await getSingleItemDetails(id);
+      return res;
+    },
+    { refetchOnWindowFocus: false }
+  );
+
+  /**
+   * Add Mutation
+   */
+
+  const [addMutation] = useMutation(
+    async item => {
+      setAddToCartButtonLoading(true);
+      const res = await addItemToCart(item);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData(['singleProduct', id], prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+            itemInCart: true,
+          };
+        });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
+      },
+    }
+  );
+
+  /**
+   * Remove Mutation
+   */
+
+  const [removeMutation] = useMutation(
+    async id => {
+      setAddToCartButtonLoading(true);
+      const res = await removeItemFromCart(id);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData(['singleProduct', id], prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+            itemInCart: false,
+          };
+        });
+        setAddToCartButtonLoading(false);
+      },
+    }
+  );
   const [quantity, setQuantity] = React.useState(quantityOptions[0]);
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
-  const [cartItems, setCartItems] = React.useState(null);
-  const [cartTotal, setCartTotal] = React.useState(0);
-  const [cartEmpty, setCartEmpty] = React.useState(false);
-  const [data, setData] = React.useState(null);
   const [related, setRelated] = React.useState(null);
   const [detailsTab, setDetailsTab] = React.useState(0);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
-  const [loading, setLoading] = React.useState(true);
-  const [itemInCart, setItemInCart] = React.useState(false);
   const handleLoadMore = inView => {
     if (inView) {
       if (hasMore) {
@@ -59,40 +115,23 @@ export default function SingleProduct() {
     }
   };
   const handleAddToCart = async () => {
-    setAddToCartButtonLoading(true);
-    const result = await addItemToCart({
-      id: data.id,
-      quantity: quantity.value,
-      price: data.price,
-      name: data.name,
-      photo: data.photos.small,
-    });
-    if (result.message === 'ok') {
-      setAddToCartButtonLoading(false);
-      setItemInCart(true);
-      setCartItems(result.cartItems);
-      setSideMenuOpen(true);
-      setCartTotal(result.cartTotal);
-      setCartEmpty(false);
+    try {
+      await addMutation({
+        id: data.item.id,
+        quantity: quantity.value,
+        price: data.item.price,
+        name: data.item.name,
+        photo: data.item.photos.small,
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
   const handleRemoveFromCart = async id => {
-    if (id === data.id) {
-      setAddToCartButtonLoading(true);
-    }
-    const result = await removeItemFromCart(id);
-    if (result.message === 'ok') {
-      if (id === data.id) {
-        setAddToCartButtonLoading(false);
-        setItemInCart(false);
-      }
-      if (sideMenuOpen) {
-        setCartItems(result.cartItems);
-        setCartTotal(result.cartTotal);
-        if (result.cartItems.length === 0) {
-          setCartEmpty(true);
-        }
-      }
+    try {
+      await removeMutation(id);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -109,30 +148,6 @@ export default function SingleProduct() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  /*
-  {entry}
-  */
-
-  React.useEffect(() => {
-    getSingleItemDetails(id).then(item => {
-      setData(item);
-
-      setLoading(false);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  React.useEffect(() => {
-    isItemInCart(id).then(res => {
-      if (res.message === 'yes') {
-        setItemInCart(true);
-        setAddToCartButtonLoading(false);
-      } else {
-        setItemInCart(false);
-        setAddToCartButtonLoading(false);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   // Add item to localStorage //
   React.useEffect(() => {
     const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
@@ -143,7 +158,7 @@ export default function SingleProduct() {
       visitedItems.push({ id });
       localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
     }
-  });
+  }, [id]);
 
   return (
     <Layout>
@@ -155,31 +170,30 @@ export default function SingleProduct() {
         />
       </Helmet>
 
-      <CSSTransition
-        timeout={300}
-        classNames={`${
-          locale === 'ar'
-            ? 'ar-add-to-cart__sideMenu'
-            : 'en-add-to-cart__sideMenu'
-        }`}
-        unmountOnExit
-        in={sideMenuOpen}
-      >
-        <SideCartMenu
-          cartItems={cartItems}
-          cartTotal={cartTotal}
-          setSideMenuOpen={setSideMenuOpen}
-          handleRemoveFromCart={handleRemoveFromCart}
-          cartEmpty={cartEmpty}
-        />
-      </CSSTransition>
+      <AnimatePresence>
+        {sideMenuOpen && (
+          <SideCartMenu
+            cartItems={data.cartItems}
+            cartTotal={data.cartTotal}
+            setSideMenuOpen={setSideMenuOpen}
+            handleRemoveFromCart={handleRemoveFromCart}
+          />
+        )}
+      </AnimatePresence>
+      {/* {sideMenuOpen && (
+          <div
+            onClick={() => setSideMenuOpen(false)}
+            className="side__addCart-bg"
+          ></div>
+        )} */}
+
       <div className=" px-4 ">
         <div className="mx-auto max-w-default">
           <Breadcrumbs />
 
           <div className="details__container">
             <div className="relative ">
-              {loading && (
+              {isLoading && (
                 <ContentLoader
                   speed={2}
                   viewBox="0 0 480 480"
@@ -189,29 +203,32 @@ export default function SingleProduct() {
                   <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
                 </ContentLoader>
               )}
-              {!loading && (
+              {!isLoading && (
                 <ImageZoom
-                  data={{ images: data.photos.main, name: data.name }}
+                  data={{ images: data.item.photos.main, name: data.item.name }}
                 />
               )}
             </div>
-
-            <MiddleSection
-              data={data}
-              deliveryCountry={deliveryCountry}
-              loading={loading}
-            />
-            <RightSection
-              data={data}
-              quantity={quantity}
-              setQuantity={setQuantity}
-              handleAddToCart={handleAddToCart}
-              handleRemoveFromCart={handleRemoveFromCart}
-              quantityOptions={quantityOptions}
-              addToCartButtonLoading={addToCartButtonLoading}
-              loading={loading}
-              itemInCart={itemInCart}
-            />
+            {!isLoading && (
+              <>
+                <MiddleSection
+                  data={data.item}
+                  deliveryCountry={deliveryCountry}
+                  loading={isLoading}
+                />
+                <RightSection
+                  data={data.item}
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  handleAddToCart={handleAddToCart}
+                  handleRemoveFromCart={handleRemoveFromCart}
+                  quantityOptions={quantityOptions}
+                  addToCartButtonLoading={addToCartButtonLoading}
+                  loading={isLoading}
+                  itemInCart={data.itemInCart}
+                />
+              </>
+            )}
           </div>
           <div id="details" className="py-2 mb-2">
             <h1 className="text-xl font-semibold mb-1 px-2">
@@ -244,7 +261,9 @@ export default function SingleProduct() {
                 Reviews
               </button>
             </div>
-            {!loading && <div className="px-2 text-sm">{data.description}</div>}
+            {!isLoading && (
+              <div className="px-2 text-sm">{data.description}</div>
+            )}
           </div>
           {related && <RelatedItems relatedData={related} />}
           {isFetching && <div>Loading ...</div>}

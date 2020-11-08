@@ -153,6 +153,13 @@ export default function ItemsSlider({
             cartItems: data.cartItems,
           };
         });
+        queryCache.setQueryData('cartItems', prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+          };
+        });
         refetch();
       },
     }
