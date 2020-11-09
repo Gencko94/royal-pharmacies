@@ -4,10 +4,8 @@ import Hamburger from './MobileNavbar/Hamburger';
 import MobileIcons from './MobileNavbar/MobileIcons';
 import MobileSearchbar from './MobileNavbar/MobileSearchbar';
 import SideMenu from './NavbarComponents/SideMenu';
-import { CSSTransition } from 'react-transition-group';
 import { DataProvider } from '../contexts/DataContext';
 import NavLogoMobile from './MobileNavbar/NavLogoMobile';
-import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function MobileNavbar() {
@@ -17,7 +15,6 @@ export default function MobileNavbar() {
   const [windowScrolled, setWindowScrolled] = React.useState(false);
   const sideMenuRef = React.useRef(null);
   const sideMenuRefSecond = React.useRef(null);
-  const { locale } = useIntl();
   useClickAway(sideMenuRef, () => {
     if (sideMenuOpen) {
       sideMenuRef.current.classList.add('-translate-x-full');
