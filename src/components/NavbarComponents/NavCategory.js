@@ -1,52 +1,21 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
 import AllCategories from './AllCategories/AllCategories';
-import { gsap } from 'gsap';
 import { AnimatePresence } from 'framer-motion';
 import ReactHoverObserver from 'react-hover-observer';
 import MegaMenu from './MegaMenu';
 import NavCategoriesContainer from './NavCategoriesContainer';
 export default function NavCategory() {
-  const buttonRef = React.useRef(null);
   const dropDownbgRef = React.useRef(null);
-  const menuRef = React.useRef(null);
   const { navCategories, isLightTheme } = React.useContext(DataProvider);
 
   const [dropDownOpen, setDropDownOpen] = React.useState(false);
   const [catData, setCatData] = React.useState(null);
   const [data, setData] = React.useState([]);
-  const animation = React.useMemo(
-    () =>
-      gsap.timeline({
-        defaults: { duration: 0.2 },
-        paused: true,
-      }),
-    []
-  );
-  React.useEffect(() => {
-    animation.fromTo(
-      menuRef.current,
-      { height: 0, opacity: 0 },
-      { height: 'auto', opacity: 1 }
-    );
-  }, [animation]);
-  React.useEffect(() => {
-    if (dropDownOpen) {
-      animation.play();
-    } else {
-      animation.reverse();
-    }
-  }, [animation, dropDownOpen]);
 
   const handleDropDownOpen = id => {
-    console.log(id);
     const category = data.find(item => item.category === id);
-    console.log(category);
     setCatData(category);
-  };
-
-  const closeDropDown = () => {
-    setDropDownOpen(false);
   };
 
   React.useEffect(() => {
@@ -55,7 +24,6 @@ export default function NavCategory() {
   return (
     <>
       <div
-        ref={buttonRef}
         className={`   sticky     z-10  ${
           isLightTheme
             ? 'bg-nav-cat-light text-nav-cat-text-light'
@@ -72,7 +40,6 @@ export default function NavCategory() {
                 data={data}
                 handleDropDownOpen={handleDropDownOpen}
                 setCatData={setCatData}
-                closeDropDown={closeDropDown}
                 setDropDownOpen={setDropDownOpen}
                 catData={catData}
               />

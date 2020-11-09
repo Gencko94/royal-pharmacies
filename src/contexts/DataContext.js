@@ -126,7 +126,6 @@ import kitchen from '../assets/navCategories/kitchen.jpg';
 import bedding from '../assets/navCategories/bedding.jpg';
 import menphoto from '../assets/navCategories/menphoto.jpg';
 import women from '../assets/navCategories/women.jpg';
-
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState('kuwait');
@@ -134,6 +133,7 @@ export default function DataContextProvider({ children }) {
   const [isLightTheme, setLightTheme] = React.useState(true);
   const localItems = localStorage.getItem('cartItems');
   const prefferedLanguage = localStorage.getItem('prefferedLanguage');
+
   const [language, setLanguage] = React.useState(() => {
     if (prefferedLanguage) {
       return prefferedLanguage;
@@ -322,9 +322,6 @@ export default function DataContextProvider({ children }) {
       }, 2000);
     });
   };
-
-  /*Home*/
-  // carousel
 
   const getMainCarouselItems = screen => {
     return new Promise(resolve => {

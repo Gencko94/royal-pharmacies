@@ -2,11 +2,19 @@
 
 - [x] Fix Deliver To in Mobile & Desktop View
 
-- [ ] Add Support for Authenticated Users
+- [x] Add Support for Authenticated Users
 
 - [x] Add Framer motion to Mobile Side Menu
 
-- [ ] Fix Buy options in items Slider
+- [x] Fix Buy options in items Slider
+
+- [ ] Add Edit Cart item support
+
+- [ ] Look into lazy loading and progressive images
+
+- [ ] Add React Query to Navbar
+
+- [ ] Add Protected Routes
 
 - [ ] Add Maps to MyAddressesMobile
 

@@ -1,9 +1,11 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import logo from '../assets/mrgnavlogo.png';
 import * as Yup from 'yup';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { AuthProvider } from '../contexts/AuthContext';
+import { BeatLoader } from 'react-spinners';
 
 const CustomTextInput = ({ label, value, name, ...props }) => {
   const [activeLabel, setActiveLabel] = React.useState(false);
@@ -47,7 +49,8 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
 
 export default function Register() {
   const { formatMessage, locale } = useIntl();
-
+  const { userRegister } = React.useContext(AuthProvider);
+  const history = useHistory();
   const validationSchema = Yup.object({
     email: Yup.string()
       .email(formatMessage({ id: 'email-validation' }))
@@ -81,15 +84,15 @@ export default function Register() {
             username: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting, resetForm }) => {
-            setTimeout(() => {
-              console.log(values);
+          onSubmit={async (values, { resetForm }) => {
+            const res = await userRegister(values);
+            if (res === 'ok') {
               resetForm();
-              setSubmitting(false);
-            }, 2000);
+              history.goBack();
+            }
           }}
         >
-          {({ handleSubmit, values }) => {
+          {({ handleSubmit, values, isSubmitting }) => {
             return (
               <form className="px-4 py-2" onSubmit={handleSubmit}>
                 <CustomTextInput
@@ -113,9 +116,14 @@ export default function Register() {
 
                 <div className="py-1 mt-2">
                   <button
-                    className={`w-full rounded text-second-nav-text-light bg-second-nav-light p-2 font-semibold hover:bg-red-400 transition duration-150 `}
+                    className={`${
+                      isSubmitting
+                        ? 'bg-main-color cursor-not-allowed'
+                        : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
+                    } w-full rounded   p-2 font-semibold  transition duration-150 `}
                   >
-                    {formatMessage({ id: 'register-button' })}
+                    {isSubmitting && <BeatLoader size={10} />}
+                    {!isSubmitting && formatMessage({ id: 'register-button' })}
                   </button>
                 </div>
               </form>
@@ -154,10 +162,6 @@ export default function Register() {
                 ),
               }}
             />
-            {/* By clicking “Create an account”, you agree to our{' '}
-            <span className="text-second-nav-light">Terms of Service</span> and{' '}
-            <span className="text-second-nav-light">Privacy Statement</span>.
-            We’ll occasionally send you account related emails. */}
           </h1>
         </div>
       </div>

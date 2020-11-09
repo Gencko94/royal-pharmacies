@@ -25,10 +25,14 @@ export default function Cart() {
   /**
    * Main Fetch
    */
-  const { data, isLoading, refetch } = useQuery('cartItems', async () => {
-    const res = await getCartItems();
-    return res;
-  });
+  const { data, isLoading, refetch } = useQuery(
+    'cartItems',
+    async () => {
+      const res = await getCartItems();
+      return res;
+    },
+    { refetchOnWindowFocus: false }
+  );
 
   /**
    * Remove Mutation

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import logo from '../assets/mrgnavlogo.png';
 import { Formik, useField } from 'formik';
 import * as Yup from 'yup';
 import { useIntl } from 'react-intl';
-
+import { AuthProvider } from '../contexts/AuthContext';
+import { BeatLoader } from 'react-spinners';
 const CustomTextInput = ({ label, value, name, ...props }) => {
   const [activeLabel, setActiveLabel] = React.useState(false);
   const checkEmptyInput = () => {
@@ -47,7 +48,8 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
 
 export default function Login() {
   const { formatMessage, locale } = useIntl();
-
+  const { userLogin } = React.useContext(AuthProvider);
+  const history = useHistory();
   const validationSchema = Yup.object({
     email: Yup.string()
       .email(formatMessage({ id: 'email-validation' }))
@@ -78,11 +80,12 @@ export default function Login() {
             password: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting, resetForm }) => {
-            setTimeout(() => {
+          onSubmit={async (values, { resetForm }) => {
+            const res = await userLogin(values);
+            if (res === 'ok') {
               resetForm();
-              setSubmitting(false);
-            }, 2000);
+              history.goBack();
+            }
           }}
         >
           {({ handleSubmit, values, isSubmitting }) => {
@@ -106,11 +109,12 @@ export default function Login() {
                     type="submit"
                     className={`${
                       isSubmitting
-                        ? 'bg-gray-600 cursor-not-allowed'
-                        : 'bg-second-nav-light text-second-nav-text-light hover:bg-red-800'
+                        ? 'bg-main-color cursor-not-allowed'
+                        : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
                     } w-full rounded   p-2 font-semibold  transition duration-150 `}
                   >
-                    {formatMessage({ id: 'login-button' })}
+                    {isSubmitting && <BeatLoader size={10} />}
+                    {!isSubmitting && formatMessage({ id: 'login-button' })}
                   </button>
                 </div>
               </form>

@@ -96,12 +96,12 @@ export default function SliderItem({
           </div>
 
           <div className=" py-2 px-3 flex items-center justify-between">
-            <p className="   text-lg font-semibold text-red-700 whitespace-no-wrap">
+            <p className="   text-lg font-semibold text-main-color whitespace-no-wrap">
               {data.price} <span className="text-xs ">KD</span>
             </p>
             <button
               onClick={() => handleBuyOptionsToggle(data.id)}
-              className=" rounded-full p-1 shadow-itemsSlider-shallow text-body-light z-3 bg-buy-options-main"
+              className=" rounded-full p-1 shadow-itemsSlider-shallow text-body-light z-3 bg-main-color"
             >
               <TiShoppingCart className="w-20p h-20p" />
             </button>

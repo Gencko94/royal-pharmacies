@@ -5,14 +5,12 @@ export default function NavCategoriesContainer({
   isHovering,
   isLightTheme,
   data,
-  closeDropDown,
   setDropDownOpen,
   handleDropDownOpen,
   setCatData,
   catData,
 }) {
   React.useEffect(() => {
-    console.log(isHovering);
     if (isHovering && catData) {
       setDropDownOpen(true);
     } else {

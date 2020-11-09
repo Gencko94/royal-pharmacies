@@ -9,9 +9,15 @@ import NavCategory from './NavbarComponents/NavCategory';
 import { DataProvider } from '../contexts/DataContext';
 import { Link, useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
+import { AuthProvider } from '../contexts/AuthContext';
 // import Promos from './NavbarComponents/Promos';
 
 export default function Navbar() {
+  const {
+    authenticationLoading,
+    isAuthenticated,
+    userLogout,
+  } = React.useContext(AuthProvider);
   const { isLightTheme } = React.useContext(DataProvider);
   const { pathname } = useLocation();
   const specialPages =
@@ -41,9 +47,22 @@ export default function Navbar() {
             >
               Light Theme Toggle
             </button> */}
-              <Link className="mr-2" to={`/${locale}/user/account/profile`}>
-                {formatMessage({ id: 'nav.account' })}
-              </Link>
+              {!authenticationLoading && (
+                <>
+                  {isAuthenticated && (
+                    <div className="mx-2">
+                      <Link
+                        className="mx-2"
+                        to={`/${locale}/user/account/profile`}
+                      >
+                        {formatMessage({ id: 'nav.account' })}
+                      </Link>
+                      <button onClick={userLogout}>logout</button>
+                    </div>
+                  )}
+                </>
+              )}
+              {authenticationLoading && <h1>Loading...</h1>}
               <LoginRegister />
             </div>
           </div>

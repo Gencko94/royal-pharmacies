@@ -7,6 +7,7 @@ import App from './App';
 import DataContextProvider from './contexts/DataContext';
 
 import SearchContext from './contexts/SearchContext';
+import AuthContext from './contexts/AuthContext';
 
 const localCart = localStorage.getItem('cartItems');
 if (!localCart) {
@@ -24,14 +25,21 @@ const myLocalLocations = localStorage.getItem('myLocalLocations');
 if (!myLocalLocations) {
   localStorage.setItem('myLocalLocations', JSON.stringify([]));
 }
+
+const localAuthenticated = localStorage.getItem('localAuthenticated');
+if (!localAuthenticated) {
+  localStorage.setItem('localAuthenticated', false);
+}
 ReactDOM.render(
-  <DataContextProvider>
-    <SearchContext>
-      <div className={` antialiased relative`}>
-        <App />
-      </div>
-    </SearchContext>
-  </DataContextProvider>,
+  <AuthContext>
+    <DataContextProvider>
+      <SearchContext>
+        <div className={` antialiased relative`}>
+          <App />
+        </div>
+      </SearchContext>
+    </DataContextProvider>
+  </AuthContext>,
 
   document.getElementById('root')
 );
