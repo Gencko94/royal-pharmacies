@@ -1,16 +1,15 @@
 import React from 'react';
 import { DataProvider } from '../contexts/DataContext';
-import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
+// import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
 import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
 import LayoutMobile from '../components/LayoutMobile';
 import { useIntl } from 'react-intl';
 import CartItemMobile from '../components/CartMobile/CartItemMobile';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import CheckoutButton from '../components/CartMobile/CheckoutButton';
 import CartEmpty from '../components/CartMobile/CartEmpty';
 import MainContentLoader from '../components/CartMobile/ContentLoaders/MainContentLoader';
 import { queryCache, useMutation, useQuery } from 'react-query';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 
 export default function CartMobile() {
   const { formatMessage } = useIntl();
@@ -74,18 +73,20 @@ export default function CartMobile() {
         {!isLoading && data.cartItems.length === 0 && <CartEmpty />}
 
         {!isLoading && data.cartItems.length !== 0 && (
-          <div className="mb-2">
-            <AnimatePresence>
-              {data.cartItems.map((item, i) => (
-                <CartItemMobile
-                  key={i}
-                  item={item}
-                  handleRemoveItem={handleRemoveItem}
-                  removeButtonLoading={removeButtonLoading}
-                />
-              ))}
-            </AnimatePresence>
-          </div>
+          <AnimateSharedLayout>
+            <motion.div initial={false} layout className="mb-2">
+              <AnimatePresence>
+                {data.cartItems.map(item => (
+                  <CartItemMobile
+                    key={item.id}
+                    item={item}
+                    handleRemoveItem={handleRemoveItem}
+                    removeButtonLoading={removeButtonLoading}
+                  />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </AnimateSharedLayout>
         )}
 
         <h1 className="text-xs my-2 px-2">

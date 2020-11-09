@@ -134,7 +134,7 @@ export default function SideCartMenuMobile({
                         )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
                       >
                         <img
-                          src={item.photos.small}
+                          src={item.photo}
                           alt={item.name}
                           className="max-w-full h-auto"
                         />

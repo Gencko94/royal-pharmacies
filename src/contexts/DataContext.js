@@ -185,7 +185,7 @@ export default function DataContextProvider({ children }) {
       }, 500);
     });
   };
-  const addItemToCart = ({ id, quantity, price, name, photo }) => {
+  const addItemToCart = ({ id, quantity, price, name, photo, category }) => {
     return new Promise(resolve => {
       setTimeout(() => {
         const cartCopy = [...cartItems];
@@ -194,20 +194,17 @@ export default function DataContextProvider({ children }) {
           price,
           name,
           photo,
-
-          quantity: quantity || 1,
+          quantity,
+          category,
         };
         cartCopy.push(newItem);
-        const iDs = cartCopy.map(item => item.id);
-        const items = allItems.filter(
-          item => item.id === iDs.find(id => id === item.id)
-        );
+
         setCartItems(cartCopy);
 
         localStorage.setItem('cartItems', JSON.stringify(cartCopy));
         resolve({
           message: 'ok',
-          cartItems: items,
+          cartItems: cartCopy,
           cartTotal: calculateItemsPrice(cartCopy),
         });
       }, 1000);
@@ -229,14 +226,11 @@ export default function DataContextProvider({ children }) {
       setTimeout(() => {
         const cartCopy = cartItems.filter(cartItem => id !== cartItem.id);
         setCartItems(cartCopy);
-        const iDs = cartCopy.map(item => item.id);
-        const items = allItems.filter(
-          item => item.id === iDs.find(id => id === item.id)
-        );
+
         localStorage.setItem('cartItems', JSON.stringify(cartCopy));
         resolve({
           message: 'ok',
-          cartItems: items,
+          cartItems: cartCopy,
           cartTotal: calculateItemsPrice(cartCopy),
         });
       }, 1000);

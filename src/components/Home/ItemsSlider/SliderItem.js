@@ -30,6 +30,7 @@ export default function SliderItem({
         price: data.price,
         name: data.name,
         options,
+        category: data.category,
       });
     } catch (error) {
       console.log(error);

@@ -12,7 +12,7 @@ import useClickAway from '../hooks/useClickAway';
 import Layout from '../components/Layout';
 import { useIntl } from 'react-intl';
 import ContentLoader from 'react-content-loader';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import NoCartItems from '../components/Cart/NoCartItems';
 export default function Cart() {
@@ -120,20 +120,26 @@ export default function Cart() {
                       </h1>
                     </div>
                     <hr />
-                    <div className=" flex flex-col">
-                      <AnimatePresence>
-                        {data.cartItems.map(item => {
-                          return (
-                            <CartItem
-                              key={item.id}
-                              item={item}
-                              handleRemoveItem={handleRemoveItem}
-                              removeButtonLoading={removeButtonLoading}
-                            />
-                          );
-                        })}
-                      </AnimatePresence>
-                    </div>
+                    <AnimateSharedLayout>
+                      <motion.div
+                        initial={false}
+                        layout
+                        className=" grid grid-cols-1 gap-2"
+                      >
+                        <AnimatePresence>
+                          {data.cartItems.map(item => {
+                            return (
+                              <CartItem
+                                key={item.id}
+                                item={item}
+                                handleRemoveItem={handleRemoveItem}
+                                removeButtonLoading={removeButtonLoading}
+                              />
+                            );
+                          })}
+                        </AnimatePresence>
+                      </motion.div>
+                    </AnimateSharedLayout>
                     <div className="flex justify-end p-2 rounded mt-2 border bg-gray-100">
                       <h1 className="text-lg font-semibold">
                         {formatMessage({ id: 'subtotal' })} (

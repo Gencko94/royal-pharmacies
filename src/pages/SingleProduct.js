@@ -122,6 +122,7 @@ export default function SingleProduct() {
         price: data.item.price,
         name: data.item.name,
         photo: data.item.photos.small,
+        category: data.item.category,
       });
     } catch (error) {
       console.log(error);

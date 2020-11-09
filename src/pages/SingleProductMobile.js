@@ -136,11 +136,12 @@ export default function SingleProductMobile({
   const handleAddToCart = async ({ id, quantity }) => {
     try {
       await addMutation({
-        id: data.item.id,
+        id,
         quantity: quantity.value,
         price: data.item.price,
         name: data.item.name,
         photo: data.item.photos.small,
+        category: data.item.category,
       });
     } catch (error) {
       console.log(error);
@@ -152,23 +153,6 @@ export default function SingleProductMobile({
     } catch (error) {
       console.log(error);
     }
-    // if (id === data.item.id) {
-    //   setAddToCartButtonLoading(true);
-    // }
-    // const result = await removeItemFromCart(id);
-    // if (result.message === 'ok') {
-    //   if (id === data.item.id) {
-    //     setAddToCartButtonLoading(false);
-    //     setItemInCart(false);
-    //   }
-    //   if (sideMenuOpen) {
-    //     setCartItems(result.cartItems);
-    //     setCartTotal(result.cartTotal);
-    //     if (result.cartItems.length === 0) {
-    //       setCartEmpty(true);
-    //     }
-    //   }
-    // }
   };
   React.useEffect(() => {
     fetchData();

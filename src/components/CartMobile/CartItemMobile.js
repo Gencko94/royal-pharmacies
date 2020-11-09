@@ -28,11 +28,12 @@ export default function CartItemMobile({
   };
   return (
     <motion.div
+      layout
       variants={variant}
       initial="hidden"
       animate="visible"
       exit="exited"
-      className=" "
+      className="border-b "
     >
       <div className="py-2 cart__item-mobile">
         <img

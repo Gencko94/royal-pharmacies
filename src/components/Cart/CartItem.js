@@ -29,11 +29,12 @@ export default function CartItem({
   };
   return (
     <motion.div
+      layout
       variants={variant}
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="cart__item py-2"
+      className="cart__item py-2 border-b"
     >
       <img className="" src={item.photo} alt={item.name} />
       <div className="">
