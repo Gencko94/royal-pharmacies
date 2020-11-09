@@ -1,14 +1,16 @@
 # Things to Complete
 
-- [ ] Fix Deliver To in Mobile & Desktop View
+- [x] Fix Deliver To in Mobile & Desktop View
 
 - [ ] Add Support for Authenticated Users
 
-- [ ] Add Framer motion to Mobile Side Menu
+- [x] Add Framer motion to Mobile Side Menu
 
 - [ ] Fix Buy options in items Slider
 
 - [ ] Add Maps to MyAddressesMobile
+
+- [ ] Add Order History to Desktop View
 
 - [ ] Add Wishlist Page
 

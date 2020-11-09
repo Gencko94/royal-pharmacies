@@ -63,13 +63,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* <OtherShops /> */}
-      {/* <div
-        className="bg-nav-cat-light "
-        style={{ top: '72px' }}
-      > */}
       {!specialPages && <NavCategory />}
-      {/* </div> */}
     </>
   );
 }

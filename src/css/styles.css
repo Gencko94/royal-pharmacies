@@ -138,45 +138,7 @@ input {
   grid-template-columns: minmax(50px, 100px) 150px;
   gap: 6px;
 }
-.mobile-nav__secondary-enter {
-  opacity: 0;
-  transform: translateY(-100%);
-}
-.mobile-nav__secondary-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 400ms;
-}
-.mobile-nav__secondary-exit {
-  transform: translateY(0);
-  opacity: 1;
-}
-.mobile-nav__secondary-exit-active {
-  transform: translateY(-100%);
 
-  opacity: 0;
-  transition: all 200ms;
-}
-
-.deliver-to-enter {
-  opacity: 0;
-  /* transform: translateY(-100%); */
-}
-.deliver-to-enter-active {
-  opacity: 1;
-  /* transform: translateY(0); */
-  transition: all 200ms;
-}
-.deliver-to-enter-exit {
-  /* transform: translateY(0); */
-  opacity: 1;
-}
-.deliver-to-enter-exit-active {
-  /* transform: translateY(-100%); */
-
-  opacity: 0;
-  transition: all 200ms;
-}
 .floating-button {
   display: grid;
   grid-template-columns: 0.5fr 0.5fr 1fr;
@@ -611,36 +573,6 @@ input {
   gap: 0.7em;
 }
 
-/* mobile side menu trans */
-
-.en-side-menu__mobile-enter {
-  transform: translateX(-100%);
-}
-.en-side-menu__mobile-enter-active {
-  transform: translateX(0);
-  transition: 500ms ease;
-}
-.en-side-menu__mobile-exit {
-  transform: translateX(0);
-}
-.en-side-menu__mobile-exit-active {
-  transform: translateX(-100%);
-  transition: 500ms ease;
-}
-.ar-side-menu__mobile-enter {
-  transform: translateX(100%);
-}
-.ar-side-menu__mobile-enter-active {
-  transform: translateX(0);
-  transition: 500ms ease;
-}
-.ar-side-menu__mobile-exit {
-  transform: translateX(0);
-}
-.ar-side-menu__mobile-exit-active {
-  transform: translateX(100%);
-  transition: 500ms ease;
-}
 .locations-grid__desktop {
   display: grid;
   grid-template-columns: repeat(auto-fit, 200px);
@@ -709,4 +641,31 @@ input {
     #c471ed,
     #12c2e9
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* Deliver To Desktop */
+
+.deliver-to__desktop {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  padding: 0.5em;
+  z-index: 20;
+  margin-top: 0.25em;
+  width: 100%;
+  overflow: hidden;
+}
+.en-deliver-to__mobile {
+  position: absolute;
+  z-index: 20;
+  margin-top: 0.5em;
+  overflow: hidden;
+  right: 60px;
+}
+.ar-deliver-to__mobile {
+  position: absolute;
+  z-index: 20;
+  margin-top: 0.5em;
+  overflow: hidden;
+  left: 60px;
 }

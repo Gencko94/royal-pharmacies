@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 
 import { BiCaretDown } from 'react-icons/bi';
@@ -21,12 +22,24 @@ export default function ShipTo() {
     }
   });
   const toggleCountryList = () => {
-    if (countryListRef.current) {
-      countryListRef.current.classList.replace('scale-0', 'scale-100');
-      setCountryListOpen(true);
-    }
+    setCountryListOpen(!countryListOpen);
   };
   const { formatMessage } = useIntl();
+
+  const countryListVariants = {
+    hidden: {
+      height: 0,
+    },
+    visible: {
+      height: 'auto',
+    },
+    exited: {
+      opacity: 0,
+      transition: {
+        duration: 0.1,
+      },
+    },
+  };
   return (
     <div className="relative">
       <button
@@ -38,42 +51,49 @@ export default function ShipTo() {
         </h1>
         <img
           src={flags[deliveryCountry]}
-          className="w-20p h-20p mx-1 "
+          className="w-20p h-20p mx-2 "
           alt="uae"
         />
         <BiCaretDown />
       </button>
-      <div
-        ref={countryListRef}
-        className="absolute p-2 transform z-20 scale-0 mt-1 text-gray-900 font-semibold   bg-gray-100 w-full  overflow-hidden left-0  top-100  transition duration-150 origin-top"
-        style={{ width: '200px' }}
-      >
-        {countries.map((country, i) => {
-          return (
-            <button
-              key={i}
-              onClick={() => {
-                setDeliveryCountry(country);
-                toggleCountryList();
-              }}
-              className={`py-2 flex px-6 uppercase items-center font-semibold  w-full text-nav-primary hover:bg-second-nav-light hover:text-second-nav-text-light`}
-            >
-              <input
-                type="checkbox"
-                className="form-checkbox rounded-full text-red-500 mr-2"
-                checked={deliveryCountry === country}
-                readOnly={true}
-              />
-              <img
-                src={flags[country]}
-                className="w-20p h-20p mr-2 "
-                alt="uae"
-              />
-              {country}
-            </button>
-          );
-        })}
-      </div>
+      <AnimatePresence>
+        {countryListOpen && (
+          <motion.div
+            variants={countryListVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exited"
+            ref={countryListRef}
+            className="deliver-to__desktop text-body-text-light font-semibold   bg-gray-100"
+          >
+            {countries.map(country => {
+              return (
+                <button
+                  key={country}
+                  onClick={() => {
+                    setDeliveryCountry(country);
+                    toggleCountryList();
+                  }}
+                  className={`py-2 flex px-1 uppercase items-center font-semibold  w-full text-nav-primary hover:bg-second-nav-light hover:text-second-nav-text-light`}
+                >
+                  <input
+                    type="checkbox"
+                    className="form-checkbox rounded-full text-red-500 mx-1"
+                    checked={deliveryCountry === country}
+                    readOnly={true}
+                  />
+                  <img
+                    src={flags[country]}
+                    className="w-20p h-20p mx-2 "
+                    alt="uae"
+                  />
+                  <h1>{country}</h1>
+                </button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

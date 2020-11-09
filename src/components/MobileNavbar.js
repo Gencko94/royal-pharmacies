@@ -8,6 +8,7 @@ import { CSSTransition } from 'react-transition-group';
 import { DataProvider } from '../contexts/DataContext';
 import NavLogoMobile from './MobileNavbar/NavLogoMobile';
 import { useIntl } from 'react-intl';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function MobileNavbar() {
   const { isLightTheme } = React.useContext(DataProvider);
@@ -52,6 +53,9 @@ export default function MobileNavbar() {
           toggleSideMenu();
         }
       } else {
+        if (sideMenuOpenSecond) {
+          toggleSideMenuSecond();
+        }
         setWindowScrolled(false);
       }
     });
@@ -74,21 +78,17 @@ export default function MobileNavbar() {
           {/* <button className="mr-2" onClick={() => setLightTheme(!isLightTheme)}>
             Light Theme Toggle
           </button> */}
-          {/* <DeliverTo /> */}
 
           <MobileIcons />
-          <CSSTransition
-            in={!windowScrolled && sideMenuOpen}
-            unmountOnExit
-            timeout={500}
-            classNames={`${locale}-side-menu__mobile`}
-          >
-            <SideMenu
-              toggleSideMenu={toggleSideMenu}
-              sideMenuRef={sideMenuRef}
-              isLightTheme={isLightTheme}
-            />
-          </CSSTransition>
+          <AnimatePresence>
+            {!windowScrolled && sideMenuOpen && (
+              <SideMenu
+                toggleSideMenu={toggleSideMenu}
+                sideMenuRef={sideMenuRef}
+                isLightTheme={isLightTheme}
+              />
+            )}
+          </AnimatePresence>
         </nav>
         <div
           className={`p-2 ${
@@ -100,39 +100,40 @@ export default function MobileNavbar() {
           <MobileSearchbar isLightTheme={isLightTheme} />
         </div>
       </div>
-      <CSSTransition
-        in={windowScrolled}
-        timeout={400}
-        classNames="mobile-nav__secondary"
-        unmountOnExit={true}
-      >
-        <div
-          className={`fixed w-full flex   ${
-            isLightTheme
-              ? 'bg-second-nav-light text-second-nav-text-light'
-              : 'bg-nav-cat-dark text-nav-cat-text-dark'
-          } p-2  z-10 top-0 left-0 `}
-        >
-          <Hamburger toggleSideMenu={toggleSideMenuSecond} />
-          <div className="mx-2 flex-1">
-            <MobileSearchbar isLightTheme={isLightTheme} />
-          </div>
 
-          <MobileIcons withoutLanguage={true} withoutFlag={true} />
-          <CSSTransition
-            in={windowScrolled && sideMenuOpenSecond}
-            unmountOnExit
-            timeout={500}
-            classNames={`${locale}-side-menu__mobile`}
+      <AnimatePresence>
+        {windowScrolled && (
+          <motion.div
+            key={65789}
+            initial={{ y: '-100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '-100%' }}
+            transition={{
+              type: 'tween',
+            }}
+            className={`fixed w-full flex   ${
+              isLightTheme
+                ? 'bg-second-nav-light text-second-nav-text-light'
+                : 'bg-nav-cat-dark text-nav-cat-text-dark'
+            } p-2  z-10 top-0 left-0 `}
           >
-            <SideMenu
-              toggleSideMenu={toggleSideMenuSecond}
-              sideMenuRef={sideMenuRefSecond}
-              isLightTheme={isLightTheme}
-            />
-          </CSSTransition>
-        </div>
-      </CSSTransition>
+            <Hamburger toggleSideMenu={toggleSideMenuSecond} />
+            <div className="mx-2 flex-1">
+              <MobileSearchbar isLightTheme={isLightTheme} />
+            </div>
+
+            <MobileIcons withoutLanguage={true} withoutFlag={true} />
+
+            {windowScrolled && sideMenuOpenSecond && (
+              <SideMenu
+                toggleSideMenu={toggleSideMenuSecond}
+                sideMenuRef={sideMenuRefSecond}
+                isLightTheme={isLightTheme}
+              />
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

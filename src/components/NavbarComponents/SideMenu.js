@@ -59,20 +59,36 @@ export default function SideMenu({
       innerRef.current.classList.add(`${locale}-page${page}`);
     }
   }, [page, locale]);
-
-  const listVariants = {
+  const x = React.useMemo(() => {
+    let x;
+    if (locale === 'ar') {
+      x = '100%';
+    } else {
+      x = '-100%';
+    }
+    return x;
+  }, [locale]);
+  const containerVariants = {
     from: {
-      opacity: 0,
+      x: x,
     },
     to: {
-      opacity: 1,
+      x: '0%',
       transition: {
         duration: 0.2,
         when: 'beforeChildren',
         staggerChildren: 0.1,
+        delayChildren: -0.1,
+      },
+    },
+    exited: {
+      x: x,
+      transition: {
+        type: 'tween',
       },
     },
   };
+
   const childVariants = {
     from: {
       opacity: 0,
@@ -84,7 +100,11 @@ export default function SideMenu({
     },
   };
   return (
-    <div
+    <motion.div
+      variants={containerVariants}
+      initial="from"
+      animate="to"
+      exit="exited"
       ref={sideMenuRef}
       className={`${
         isLightTheme
@@ -99,13 +119,9 @@ export default function SideMenu({
 
       <div className="relative overflow-hidden mt-2 ">
         <div ref={innerRef} className="sidebar__inner  ">
-          <motion.div
-            variants={listVariants}
-            initial="from"
-            animate="to"
-            className="sidebar-first "
-          >
+          <div className="sidebar-first ">
             <motion.button
+              key="allCategories"
               variants={childVariants}
               onClick={handleClickNextZero}
               className="py-2 px-2 mb-2 flex items-center justify-between "
@@ -119,6 +135,7 @@ export default function SideMenu({
               {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
             </motion.button>
             <motion.button
+              key="cart"
               onClick={toggleSideMenu}
               className="py-2 px-2 mb-2   "
               variants={childVariants}
@@ -129,6 +146,7 @@ export default function SideMenu({
               </Link>
             </motion.button>
             <motion.button
+              key="profile"
               className="py-2 px-2 mb-2"
               onClick={toggleSideMenu}
               variants={childVariants}
@@ -142,6 +160,7 @@ export default function SideMenu({
               </Link>
             </motion.button>
             <motion.button
+              key="orderHistory"
               variants={childVariants}
               onClick={toggleSideMenu}
               className="py-2 px-2 mb-2  "
@@ -155,6 +174,7 @@ export default function SideMenu({
             </motion.button>
             <hr />
             <motion.button
+              key="wishlist"
               variants={childVariants}
               onClick={toggleSideMenu}
               className="py-2 px-2 mb-2    "
@@ -165,6 +185,7 @@ export default function SideMenu({
               </div>
             </motion.button>
             <motion.button
+              key="viewedItems"
               variants={childVariants}
               onClick={toggleSideMenu}
               className="py-2 px-2 mb-2    "
@@ -178,6 +199,7 @@ export default function SideMenu({
             </motion.button>
             <hr />
             <motion.button
+              key="deliverTo"
               variants={childVariants}
               onClick={toggleSideMenu}
               className="py-2 px-2 mb-2    "
@@ -190,6 +212,7 @@ export default function SideMenu({
               </div>
             </motion.button>
             <motion.button
+              key="customerService"
               variants={childVariants}
               onClick={toggleSideMenu}
               className="py-2 px-2 mb-2    "
@@ -203,6 +226,7 @@ export default function SideMenu({
             </motion.button>
             <hr />
             <motion.button
+              key="language"
               variants={childVariants}
               onClick={toggleSideMenu}
               className="py-2 px-2 mb-2    "
@@ -212,7 +236,7 @@ export default function SideMenu({
                 <h1 className="mx-2">{formatMessage({ id: 'language' })}</h1>
               </div>
             </motion.button>
-          </motion.div>
+          </div>
           {products && (
             <>
               <div className="sidebar-second">
@@ -292,6 +316,6 @@ export default function SideMenu({
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
