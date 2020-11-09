@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { MoonLoader } from 'react-spinners';
@@ -6,12 +7,34 @@ export default function CartItemMobile({
   item,
   handleRemoveItem,
   EditItemFromCart,
-  loadingRemoveFromCartButton,
+  removeButtonLoading,
 }) {
   const { formatMessage } = useIntl();
+  const variant = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+    },
+    exited: {
+      x: 300,
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+        ease: 'easeOut',
+      },
+    },
+  };
   return (
-    <>
-      <div className=" py-2 cart__item-mobile">
+    <motion.div
+      variants={variant}
+      initial="hidden"
+      animate="visible"
+      exit="exited"
+      className=" "
+    >
+      <div className="py-2 cart__item-mobile">
         <img
           className=""
           style={{ maxHeight: '', maxWidth: '' }}
@@ -48,12 +71,10 @@ export default function CartItemMobile({
             handleRemoveItem(item.id);
           }}
           className={`${
-            loadingRemoveFromCartButton === item.id
-              ? 'bg-gray-300'
-              : 'bg-main-color'
+            removeButtonLoading === item.id ? 'bg-gray-300' : 'bg-main-color'
           }  text-main-text text-sm flex items-center justify-center flex-1 py-1 px-2 rounded  font-semibold`}
         >
-          {loadingRemoveFromCartButton === item.id ? (
+          {removeButtonLoading === item.id ? (
             <MoonLoader size={18} color="#b72b2b" />
           ) : (
             <>
@@ -70,7 +91,6 @@ export default function CartItemMobile({
           {formatMessage({ id: 'add-to-wishlist' })}
         </button>
       </div>
-      <hr />
-    </>
+    </motion.div>
   );
 }

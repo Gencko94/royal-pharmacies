@@ -9,13 +9,13 @@ import RightSection from '../components/SingleProduct/RightSection';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
-import ContentLoader from 'react-content-loader';
 import InView from 'react-intersection-observer';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { queryCache, useMutation, useQuery } from 'react-query';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import SingleProductLoader from '../components/SingleProduct/SingleProductLoader';
 
 export default function SingleProduct() {
   const { id, name } = useParams();
@@ -173,63 +173,53 @@ export default function SingleProduct() {
       <AnimatePresence>
         {sideMenuOpen && (
           <SideCartMenu
+            key={879}
             cartItems={data.cartItems}
             cartTotal={data.cartTotal}
             setSideMenuOpen={setSideMenuOpen}
             handleRemoveFromCart={handleRemoveFromCart}
           />
         )}
-      </AnimatePresence>
-      {/* {sideMenuOpen && (
-          <div
+        {sideMenuOpen && (
+          <motion.div
+            key={268}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
             onClick={() => setSideMenuOpen(false)}
             className="side__addCart-bg"
-          ></div>
-        )} */}
+          ></motion.div>
+        )}
+      </AnimatePresence>
 
       <div className=" px-4 ">
         <div className="mx-auto max-w-default">
           <Breadcrumbs />
-
-          <div className="details__container">
-            <div className="relative ">
-              {isLoading && (
-                <ContentLoader
-                  speed={2}
-                  viewBox="0 0 480 480"
-                  backgroundColor="#f3f3f3"
-                  foregroundColor="#ecebeb"
-                >
-                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
-                </ContentLoader>
-              )}
-              {!isLoading && (
+          {isLoading && <SingleProductLoader />}
+          {!isLoading && (
+            <div className="details__container">
+              <div className="relative ">
                 <ImageZoom
                   data={{ images: data.item.photos.main, name: data.item.name }}
                 />
-              )}
+              </div>
+
+              <MiddleSection
+                data={data.item}
+                deliveryCountry={deliveryCountry}
+              />
+              <RightSection
+                data={data.item}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                handleAddToCart={handleAddToCart}
+                handleRemoveFromCart={handleRemoveFromCart}
+                quantityOptions={quantityOptions}
+                addToCartButtonLoading={addToCartButtonLoading}
+                itemInCart={data.itemInCart}
+              />
             </div>
-            {!isLoading && (
-              <>
-                <MiddleSection
-                  data={data.item}
-                  deliveryCountry={deliveryCountry}
-                  loading={isLoading}
-                />
-                <RightSection
-                  data={data.item}
-                  quantity={quantity}
-                  setQuantity={setQuantity}
-                  handleAddToCart={handleAddToCart}
-                  handleRemoveFromCart={handleRemoveFromCart}
-                  quantityOptions={quantityOptions}
-                  addToCartButtonLoading={addToCartButtonLoading}
-                  loading={isLoading}
-                  itemInCart={data.itemInCart}
-                />
-              </>
-            )}
-          </div>
+          )}
           <div id="details" className="py-2 mb-2">
             <h1 className="text-xl font-semibold mb-1 px-2">
               Additional Details

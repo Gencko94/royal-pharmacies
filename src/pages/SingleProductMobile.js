@@ -3,17 +3,17 @@ import React from 'react';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import { DataProvider } from '../contexts/DataContext';
 import InView, { useInView } from 'react-intersection-observer';
-import { CSSTransition } from 'react-transition-group';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
 import ContentLoader from 'react-content-loader';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 import LayoutMobile from '../components/LayoutMobile';
 import ImageZoomMobile from '../components/SingleProductMobile/ImageZoomMobile';
-import { useIntl } from 'react-intl';
 import ItemDescription from '../components/SingleProductMobile/ItemDescription';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 import FloatingAddToCart from '../components/SingleProductMobile/FloatingAddToCart';
+import { queryCache, useMutation, useQuery } from 'react-query';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function SingleProductMobile({
   match: {
@@ -26,9 +26,71 @@ export default function SingleProductMobile({
     removeItemFromCart,
     deliveryCountry,
     getSingleItemDetails,
-    isItemInCart,
     allItems,
   } = React.useContext(DataProvider);
+
+  /**
+   * Main Fetch
+   */
+  const { data, isLoading } = useQuery(
+    ['singleProductMobile', id],
+    async (key, id) => {
+      const res = await getSingleItemDetails(id);
+      return res;
+    },
+    { refetchOnWindowFocus: false }
+  );
+
+  /**
+   * Add Mutation
+   */
+
+  const [addMutation] = useMutation(
+    async item => {
+      setAddToCartButtonLoading(true);
+      const res = await addItemToCart(item);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData(['singleProductMobile', id], prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+            itemInCart: true,
+          };
+        });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
+      },
+    }
+  );
+
+  /**
+   * Remove Mutation
+   */
+
+  const [removeMutation] = useMutation(
+    async id => {
+      setAddToCartButtonLoading(true);
+      const res = await removeItemFromCart(id);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData(['singleProductMobile', id], prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+            itemInCart: false,
+          };
+        });
+        setAddToCartButtonLoading(false);
+      },
+    }
+  );
 
   const items = allItems.filter(item => item.id === id);
 
@@ -41,14 +103,7 @@ export default function SingleProductMobile({
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
-  const [loading, setLoading] = React.useState(true);
-  const [itemInCart, setItemInCart] = React.useState(false);
-  const [cartItems, setCartItems] = React.useState(null);
-  const [cartTotal, setCartTotal] = React.useState(0);
-  const [cartEmpty, setCartEmpty] = React.useState(false);
-  const [data, setData] = React.useState(null);
   const [quantity, setQuantity] = React.useState(1);
-  const { locale } = useIntl();
 
   const [triggerRef, inView] = useInView();
 
@@ -77,67 +132,43 @@ export default function SingleProductMobile({
       setFetching(false);
     }, 2000);
   };
-  /*
-  {entry}
-  */
 
-  React.useEffect(() => {
-    getSingleItemDetails(id).then(item => {
-      console.log(item);
-      setData(item);
-
-      setLoading(false);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  React.useEffect(() => {
-    isItemInCart(id).then(res => {
-      if (res.message === 'yes') {
-        setItemInCart(true);
-        setAddToCartButtonLoading(false);
-      } else {
-        setItemInCart(false);
-        setAddToCartButtonLoading(false);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const handleAddToCart = async ({ id, quantity }) => {
-    setAddToCartButtonLoading(true);
-    const result = await addItemToCart({
-      id,
-      quantity,
-      price: data.price,
-      name: data.name,
-      photo: data.photos.small,
-    });
-    if (result.message === 'ok') {
-      setAddToCartButtonLoading(false);
-      setItemInCart(true);
-      setCartItems(result.cartItems);
-      setSideMenuOpen(true);
-      setCartTotal(result.cartTotal);
-      setCartEmpty(false);
+    try {
+      await addMutation({
+        id: data.item.id,
+        quantity: quantity.value,
+        price: data.item.price,
+        name: data.item.name,
+        photo: data.item.photos.small,
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
   const handleRemoveFromCart = async id => {
-    if (id === data.id) {
-      setAddToCartButtonLoading(true);
+    try {
+      await removeMutation(id);
+    } catch (error) {
+      console.log(error);
     }
-    const result = await removeItemFromCart(id);
-    if (result.message === 'ok') {
-      if (id === data.id) {
-        setAddToCartButtonLoading(false);
-        setItemInCart(false);
-      }
-      if (sideMenuOpen) {
-        setCartItems(result.cartItems);
-        setCartTotal(result.cartTotal);
-        if (result.cartItems.length === 0) {
-          setCartEmpty(true);
-        }
-      }
-    }
+    // if (id === data.item.id) {
+    //   setAddToCartButtonLoading(true);
+    // }
+    // const result = await removeItemFromCart(id);
+    // if (result.message === 'ok') {
+    //   if (id === data.item.id) {
+    //     setAddToCartButtonLoading(false);
+    //     setItemInCart(false);
+    //   }
+    //   if (sideMenuOpen) {
+    //     setCartItems(result.cartItems);
+    //     setCartTotal(result.cartTotal);
+    //     if (result.cartItems.length === 0) {
+    //       setCartEmpty(true);
+    //     }
+    //   }
+    // }
   };
   React.useEffect(() => {
     fetchData();
@@ -153,27 +184,30 @@ export default function SingleProductMobile({
         />
       </Helmet>
       <div className="overflow-hidden">
-        <CSSTransition
-          timeout={300}
-          classNames={`${
-            locale === 'ar'
-              ? 'ar-add-to-cart__sideMenu-mobile'
-              : 'en-add-to-cart__sideMenu-mobile'
-          }`}
-          unmountOnExit
-          in={sideMenuOpen}
-        >
-          <SideCartMenuMobile
-            cartItems={cartItems}
-            cartTotal={cartTotal}
-            setSideMenuOpen={setSideMenuOpen}
-            handleRemoveFromCart={handleRemoveFromCart}
-            cartEmpty={cartEmpty}
-          />
-        </CSSTransition>
+        <AnimatePresence>
+          {sideMenuOpen && (
+            <SideCartMenuMobile
+              key={998}
+              cartItems={data.cartItems}
+              cartTotal={data.cartTotal}
+              setSideMenuOpen={setSideMenuOpen}
+              handleRemoveFromCart={handleRemoveFromCart}
+            />
+          )}
+          {sideMenuOpen && (
+            <motion.div
+              key={369}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSideMenuOpen(false)}
+              className="side__addCart-bg"
+            ></motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="">
-          {loading && (
+          {isLoading && (
             <ContentLoader
               speed={2}
               viewBox="0 0 420 480"
@@ -183,14 +217,14 @@ export default function SingleProductMobile({
               <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
             </ContentLoader>
           )}
-          {!loading && (
+          {!isLoading && (
             <ImageZoomMobile
-              data={{ images: data.photos.main, name: data.name }}
+              data={{ images: data.item.photos.main, name: data.item.name }}
             />
           )}
           <hr />
           <div className="flex flex-col w-full  px-3 py-2 bg-white">
-            {loading && (
+            {isLoading && (
               <ContentLoader
                 speed={2}
                 viewBox="0 0 480 470"
@@ -207,18 +241,18 @@ export default function SingleProductMobile({
                 <rect x="0" y="420" rx="5" ry="5" width="40%" height="35" />
               </ContentLoader>
             )}
-            {!loading && (
+            {!isLoading && (
               <ItemDescription
                 handleAddToCart={handleAddToCart}
                 handleRemoveFromCart={handleRemoveFromCart}
                 deliveryCountry={deliveryCountry}
                 data={{
-                  price: data.price,
-                  priceBefore: data.priceBefore,
-                  name: data.name,
-                  id: data.id,
+                  price: data.item.price,
+                  priceBefore: data.item.priceBefore,
+                  name: data.item.name,
+                  id: data.item.id,
                 }}
-                itemInCart={itemInCart}
+                itemInCart={data.itemInCart}
                 addToCartButtonLoading={addToCartButtonLoading}
                 quantity={quantity}
                 setQuantity={setQuantity}
@@ -227,7 +261,7 @@ export default function SingleProductMobile({
             <hr />
 
             <div className="relative  ">
-              {loading && (
+              {isLoading && (
                 <ContentLoader
                   speed={2}
                   viewBox="0 0 480 100"
@@ -268,18 +302,18 @@ export default function SingleProductMobile({
           </div>
         </div>
 
-        {!loading && (
+        {!isLoading && (
           <FloatingAddToCart
             handleSubstractQuantity={handleSubstractQuantity}
             quantity={quantity}
             handleAddQuantity={handleAddQuantity}
             handleRemoveFromCart={handleRemoveFromCart}
             handleAddToCart={handleAddToCart}
-            id={data.id}
-            price={data.price}
+            id={data.item.id}
+            price={data.item.price}
             addToCartButtonLoading={addToCartButtonLoading}
             inView={inView}
-            itemInCart={itemInCart}
+            itemInCart={data.itemInCart}
           />
         )}
 

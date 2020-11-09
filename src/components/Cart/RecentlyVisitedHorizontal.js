@@ -5,14 +5,7 @@ import { BsChevronRight } from 'react-icons/bs';
 import { BsChevronLeft } from 'react-icons/bs';
 import MultiClamp from 'react-multi-clamp';
 import { Link } from 'react-router-dom';
-// const isItemInCart = data => {
-//   const itemInCart = cartItems.find(item => data.id === item.id);
-//   if (itemInCart !== undefined) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
+
 const RightArrow = ({ onClick }) => {
   return (
     <div
@@ -35,10 +28,9 @@ const LeftArrow = ({ onClick }) => {
 };
 
 export default function RecentlyVisitedHorizontal({
-
   miniLogo = false,
   visitedItems,
-  isLightTheme=true,
+  isLightTheme = true,
 }) {
   const settings = {
     className: '',
@@ -50,8 +42,6 @@ export default function RecentlyVisitedHorizontal({
     prevArrow: <LeftArrow />,
 
     responsive: [
-     
-     
       {
         breakpoint: 1560,
         settings: {
@@ -107,7 +97,9 @@ export default function RecentlyVisitedHorizontal({
   return (
     <div className="my-6   ">
       <div className="flex items-center mb-4">
-        <h1 className="text-xl font-semibold flex-grow">Your Recently Visited Items</h1>
+        <h1 className="text-xl font-semibold flex-grow">
+          Your Recently Visited Items
+        </h1>
         <button className="p-0">See all</button>
       </div>
       <Slider className="" {...settings}>
@@ -123,7 +115,7 @@ export default function RecentlyVisitedHorizontal({
               >
                 <a href={`/products/${item.id}`}>
                   <img
-                  title={item.name}
+                    title={item.name}
                     src={item.photos.small}
                     alt={item.name}
                     className=" w-full object-cover "
@@ -132,7 +124,6 @@ export default function RecentlyVisitedHorizontal({
                 <hr />
 
                 <div
-               
                   className={`relative flex flex-col  ${
                     miniLogo ? 'pt-8' : 'pt-2'
                   } px-2 py-1 ${
@@ -143,7 +134,6 @@ export default function RecentlyVisitedHorizontal({
                 >
                   {miniLogo && (
                     <img
-                    
                       src={zalo}
                       alt="playstore"
                       className="absolute rounded-full shadow-xl "
@@ -159,9 +149,14 @@ export default function RecentlyVisitedHorizontal({
                     className="text-sm  font-semibold"
                     clamp={2}
                     ellipsis="..."
-                    
                   >
-                    <Link  title={item.name} className='hover:underline' to={`/products/${item.id}`}>{item.name}</Link>
+                    <Link
+                      title={item.name}
+                      className="hover:underline"
+                      to={`/products/${item.id}`}
+                    >
+                      {item.name}
+                    </Link>
                   </MultiClamp>
 
                   <div className="flex items-center">

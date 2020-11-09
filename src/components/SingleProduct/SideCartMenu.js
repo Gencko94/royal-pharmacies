@@ -4,7 +4,7 @@ import MultiClamp from 'react-multi-clamp';
 import { Link } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
 import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function SideCartMenu({
   cartItems,
@@ -85,64 +85,66 @@ export default function SideCartMenu({
             className="flex-1 overflow-y-auto overflow-x-hidden"
             style={{ maxHeight: 'calc(-110px + 100vh)' }}
           >
-            {cartItems.map(item => {
-              return (
-                <motion.div
-                  key={item.id}
-                  variants={cartItemVariant}
-                  className=" after__addToCart-related mb-2"
-                >
-                  <div className="">
-                    <Link
-                      title={item.name}
-                      className="hover:underline"
-                      to={`/${locale}/${item.category.replace(
-                        /\s|%|,/g,
-                        '-'
-                      )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
-                    >
-                      <img
-                        src={item.photos.small}
-                        alt={item.name}
-                        className="max-w-full h-auto"
-                      />
-                    </Link>
-                  </div>
-                  <div className="">
-                    <Link
-                      title={item.name}
-                      className="hover:underline"
-                      to={`/${locale}/${item.category.replace(
-                        /\s|%|,/g,
-                        '-'
-                      )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
-                    >
-                      <MultiClamp
-                        className="font-semibold text-sm "
-                        clamp={4}
-                        ellipsis="..."
+            <AnimatePresence>
+              {cartItems.map(item => {
+                return (
+                  <motion.div
+                    key={item.id}
+                    variants={cartItemVariant}
+                    className=" after__addToCart-related mb-2"
+                  >
+                    <div className="">
+                      <Link
+                        title={item.name}
+                        className="hover:underline"
+                        to={`/${locale}/${item.category.replace(
+                          /\s|%|,/g,
+                          '-'
+                        )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
                       >
-                        {item.name}
-                      </MultiClamp>
-                    </Link>
-
-                    <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-                      {item.price} KD
-                    </h1>
-                    <div>
-                      <button
-                        className="bg-main-color text-main-text text-xs rounded p-1 my-1"
-                        onClick={() => {
-                          handleRemoveFromCart(item.id);
-                        }}
-                      >
-                        {formatMessage({ id: 'remove-from-cart' })}
-                      </button>
+                        <img
+                          src={item.photos.small}
+                          alt={item.name}
+                          className="max-w-full h-auto"
+                        />
+                      </Link>
                     </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+                    <div className="">
+                      <Link
+                        title={item.name}
+                        className="hover:underline"
+                        to={`/${locale}/${item.category.replace(
+                          /\s|%|,/g,
+                          '-'
+                        )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
+                      >
+                        <MultiClamp
+                          className="font-semibold text-sm "
+                          clamp={4}
+                          ellipsis="..."
+                        >
+                          {item.name}
+                        </MultiClamp>
+                      </Link>
+
+                      <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
+                        {item.price} KD
+                      </h1>
+                      <div>
+                        <button
+                          className="bg-main-color text-main-text text-xs rounded p-1 my-1"
+                          onClick={() => {
+                            handleRemoveFromCart(item.id);
+                          }}
+                        >
+                          {formatMessage({ id: 'remove-from-cart' })}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </div>
         )}
         <hr className="my-1" />

@@ -64,7 +64,6 @@ export default function Cart() {
   });
   const { formatMessage, locale } = useIntl();
   const handleRemoveItem = async id => {
-    setRemoveButtonLoading(id);
     try {
       await removeMutation(id);
     } catch (error) {
