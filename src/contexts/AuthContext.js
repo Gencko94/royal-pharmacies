@@ -9,7 +9,7 @@ export default function AuthContext({ children }) {
     const localAuthenticated = localStorage.getItem('localAuthenticated');
     return new Promise(resolve => {
       setTimeout(() => {
-        if (localAuthenticated) {
+        if (localAuthenticated === 'true') {
           resolve({ isAuthenticated: true });
         } else {
           resolve({ isAuthenticated: false });
@@ -67,18 +67,12 @@ export default function AuthContext({ children }) {
   /**
    * User Logout
    */
-  const [userLogout] = useMutation(
-    () => {
-      localStorage.setItem('localAuthenticated', false);
-    },
-    {
-      onSuccess: () => {
-        queryCache.setQueryData('authentication', () => {
-          return false;
-        });
-      },
-    }
-  );
+  const [userLogout] = useMutation(() => {
+    queryCache.setQueryData('authentication', () => {
+      return false;
+    });
+    localStorage.setItem('localAuthenticated', false);
+  });
 
   /**
    *

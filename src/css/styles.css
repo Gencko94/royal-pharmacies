@@ -101,10 +101,9 @@ input {
 .cart {
   display: grid;
   position: relative;
-  /* max-width: calc(100vw - 100px); */
   grid-template-columns: minmax(300px, 2.5fr) minmax(250px, 0.5fr);
   gap: 0.5em;
-  align-items: flex-start;
+  /* align-items: flex-start; */
 }
 
 .cart__title {

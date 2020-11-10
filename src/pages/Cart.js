@@ -143,18 +143,22 @@ export default function Cart() {
                           })}
                         </AnimatePresence>
                       </motion.div>
+
+                      <motion.div
+                        layout
+                        className="flex justify-end p-2 rounded mt-2 border bg-gray-100"
+                      >
+                        <h1 className="text-lg font-semibold">
+                          {formatMessage({ id: 'subtotal' })} (
+                          {data.cartItems.length}{' '}
+                          {data.cartItems.length === 1 ? 'item' : 'items'}) :{' '}
+                          {data.cartTotal} KD
+                        </h1>
+                      </motion.div>
+                      <motion.div layout className="text-sm my-4">
+                        <h1>{formatMessage({ id: 'cart-tos' })}</h1>
+                      </motion.div>
                     </AnimateSharedLayout>
-                    <div className="flex justify-end p-2 rounded mt-2 border bg-gray-100">
-                      <h1 className="text-lg font-semibold">
-                        {formatMessage({ id: 'subtotal' })} (
-                        {data.cartItems.length}{' '}
-                        {data.cartItems.length === 1 ? 'item' : 'items'}) :{' '}
-                        {data.cartTotal} KD
-                      </h1>
-                    </div>
-                    <h1 className="text-sm my-4">
-                      {formatMessage({ id: 'cart-tos' })}
-                    </h1>
                   </>
                 )}
               </>

@@ -8,7 +8,11 @@
 
 - [x] Fix Buy options in items Slider
 
+- [ ] Add routes to account page and try to animate them
+
 - [ ] Add Edit Cart item support
+
+- [ ] Add Coupon Support
 
 - [ ] Look into lazy loading and progressive images
 
@@ -35,3 +39,49 @@
 - [ ] Complete the Checkout Page
 
 - [ ] Add Loaders to Vertical Items
+
+- [ ] Search Engine optimization
+
+# Needed Routes
+
+#### Authenticaion
+
+- [ ] - Check whether user is authenticated or not.
+- [ ] - Login Route.
+- [ ] - Register Route.
+
+#### Home Page
+
+- [ ] - Main Carousel Items.
+- [ ] - Slider Items based on Type & if its in cart or not.
+- [ ] - Promo Banners.
+- [ ] - Delivery Country if needed.
+- [ ] - Category bar data.
+
+#### Side Menu
+
+- [ ] - Mobile View Side Menu Category
+
+#### Single Product
+
+- [ ] - Single Product Details & if its in cart or not.
+- [ ] - Add item to cart and return cart items + cart subtotal amount.
+- [ ] - Remove item from cart and return cart items + cart subtotal amount.
+- [ ] - Remove item from cart and return cart items + cart subtotal amount.
+
+#### Cart
+
+- [ ] - Edit item from cart ("Quantity + Size + color + etc....") and return cart items + cart subtotal amount.
+- [ ] - Getting Cart items + cart subtotal amount.
+- [ ] - Getting Cart items + cart subtotal amount.
+
+#### Wishlist
+
+- [ ] - Getting Wishlist items.
+- [ ] - Add Wishlist items.
+- [ ] - Remove Wishlist items.
+
+#### User settings
+
+- [ ] - Getting User general Information.
+- [ ] - Getting User saved locations.

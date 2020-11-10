@@ -23,7 +23,7 @@ export default function SideCartMenu({
       x: '0%',
       opacity: 1,
       transition: {
-        delayChildren: 0.1,
+        type: 'tween',
         staggerChildren: 0.1,
       },
     },
@@ -90,6 +90,9 @@ export default function SideCartMenu({
                 return (
                   <motion.div
                     key={item.id}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exited"
                     variants={cartItemVariant}
                     className=" after__addToCart-related mb-2"
                   >

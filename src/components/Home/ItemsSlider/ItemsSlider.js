@@ -177,10 +177,11 @@ export default function ItemsSlider({
     {
       onSuccess: data => {
         setLoadingButton(null);
-        queryCache.setQueryData(['slides', type], prev => {
+        queryCache.setQueryData('cartItems', prev => {
           return {
             ...prev,
             cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
           };
         });
         refetch();

@@ -12,40 +12,11 @@ export default function SideCartMenuMobile({
   setSideMenuOpen,
   cartTotal,
 }) {
-  // let animation = React.useMemo(
-  //   () =>
-  //     gsap.timeline({
-  //       defaults: { ease: Power2.easeOut },
-  //       paused: true,
-  //     }),
-  //   []
-  // );
   const handleCloseMenu = () => {
-    // animation.reverse();
-    // setTimeout(() => {
     setSideMenuOpen(false);
-    // }, 600);
   };
   const { formatMessage, locale } = useIntl();
-  // React.useEffect(() => {
-  //   animation
-  //     .fromTo(
-  //       '.after__addToCart-related',
-  //       { x: locale === 'ar' ? '100%' : '-100%' },
-  //       { x: '0%', stagger: '0.2', duration: 0.6 },
-  //       '+=0.3'
-  //     )
-  //     .fromTo(
-  //       '.side__addCart-bg',
-  //       {
-  //         visibility: 'hidden',
-  //         opacity: 0,
-  //       },
-  //       { visibility: 'visible', opacity: 0.5 },
-  //       '-=1'
-  //     );
-  //   animation.play();
-  // }, [animation, locale]);
+
   const sideMenuVariants = {
     hidden: {
       x: `${locale === 'ar' ? '100%' : '-100%'}`,
@@ -55,14 +26,16 @@ export default function SideCartMenuMobile({
       x: '0%',
       opacity: 1,
       transition: {
-        delayChildren: 0.1,
-        staggerChildren: 0.1,
+        type: 'tween',
+        // when: 'beforeChildren',
+        // staggerChildren: 0.1,
       },
     },
     exited: {
       x: `${locale === 'ar' ? '100%' : '-100%'}`,
       transition: {
         when: 'afterChildren',
+        type: 'tween',
       },
     },
   };
@@ -71,13 +44,14 @@ export default function SideCartMenuMobile({
       x: `${locale === 'ar' ? '100%' : '-100%'}`,
     },
     visible: {
-      x: '0',
-      delay: 3,
+      x: 0,
+      // delay: 3,
     },
     exited: {
       opacity: 0,
     },
   };
+
   return (
     <motion.div
       variants={sideMenuVariants}
@@ -118,10 +92,14 @@ export default function SideCartMenuMobile({
             style={{ maxHeight: 'calc(-110px + 100vh)' }}
           >
             <AnimatePresence>
-              {cartItems.map((item, i) => {
+              {cartItems.map(item => {
                 return (
                   <motion.div
                     variants={cartItemVariant}
+                    key={item.id}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exited"
                     className=" after__addToCart-related mb-2"
                   >
                     <div className="">
