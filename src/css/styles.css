@@ -582,6 +582,11 @@ input {
   grid-template-columns: repeat(auto-fit, 150px);
   gap: 0.5em;
 }
+.orders-grid__desktop {
+  display: grid;
+  grid-template-columns: 1fr 0.1fr;
+  gap: 0.5em;
+}
 .btn-disabled {
   background-color: gray;
   color: gainsboro;

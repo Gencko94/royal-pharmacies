@@ -83,7 +83,6 @@ const Cart = React.lazy(() => import('./pages/Cart'));
 const CartMobile = React.lazy(() => import('./pages/CartMobile'));
 
 const Category = React.lazy(() => import('./pages/Category'));
-const Protected = React.lazy(() => import('./Protected'));
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
@@ -149,9 +148,6 @@ function App() {
               }
             }}
           />
-          <ProtectedRoute path="/protected">
-            <Protected />
-          </ProtectedRoute>
 
           <Route>
             <div>not found !</div>

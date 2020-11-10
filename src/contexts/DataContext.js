@@ -347,6 +347,13 @@ export default function DataContextProvider({ children }) {
       }, 500);
     });
   };
+  const getOrderedItems = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(orderedItems);
+      }, 1500);
+    });
+  };
   const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const stores = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const allItems = [
@@ -2438,6 +2445,7 @@ export default function DataContextProvider({ children }) {
         handleRemoveLocation,
         getCartItemsLength,
         getNavCategoryData,
+        getOrderedItems,
       }}
     >
       {children}

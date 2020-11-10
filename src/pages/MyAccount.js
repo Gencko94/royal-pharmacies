@@ -8,6 +8,7 @@ import PaymentDetails from '../components/MyAccount/PaymentDetails';
 import { DataProvider } from '../contexts/DataContext';
 import Layout from '../components/Layout';
 import { useParams } from 'react-router-dom';
+import { AnimateSharedLayout, motion } from 'framer-motion';
 
 export default function MyAccount() {
   const { page } = useParams();
@@ -35,25 +36,31 @@ export default function MyAccount() {
       <Helmet>
         <title>My Account | MRG</title>
       </Helmet>
-      <div
-        className={`p-4 pb-3 ${
-          isLightTheme
-            ? 'bg-body-light text-body-text-light'
-            : 'bg-body-dark text-body-text-dark'
-        } max-w-default mx-auto myaccount__grid`}
-        style={{ minHeight: 'calc(-62px + 100vh)' }}
-      >
-        <SideTabs
-          isLightTheme={isLightTheme}
-          selectedIndex={selectedIndex}
-          setSelectedIndex={setSelectedIndex}
-        />
+      <AnimateSharedLayout>
+        <motion.div
+          layout
+          initial={false}
+          className={`p-4 pb-3 ${
+            isLightTheme
+              ? 'bg-body-light text-body-text-light'
+              : 'bg-body-dark text-body-text-dark'
+          } max-w-default mx-auto myaccount__grid`}
+          style={{ minHeight: 'calc(-62px + 100vh)' }}
+        >
+          <SideTabs
+            isLightTheme={isLightTheme}
+            selectedIndex={selectedIndex}
+            setSelectedIndex={setSelectedIndex}
+          />
 
-        {selectedIndex === 0 && <MyProfile isLightTheme={isLightTheme} />}
-        {selectedIndex === 1 && <MyAddresses isLightTheme={isLightTheme} />}
-        {selectedIndex === 2 && <MyOrders isLightTheme={isLightTheme} />}
-        {selectedIndex === 3 && <PaymentDetails isLightTheme={isLightTheme} />}
-      </div>
+          {selectedIndex === 0 && <MyProfile isLightTheme={isLightTheme} />}
+          {selectedIndex === 1 && <MyAddresses isLightTheme={isLightTheme} />}
+          {selectedIndex === 2 && <MyOrders isLightTheme={isLightTheme} />}
+          {selectedIndex === 3 && (
+            <PaymentDetails isLightTheme={isLightTheme} />
+          )}
+        </motion.div>
+      </AnimateSharedLayout>
     </Layout>
   );
 }

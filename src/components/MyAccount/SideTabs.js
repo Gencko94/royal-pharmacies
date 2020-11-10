@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -20,7 +21,7 @@ export default function SideTabs({ selectedIndex, isLightTheme }) {
     'order-history': 'order-history',
   };
   return (
-    <div className=" flex flex-col self-start ">
+    <motion.div initial={false} layout className=" flex flex-col self-start ">
       <Avatar />
 
       <div
@@ -50,6 +51,6 @@ export default function SideTabs({ selectedIndex, isLightTheme }) {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }

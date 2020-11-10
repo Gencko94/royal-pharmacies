@@ -98,7 +98,6 @@ export default function OrderDetailsMobile({
                           title={item.name}
                           src={item.photos.small}
                           alt={item.name}
-                          // className=" w-full "
                         />
                       </a>
                       <hr />

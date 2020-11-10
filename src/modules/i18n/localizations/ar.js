@@ -147,4 +147,19 @@ export const ar = {
   // item slider buy options
   'slider.buy-options': 'خيارات الشراء',
   size: 'المقاس',
+  /**
+   * orders
+   */
+
+  'order-number': 'رقم الطلبية',
+  status: 'الحالة',
+  'ordered-at': 'تم الطلب في',
+  'delivered-at': 'تم التوصيل في',
+  'order-details': 'تفاصيل الطلبية',
+  'delivered-to': 'تم التوصيل إلى',
+  'payment-method': 'طريقة الدفع',
+  'order-date': 'تاريخ الطلبية',
+  delivered: 'تم التوصيل',
+  pending: 'قيد الإنتظار',
+  'expected-delivery': 'وقت التوصيل المتوقع',
 };

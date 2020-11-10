@@ -12,6 +12,8 @@
 
 - [x] Add Protected Routes.
 
+- [x] Add Maps to MyAddressesMobile.
+
 - [ ] Add Error Boundaries and handlers.
 
 - [ ] Add routes to account page and try to animate them.
@@ -22,9 +24,9 @@
 
 - [ ] Look into lazy loading and progressive images.
 
-- [ ] Add Maps to MyAddressesMobile.
+- [x] Add Order History to Desktop View.
 
-- [ ] Add Order History to Desktop View.
+- [ ] Add React query to order history.
 
 - [ ] Add Wishlist Page.
 
@@ -87,6 +89,11 @@
 - [ ] - Getting Wishlist items.
 - [ ] - Add Wishlist items.
 - [ ] - Remove Wishlist items.
+
+#### Orders
+
+- [ ] - Getting Order details.
+- [ ] - Order History details with items.
 
 #### User settings
 

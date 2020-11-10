@@ -153,6 +153,22 @@ const baseStrings = {
   // item slider buy options
   'slider.buy-options': 'Buy Options',
   size: 'Size',
+
+  /**
+   * orders
+   */
+
+  'order-number': 'Order Number',
+  status: 'Status',
+  'ordered-at': 'Ordered at',
+  'delivered-at': 'Delivered at',
+  'order-details': 'Order Details',
+  'delivered-to': 'Delivered to',
+  'payment-method': 'Payment Method',
+  'order-date': 'Order Date',
+  delivered: 'Delivered',
+  pending: 'Pending',
+  'expected-delivery': 'Expected Delivery',
 };
 
 export const en = baseStrings;
