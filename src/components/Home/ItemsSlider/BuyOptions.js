@@ -64,8 +64,7 @@ export default function BuyOptions({
       className="buy-options__itemslider"
     >
       <div className="p-1">
-        <h1 className="text-sm font-semibold text-center text-body-light truncate">
-          {/* {formatMessage({ id: 'slider.buy-options' })} */}
+        <h1 className="text-xs font-semibold text-center text-body-light truncate">
           {data.name}
         </h1>
       </div>

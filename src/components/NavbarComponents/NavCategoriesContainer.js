@@ -9,6 +9,7 @@ export default function NavCategoriesContainer({
   handleDropDownOpen,
   setCatData,
   catData,
+  isLoading,
 }) {
   React.useEffect(() => {
     if (isHovering && catData) {
@@ -28,14 +29,15 @@ export default function NavCategoriesContainer({
             : 'bg-nav-cat-dark text-nav-cat-text-dark'
         } flex items-center  `}
       >
-        {data.map(item => (
-          <CategoryButton
-            key={item.category}
-            item={item}
-            isLightTheme={isLightTheme}
-            handleDropDownOpen={handleDropDownOpen}
-          />
-        ))}
+        {!isLoading &&
+          data.map(item => (
+            <CategoryButton
+              key={item.category}
+              item={item}
+              isLightTheme={isLightTheme}
+              handleDropDownOpen={handleDropDownOpen}
+            />
+          ))}
       </div>
     </div>
   );

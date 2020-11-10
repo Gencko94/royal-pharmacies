@@ -12,6 +12,7 @@ import ScrollToTopOnMount from './helpers/ScrollToTopOnMount';
 import { LocalizedSwitch, LocalizedRouter, appStrings } from './modules/i18n/';
 import { appLanguages } from './modules/const';
 import Loading from './helpers/Loading';
+import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 // import Loadable from 'react-loadable';
 
 // const Home = Loadable({
@@ -82,6 +83,7 @@ const Cart = React.lazy(() => import('./pages/Cart'));
 const CartMobile = React.lazy(() => import('./pages/CartMobile'));
 
 const Category = React.lazy(() => import('./pages/Category'));
+const Protected = React.lazy(() => import('./Protected'));
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
@@ -99,16 +101,9 @@ function App() {
 
           <Route exact path="/" component={Home} />
 
-          <Route
-            path="/user/account/:page"
-            render={props => {
-              if (isTabletOrAbove) {
-                return <MyAccount {...props} />;
-              } else {
-                return <MyAccountMobile {...props} />;
-              }
-            }}
-          />
+          <ProtectedRoute path="/user/account/:page">
+            {isTabletOrAbove ? <MyAccount /> : <MyAccountMobile />}
+          </ProtectedRoute>
 
           <Route
             path="/cart"
@@ -154,6 +149,9 @@ function App() {
               }
             }}
           />
+          <ProtectedRoute path="/protected">
+            <Protected />
+          </ProtectedRoute>
 
           <Route>
             <div>not found !</div>

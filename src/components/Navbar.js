@@ -41,6 +41,7 @@ export default function Navbar() {
             </div>
             {/* <Promos /> */}
             <div className="flex justify items-center">
+              <Link to="/en/protected">protected</Link>
               {/* <button
               className="mr-2"
               onClick={() => setLightTheme(!isLightTheme)}

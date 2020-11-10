@@ -322,7 +322,20 @@ export default function DataContextProvider({ children }) {
       }, 2000);
     });
   };
-
+  const getCartItemsLength = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(cartItems.length);
+      }, 1000);
+    });
+  };
+  const getNavCategoryData = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(navCategories);
+      }, 1500);
+    });
+  };
   const getMainCarouselItems = screen => {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -2423,6 +2436,8 @@ export default function DataContextProvider({ children }) {
         getUserLocations,
         handleAddLocation,
         handleRemoveLocation,
+        getCartItemsLength,
+        getNavCategoryData,
       }}
     >
       {children}

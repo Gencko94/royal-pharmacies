@@ -1,16 +1,14 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { useParams } from 'react-router-dom';
 import LayoutMobile from '../components/LayoutMobile';
 import MobileTabs from '../components/MyAccountMobile/MobileTabs';
 import MyAddressesMobile from '../components/MyAccountMobile/MyAddressesMobile';
 import MyOrdersMobile from '../components/MyAccountMobile/MyOrdersMobile';
 import MyProfileMobile from '../components/MyAccountMobile/MyProfileMobile';
 import PaymentDetailsMobile from '../components/MyAccountMobile/PaymentDetailsMobile';
-export default function MyAccountMobile({
-  match: {
-    params: { page },
-  },
-}) {
+export default function MyAccountMobile() {
+  const { page } = useParams();
   const mapPageToIndex = {
     profile: 0,
     addresses: 1,

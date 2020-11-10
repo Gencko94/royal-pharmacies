@@ -102,7 +102,9 @@ export const ar = {
   'new-to-family': 'هل انت مستخدم جديد ؟',
   'join-us-here': ' اشترك معنا الآن',
   'forgot-password': 'هل نسيت كلمة المرور ؟',
-
+  'we-have-found': 'لقد قمت بتسجيل',
+  addresses: 'عناوين ',
+  'one-address': 'عنوان',
   'already-have-an-account':
     'هل لديك حساب مسبق ؟ <link>سجل الدخول الآن </link>',
   'terms-of-service':

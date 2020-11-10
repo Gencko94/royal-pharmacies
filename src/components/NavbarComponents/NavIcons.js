@@ -4,9 +4,18 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import { DataProvider } from '../../contexts/DataContext';
 import { useIntl } from 'react-intl';
+import { useQuery } from 'react-query';
+import { MoonLoader } from 'react-spinners';
 export default function NavIcons({ color = 'nav-secondary' }) {
-  const { cartItems, isLightTheme } = React.useContext(DataProvider);
+  const { getCartItemsLength, isLightTheme } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
+  const { data, isLoading } = useQuery(
+    'cartItemsLength',
+    async () => {
+      return await getCartItemsLength();
+    },
+    { refetchOnWindowFocus: false }
+  );
   return (
     <div
       className={`flex items-center justify-evenly  text-${color}`}
@@ -24,14 +33,18 @@ export default function NavIcons({ color = 'nav-secondary' }) {
           } h-4 w-4  font-bold rounded-full  top-0 text-xs flex items-center justify-center ${
             isLightTheme
               ? 'bg-second-nav-text-light text-second-nav-light'
-              : 'bg-second-nav-dark text-second-nav-text-dark'
+              : 'bg-second-nav-dark text-second-nav-text-dark '
           }`}
         >
-          {cartItems.length}
+          {isLoading && <MoonLoader size={11} color="#b72b2b" />}
+          {!isLoading && data}
         </span>
       </Link>
 
-      <Link to="/" className="p-1 flex items-center font-semibold  ">
+      <Link
+        to={`/${locale}/wishlist`}
+        className="p-1 flex items-center font-semibold  "
+      >
         <h1 className=" text-sm ">{formatMessage({ id: 'nav.wishlist' })}</h1>
         <AiOutlineHeart className="w-30p h-30p mx-1" />
       </Link>

@@ -1,46 +1,54 @@
 # Things to Complete
 
-- [x] Fix Deliver To in Mobile & Desktop View
+- [x] Fix Deliver To in Mobile & Desktop View.
 
-- [x] Add Support for Authenticated Users
+- [x] Add Support for Authenticated Users.
 
-- [x] Add Framer motion to Mobile Side Menu
+- [x] Add Framer motion to Mobile Side Menu.
 
-- [x] Fix Buy options in items Slider
+- [x] Fix Buy options in items Slider.
 
-- [ ] Add routes to account page and try to animate them
+- [x] Add React Query to Navbar.
 
-- [ ] Add Edit Cart item support
+- [x] Add Protected Routes.
 
-- [ ] Add Coupon Support
+- [ ] Add Error Boundaries and handlers.
 
-- [ ] Look into lazy loading and progressive images
+- [ ] Add routes to account page and try to animate them.
 
-- [ ] Add React Query to Navbar
+- [ ] Add Edit Cart item support.
 
-- [ ] Add Protected Routes
+- [ ] Add Coupon Support.
 
-- [ ] Add Maps to MyAddressesMobile
+- [ ] Look into lazy loading and progressive images.
 
-- [ ] Add Order History to Desktop View
+- [ ] Add Maps to MyAddressesMobile.
 
-- [ ] Add Wishlist Page
+- [ ] Add Order History to Desktop View.
 
-- [ ] Add React Query & Localizations to the Search page
+- [ ] Add Wishlist Page.
 
-- [ ] Add Buy Options to SingleProduct in Desktop and Mobile View
+- [ ] Add React Query & Localizations to the Search page.
 
-- [ ] Add a new layout to SingleProduct Pages
+- [ ] Add Buy Options to SingleProduct in Desktop and Mobile View.
 
-- [ ] Add Scroll Pagination to SingleProduct Pages
+- [ ] Add a new layout to SingleProduct Pages.
 
-- [ ] Add auto Complete to the Search bar
+- [ ] Add Scroll Pagination to SingleProduct Pages.
 
-- [ ] Complete the Checkout Page
+- [ ] Add auto Complete to the Search bar.
 
-- [ ] Add Loaders to Vertical Items
+- [ ] Complete the Checkout Page.
 
-- [ ] Search Engine optimization
+- [ ] Add Loaders to Vertical Items.
+
+- [ ] Search Engine optimization.
+
+- [ ] Add 404 page.
+
+- [ ] Discuss Location handling with Maher.
+
+- [ ] Add default location support.
 
 # Needed Routes
 
@@ -66,7 +74,6 @@
 
 - [ ] - Single Product Details & if its in cart or not.
 - [ ] - Add item to cart and return cart items + cart subtotal amount.
-- [ ] - Remove item from cart and return cart items + cart subtotal amount.
 - [ ] - Remove item from cart and return cart items + cart subtotal amount.
 
 #### Cart

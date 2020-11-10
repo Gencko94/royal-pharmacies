@@ -7,12 +7,11 @@ import MyOrders from '../components/MyAccount/MyOrders';
 import PaymentDetails from '../components/MyAccount/PaymentDetails';
 import { DataProvider } from '../contexts/DataContext';
 import Layout from '../components/Layout';
+import { useParams } from 'react-router-dom';
 
-export default function MyAccount({
-  match: {
-    params: { page },
-  },
-}) {
+export default function MyAccount() {
+  const { page } = useParams();
+  console.log(page);
   const { isLightTheme } = React.useContext(DataProvider);
   const mapPageToIndex = {
     profile: 0,

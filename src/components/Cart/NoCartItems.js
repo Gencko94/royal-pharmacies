@@ -12,12 +12,16 @@ export default function NoCartItems() {
     visible: {
       opacity: 1,
     },
+    exited: {
+      opacity: 0,
+    },
   };
   return (
     <motion.div
       variants={variants}
       initial="hidden"
       animate="visible"
+      exit="exited"
       className=" flex"
     >
       <img src={cartBag} alt="Empty Cart Bag" className=" h-32" />

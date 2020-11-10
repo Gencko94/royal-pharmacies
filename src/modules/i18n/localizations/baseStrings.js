@@ -74,6 +74,9 @@ const baseStrings = {
   'all-categories': 'All Categories',
   'customer-service': 'Customer Service',
   'search-for-an-area': 'Search for an area...',
+  'we-have-found': 'We have found',
+  addresses: 'addresses ',
+  'one-address': 'address',
 
   //
   'home.title': 'Home',

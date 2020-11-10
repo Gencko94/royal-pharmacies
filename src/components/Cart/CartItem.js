@@ -63,7 +63,7 @@ export default function CartItem({
             }}
             className={`${
               removeButtonLoading === item.id ? 'bg-gray-300' : 'bg-main-color'
-            }  text-main-text text-sm flex items-center justify-center py-1 px-2 rounded  font-semibold`}
+            }  text-main-text text-sm flex items-center justify-center py-1 px-2 rounded  font-semibold `}
           >
             {removeButtonLoading === item.id ? (
               <MoonLoader size={18} color="#b72b2b" />

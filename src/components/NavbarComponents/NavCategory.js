@@ -5,22 +5,23 @@ import { AnimatePresence } from 'framer-motion';
 import ReactHoverObserver from 'react-hover-observer';
 import MegaMenu from './MegaMenu';
 import NavCategoriesContainer from './NavCategoriesContainer';
+import { useQuery } from 'react-query';
 export default function NavCategory() {
   const dropDownbgRef = React.useRef(null);
-  const { navCategories, isLightTheme } = React.useContext(DataProvider);
+  const { getNavCategoryData, isLightTheme } = React.useContext(DataProvider);
+
+  const { data, isLoading } = useQuery('navCategoryItems', async () => {
+    return await getNavCategoryData();
+  });
 
   const [dropDownOpen, setDropDownOpen] = React.useState(false);
   const [catData, setCatData] = React.useState(null);
-  const [data, setData] = React.useState([]);
 
   const handleDropDownOpen = id => {
     const category = data.find(item => item.category === id);
     setCatData(category);
   };
 
-  React.useEffect(() => {
-    setData(navCategories);
-  }, [navCategories]);
   return (
     <>
       <div
@@ -38,6 +39,7 @@ export default function NavCategory() {
               <NavCategoriesContainer
                 isLightTheme={isLightTheme}
                 data={data}
+                isLoading={isLoading}
                 handleDropDownOpen={handleDropDownOpen}
                 setCatData={setCatData}
                 setDropDownOpen={setDropDownOpen}

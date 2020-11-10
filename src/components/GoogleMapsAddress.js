@@ -10,11 +10,9 @@ import {
 import PlacesSearch from './Cart/GuestCheckout/GoogleMaps/PlacesSearch';
 import { useIntl } from 'react-intl';
 import { MoonLoader } from 'react-spinners';
+import { useMediaQuery } from 'react-responsive';
 const libraries = ['places'];
-const mapContainerStyle = {
-  width: '100%',
-  height: 'calc(-135px + 100vh)',
-};
+
 const center = {
   lat: 29.3759,
   lng: 47.9774,
@@ -29,6 +27,7 @@ export default function GoogleMapsAddress({
   addMutation,
   AddButtonLoading,
 }) {
+  const { isTabletOrAbove } = useMediaQuery({ query: '(min-width:768px)' });
   const { formatMessage } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAYprqr3Vrnmhwx9UQozUNNks7CVH9m3Xg',
@@ -106,7 +105,12 @@ export default function GoogleMapsAddress({
       <PlacesSearch panTo={panTo} markerAddress={markerAddress} />
 
       <GoogleMap
-        mapContainerStyle={mapContainerStyle}
+        mapContainerStyle={{
+          width: '100%',
+          height: isTabletOrAbove
+            ? 'cale(-135px + 100vh)'
+            : 'calc(-170px + 100vh)',
+        }}
         zoom={15}
         center={center}
         options={options}
