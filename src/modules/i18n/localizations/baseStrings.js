@@ -19,6 +19,7 @@ const baseStrings = {
   login: 'Sign In to your account',
   register: 'Register Now',
   language: 'Language',
+  logout: 'Logout',
   'my-account': 'My Account',
   'my-orders': 'My Orders',
   'my-profile': 'My Profile',

@@ -1,25 +1,19 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 import Avatar from './Avatar';
-export default function SideTabs({ selectedIndex, isLightTheme }) {
-  const history = useHistory();
+export default function SideTabs({ isLightTheme }) {
   const { formatMessage } = useIntl();
+
   const options = [
-    'my-profile',
-    'my-addresses',
-    'my-orders',
-    'my-payment-details',
-    'order-history',
+    { url: '', name: 'my-profile' },
+    { url: '/addresses', name: 'my-addresses' },
+    { url: '/orders', name: 'my-orders' },
+    { url: '/paymentdetails', name: 'my-payment-details' },
   ];
-  const mapNametoPage = {
-    'my-profile': 'profile',
-    'my-addresses': 'addresses',
-    'my-orders': 'orders',
-    'my-payment-details': 'payment',
-    'order-history': 'order-history',
-  };
+
+  const { url } = useRouteMatch();
   return (
     <motion.div initial={false} layout className=" flex flex-col self-start ">
       <Avatar />
@@ -31,22 +25,21 @@ export default function SideTabs({ selectedIndex, isLightTheme }) {
             : 'shadow-itemsSlider-wide'
         }`}
       >
-        {options.map((option, i) => (
-          <div key={i}>
-            <button
-              onClick={() => history.push(`${mapNametoPage[option]}`)}
-              className={`px-6 py-4 w-full ${
-                selectedIndex === i
-                  ? isLightTheme
-                    ? 'bg-btn-primary-light text-btn-secondary-light font-semibold'
-                    : 'bg-btn-primary-dark text-btn-secondary-dark '
-                  : isLightTheme
-                  ? 'bg-btn-secondary-light '
-                  : 'bg-first-nav-light text-first-nav-text-light '
-              }   hover:bg-btn-primary-light  hover:text-btn-secondary-light hover:font-semibold transition duration-150 `}
+        {options.map(option => (
+          <div key={option.name}>
+            <NavLink
+              exact
+              className="w-full px-6 py-4 inline-block text-center "
+              activeClassName={`${
+                isLightTheme
+                  ? 'bg-btn-primary-light text-btn-secondary-light font-semibold'
+                  : 'bg-btn-primary-dark text-btn-secondary-dark '
+              }`}
+              to={`${url}${option.url}`}
             >
-              {formatMessage({ id: option })}
-            </button>
+              {formatMessage({ id: option.name })}
+            </NavLink>
+
             <hr />
           </div>
         ))}

@@ -54,6 +54,7 @@ export default function SingleProductMobile({
     {
       onSuccess: data => {
         queryCache.setQueryData(['singleProductMobile', id], prev => {
+          console.log(data.cartTotal);
           return {
             ...prev,
             cartItems: data.cartItems,

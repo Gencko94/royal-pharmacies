@@ -3,6 +3,7 @@ import { DataProvider } from '../../contexts/DataContext';
 import NoOrdersMobile from './MyOrdersMobile/NoOrdersMobile';
 import OrderMobile from './MyOrdersMobile/OrderMobile';
 import OrderDetailsMobile from './MyOrdersMobile/OrderDetailsMobile';
+import { motion } from 'framer-motion';
 export default function MyOrdersMobile() {
   const { orderedItems, isLightTheme } = React.useContext(DataProvider);
   const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false);
@@ -17,8 +18,28 @@ export default function MyOrdersMobile() {
       setOrderDetailsOpen(false);
     }
   }, [selectedOrder]);
+  const containerVariants = {
+    hidden: {
+      x: '100%',
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0,
+    },
+  };
   return (
-    <div className="  ">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="  "
+    >
       {orderedItems.length === 0 ? (
         <NoOrdersMobile />
       ) : (
@@ -42,6 +63,6 @@ export default function MyOrdersMobile() {
         orderDetailsOpen={orderDetailsOpen}
         isLightTheme={isLightTheme}
       />
-    </div>
+    </motion.div>
   );
 }

@@ -101,8 +101,8 @@ export default function RightSection({
               ? 'bg-gray-300'
               : itemInCart
               ? 'bg-main-color'
-              : 'bg-blue-700'
-          } flex-1 text-main-text  p-1 px-2 rounded mb-2   flex items-center justify-center font-semibold`}
+              : 'bg-green-700'
+          } flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold`}
         >
           {addToCartButtonLoading ? (
             <MoonLoader size={19} color="#b72b2b" />
@@ -125,7 +125,7 @@ export default function RightSection({
           )}
         </button>
 
-        <button className="bg-blue-500 py-1 px-2 rounded  text-white flex items-center justify-center font-semibold ">
+        <button className="border border-main-color py-2 px-2 rounded  text-main-color flex items-center justify-center font-semibold ">
           <span>
             <AiOutlineHeart className="w-25p h-25p" />
           </span>

@@ -51,10 +51,7 @@ export default function Navbar() {
                 <>
                   {isAuthenticated && (
                     <div className="mx-2">
-                      <Link
-                        className="mx-2"
-                        to={`/${locale}/user/account/profile`}
-                      >
+                      <Link className="mx-2" to={`/${locale}/user/account`}>
                         {formatMessage({ id: 'nav.account' })}
                       </Link>
                       <button onClick={userLogout}>logout</button>

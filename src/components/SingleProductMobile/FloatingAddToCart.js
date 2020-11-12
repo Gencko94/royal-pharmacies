@@ -53,8 +53,8 @@ export default function FloatingAddToCart({
               ? 'bg-gray-300'
               : itemInCart
               ? 'bg-main-color'
-              : 'bg-blue-700'
-          } flex-1 text-gray-100 text-sm p-1 px-2 rounded   flex items-center justify-center font-semibold`}
+              : 'bg-green-700'
+          } flex-1 text-gray-100 text-sm py-2 px-2 rounded   flex items-center justify-center font-semibold`}
         >
           {addToCartButtonLoading ? (
             <MoonLoader size={19} color="#b72b2b" />

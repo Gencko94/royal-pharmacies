@@ -7,10 +7,13 @@ import { HiOutlineShoppingBag } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiOutlineEye } from 'react-icons/ai';
-import { MdLocationOn } from 'react-icons/md';
+import { AiOutlinePoweroff } from 'react-icons/ai';
+
+import { MdAccountCircle, MdLocationOn } from 'react-icons/md';
 import { FaLanguage } from 'react-icons/fa';
 import { RiCustomerServiceFill } from 'react-icons/ri';
 import { DataProvider } from '../../contexts/DataContext';
+import { AuthProvider } from '../../contexts/AuthContext';
 import { Link } from 'react-router-dom';
 import TopSection from '../SideMenuMobile/TopSection';
 import { motion } from 'framer-motion';
@@ -20,6 +23,7 @@ export default function SideMenu({
   sideMenuRef,
   isLightTheme,
 }) {
+  const { isAuthenticated, userLogout } = React.useContext(AuthProvider);
   const { sidebarCategories } = React.useContext(DataProvider);
   const [products, setProducts] = React.useState(false);
   const [page, setPage] = React.useState(0);
@@ -145,20 +149,39 @@ export default function SideMenu({
                 <h1 className="mx-2">{formatMessage({ id: 'cart' })}</h1>
               </Link>
             </motion.button>
-            <motion.button
-              key="profile"
-              className="py-2 px-2 mb-2"
-              onClick={toggleSideMenu}
-              variants={childVariants}
-            >
-              <Link
-                to={`/${locale}/user/account/profile`}
-                className="flex items-center"
+            {!isAuthenticated && (
+              <motion.button
+                key="login"
+                onClick={toggleSideMenu}
+                className="py-2 px-2 mb-2 "
+                variants={childVariants}
               >
-                <CgProfile className=" w-25p h-25p" />
-                <h1 className="mx-2">{formatMessage({ id: 'my-account' })}</h1>
-              </Link>
-            </motion.button>
+                <Link to={`/${locale}/app/login`} className="flex items-center">
+                  <MdAccountCircle className="w-25p h-25p " />
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'short-login' })}
+                  </h1>
+                </Link>
+              </motion.button>
+            )}
+            {isAuthenticated && (
+              <motion.button
+                key="profile"
+                className="py-2 px-2 mb-2"
+                onClick={toggleSideMenu}
+                variants={childVariants}
+              >
+                <Link
+                  to={`/${locale}/user/account`}
+                  className="flex items-center"
+                >
+                  <CgProfile className=" w-25p h-25p" />
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'my-account' })}
+                  </h1>
+                </Link>
+              </motion.button>
+            )}
             <motion.button
               key="orderHistory"
               variants={childVariants}
@@ -215,7 +238,7 @@ export default function SideMenu({
               key="customerService"
               variants={childVariants}
               onClick={toggleSideMenu}
-              className="py-2 px-2 mb-2    "
+              className="py-2 px-2 mb-2"
             >
               <div className=" flex items-center">
                 <RiCustomerServiceFill className=" w-25p h-25p" />
@@ -229,13 +252,29 @@ export default function SideMenu({
               key="language"
               variants={childVariants}
               onClick={toggleSideMenu}
-              className="py-2 px-2 mb-2    "
+              className="py-2 px-2 mb-2"
             >
               <div className=" flex items-center">
                 <FaLanguage className=" w-25p h-25p" />
                 <h1 className="mx-2">{formatMessage({ id: 'language' })}</h1>
               </div>
             </motion.button>
+            {isAuthenticated && (
+              <motion.button
+                key="logout"
+                variants={childVariants}
+                onClick={() => {
+                  toggleSideMenu();
+                  userLogout();
+                }}
+                className="py-2 px-2 mb-2"
+              >
+                <div className=" flex items-center">
+                  <AiOutlinePoweroff className=" w-25p h-25p" />
+                  <h1 className="mx-2">{formatMessage({ id: 'logout' })}</h1>
+                </div>
+              </motion.button>
+            )}
           </div>
           {products && (
             <>

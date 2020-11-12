@@ -12,7 +12,9 @@ export default function Orders({ data }) {
         initial={false}
         className="flex p-3 items-center justify-between bg-main-color text-main-text"
       >
-        <h1 className="text-lg">{formatMessage({ id: 'my-orders' })}</h1>
+        <motion.h1 className="text-lg">
+          {formatMessage({ id: 'my-orders' })}
+        </motion.h1>
       </motion.div>
       <motion.div layout initial={false} className="grid grid-cols-1 gap-2 p-3">
         {data.map(order => {

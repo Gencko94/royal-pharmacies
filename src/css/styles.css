@@ -383,8 +383,8 @@ input {
   height: 100%;
   top: 0;
 
-  min-width: 350px;
-  max-width: 350px;
+  min-width: 75%;
+  max-width: 75%;
 }
 .side__addCart-bg {
   position: fixed;
@@ -675,4 +675,17 @@ input {
   margin-top: 0.5em;
   overflow: hidden;
   left: 60px;
+}
+/* Error SnackBar */
+.snackbar__error {
+  position: fixed;
+  z-index: 50;
+  padding: 0.5em;
+  bottom: 50px;
+  text-align: center;
+  left: 50%;
+  width: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

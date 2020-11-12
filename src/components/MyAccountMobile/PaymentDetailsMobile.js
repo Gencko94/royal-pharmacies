@@ -2,11 +2,30 @@ import React from 'react';
 import lostManWallet from '../../assets/illustrations/lostManWallet.svg';
 import { MdPayment } from 'react-icons/md';
 import { useIntl } from 'react-intl';
+import { motion } from 'framer-motion';
 export default function PaymentDetailsMobile() {
   const { formatMessage } = useIntl();
   const orders = [];
+  const containerVariants = {
+    hidden: {
+      x: '100%',
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0,
+    },
+  };
   return (
-    <div
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
       className="  flex flex-col justify-center items-center p-4 "
       style={{ height: 'calc(-173px + 100vh)' }}
     >
@@ -29,6 +48,6 @@ export default function PaymentDetailsMobile() {
           </div>
         </>
       )}
-    </div>
+    </motion.div>
   );
 }

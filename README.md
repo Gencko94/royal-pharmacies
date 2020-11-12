@@ -14,9 +14,15 @@
 
 - [x] Add Maps to MyAddressesMobile.
 
+- [x] Append buy options to cart.
+
 - [ ] Add Error Boundaries and handlers.
 
-- [ ] Add routes to account page and try to animate them.
+- [x] Make buttons bigger || or make classes for buttons.
+
+- [ ] Add forgot password support .
+
+- [x] Add routes to account page and try to animate them.
 
 - [ ] Add Edit Cart item support.
 
@@ -24,7 +30,7 @@
 
 - [ ] Look into lazy loading and progressive images.
 
-- [x] Add Order History to Desktop View.
+- [ ] Complete desktop view order history.
 
 - [ ] Add React query to order history.
 
@@ -42,7 +48,7 @@
 
 - [ ] Complete the Checkout Page.
 
-- [ ] Add Loaders to Vertical Items.
+- [x] Add Loaders to Vertical Items.
 
 - [ ] Search Engine optimization.
 

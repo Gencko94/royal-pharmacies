@@ -29,12 +29,7 @@ const LeftArrow = ({ onClick }) => {
   );
 };
 
-export default function ItemsSlider({
-  miniLogo = false,
-  title,
-  isLightTheme,
-  type,
-}) {
+export default function ItemsSlider({ title, isLightTheme, type }) {
   const settings = {
     className: '',
     arrows: true,

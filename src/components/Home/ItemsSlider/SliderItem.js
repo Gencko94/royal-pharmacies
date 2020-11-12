@@ -1,6 +1,7 @@
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import { TiShoppingCart } from 'react-icons/ti';
+import { BsPlus } from 'react-icons/bs';
 import { useIntl } from 'react-intl';
 import MultiClamp from 'react-multi-clamp';
 import BuyOptions from './BuyOptions';
@@ -101,9 +102,20 @@ export default function SliderItem({
             </p>
             <button
               onClick={() => handleBuyOptionsToggle(data.id)}
-              className=" rounded-full p-1 shadow-itemsSlider-shallow text-body-light z-3 bg-main-color"
+              className=" rounded-full  p-2  shadow-itemsSlider-shallow relative text-body-light z-3 bg-main-color"
             >
-              <TiShoppingCart className="w-20p h-20p" />
+              <TiShoppingCart
+                style={{
+                  height: '25px',
+                  width: '25px',
+                  marginTop: '3px',
+                  marginRight: '2px',
+                }}
+              />
+              <BsPlus
+                className="w-4 h-4 absolute  "
+                style={{ right: '4px', top: '3px' }}
+              />
             </button>
             {/* {data.sale && (
               <p className="text-xs mx-3  line-through text-gray-500  font-bold whitespace-no-wrap">

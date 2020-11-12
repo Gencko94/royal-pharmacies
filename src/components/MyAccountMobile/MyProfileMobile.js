@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import Select from 'react-select';
@@ -9,8 +10,27 @@ export default function MyProfileMobile() {
     { value: 'English', label: 'English' },
   ];
   const [language, setLanguage] = React.useState(languages[1]);
+  const containerVariants = {
+    hidden: {
+      x: '100%',
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0,
+    },
+  };
   return (
-    <div>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
       <div className="">
         <div className="px-3 py-3 flex justify-between  text-gray-900">
           <h1 className="text-xl font-semibold">
@@ -93,6 +113,6 @@ export default function MyProfileMobile() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

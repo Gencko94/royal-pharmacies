@@ -161,13 +161,13 @@ export default function SideCartMenu({
             <div className=" flex items-center my-2 text-center text-second-nav-text-light ">
               <Link
                 to={`/${locale}/checkout/guestcheckout`}
-                className={`flex-1 py-1  px-2  bg-blue-500 w-full  rounded `}
+                className={`flex-1 py-2  px-3  bg-green-700 w-full  rounded `}
               >
                 {formatMessage({ id: 'checkout' })}
               </Link>
               <Link
                 to={`/${locale}/cart`}
-                className={`flex-1 py-1 px-2 bg-green-500 mx-1    rounded`}
+                className={`flex-1 py-2 px-3 border border-main-color text-main-color mx-1    rounded`}
               >
                 {formatMessage({ id: 'go-to-cart' })}
               </Link>

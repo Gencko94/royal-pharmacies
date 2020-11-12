@@ -1,8 +1,9 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import guest from '../../assets/svgs/guest.svg';
 export default function Avatar() {
   return (
-    <div className="flex mb-4 rounded-lg  p-2 border shadow-itemsSlider-shallow overflow-hidden ">
+    <motion.div className="flex mb-4 rounded-lg  p-2 border shadow-itemsSlider-shallow overflow-hidden ">
       <div className="" style={{ flexBasis: '20%' }}>
         <img src={guest} alt="user" />
       </div>
@@ -10,6 +11,6 @@ export default function Avatar() {
         <h1>John Doe</h1>
         <h1 className="text-xs">John@Doe.com</h1>
       </div>
-    </div>
+    </motion.div>
   );
 }

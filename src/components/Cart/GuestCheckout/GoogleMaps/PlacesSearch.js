@@ -7,8 +7,14 @@ import usePlacesAutoComplete, {
 import AutoSuggest from 'react-autosuggest';
 import { MdLocationOn } from 'react-icons/md';
 import { useIntl } from 'react-intl';
+import ErrorSnackbar from '../../../ErrorSnackbar';
 export default function PlacesSearch({ panTo, markerAddress }) {
   const { formatMessage, locale } = useIntl();
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState(null);
+  const closeErrorDialog = () => {
+    setErrorOpen(false);
+  };
   const {
     ready,
     value,
@@ -29,7 +35,8 @@ export default function PlacesSearch({ panTo, markerAddress }) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
     } else {
-      alert('Geolocation is not supported by this browser.');
+      setErrorOpen(true);
+      setErrorMessage('Geolocation is not supported by this browser.');
     }
   };
   const locationSuccess = position => {
@@ -40,20 +47,25 @@ export default function PlacesSearch({ panTo, markerAddress }) {
   const locationError = error => {
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        alert('User Denied the request for Geolocation. ');
+        setErrorOpen(true);
+        setErrorMessage('User Denied the request for Geolocation. ');
         break;
       case error.POSITION.UNAVAILABLE:
-        alert('Location information is Unavailable ');
+        setErrorOpen(true);
+        setErrorMessage('Location information is Unavailable ');
         break;
       case error.TIMEOUT:
-        alert('The Request to get user location was timed out. ');
+        setErrorOpen(true);
+        setErrorMessage('The Request to get user location was timed out. ');
         break;
       case error.UNKNOWN_ERROR:
-        alert('An Unknown Error has Occured.');
+        setErrorOpen(true);
+        setErrorMessage('An Unknown Error has Occured.');
         break;
 
       default:
-        alert('An Unknown Error has Occured.');
+        setErrorOpen(true);
+        setErrorMessage('An Unknown Error has Occured.');
     }
   };
   const handleClick = async (e, { suggestion }) => {
@@ -93,6 +105,12 @@ export default function PlacesSearch({ panTo, markerAddress }) {
   };
   return (
     <>
+      {errorOpen && (
+        <ErrorSnackbar
+          message={errorMessage}
+          closeFunction={closeErrorDialog}
+        />
+      )}
       <div className="absolute z-3 top-0 " style={{ width: '96%', left: '2%' }}>
         <div
           style={{ position: 'absolute', top: '19px' }}

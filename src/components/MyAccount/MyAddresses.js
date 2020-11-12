@@ -5,13 +5,15 @@ import GoogleMapsAddress from '../GoogleMapsAddress';
 import Locations from './MyAddresses/Locations';
 import NoAddresses from './MyAddresses/NoAddresses';
 import { useQuery, useMutation, queryCache } from 'react-query';
+import { motion } from 'framer-motion';
 
-export default function MyAddresses({ isLightTheme }) {
+export default function MyAddresses() {
   const [showMap, setShowMap] = React.useState(false);
   const {
     getUserLocations,
     handleAddLocation,
     handleRemoveLocation,
+    isLightTheme,
   } = React.useContext(DataProvider);
 
   /* Main Fetching */
@@ -83,25 +85,33 @@ export default function MyAddresses({ isLightTheme }) {
     );
   }
 
+  const containerVariants = {
+    hidden: {
+      x: '100%',
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0,
+    },
+  };
   if (isLoading)
     return (
-      <div
-        className={`rounded-lg overflow-hidden ${
-          isLightTheme
-            ? 'shadow-itemsSlider-shallow'
-            : 'shadow-itemsSlider-wide'
-        }`}
-      >
-        <div className="flex h-full justify-center items-center">
-          <BeatLoader size={10} color={'#b72b2b'} />
-        </div>
+      <div className="flex h-full justify-center items-center">
+        <BeatLoader size={10} color={'#b72b2b'} />
       </div>
     );
   return (
-    <div
-      className={`rounded-lg overflow-hidden ${
-        isLightTheme ? 'shadow-itemsSlider-shallow' : 'shadow-itemsSlider-wide'
-      }`}
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="h-full"
     >
       {!isLoading &&
         !showMap &&
@@ -121,6 +131,6 @@ export default function MyAddresses({ isLightTheme }) {
           AddButtonLoading={AddButtonLoading}
         />
       )}
-    </div>
+    </motion.div>
   );
 }

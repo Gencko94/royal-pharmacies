@@ -27,8 +27,6 @@ export default function SideCartMenuMobile({
       opacity: 1,
       transition: {
         type: 'tween',
-        // when: 'beforeChildren',
-        // staggerChildren: 0.1,
       },
     },
     exited: {
@@ -45,7 +43,6 @@ export default function SideCartMenuMobile({
     },
     visible: {
       x: 0,
-      // delay: 3,
     },
     exited: {
       opacity: 0,
@@ -167,13 +164,13 @@ export default function SideCartMenuMobile({
             <div className=" flex items-center my-2 text-center text-second-nav-text-light ">
               <Link
                 to={`/${locale}/checkout/guestcheckout`}
-                className={`flex-1 py-1  px-2  bg-blue-500 w-full  rounded `}
+                className={`flex-1 py-2  px-3  bg-green-700 w-full  rounded `}
               >
                 {formatMessage({ id: 'checkout' })}
               </Link>
               <Link
                 to={`/${locale}/cart`}
-                className={`flex-1 py-1 px-2 bg-green-500 mx-1    rounded`}
+                className={`flex-1 py-2 px-3 text-main-color mx-1 border-main-color border   rounded`}
               >
                 {formatMessage({ id: 'go-to-cart' })}
               </Link>

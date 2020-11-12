@@ -185,6 +185,15 @@ export default function DataContextProvider({ children }) {
       }, 500);
     });
   };
+  const getRecentlyViewedVertical = visitedItems => {
+    return new Promise(resolve => {
+      let iDs = visitedItems.map(item => item.id);
+      let visited = allItems.filter(item => iDs.includes(item.id));
+      setTimeout(() => {
+        resolve(visited.slice(0, 5));
+      }, 1000);
+    });
+  };
   const addItemToCart = ({ id, quantity, price, name, photo, category }) => {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -239,7 +248,7 @@ export default function DataContextProvider({ children }) {
   const calculateItemsPrice = item => {
     let price = 0;
     item.forEach(item => {
-      price = price + item.quantity * item.price;
+      price = price + item.quantity * parseInt(item.price);
     });
     return price;
   };
@@ -2446,6 +2455,7 @@ export default function DataContextProvider({ children }) {
         getCartItemsLength,
         getNavCategoryData,
         getOrderedItems,
+        getRecentlyViewedVertical,
       }}
     >
       {children}

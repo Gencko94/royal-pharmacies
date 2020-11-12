@@ -100,7 +100,7 @@ function App() {
 
           <Route exact path="/" component={Home} />
 
-          <ProtectedRoute path="/user/account/:page">
+          <ProtectedRoute path="/user/account">
             {isTabletOrAbove ? <MyAccount /> : <MyAccountMobile />}
           </ProtectedRoute>
 

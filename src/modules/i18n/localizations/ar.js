@@ -15,6 +15,7 @@ export const ar = {
   'my-account': 'حسابي',
   register: 'اشترك معنا',
   login: 'سجل الدخول',
+  logout: 'تسجيل الخروج',
   'order-history': 'طلباتي السابقة',
   'viewed-items': 'العناصر التي قمت بزيارتها مسبقا',
   'my-orders': 'طلباتي',

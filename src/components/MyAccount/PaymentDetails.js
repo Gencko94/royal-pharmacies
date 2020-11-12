@@ -1,15 +1,34 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import { MdPayment } from 'react-icons/md';
 import { useIntl } from 'react-intl';
 import lostManWallet from '../../assets/illustrations/lostManWallet.svg';
+import { DataProvider } from '../../contexts/DataContext';
 
-export default function PaymentDetails({ isLightTheme }) {
+export default function PaymentDetails() {
+  const { isLightTheme } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
+  const containerVariants = {
+    hidden: {
+      x: '100%',
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0,
+    },
+  };
   return (
-    <div
-      className={`rounded-lg overflow-hidden  ${
-        isLightTheme ? 'shadow-itemsSlider-shallow' : 'shadow-itemsSlider-wide'
-      }`}
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="h-full"
     >
       <div className="flex flex-col justify-center items-center h-full">
         <img
@@ -36,6 +55,6 @@ export default function PaymentDetails({ isLightTheme }) {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

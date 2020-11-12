@@ -93,7 +93,12 @@ export default function GoogleMapsAddress({
       setMarkerAddress(null);
     }
   }, [markerDetails]);
-  if (loadError) return 'Error loading maps';
+  if (loadError)
+    return (
+      <div className="h-full flex justify-center items-center">
+        <h1>There was an Error loading maps, Please try again </h1>
+      </div>
+    );
   if (!isLoaded)
     return (
       <div className="flex h-full justify-center items-center">

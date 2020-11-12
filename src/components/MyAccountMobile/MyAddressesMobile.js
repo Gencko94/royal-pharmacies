@@ -5,6 +5,7 @@ import { BeatLoader } from 'react-spinners';
 import NoAddresses from '../MyAccount/MyAddresses/NoAddresses';
 import GoogleMapsAddress from '../GoogleMapsAddress';
 import LocationsMobile from './MyAddressesMobile/LocationsMobile';
+import { motion } from 'framer-motion';
 export default function MyAddressesMobile() {
   const [showMap, setShowMap] = React.useState(false);
   const {
@@ -81,8 +82,29 @@ export default function MyAddressesMobile() {
         </div>
       </div>
     );
+  const containerVariants = {
+    hidden: {
+      x: '100%',
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0,
+    },
+  };
   return (
-    <div className="" style={{ height: 'calc(-173px + 100vh)' }}>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className=""
+      style={{ height: 'calc(-173px + 100vh)' }}
+    >
       {!isLoading &&
         !showMap &&
         (data.length === 0 ? (
@@ -101,6 +123,6 @@ export default function MyAddressesMobile() {
           AddButtonLoading={AddButtonLoading}
         />
       )}
-    </div>
+    </motion.div>
   );
 }

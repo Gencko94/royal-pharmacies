@@ -5,7 +5,6 @@ import Hamburger from '../MobileNavbar/Hamburger';
 import { AiFillHome } from 'react-icons/ai';
 import { FaHeart } from 'react-icons/fa';
 import { BsBagFill } from 'react-icons/bs';
-import { MdAccountCircle } from 'react-icons/md';
 import { useIntl } from 'react-intl';
 import { motion } from 'framer-motion';
 
@@ -39,14 +38,6 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
         </div>
       </div>
       <div className="  px-1 my-2 ">
-        {/* <div className="grid place-items-center mb-2">
-          <Link
-            to="/app/login"
-            className=" font-semibold p-1 rounded text-center shadow "
-          >
-            Hello,Sign in
-          </Link>
-        </div> */}
         <motion.div
           className="flex justify-between items-center"
           variants={listContainerVariants}
@@ -92,20 +83,6 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
               </div>
               <h1 className="text-xs  font-semibold whitespace-no-wrap">
                 {formatMessage({ id: 'wishlist-short' })}
-              </h1>
-            </Link>
-          </motion.button>
-          <motion.button className="   ">
-            <Link
-              style={{ width: '60px' }}
-              to={`/${locale}/app/login`}
-              className="flex flex-col justify-center items-center"
-            >
-              <div className="rounded shadow p-2 mb-1 ">
-                <MdAccountCircle className="w-5 h-5 " />
-              </div>
-              <h1 className="text-xs  font-semibold whitespace-no-wrap">
-                {formatMessage({ id: 'short-login' })}
               </h1>
             </Link>
           </motion.button>

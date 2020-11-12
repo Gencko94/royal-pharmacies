@@ -8,7 +8,6 @@ export default function ProtectedRoute({ children, ...args }) {
   const { isAuthenticated, authenticationLoading } = React.useContext(
     AuthProvider
   );
-  console.log(isAuthenticated === true);
   return (
     <Route
       {...args}

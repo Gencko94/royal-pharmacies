@@ -3,7 +3,10 @@ import ProfileModal from '../Modals/ProfileModal';
 import useClickAway from '../../hooks/useClickAway';
 import Select from 'react-select';
 import { useIntl } from 'react-intl';
-export default function MyProfile({ isLightTheme }) {
+import { DataProvider } from '../../contexts/DataContext';
+import { motion } from 'framer-motion';
+export default function MyProfile() {
+  const { isLightTheme } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
   const languages = [
     { value: 'Arabic', label: 'Arabic' },
@@ -36,12 +39,26 @@ export default function MyProfile({ isLightTheme }) {
       document.removeEventListener('keydown', checkEscKey);
     };
   }, []);
-
+  const containerVariants = {
+    hidden: {
+      x: '100%',
+      opacity: 0,
+    },
+    visible: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: {
+      x: '-100%',
+      opacity: 0,
+    },
+  };
   return (
-    <div
-      className={`rounded-lg overflow-y-auto self-stretch ${
-        isLightTheme ? 'shadow-itemsSlider-shallow' : 'shadow-itemsSlider-wide'
-      }`}
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
     >
       <div className="">
         <div className="bg-main-color text-main-text px-3 py-3 flex items center justify-between">
@@ -140,6 +157,6 @@ export default function MyProfile({ isLightTheme }) {
         profileModalBoxRef={profileModalBoxRef}
         profileEditModalOpen={profileEditModalOpen}
       />
-    </div>
+    </motion.div>
   );
 }
