@@ -27,7 +27,7 @@ export default function FloatingAddToCart({
     >
       <div className={`floating-button border-t bg-second-nav-text-light`}>
         <div className=" flex items-center justify-center flex-1">
-          <button onClick={handleSubstractQuantity} className="p-1 mr-2">
+          <button onClick={handleSubstractQuantity} className="p-1">
             <AiOutlineMinusCircle
               className={`w-6 h-6 ${
                 quantity === 1 ? 'text-gray-700' : 'text-blue-700'

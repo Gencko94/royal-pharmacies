@@ -64,6 +64,9 @@ const baseStrings = {
   description: 'Description',
   specifications: 'Specifications',
   reviews: 'Reviews',
+  'the-reviews': 'Reviews',
+  'one-review': 'Review',
+  'two-reviews': 'Reviews',
   'secure-transaction': 'Secure transaction',
   quantity: 'Quantity',
   'estimated-delivery': 'Estimated Delivery',
@@ -170,6 +173,17 @@ const baseStrings = {
   delivered: 'Delivered',
   pending: 'Pending',
   'expected-delivery': 'Expected Delivery',
+  /**
+   * Single product sizes & colors
+   */
+  'single-product-size': 'Available sizes for this product',
+  'single-product-color': 'Available colors for this product',
+  'single-product-additional-details': 'Additional Details for this product',
+  'additional-details__item-specifications': 'Item Specifications',
+  'additional-details__item-description': 'Item Description',
+  'additional-details__item-reviews': 'Item Reviews',
+
+  'single-product-product-review': 'Product Rating',
 };
 
 export const en = baseStrings;

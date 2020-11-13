@@ -3,19 +3,49 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import Rating from 'react-rating';
 import miniBanner from '../../assets/banners/miniBanner.gif';
-export default function MiddleSection({ data, deliveryCountry }) {
+import Colors from './Colors';
+import Sizes from './Sizes';
+export default function MiddleSection({
+  data,
+  deliveryCountry,
+  size,
+  setSize,
+  color,
+  setColor,
+}) {
   const { formatMessage } = useIntl();
+  const resolvePlural = () => {
+    switch (data.reviews.length) {
+      case 1:
+        return formatMessage({ id: 'one-review' });
+
+      case 2:
+        return formatMessage({ id: 'two-reviews' });
+
+      case data.reviews.length > 10:
+        return formatMessage({ id: 'one-review' });
+
+      default:
+        return formatMessage({ id: 'reviews' });
+    }
+  };
   return (
     <div className="flex flex-col w-full self-start ">
       <h1 className="font-semibold text-xl">{data.name}</h1>
       <div className="flex items-center ">
         <Rating
-          initialRating={4.5}
-          emptySymbol={<AiOutlineStar className="text-red-700" />}
-          fullSymbol={<AiFillStar className="text-red-700" />}
+          initialRating={data.rating}
+          readonly
+          emptySymbol={<AiOutlineStar className="text-gold" />}
+          fullSymbol={<AiFillStar className="text-gold" />}
           className=" pt-1"
         />
-        <h1 className="text-sm mx-2">36 {formatMessage({ id: 'ratings' })}</h1>
+        <div className="text-sm mx-2">
+          <div className="text-sm text-gray-600 flex items-center">
+            <h1>{data.reviews.length > 2 && data.reviews.length}</h1>
+            <h1 className="mx-1">{resolvePlural()}</h1>
+          </div>
+        </div>
       </div>
       <h1 className=" font-semibold mb-1 text-green-700">
         {formatMessage({ id: 'in-stock' })}
@@ -38,7 +68,7 @@ export default function MiddleSection({ data, deliveryCountry }) {
               <h1 className=" text-xl mx-2  text-red-700">
                 {data.price} KD
               </h1>{' '}
-              <h1 className=" font-normal  text-gray-700">
+              <h1 className=" font-normal uppercase  text-gray-700">
                 ({formatMessage({ id: 'vat-inclusive' })})
               </h1>
             </div>
@@ -53,35 +83,29 @@ export default function MiddleSection({ data, deliveryCountry }) {
         </div>
       </div>
       <hr className="my-2" />
+      {data.sizes && (
+        <>
+          <Sizes
+            sizes={data.sizes}
+            size={size}
+            setSize={setSize}
+            availableSizes={data.availableSizes}
+          />
+          <hr className="my-2" />
+        </>
+      )}
+      {data.colors && (
+        <>
+          <Colors
+            colors={data.colors}
+            color={color}
+            setColor={setColor}
+            availableColors={data.availableColors}
+          />
+          <hr className="my-2" />
+        </>
+      )}
       <img src={miniBanner} alt="offer" className="mt-2" />
-
-      {/* <ul
-        className={`${
-          isDesktop ? 'text-sm' : 'text-sm'
-        } bg-gray-200  py-2 my-2 list-disc pl-4`}
-      >
-        <li>
-          The nephilim Edition contains all the loot from the Collector's
-          Edition as well as the Limited Edition Darksiders: the forbidden land
-          board game!{' '}
-        </li>
-        <li>
-          Blast Angels and demons as the gunslinging Horseman strife, playable
-          for the first time
-        </li>
-        <li>
-          Swap between the powerful swordsman war and strife instantly in
-          frenetic, single-player gameplay
-        </li>
-        <li>
-          Explore the epic world of Darksiders and wreak havoc with a friend in
-          two-player cooperative mode{' '}
-        </li>
-        <li>
-          Experience a brand new story campaign that takes place before the
-          original Darksiders, exploring the origin of the Seven seals{' '}
-        </li>
-      </ul> */}
     </div>
   );
 }

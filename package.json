@@ -13,6 +13,7 @@
     "gsap": "^3.5.1",
     "i18next": "^19.8.3",
     "i18next-browser-languagedetector": "^6.0.1",
+    "moment": "^2.29.1",
     "nprogress": "^0.2.0",
     "pure-react-carousel": "^1.27.4",
     "react": "^16.13.1",

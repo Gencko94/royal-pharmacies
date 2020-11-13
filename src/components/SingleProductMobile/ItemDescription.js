@@ -4,8 +4,19 @@ import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
 import Rating from 'react-rating';
 import MoonLoader from 'react-spinners/MoonLoader';
+import Colors from '../SingleProduct/Colors';
+import Sizes from '../SingleProduct/Sizes';
 export default function ItemDescription({
-  data: { name, priceBefore, price, id },
+  data: {
+    name,
+    priceBefore,
+    price,
+    id,
+    colors,
+    availableColors,
+    sizes,
+    availableSizes,
+  },
   deliveryCountry,
   handleRemoveFromCart,
   handleAddToCart,
@@ -13,6 +24,10 @@ export default function ItemDescription({
   quantity,
   setQuantity,
   addToCartButtonLoading,
+  size,
+  setSize,
+  color,
+  setColor,
 }) {
   const { formatMessage } = useIntl();
 
@@ -77,6 +92,28 @@ export default function ItemDescription({
           <option>3</option>
         </select>
       </div>
+      {sizes && (
+        <>
+          <Sizes
+            size={size}
+            setSize={setSize}
+            sizes={sizes}
+            availableSizes={availableSizes}
+          />
+          <hr className="my-2" />
+        </>
+      )}
+      {colors && (
+        <>
+          <Colors
+            colors={colors}
+            color={color}
+            setColor={setColor}
+            availableColors={availableColors}
+          />
+          <hr className="my-2" />
+        </>
+      )}
       <div className="relative flex items-center justify-between">
         <button
           onClick={() => {

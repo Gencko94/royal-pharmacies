@@ -52,7 +52,10 @@ export const ar = {
   'additional-details': 'تفاصيل إضافية',
   description: 'الوصف',
   specifications: 'المواصفات',
-  reviews: 'المراجعات',
+  'the-reviews': 'المراجعات',
+  reviews: 'مراجعات',
+  'one-review': 'مراجعة واحدة',
+  'two-reviews': 'مراجعتان',
   'secure-transaction': 'دفع آمن',
   quantity: 'الكمية',
   'estimated-delivery': 'زمن التوصيل التقريبي',
@@ -163,4 +166,16 @@ export const ar = {
   delivered: 'تم التوصيل',
   pending: 'قيد الإنتظار',
   'expected-delivery': 'وقت التوصيل المتوقع',
+
+  /**
+   * Single product sizes & colors
+   */
+  'single-product-size': 'المقاسات المتوفرة لهذا المنتج',
+  'single-product-color': 'الألوان المتوفرة لهذا المنتج',
+  'single-product-additional-details': 'معلومات إضافية لهذا المنتج',
+  'additional-details__item-specifications': 'مواصفات المنتج',
+  'additional-details__item-description': 'لمحة عن المنتج',
+  'additional-details__item-reviews': 'تقييمات المنتج',
+
+  'single-product-product-review': 'تقييم المنتج',
 };

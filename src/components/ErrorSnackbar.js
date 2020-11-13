@@ -25,8 +25,8 @@ export default function ErrorSnackbar({ message, closeFunction }) {
       exit="exited"
       className="snackbar__error bg-main-color text-main-text rounded font-semibold flex text-sm"
     >
-      <h1>{message}</h1>
-      <button onClick={closeFunction}>
+      <h1 className="mx-3">{message}</h1>
+      <button onClick={closeFunction} className="mx-3">
         <MdClose className="w-5 h-5" />
       </button>
     </motion.div>

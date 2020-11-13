@@ -14,7 +14,9 @@
 
 - [x] Add Maps to MyAddressesMobile.
 
-- [x] Append buy options to cart.
+- [ ] Add a Review system.
+
+- [ ] Append buy options to cart.
 
 - [ ] Add Error Boundaries and handlers.
 

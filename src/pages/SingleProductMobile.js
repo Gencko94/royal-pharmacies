@@ -105,6 +105,8 @@ export default function SingleProductMobile({
     false
   );
   const [quantity, setQuantity] = React.useState(1);
+  const [size, setSize] = React.useState(null);
+  const [color, setColor] = React.useState(null);
 
   const [triggerRef, inView] = useInView();
 
@@ -143,6 +145,8 @@ export default function SingleProductMobile({
         name: data.item.name,
         photo: data.item.photos.small,
         category: data.item.category,
+        color,
+        size,
       });
     } catch (error) {
       console.log(error);
@@ -236,11 +240,19 @@ export default function SingleProductMobile({
                   priceBefore: data.item.priceBefore,
                   name: data.item.name,
                   id: data.item.id,
+                  colors: data.item.colors,
+                  availableColors: data.item.availableColors,
+                  sizes: data.item.sizes,
+                  availableSizes: data.item.availableSizes,
                 }}
                 itemInCart={data.itemInCart}
                 addToCartButtonLoading={addToCartButtonLoading}
                 quantity={quantity}
                 setQuantity={setQuantity}
+                size={size}
+                setSize={setSize}
+                color={color}
+                setColor={setColor}
               />
             )}
             <hr />

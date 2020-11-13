@@ -684,8 +684,35 @@ input {
   bottom: 50px;
   text-align: center;
   left: 50%;
-  width: 400px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+/* single product sizes */
+.single-product-sizes__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 50px);
+  gap: 0.5em;
+}
+/* single product colors */
+.single-product-colors__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 50px);
+}
+.color-disabled {
+  position: relative;
+  width: 50px;
+  height: 75px;
+}
+.color-disabled::after {
+  position: absolute;
+  transform: rotate(57deg);
+  transform-origin: left;
+  content: '';
+  top: 0;
+  left: 0;
+  background-color: gray;
+  width: 175%;
+  height: 1px;
 }

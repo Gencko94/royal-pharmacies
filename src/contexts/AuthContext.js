@@ -89,7 +89,7 @@ export default function AuthContext({ children }) {
     });
   };
   const handleUserLogin = data => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       setTimeout(() => {
         localStorage.setItem('localAuthenticated', true);
         resolve({

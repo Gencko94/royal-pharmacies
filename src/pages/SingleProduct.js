@@ -16,6 +16,7 @@ import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import SingleProductLoader from '../components/SingleProduct/SingleProductLoader';
+import AdditionalDetails from '../components/SingleProduct/AdditionalDetails';
 
 export default function SingleProduct() {
   const { id, name } = useParams();
@@ -97,12 +98,14 @@ export default function SingleProduct() {
     }
   );
   const [quantity, setQuantity] = React.useState(quantityOptions[0]);
+  const [size, setSize] = React.useState(null);
+  const [color, setColor] = React.useState(null);
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
   const [related, setRelated] = React.useState(null);
-  const [detailsTab, setDetailsTab] = React.useState(0);
+
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
@@ -123,6 +126,8 @@ export default function SingleProduct() {
         name: data.item.name,
         photo: data.item.photos.small,
         category: data.item.category,
+        size,
+        color,
       });
     } catch (error) {
       console.log(error);
@@ -199,7 +204,7 @@ export default function SingleProduct() {
           {isLoading && <SingleProductLoader />}
           {!isLoading && (
             <div className="details__container">
-              <div className="relative ">
+              <div className=" ">
                 <ImageZoom
                   data={{ images: data.item.photos.main, name: data.item.name }}
                 />
@@ -208,6 +213,10 @@ export default function SingleProduct() {
               <MiddleSection
                 data={data.item}
                 deliveryCountry={deliveryCountry}
+                setColor={setColor}
+                color={color}
+                setSize={setSize}
+                size={size}
               />
               <RightSection
                 data={data.item}
@@ -222,39 +231,7 @@ export default function SingleProduct() {
             </div>
           )}
           <div id="details" className="py-2 mb-2">
-            <h1 className="text-xl font-semibold mb-1 px-2">
-              Additional Details
-            </h1>
-            <div className="flex justify-center mb-2">
-              <button
-                onClick={() => setDetailsTab(0)}
-                className={`text-lg py-2 flex-1 text-center   ${
-                  detailsTab === 0 && 'border-red-700 border-b-2 text-red-700'
-                }   bg-gray-400`}
-              >
-                Description
-              </button>
-
-              <button
-                onClick={() => setDetailsTab(1)}
-                className={`text-lg py-2 flex-1 text-center   ${
-                  detailsTab === 1 && 'border-red-700 border-b-2 text-red-700'
-                }   bg-gray-400`}
-              >
-                Specifications
-              </button>
-              <button
-                onClick={() => setDetailsTab(2)}
-                className={`text-lg py-2 flex-1 text-center   ${
-                  detailsTab === 2 && 'border-red-700 border-b-2 text-red-700'
-                }   bg-gray-400`}
-              >
-                Reviews
-              </button>
-            </div>
-            {!isLoading && (
-              <div className="px-2 text-sm">{data.description}</div>
-            )}
+            {!isLoading && <AdditionalDetails data={data.item} />}
           </div>
           {related && <RelatedItems relatedData={related} />}
           {isFetching && <div>Loading ...</div>}

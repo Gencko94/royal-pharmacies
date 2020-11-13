@@ -13,6 +13,7 @@ import { LocalizedSwitch, LocalizedRouter, appStrings } from './modules/i18n/';
 import { appLanguages } from './modules/const';
 import Loading from './helpers/Loading';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
+import Test from './pages/test';
 // import Loadable from 'react-loadable';
 
 // const Home = Loadable({
@@ -148,6 +149,7 @@ function App() {
               }
             }}
           />
+          <Route path="/test" component={Test} />
 
           <Route>
             <div>not found !</div>

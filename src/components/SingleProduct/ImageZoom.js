@@ -12,7 +12,6 @@ export default function ImageZoom({ data: { name, images } }) {
 
   const { locale } = useIntl();
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  // const min1100 = useMediaQuery({ query: '(min-width:1100px)' });
   const mainSettings = {
     arrows: false,
     infinite: true,
@@ -42,7 +41,7 @@ export default function ImageZoom({ data: { name, images } }) {
         })}
       </Slider>
       <div
-        className={`absolute top-0  flex flex-col justify-center ${
+        className={`absolute top-0  grid grid-cols-1 gap-2 ${
           locale === 'ar' ? 'right-0' : 'left-0'
         }`}
       >

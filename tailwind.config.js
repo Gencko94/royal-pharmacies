@@ -75,6 +75,7 @@ module.exports = {
         'nav-gradient-to': '#9d0707',
         'buy-options-main': '#f64f59',
         aliceblue: '#F0F8FF',
+        gold: '#d3a13b',
       },
       spacing: {
         '1p': '1px',

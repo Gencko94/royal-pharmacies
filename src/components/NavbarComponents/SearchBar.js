@@ -9,13 +9,13 @@ export default function SearchBar() {
   const { isLightTheme } = React.useContext(DataProvider);
   const [searchBarValue, setSearchBarValue] = React.useState('');
   const history = useHistory();
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const handleSearch = e => {
     if (!searchBarValue) {
       return;
     }
     e.preventDefault();
-    history.push(`/search/q=${searchBarValue}`);
+    history.push(`/${locale}/search/q=${searchBarValue}`);
   };
   return (
     <div

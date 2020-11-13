@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { useIntl } from 'react-intl';
 import { AuthProvider } from '../contexts/AuthContext';
 import { BeatLoader } from 'react-spinners';
+import ErrorSnackbar from '../components/ErrorSnackbar';
 const CustomTextInput = ({ label, value, name, ...props }) => {
   const [activeLabel, setActiveLabel] = React.useState(false);
   const checkEmptyInput = () => {
@@ -49,6 +50,11 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
 export default function Login() {
   const { formatMessage, locale } = useIntl();
   const { userLogin } = React.useContext(AuthProvider);
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const closeError = () => {
+    setErrorOpen(false);
+  };
   const history = useHistory();
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -58,6 +64,9 @@ export default function Login() {
   });
   return (
     <div className="  text-gray-900 flex justify-center items-center   h-screen relative">
+      {errorOpen && (
+        <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
+      )}
       <div className=" rounded z-2  max-w-screen-xs w-5/6 pb-1  shadow-2xl   overflow-hidden">
         <div className="flex items-center flex-col p-4 pb-1 bg-main-color text-main-text ">
           <Link to={`/${locale}/`}>
@@ -80,11 +89,22 @@ export default function Login() {
             password: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
-            const res = await userLogin(values);
-            if (res === 'ok') {
-              resetForm();
-              history.goBack();
+          onSubmit={async (values, actions) => {
+            setErrorOpen(false);
+            try {
+              const res = await userLogin(values);
+              if (res === 'ok') {
+                history.goBack();
+              } else {
+                actions.setErrors({
+                  email: 'Email or Password is not correct',
+                  password: 'Email or password is not correct',
+                });
+                actions.setSubmitting(false);
+              }
+            } catch (error) {
+              setErrorOpen(true);
+              setErrorMessage('Something went wrong, Please try again');
             }
           }}
         >
