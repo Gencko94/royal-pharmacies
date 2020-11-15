@@ -81,6 +81,7 @@ const baseStrings = {
   'we-have-found': 'We have found',
   addresses: 'addresses ',
   'one-address': 'address',
+  'show-order-receipt': 'Show order receipt',
 
   //
   'home.title': 'Home',
@@ -121,15 +122,21 @@ const baseStrings = {
   //end of credentials forms
   //start of cart items
   price: 'Price',
-  item: 'Item',
-  items: 'Items',
+  'the-item': 'Item',
+  'the-items': 'Items',
   'one-item': 'Item',
+  'two-items': 'Items',
   'multiple-items': 'Items',
 
   'cart-tos':
     'The price and availability of items at mrg.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
   subtotal: 'Subtotal',
+  'cart-total': 'Cart Total',
+  'cart-enter-code-or-coupon': 'Enter Code or Coupon here',
+  'cart-code-button': 'Enter',
   'cart-empty': 'Oops, Your cart is Empty !',
+  'cart-delivery-cost': 'Delivery Cost',
+  'cart-free': 'Free',
   'check-today-deals': 'Check today deals',
   'shopping-cart': 'Shopping cart',
   single: '1',
@@ -140,6 +147,16 @@ const baseStrings = {
   'order-placed': 'Order Placed',
   // maps
   'find-my-position': 'Find my position',
+  'location-details': 'Location Details',
+  'maps-detailed-address-street_neighborhood_governate':
+    'Street/Neighborhood/District',
+  'maps-detailed-address-apartment': 'House or Apartment Number',
+  'maps-detailed-address-building': 'Building or Tower Number',
+  'maps-detailed-address-phone': 'Phone Number',
+  'apartment-empty': 'Please enter House or Apartment Number',
+  'building-empty': 'Please enter Building or Tower Number',
+  'phone-empty': 'Please Enter a phone number',
+  'number-only': 'Please enter a valid Number',
 
   // checkout modal
   'not-signed-in': 'You are not signed in',

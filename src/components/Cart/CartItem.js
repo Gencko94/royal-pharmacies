@@ -64,6 +64,7 @@ export default function CartItem({
             className={`${
               removeButtonLoading === item.id ? 'bg-gray-300' : 'bg-main-color'
             }  text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold `}
+            style={{ width: '160px' }}
           >
             {removeButtonLoading === item.id ? (
               <MoonLoader size={18} color="#b72b2b" />
@@ -78,6 +79,7 @@ export default function CartItem({
           <button
             onClick={() => handleRemoveItem(item.id)}
             className="p-2 border border-main-color  text-main-color font-semibold rounded mx-2"
+            style={{ width: '130px' }}
           >
             {formatMessage({ id: 'add-to-wishlist' })}
           </button>

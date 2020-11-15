@@ -6,6 +6,7 @@ import SortInfoPanel from '../components/Category/SortInfoPanel';
 import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
 import { SearchProvider } from '../contexts/SearchContext';
 import { MdClose } from 'react-icons/md';
+import Layout from '../components/Layout';
 export default function Category({
   match: {
     params: { query },
@@ -213,7 +214,7 @@ export default function Category({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brandFilters, subCategoryFilter]);
   return (
-    <>
+    <Layout>
       <Helmet>
         <title>Search</title>
       </Helmet>
@@ -280,6 +281,6 @@ export default function Category({
           )}
         </div>
       </div>
-    </>
+    </Layout>
   );
 }

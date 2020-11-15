@@ -22,14 +22,14 @@ export default function AdditionalDetails({ data }) {
           {formatMessage({ id: 'additional-details__item-description' })}
         </button>
 
-        <button
+        {/* <button
           onClick={() => setDetailsTab(1)}
           className={`text-lg py-2 flex-1 text-center   ${
             detailsTab === 1 && 'bg-main-color  text-main-text'
           }   bg-gray-400`}
         >
           {formatMessage({ id: 'additional-details__item-specifications' })}
-        </button>
+        </button> */}
         <button
           onClick={() => setDetailsTab(2)}
           className={`text-lg py-2 flex-1 text-center   ${

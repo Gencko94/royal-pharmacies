@@ -79,7 +79,7 @@ export default function PlacesSearch({ panTo, markerAddress }) {
   };
   React.useEffect(() => {
     if (markerAddress) {
-      setValue(`${markerAddress.street} ${markerAddress.governate}`, false);
+      setValue(markerAddress, false);
     }
   }, [markerAddress, setValue]);
 

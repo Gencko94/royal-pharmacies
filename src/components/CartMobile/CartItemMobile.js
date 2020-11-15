@@ -73,7 +73,7 @@ export default function CartItemMobile({
           }}
           className={`${
             removeButtonLoading === item.id ? 'bg-gray-300' : 'bg-main-color'
-          }  text-main-text text-sm flex items-center justify-center flex-1 py-1 px-2 rounded  font-semibold`}
+          }  text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded  font-semibold`}
         >
           {removeButtonLoading === item.id ? (
             <MoonLoader size={18} color="#b72b2b" />
@@ -87,7 +87,7 @@ export default function CartItemMobile({
         </button>
         <button
           onClick={() => handleRemoveItem(item.id)}
-          className="py-1 flex-1 px-2 text-sm bg-blue-600 text-main-text  rounded font-semibold mx-2  "
+          className="p-2 flex-1  text-sm border border-main-color text-main-color  rounded font-semibold mx-2  "
         >
           {formatMessage({ id: 'add-to-wishlist' })}
         </button>

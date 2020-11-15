@@ -74,6 +74,7 @@ export const ar = {
   'no-orders-placed': 'لم تقم بطلب اي منتج حتى الآن',
   'start-shopping-now': 'ابدأ التسوق الآن',
   'search-for-an-area': 'ابحث عن منطقة ...',
+  'show-order-receipt': 'إظهار فاتورة الطلبية',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -116,14 +117,20 @@ export const ar = {
   // end of credential forms
   // start of cart  items
   price: 'السعر',
-  'one-item': 'قطعة',
-  items: 'القطع',
-  item: 'القطعة',
+  'the-items': 'القطع',
+  'the-item': 'القطعة',
+  'one-item': 'قطعة واحدة',
+  'two-items': 'قطعتين',
   'multiple-items': 'قطع',
   'cart-tos':
     'إن سعر وتوافر العناصر على mrg.com عرضة للتغيير. تعتبر عربة التسوق مكانًا مؤقتًا لتخزين قائمة بالعناصر الخاصة بك وتعكس أحدث سعر لكل عنصر.',
   subtotal: 'المبلغ الإجمالي',
+  'cart-total': 'إجمالي العربة',
+  'cart-enter-code-or-coupon': 'أدخل الكود او رقم الكوبون هنا',
+  'cart-code-button': 'إدخال',
   'cart-empty': 'إن عربة التسوق الخاصة بك فارغة !',
+  'cart-delivery-cost': 'كلفة التوصيل',
+  'cart-free': 'مجانا',
   'check-today-deals': 'إلق نظرة على عروض اليوم',
   'shopping-cart': 'عربة التسوق',
   single: 'واحدة',
@@ -134,6 +141,15 @@ export const ar = {
   'order-placed': 'وضع الطلب',
   // maps
   'find-my-position': 'حدد مكاني',
+  'location-details': 'تفاصيل الموقع',
+  'maps-detailed-address-street_neighborhood_governate': 'الشارع/الحي/المحافظة',
+  'maps-detailed-address-apartment': 'رقم المنزل او الشقة',
+  'maps-detailed-address-building': 'رقم البناء او البرج',
+  'maps-detailed-address-phone': 'رقم الهاتف أو الجوال',
+  'apartment-empty': 'الرجاء ذكر رقم المنزل او الشقة',
+  'building-empty': 'الرجاء ذكر رقم البناء او البرج',
+  'phone-empty': 'الرجاء ذكر رقم الهاتف او الجوال',
+  'number-only': 'الرجاء التأكد من رقم الهاتف او الجوال',
 
   // checkout modal
   'not-signed-in': 'لم تقم بتسجيل الدخول ',

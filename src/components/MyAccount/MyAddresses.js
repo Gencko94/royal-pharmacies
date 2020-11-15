@@ -125,11 +125,13 @@ export default function MyAddresses() {
           />
         ))}
       {showMap && (
-        <GoogleMapsAddress
-          setShowMap={setShowMap}
-          addMutation={addMutation}
-          AddButtonLoading={AddButtonLoading}
-        />
+        <div className="relative h-full">
+          <GoogleMapsAddress
+            setShowMap={setShowMap}
+            addMutation={addMutation}
+            AddButtonLoading={AddButtonLoading}
+          />
+        </div>
       )}
     </motion.div>
   );

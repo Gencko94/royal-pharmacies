@@ -39,14 +39,7 @@ export default function Navbar() {
               <span className="border-r mx-1  border-gray-300 opacity-50"></span>
               <ShipTo />
             </div>
-            {/* <Promos /> */}
             <div className="flex justify items-center">
-              {/* <button
-              className="mr-2"
-              onClick={() => setLightTheme(!isLightTheme)}
-            >
-              Light Theme Toggle
-            </button> */}
               {!authenticationLoading && (
                 <>
                   {isAuthenticated && (
@@ -65,6 +58,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
       <div
         className={` z-10 sticky top-0 left-0   ${
           isLightTheme

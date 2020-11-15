@@ -14,11 +14,11 @@
 
 - [x] Add Maps to MyAddressesMobile.
 
-- [ ] Add a Review system.
+- [x] Add a Review system.
 
-- [ ] Append buy options to cart.
+- [x] Append buy options to cart.
 
-- [ ] Add Error Boundaries and handlers.
+- [x] Add Error Boundaries and handlers.
 
 - [x] Make buttons bigger || or make classes for buttons.
 
@@ -28,11 +28,11 @@
 
 - [ ] Add Edit Cart item support.
 
-- [ ] Add Coupon Support.
+- [x] Add Coupon Support.
 
 - [ ] Look into lazy loading and progressive images.
 
-- [ ] Complete desktop view order history.
+- [x] Complete desktop view order history.
 
 - [ ] Add React query to order history.
 
@@ -41,8 +41,6 @@
 - [ ] Add React Query & Localizations to the Search page.
 
 - [ ] Add Buy Options to SingleProduct in Desktop and Mobile View.
-
-- [ ] Add a new layout to SingleProduct Pages.
 
 - [ ] Add Scroll Pagination to SingleProduct Pages.
 
@@ -56,54 +54,134 @@
 
 - [ ] Add 404 page.
 
-- [ ] Discuss Location handling with Maher.
+- [x] Discuss Location handling with Maher.
 
-- [ ] Add default location support.
+- [x] Add default location support.
 
-# Needed Routes
+- [ ] Add keys to env variables.
 
-#### Authenticaion
+# MRG API Structure :
 
-- [ ] - Check whether user is authenticated or not.
-- [ ] - Login Route.
-- [ ] - Register Route.
+## 1. Home page :
 
-#### Home Page
+- ### 1. **_Main Slider_** :
+  Image Sizes should be :
+  - Desktop :
+    - **Width** : from **1366px** up to **1566px**,
+    - **Height**: from **300px** up to **400px**.
+  - Mobile :
+    - **Width** : **800px,**
+    - **Height**: **300px**.
 
-- [ ] - Main Carousel Items.
-- [ ] - Slider Items based on Type & if its in cart or not.
-- [ ] - Promo Banners.
-- [ ] - Delivery Country if needed.
-- [ ] - Category bar data.
+Feel free to Choose between one of the Two Variations :
 
-#### Side Menu
+1. **Two Routes** for **Desktop** and **Mobile** : (_Recommended_)
+   - **Desktop Route**
+   - **Mobile Route**
+2. **One Route** that supports the two viewports
 
-- [ ] - Mobile View Side Menu Category
+- The response Object should be somewhat similar to this :
 
-#### Single Product
+```
+responseObject = {
+ en: {
+  id: id,
+  url : String,
+  link: String
+ },
+  ar: {
+  id: id,
+  url : String,
+  link: String
+ }
+}
 
-- [ ] - Single Product Details & if its in cart or not.
-- [ ] - Add item to cart and return cart items + cart subtotal amount.
-- [ ] - Remove item from cart and return cart items + cart subtotal amount.
+```
 
-#### Cart
+- ### 2. Item Slider: (ex: _BestSellers or Mobile Items.._ )
+- It's going to be an array of at least **7 Items**.
+- Desktop and Mobile are the same.
+- This Route Should return a list of product Items.
+- The returned Image Should be :
+  - Width: **286px MAX**
+  - Height: Same as Width for rectangle Images or **MAX** **210px** .
+- The response Object should be somewhat similar to this :
 
-- [ ] - Edit item from cart ("Quantity + Size + color + etc....") and return cart items + cart subtotal amount.
-- [ ] - Getting Cart items + cart subtotal amount.
-- [ ] - Getting Cart items + cart subtotal amount.
+```
+responseObject = {
+ status:'ok',
+ data: [
+  {
+   id: id,
+   name : String,
+   brand: String (optional),
+   url: String,
+   seoTitle or slug : String (This should mention also the item category for SEO purposes),
+   sale: Boolean, (if the Item has sale on not),
+   price: String || Number,
+   priceAfterSale: String || Number,
+   salePercent:String,
+   image: url,
+   ... any additional extras, Those were just the Basics
+  }
+ ],
 
-#### Wishlist
+}
 
-- [ ] - Getting Wishlist items.
-- [ ] - Add Wishlist items.
-- [ ] - Remove Wishlist items.
+```
 
-#### Orders
+- ### 3. Category Slider:
+- It's going to be an array of at least **7 Items**.
+- Desktop and Mobile are the same.
+- This Route Should return an array of Photo Categories.
+- Each Photo Category Contains a **Main Title**, **URL** ,**Link**, **Background Image** and **SubCategories** (_Either 3 or 4 Sub Categories_ ). The Category Background Image Should match :
 
-- [ ] - Getting Order details.
-- [ ] - Order History details with items.
+  - Width: **1110px MAX**
+  - Height: Same as Width for rectangle Images or **400px MAX** .
 
-#### User settings
+- a Sub Category contains a **Photo URL**(PNG), a **Link**, a **Background color Property that matches the Parent Category Image background Color** (eg : if the Parent Category image background is blue the subcategories image background should be the same hex code ), and a **Title**. The SubCategory Photo Should match :
 
-- [ ] - Getting User general Information.
-- [ ] - Getting User saved locations.
+  - Width: **270px**
+  - Height: Same as Width for rectangle Images or **150px** .
+
+- The response Object should be somewhat similar to this :
+
+```
+responseObject = {
+ status:'ok',
+ data: [
+  {
+   id: id,
+   title: String,
+   backgroundImage: url,
+   link: String,
+   subCategories :[
+	{
+		id:id,
+		title,String,
+		backgroundColor:String(hex),
+		link:String
+	},
+	{
+		id:id,
+		title,String,
+		backgroundColor:String(hex),
+		link:String
+	},
+	...
+   ]
+  }
+ ],
+
+}
+
+```
+
+- ### 4. Banners
+  - an Image that size is the same as the Main Slider Image
+    - Desktop :
+    - **Width** : from **1366px** up to **1566px**,
+    - **Height**: from **300px** up to **400px**.
+    - Mobile :
+    - **Width** : **800px,**
+    - **Height**: **300px**.
