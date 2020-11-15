@@ -348,26 +348,6 @@ input {
   }
 }
 
-/* Profile Edit Modal */
-.profileEditModal-enter {
-  opacity: 0;
-  transform: translateY(-20%);
-}
-.profileEditModal-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: 200ms ease;
-}
-.profileEditModal-exit {
-  transform: translateY(0);
-  opacity: 1;
-}
-.profileEditModal-exit-active {
-  transform: translateY(-20%);
-  opacity: 0;
-  transition: 200ms ease;
-}
-
 /* login & register labels */
 .form__label-active {
   position: absolute;

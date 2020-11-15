@@ -19,7 +19,9 @@ export default function MyAccountMobile() {
       </Helmet>
       <div>
         <MobileTabs />
-        <div style={{ minHeight: 'calc(-120px + 100vh)' }}>
+        <div
+        // style={{ height: 'calc(-120px + 100vh)' }}
+        >
           <AnimatePresence exitBeforeEnter>
             <Switch location={location} key={location.key}>
               <Route path={`${path}`} exact component={MyProfileMobile} />

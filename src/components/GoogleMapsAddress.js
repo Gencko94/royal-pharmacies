@@ -22,11 +22,7 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-export default function GoogleMapsAddress({
-  setAddress,
-  addMutation,
-  AddButtonLoading,
-}) {
+export default function GoogleMapsAddress({ addMutation }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAYprqr3Vrnmhwx9UQozUNNks7CVH9m3Xg',
@@ -71,7 +67,7 @@ export default function GoogleMapsAddress({
         })
         .catch(err => console.log(err));
     }
-  }, [marker, setAddress]);
+  }, [marker]);
   // React.useEffect(() => {
   //   if (!marker) {
   //     setMarkerAddress(null);
@@ -84,13 +80,19 @@ export default function GoogleMapsAddress({
 
   if (loadError)
     return (
-      <div className="h-full flex justify-center items-center">
+      <div
+        className="flex justify-center items-center"
+        style={{ height: 'calc(-173px + 100vh)' }}
+      >
         <h1>There was an Error loading maps, Please try again </h1>
       </div>
     );
   if (!isLoaded)
     return (
-      <div className="flex h-full justify-center items-center">
+      <div
+        className="flex justify-center items-center"
+        style={{ height: 'calc(-173px + 100vh)' }}
+      >
         <BeatLoader size={10} color={'#b72b2b'} />
       </div>
     );

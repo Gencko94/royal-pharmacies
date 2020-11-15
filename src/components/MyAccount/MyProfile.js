@@ -1,12 +1,17 @@
 import React from 'react';
 import ProfileModal from '../Modals/ProfileModal';
-import useClickAway from '../../hooks/useClickAway';
 import Select from 'react-select';
 import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
+import { queryCache, useMutation, useQuery } from 'react-query';
+import { BeatLoader } from 'react-spinners';
 export default function MyProfile() {
-  const { isLightTheme } = React.useContext(DataProvider);
+  const {
+    isLightTheme,
+    getUserProfileInfo,
+    editUserProfileInfo,
+  } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
   const languages = [
     { value: 'Arabic', label: 'Arabic' },
@@ -14,31 +19,40 @@ export default function MyProfile() {
   ];
   const [language, setLanguage] = React.useState(languages[1]);
   const [profileEditModalOpen, setProfileEditModalOpen] = React.useState(false);
-  const generalInformationOptions = [
-    { title: 'full-name', value: 'John Doe' },
 
-    { title: 'phone-number', value: '+123456789' },
-    { title: 'date-of-birth', value: '1/1/1990' },
-  ];
-  const profileModalRef = React.useRef(null);
-  const profileModalBoxRef = React.useRef(null);
-  useClickAway(profileModalBoxRef, () => {
-    setProfileEditModalOpen(false);
-  });
+  /**
+   * Main Fetch
+   */
 
-  const checkEscKey = e => {
-    if ('key' in e) {
-      if (e.key === 'Escape' || e.key === 'Esc') {
+  const { data, isLoading } = useQuery(
+    'userProfile',
+    async () => {
+      const res = await getUserProfileInfo();
+      return res;
+    },
+    { refetchOnWindowFocus: false }
+  );
+
+  /**
+   * Edit Fetch
+   */
+
+  const [editMutation] = useMutation(
+    async data => {
+      return await editUserProfileInfo();
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData('userProfile', prev => {
+          return {
+            ...prev,
+            data,
+          };
+        });
         setProfileEditModalOpen(false);
-      }
+      },
     }
-  };
-  React.useEffect(() => {
-    document.addEventListener('keydown', checkEscKey);
-    return () => {
-      document.removeEventListener('keydown', checkEscKey);
-    };
-  }, []);
+  );
   const containerVariants = {
     hidden: {
       x: '100%',
@@ -53,12 +67,30 @@ export default function MyProfile() {
       opacity: 0,
     },
   };
+  if (isLoading) {
+    return (
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="relative"
+        style={{ height: 'calc(-90px + 100vh)' }}
+      >
+        <div className="flex h-full justify-center items-center">
+          <BeatLoader size={10} color={'#b72b2b'} />
+        </div>
+      </motion.div>
+    );
+  }
   return (
     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       exit="exit"
+      className="relative"
+      style={{ height: 'calc(-90px + 100vh)' }}
     >
       <div className="">
         <div className="bg-main-color text-main-text px-3 py-3 flex items center justify-between">
@@ -73,23 +105,31 @@ export default function MyProfile() {
           </button>
         </div>
         <div className=" ">
-          {generalInformationOptions.map((option, i) => {
-            return (
-              <div key={i}>
-                <div
-                  className={`${
-                    i % 2 ? '' : isLightTheme ? 'bg-body-light' : 'bg-body-dark'
-                  } py-4 px-3 flex    `}
-                >
-                  <h1 className="  w-2/4">
-                    {formatMessage({ id: option.title })}
-                  </h1>
-                  <h1 className="">{option.value}</h1>
-                </div>
-                <hr />
-              </div>
-            );
-          })}
+          <div>
+            <div className={` py-4 px-3 flex    `}>
+              <h1 className="  w-2/4">{formatMessage({ id: 'full-name' })}</h1>
+              <h1 className="">{data.fullName}</h1>
+            </div>
+            <hr />
+          </div>
+          <div>
+            <div className={` py-4 px-3 flex    `}>
+              <h1 className="  w-2/4">
+                {formatMessage({ id: 'phone-number' })}
+              </h1>
+              <h1 className="">{data.phoneNumber}</h1>
+            </div>
+            <hr />
+          </div>
+          <div>
+            <div className={` py-4 px-3 flex    `}>
+              <h1 className="  w-2/4">
+                {formatMessage({ id: 'date-of-birth' })}
+              </h1>
+              <h1 className="">{data.dateOfBirth}</h1>
+            </div>
+            <hr />
+          </div>
         </div>
       </div>
 
@@ -151,12 +191,9 @@ export default function MyProfile() {
           </div>
         </div>
       </div>
-
-      <ProfileModal
-        profileModalRef={profileModalRef}
-        profileModalBoxRef={profileModalBoxRef}
-        profileEditModalOpen={profileEditModalOpen}
-      />
+      <AnimatePresence>
+        {profileEditModalOpen && <ProfileModal editMutation={editMutation} />}
+      </AnimatePresence>
     </motion.div>
   );
 }

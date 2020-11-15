@@ -27,7 +27,7 @@ export default function MyAddresses() {
   );
 
   /* Add Mutation */
-  const [addMutation, { isLoading: AddButtonLoading }] = useMutation(
+  const [addMutation] = useMutation(
     async location => {
       const res = await handleAddLocation(location);
       if (res.message === 'ok') {
@@ -126,11 +126,7 @@ export default function MyAddresses() {
         ))}
       {showMap && (
         <div className="relative h-full">
-          <GoogleMapsAddress
-            setShowMap={setShowMap}
-            addMutation={addMutation}
-            AddButtonLoading={AddButtonLoading}
-          />
+          <GoogleMapsAddress addMutation={addMutation} />
         </div>
       )}
     </motion.div>

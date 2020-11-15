@@ -360,7 +360,26 @@ export default function DataContextProvider({ children }) {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve(orderedItems);
-      }, 1500);
+      }, 1000);
+    });
+  };
+
+  const getUserProfileInfo = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          fullName: 'John Doe',
+          phoneNumber: '+965687123',
+          dateOfBirth: '1/1/1990',
+        });
+      }, 500);
+    });
+  };
+  const editUserProfileInfo = data => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(data);
+      }, 1000);
     });
   };
   const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
@@ -2792,6 +2811,8 @@ export default function DataContextProvider({ children }) {
         getNavCategoryData,
         getOrderedItems,
         getRecentlyViewedVertical,
+        getUserProfileInfo,
+        editUserProfileInfo,
       }}
     >
       {children}

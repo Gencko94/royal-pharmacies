@@ -30,7 +30,7 @@ export default function LocationForm({
       <div className="font-bold p-2">
         <h1>{formatMessage({ id: 'location-details' })}</h1>
       </div>
-      <div className="px-2">
+      <div className="p-2">
         <div className="mb-1">
           <h1>
             {formatMessage({
@@ -53,24 +53,17 @@ export default function LocationForm({
             phoneNumber: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
-            try {
-              const res = await addMutation({
-                lat: marker?.lat,
-                lng: marker?.lng,
-                defaultLocation: defaultLocationChecked,
-                addressDetails: {
-                  ...values,
-                  markerAddress,
-                  userTypedLocation,
-                },
-              });
-              if (res === 'ok') {
-                resetForm();
-              }
-            } catch (error) {
-              console.log(error);
-            }
+          onSubmit={async values => {
+            await addMutation({
+              lat: marker?.lat,
+              lng: marker?.lng,
+              defaultLocation: defaultLocationChecked,
+              addressDetails: {
+                ...values,
+                markerAddress,
+                userTypedLocation,
+              },
+            });
           }}
         >
           {({ handleSubmit, values, isSubmitting }) => {
@@ -99,7 +92,7 @@ export default function LocationForm({
                   type="text"
                 />
 
-                <div className="p-2 ">
+                <div className=" ">
                   <div className="flex items-center mb-2">
                     <label>{formatMessage({ id: 'mark-as-default' })}</label>
                     <input

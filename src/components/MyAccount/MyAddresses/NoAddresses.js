@@ -5,7 +5,10 @@ import manWithMap from '../../../assets/illustrations/manWithMap.svg';
 export default function NoAddresses({ isLightTheme, setShowMap }) {
   const { formatMessage } = useIntl();
   return (
-    <div className="flex flex-col justify-center items-center h-full">
+    <div
+      className="flex flex-col justify-center items-center"
+      style={{ height: 'calc(-173px + 100vh)' }}
+    >
       <img
         src={manWithMap}
         alt="map"

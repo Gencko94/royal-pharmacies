@@ -156,7 +156,7 @@ const baseStrings = {
   'apartment-empty': 'Please enter House or Apartment Number',
   'building-empty': 'Please enter Building or Tower Number',
   'phone-empty': 'Please Enter a phone number',
-  'number-only': 'Please enter a valid Number',
+  'number-only': 'Please enter a valid number',
 
   // checkout modal
   'not-signed-in': 'You are not signed in',

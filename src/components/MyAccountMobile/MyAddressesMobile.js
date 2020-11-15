@@ -24,7 +24,7 @@ export default function MyAddressesMobile() {
   );
 
   /* Add Mutation */
-  const [addMutation, { isLoading: AddButtonLoading }] = useMutation(
+  const [addMutation] = useMutation(
     async location => {
       const res = await handleAddLocation(location);
       if (res.message === 'ok') {
@@ -102,8 +102,7 @@ export default function MyAddressesMobile() {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className=""
-      style={{ height: 'calc(-173px + 100vh)' }}
+      className="h-full"
     >
       {!isLoading &&
         !showMap &&
@@ -117,12 +116,8 @@ export default function MyAddressesMobile() {
           />
         ))}
       {showMap && (
-        <div className="relative h-full">
-          <GoogleMapsAddress
-            setShowMap={setShowMap}
-            addMutation={addMutation}
-            AddButtonLoading={AddButtonLoading}
-          />
+        <div className="relative" style={{ minHeight: 'calc(-173px + 100vh)' }}>
+          <GoogleMapsAddress addMutation={addMutation} />
         </div>
       )}
     </motion.div>

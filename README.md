@@ -60,6 +60,8 @@
 
 - [ ] Add keys to env variables.
 
+- [ ] Localize Footers.
+
 # MRG API Structure :
 
 ## 1. Home page :
@@ -131,7 +133,7 @@ responseObject = {
 ```
 
 - ### 3. Category Slider:
-- It's going to be an array of at least **7 Items**.
+- It's going to be an array of at least **4 Items**.
 - Desktop and Mobile are the same.
 - This Route Should return an array of Photo Categories.
 - Each Photo Category Contains a **Main Title**, **URL** ,**Link**, **Background Image** and **SubCategories** (_Either 3 or 4 Sub Categories_ ). The Category Background Image Should match :
@@ -185,3 +187,53 @@ responseObject = {
     - Mobile :
     - **Width** : **800px,**
     - **Height**: **300px**.
+
+## 2. Single Product :
+
+- The response Object should be somewhat similar to this :
+
+```
+responseObject = {
+ status:'ok',
+ data: [
+  {
+   id: id,
+   title: String,
+   brand:String,(optional)
+   sale:Boolean,
+   salePercent:String,
+   price: String || Number,
+   PriceAfterSale:String || Number,
+   description: feel free to shape this out,
+   addons : [
+	   sizes: {
+		   supported: String[an array of supported Sizes],
+		   available: String[an array of available Sizes]
+	   },
+	   colors :{
+	    supported: img[an array of supported Sizes (preferabley Images )],
+	    available: img[an array of available Sizes]
+	   }
+	]
+   rating: Number,
+   reviews:[
+	{
+		id:id,
+		title,String,
+		backgroundColor:String(hex),
+		link:String
+	},
+	{
+		id:id,
+		title,String,
+		backgroundColor:String(hex),
+		link:String
+	},
+	...
+   ]
+  }
+ ],
+
+}
+
+```
