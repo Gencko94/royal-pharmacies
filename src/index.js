@@ -13,6 +13,10 @@ const localCart = localStorage.getItem('cartItems');
 if (!localCart) {
   localStorage.setItem('cartItems', JSON.stringify([]));
 }
+const localWish = localStorage.getItem('localWish');
+if (!localWish) {
+  localStorage.setItem('localWish', JSON.stringify([]));
+}
 const visitedItems = localStorage.getItem('visitedItems');
 if (!visitedItems) {
   localStorage.setItem('visitedItems', JSON.stringify([]));

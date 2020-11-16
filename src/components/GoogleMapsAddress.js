@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import BeatLoader from 'react-spinners/BeatLoader';
-
+import mapStyles from '../helpers/mapStyles';
 import {
   GoogleMap,
   useLoadScript,
@@ -18,7 +18,7 @@ const center = {
   lng: 47.9774,
 };
 const options = {
-  // styles: mapStyles,
+  styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
 };
@@ -41,8 +41,7 @@ export default function GoogleMapsAddress({ addMutation }) {
   }, []);
   const panTo = React.useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
-    setMarker(null);
-    setMarkerAddress(null);
+    setMarker({ lat, lng });
     setMarkerInfoWindowDetails(null);
   }, []);
 
@@ -68,15 +67,6 @@ export default function GoogleMapsAddress({ addMutation }) {
         .catch(err => console.log(err));
     }
   }, [marker]);
-  // React.useEffect(() => {
-  //   if (!marker) {
-  //     setMarkerAddress(null);
-  //   }
-  // }, [marker]);
-
-  /**
-   * Form Validation
-   */
 
   if (loadError)
     return (

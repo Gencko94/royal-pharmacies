@@ -34,13 +34,9 @@
 
 - [x] Complete desktop view order history.
 
-- [ ] Add React query to order history.
-
-- [ ] Add Wishlist Page.
-
 - [ ] Add React Query & Localizations to the Search page.
 
-- [ ] Add Buy Options to SingleProduct in Desktop and Mobile View.
+- [x] Add Buy Options to SingleProduct in Desktop and Mobile View.
 
 - [ ] Add Scroll Pagination to SingleProduct Pages.
 
@@ -52,8 +48,6 @@
 
 - [ ] Search Engine optimization.
 
-- [ ] Add 404 page.
-
 - [x] Discuss Location handling with Maher.
 
 - [x] Add default location support.
@@ -61,6 +55,14 @@
 - [ ] Add keys to env variables.
 
 - [ ] Localize Footers.
+
+- [ ] Add auto detect locale and localstorage language.
+
+- [ ] Add Wishlist Page.
+
+- [x] Add 404 page.
+
+- [ ] Add React query to order history.
 
 # MRG API Structure :
 

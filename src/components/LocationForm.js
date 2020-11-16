@@ -3,6 +3,8 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { MoonLoader } from 'react-spinners';
 import * as Yup from 'yup';
+import { BiChevronDown } from 'react-icons/bi';
+import useClickAway from '../hooks/useClickAway';
 export default function LocationForm({
   markerAddress,
 
@@ -85,7 +87,7 @@ export default function LocationForm({
                   value={values.buildingOrTowerNumber}
                   type="text"
                 />
-                <CustomTextInput
+                <PhoneNumberCustomInput
                   label={formatMessage({ id: 'maps-detailed-address-phone' })}
                   name="phoneNumber"
                   value={values.phoneNumber}
@@ -146,6 +148,59 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
         }}
         className=" w-full rounded-sm border   p-1"
       />
+      {meta.touched && meta.error ? (
+        <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
+      ) : (
+        <h1 className="text-xs text-main-color mt-1" style={{ height: '18px' }}>
+          {' '}
+        </h1>
+      )}
+    </div>
+  );
+};
+const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const menuRef = React.useRef();
+  useClickAway(menuRef, () => {
+    if (menuRef.current) {
+      setMenuOpen(false);
+    }
+  });
+  const [field, meta] = useField(name);
+  return (
+    <div className="w-full mb-2 ">
+      <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
+        {label}
+      </label>
+      <div className="flex rounded-sm border items-center relative  ">
+        <div
+          ref={menuRef}
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="  cursor-pointer flex items-center p-1 border-r"
+          style={{ width: '74px' }}
+        >
+          <span>+965</span>
+          <BiChevronDown className="mx-1 w-5 h-5" />
+          {menuOpen && (
+            <div
+              className="absolute top-100 left-0 w-full border z-1 bg-body-light"
+              style={{ width: '74px' }}
+            >
+              <div className="hover:bg-main-color p-1 hover:text-main-text flex justify-start items-center">
+                +965
+              </div>
+            </div>
+          )}
+        </div>
+        <input
+          {...field}
+          {...props}
+          onBlur={e => {
+            field.onBlur(e);
+          }}
+          className=" w-full p-1"
+        />
+      </div>
       {meta.touched && meta.error ? (
         <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
       ) : (

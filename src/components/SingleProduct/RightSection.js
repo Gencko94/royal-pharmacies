@@ -15,7 +15,10 @@ export default function RightSection({
   handleRemoveFromCart,
   quantityOptions,
   addToCartButtonLoading,
-
+  addToWishListButtonLoading,
+  handleAddToWishList,
+  handleRemoveFromWishList,
+  itemInWishList,
   itemInCart,
 }) {
   const { formatMessage } = useIntl();
@@ -125,12 +128,51 @@ export default function RightSection({
           )}
         </button>
 
-        <button className="border border-main-color py-2 px-2 rounded uppercase  text-main-color flex items-center justify-center font-semibold ">
+        <button
+          onClick={() => {
+            if (itemInWishList) {
+              handleRemoveFromWishList(data.id);
+            } else {
+              handleAddToWishList();
+            }
+          }}
+          className={`${
+            addToWishListButtonLoading
+              ? 'bg-gray-300'
+              : itemInWishList
+              ? 'border-main-color text-main-text'
+              : 'border-main-color text-main-color'
+          } flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
+        >
+          {addToWishListButtonLoading ? (
+            <MoonLoader size={19} color="#b72b2b" />
+          ) : itemInWishList ? (
+            <>
+              <span>
+                <TiShoppingCart className="w-25p h-25p " />
+              </span>
+              <h1 className="mx-2 whitespace-no-wrap">
+                {formatMessage({ id: 'remove-from-wishlist' })}
+              </h1>
+            </>
+          ) : (
+            <>
+              <span>
+                <AiOutlineHeart className="w-25p h-25p" />
+              </span>
+              <h1 className="mx-2">
+                {formatMessage({ id: 'add-to-wishlist' })}
+              </h1>
+            </>
+          )}
+        </button>
+
+        {/* <button className="border border-main-color py-2 px-2 rounded uppercase  text-main-color flex items-center justify-center font-semibold ">
           <span>
             <AiOutlineHeart className="w-25p h-25p" />
           </span>
           <h1 className="mx-1">{formatMessage({ id: 'add-to-wishlist' })}</h1>
-        </button>
+        </button> */}
       </div>
     </div>
   );

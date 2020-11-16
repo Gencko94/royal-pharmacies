@@ -1,28 +1,79 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import logo from '../assets/mrgnavlogo.png';
+import logo from '../assets/mrg.svg';
 import * as Yup from 'yup';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AuthProvider } from '../contexts/AuthContext';
 import { BeatLoader } from 'react-spinners';
 import ErrorSnackbar from '../components/ErrorSnackbar';
+import { BiChevronDown } from 'react-icons/bi';
+import useClickAway from '../hooks/useClickAway';
 
-const CustomTextInput = ({ label, value, name, ...props }) => {
-  const [activeLabel, setActiveLabel] = React.useState(false);
-  const checkEmptyInput = () => {
-    if (value === '') {
-      setActiveLabel(false);
+const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const menuRef = React.useRef();
+  useClickAway(menuRef, () => {
+    if (menuRef.current) {
+      setMenuOpen(false);
     }
-  };
+  });
   const [field, meta] = useField(name);
   return (
-    <div className="w-full mt-10 relative">
+    <div className="w-full mb-2 flex flex-col ">
       <label
         htmlFor={name}
-        className={`rtl-form-label ${
-          activeLabel ? 'form__label-active' : 'form__label'
-        } text-sm font-semibold text-gray-700 pointer-events-none`}
+        className={`text-xs font-semibold text-gray-800 mb-1`}
+      >
+        {label}
+      </label>
+      <div className="flex rounded-lg border items-center relative  overflow-hidden ">
+        <div
+          ref={menuRef}
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="  cursor-pointer flex items-center p-1 border-r"
+          style={{ width: '74px' }}
+        >
+          <span>+965</span>
+          <BiChevronDown className="mx-1 w-5 h-5" />
+          {menuOpen && (
+            <div
+              className="absolute top-100 left-0 w-full border z-1 bg-body-light"
+              style={{ width: '74px' }}
+            >
+              <div className="hover:bg-main-color p-1 hover:text-main-text flex justify-start items-center">
+                +965
+              </div>
+            </div>
+          )}
+        </div>
+        <input
+          {...field}
+          {...props}
+          onBlur={e => {
+            field.onBlur(e);
+          }}
+          className=" w-full   p-1"
+        />
+      </div>
+      {meta.touched && meta.error ? (
+        <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
+      ) : (
+        <h1 className="text-xs text-main-color mt-1" style={{ height: '18px' }}>
+          {' '}
+        </h1>
+      )}
+    </div>
+  );
+};
+
+const CustomTextInput = ({ label, value, name, ...props }) => {
+  const [field, meta] = useField(name);
+  return (
+    <div className="w-full relative mb-2 flex flex-col">
+      <label
+        htmlFor={name}
+        className={` text-xs font-semibold text-gray-800 mb-1 `}
       >
         {label}
       </label>
@@ -30,12 +81,9 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
         {...field}
         {...props}
         onBlur={e => {
-          checkEmptyInput();
           field.onBlur(e);
         }}
-        className=" w-full rounded-sm border-b   p-1"
-        onClick={() => setActiveLabel(true)}
-        onFocus={() => setActiveLabel(true)}
+        className=" w-full rounded-lg border   p-1"
       />
       {meta.touched && meta.error ? (
         <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
@@ -65,119 +113,133 @@ export default function Register() {
       .required(formatMessage({ id: 'password-empty' }))
       .min(6, formatMessage({ id: 'password-min-6' }))
       .max(15, formatMessage({ id: 'password-max-15' })),
-    username: Yup.string().required(formatMessage({ id: 'username-empty' })),
+    fullName: Yup.string().required(formatMessage({ id: 'fullname-empty' })),
+    phoneNumber: Yup.string()
+      .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
+      .required(formatMessage({ id: 'phone-empty' })),
   });
   return (
     <div className=" text-gray-900 flex justify-center items-center   h-screen relative">
       {errorOpen && (
         <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
       )}
-      <div className=" rounded z-2  max-w-screen-xs w-5/6 pb-1  shadow-2xl   overflow-hidden">
-        <div className="flex items-center flex-col p-4 pb-1  bg-main-color text-main-text ">
+      <div className=" z-2  max-w-screen-xs w-5/6   overflow-hidden">
+        <div className="flex items-center flex-col mb-2  rounded-lg ">
           <Link to="/">
             <img
               src={logo}
               alt="logo"
               className=" mb-3"
-              style={{ width: '140px', height: '70px' }}
+              style={{ width: '100px', height: '50px' }}
             />
           </Link>
-          <h2 className="text-xl text-center font-bold">
+          <h2 className="text-lg text-center">
             {formatMessage({ id: 'register-on-mrg' })}
           </h2>
         </div>
-        <Formik
-          initialValues={{
-            email: '',
-            password: '',
-            username: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={async (values, { resetForm }) => {
-            setErrorOpen(false);
-            try {
-              const res = await userRegister(values);
-              if (res === 'ok') {
-                resetForm();
-                history.goBack();
+        <div className="rounded-lg border bg-gray-100 mb-2">
+          <Formik
+            initialValues={{
+              email: '',
+              password: '',
+              fullName: '',
+              phoneNumber: '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={async (values, { resetForm }) => {
+              setErrorOpen(false);
+              try {
+                const res = await userRegister(values);
+                if (res === 'ok') {
+                  resetForm();
+                  history.goBack();
+                }
+              } catch (error) {
+                setErrorOpen(true);
+                setErrorMessage('Something went wrong, Please try again');
               }
-            } catch (error) {
-              setErrorOpen(true);
-              setErrorMessage('Something went wrong, Please try again');
-            }
-          }}
-        >
-          {({ handleSubmit, values, isSubmitting }) => {
-            return (
-              <form className="px-4 py-2" onSubmit={handleSubmit}>
-                <CustomTextInput
-                  label={formatMessage({ id: 'username-label' })}
-                  name="username"
-                  value={values.username}
-                  type="text"
-                />
-                <CustomTextInput
-                  label={formatMessage({ id: 'email-label' })}
-                  name="email"
-                  value={values.email}
-                  type="email"
-                />
-                <CustomTextInput
-                  label={formatMessage({ id: 'password-label' })}
-                  name="password"
-                  value={values.password}
-                  type="password"
-                />
+            }}
+          >
+            {({ handleSubmit, values, isSubmitting }) => {
+              return (
+                <form className="px-3 py-2 " onSubmit={handleSubmit}>
+                  <CustomTextInput
+                    label={formatMessage({ id: 'fullname-label' })}
+                    name="fullName"
+                    value={values.fullName}
+                    type="text"
+                  />
+                  <PhoneNumberCustomInput
+                    label={formatMessage({ id: 'phone-label' })}
+                    name="phoneNumber"
+                    value={values.phoneNumber}
+                    type="text"
+                  />
+                  <CustomTextInput
+                    label={formatMessage({ id: 'password-label' })}
+                    name="password"
+                    value={values.password}
+                    type="password"
+                  />
+                  <CustomTextInput
+                    label={formatMessage({ id: 'email-label' })}
+                    name="email"
+                    value={values.email}
+                    type="email"
+                  />
 
-                <div className="py-1 mt-2">
-                  <button
-                    className={`${
-                      isSubmitting
-                        ? 'bg-main-color cursor-not-allowed'
-                        : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
-                    } w-full rounded   p-2 font-semibold  transition duration-150 `}
-                  >
-                    {isSubmitting && <BeatLoader size={10} />}
-                    {!isSubmitting && formatMessage({ id: 'register-button' })}
-                  </button>
-                </div>
-              </form>
-            );
-          }}
-        </Formik>
-
-        <div className="px-4 py-2">
-          <h1 className="text-sm">
-            <FormattedMessage
-              id="already-have-an-account"
-              values={{
-                link: word => (
-                  <Link
-                    className="text-second-nav-light"
-                    to={`/${locale}/app/login`}
-                  >
-                    {word}
-                  </Link>
-                ),
-              }}
-            />
-          </h1>
+                  <div className="mt-1">
+                    <button
+                      className={`${
+                        isSubmitting
+                          ? 'bg-main-color cursor-not-allowed'
+                          : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
+                      } w-full rounded text-xs  p-2 font-semibold  transition duration-150 uppercase `}
+                    >
+                      {isSubmitting && <BeatLoader size={10} />}
+                      {!isSubmitting &&
+                        formatMessage({ id: 'register-button' })}
+                    </button>
+                  </div>
+                </form>
+              );
+            }}
+          </Formik>
         </div>
-        <hr />
-        <div className="px-4 w-full py-2 ">
-          <h1 className="text-xs">
-            <FormattedMessage
-              id="terms-of-service"
-              values={{
-                link: word => (
-                  <span className="text-second-nav-light">{word}</span>
-                ),
-                tos: word => (
-                  <span className="text-second-nav-light">{word}</span>
-                ),
-              }}
-            />
-          </h1>
+        <div className="rounded-lg border">
+          <div className="px-3 py-2 ">
+            <h1 className="text-sm">
+              <FormattedMessage
+                id="already-have-an-account"
+                values={{
+                  link: word => (
+                    <Link
+                      className="text-second-nav-light"
+                      to={`/${locale}/app/login`}
+                    >
+                      {word}
+                    </Link>
+                  ),
+                }}
+              />
+            </h1>
+          </div>
+          <hr />
+          <div className="px-3 w-full py-2 ">
+            <h1 className="text-xs">
+              <FormattedMessage
+                id="terms-of-service"
+                values={{
+                  link: word => (
+                    <span className="text-second-nav-light">{word}</span>
+                  ),
+                  tos: word => (
+                    <span className="text-second-nav-light">{word}</span>
+                  ),
+                }}
+              />
+            </h1>
+          </div>
         </div>
       </div>
     </div>

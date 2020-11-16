@@ -54,6 +54,12 @@ export default function Cart() {
             cartTotal: data.cartTotal,
           };
         });
+        queryCache.setQueryData('cartAndWishListLength', prev => {
+          return {
+            ...prev,
+            cart: data.cartItems.length,
+          };
+        });
         setRemoveButtonLoading(null);
         refetch();
       },
@@ -94,7 +100,7 @@ export default function Cart() {
         />
       )}
       <div className="px-4 py-2 max-w-default mx-auto">
-        <div className=" cart  ">
+        <div className=" cart-main-grid  ">
           <CartContainer
             isLoading={isLoading}
             handleRemoveItem={handleRemoveItem}

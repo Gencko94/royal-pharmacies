@@ -82,6 +82,9 @@ const baseStrings = {
   addresses: 'addresses ',
   'one-address': 'address',
   'show-order-receipt': 'Show order receipt',
+  'not-found-title': "We can't seem to find the page you're looking for. ",
+  'back-to-home': 'Back to Homepage',
+  oops: 'Oops !',
 
   //
   'home.title': 'Home',
@@ -103,10 +106,10 @@ const baseStrings = {
   'password-min-6': 'Must be atleast 6 characters',
   'password-max-15': 'Must be 15 characters or less',
   'password-empty': 'Please Enter a password',
-  'username-empty': 'Please enter a username',
+  'fullname-empty': 'Please enter a Full Name',
   'email-label': 'Email',
   'password-label': 'Password',
-  'username-label': 'Username',
+  'fullname-label': 'Full Name',
   'phone-label': 'Phone Number',
   'login-button': 'Login',
   'register-button': 'Create an account',

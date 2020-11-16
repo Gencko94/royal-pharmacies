@@ -1,27 +1,35 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
 import Slider from 'react-slick';
-import { useMediaQuery } from 'react-responsive';
-import MultiClamp from 'react-multi-clamp';
+// import { useMediaQuery } from 'react-responsive';
+// import MultiClamp from 'react-multi-clamp';
 import ContentLoader from 'react-content-loader';
+import { useQuery } from 'react-query';
+// import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 export default function Categories() {
-  const [data, setData] = React.useState(null);
-  const { categories } = React.useContext(DataProvider);
-  const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
-  const isMobile = useMediaQuery({ query: '(min-width: 360px)' });
+  const { getHomePageCategories } = React.useContext(DataProvider);
+  // const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
+  const { data, isLoading } = useQuery(
+    'sliderCategories',
+    async () => {
+      return await getHomePageCategories();
+    },
+    { retry: true }
+  );
+  // const isMobile = useMediaQuery({ query: '(min-width: 360px)' });
   const settings = {
     className: '',
     autoplay: true,
     autoplaySpeed: 3000,
     infinite: true,
-    slidesToShow: 2,
+    slidesToShow: 8,
     slidesToScroll: 2,
 
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 5,
           slidesToScroll: 2,
         },
       },
@@ -43,97 +51,60 @@ export default function Categories() {
       },
     ],
   };
-  React.useEffect(() => {
-    setTimeout(() => {
-      setData([categories]);
-    }, 3000);
-  }, [categories]);
+
   return (
-    <div className="mb-6 text-body-text-light">
-      <div className="flex items-center mb-4">
-        <h1 className="text-xl font-semibold flex-grow">Categories</h1>
-        <button className="p-1">See all</button>
-      </div>
+    <div className="my-3 text-body-text-light">
       <Slider className="" {...settings}>
-        {categories.map((item, i) => {
-          return (
-            <div key={i} className="px-1 overflow-hidden ">
-              {!data && (
+        {isLoading &&
+          [0, 1, 2, 3, 4, 5, 6, 7].map(i => {
+            return (
+              <div key={i} className="px-1 overflow-hidden ">
                 <ContentLoader
                   speed={2}
-                  viewBox="0 0 400 210"
+                  viewBox="0 0 400 500"
                   backgroundColor="#f3f3f3"
                   foregroundColor="#ecebeb"
                 >
-                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="125" />
-                  <rect x="0" y="130" rx="5" ry="5" width="24%" height="80" />
-                  <rect x="100" y="130" rx="5" ry="5" width="24%" height="80" />
-                  <rect x="200" y="130" rx="5" ry="5" width="24%" height="80" />
-                  <rect x="300" y="130" rx="5" ry="5" width="24%" height="80" />
+                  <circle cx="50%" cy="50%" r="200" width="100%" />
                 </ContentLoader>
-              )}
-              {data && (
+              </div>
+            );
+          })}
+        {!isLoading &&
+          data.map(item => {
+            return (
+              <div className="px-1">
                 <div className="  overflow-hidden  relative  rounded-lg  ">
                   <img
-                    src={item.main}
+                    src={item.url}
                     alt="something"
-                    className=" h-auto w-full rounded mb-0  "
+                    className=" h-auto w-full "
                   />
-                  <h1
-                    style={{
-                      maxWidth: '50%',
-                      top: isTabletOrAbove ? '16%' : '10%',
-                    }}
-                    className="absolute text-center  font-semibold left-10 text-base sm:text-lg md:text-xl lg:text-2xl "
-                  >
-                    {item.title}
-                  </h1>
-                  <div
-                    className=""
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit,minmax(50px,1fr)',
-                      gap: isMobile ? '6px' : '8px',
-                    }}
-                  >
-                    {item.sub.map((photo, j) => {
-                      return (
-                        <div
-                          key={j + i}
-                          className=" mt-2 grid grid-cols-1 rounded  justify-center "
-                          style={{
-                            backgroundColor: item.color,
-                            // maxHeight: '120px',
-                            minHeight: '120px',
-                          }}
-                        >
-                          <div
-                            // style={{ maxHeight: '70px' }}
-                            className=" flex justify-center items-center py-1"
-                          >
-                            <img
-                              src={photo.src}
-                              alt={photo.title}
-                              className="max-w-full h-auto py-1"
-                            />
-                          </div>
-                          <MultiClamp
-                            className="text-center text-xs p-1 font-semibold"
-                            clamp={2}
-                            ellipsis="..."
-                          >
-                            {photo.title}
-                          </MultiClamp>
-                        </div>
-                      );
-                    })}
-                  </div>
                 </div>
-              )}
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
       </Slider>
     </div>
   );
 }
+// const RightArrow = ({ onClick }) => {
+//   return (
+//     <div
+//       className="hover:bg-gray-300 rounded-full grid place-items-center absolute top-1/2 right-n25 lg:right-n42 w-8 h-8 lg:h-12 lg:w-12 z-1 transform -translate-x-1/2 -translate-y-1/2 bg-white transition duration-150 shadow-2xl border border-gray-300"
+//       onClick={onClick}
+//     >
+//       <BsChevronRight />
+//     </div>
+//   );
+// };
+// const LeftArrow = ({ onClick }) => {
+//   return (
+//     <div
+//       className="hover:bg-gray-300 rounded-full flex justify-center w-8 h-8  lg:h-12 lg:w-12    items-center absolute left-8 top-1/2   z-1 transform -translate-x-1/2 -translate-y-1/2 bg-white transition-colors duration-150 shadow-2xl border border-gray-300"
+//       onClick={onClick}
+//     >
+//       <BsChevronLeft />
+//     </div>
+//   );
+// };

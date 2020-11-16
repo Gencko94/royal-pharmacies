@@ -124,8 +124,8 @@ export default function BuyOptions({
               ? 'bg-gray-300'
               : isItemInCart(data.id)
               ? 'bg-main-color'
-              : 'bg-blue-700'
-          } flex-1 text-main-text shadow-itemsSlider-shallow  p-2 rounded-lg text-xs sm:text-sm w-full   flex items-center justify-center font-semibold`}
+              : 'bg-green-700'
+          } flex-1 text-main-text shadow-itemsSlider-shallow uppercase  p-2 rounded-lg text-xs sm:text-sm w-full   flex items-center justify-center font-semibold`}
         >
           {loadingButton === data.id ? (
             <MoonLoader size={15} color="#b72b2b" />

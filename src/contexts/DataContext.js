@@ -12,26 +12,43 @@ import mbwatch from '../assets/mainCarousel/mbwatch.png';
 import mbbigdeal from '../assets/mainCarousel/mbbigdeal.png';
 import mbemaar from '../assets/mainCarousel/mbemaar.png';
 
-import accessories from '../assets/cat/accessories.png';
-import bags from '../assets/cat/bags.png';
-import color from '../assets/cat/color.png';
-import fridge from '../assets/cat/fridge.png';
-import iron from '../assets/cat/iron.png';
-import ladies from '../assets/cat/ladies.png';
-import laptops from '../assets/cat/laptops.png';
-import makeup from '../assets/cat/makeup.png';
-import men from '../assets/cat/men.png';
-import paper from '../assets/cat/paper.png';
-import personalcare from '../assets/cat/personalcare.png';
-import phones from '../assets/cat/phones.png';
-import tabs from '../assets/cat/tabs.png';
-import tv from '../assets/cat/tv.png';
-import writing from '../assets/cat/writing.png';
+/**
+ * Categories
+ */
 
-import school from '../assets/cat/school.jpg';
-import smartphones from '../assets/cat/smartphones.jpg';
-import electronics from '../assets/cat/electronics.jpg';
-import beauty from '../assets/cat/beauty.jpg';
+import appliances from '../assets/newcat/appliances.png';
+import babycat from '../assets/newcat/baby.png';
+import beauty from '../assets/newcat/beauty.png';
+import boutique from '../assets/newcat/boutique.gif';
+import electronics from '../assets/newcat/electronics.png';
+import fashioncat from '../assets/newcat/fashion.png';
+import homecat from '../assets/newcat/home.png';
+import laptops from '../assets/newcat/laptops.png';
+import mobiles from '../assets/newcat/mobiles.png';
+import sports from '../assets/newcat/sports.png';
+import toys from '../assets/newcat/toys.png';
+import tv from '../assets/newcat/tv.png';
+import grocery from '../assets/newcat/grocery.png';
+// import accessories from '../assets/cat/accessories.png';
+// import bags from '../assets/cat/bags.png';
+// import color from '../assets/cat/color.png';
+// import fridge from '../assets/cat/fridge.png';
+// import iron from '../assets/cat/iron.png';
+// import ladies from '../assets/cat/ladies.png';
+// import laptops from '../assets/cat/laptops.png';
+// import makeup from '../assets/cat/makeup.png';
+// import men from '../assets/cat/men.png';
+// import paper from '../assets/cat/paper.png';
+// import personalcare from '../assets/cat/personalcare.png';
+// import phones from '../assets/cat/phones.png';
+// import tabs from '../assets/cat/tabs.png';
+// import tv from '../assets/cat/tv.png';
+// import writing from '../assets/cat/writing.png';
+
+// import school from '../assets/cat/school.jpg';
+// import smartphones from '../assets/cat/smartphones.jpg';
+// import electronics from '../assets/cat/electronics.jpg';
+// import beauty from '../assets/cat/beauty.jpg';
 import usa from '../assets/flags/usa.svg';
 import korea from '../assets/flags/korea.svg';
 import uk from '../assets/flags/uk.svg';
@@ -132,8 +149,15 @@ export default function DataContextProvider({ children }) {
   const [selectedStore, setSelectedStore] = React.useState('kuwait');
   const [isLightTheme, setLightTheme] = React.useState(true);
   const localItems = localStorage.getItem('cartItems');
+  const localWish = localStorage.getItem('localWish');
   const prefferedLanguage = localStorage.getItem('prefferedLanguage');
-
+  const [wishListItems, setWishListItems] = React.useState(() => {
+    if (localWish) {
+      return JSON.parse(localWish);
+    } else {
+      return [];
+    }
+  });
   const [language, setLanguage] = React.useState(() => {
     if (prefferedLanguage) {
       return prefferedLanguage;
@@ -164,6 +188,67 @@ export default function DataContextProvider({ children }) {
       }, 500);
     });
   };
+
+  // const moveItemFromWishListToCart = (item)=>{
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       resolve()
+  //     }, 750);
+  //   })
+  // }
+  const addItemToWishList = ({
+    id,
+    quantity,
+    price,
+    name,
+    photo,
+    category,
+  }) => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newItem = {
+          id,
+          price,
+          name,
+          photo,
+          quantity,
+          category,
+        };
+        const wishListCopy = [...wishListItems];
+        wishListCopy.push(newItem);
+        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
+        setWishListItems(wishListCopy);
+        resolve({
+          wishListItems: wishListCopy,
+        });
+      }, 750);
+    });
+  };
+  const removeItemFromWishList = id => {
+    console.log(id);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const wishListCopy = wishListItems.filter(i => {
+          return i.id !== id;
+        });
+
+        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
+        setWishListItems(wishListCopy);
+        resolve({
+          wishListItems: wishListCopy,
+        });
+      }, 750);
+    });
+  };
+  const getWishListItems = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          wishListItems,
+        });
+      }, 1000);
+    });
+  };
   const getCartItems = () => {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -176,9 +261,14 @@ export default function DataContextProvider({ children }) {
       setTimeout(() => {
         const item = allItems.find(item => item.id === id);
         const isItemInCart = cartItems.find(item => item.id === id);
+        const isItemInWishList = wishListItems.find(item => item.id === id);
 
         if (item) {
-          resolve({ item, itemInCart: Boolean(isItemInCart) });
+          resolve({
+            item,
+            itemInCart: Boolean(isItemInCart),
+            itemInWishList: Boolean(isItemInWishList),
+          });
         } else {
           reject({ message: 'no product' });
         }
@@ -331,10 +421,10 @@ export default function DataContextProvider({ children }) {
       }, 2000);
     });
   };
-  const getCartItemsLength = () => {
+  const getCartAndWishListLength = () => {
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve(cartItems.length);
+        resolve({ cart: cartItems.length, wishlist: wishListItems.length });
       }, 1000);
     });
   };
@@ -382,8 +472,57 @@ export default function DataContextProvider({ children }) {
       }, 1000);
     });
   };
+  const getHomePageCategories = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(cat);
+      }, 1000);
+    });
+  };
   const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const stores = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
+
+  const cat = [
+    {
+      url: appliances,
+    },
+    {
+      url: babycat,
+    },
+    {
+      url: beauty,
+    },
+    {
+      url: boutique,
+    },
+    {
+      url: electronics,
+    },
+    {
+      url: fashioncat,
+    },
+    {
+      url: grocery,
+    },
+    {
+      url: homecat,
+    },
+    {
+      url: laptops,
+    },
+    {
+      url: mobiles,
+    },
+    {
+      url: sports,
+    },
+    {
+      url: toys,
+    },
+    {
+      url: tv,
+    },
+  ];
   const allItems = [
     {
       id: '1',
@@ -1532,52 +1671,52 @@ export default function DataContextProvider({ children }) {
       subCategory: 'Smartphones',
     },
   ];
-  const categories = [
-    {
-      main: electronics,
-      sub: [
-        { src: fridge, title: 'Large Appliances' },
-        { src: iron, title: 'Small Appliances' },
-        { src: tv, title: 'TVs & Projectors' },
-        { src: laptops, title: 'Laptops & PCs' },
-      ],
-      color: '#9adbf3',
-      title: 'Electronics & Appliances',
-    },
-    {
-      main: smartphones,
-      sub: [
-        { src: phones, title: 'Smartphones' },
-        { src: tabs, title: 'Tablets & E-Readers' },
-        { src: accessories, title: 'Mobile Accessories' },
-        { src: accessories, title: 'Mobile Accessories' },
-      ],
-      color: '#9adbf3',
-      title: 'Smartphones,Tablets & Wearables',
-    },
-    {
-      main: school,
-      sub: [
-        { src: writing, title: 'Writing Supplies' },
-        { src: bags, title: 'School Bags' },
-        { src: color, title: 'Coloring Materials' },
-        { src: paper, title: 'Paper Supplies' },
-      ],
-      color: '#f3f3f3',
-      title: 'Stationary & School supplies',
-    },
-    {
-      main: beauty,
-      sub: [
-        { src: men, title: `Men's Grooming` },
-        { src: ladies, title: 'Ladies Hair Removal' },
-        { src: personalcare, title: 'Natural Personal Care' },
-        { src: makeup, title: 'Makeup & Nails' },
-      ],
-      color: '#f7def1',
-      title: 'Beauty & Personal Care',
-    },
-  ];
+  // const categories = [
+  //   {
+  //     main: electronics,
+  //     sub: [
+  //       { src: fridge, title: 'Large Appliances' },
+  //       { src: iron, title: 'Small Appliances' },
+  //       { src: tv, title: 'TVs & Projectors' },
+  //       { src: laptops, title: 'Laptops & PCs' },
+  //     ],
+  //     color: '#9adbf3',
+  //     title: 'Electronics & Appliances',
+  //   },
+  //   {
+  //     main: smartphones,
+  //     sub: [
+  //       { src: phones, title: 'Smartphones' },
+  //       { src: tabs, title: 'Tablets & E-Readers' },
+  //       { src: accessories, title: 'Mobile Accessories' },
+  //       { src: accessories, title: 'Mobile Accessories' },
+  //     ],
+  //     color: '#9adbf3',
+  //     title: 'Smartphones,Tablets & Wearables',
+  //   },
+  //   {
+  //     main: school,
+  //     sub: [
+  //       { src: writing, title: 'Writing Supplies' },
+  //       { src: bags, title: 'School Bags' },
+  //       { src: color, title: 'Coloring Materials' },
+  //       { src: paper, title: 'Paper Supplies' },
+  //     ],
+  //     color: '#f3f3f3',
+  //     title: 'Stationary & School supplies',
+  //   },
+  //   {
+  //     main: beauty,
+  //     sub: [
+  //       { src: men, title: `Men's Grooming` },
+  //       { src: ladies, title: 'Ladies Hair Removal' },
+  //       { src: personalcare, title: 'Natural Personal Care' },
+  //       { src: makeup, title: 'Makeup & Nails' },
+  //     ],
+  //     color: '#f7def1',
+  //     title: 'Beauty & Personal Care',
+  //   },
+  // ];
   const sidebarCategories = [
     {
       title: 'Electronics & Appliances',
@@ -2776,7 +2915,6 @@ export default function DataContextProvider({ children }) {
         deliveryCountry,
         setDeliveryCountry,
         bestSeller,
-        categories,
         navCategories,
         countries,
         selectedStore,
@@ -2807,12 +2945,16 @@ export default function DataContextProvider({ children }) {
         getUserLocations,
         handleAddLocation,
         handleRemoveLocation,
-        getCartItemsLength,
+        getCartAndWishListLength,
         getNavCategoryData,
         getOrderedItems,
         getRecentlyViewedVertical,
         getUserProfileInfo,
         editUserProfileInfo,
+        getHomePageCategories,
+        getWishListItems,
+        addItemToWishList,
+        removeItemFromWishList,
       }}
     >
       {children}

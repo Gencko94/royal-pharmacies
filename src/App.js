@@ -14,6 +14,9 @@ import { appLanguages } from './modules/const';
 import Loading from './helpers/Loading';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Test from './pages/test';
+import NotFound from './pages/NotFound';
+import NotFoundMobile from './pages/NotFoundMobile';
+import Wishlist from './pages/Wishlist';
 // import Loadable from 'react-loadable';
 
 // const Home = Loadable({
@@ -104,6 +107,9 @@ function App() {
           <ProtectedRoute path="/user/account">
             {isTabletOrAbove ? <MyAccount /> : <MyAccountMobile />}
           </ProtectedRoute>
+          <ProtectedRoute path="/wishlist">
+            {isTabletOrAbove ? <Wishlist /> : <MyAccountMobile />}
+          </ProtectedRoute>
 
           <Route
             path="/cart"
@@ -151,9 +157,15 @@ function App() {
           />
           <Route path="/test" component={Test} />
 
-          <Route>
-            <div>not found !</div>
-          </Route>
+          <Route
+            render={props => {
+              if (isTabletOrAbove) {
+                return <NotFound {...props} />;
+              } else {
+                return <NotFoundMobile {...props} />;
+              }
+            }}
+          ></Route>
         </LocalizedSwitch>
       </LocalizedRouter>
     </Suspense>

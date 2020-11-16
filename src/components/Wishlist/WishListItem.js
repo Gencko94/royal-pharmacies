@@ -2,14 +2,12 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { MoonLoader } from 'react-spinners';
-import { DataProvider } from '../../contexts/DataContext';
 
-export default function CartItem({
+export default function WishListItem({
   item,
   handleRemoveItem,
   removeButtonLoading,
 }) {
-  const { EditItemFromCart } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
   const variant = {
     hidden: {
@@ -34,7 +32,7 @@ export default function CartItem({
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="cart-item py-2 border-b"
+      className="wishlist-item"
     >
       <img className="" src={item.photo} alt={item.name} />
       <div className="">
@@ -48,7 +46,7 @@ export default function CartItem({
           </h1>
           <select
             value={item.quantity}
-            onChange={e => EditItemFromCart(e.target.value, item)}
+            // onChange={e => EditItemFromCart(e.target.value, item)}
             className="pr-8 py-0 mx-2 form-select border-gray-400 border rounded"
           >
             <option>1</option>
@@ -85,9 +83,9 @@ export default function CartItem({
           </button>
         </div>
       </div>
-      <div className="text-center font-bold">
+      {/* <div className="text-center font-bold">
         {item.price * item.quantity} KD
-      </div>
+      </div> */}
     </motion.div>
   );
 }

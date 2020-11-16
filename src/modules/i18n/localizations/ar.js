@@ -75,6 +75,9 @@ export const ar = {
   'start-shopping-now': 'ابدأ التسوق الآن',
   'search-for-an-area': 'ابحث عن منطقة ...',
   'show-order-receipt': 'إظهار فاتورة الطلبية',
+  'not-found-title': 'يبدو اننا لم نجد ما تبحث عنه.',
+  'back-to-home': 'العودة إلى الرئيسية',
+  oops: 'عذرا !',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -95,10 +98,10 @@ export const ar = {
   'password-min-6': '6 أحرف كحد ادنى',
   'password-max-15': '15 حرف كحد اقصى',
   'password-empty': 'الرجاء إدخال كلمة السر',
-  'username-empty': 'الرجاء إدخال اسم المستخدم',
+  'fullname-empty': 'الرجاء إدخال اسم الكامل',
   'email-label': 'البريد الإلكتروني',
   'password-label': 'كلمة السر',
-  'username-label': 'اسم المستخدم',
+  'fullname-label': 'الإسم الكامل',
   'phone-label': 'رقم الهاتف ',
   'login-button': 'تسجيل الدخول',
   'register-button': 'انشاء حساب',

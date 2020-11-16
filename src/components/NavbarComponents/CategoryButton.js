@@ -12,7 +12,7 @@ export default function CategoryButton({
       onMouseEnter={() => {
         handleDropDownOpen(item.category);
       }}
-      className={`p-2 text-sm  font-semibold hover:shadow-navCategory cursor-pointer ${
+      className={`p-2 text-sm  font-semibold cursor-pointer ${
         isLightTheme
           ? 'hover:bg-second-nav-text-light'
           : 'hover:bg-second-nav-dark'
