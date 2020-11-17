@@ -22,9 +22,8 @@ export default function WishlistContainer({
         <AnimateSharedLayout>
           <motion.div layout className="grid grid-cols-1 gap-2">
             <div className="wishlist-grid-titles mb-2">
-              <h1 className="  ">{formatMessage({ id: 'shopping-cart' })}</h1>
-              <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1>
-              <h1 className="text-center">{formatMessage({ id: 'price' })}</h1>
+              <h1 className="  ">{formatMessage({ id: 'wishlist' })}</h1>
+              {/* <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1> */}
             </div>
             <AnimatePresence>
               {data.wishListItems.map(item => {

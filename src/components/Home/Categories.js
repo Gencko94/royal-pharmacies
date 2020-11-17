@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 // import MultiClamp from 'react-multi-clamp';
 import ContentLoader from 'react-content-loader';
 import { useQuery } from 'react-query';
-// import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 export default function Categories() {
   const { getHomePageCategories } = React.useContext(DataProvider);
   // const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -22,8 +22,10 @@ export default function Categories() {
     autoplay: true,
     autoplaySpeed: 3000,
     infinite: true,
-    slidesToShow: 8,
+    slidesToShow: 9,
     slidesToScroll: 5,
+    nextArrow: <RightArrow />,
+    prevArrow: <LeftArrow />,
 
     responsive: [
       {
@@ -38,7 +40,6 @@ export default function Categories() {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
-          arrows: false,
         },
       },
       {
@@ -46,17 +47,16 @@ export default function Categories() {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          arrows: false,
         },
       },
     ],
   };
 
   return (
-    <div className="my-3 text-body-text-light">
+    <div className="my-3 text-body-text-light px-2">
       <Slider className="" {...settings}>
         {isLoading &&
-          [0, 1, 2, 3, 4, 5, 6, 7].map(i => {
+          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
             return (
               <div key={i} className="px-1 overflow-hidden ">
                 <ContentLoader
@@ -71,9 +71,9 @@ export default function Categories() {
             );
           })}
         {!isLoading &&
-          data.map(item => {
+          data.map((item, i) => {
             return (
-              <div className="px-1">
+              <div key={i} className="px-1">
                 <div className="  overflow-hidden  relative  rounded-lg  ">
                   <img
                     src={item.url}
@@ -88,23 +88,23 @@ export default function Categories() {
     </div>
   );
 }
-// const RightArrow = ({ onClick }) => {
-//   return (
-//     <div
-//       className="hover:bg-gray-300 rounded-full grid place-items-center absolute top-1/2 right-n25 lg:right-n42 w-8 h-8 lg:h-12 lg:w-12 z-1 transform -translate-x-1/2 -translate-y-1/2 bg-white transition duration-150 shadow-2xl border border-gray-300"
-//       onClick={onClick}
-//     >
-//       <BsChevronRight />
-//     </div>
-//   );
-// };
-// const LeftArrow = ({ onClick }) => {
-//   return (
-//     <div
-//       className="hover:bg-gray-300 rounded-full flex justify-center w-8 h-8  lg:h-12 lg:w-12    items-center absolute left-8 top-1/2   z-1 transform -translate-x-1/2 -translate-y-1/2 bg-white transition-colors duration-150 shadow-2xl border border-gray-300"
-//       onClick={onClick}
-//     >
-//       <BsChevronLeft />
-//     </div>
-//   );
-// };
+const RightArrow = ({ onClick }) => {
+  return (
+    <button
+      className="items-slider__next-button hover:bg-gray-300  rounded       bg-white transition duration-150 shadow-2xl border border-gray-300"
+      onClick={onClick}
+    >
+      <BsChevronRight className="w-5 h-5" />
+    </button>
+  );
+};
+const LeftArrow = ({ onClick }) => {
+  return (
+    <button
+      className=" items-slider__prev-button hover:bg-gray-300 rounded     bg-white transition-colors duration-150 shadow-2xl border border-gray-300"
+      onClick={onClick}
+    >
+      <BsChevronLeft className="w-5 h-5" />
+    </button>
+  );
+};

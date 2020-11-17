@@ -284,6 +284,13 @@ export default function DataContextProvider({ children }) {
       }, 1000);
     });
   };
+  const getFeaturedItems = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(phone);
+      }, 1250);
+    });
+  };
   const addItemToCart = ({ id, quantity, price, name, photo, category }) => {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -1671,52 +1678,7 @@ export default function DataContextProvider({ children }) {
       subCategory: 'Smartphones',
     },
   ];
-  // const categories = [
-  //   {
-  //     main: electronics,
-  //     sub: [
-  //       { src: fridge, title: 'Large Appliances' },
-  //       { src: iron, title: 'Small Appliances' },
-  //       { src: tv, title: 'TVs & Projectors' },
-  //       { src: laptops, title: 'Laptops & PCs' },
-  //     ],
-  //     color: '#9adbf3',
-  //     title: 'Electronics & Appliances',
-  //   },
-  //   {
-  //     main: smartphones,
-  //     sub: [
-  //       { src: phones, title: 'Smartphones' },
-  //       { src: tabs, title: 'Tablets & E-Readers' },
-  //       { src: accessories, title: 'Mobile Accessories' },
-  //       { src: accessories, title: 'Mobile Accessories' },
-  //     ],
-  //     color: '#9adbf3',
-  //     title: 'Smartphones,Tablets & Wearables',
-  //   },
-  //   {
-  //     main: school,
-  //     sub: [
-  //       { src: writing, title: 'Writing Supplies' },
-  //       { src: bags, title: 'School Bags' },
-  //       { src: color, title: 'Coloring Materials' },
-  //       { src: paper, title: 'Paper Supplies' },
-  //     ],
-  //     color: '#f3f3f3',
-  //     title: 'Stationary & School supplies',
-  //   },
-  //   {
-  //     main: beauty,
-  //     sub: [
-  //       { src: men, title: `Men's Grooming` },
-  //       { src: ladies, title: 'Ladies Hair Removal' },
-  //       { src: personalcare, title: 'Natural Personal Care' },
-  //       { src: makeup, title: 'Makeup & Nails' },
-  //     ],
-  //     color: '#f7def1',
-  //     title: 'Beauty & Personal Care',
-  //   },
-  // ];
+
   const sidebarCategories = [
     {
       title: 'Electronics & Appliances',
@@ -2955,6 +2917,7 @@ export default function DataContextProvider({ children }) {
         getWishListItems,
         addItemToWishList,
         removeItemFromWishList,
+        getFeaturedItems,
       }}
     >
       {children}

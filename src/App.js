@@ -17,6 +17,7 @@ import Test from './pages/test';
 import NotFound from './pages/NotFound';
 import NotFoundMobile from './pages/NotFoundMobile';
 import Wishlist from './pages/Wishlist';
+import RegisterMobile from './pages/RegisterMobile';
 // import Loadable from 'react-loadable';
 
 // const Home = Loadable({
@@ -99,7 +100,16 @@ function App() {
         <ScrollToTopOnMount />
 
         <LocalizedSwitch>
-          <Route path="/app/register" component={Register} />
+          <Route
+            path="/app/register"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <Register {...props} />;
+              } else {
+                return <RegisterMobile {...props} />;
+              }
+            }}
+          />
           <Route path="/app/login" component={Login} />
 
           <Route exact path="/" component={Home} />

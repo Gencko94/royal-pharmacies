@@ -6,7 +6,7 @@ import LayoutMobile from '../components/LayoutMobile';
 import { useIntl } from 'react-intl';
 import CartItemMobile from '../components/CartMobile/CartItemMobile';
 import CheckoutButton from '../components/CartMobile/CheckoutButton';
-import CartEmpty from '../components/CartMobile/CartEmpty';
+import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
 import MainContentLoader from '../components/CartMobile/ContentLoaders/MainContentLoader';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
@@ -70,7 +70,7 @@ export default function CartMobile() {
           <CheckoutButton data={data.cartItems} cartTotal={data.cartTotal} />
         )}
         {isLoading && <MainContentLoader />}
-        {!isLoading && data.cartItems.length === 0 && <CartEmpty />}
+        {!isLoading && data.cartItems.length === 0 && <CartEmptyMobile />}
 
         {!isLoading && data.cartItems.length !== 0 && (
           <AnimateSharedLayout>

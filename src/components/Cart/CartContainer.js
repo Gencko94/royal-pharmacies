@@ -1,9 +1,9 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
+import CartEmpty from './CartEmpty';
 import CartItem from './CartItem';
 import CartContainerLoader from './loaders/CartContainerLoader';
-import NoCartItems from './NoCartItems';
 
 export default function CartContainer({
   isLoading,
@@ -32,12 +32,13 @@ export default function CartContainer({
   return (
     <div className="">
       <AnimatePresence>
-        {data.cartItems.length === 0 && <NoCartItems />}
+        {data.cartItems.length === 0 && <CartEmpty />}
       </AnimatePresence>
       {data.cartItems.length !== 0 && (
         <>
           <div className="cart-grid-titles font-semibold text-lg">
-            <h1 className="  ">{formatMessage({ id: 'shopping-cart' })}</h1>
+            <div></div>
+            {/* <h1 className="  ">{formatMessage({ id: 'shopping-cart' })}</h1> */}
             <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1>
             <h1 className="text-center">{formatMessage({ id: 'price' })}</h1>
           </div>

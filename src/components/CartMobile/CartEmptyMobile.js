@@ -2,7 +2,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
-export default function CartEmpty() {
+export default function CartEmptyMobile() {
   const { formatMessage, locale } = useIntl();
   return (
     <div>

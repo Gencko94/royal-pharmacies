@@ -32,7 +32,7 @@ export default function WishListItem({
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="wishlist-item"
+      className="wishlist-item border rounded"
     >
       <img className="" src={item.photo} alt={item.name} />
       <div className="">
