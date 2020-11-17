@@ -1,11 +1,14 @@
 import React from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+// import { useQuery } from 'react-query';
 import Rating from 'react-rating';
 import { DataProvider } from '../../contexts/DataContext';
 
 export default function FeaturedItemsVertical() {
   const { bestSeller } = React.useContext(DataProvider);
-
+  // const { data, isLoading } = useQuery('featuredItemsVertical', async () => {
+  //   return await getFeaturedItems();
+  // });
   return (
     <div>
       <h1 className="mb-1">Featured Items</h1>

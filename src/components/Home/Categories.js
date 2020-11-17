@@ -23,29 +23,29 @@ export default function Categories() {
     autoplaySpeed: 3000,
     infinite: true,
     slidesToShow: 8,
-    slidesToScroll: 2,
+    slidesToScroll: 5,
 
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 5,
-          slidesToScroll: 2,
+          slidesToShow: 6,
+          slidesToScroll: 5,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 4,
+          slidesToScroll: 4,
           arrows: false,
         },
       },
       {
         breakpoint: 320,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 3,
+          slidesToScroll: 3,
           arrows: false,
         },
       },

@@ -14,9 +14,9 @@ export default function RecentlyViewedVertical({ visitedItems }) {
     return await getRecentlyViewedVertical(visitedItems);
   });
 
-  return (
-    <div className="border rounded p-2 bg-gray-100">
-      {isLoading && (
+  if (isLoading) {
+    return (
+      <div className="border rounded p-2 bg-gray-100">
         <ContentLoader
           speed={3}
           viewBox="0 0 400 680"
@@ -49,56 +49,56 @@ export default function RecentlyViewedVertical({ visitedItems }) {
           <rect x="32%" y="600" rx="5" ry="5" width="100%" height="35" />
           <rect x="32%" y="640" rx="5" ry="5" width="100%" height="38" />
         </ContentLoader>
-      )}
-      {!isLoading && (
-        <>
-          <h1 className="mb-1">
-            {formatMessage({ id: 'your-recently-visited-items' })}
-          </h1>
-          <hr />
-          {data.map(item => {
-            return (
-              <div key={item.id} className="recent-items__container mb-2 ">
-                <a
-                  title={item.name}
-                  className="hover:underline"
-                  href={`/${locale}/${item.category.replace(
-                    /\s|%|,/g,
-                    '-'
-                  )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
+      </div>
+    );
+  }
+  return (
+    <div className="border rounded p-2 bg-gray-100">
+      <h1 className="mb-1">
+        {formatMessage({ id: 'your-recently-visited-items' })}
+      </h1>
+      <hr />
+      {data.map(item => {
+        return (
+          <div key={item.id} className="recent-items__container mb-2 ">
+            <a
+              title={item.name}
+              className="hover:underline"
+              href={`/${locale}/${item.category.replace(
+                /\s|%|,/g,
+                '-'
+              )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
+            >
+              <img src={item.photos.small} alt={item.name} />
+            </a>
+            <div className="text-sm">
+              <a
+                title={item.name}
+                className="hover:underline"
+                href={`/${locale}/${item.category.replace(
+                  /\s|%|,/g,
+                  '-'
+                )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
+              >
+                <MultiClamp
+                  className="text-sm  font-semibold"
+                  clamp={2}
+                  ellipsis="..."
                 >
-                  <img src={item.photos.small} alt={item.name} />
-                </a>
-                <div className="text-sm">
-                  <a
-                    title={item.name}
-                    className="hover:underline"
-                    href={`/${locale}/${item.category.replace(
-                      /\s|%|,/g,
-                      '-'
-                    )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
-                  >
-                    <MultiClamp
-                      className="text-sm  font-semibold"
-                      clamp={2}
-                      ellipsis="..."
-                    >
-                      {item.name}
-                    </MultiClamp>
-                  </a>
-                  <Rating
-                    initialRating={Math.round(Math.random() * 5)}
-                    emptySymbol={<AiOutlineStar className="text-red-700" />}
-                    fullSymbol={<AiFillStar className="text-red-700" />}
-                    className="mr-2 pt-1"
-                  />
-                  <h1 className="text-green-700">{item.price} KD</h1>
-                </div>
-              </div>
-            );
-          })}
-        </>
-      )}
+                  {item.name}
+                </MultiClamp>
+              </a>
+              <Rating
+                initialRating={Math.round(Math.random() * 5)}
+                emptySymbol={<AiOutlineStar className="text-red-700" />}
+                fullSymbol={<AiFillStar className="text-red-700" />}
+                className="mr-2 pt-1"
+              />
+              <h1 className="text-green-700">{item.price} KD</h1>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
