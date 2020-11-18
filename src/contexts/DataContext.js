@@ -176,26 +176,31 @@ export default function DataContextProvider({ children }) {
     localStorage.setItem('prefferedLanguage', lang);
     setLanguage(lang);
   };
-  const isItemInCart = id => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const itemInCart = cartItems.find(item => id === item.id);
-        if (itemInCart) {
-          resolve({ message: 'yes' });
-        } else {
-          resolve({ message: 'no' });
-        }
-      }, 500);
-    });
-  };
-
-  // const moveItemFromWishListToCart = (item)=>{
+  // const isItemInCart = id => {
   //   return new Promise(resolve => {
   //     setTimeout(() => {
-  //       resolve()
-  //     }, 750);
-  //   })
-  // }
+  //       const itemInCart = cartItems.find(item => id === item.id);
+  //       if (itemInCart) {
+  //         resolve({ message: 'yes' });
+  //       } else {
+  //         resolve({ message: 'no' });
+  //       }
+  //     }, 500);
+  //   });
+  // };
+  // const isItemInWishlist = id => {
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       const itemInCart = cartItems.find(item => id === item.id);
+  //       if (itemInCart) {
+  //         resolve({ message: 'yes' });
+  //       } else {
+  //         resolve({ message: 'no' });
+  //       }
+  //     }, 500);
+  //   });
+  // };
+
   const addItemToWishList = ({
     id,
     quantity,
@@ -203,8 +208,10 @@ export default function DataContextProvider({ children }) {
     name,
     photo,
     category,
+    rating,
   }) => {
     return new Promise(resolve => {
+      const isItemInCart = cartItems.find(item => item.id === id);
       setTimeout(() => {
         const newItem = {
           id,
@@ -213,6 +220,8 @@ export default function DataContextProvider({ children }) {
           photo,
           quantity,
           category,
+          rating,
+          itemInCart: Boolean(isItemInCart),
         };
         const wishListCopy = [...wishListItems];
         wishListCopy.push(newItem);
@@ -224,8 +233,47 @@ export default function DataContextProvider({ children }) {
       }, 750);
     });
   };
+  const addItemToWishListFromCart = ({
+    id,
+    quantity,
+    price,
+    name,
+    photo,
+    category,
+    rating,
+  }) => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const newItem = {
+          id,
+          price,
+          name,
+          photo,
+          quantity,
+          category,
+          rating,
+          itemInWishList: true,
+        };
+        console.log(newItem);
+        const cartCopy = [...cartItems];
+        const modifiedCartItemIndex = cartCopy.findIndex(i => i.id === id);
+        if (modifiedCartItemIndex !== -1) {
+          cartCopy[modifiedCartItemIndex].itemInWishList = true;
+        }
+        const wishListCopy = [...wishListItems];
+        wishListCopy.push(newItem);
+        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
+        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
+        setWishListItems(wishListCopy);
+        setCartItems(cartCopy);
+        resolve({
+          cartItems: cartCopy,
+          wishListItems: wishListCopy,
+        });
+      }, 750);
+    });
+  };
   const removeItemFromWishList = id => {
-    console.log(id);
     return new Promise(resolve => {
       setTimeout(() => {
         const wishListCopy = wishListItems.filter(i => {
@@ -235,6 +283,29 @@ export default function DataContextProvider({ children }) {
         localStorage.setItem('localWish', JSON.stringify(wishListCopy));
         setWishListItems(wishListCopy);
         resolve({
+          wishListItems: wishListCopy,
+        });
+      }, 750);
+    });
+  };
+  const removeItemFromWishListFromCart = id => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const wishListCopy = wishListItems.filter(i => {
+          return i.id !== id;
+        });
+        const cartCopy = [...cartItems];
+        const modifiedCartItemIndex = cartCopy.findIndex(i => id === i.id);
+        if (modifiedCartItemIndex !== -1) {
+          cartCopy[modifiedCartItemIndex].itemInWishList = false;
+        }
+
+        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
+        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
+        setCartItems(cartCopy);
+        setWishListItems(wishListCopy);
+        resolve({
+          cartItems: cartCopy,
           wishListItems: wishListCopy,
         });
       }, 750);
@@ -291,7 +362,56 @@ export default function DataContextProvider({ children }) {
       }, 1250);
     });
   };
-  const addItemToCart = ({ id, quantity, price, name, photo, category }) => {
+  const addItemToCartFromWishlist = ({
+    id,
+    quantity,
+    price,
+    name,
+    photo,
+    category,
+  }) => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const cartCopy = [...cartItems];
+        const wishListCopy = [...wishListItems];
+        const newCartItem = {
+          id,
+          price,
+          name,
+          photo,
+          quantity,
+          category,
+        };
+        cartCopy.push(newCartItem);
+        const modifiedWishListItemIndex = wishListCopy.findIndex(
+          i => id === i.id
+        );
+        if (modifiedWishListItemIndex !== -1) {
+          wishListCopy[modifiedWishListItemIndex].itemInCart = true;
+        }
+
+        setCartItems(cartCopy);
+        setWishListItems(wishListCopy);
+        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
+        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
+        resolve({
+          message: 'ok',
+          cartItems: cartCopy,
+          wishListItems: wishListCopy,
+          cartTotal: calculateItemsPrice(cartCopy),
+        });
+      }, 1000);
+    });
+  };
+  const addItemToCart = ({
+    id,
+    quantity,
+    price,
+    name,
+    photo,
+    category,
+    rating,
+  }) => {
     return new Promise(resolve => {
       setTimeout(() => {
         const cartCopy = [...cartItems];
@@ -302,6 +422,7 @@ export default function DataContextProvider({ children }) {
           photo,
           quantity,
           category,
+          rating,
         };
         cartCopy.push(newItem);
 
@@ -332,11 +453,44 @@ export default function DataContextProvider({ children }) {
       setTimeout(() => {
         const cartCopy = cartItems.filter(cartItem => id !== cartItem.id);
         setCartItems(cartCopy);
-
+        const wishListCopy = [...wishListItems];
+        const modifiedWishListItemIndex = wishListCopy.findIndex(
+          i => id === i.id
+        );
+        if (modifiedWishListItemIndex !== -1) {
+          wishListCopy[modifiedWishListItemIndex].itemInCart = false;
+        }
+        setWishListItems(wishListCopy);
         localStorage.setItem('cartItems', JSON.stringify(cartCopy));
         resolve({
           message: 'ok',
           cartItems: cartCopy,
+          wishListItems: wishListCopy,
+          cartTotal: calculateItemsPrice(cartCopy),
+        });
+      }, 1000);
+    });
+  };
+  const removeItemFromCartFromWishlist = id => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const wishListCopy = [...wishListItems];
+        const cartCopy = cartItems.filter(cartItem => id !== cartItem.id);
+        const modifiedWishListItemIndex = wishListCopy.findIndex(
+          i => id === i.id
+        );
+        if (modifiedWishListItemIndex !== -1) {
+          wishListCopy[modifiedWishListItemIndex].itemInCart = false;
+        }
+        setCartItems(cartCopy);
+        setWishListItems(wishListCopy);
+
+        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
+        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
+        resolve({
+          message: 'ok',
+          cartItems: cartCopy,
+          wishListItems: wishListCopy,
           cartTotal: calculateItemsPrice(cartCopy),
         });
       }, 1000);
@@ -2900,7 +3054,7 @@ export default function DataContextProvider({ children }) {
         orderedItems,
         language,
         handleLanguageChange,
-        isItemInCart,
+
         getSingleItemDetails,
         getCartItems,
         getItemsByType,
@@ -2918,6 +3072,10 @@ export default function DataContextProvider({ children }) {
         addItemToWishList,
         removeItemFromWishList,
         getFeaturedItems,
+        addItemToCartFromWishlist,
+        removeItemFromCartFromWishlist,
+        removeItemFromWishListFromCart,
+        addItemToWishListFromCart,
       }}
     >
       {children}

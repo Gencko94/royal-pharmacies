@@ -8,8 +8,11 @@ import CartContainerLoader from './loaders/CartContainerLoader';
 export default function CartContainer({
   isLoading,
   data,
-  removeButtonLoading,
-  handleRemoveItem,
+  removefromCartButtonLoading,
+  handleRemoveItemFromCart,
+  handleAddItemToWishlist,
+  handleRemoveItemFromWishlist,
+  addToWishListButtonLoading,
 }) {
   const resolvePlural = () => {
     switch (data.cartItems.length) {
@@ -55,8 +58,13 @@ export default function CartContainer({
                     <CartItem
                       key={item.id}
                       item={item}
-                      handleRemoveItem={handleRemoveItem}
-                      removeButtonLoading={removeButtonLoading}
+                      handleRemoveItemFromCart={handleRemoveItemFromCart}
+                      removefromCartButtonLoading={removefromCartButtonLoading}
+                      handleRemoveItemFromWishlist={
+                        handleRemoveItemFromWishlist
+                      }
+                      handleAddItemToWishlist={handleAddItemToWishlist}
+                      addToWishListButtonLoading={addToWishListButtonLoading}
                     />
                   );
                 })}

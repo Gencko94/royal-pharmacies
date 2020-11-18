@@ -140,8 +140,8 @@ export default function RightSection({
             addToWishListButtonLoading
               ? 'bg-gray-300'
               : itemInWishList
-              ? 'border-main-color text-main-text'
-              : 'border-main-color text-main-color'
+              ? 'border-main-color text-main-color border'
+              : 'border-main-color text-main-color border'
           } flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToWishListButtonLoading ? (

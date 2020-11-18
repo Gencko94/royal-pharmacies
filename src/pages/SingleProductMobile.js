@@ -62,6 +62,19 @@ export default function SingleProductMobile({
             itemInCart: true,
           };
         });
+        queryCache.setQueryData('cartAndWishListLength', prev => {
+          return {
+            ...prev,
+            cart: data.cartItems.length,
+          };
+        });
+        queryCache.setQueryData('cartItems', prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+          };
+        });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
       },
@@ -88,6 +101,20 @@ export default function SingleProductMobile({
             itemInCart: false,
           };
         });
+        queryCache.setQueryData('cartItems', prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+          };
+        });
+        queryCache.setQueryData('cartAndWishListLength', prev => {
+          return {
+            ...prev,
+            cart: data.cartItems.length,
+          };
+        });
+
         setAddToCartButtonLoading(false);
       },
     }
@@ -147,6 +174,7 @@ export default function SingleProductMobile({
         category: data.item.category,
         color,
         size,
+        rating: data.rating,
       });
     } catch (error) {
       console.log(error);

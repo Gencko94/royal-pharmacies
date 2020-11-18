@@ -8,8 +8,11 @@ import WishListItem from './WishListItem';
 export default function WishlistContainer({
   isLoading,
   data,
-  handleRemoveItem,
-  removeButtonLoading,
+  handleRemoveItemFromWishList,
+  removeFromWishListButtonLoading,
+  addToCartButtonLoading,
+  handleRemoveFromCart,
+  handleAddToCart,
 }) {
   const { formatMessage, locale } = useIntl();
   if (isLoading) {
@@ -25,14 +28,20 @@ export default function WishlistContainer({
               <h1 className="  ">{formatMessage({ id: 'wishlist' })}</h1>
               {/* <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1> */}
             </div>
+            <hr />
             <AnimatePresence>
               {data.wishListItems.map(item => {
                 return (
                   <WishListItem
                     key={item.id}
                     item={item}
-                    handleRemoveItem={handleRemoveItem}
-                    removeButtonLoading={removeButtonLoading}
+                    handleRemoveItemFromWishList={handleRemoveItemFromWishList}
+                    removeFromWishListButtonLoading={
+                      removeFromWishListButtonLoading
+                    }
+                    addToCartButtonLoading={addToCartButtonLoading}
+                    handleAddToCart={handleAddToCart}
+                    handleRemoveFromCart={handleRemoveFromCart}
                   />
                 );
               })}

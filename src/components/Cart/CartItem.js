@@ -6,8 +6,11 @@ import { DataProvider } from '../../contexts/DataContext';
 
 export default function CartItem({
   item,
-  handleRemoveItem,
-  removeButtonLoading,
+  handleRemoveItemFromCart,
+  removefromCartButtonLoading,
+  handleAddItemToWishlist,
+  handleRemoveItemFromWishlist,
+  addToWishListButtonLoading,
 }) {
   const { EditItemFromCart } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
@@ -56,17 +59,19 @@ export default function CartItem({
             <option>3</option>
           </select>
         </div>
-        <div className="flex text-sm  items-center mb-2 ">
+        <div className="flex text-sm  items-center ">
           <button
             onClick={() => {
-              handleRemoveItem(item.id);
+              handleRemoveItemFromCart(item.id);
             }}
             className={`${
-              removeButtonLoading === item.id ? 'bg-gray-300' : 'bg-main-color'
+              removefromCartButtonLoading === item.id
+                ? 'bg-gray-300'
+                : 'bg-main-color'
             }  text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold uppercase `}
-            style={{ width: '160px' }}
+            style={{ width: '200px' }}
           >
-            {removeButtonLoading === item.id ? (
+            {removefromCartButtonLoading === item.id ? (
               <MoonLoader size={18} color="#b72b2b" />
             ) : (
               <>
@@ -77,12 +82,45 @@ export default function CartItem({
             )}
           </button>
           <button
-            onClick={() => handleRemoveItem(item.id)}
+            onClick={() => {
+              if (item.itemInWishList) {
+                handleRemoveItemFromWishlist(item.id);
+              } else {
+                handleAddItemToWishlist(item);
+              }
+            }}
+            className={`${
+              addToWishListButtonLoading
+                ? 'bg-gray-300'
+                : item.itemInWishList
+                ? 'bg-main-color'
+                : 'bg-green-700'
+            }  text-main-text   p-2 rounded flex items-center justify-center mx-2 font-semibold uppercase`}
+            style={{ width: '200px' }}
+          >
+            {addToWishListButtonLoading ? (
+              <MoonLoader size={19} color="#b72b2b" />
+            ) : item.itemInWishList ? (
+              <>
+                <h1 className="mx-2 whitespace-no-wrap">
+                  {formatMessage({ id: 'remove-from-wishlist' })}
+                </h1>
+              </>
+            ) : (
+              <>
+                <h1 className="mx-2">
+                  {formatMessage({ id: 'add-to-wishlist' })}
+                </h1>
+              </>
+            )}
+          </button>
+          {/* <button
+            onClick={() => handleRemoveItemFromCart(item.id)}
             className="p-2 border uppercase border-main-color  text-main-color font-semibold rounded mx-2"
             style={{ width: '160px' }}
           >
             {formatMessage({ id: 'add-to-wishlist' })}
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="text-center font-bold">

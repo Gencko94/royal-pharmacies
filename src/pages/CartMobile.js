@@ -23,7 +23,7 @@ export default function CartMobile() {
   /**
    * Main Fetch
    */
-  const { data, isLoading, refetch } = useQuery('cartItemsMobile', async () => {
+  const { data, isLoading, refetch } = useQuery('cartItems', async () => {
     const res = await getCartItems();
     return res;
   });
@@ -39,11 +39,23 @@ export default function CartMobile() {
     },
     {
       onSuccess: data => {
-        queryCache.setQueryData('cartItemsMobile', prev => {
+        queryCache.setQueryData('cartItems', prev => {
           return {
             ...prev,
             cartItems: data.cartItems,
             cartTotal: data.cartTotal,
+          };
+        });
+        queryCache.setQueryData('cartAndWishListLength', prev => {
+          return {
+            ...prev,
+            cart: data.cartItems.length,
+          };
+        });
+        queryCache.setQueryData('wishListItems', prev => {
+          return {
+            ...prev,
+            wishListItems: data.wishListItems,
           };
         });
         setRemoveButtonLoading(null);

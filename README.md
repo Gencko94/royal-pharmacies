@@ -1,70 +1,54 @@
 # Things to Complete
 
 - [x] Fix Deliver To in Mobile & Desktop View.
-
 - [x] Add Support for Authenticated Users.
-
 - [x] Add Framer motion to Mobile Side Menu.
-
 - [x] Fix Buy options in items Slider.
-
 - [x] Add React Query to Navbar.
-
 - [x] Add Protected Routes.
-
 - [x] Add Maps to MyAddressesMobile.
-
 - [x] Add a Review system.
-
-- [ ] Add a Review system for Mobile.
-
 - [x] Append buy options to cart.
-
 - [x] Add Error Boundaries and handlers.
-
 - [x] Make buttons bigger || or make classes for buttons.
-
 - [x] Add forgot password support .
-
 - [x] Add routes to account page and try to animate them.
+- [x] Add Coupon Support.
+- [x] Complete desktop view order history.
+- [x] Add Buy Options to SingleProduct in Desktop and Mobile View.
+- [x] Add Loaders to Vertical Items.
+- [x] Discuss Location handling with Maher.
+- [x] Add default location support.
+- [x] Localize Footers.
+- [x] Add 404 page.
 
 - [ ] Add Edit Cart item support.
 
-- [x] Add Coupon Support.
+- [ ] Add a Review system for Mobile.(2hrs)
 
 - [ ] Look into lazy loading and progressive images.
 
-- [x] Complete desktop view order history.
-
 - [ ] Add React Query & Localizations to the Search page.
-
-- [x] Add Buy Options to SingleProduct in Desktop and Mobile View.
 
 - [ ] Add Scroll Pagination to SingleProduct Pages.
 
-- [ ] Add auto Complete to the Search bar.
+- [ ] Add auto Complete to the Search bar.(1hr)
 
-- [ ] Complete the Checkout Page.
-
-- [x] Add Loaders to Vertical Items.
+- [ ] Complete the Checkout Page.(2hrs)
 
 - [ ] Search Engine optimization.
 
-- [x] Discuss Location handling with Maher.
+- [ ] Add keys to env variables.(0.5hr)
 
-- [x] Add default location support.
+- [ ] Add auto detect locale and localstorage language.(1hr)
 
-- [ ] Add keys to env variables.
+- [ ] Add Wishlist Page Desktop & Mobile.(3hrs)
 
-- [x] Localize Footers.
+- [ ] Add React query to order history. (2.5hrs)
 
-- [ ] Add auto detect locale and localstorage language.
+- [ ] Add payment Method for Mobile & Desktop (3hrs)
 
-- [ ] Add Wishlist Page.
-
-- [x] Add 404 page.
-
-- [ ] Add React query to order history.
+- [ ] Add Viewed Items for Mobile & Desktop (3hrs)
 
 # MRG API Structure :
 

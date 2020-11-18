@@ -32,6 +32,7 @@ export default function SliderItem({
         name: data.name,
         options,
         category: data.category,
+        rating: data.rating,
       });
     } catch (error) {
       console.log(error);

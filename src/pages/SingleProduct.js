@@ -181,7 +181,7 @@ export default function SingleProduct() {
             wishlist: data.wishListItems.length,
           };
         });
-        setAddToCartButtonLoading(false);
+        setAddToWishListButtonLoading(false);
       },
     }
   );
@@ -220,6 +220,7 @@ export default function SingleProduct() {
         category: data.item.category,
         size,
         color,
+        rating: data.item.rating,
       });
     } catch (error) {
       console.log(error);
@@ -236,6 +237,7 @@ export default function SingleProduct() {
         category: data.item.category,
         size,
         color,
+        rating: data.rating,
       });
     } catch (error) {
       console.log(error);

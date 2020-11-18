@@ -17,6 +17,8 @@ export default function Cart() {
     isLightTheme,
     getCartItems,
     removeItemFromCart,
+    addItemToWishListFromCart,
+    removeItemFromWishListFromCart,
   } = React.useContext(DataProvider);
   /**
    * Main Fetch
@@ -37,11 +39,11 @@ export default function Cart() {
   );
 
   /**
-   * Remove Mutation
+   * Remove From Cart Mutation
    */
-  const [removeMutation] = useMutation(
+  const [removeFromCartMutation] = useMutation(
     async id => {
-      setRemoveButtonLoading(id);
+      setRemoveFromCartButtonLoading(id);
       const res = await removeItemFromCart(id);
       return res;
     },
@@ -60,7 +62,13 @@ export default function Cart() {
             cart: data.cartItems.length,
           };
         });
-        setRemoveButtonLoading(null);
+        queryCache.setQueryData('wishListItems', prev => {
+          return {
+            ...prev,
+            wishListItems: data.wishListItems,
+          };
+        });
+        setRemoveFromCartButtonLoading(null);
         refetch();
       },
       onError: error => {
@@ -70,17 +78,104 @@ export default function Cart() {
     }
   );
 
+  /**
+   * add to wishlist mutation
+   */
+
+  const [addToWishListMutation] = useMutation(
+    async item => {
+      setAddToWishListButtonLoading(item.id);
+      const res = await addItemToWishListFromCart(item);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData('cartAndWishListLength', prev => {
+          return {
+            ...prev,
+            wishlist: data.wishListItems.length,
+          };
+        });
+        queryCache.setQueryData('cartItems', prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+          };
+        });
+        queryCache.setQueryData('wishListItems', () => {
+          return {
+            wishListItems: data.wishListItems,
+          };
+        });
+        setAddToWishListButtonLoading(null);
+      },
+    }
+  );
+  /**
+   * remove from wishlist mutation
+   */
+
+  const [removeFromWishListMutation] = useMutation(
+    async id => {
+      setAddToWishListButtonLoading(id);
+      const res = await removeItemFromWishListFromCart(id);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData('cartAndWishListLength', prev => {
+          return {
+            ...prev,
+            wishlist: data.wishListItems.length,
+          };
+        });
+        queryCache.setQueryData('cartItems', prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+          };
+        });
+        queryCache.setQueryData('wishListItems', () => {
+          return {
+            wishListItems: data.wishListItems,
+          };
+        });
+        setAddToWishListButtonLoading(null);
+      },
+    }
+  );
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
-  const [removeButtonLoading, setRemoveButtonLoading] = React.useState(null);
+  const [
+    removefromCartButtonLoading,
+    setRemoveFromCartButtonLoading,
+  ] = React.useState(null);
+  const [
+    addToWishListButtonLoading,
+    setAddToWishListButtonLoading,
+  ] = React.useState(null);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const modalRef = React.useRef();
   useClickAway(modalRef, () => {
     setCheckOutModalOpen(false);
   });
-  const handleRemoveItem = async id => {
+  const handleRemoveItemFromCart = async id => {
     try {
-      await removeMutation(id);
+      await removeFromCartMutation(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleRemoveItemFromWishlist = async id => {
+    try {
+      await removeFromWishListMutation(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleAddItemToWishlist = async item => {
+    try {
+      await addToWishListMutation(item);
     } catch (error) {
       console.log(error);
     }
@@ -103,9 +198,12 @@ export default function Cart() {
         <div className=" cart-main-grid  ">
           <CartContainer
             isLoading={isLoading}
-            handleRemoveItem={handleRemoveItem}
+            handleRemoveItemFromCart={handleRemoveItemFromCart}
             data={data}
-            removeButtonLoading={removeButtonLoading}
+            removefromCartButtonLoading={removefromCartButtonLoading}
+            handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
+            handleAddItemToWishlist={handleAddItemToWishlist}
+            addToWishListButtonLoading={addToWishListButtonLoading}
           />
           <CartRightSide
             data={data}

@@ -7,10 +7,17 @@ import WishlistRightSide from '../components/Wishlist/WishlistRightSide';
 import { DataProvider } from '../contexts/DataContext';
 
 export default function Wishlist() {
-  const [removeButtonLoading, setRemoveButtonLoading] = React.useState(null);
+  const [
+    removeFromWishListButtonLoading,
+    setRemoveFromWishListButtonLoading,
+  ] = React.useState(null);
+  const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
+    null
+  );
   const {
     getWishListItems,
-
+    addItemToCartFromWishlist,
+    removeItemFromCartFromWishlist,
     removeItemFromWishList,
   } = React.useContext(DataProvider);
 
@@ -33,11 +40,11 @@ export default function Wishlist() {
   );
 
   /**
-   * Remove Mutation
+   * Remove From WishList Mutation
    */
-  const [removeMutation] = useMutation(
+  const [removeFromWishListMutation] = useMutation(
     async id => {
-      setRemoveButtonLoading(id);
+      setRemoveFromWishListButtonLoading(id);
       const res = await removeItemFromWishList(id);
       return res;
     },
@@ -56,7 +63,7 @@ export default function Wishlist() {
             wishlist: data.wishListItems.length,
           };
         });
-        setRemoveButtonLoading(null);
+        setRemoveFromWishListButtonLoading(null);
         refetch();
       },
       onError: error => {
@@ -65,14 +72,93 @@ export default function Wishlist() {
       },
     }
   );
-  const handleRemoveItem = async id => {
+
+  /**
+   * Add to Cart Mutation
+   */
+
+  const [addToCartMutation] = useMutation(
+    async item => {
+      setAddToCartButtonLoading(item.id);
+      const res = await addItemToCartFromWishlist(item);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData('cartAndWishListLength', prev => {
+          return {
+            ...prev,
+            cart: data.cartItems.length,
+          };
+        });
+        queryCache.setQueryData('cartItems', prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+          };
+        });
+        queryCache.setQueryData('wishListItems', () => {
+          return {
+            wishListItems: data.wishListItems,
+          };
+        });
+        setAddToCartButtonLoading(null);
+      },
+    }
+  );
+  const [removeFromCartMutation] = useMutation(
+    async id => {
+      setAddToCartButtonLoading(id);
+      const res = await removeItemFromCartFromWishlist(id);
+      return res;
+    },
+    {
+      onSuccess: data => {
+        queryCache.setQueryData('cartAndWishListLength', prev => {
+          return {
+            ...prev,
+            cart: data.cartItems.length,
+          };
+        });
+        queryCache.setQueryData('cartItems', prev => {
+          return {
+            ...prev,
+            cartItems: data.cartItems,
+            cartTotal: data.cartTotal,
+          };
+        });
+        queryCache.setQueryData('wishListItems', () => {
+          return {
+            wishListItems: data.wishListItems,
+          };
+        });
+        setAddToCartButtonLoading(null);
+      },
+    }
+  );
+
+  const handleRemoveItemFromWishList = async id => {
     try {
-      await removeMutation(id);
+      await removeFromWishListMutation(id);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handleAddToCart = async item => {
+    try {
+      await addToCartMutation(item);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleRemoveFromCart = async id => {
+    try {
+      await removeFromCartMutation(id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Layout>
       <Helmet>
@@ -83,8 +169,11 @@ export default function Wishlist() {
           <WishlistContainer
             isLoading={isLoading}
             data={data}
-            handleRemoveItem={handleRemoveItem}
-            removeButtonLoading={removeButtonLoading}
+            handleRemoveItemFromWishList={handleRemoveItemFromWishList}
+            removeFromWishListButtonLoading={removeFromWishListButtonLoading}
+            addToCartButtonLoading={addToCartButtonLoading}
+            handleAddToCart={handleAddToCart}
+            handleRemoveFromCart={handleRemoveFromCart}
           />
           <WishlistRightSide data={data} isLoading={isLoading} />
         </div>
