@@ -113,15 +113,20 @@ const baseStrings = {
   'phone-label': 'Phone Number',
   'login-button': 'Login',
   'register-button': 'Create an account',
-  'login-to-mrg': 'Login to MRG',
+  'login-welcome-back': 'Welcome Back !',
   'register-on-mrg': 'Register on MRG ',
+  'credentials-wrong': 'Phone number or password are not correct',
   'new-to-family': 'Are you new to the family ? ',
   'join-us-here': 'Join us here',
   'forgot-password': 'Forgot password ?',
+  'password-reset': 'Password Reset',
+  'password-reset-send-button': 'Send Code',
   'already-have-an-account':
     'Already have an account ? <link>Log in instead</link>',
   'terms-of-service':
     'By clicking “Create an account”, you agree to our <link>Terms of Service</link> and <link>Privacy Statement</link>. We’ll occasionally send you account related emails',
+  'password-reset-enter-your-email':
+    "Enter your phone number and we'll send you a code to reset your password ",
   //end of credentials forms
   //start of cart items
   price: 'Price',
@@ -204,6 +209,15 @@ const baseStrings = {
   'additional-details__item-reviews': 'Item Reviews',
 
   'single-product-product-review': 'Product Rating',
+  /**
+   * Footer
+   */
+  'footer-help-center': 'Help Center',
+  'footer-call': 'Call',
+  'footer-contact-email': 'Contact Email',
+  'footer-help': "We're always here to help",
+  'footer-reach': 'Reach out to us through any of these support channels',
+  'footer-all-rights': 'All Rights Reserved',
 };
 
 export const en = baseStrings;

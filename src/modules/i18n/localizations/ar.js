@@ -97,26 +97,31 @@ export const ar = {
   'email-empty': 'الرجاء إدخال البريد الألكتروني',
   'password-min-6': '6 أحرف كحد ادنى',
   'password-max-15': '15 حرف كحد اقصى',
-  'password-empty': 'الرجاء إدخال كلمة السر',
+  'password-empty': 'الرجاء إدخال كلمة المرور',
   'fullname-empty': 'الرجاء إدخال اسم الكامل',
   'email-label': 'البريد الإلكتروني',
-  'password-label': 'كلمة السر',
+  'password-label': 'كلمة المرور',
   'fullname-label': 'الإسم الكامل',
   'phone-label': 'رقم الهاتف ',
   'login-button': 'تسجيل الدخول',
   'register-button': 'انشاء حساب',
-  'login-to-mrg': 'سجل الدخول الى MRG ',
-  'register-on-mrg': 'سجل الدخول الى MRG ',
+  'login-welcome-back': 'اهلا بك مجددا !',
+  'register-on-mrg': 'اشترك في MRG',
+  'credentials-wrong': 'رقم الهاتف او كلمة المرور غير صحيحين',
   'new-to-family': 'هل انت مستخدم جديد ؟',
   'join-us-here': ' اشترك معنا الآن',
   'forgot-password': 'هل نسيت كلمة المرور ؟',
   'we-have-found': 'لقد قمت بتسجيل',
   addresses: 'عناوين ',
   'one-address': 'عنوان',
+  'password-reset': 'إعادة تعيين كلمة المرور',
+  'password-reset-send-button': 'إرسال الكود',
   'already-have-an-account':
     'هل لديك حساب مسبق ؟ <link>سجل الدخول الآن </link>',
   'terms-of-service':
     'بالنقر على زر انشاء الحساب , فأنت توافق على <tos>شروط الخدمة</tos>  و <link>سياسة الخصوصية</link> , سوف نقوم ايضا بإرسال ايميلات متعلقة بالحساب من حين إلى اخر.',
+  'password-reset-enter-your-email':
+    'ادخل رقم الهاتف ليتم ارسال كود إعادة تعيين كلمة المرور',
   // end of credential forms
   // start of cart  items
   price: 'السعر',
@@ -197,4 +202,13 @@ export const ar = {
   'additional-details__item-reviews': 'تقييمات المنتج',
 
   'single-product-product-review': 'تقييم المنتج',
+  /**
+   * Footer
+   */
+  'footer-help-center': 'مركز المساعدة',
+  'footer-call': 'اتصل',
+  'footer-contact-email': 'بريدنا الإلكتروني',
+  'footer-help': 'دائما موجودون لمساعدتك',
+  'footer-reach': 'تواصل معنا عبر وسائل الاتصال المتاحة لمساعدتك',
+  'footer-all-rights': 'جميع الحقوق محفوظة',
 };

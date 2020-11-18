@@ -16,13 +16,15 @@
 
 - [x] Add a Review system.
 
+- [ ] Add a Review system for Mobile.
+
 - [x] Append buy options to cart.
 
 - [x] Add Error Boundaries and handlers.
 
 - [x] Make buttons bigger || or make classes for buttons.
 
-- [ ] Add forgot password support .
+- [x] Add forgot password support .
 
 - [x] Add routes to account page and try to animate them.
 
@@ -54,7 +56,7 @@
 
 - [ ] Add keys to env variables.
 
-- [ ] Localize Footers.
+- [x] Localize Footers.
 
 - [ ] Add auto detect locale and localstorage language.
 

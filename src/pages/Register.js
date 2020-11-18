@@ -10,6 +10,8 @@ import ErrorSnackbar from '../components/ErrorSnackbar';
 import { BiChevronDown } from 'react-icons/bi';
 import useClickAway from '../hooks/useClickAway';
 import register from '../assets/register.jpg';
+import Language from '../components/NavbarComponents/Language';
+import { AiOutlineArrowLeft } from 'react-icons/ai';
 const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuRef = React.useRef();
@@ -23,7 +25,7 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
     <div className="w-full mb-2 flex flex-col ">
       <label
         htmlFor={name}
-        className={`text-xs font-semibold text-gray-800 mb-1`}
+        className={`text-sm font-semibold text-gray-800 mb-1`}
       >
         {label}
       </label>
@@ -41,7 +43,7 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
               className="absolute top-100 left-0 w-full border z-1 bg-body-light"
               style={{ width: '74px' }}
             >
-              <div className="hover:bg-main-color p-1 hover:text-main-text flex justify-start items-center">
+              <div className="hover:bg-main-color px-1 py-2 hover:text-main-text flex justify-start items-center">
                 +965
               </div>
             </div>
@@ -53,7 +55,7 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
           onBlur={e => {
             field.onBlur(e);
           }}
-          className=" w-full   p-1"
+          className=" w-full  px-1 py-2"
         />
       </div>
       {meta.touched && meta.error ? (
@@ -73,7 +75,7 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
     <div className="w-full relative mb-2 flex flex-col">
       <label
         htmlFor={name}
-        className={` text-xs font-semibold text-gray-800 mb-1 `}
+        className={` text-sm font-semibold text-gray-800 mb-1 `}
       >
         {label}
       </label>
@@ -83,7 +85,7 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
         onBlur={e => {
           field.onBlur(e);
         }}
-        className=" w-full rounded-lg border   p-1"
+        className=" w-full rounded-lg border  px-1 py-2"
       />
       {meta.touched && meta.error ? (
         <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
@@ -106,9 +108,8 @@ export default function Register() {
   };
   const history = useHistory();
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email(formatMessage({ id: 'email-validation' }))
-      .required(formatMessage({ id: 'email-empty' })),
+    email: Yup.string().email(formatMessage({ id: 'email-validation' })),
+
     password: Yup.string()
       .required(formatMessage({ id: 'password-empty' }))
       .min(6, formatMessage({ id: 'password-min-6' }))
@@ -203,7 +204,7 @@ export default function Register() {
                           isSubmitting
                             ? 'bg-main-color cursor-not-allowed'
                             : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
-                        } w-full rounded text-xs  p-2 font-semibold  transition duration-150 uppercase `}
+                        } w-full rounded text-sm  p-2 font-semibold  transition duration-150 uppercase `}
                       >
                         {isSubmitting && <BeatLoader size={10} />}
                         {!isSubmitting &&
@@ -250,6 +251,14 @@ export default function Register() {
               </h1>
             </div>
           </div>
+        </div>
+        <div className="credentials-language__container">
+          <Language />
+        </div>
+        <div className="credentials-back-button__container">
+          <button onClick={() => history.goBack()}>
+            <AiOutlineArrowLeft className="w-6 h-6" />
+          </button>
         </div>
       </div>
     </div>

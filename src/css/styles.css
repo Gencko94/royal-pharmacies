@@ -765,6 +765,11 @@ input {
   grid-template-columns: 0.5fr 0.5fr;
   height: 100vh;
 }
+.login-container {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr;
+  height: 100vh;
+}
 .items-slider__next-button {
   position: absolute;
   top: 25%;
@@ -815,4 +820,30 @@ input {
     width: 35px;
     z-index: 1;
   }
+}
+.footer-site-map__mobile {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr;
+  gap: 0.5em;
+}
+
+.credentials-language__container {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+}
+.credentials-back-button__container {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+}
+.credentials-language__container-mobile {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
+.credentials-back-button__container-mobile {
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }

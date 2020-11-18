@@ -3,7 +3,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import logo from '../assets/mrg.svg';
 import * as Yup from 'yup';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { AuthProvider } from '../contexts/AuthContext';
 import { BeatLoader } from 'react-spinners';
 import ErrorSnackbar from '../components/ErrorSnackbar';
@@ -97,9 +97,9 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
   );
 };
 
-export default function RegisterMobile() {
+export default function LoginMobile() {
   const { formatMessage, locale } = useIntl();
-  const { userRegister } = React.useContext(AuthProvider);
+  const { userLogin } = React.useContext(AuthProvider);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const closeError = () => {
@@ -135,25 +135,33 @@ export default function RegisterMobile() {
             />
           </Link>
           <h2 className="text-lg text-center">
-            {formatMessage({ id: 'register-on-mrg' })}
+            {formatMessage({ id: 'login-welcome-back' })}
           </h2>
         </div>
         <div className="rounded-lg border bg-gray-100 mb-2 shadow">
           <Formik
             initialValues={{
-              email: '',
               password: '',
-              fullName: '',
+
               phoneNumber: '',
             }}
             validationSchema={validationSchema}
-            onSubmit={async (values, { resetForm }) => {
+            onSubmit={async (
+              values,
+              { resetForm, setErrors, setSubmitting }
+            ) => {
               setErrorOpen(false);
               try {
-                const res = await userRegister(values);
+                const res = await userLogin(values);
                 if (res === 'ok') {
                   resetForm();
                   history.goBack();
+                } else {
+                  setErrors({
+                    phoneNumber: formatMessage({ id: 'credentials-wrong' }),
+                    password: formatMessage({ id: 'credentials-wrong' }),
+                  });
+                  setSubmitting(false);
                 }
               } catch (error) {
                 setErrorOpen(true);
@@ -164,12 +172,6 @@ export default function RegisterMobile() {
             {({ handleSubmit, values, isSubmitting }) => {
               return (
                 <form className="px-3 py-2 " onSubmit={handleSubmit}>
-                  <CustomTextInput
-                    label={formatMessage({ id: 'fullname-label' })}
-                    name="fullName"
-                    value={values.fullName}
-                    type="text"
-                  />
                   <PhoneNumberCustomInput
                     label={formatMessage({ id: 'phone-label' })}
                     name="phoneNumber"
@@ -181,12 +183,6 @@ export default function RegisterMobile() {
                     name="password"
                     value={values.password}
                     type="password"
-                  />
-                  <CustomTextInput
-                    label={formatMessage({ id: 'email-label' })}
-                    name="email"
-                    value={values.email}
-                    type="email"
                   />
 
                   <div className="mt-1">
@@ -208,38 +204,22 @@ export default function RegisterMobile() {
           </Formik>
         </div>
         <div className="">
-          <div className="px-3 py-2 ">
+          <div className="px-3 py-2">
             <h1 className="text-sm">
-              <FormattedMessage
-                id="already-have-an-account"
-                values={{
-                  link: word => (
-                    <Link
-                      className="text-second-nav-light"
-                      to={`/${locale}/app/login`}
-                    >
-                      {word}
-                    </Link>
-                  ),
-                }}
-              />
+              {formatMessage({ id: 'new-to-family' })}
+              <Link
+                className="text-second-nav-light"
+                to={`/${locale}/app/register`}
+              >
+                {formatMessage({ id: 'join-us-here' })}
+              </Link>
             </h1>
-          </div>
-          <hr />
-          <div className="px-3 w-full py-2 ">
-            <h1 className="text-xs">
-              <FormattedMessage
-                id="terms-of-service"
-                values={{
-                  link: word => (
-                    <span className="text-second-nav-light">{word}</span>
-                  ),
-                  tos: word => (
-                    <span className="text-second-nav-light">{word}</span>
-                  ),
-                }}
-              />
-            </h1>
+            <Link
+              to={`/${locale}/app/password-reset`}
+              className=" text-sm text-second-nav-light"
+            >
+              {formatMessage({ id: 'forgot-password' })}
+            </Link>
           </div>
         </div>
       </div>

@@ -85,6 +85,15 @@ export default function MobileNavbar() {
                 isLightTheme={isLightTheme}
               />
             )}
+            {!windowScrolled && sideMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.25 }}
+                exit={{ opacity: 0 }}
+                key={5687452}
+                className="bg-gray-900 opacity-25 fixed z-10 top-0 left-0 w-full h-screen"
+              ></motion.div>
+            )}
           </AnimatePresence>
         </nav>
         <div
@@ -127,6 +136,15 @@ export default function MobileNavbar() {
                 sideMenuRef={sideMenuRefSecond}
                 isLightTheme={isLightTheme}
               />
+            )}
+            {windowScrolled && sideMenuOpenSecond && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.25 }}
+                exit={{ opacity: 0 }}
+                key={5687452}
+                className="bg-gray-900 opacity-25 fixed z-10 top-0 left-0 w-full h-screen"
+              ></motion.div>
             )}
           </motion.div>
         )}

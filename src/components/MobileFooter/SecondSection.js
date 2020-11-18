@@ -2,8 +2,8 @@ import React from 'react';
 
 export default function SecondSection() {
   return (
-    <div className="px-4 py-2 flex justify-evenly items-start flex-wrap bg-red-50 bg-gray-900 text-gray-100">
-      <div className="grid mt-2  gap-1">
+    <div className="px-4 py-2 footer-site-map__mobile  bg-gray-900 text-main-text">
+      <div className="grid grid-cols-1 mt-2  gap-1">
         <button className="text-lg font-semibold">Electronics</button>
         <button className="text-sm">Mobiles</button>
         <button className="text-sm">Tablets</button>

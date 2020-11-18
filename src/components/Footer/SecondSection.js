@@ -2,7 +2,9 @@ import React from 'react';
 
 export default function SecondSection() {
   return (
-    <div className={`px-4 py-2 flex justify-evenly items-start flex-wrap bg-first-nav-light text-first-nav-text-light `}>
+    <div
+      className={`px-4 py-2 flex justify-evenly items-start flex-wrap bg-first-nav-light text-first-nav-text-light `}
+    >
       <div className="grid mt-2  gap-1">
         <button className="text-lg font-semibold">Electronics</button>
         <button className="text-sm">Mobiles</button>

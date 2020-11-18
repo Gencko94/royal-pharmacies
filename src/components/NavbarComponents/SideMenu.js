@@ -114,7 +114,7 @@ export default function SideMenu({
         isLightTheme
           ? 'bg-side-light text-side-light-text'
           : 'bg-side-dark text-side-dark-text'
-      }  z-20  absolute top-0 ${
+      }  z-20  fixed top-0 ${
         locale === 'ar' ? 'right-0' : 'left-0'
       } min-w-75p h-screen sm:text-lg`}
       style={{ maxWidth: '75%' }}

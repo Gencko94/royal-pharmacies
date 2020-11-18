@@ -18,6 +18,8 @@ import NotFound from './pages/NotFound';
 import NotFoundMobile from './pages/NotFoundMobile';
 import Wishlist from './pages/Wishlist';
 import RegisterMobile from './pages/RegisterMobile';
+import LoginMobile from './pages/LoginMobile';
+import PasswordReset from './pages/PasswordReset';
 // import Loadable from 'react-loadable';
 
 // const Home = Loadable({
@@ -110,8 +112,18 @@ function App() {
               }
             }}
           />
-          <Route path="/app/login" component={Login} />
+          <Route
+            path="/app/login"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <Login {...props} />;
+              } else {
+                return <LoginMobile {...props} />;
+              }
+            }}
+          />
 
+          <Route exact path="/app/password-reset" component={PasswordReset} />
           <Route exact path="/" component={Home} />
 
           <ProtectedRoute path="/user/account">
