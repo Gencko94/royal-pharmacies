@@ -6,6 +6,7 @@ import Rating from 'react-rating';
 import MoonLoader from 'react-spinners/MoonLoader';
 import Colors from '../SingleProduct/Colors';
 import Sizes from '../SingleProduct/Sizes';
+import { scrollIntoView } from 'scroll-js';
 export default function ItemDescription({
   data: {
     name,
@@ -28,20 +29,49 @@ export default function ItemDescription({
   setSize,
   color,
   setColor,
+  reviews,
+  setDetailsTab,
+  rating,
 }) {
   const { formatMessage } = useIntl();
+  const resolvePlural = () => {
+    switch (reviews.length) {
+      case 1:
+        return formatMessage({ id: 'one-review' });
 
+      case 2:
+        return formatMessage({ id: 'two-reviews' });
+
+      case reviews.length > 10:
+        return formatMessage({ id: 'one-review' });
+
+      default:
+        return formatMessage({ id: 'reviews' });
+    }
+  };
   return (
     <div className="mb-3">
       <h1 className="font-semibold text-xl">{name}</h1>
       <div className="flex items-center ">
         <Rating
-          initialRating={4.5}
+          initialRating={rating}
           emptySymbol={<AiOutlineStar className="text-red-700" />}
           fullSymbol={<AiFillStar className="text-red-700" />}
           className="pt-1"
         />
-        <h1 className="text-sm mx-2">36 {formatMessage({ id: 'ratings' })}</h1>
+
+        <div
+          onClick={() => {
+            scrollIntoView(document.getElementById('details'));
+            setDetailsTab(1);
+          }}
+          className="text-sm mx-2 cursor-pointer"
+        >
+          <div className="text-sm text-gray-600 flex items-center  hover:underline">
+            <h1>{reviews.length > 2 && reviews.length}</h1>
+            <h1 className="mx-1">{resolvePlural()}</h1>
+          </div>
+        </div>
       </div>
 
       <h1 className=" font-semibold mb-1 text-green-600">
@@ -69,7 +99,7 @@ export default function ItemDescription({
 
         <h1 className="">
           {formatMessage({ id: 'you-save' })} :{' '}
-          <span className=" text-xl  text-red-700">18%</span>{' '}
+          <span className=" text-xl  text-main-color">18%</span>{' '}
         </h1>
         <button
           className={`my-2 px-2 text-sm bg-green-200 rounded font-semibold`}
@@ -129,7 +159,7 @@ export default function ItemDescription({
               : itemInCart
               ? 'bg-main-color'
               : 'bg-green-700'
-          } flex-1 text-gray-100 text-sm py-2 px-2 rounded   flex items-center justify-center font-semibold`}
+          } flex-1 text-gray-100 text-sm py-2 px-2 rounded uppercase  flex items-center justify-center font-semibold`}
         >
           {addToCartButtonLoading ? (
             <MoonLoader size={19} color="#b72b2b" />

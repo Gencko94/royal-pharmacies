@@ -78,6 +78,7 @@ export const ar = {
   'start-shopping-now': 'ابدأ التسوق الآن',
   'search-for-an-area': 'ابحث عن منطقة ...',
   'show-order-receipt': 'إظهار فاتورة الطلبية',
+  'order-receipt': 'فاتورة الطلبية',
   'not-found-title': 'يبدو اننا لم نجد ما تبحث عنه.',
   'back-to-home': 'العودة إلى الرئيسية',
   oops: 'عذرا !',

@@ -3,6 +3,12 @@ select,
 input {
   outline: none !important;
 }
+.text-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .text-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -21,7 +27,7 @@ input {
   gap: 1em;
 }
 
-.details__container {
+.single-product__container-desktop {
   position: relative;
   display: grid;
   gap: 15px;
@@ -103,7 +109,17 @@ input {
   grid-template-columns: 1fr;
   gap: 0.3em;
 }
+.my-orders-items__grid-mobile {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.3em;
+}
 .my-orders-item-desktop {
+  display: grid;
+  grid-template-columns: 0.1fr 0.8fr 0.1fr;
+  gap: 0.3em;
+}
+.my-orders-item-mobile {
   display: grid;
   grid-template-columns: 0.1fr 0.8fr 0.1fr;
   gap: 0.3em;
@@ -113,9 +129,19 @@ input {
   grid-template-columns: 0.1fr 0.8fr 0.1fr;
   gap: 0.3em;
 }
+.my-orders-items__table-mobile {
+  display: grid;
+  grid-template-columns: 0.1fr 0.8fr 0.1fr;
+  gap: 0.3em;
+  text-align: center;
+}
 .my-orders-receipt-summary {
   display: grid;
   grid-template-columns: 0.9fr 0.1fr;
+}
+.my-orders-receipt-summary-mobile {
+  display: grid;
+  grid-template-columns: 0.8fr 0.2fr;
 }
 .wishlist-main-grid {
   display: grid;
@@ -569,25 +595,6 @@ input {
   grid-template-columns: 1fr;
   gap: 1em;
 }
-.order-items__mobile-enter {
-  transform: translateY(100%);
-}
-.order-items__mobile-enter-active {
-  transform: translateY(0);
-  transition: 200ms ease;
-}
-.order-items__mobile-exit {
-  transform: translateY(0);
-}
-.order-items__mobile-exit-active {
-  transform: translateX(100%);
-  transition: 200ms ease;
-}
-.order-details-mobile__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 162px));
-  gap: 0.7em;
-}
 
 .locations-grid__desktop {
   display: grid;
@@ -599,9 +606,14 @@ input {
   grid-template-columns: repeat(auto-fit, 150px);
   gap: 0.5em;
 }
-.orders-grid__desktop {
+.my-orders-grid__desktop {
   display: grid;
   grid-template-columns: 1fr 0.1fr;
+  gap: 0.5em;
+}
+.my-orders-grid__mobile {
+  display: grid;
+  grid-template-columns: 0.7fr 0.3fr;
   gap: 0.5em;
 }
 .btn-disabled {

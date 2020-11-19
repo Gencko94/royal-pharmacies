@@ -320,7 +320,7 @@ export default function SingleProduct() {
           <Breadcrumbs />
           {isLoading && <SingleProductLoader />}
           {!isLoading && (
-            <div className="details__container">
+            <div className="single-product__container-desktop">
               <div className=" ">
                 <ImageZoom
                   data={{ images: data.item.photos.main, name: data.item.name }}

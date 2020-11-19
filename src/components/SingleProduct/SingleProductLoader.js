@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 export default function SingleProductLoader() {
   const { locale } = useIntl();
   return (
-    <div className="details__container">
+    <div className="single-product__container-desktop">
       <div>
         <ContentLoader
           speed={2}

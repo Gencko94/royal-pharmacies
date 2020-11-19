@@ -1,7 +1,8 @@
+import { motion } from 'framer-motion';
 import React from 'react';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
-import MultiClamp from 'react-multi-clamp';
-import { CSSTransition } from 'react-transition-group';
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
+import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 export default function OrderDetailsMobile({
   orderDetailsOpen,
@@ -9,145 +10,170 @@ export default function OrderDetailsMobile({
   handleOrderDetailsClose,
   isLightTheme,
 }) {
+  const { formatMessage, locale } = useIntl();
   React.useEffect(() => {
     if (orderDetailsOpen) {
       document.body.style.overflow = 'hidden';
     }
     return () => (document.body.style.overflow = 'unset');
   }, [orderDetailsOpen]);
+  const containerVariants = {
+    hidden: {
+      y: '50%',
+      opacity: 0,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'tween',
+      },
+    },
+    exited: {
+      x: '100%',
+      opacity: 0,
+      transition: {
+        type: 'tween',
+      },
+    },
+  };
   return (
-    <CSSTransition
-      in={orderDetailsOpen}
-      timeout={200}
-      classNames="order-items__mobile"
-      unmountOnExit
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exited"
+      className="fixed top-0 left-0 right-0 bottom-0 overflow-y-scroll bg-body-light z-30 h-screen"
+      style={{ overflowY: 'scroll !important' }}
     >
-      <div
-        className="fixed top-0 left-0 right-0 bottom-0 overflow-y-scroll bg-body-light z-30 max-h-full "
-        style={{ overflowY: 'scroll !important' }}
-      >
-        <div className=" sticky top-0 p-3 flex items-center bg-main-color text-main-text z-1">
-          <button
-            className="text-white text-center mr-4"
-            onClick={handleOrderDetailsClose}
-          >
+      <div className=" sticky top-0 p-3 flex items-center bg-main-color text-main-text z-1">
+        <button
+          className="text-white text-center"
+          onClick={handleOrderDetailsClose}
+        >
+          {locale === 'en' ? (
             <AiOutlineArrowLeft className="w-6 h-6 " />
-          </button>
-          <h1 className="font-semibold text-lg">Order Details</h1>
-        </div>
-        {selectedOrder && (
-          <div className="p-3 ">
-            <div className="mb-3 p-3 rounded-lg flex bg-gray-900 text-main-text">
-              <div className="flex-1">
-                <h1 className="font-bold mb-1">John Doe</h1>
-                <h1 className="font-semibold text-xs">
-                  Order No {selectedOrder.orderNo}
+          ) : (
+            <AiOutlineArrowRight className="w-6 h-6 " />
+          )}
+        </button>
+        <h1 className="font-semibold text-lg mx-4">
+          {formatMessage({ id: 'order-details' })}
+        </h1>
+      </div>
+      {selectedOrder && (
+        <div className="px-1 py-2 ">
+          <div className="mb-3 p-3 rounded-lg flex bg-gray-900 text-main-text">
+            <div className="flex-1">
+              <div className="flex items-center font-bold">
+                <h1>{formatMessage({ id: 'order-number' })}</h1>
+                <h1 className="mx-1">{selectedOrder.orderNo}</h1>
+              </div>
+              <div className="flex items-center text-xs">
+                <h1 className="font-semibold  text-gray-600">
+                  {formatMessage({ id: 'order-date' })} :
                 </h1>
-                <h1 className="font-semibold text-xs text-gray-600">
-                  Order Date {selectedOrder.orderDate}
-                </h1>
-                <h1 className="text-gray-600 text-xs">
+                <h1 className="mx-1">{selectedOrder.orderDate}</h1>
+              </div>
+              <div className="flex items-center text-xs">
+                <h1 className="text-gray-600">
                   {selectedOrder.delivered
-                    ? `Delivered on : ${selectedOrder.deliveryDate}`
-                    : `Expected Delivery :  ${selectedOrder.expectedDelivery}`}
+                    ? formatMessage({ id: 'delivered-at' })
+                    : formatMessage({ id: 'expected-delivery' })}{' '}
+                  :
                 </h1>
-                <h1 className="text-gray-600 text-xs">
-                  {selectedOrder.delivered ? 'Delivered To' : 'Deliver To'} :{' '}
-                  {selectedOrder.deliveryDestination}
-                </h1>
-                <h1 className="text-gray-600 text-xs">
-                  Payment Method : K-net
+                <h1 className="mx-1">
+                  {selectedOrder.delivered
+                    ? selectedOrder.deliveryDate
+                    : selectedOrder.expectedDelivery}
                 </h1>
               </div>
-              <div className=" text-xs flex flex-col justify-center font-semibold">
-                <div
-                  className={`  uppercase px-2 py-1 rounded ${
-                    selectedOrder.delivered ? 'bg-green-700' : 'bg-orange-600'
-                  }`}
-                >
-                  {selectedOrder.delivered ? 'Delivered' : 'Pending'}
-                </div>
-                <div className="mt-auto text-center">
-                  <h1>Total Amount</h1>
-                  <h1>{selectedOrder.orderAmount}</h1>
-                </div>
+              <div className="flex items-center text-xs">
+                <h1 className="text-gray-600 ">
+                  {selectedOrder.delivered
+                    ? formatMessage({ id: 'delivered-to' })
+                    : formatMessage({ id: 'deliver-to' })}
+                  :{' '}
+                </h1>
+                <h1 className="mx-1">{selectedOrder.deliveryDestination}</h1>
+              </div>
+              <div className="flex items-center text-xs">
+                <h1 className="text-gray-600">
+                  {formatMessage({ id: 'payment-method' })} :
+                </h1>
+                <h1 className="mx-1">K-net</h1>
               </div>
             </div>
-            <div>
-              <h1 className="font-bold">Order Items</h1>
-            </div>
-            <hr className="my-1" />
-            <div className="order-details-mobile__grid my-4">
-              {selectedOrder.orderItems.map((item, i) => {
-                return (
-                  <div key={i} className="">
-                    <div
-                      className={` overflow-hidden flex flex-col relative ${
-                        isLightTheme
-                          ? 'shadow-itemsSlider-shallow'
-                          : 'shadow-itemsSlider'
-                      } rounded`}
-                    >
-                      <a
-                        href={`/products/${item.category.replace(
-                          /\s|%|,/g,
-                          '-'
-                        )}/${item.name.replace(/\s|%|,/g, '-')}/${item.id}`}
-                      >
-                        <img
-                          title={item.name}
-                          src={item.photos.small}
-                          alt={item.name}
-                        />
-                      </a>
-                      <hr />
-
-                      <div
-                        className={`relative flex flex-col  px-2 py-1 ${
-                          isLightTheme
-                            ? 'bg-body-light text-body-text-light'
-                            : 'bg-body-dark text-body-text-dark'
-                        }`}
-                        style={{ minHeight: '72px' }}
-                      >
-                        <a
-                          title={item.name}
-                          className="hover:underline"
-                          href={`/products/${item.category.replace(
-                            /\s|%|,/g,
-                            '-'
-                          )}/${item.name.replace(/\s|%|,/g, '-')}/${item.id}`}
-                        >
-                          <MultiClamp
-                            className="text-sm  font-semibold"
-                            clamp={2}
-                            ellipsis="..."
-                          >
-                            {item.name}
-                          </MultiClamp>
-                        </a>
-
-                        <div className="flex items-center">
-                          <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">
-                            {item.price} <span className="text-xs ">KD</span>
-                          </p>
-                          {item.sale && (
-                            <p className="text-xs  line-through text-gray-500  font-bold whitespace-no-wrap">
-                              {' '}
-                              {item.priceBefore}{' '}
-                              <span className="font-normal">KD</span>
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className=" text-xs flex flex-col justify-center font-semibold">
+              <div
+                className={`  uppercase px-2 py-1 rounded ${
+                  selectedOrder.delivered ? 'bg-green-700' : 'bg-orange-600'
+                }`}
+              >
+                {selectedOrder.delivered
+                  ? formatMessage({ id: 'delivered' })
+                  : formatMessage({ id: 'pending' })}
+              </div>
+              <div className="mt-auto text-center">
+                <h1>{formatMessage({ id: 'subtotal' })}</h1>
+                <h1 className="text-green-700">{selectedOrder.orderAmount}</h1>
+              </div>
             </div>
           </div>
-        )}
-      </div>
-    </CSSTransition>
+          <div>
+            <h1 className="font-bold">
+              {formatMessage({ id: 'order-receipt' })}
+            </h1>
+          </div>
+          <hr className="my-1" />
+          <div className="my-orders-items__grid-mobile">
+            <div className="my-orders-items__table-mobile font-semibold ">
+              <h1>#</h1>
+              <h1>{formatMessage({ id: 'the-item' })}</h1>
+              <h1>{formatMessage({ id: 'price' })}</h1>
+            </div>
+            {selectedOrder.orderItems.map((orderItem, i) => {
+              return (
+                <div
+                  key={orderItem.id}
+                  className="my-orders-item-mobile px-2 text-sm"
+                >
+                  <div className="">
+                    <h1 className="">{i + 1}</h1>
+                  </div>
+                  <Link
+                    to={`/${locale}/${orderItem.category.replace(
+                      /\s|%|,/g,
+                      '-'
+                    )}/${orderItem.name.replace(/\s|%|,|-/g, '-')}/${
+                      orderItem.id
+                    }`}
+                    className="hover:underline"
+                  >
+                    <h1 className="text-clamp-1  semibold">{orderItem.name}</h1>
+                  </Link>
+                  <div className="">
+                    <h1 className="">{orderItem.price}</h1>
+                  </div>
+                </div>
+              );
+            })}
+            <hr className="my-1" />
+            <div className="my-orders-receipt-summary-mobile font-bold rounded-lg border bg-gray-100 p-2 text-sm">
+              <h1>{formatMessage({ id: 'cart-total' })}</h1>
+              <h1>{selectedOrder.orderAmount}</h1>
+              <h1>{formatMessage({ id: 'cart-delivery-cost' })}</h1>
+              <h1 className="mb-2">{formatMessage({ id: 'cart-free' })}</h1>
+              <h1 className="text-green-700 text-base">
+                {formatMessage({ id: 'subtotal' })}
+              </h1>
+              <h1 className="text-green-700 text-base">
+                {selectedOrder.orderAmount}
+              </h1>
+            </div>
+          </div>
+        </div>
+      )}
+    </motion.div>
   );
 }

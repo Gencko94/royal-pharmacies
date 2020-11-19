@@ -31,14 +31,14 @@ export default function Categories() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 6,
+          slidesToShow: 5,
           slidesToScroll: 5,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 4,
         },
       },
@@ -73,8 +73,8 @@ export default function Categories() {
         {!isLoading &&
           data.map((item, i) => {
             return (
-              <div key={i} className="px-1">
-                <div className="  overflow-hidden  relative  rounded-lg  ">
+              <div key={i} className="px-">
+                <div className="  overflow-hidden  relative ">
                   <img
                     src={item.url}
                     alt="something"

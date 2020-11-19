@@ -9,6 +9,10 @@ import Orders from './MyOrders/Orders';
 
 export default function MyOrders() {
   const { getOrderedItems, isLightTheme } = React.useContext(DataProvider);
+
+  /**
+   * Main Fetch
+   */
   const { data, isLoading } = useQuery('orders', async () => {
     const res = await getOrderedItems();
 

@@ -85,6 +85,7 @@ const baseStrings = {
   addresses: 'addresses ',
   'one-address': 'address',
   'show-order-receipt': 'Show order receipt',
+  'order-receipt': 'Order Receipt',
   'not-found-title': "We can't seem to find the page you're looking for. ",
   'back-to-home': 'Back to Homepage',
   oops: 'Oops !',

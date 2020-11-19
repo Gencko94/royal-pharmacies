@@ -88,7 +88,7 @@ export default function SliderItem({
               )}/${data.name.replace(/\s|%|,|-/g, '-')}/${data.id}`}
             >
               <MultiClamp
-                className="text-xs text-gray-800 font-semibold"
+                className="text-sm text-gray-800"
                 clamp={2}
                 ellipsis="..."
               >

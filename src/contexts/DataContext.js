@@ -176,30 +176,6 @@ export default function DataContextProvider({ children }) {
     localStorage.setItem('prefferedLanguage', lang);
     setLanguage(lang);
   };
-  // const isItemInCart = id => {
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       const itemInCart = cartItems.find(item => id === item.id);
-  //       if (itemInCart) {
-  //         resolve({ message: 'yes' });
-  //       } else {
-  //         resolve({ message: 'no' });
-  //       }
-  //     }, 500);
-  //   });
-  // };
-  // const isItemInWishlist = id => {
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       const itemInCart = cartItems.find(item => id === item.id);
-  //       if (itemInCart) {
-  //         resolve({ message: 'yes' });
-  //       } else {
-  //         resolve({ message: 'no' });
-  //       }
-  //     }, 500);
-  //   });
-  // };
 
   const addItemToWishList = ({
     id,

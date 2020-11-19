@@ -24,7 +24,7 @@
 
 - [ ] Add Edit Cart item support.
 
-- [ ] Add a Review system for Mobile.(2hrs)
+- [x] Add a Review system for Mobile.(2hrs)
 
 - [ ] Look into lazy loading and progressive images.
 
@@ -44,9 +44,9 @@
 
 - [ ] Add Wishlist Page Desktop & Mobile.(3hrs)
 
-- [ ] Add React query to order history. (2.5hrs)
+- [x] Add React query to order history. (2.5hrs)
 
-- [ ] Add payment Method for Mobile & Desktop (3hrs)
+- [ ] Add payment Method for Mobile & Desktop (3hrs) (discuss with maher)
 
 - [ ] Add Viewed Items for Mobile & Desktop (3hrs)
 

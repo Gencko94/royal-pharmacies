@@ -39,7 +39,7 @@ module.exports = {
         xxl: '1440px',
       },
       fontFamily: {
-        body: ['Open Sans'],
+        body: ['Rubik'],
         cairo: ['Cairo'],
       },
       colors: {

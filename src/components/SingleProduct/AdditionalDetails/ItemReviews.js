@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  AiFillStar,
-  AiOutlineStar,
-  AiFillLike,
-  AiFillDislike,
-} from 'react-icons/ai';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import Rating from 'react-rating';
 import moment from 'moment';
@@ -61,8 +56,8 @@ export default function ItemReviews({ reviews, rating }) {
                   <Rating
                     initialRating={review.rating}
                     readonly
-                    emptySymbol={<AiOutlineStar className="text-gold" />}
-                    fullSymbol={<AiFillStar className="text-gold" />}
+                    emptySymbol={<AiOutlineStar className="text-main-color" />}
+                    fullSymbol={<AiFillStar className="text-main-color" />}
                     className=" pt-1"
                   />
 
@@ -72,14 +67,6 @@ export default function ItemReviews({ reviews, rating }) {
                 </div>
                 <div className="mb-2">
                   <p className="">{review.body}</p>
-                </div>
-                <div className="flex items-center">
-                  <button>
-                    <AiFillLike className="w-6 h-6 text-gray-500" />
-                  </button>
-                  <button className="mx-3">
-                    <AiFillDislike className="w-6 h-6 text-gray-500" />
-                  </button>
                 </div>
                 {i !== reviews.length - 1 && <hr className="mt-2" />}
               </div>

@@ -24,7 +24,7 @@ export default function Order({ order }) {
             : formatMessage({ id: 'pending' })}
         </h1>
       </motion.div>
-      <motion.div layout className="orders-grid__desktop text-sm p-2">
+      <motion.div layout className="my-orders-grid__desktop text-sm p-2">
         <motion.div layout>
           <h1 className="font-semibold ">
             {formatMessage({ id: 'order-number' })} : {order.orderNo}

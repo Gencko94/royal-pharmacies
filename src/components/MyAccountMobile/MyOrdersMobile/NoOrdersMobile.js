@@ -3,7 +3,10 @@ import { AiFillShopping } from 'react-icons/ai';
 import shoppingLost from '../../../assets/illustrations/shoppingLost.svg';
 export default function NoOrdersMobile() {
   return (
-    <div className="  flex flex-col justify-center items-center p-4 h-full ">
+    <div
+      className="  flex flex-col justify-center items-center p-4 "
+      style={{ minHeight: 'calc(-120px + 100vh)' }}
+    >
       <div className="flex flex-col items-center justify-center">
         <h1 className="text-lg text-center font-bold">
           You've not placed any Orders yet !

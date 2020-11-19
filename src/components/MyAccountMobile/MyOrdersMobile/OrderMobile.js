@@ -1,48 +1,59 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 
 export default function OrderMobile({ order, setSelectedOrder, isLightTheme }) {
+  const { formatMessage } = useIntl();
   return (
-    <div className=" bg-body-light border overflow-hidden flex  relative  rounded-sm p-2 ">
+    <div className=" bg-body-light border overflow-hidden rounded-lg ">
       <div
-        className="flex flex-col items-start justify-start text-sm mr-2"
-        style={{ flexBasis: '66.66%' }}
+        className={` text-body-text-dark  px-2 py-1 font-semibold   ${
+          order.delivered ? 'bg-green-700 ' : 'bg-orange-500 '
+        }`}
       >
-        <div className="mb-1">
-          <h1>Order Number : {order.orderNo}</h1>
-          <h1 className="text-gray-600 text-xs ">
-            Ordered at : {order.orderDate}
-          </h1>
-          <h1 className="text-gray-600 text-xs">
-            {order.delivered
-              ? `Delivered at : ${order.deliveryDate}`
-              : `Expected Delivery :  ${order.expectedDelivery}`}
-          </h1>
-        </div>
-
-        <div
-          className={` text-body-text-dark text-xs px-2 py-0 font-semibold rounded ${
-            order.delivered ? 'bg-green-700 ' : 'bg-orange-500 '
-          }`}
-        >
-          <h1>Status : {order.delivered ? 'Delivered' : 'Pending'}</h1>
-        </div>
-        <button
-          onClick={() => setSelectedOrder(order)}
-          className="px-3 py-1 mt-auto text-body-text-dark bg-blue-700  rounded-lg font-semibold"
-        >
-          Order Details
-        </button>
+        <h1>
+          {formatMessage({ id: 'status' })} :{' '}
+          {order.delivered
+            ? formatMessage({ id: 'delivered' })
+            : formatMessage({ id: 'pending' })}
+        </h1>
       </div>
-
-      <div
-        className="flex flex-col justify-center items-center"
-        style={{ flexBasis: '33.33%' }}
-      >
-        <img
-          src={order.orderItems[0].photos.small}
-          alt={order.orderNo}
-          // style={{ width: '50px', height: '64px' }}
-        />
+      <div className=" text-sm mr-2 p-2 my-orders-grid__mobile">
+        <div>
+          <div className="flex items-center">
+            <h1 className="text-gray-600">
+              {formatMessage({ id: 'order-number' })} :
+            </h1>
+            <h1 className="mx-1">{order.orderNo}</h1>
+          </div>
+          <div className="flex items-center">
+            <h1 className="text-gray-600">
+              {formatMessage({ id: 'ordered-at' })} :
+            </h1>
+            <h1 className="mx-1 ">{order.orderDate}</h1>
+          </div>
+          <div className="flex items-center">
+            <h1 className="text-gray-600">
+              {order.delivered
+                ? formatMessage({ id: 'delivered-at' })
+                : formatMessage({ id: 'expected-delivery' })}{' '}
+              :
+            </h1>
+            <h1 className=" mx-1">
+              {order.delivered ? order.deliveryDate : order.expectedDelivery}
+            </h1>
+          </div>
+          <div className=" mt-8">
+            <button
+              onClick={() => setSelectedOrder(order)}
+              className="px-3 py-1 text-body-text-dark bg-blue-700 uppercase  rounded font-semibold"
+            >
+              {formatMessage({ id: 'order-details' })}
+            </button>
+          </div>
+        </div>
+        <div className="">
+          <img src={order.orderItems[0].photos.small} alt={order.orderNo} />
+        </div>
       </div>
     </div>
   );

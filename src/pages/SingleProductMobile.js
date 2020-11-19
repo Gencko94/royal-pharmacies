@@ -5,7 +5,6 @@ import { DataProvider } from '../contexts/DataContext';
 import InView, { useInView } from 'react-intersection-observer';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
-import ContentLoader from 'react-content-loader';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 import LayoutMobile from '../components/LayoutMobile';
 import ImageZoomMobile from '../components/SingleProductMobile/ImageZoomMobile';
@@ -14,6 +13,8 @@ import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMo
 import FloatingAddToCart from '../components/SingleProductMobile/FloatingAddToCart';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import { AnimatePresence, motion } from 'framer-motion';
+import SingleProductMobileLoader from '../components/SingleProductMobile/SingleProductMobileLoader';
+import AdditionalDetailsMobile from '../components/SingleProductMobile/AdditionalDetailsMobile';
 
 export default function SingleProductMobile({
   match: {
@@ -45,7 +46,7 @@ export default function SingleProductMobile({
    * Add Mutation
    */
 
-  const [addMutation] = useMutation(
+  const [addToCartMutation] = useMutation(
     async item => {
       setAddToCartButtonLoading(true);
       const res = await addItemToCart(item);
@@ -85,7 +86,7 @@ export default function SingleProductMobile({
    * Remove Mutation
    */
 
-  const [removeMutation] = useMutation(
+  const [removeFromCartMutation] = useMutation(
     async id => {
       setAddToCartButtonLoading(true);
       const res = await removeItemFromCart(id);
@@ -120,9 +121,6 @@ export default function SingleProductMobile({
     }
   );
 
-  const items = allItems.filter(item => item.id === id);
-
-  const [detailsTab, setDetailsTab] = React.useState(0);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
@@ -134,6 +132,7 @@ export default function SingleProductMobile({
   const [quantity, setQuantity] = React.useState(1);
   const [size, setSize] = React.useState(null);
   const [color, setColor] = React.useState(null);
+  const [detailsTab, setDetailsTab] = React.useState(0);
 
   const [triggerRef, inView] = useInView();
 
@@ -165,7 +164,7 @@ export default function SingleProductMobile({
 
   const handleAddToCart = async ({ id, quantity }) => {
     try {
-      await addMutation({
+      await addToCartMutation({
         id,
         quantity: quantity.value,
         price: data.item.price,
@@ -182,7 +181,7 @@ export default function SingleProductMobile({
   };
   const handleRemoveFromCart = async id => {
     try {
-      await removeMutation(id);
+      await removeFromCartMutation(id);
     } catch (error) {
       console.log(error);
     }
@@ -223,42 +222,15 @@ export default function SingleProductMobile({
           )}
         </AnimatePresence>
 
-        <div className="">
-          {isLoading && (
-            <ContentLoader
-              speed={2}
-              viewBox="0 0 420 480"
-              backgroundColor="#f3f3f3"
-              foregroundColor="#ecebeb"
-            >
-              <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
-            </ContentLoader>
-          )}
-          {!isLoading && (
+        {isLoading && <SingleProductMobileLoader />}
+        {!isLoading && (
+          <div className="">
             <ImageZoomMobile
               data={{ images: data.item.photos.main, name: data.item.name }}
             />
-          )}
-          <hr />
-          <div className="flex flex-col w-full  px-3 py-2 bg-white">
-            {isLoading && (
-              <ContentLoader
-                speed={2}
-                viewBox="0 0 480 470"
-                backgroundColor="#f3f3f3"
-                foregroundColor="#ecebeb"
-              >
-                <rect x="0" y="0" rx="5" ry="5" width="100%" height="40" />
-                <rect x="0" y="60" rx="5" ry="5" width="90%" height="40" />
-                <rect x="0" y="120" rx="5" ry="5" width="80%" height="40" />
-                <rect x="0" y="180" rx="5" ry="5" width="70%" height="35" />
-                <rect x="0" y="240" rx="5" ry="5" width="60%" height="35" />
-                <rect x="0" y="300" rx="5" ry="5" width="40%" height="35" />
-                <rect x="0" y="360" rx="5" ry="5" width="60%" height="35" />
-                <rect x="0" y="420" rx="5" ry="5" width="40%" height="35" />
-              </ContentLoader>
-            )}
-            {!isLoading && (
+
+            <hr />
+            <div className="flex flex-col w-full  px-3 py-2 bg-white">
               <ItemDescription
                 handleAddToCart={handleAddToCart}
                 handleRemoveFromCart={handleRemoveFromCart}
@@ -281,51 +253,22 @@ export default function SingleProductMobile({
                 setSize={setSize}
                 color={color}
                 setColor={setColor}
+                reviews={data.item.reviews}
+                rating={data.item.rating}
+                setDetailsTab={setDetailsTab}
               />
-            )}
-            <hr />
 
-            <div className="relative  ">
-              {isLoading && (
-                <ContentLoader
-                  speed={2}
-                  viewBox="0 0 480 100"
-                  backgroundColor="#f3f3f3"
-                  foregroundColor="#ecebeb"
-                >
-                  <rect x="0" y="20" rx="5" ry="5" width="100%" height="25" />
-                  <rect x="0" y="60" rx="5" ry="5" width="49%" height="25" />
-                  <rect x="50%" y="60" rx="5" ry="5" width="50%" height="25" />
-                </ContentLoader>
-              )}
+              <hr />
             </div>
           </div>
-        </div>
-        <div>
-          <div id="details" className="py-2">
-            <h1 className="text-xl font-semibold mb-1 px-3">Product Details</h1>
-            <div className="flex justify-center mb-2">
-              <button
-                onClick={() => setDetailsTab(0)}
-                className={`text-lg py-2 flex-1 text-center   ${
-                  detailsTab === 0 && 'border-red-700 border-b-2 text-red-700'
-                }   bg-gray-400`}
-              >
-                Description
-              </button>
-
-              <button
-                onClick={() => setDetailsTab(1)}
-                className={`text-lg py-2 flex-1 text-center   ${
-                  detailsTab === 1 && 'border-red-700 border-b-2 text-red-700'
-                }   bg-gray-400`}
-              >
-                Specifications
-              </button>
-            </div>
-            <div className="px-3 text-sm">{items[0].description}</div>
-          </div>
-        </div>
+        )}
+        {!isLoading && (
+          <AdditionalDetailsMobile
+            data={data.item}
+            detailsTab={detailsTab}
+            setDetailsTab={setDetailsTab}
+          />
+        )}
 
         {!isLoading && (
           <FloatingAddToCart
