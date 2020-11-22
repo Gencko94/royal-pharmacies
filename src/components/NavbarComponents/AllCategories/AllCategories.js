@@ -1,10 +1,12 @@
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import { BiCaretDown } from 'react-icons/bi';
+import { useIntl } from 'react-intl';
 import { DataProvider } from '../../../contexts/DataContext';
 import AllCategoriesMegaMenu from '../AllCategoriesMegaMenu';
 import AllCategoriesMenu from '../AllCategoriesMenu';
-export default function AllCategories({ dropDownbgRef }) {
+export default function AllCategories() {
+  const { formatMessage } = useIntl();
   const { allCategories } = React.useContext(DataProvider);
   const [categories, setCategories] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState({});
@@ -37,7 +39,7 @@ export default function AllCategories({ dropDownbgRef }) {
         className="font-semibold  flex  justify-between py-2 px-4 border-r relative"
         style={{ flexBasis: '250px' }}
       >
-        <span className="">All Categories</span>
+        <span className="">{formatMessage({ id: 'all-categories' })}</span>
         <BiCaretDown className="w-5 h-5" />
         <AnimatePresence>
           {categoriesOpen && (

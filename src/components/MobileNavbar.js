@@ -43,7 +43,7 @@ export default function MobileNavbar() {
     }
   };
   React.useEffect(() => {
-    window.addEventListener('scroll', () => {
+    const checkScrolling = () => {
       if (window.scrollY >= 140) {
         setWindowScrolled(true);
         if (sideMenuOpen) {
@@ -55,9 +55,10 @@ export default function MobileNavbar() {
         }
         setWindowScrolled(false);
       }
-    });
+    };
+    window.addEventListener('scroll', checkScrolling);
     return () => {
-      window.removeEventListener('scroll', null);
+      window.removeEventListener('scroll', checkScrolling);
     };
   });
   return (

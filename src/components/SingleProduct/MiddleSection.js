@@ -36,8 +36,8 @@ export default function MiddleSection({
         <Rating
           initialRating={data.rating}
           readonly
-          emptySymbol={<AiOutlineStar className="text-gold" />}
-          fullSymbol={<AiFillStar className="text-gold" />}
+          emptySymbol={<AiOutlineStar className="text-main-color" />}
+          fullSymbol={<AiFillStar className="text-main-color" />}
           className=" pt-1"
         />
         <div className="text-sm mx-2">

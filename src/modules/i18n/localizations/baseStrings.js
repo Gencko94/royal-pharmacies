@@ -63,6 +63,7 @@ const baseStrings = {
   'add-to-wishlist': 'Add to Wishlist',
   'remove-from-cart': 'Remove from cart',
   'remove-from-wishlist': 'Remove from Wishlist',
+  remove: 'Remove',
   'additional-details': 'Additional Details',
   description: 'Description',
   specifications: 'Specifications',
@@ -89,6 +90,7 @@ const baseStrings = {
   'not-found-title': "We can't seem to find the page you're looking for. ",
   'back-to-home': 'Back to Homepage',
   oops: 'Oops !',
+  'press-enter-to-search': 'Press Enter to search ',
 
   //
   'home.title': 'Home',
@@ -213,6 +215,11 @@ const baseStrings = {
   'additional-details__item-reviews': 'Item Reviews',
 
   'single-product-product-review': 'Product Rating',
+  /**
+   * Viewed Items Page
+   *
+   */
+  'your-viewed-items': 'Your Browsing history',
   /**
    * Footer
    */

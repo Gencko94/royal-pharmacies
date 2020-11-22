@@ -25,7 +25,7 @@ export default function ItemReviews({ reviews, rating }) {
   };
   return (
     <div>
-      <div className="flex items-center mb-2">
+      <div className="flex items-center flex-wrap mb-2">
         <h1 className="font-semibold text-xl">
           {formatMessage({ id: 'single-product-product-review' })}:
         </h1>

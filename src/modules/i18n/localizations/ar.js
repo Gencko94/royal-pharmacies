@@ -52,6 +52,7 @@ export const ar = {
   'add-to-wishlist': 'أضف الى المفضلة',
   'remove-from-cart': 'إزالة من عربة التسوق',
   'remove-from-wishlist': 'إزالة من المفضلة',
+  remove: 'إزالة',
   'additional-details': 'تفاصيل إضافية',
   description: 'الوصف',
   specifications: 'المواصفات',
@@ -82,6 +83,7 @@ export const ar = {
   'not-found-title': 'يبدو اننا لم نجد ما تبحث عنه.',
   'back-to-home': 'العودة إلى الرئيسية',
   oops: 'عذرا !',
+  'press-enter-to-search': 'إضغط على Enter للبحث عن ',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -215,4 +217,9 @@ export const ar = {
   'footer-help': 'دائما موجودون لمساعدتك',
   'footer-reach': 'تواصل معنا عبر وسائل الاتصال المتاحة لمساعدتك',
   'footer-all-rights': 'جميع الحقوق محفوظة',
+  /**
+   * Viewed Items Page
+   *
+   */
+  'your-viewed-items': 'المنتجات التي قمت بزيارتها',
 };

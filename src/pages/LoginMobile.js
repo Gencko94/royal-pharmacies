@@ -194,8 +194,7 @@ export default function LoginMobile() {
                       } w-full rounded text-sm  p-3 font-semibold  transition duration-150 uppercase `}
                     >
                       {isSubmitting && <BeatLoader size={10} />}
-                      {!isSubmitting &&
-                        formatMessage({ id: 'register-button' })}
+                      {!isSubmitting && formatMessage({ id: 'login-button' })}
                     </button>
                   </div>
                 </form>

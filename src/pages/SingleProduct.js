@@ -28,6 +28,7 @@ export default function SingleProduct() {
     addItemToWishList,
     removeItemFromWishList,
     getSingleItemDetails,
+    addViewedItems,
   } = React.useContext(DataProvider);
   const quantityOptions = [
     { value: 1, label: 1 },
@@ -45,7 +46,13 @@ export default function SingleProduct() {
       const res = await getSingleItemDetails(id);
       return res;
     },
-    { refetchOnWindowFocus: false }
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: async () => {
+        // add Item to localStorage
+        return await addViewedItems(id);
+      },
+    }
   );
 
   /**
@@ -272,16 +279,16 @@ export default function SingleProduct() {
   }, [page]);
 
   // Add item to localStorage //
-  React.useEffect(() => {
-    const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-    const isItemInHistory = visitedItems.find(item => item.id === id);
-    if (isItemInHistory !== undefined) {
-      return;
-    } else {
-      visitedItems.push({ id });
-      localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
-    }
-  }, [id]);
+  // React.useEffect(() => {
+  //   const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+  //   const isItemInHistory = visitedItems.find(item => item.id === id);
+  //   if (isItemInHistory !== undefined) {
+  //     return;
+  //   } else {
+  //     visitedItems.push({ id });
+  //     localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
+  //   }
+  // }, [id]);
 
   return (
     <Layout>

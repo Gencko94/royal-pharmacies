@@ -25,7 +25,7 @@ const options = {
 export default function GoogleMapsAddress({ addMutation }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: 'AIzaSyAYprqr3Vrnmhwx9UQozUNNks7CVH9m3Xg',
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
 
@@ -49,7 +49,7 @@ export default function GoogleMapsAddress({ addMutation }) {
     if (marker) {
       axios
         .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=AIzaSyAYprqr3Vrnmhwx9UQozUNNks7CVH9m3Xg`
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
         )
         .then(res => {
           console.log(res.data);

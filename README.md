@@ -22,7 +22,7 @@
 - [x] Localize Footers.
 - [x] Add 404 page.
 
-- [ ] Add Edit Cart item support.
+- [ ] Add Edit Cart item support. (discuss with maher)
 
 - [x] Add a Review system for Mobile.(2hrs)
 
@@ -38,17 +38,23 @@
 
 - [ ] Search Engine optimization.
 
-- [ ] Add keys to env variables.(0.5hr)
+- [x] Add keys to env variables.(0.5hr)
 
 - [ ] Add auto detect locale and localstorage language.(1hr)
 
-- [ ] Add Wishlist Page Desktop & Mobile.(3hrs)
+- [ ] Add delivery country context.(1hr)
+
+- [ ] Add Wishlist Page Desktop & Mobile.(3hrs) (discuss with maher)
 
 - [x] Add React query to order history. (2.5hrs)
 
 - [ ] Add payment Method for Mobile & Desktop (3hrs) (discuss with maher)
 
 - [ ] Add Viewed Items for Mobile & Desktop (3hrs)
+
+- [ ] Look into re-algothiming side menu (3hrs)
+
+- [ ] Nest Lazyloading deep (3hrs)
 
 # MRG API Structure :
 

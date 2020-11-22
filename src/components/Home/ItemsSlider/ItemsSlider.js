@@ -7,6 +7,7 @@ import { useIntl } from 'react-intl';
 import { DataProvider } from '../../../contexts/DataContext';
 import SliderItem from './SliderItem';
 import { queryCache, useMutation, useQuery } from 'react-query';
+// import { getItemsByType } from '../../../Queries/Queries';
 
 const RightArrow = ({ onClick }) => {
   return (
@@ -124,6 +125,7 @@ export default function ItemsSlider({ title, isLightTheme, type }) {
     ['slides', type],
     async (key, type) => {
       const res = await getItemsByType(type);
+      // const res = await getItemsByType()
       return res;
     },
     { refetchOnWindowFocus: false }

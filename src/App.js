@@ -90,6 +90,8 @@ const Cart = React.lazy(() => import('./pages/Cart'));
 const CartMobile = React.lazy(() => import('./pages/CartMobile'));
 
 const Category = React.lazy(() => import('./pages/Category'));
+const ViewedItems = React.lazy(() => import('./pages/ViewedItems'));
+const ViewedItemsMobile = React.lazy(() => import('./pages/ViewedItemsMobile'));
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
@@ -146,12 +148,12 @@ function App() {
 
           <Route
             exact
-            path="/:category/:name/:id"
+            path="/vieweditems"
             render={props => {
               if (isTabletOrAbove) {
-                return <SingleProduct {...props} />;
+                return <ViewedItems {...props} />;
               } else {
-                return <SingleProductMobile {...props} />;
+                return <ViewedItemsMobile {...props} />;
               }
             }}
           />
@@ -178,7 +180,17 @@ function App() {
             }}
           />
           <Route path="/test" component={Test} />
-
+          <Route
+            exact
+            path="/:category/:name/:id"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <SingleProduct {...props} />;
+              } else {
+                return <SingleProductMobile {...props} />;
+              }
+            }}
+          />
           <Route
             render={props => {
               if (isTabletOrAbove) {
@@ -187,7 +199,7 @@ function App() {
                 return <NotFoundMobile {...props} />;
               }
             }}
-          ></Route>
+          />
         </LocalizedSwitch>
       </LocalizedRouter>
     </Suspense>

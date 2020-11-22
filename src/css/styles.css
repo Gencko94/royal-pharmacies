@@ -859,3 +859,23 @@ input {
   top: 20px;
   left: 20px;
 }
+.viewed-items-grid__desktop {
+  display: grid;
+  grid-template-columns: minmax(300px, 2.2fr) minmax(250px, 0.8fr);
+  gap: 0.5em;
+}
+.viewed-items-grid__mobile {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5em;
+}
+.viewed-item {
+  display: grid;
+  grid-template-columns: 0.2fr 0.8fr;
+  gap: 0.5em;
+}
+.viewed-item__mobiles {
+  display: grid;
+  grid-template-columns: 0.3fr 0.7fr;
+  gap: 0.5em;
+}

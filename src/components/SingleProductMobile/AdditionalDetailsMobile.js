@@ -11,8 +11,7 @@ export default function AdditionalDetailsMobile({
   const { formatMessage } = useIntl();
   return (
     <div className="py-2">
-      <h1 className="text-xl font-semibold mb-1 px-3">
-        {' '}
+      <h1 className="text-xl font-semibold mb-3 px-3">
         {formatMessage({ id: 'single-product-additional-details' })}
       </h1>
       <div className="flex justify-center mb-2">

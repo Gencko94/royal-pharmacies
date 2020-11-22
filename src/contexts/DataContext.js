@@ -150,6 +150,14 @@ export default function DataContextProvider({ children }) {
   const [isLightTheme, setLightTheme] = React.useState(true);
   const localItems = localStorage.getItem('cartItems');
   const localWish = localStorage.getItem('localWish');
+  const localViewed = localStorage.getItem('visitedItems');
+  const [viewedItems, setViewedItems] = React.useState(() => {
+    if (localViewed) {
+      return JSON.parse(localViewed);
+    } else {
+      return [];
+    }
+  });
   const prefferedLanguage = localStorage.getItem('prefferedLanguage');
   const [wishListItems, setWishListItems] = React.useState(() => {
     if (localWish) {
@@ -176,7 +184,43 @@ export default function DataContextProvider({ children }) {
     localStorage.setItem('prefferedLanguage', lang);
     setLanguage(lang);
   };
-
+  const getViewedItems = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const visitedItems = allItems.filter(item =>
+          viewedItems.includes(item.id)
+        );
+        resolve({ visitedItems });
+      }, 1500);
+    });
+  };
+  const addViewedItems = id => {
+    return new Promise(resolve => {
+      const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+      const isItemInHistory = visitedItems.find(item => item.id === id);
+      if (!isItemInHistory) {
+        visitedItems.push(id);
+        localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
+        setViewedItems(visitedItems);
+      }
+      setTimeout(() => {
+        resolve({ msg: 'ok' });
+      }, 500);
+    });
+  };
+  const removeViewedItem = id => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const updated = viewedItems.filter(i => i !== id);
+        setViewedItems(updated);
+        localStorage.setItem('visitedItems', JSON.stringify(updated));
+        resolve({
+          message: 'ok',
+          id,
+        });
+      }, 1000);
+    });
+  };
   const addItemToWishList = ({
     id,
     quantity,
@@ -3052,6 +3096,9 @@ export default function DataContextProvider({ children }) {
         removeItemFromCartFromWishlist,
         removeItemFromWishListFromCart,
         addItemToWishListFromCart,
+        getViewedItems,
+        addViewedItems,
+        removeViewedItem,
       }}
     >
       {children}

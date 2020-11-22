@@ -1,35 +1,111 @@
+import axios from 'axios';
 import React from 'react';
+import Autosuggest from 'react-autosuggest';
 import { BiSearch } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
+import { BeatLoader } from 'react-spinners';
 import { DataProvider } from '../../contexts/DataContext';
-// import OrderFrom from './OrderFrom';
-
+import { searchBarSearch } from '../../Queries/Queries';
+import theme from './theme.module.css';
+let cancelToken = undefined;
 export default function SearchBar() {
   const { isLightTheme } = React.useContext(DataProvider);
   const [searchBarValue, setSearchBarValue] = React.useState('');
-  const history = useHistory();
-  const { formatMessage, locale } = useIntl();
-  const handleSearch = e => {
-    if (!searchBarValue) {
-      return;
+  const [data, setData] = React.useState([]);
+  const [isLoading, setLoading] = React.useState(false);
+  const { formatMessage } = useIntl();
+
+  //with controlling the arrows
+  const getSuggestionValue = suggestion => {
+    return suggestion.translation[0].title;
+  };
+
+  const renderSuggestion = (suggestion, { isHighlighted }) => {
+    return (
+      <div className={`p-2 ${isHighlighted && 'bg-gray-300 rounded'}`}>
+        {suggestion.translation[0].title}
+      </div>
+    );
+  };
+  const onSuggestionsFetchRequested = ({ value }) => {
+    if (cancelToken) {
+      cancelToken.cancel();
     }
-    e.preventDefault();
-    history.push(`/${locale}/search/q=${searchBarValue}`);
+    cancelToken = axios.CancelToken.source();
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+    if (inputLength < 2) return [];
+    setLoading(true);
+    searchBarSearch(value, cancelToken).then(res => {
+      setData(res);
+      setLoading(false);
+    });
+  };
+  const onSuggestionsClearRequested = () => {
+    setData([]);
+  };
+  const renderSuggestionsContainer = ({ containerProps, children }) => {
+    return (
+      <div
+        {...containerProps}
+        className="absolute  left-0 bg-body-light w-full rounded"
+        style={{ top: '110%' }}
+      >
+        {children}
+      </div>
+    );
+  };
+  const renderInputComponent = inputProps => {
+    return (
+      <input
+        {...inputProps}
+        className={`w-full p-2
+            ${
+              isLightTheme
+                ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
+                : 'bg-nav-cat-dark text-nav-cat-text-dark placeholder-gray-500'
+            }  `}
+      />
+    );
+  };
+  const handleSelect = (event, { suggestion }) => {
+    console.log(suggestion);
   };
   return (
     <div
-      className={`flex     rounded overflow-hidden  relative  ${
+      className={`flex rounded items-center relative  ${
         isLightTheme
           ? 'bg-nav-cat-light text-nav-cat-text-light'
           : 'bg-nav-cat-dark text-nav-cat-text-dark'
       }  mx-4 flex-1  `}
     >
-      <button onClick={handleSearch} className=" p-2  bg-nav-cat-light  ">
+      <button className=" p-2   bg-nav-cat-light  ">
         <BiSearch className=" w-5 h-5" />
       </button>
       <span className="border-r"></span>
-      <form className="w-full p-2 " onSubmit={handleSearch}>
+      <Autosuggest
+        theme={theme}
+        inputProps={{
+          value: searchBarValue,
+          placeholder: formatMessage({ id: 'nav.search.placeholder' }),
+          onChange: (e, { newValue }) => setSearchBarValue(newValue),
+        }}
+        renderInputComponent={renderInputComponent}
+        suggestions={data}
+        onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+        onSuggestionsClearRequested={onSuggestionsClearRequested}
+        renderSuggestion={renderSuggestion}
+        getSuggestionValue={getSuggestionValue}
+        renderSuggestionsContainer={renderSuggestionsContainer}
+        onSuggestionSelected={handleSelect}
+      />
+      <div
+        className="p-2 flex items-center justify-center"
+        style={{ width: '15%' }}
+      >
+        <BeatLoader loading={isLoading} size={8} color={'#b72b2b'} />
+      </div>
+      {/* <form className="w-full p-2 " onSubmit={handleSearch}>
         <input
           className={`w-full    ${
             isLightTheme
@@ -41,7 +117,7 @@ export default function SearchBar() {
           value={searchBarValue}
           onChange={e => setSearchBarValue(e.target.value)}
         />
-      </form>
+      </form> */}
       {/* <OrderFrom /> */}
     </div>
   );

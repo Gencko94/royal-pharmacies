@@ -10,14 +10,15 @@ import { DataProvider } from '../contexts/DataContext';
 import { Link, useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { AuthProvider } from '../contexts/AuthContext';
+import { useMediaQuery } from 'react-responsive';
 // import Promos from './NavbarComponents/Promos';
-
 export default function Navbar() {
   const {
     authenticationLoading,
     isAuthenticated,
     userLogout,
   } = React.useContext(AuthProvider);
+  const hideAllCategories = useMediaQuery({ query: '(min-width:1040px)' });
   const { isLightTheme } = React.useContext(DataProvider);
   const { pathname } = useLocation();
   const specialPages =
@@ -60,7 +61,7 @@ export default function Navbar() {
       )}
 
       <div
-        className={` z-10 sticky top-0 left-0   ${
+        className={` z-20 sticky top-0 left-0   ${
           isLightTheme
             ? 'bg-second-nav-light text-second-nav-text-light'
             : 'bg-second-nav-dark text-second-nav-text-dark'
@@ -73,7 +74,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {!specialPages && <NavCategory />}
+      {!specialPages && hideAllCategories && <NavCategory />}
     </>
   );
 }

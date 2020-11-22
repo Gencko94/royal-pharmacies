@@ -28,6 +28,7 @@ export default function SingleProductMobile({
     deliveryCountry,
     getSingleItemDetails,
     allItems,
+    addViewedItems,
   } = React.useContext(DataProvider);
 
   /**
@@ -39,7 +40,13 @@ export default function SingleProductMobile({
       const res = await getSingleItemDetails(id);
       return res;
     },
-    { refetchOnWindowFocus: false }
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: async () => {
+        // add Item to localStorage
+        return await addViewedItems(id);
+      },
+    }
   );
 
   /**

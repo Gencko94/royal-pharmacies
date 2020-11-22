@@ -6,10 +6,11 @@ import ReactHoverObserver from 'react-hover-observer';
 import MegaMenu from './MegaMenu';
 import NavCategoriesContainer from './NavCategoriesContainer';
 import { useQuery } from 'react-query';
+import { useMediaQuery } from 'react-responsive';
 export default function NavCategory() {
   const dropDownbgRef = React.useRef(null);
   const { getNavCategoryData, isLightTheme } = React.useContext(DataProvider);
-
+  const hideAllCategories = useMediaQuery({ query: '(min-width:1290px)' });
   const { data, isLoading } = useQuery('navCategoryItems', async () => {
     return await getNavCategoryData();
   });
@@ -34,7 +35,7 @@ export default function NavCategory() {
       >
         <div className="max-w-default mx-auto  px-4 ">
           <div className="relative items-center flex">
-            <AllCategories dropDownbgRef={dropDownbgRef} />
+            {hideAllCategories && <AllCategories />}
             <ReactHoverObserver hoverDelayInMs={300}>
               <NavCategoriesContainer
                 isLightTheme={isLightTheme}

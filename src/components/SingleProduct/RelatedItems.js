@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
-import MultiClamp from 'react-multi-clamp';
 
 export default function RelatedItems({ relatedData }) {
   return (
@@ -24,19 +23,15 @@ export default function RelatedItems({ relatedData }) {
                 <hr />
 
                 <div className=" relative flex flex-col pt-2 p-3 bg-white text-black">
-                  <MultiClamp
-                    className="text-sm  font-semibold"
-                    clamp={2}
-                    ellipsis="..."
+                  <Link
+                    title={item.name}
+                    className="hover:underline"
+                    to={`/products/${item.id}`}
                   >
-                    <Link
-                      title={item.name}
-                      className="hover:underline"
-                      to={`/products/${item.id}`}
-                    >
+                    <h1 className="text-sm font-semibold text-clamp-2">
                       {item.name}
-                    </Link>
-                  </MultiClamp>
+                    </h1>
+                  </Link>
 
                   <div className="flex items-center">
                     <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">

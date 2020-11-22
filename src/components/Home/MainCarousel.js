@@ -1,28 +1,19 @@
 import React from 'react';
 import Slider from 'react-slick';
 
-import { DataProvider } from '../../contexts/DataContext';
 import { useMediaQuery } from 'react-responsive';
 import ContentLoader from 'react-content-loader';
 import { useQuery } from 'react-query';
+import { getMainCarouselItems } from '../../Queries/Queries';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 const MainCarousel = () => {
-  const { getMainCarouselItems } = React.useContext(DataProvider);
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 668px)' });
 
   const { data, isLoading } = useQuery(
     ['mainCarousel', isTabletOrAbove],
-    async (key, desktop) => {
-      if (desktop) {
-        const res = await getMainCarouselItems('desktop');
-        return res;
-      } else {
-        const res = await getMainCarouselItems('mobile');
-        return res;
-      }
-    },
+    getMainCarouselItems,
     { refetchOnWindowFocus: false, retry: true }
   );
-
   const settings = {
     className: '',
     dots: true,
@@ -90,13 +81,18 @@ const MainCarousel = () => {
         {!isLoading &&
           data.map(item => {
             return (
-              <div key={item} className="px-0 md:px-1">
-                <img
-                  src={item.src}
+              <a
+                href={`/categories/${item.category.slug}`}
+                key={item.id}
+                className="px-0 md:px-1"
+              >
+                <LazyLoadImage
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.translation[0].image.link}`}
                   alt="something"
+                  effect="blur"
                   className=" md:rounded w-full h-full "
                 />
-              </div>
+              </a>
             );
           })}
       </Slider>

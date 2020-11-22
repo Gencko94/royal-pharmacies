@@ -207,19 +207,24 @@ export default function SideMenu({
                 <h1 className="mx-2">{formatMessage({ id: 'wishlist' })}</h1>
               </div>
             </motion.button>
-            <motion.button
-              key="viewedItems"
-              variants={childVariants}
-              onClick={toggleSideMenu}
-              className="py-2 px-2 mb-2    "
-            >
-              <div className=" flex items-center">
-                <AiOutlineEye className=" w-25p h-25p" />
-                <h1 className="mx-2 whitespace-no-wrap">
-                  {formatMessage({ id: 'viewed-items' })}
-                </h1>
-              </div>
-            </motion.button>
+            {isAuthenticated && (
+              <motion.button
+                key="viewedItems"
+                variants={childVariants}
+                onClick={toggleSideMenu}
+                className="py-2 px-2 mb-2    "
+              >
+                <Link
+                  to={`/${locale}/vieweditems`}
+                  className="flex items-center"
+                >
+                  <AiOutlineEye className=" w-25p h-25p" />
+                  <h1 className="mx-2 whitespace-no-wrap">
+                    {formatMessage({ id: 'viewed-items' })}
+                  </h1>
+                </Link>
+              </motion.button>
+            )}
             <hr />
             <motion.button
               key="deliverTo"
