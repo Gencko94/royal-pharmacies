@@ -37,13 +37,13 @@ export default function NoWishListItems() {
         </Link>
         <div className="flex items-center flex-wrap">
           <Link
-            to="/app/login"
+            to={`/${locale}/app/login`}
             className={` rounded p-2 mt-2 bg-green-700 text-second-nav-text-light  `}
           >
             {formatMessage({ id: 'login-button' })}
           </Link>
           <Link
-            to="/app/register"
+            to={`/${locale}/app/register`}
             className={` rounded p-2 mt-2 bg-blue-700 text-second-nav-text-light mx-2  `}
           >
             {formatMessage({ id: 'register-button' })}

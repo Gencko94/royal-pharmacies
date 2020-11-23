@@ -3,10 +3,10 @@ import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import { BiSearch } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
-import { BeatLoader } from 'react-spinners';
 import { DataProvider } from '../../contexts/DataContext';
-import { searchBarSearch } from '../../Queries/Queries';
 import theme from './theme.module.css';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Loader from 'react-loader-spinner';
 let cancelToken = undefined;
 export default function SearchBar() {
   const { isLightTheme } = React.useContext(DataProvider);
@@ -27,7 +27,7 @@ export default function SearchBar() {
       </div>
     );
   };
-  const onSuggestionsFetchRequested = ({ value }) => {
+  const onSuggestionsFetchRequested = async ({ value }) => {
     if (cancelToken) {
       cancelToken.cancel();
     }
@@ -36,10 +36,21 @@ export default function SearchBar() {
     const inputLength = inputValue.length;
     if (inputLength < 2) return [];
     setLoading(true);
-    searchBarSearch(value, cancelToken).then(res => {
-      setData(res);
-      setLoading(false);
-    });
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_MAIN_URL}/search-products`,
+        params: { value: value, page: 1 },
+        cancelToken: cancelToken.token,
+      });
+      console.log(res.data.data.data);
+      if (res) {
+        setData(res.data.data.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      if (axios.isCancel(error)) return [];
+    }
   };
   const onSuggestionsClearRequested = () => {
     setData([]);
@@ -99,26 +110,15 @@ export default function SearchBar() {
         renderSuggestionsContainer={renderSuggestionsContainer}
         onSuggestionSelected={handleSelect}
       />
-      <div
-        className="p-2 flex items-center justify-center"
-        style={{ width: '15%' }}
-      >
-        <BeatLoader loading={isLoading} size={8} color={'#b72b2b'} />
-      </div>
-      {/* <form className="w-full p-2 " onSubmit={handleSearch}>
-        <input
-          className={`w-full    ${
-            isLightTheme
-              ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
-              : 'bg-nav-cat-dark text-nav-cat-text-dark placeholder-gray-500'
-          }  `}
-          type="text"
-          placeholder={formatMessage({ id: 'nav.search.placeholder' })}
-          value={searchBarValue}
-          onChange={e => setSearchBarValue(e.target.value)}
+      <div>
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={30}
+          width={30}
+          visible={isLoading}
         />
-      </form> */}
-      {/* <OrderFrom /> */}
+      </div>
     </div>
   );
 }

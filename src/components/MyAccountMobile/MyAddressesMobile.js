@@ -1,7 +1,8 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
 import { queryCache, useMutation, useQuery } from 'react-query';
-import { BeatLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import NoAddresses from '../MyAccount/MyAddresses/NoAddresses';
 import GoogleMapsAddress from '../GoogleMapsAddress';
 import LocationsMobile from './MyAddressesMobile/LocationsMobile';
@@ -78,7 +79,13 @@ export default function MyAddressesMobile() {
     return (
       <div className=" p-4 " style={{ height: 'calc(-173px + 100vh)' }}>
         <div className="flex h-full justify-center items-center">
-          <BeatLoader size={10} color={'#b72b2b'} />
+          <Loader
+            type="ThreeDots"
+            color="#b72b2b"
+            height={40}
+            width={40}
+            visible={isLoading}
+          />
         </div>
       </div>
     );
@@ -102,10 +109,8 @@ export default function MyAddressesMobile() {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="h-full"
     >
-      {!isLoading &&
-        !showMap &&
+      {!showMap &&
         (data.length === 0 ? (
           <NoAddresses isLightTheme={isLightTheme} setShowMap={setShowMap} />
         ) : (
@@ -116,7 +121,7 @@ export default function MyAddressesMobile() {
           />
         ))}
       {showMap && (
-        <div className="relative" style={{ minHeight: 'calc(-173px + 100vh)' }}>
+        <div className="relative" style={{ minHeight: 'calc(-176px + 100vh)' }}>
           <GoogleMapsAddress addMutation={addMutation} />
         </div>
       )}

@@ -2,7 +2,8 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { Redirect, Route } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
-import BeatLoader from 'react-spinners/BeatLoader';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function ProtectedRoute({ children, ...args }) {
   const { locale } = useIntl();
   const { isAuthenticated, authenticationLoading } = React.useContext(
@@ -15,7 +16,13 @@ export default function ProtectedRoute({ children, ...args }) {
         if (authenticationLoading)
           return (
             <div className="min-h-screen flex items-center justify-center">
-              <BeatLoader size={20} color="#b72b2b" />
+              <Loader
+                type="ThreeDots"
+                color="#b72b2b"
+                height={50}
+                width={50}
+                visible={authenticationLoading}
+              />
             </div>
           );
         if (isAuthenticated === true) {

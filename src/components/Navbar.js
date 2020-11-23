@@ -11,6 +11,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { AuthProvider } from '../contexts/AuthContext';
 import { useMediaQuery } from 'react-responsive';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 // import Promos from './NavbarComponents/Promos';
 export default function Navbar() {
   const {
@@ -28,10 +30,10 @@ export default function Navbar() {
     <>
       {!specialPages && (
         <div
-          className={` font-semibold py-1 z-10 ${
+          className={` font-semibold py-1 z-30 ${
             isLightTheme
-              ? 'bg-first-nav-light text-first-nav-text-light'
-              : 'bg-first-nav-dark text-first-nav-text-dark'
+              ? 'bg-first-nav-light text-main-text'
+              : 'bg-main-color text-main-text'
           } text-sm `}
         >
           <div className="max-w-default mx-auto flex items-center justify-between px-6">
@@ -48,13 +50,25 @@ export default function Navbar() {
                       <Link className="mx-2" to={`/${locale}/user/account`}>
                         {formatMessage({ id: 'nav.account' })}
                       </Link>
-                      <button onClick={userLogout}>logout</button>
+                      <button className="font-semibold" onClick={userLogout}>
+                        {' '}
+                        {formatMessage({ id: 'logout' })}
+                      </button>
                     </div>
                   )}
+                  {!isAuthenticated && <LoginRegister />}
                 </>
               )}
-              {authenticationLoading && <h1>Loading...</h1>}
-              <LoginRegister />
+              {authenticationLoading && (
+                <Loader
+                  type="ThreeDots"
+                  color="#b27b2b"
+                  secondaryColor="black"
+                  height={20}
+                  width={20}
+                  visible={authenticationLoading}
+                />
+              )}
             </div>
           </div>
         </div>

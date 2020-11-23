@@ -3,7 +3,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { queryCache, useMutation, useQuery } from 'react-query';
-import { BeatLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import LayoutMobile from '../components/LayoutMobile';
 import NoViewedItems from '../components/ViewedItems/NoViewedItems';
 import ViewedItemMobile from '../components/ViewedItems/ViewedItemMobile';
@@ -59,7 +60,13 @@ export default function ViewedItemsMobile() {
 
       {isLoading && (
         <div className="min-h-screen flex items-center justify-center">
-          <BeatLoader size={10} color={'#b72b2b'} />
+          <Loader
+            type="ThreeDots"
+            color="#b72b2b"
+            height={40}
+            width={40}
+            visible={isLoading}
+          />
         </div>
       )}
       {!isLoading && (

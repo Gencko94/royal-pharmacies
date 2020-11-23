@@ -7,7 +7,7 @@ export default function NoAddresses({ isLightTheme, setShowMap }) {
   return (
     <div
       className="flex flex-col justify-center items-center"
-      style={{ height: 'calc(-173px + 100vh)' }}
+      style={{ height: 'calc(-176px + 100vh)' }}
     >
       <img
         src={manWithMap}
@@ -27,7 +27,9 @@ export default function NoAddresses({ isLightTheme, setShowMap }) {
               : 'bg-btn-primary-dark text-btn-secondary-dark'
           } `}
         >
-          <h1 className="mx-2">{formatMessage({ id: 'add-new-address' })}</h1>
+          <h1 className="mx-2 uppercase">
+            {formatMessage({ id: 'add-new-address' })}
+          </h1>
           <FaMapMarkedAlt className="w-20p h-20p" />
         </button>
       </div>

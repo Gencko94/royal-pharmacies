@@ -5,7 +5,8 @@ import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { queryCache, useMutation, useQuery } from 'react-query';
-import { BeatLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function MyProfile() {
   const {
     isLightTheme,
@@ -78,7 +79,13 @@ export default function MyProfile() {
         style={{ height: 'calc(-90px + 100vh)' }}
       >
         <div className="flex h-full justify-center items-center">
-          <BeatLoader size={10} color={'#b72b2b'} />
+          <Loader
+            type="ThreeDots"
+            color="#b72b2b"
+            height={40}
+            width={40}
+            visible={isLoading}
+          />
         </div>
       </motion.div>
     );
@@ -124,15 +131,34 @@ export default function MyProfile() {
           <div>
             <div className={` py-4 px-3 flex    `}>
               <h1 className="  w-2/4">
-                {formatMessage({ id: 'date-of-birth' })}
+                {formatMessage({ id: 'email-address' })}
               </h1>
-              <h1 className="">{data.dateOfBirth}</h1>
+              <h1 className="">{data.email}</h1>
             </div>
             <hr />
           </div>
         </div>
       </div>
-
+      <div className="">
+        <div className="px-3 py-3 bg-main-color text-main-text flex items-center justify-between ">
+          <h1 className="text-lg">{formatMessage({ id: 'security' })}</h1>
+          <button
+            className={`px-4 py-1 text-sm font-semibold bg-body-light text-btn-primary-light rounded`}
+          >
+            {formatMessage({ id: 'edit' })}
+          </button>
+        </div>
+        <div className="">
+          <div
+            className={`${
+              isLightTheme ? 'bg-nav-cat-light' : 'bg-nav-cat-dark'
+            } py-4 px-3 flex `}
+          >
+            <h1 className=" w-2/4">{formatMessage({ id: 'password' })}</h1>
+            <h1 className="">**********</h1>
+          </div>
+        </div>
+      </div>
       <div className="">
         <div className="px-3 py-3 bg-main-color text-main-text">
           <h1 className="text-lg ">{formatMessage({ id: 'language' })}</h1>
@@ -158,39 +184,6 @@ export default function MyProfile() {
         </div>
       </div>
 
-      <div className="">
-        <div className="px-3 py-3 bg-main-color text-main-text flex items-center justify-between ">
-          <h1 className="text-lg">{formatMessage({ id: 'security' })}</h1>
-          <button
-            className={`px-4 py-1 text-sm font-semibold bg-body-light text-btn-primary-light rounded`}
-          >
-            {formatMessage({ id: 'edit' })}
-          </button>
-        </div>
-        <div className="">
-          <div className="">
-            <div
-              className={`${
-                isLightTheme ? 'bg-nav-cat-light' : 'bg-nav-cat-dark'
-              } py-4 px-3 flex `}
-            >
-              <h1 className="  w-2/4">
-                {formatMessage({ id: 'email-address' })}
-              </h1>
-              <h1 className="">John@doe.com</h1>
-            </div>
-          </div>
-          <hr />
-          <div
-            className={`${
-              isLightTheme ? 'bg-nav-cat-light' : 'bg-nav-cat-dark'
-            } py-4 px-3 flex `}
-          >
-            <h1 className=" w-2/4">{formatMessage({ id: 'password' })}</h1>
-            <h1 className="">**********</h1>
-          </div>
-        </div>
-      </div>
       <AnimatePresence>
         {profileEditModalOpen && <ProfileModal editMutation={editMutation} />}
       </AnimatePresence>

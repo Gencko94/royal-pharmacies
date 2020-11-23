@@ -1,5 +1,6 @@
 import React from 'react';
-import { BeatLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { DataProvider } from '../../contexts/DataContext';
 import GoogleMapsAddress from '../GoogleMapsAddress';
 import Locations from './MyAddresses/Locations';
@@ -102,7 +103,13 @@ export default function MyAddresses() {
   if (isLoading)
     return (
       <div className="flex h-full justify-center items-center">
-        <BeatLoader size={10} color={'#b72b2b'} />
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={40}
+          width={40}
+          visible={isLoading}
+        />
       </div>
     );
   return (

@@ -32,7 +32,7 @@
 
 - [ ] Add Scroll Pagination to SingleProduct Pages.
 
-- [ ] Add auto Complete to the Search bar.(1hr)
+- [x] Add auto Complete to the Search bar.(1hr)
 
 - [ ] Complete the Checkout Page.(2hrs)
 
@@ -50,11 +50,15 @@
 
 - [ ] Add payment Method for Mobile & Desktop (3hrs) (discuss with maher)
 
-- [ ] Add Viewed Items for Mobile & Desktop (3hrs)
+- [x] Add Viewed Items for Mobile & Desktop (3hrs)
 
 - [ ] Look into re-algothiming side menu (3hrs)
 
 - [ ] Nest Lazyloading deep (3hrs)
+
+- [ ] Complete Profile Modal Desktop (3hrs)
+
+**API BUGS** -[loginApi] when sending login request the "mobile" key is not validated, for example i can send a "mobil" key instead of "mobile" . . if possible please rename to phoneNumber. -[getUserApi] not returning an error code when sending without token.
 
 # MRG API Structure :
 

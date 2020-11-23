@@ -640,8 +640,8 @@ export default function DataContextProvider({ children }) {
       setTimeout(() => {
         resolve({
           fullName: 'John Doe',
-          phoneNumber: '+965687123',
-          dateOfBirth: '1/1/1990',
+          phoneNumber: '+96568712323',
+          email: 'Not Added',
         });
       }, 500);
     });

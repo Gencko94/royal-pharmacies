@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import BeatLoader from 'react-spinners/BeatLoader';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import mapStyles from '../helpers/mapStyles';
 import {
   GoogleMap,
@@ -81,9 +82,15 @@ export default function GoogleMapsAddress({ addMutation }) {
     return (
       <div
         className="flex justify-center items-center"
-        style={{ height: 'calc(-173px + 100vh)' }}
+        style={{ height: 'calc(-176px + 100vh)' }}
       >
-        <BeatLoader size={10} color={'#b72b2b'} />
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={40}
+          width={40}
+          visible={!isLoaded}
+        />
       </div>
     );
   return (

@@ -84,6 +84,7 @@ export const ar = {
   'back-to-home': 'العودة إلى الرئيسية',
   oops: 'عذرا !',
   'press-enter-to-search': 'إضغط على Enter للبحث عن ',
+  'something-went-wrong-snackbar': 'حصل خطأ ما , الرجاء المحاولة مرة أخرى',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -113,12 +114,14 @@ export const ar = {
   'register-button': 'انشاء حساب',
   'login-welcome-back': 'اهلا بك مجددا !',
   'register-on-mrg': 'اشترك في MRG',
-  'credentials-wrong': 'رقم الهاتف او كلمة المرور غير صحيحين',
+  'Invalid credentials': 'رقم الهاتف او كلمة المرور غير صحيحين',
   'new-to-family': 'هل انت مستخدم جديد ؟',
   'join-us-here': ' اشترك معنا الآن',
   'forgot-password': 'هل نسيت كلمة المرور ؟',
+  'save-button': 'حفظ',
   'we-have-found': 'لقد قمت بتسجيل',
   addresses: 'عناوين ',
+
   'one-address': 'عنوان',
   'password-reset': 'إعادة تعيين كلمة المرور',
   'password-reset-send-button': 'إرسال الكود',
@@ -152,6 +155,7 @@ export const ar = {
   // stepper
   address: 'العنوان',
   'personal-information': 'المعلومات الشخصية',
+  'edit-personal-information': 'تعديل المعلومات الشخصية',
   'order-placed': 'وضع الطلب',
   // maps
   'find-my-position': 'حدد مكاني',

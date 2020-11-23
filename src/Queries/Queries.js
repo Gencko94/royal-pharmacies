@@ -16,19 +16,35 @@ export const getMainCarouselItems = async (key, desktop) => {
     throw new Error(error);
   }
 };
-
-export const searchBarSearch = async (value, cancelToken) => {
-  console.log(cancelToken);
-  try {
-    const res = await axios({
-      method: 'GET',
-      url: `${process.env.REACT_APP_MAIN_URL}/search-products`,
-      params: { value: value, page: 1 },
-      cancelToken: cancelToken.token,
-    });
-    console.log(res.data.data.data);
-    return res.data.data.data;
-  } catch (error) {
-    if (axios.isCancel(error)) return [];
+export const userRegister = async data => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/customer-register`,
+    data
+  );
+  if (res.data.status === true) {
+    return res.data;
+  }
+};
+export const userLogin = async data => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/customer-login`,
+    data
+  );
+  if (res.data.status === true) {
+    return res.data;
+  }
+};
+export const checkAuth = async mrgAuthToken => {
+  const config = {
+    headers: { Authorization: `Bearer ${mrgAuthToken}` },
+  };
+  const res = await axios.get(
+    `${process.env.REACT_APP_MAIN_URL}/customer-informations`,
+    config
+  );
+  if (res.data.status === true) {
+    return { isAuthenticated: true };
+  } else {
+    throw new Error('Not Authenticated');
   }
 };

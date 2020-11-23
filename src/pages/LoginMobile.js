@@ -5,7 +5,8 @@ import logo from '../assets/mrg.svg';
 import * as Yup from 'yup';
 import { useIntl } from 'react-intl';
 import { AuthProvider } from '../contexts/AuthContext';
-import { BeatLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { BiChevronDown } from 'react-icons/bi';
 import useClickAway from '../hooks/useClickAway';
@@ -28,7 +29,11 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
       >
         {label}
       </label>
-      <div className="flex rounded-lg border items-center relative  overflow-hidden ">
+      <div
+        className={`${
+          meta.error && 'border'
+        } flex rounded-lg border items-center relative  overflow-hidden`}
+      >
         <div
           ref={menuRef}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -42,7 +47,7 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
               className="absolute top-100 left-0 w-full border z-1 bg-body-light"
               style={{ width: '74px' }}
             >
-              <div className="hover:bg-main-color p-1 hover:text-main-text flex justify-start items-center">
+              <div className="hover:bg-main-color p-2 hover:text-main-text flex justify-start items-center">
                 +965
               </div>
             </div>
@@ -54,7 +59,7 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
           onBlur={e => {
             field.onBlur(e);
           }}
-          className=" w-full   p-1"
+          className=" w-full   p-2"
         />
       </div>
       {meta.touched && meta.error ? (
@@ -84,7 +89,7 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
         onBlur={e => {
           field.onBlur(e);
         }}
-        className=" w-full rounded-lg border   p-1"
+        className={`${meta.error && 'border'} w-full rounded-lg border   p-2`}
       />
       {meta.touched && meta.error ? (
         <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
@@ -99,7 +104,7 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
 
 export default function LoginMobile() {
   const { formatMessage, locale } = useIntl();
-  const { userLogin } = React.useContext(AuthProvider);
+  const { userLoginMutation } = React.useContext(AuthProvider);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const closeError = () => {
@@ -107,14 +112,11 @@ export default function LoginMobile() {
   };
   const history = useHistory();
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email(formatMessage({ id: 'email-validation' }))
-      .required(formatMessage({ id: 'email-empty' })),
     password: Yup.string()
       .required(formatMessage({ id: 'password-empty' }))
       .min(6, formatMessage({ id: 'password-min-6' }))
       .max(15, formatMessage({ id: 'password-max-15' })),
-    fullName: Yup.string().required(formatMessage({ id: 'fullname-empty' })),
+
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
       .required(formatMessage({ id: 'phone-empty' })),
@@ -142,30 +144,34 @@ export default function LoginMobile() {
           <Formik
             initialValues={{
               password: '',
-
               phoneNumber: '',
             }}
             validationSchema={validationSchema}
-            onSubmit={async (
-              values,
-              { resetForm, setErrors, setSubmitting }
-            ) => {
+            onSubmit={async (values, { resetForm, setErrors }) => {
               setErrorOpen(false);
               try {
-                const res = await userLogin(values);
-                if (res === 'ok') {
+                const res = await userLoginMutation(values);
+                console.log(res);
+                if (res === true) {
                   resetForm();
                   history.goBack();
-                } else {
-                  setErrors({
-                    phoneNumber: formatMessage({ id: 'credentials-wrong' }),
-                    password: formatMessage({ id: 'credentials-wrong' }),
-                  });
-                  setSubmitting(false);
                 }
               } catch (error) {
+                if (error.response.data.message) {
+                  setErrors({
+                    phoneNumber: formatMessage({
+                      id: error.response.data.message,
+                    }),
+                    password: formatMessage({
+                      id: error.response.data.message,
+                    }),
+                  });
+                  return;
+                }
                 setErrorOpen(true);
-                setErrorMessage('Something went wrong, Please try again');
+                setErrorMessage(
+                  formatMessage({ id: 'something-went-wrong-snackbar' })
+                );
               }
             }}
           >
@@ -187,13 +193,23 @@ export default function LoginMobile() {
 
                   <div className="mt-1">
                     <button
+                      type="submit"
                       className={`${
                         isSubmitting
                           ? 'bg-main-color cursor-not-allowed'
                           : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
-                      } w-full rounded text-sm  p-3 font-semibold  transition duration-150 uppercase `}
+                      } w-full rounded  p-2 flex items-center justify-center font-semibold  transition duration-150 uppercase `}
                     >
-                      {isSubmitting && <BeatLoader size={10} />}
+                      {isSubmitting && (
+                        <Loader
+                          type="ThreeDots"
+                          color="#fff"
+                          secondaryColor="black"
+                          height={24}
+                          width={24}
+                          visible={isSubmitting}
+                        />
+                      )}
                       {!isSubmitting && formatMessage({ id: 'login-button' })}
                     </button>
                   </div>

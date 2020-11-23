@@ -1,39 +1,46 @@
 import React from 'react';
 import { queryCache, useMutation, useQuery } from 'react-query';
+import { checkAuth, userLogin, userRegister } from '../Queries/Queries';
 export const AuthProvider = React.createContext();
 export default function AuthContext({ children }) {
   /**
    * Authentication
    */
-  const checkAuthenticationStatus = () => {
-    const localAuthenticated = localStorage.getItem('localAuthenticated');
-    return new Promise(resolve => {
-      setTimeout(() => {
-        if (localAuthenticated === 'true') {
-          resolve({ isAuthenticated: true });
-        } else {
-          resolve({ isAuthenticated: false });
-        }
-      }, 2000);
-    });
-  };
+  // const checkAuthenticationStatus = () => {
+  //   const localAuthenticated = localStorage.getItem('localAuthenticated');
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       if (localAuthenticated === 'true') {
+  //         resolve({ isAuthenticated: true });
+  //       } else {
+  //         resolve({ isAuthenticated: false });
+  //       }
+  //     }, 2000);
+  //   });
+  // };
 
   const { data: isAuthenticated, isLoading: authenticationLoading } = useQuery(
     'authentication',
     async () => {
-      const { isAuthenticated } = await checkAuthenticationStatus();
+      const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+      const { isAuthenticated } = await checkAuth(mrgAuthToken);
       return isAuthenticated;
-    }
+    },
+    { retry: 0 }
   );
 
   /**
    * User Login
    */
-  const [userLogin] = useMutation(
+  const [userLoginMutation] = useMutation(
     async data => {
-      const res = await handleUserLogin(data);
-      if (res.message === 'ok') {
-        return res.message;
+      const res = await userLogin({
+        mobile: data.phoneNumber,
+        password: data.password,
+      });
+      if (res.status === true) {
+        localStorage.setItem('mrgAuthToken', res.data.access_token);
+        return res.status;
       }
     },
     {
@@ -42,17 +49,26 @@ export default function AuthContext({ children }) {
           return true;
         });
       },
+      throwOnError: true,
     }
   );
 
   /**
    * User Register
    */
-  const [userRegister] = useMutation(
+  const [userRegisterMutation] = useMutation(
     async data => {
-      const res = await handleUserRegister(data);
-      if (res.message === 'ok') {
-        return res.message;
+      console.log(data);
+      const res = await userRegister({
+        email: data.email,
+        password: data.password,
+        mobile: data.phoneNumber,
+        name: data.fullName,
+      });
+
+      if (res.status === true) {
+        localStorage.setItem('mrgAuthToken', res.data.access_token);
+        return res.status;
       }
     },
     {
@@ -61,6 +77,7 @@ export default function AuthContext({ children }) {
           return true;
         });
       },
+      throwOnError: true,
     }
   );
 
@@ -71,41 +88,41 @@ export default function AuthContext({ children }) {
     queryCache.setQueryData('authentication', () => {
       return false;
     });
-    localStorage.setItem('localAuthenticated', false);
+    localStorage.removeItem('mrgAuthToken');
   });
 
   /**
    *
    */
 
-  const handleUserRegister = data => {
-    return new Promise(resolve => {
-      localStorage.setItem('localAuthenticated', true);
-      setTimeout(() => {
-        resolve({
-          message: 'ok',
-        });
-      }, 1500);
-    });
-  };
-  const handleUserLogin = data => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        localStorage.setItem('localAuthenticated', true);
-        resolve({
-          message: 'ok',
-        });
-      }, 1500);
-    });
-  };
+  // const handleUserRegister = data => {
+  //   return new Promise(resolve => {
+  //     localStorage.setItem('localAuthenticated', true);
+  //     setTimeout(() => {
+  //       resolve({
+  //         message: 'ok',
+  //       });
+  //     }, 1500);
+  //   });
+  // };
+  // const handleUserLogin = data => {
+  //   return new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       localStorage.setItem('localAuthenticated', true);
+  //       resolve({
+  //         message: 'ok',
+  //       });
+  //     }, 1500);
+  //   });
+  // };
 
   return (
     <AuthProvider.Provider
       value={{
         isAuthenticated,
         authenticationLoading,
-        userRegister,
-        userLogin,
+        userRegisterMutation,
+        userLoginMutation,
         userLogout,
       }}
     >

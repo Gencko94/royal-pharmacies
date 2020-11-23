@@ -91,6 +91,7 @@ const baseStrings = {
   'back-to-home': 'Back to Homepage',
   oops: 'Oops !',
   'press-enter-to-search': 'Press Enter to search ',
+  'something-went-wrong-snackbar': 'Something went wrong, Please try again',
 
   //
   'home.title': 'Home',
@@ -121,10 +122,11 @@ const baseStrings = {
   'register-button': 'Create an account',
   'login-welcome-back': 'Welcome Back !',
   'register-on-mrg': 'Register on MRG ',
-  'credentials-wrong': 'Phone number or password are not correct',
+  'Invalid credentials': 'Phone number or password are not correct',
   'new-to-family': 'Are you new to the family ? ',
   'join-us-here': 'Join us here',
   'forgot-password': 'Forgot password ?',
+  'save-button': 'Save',
   'password-reset': 'Password Reset',
   'password-reset-send-button': 'Send Code',
   'already-have-an-account':
@@ -158,6 +160,7 @@ const baseStrings = {
   // stepper
   address: 'Address',
   'personal-information': 'Personal Information',
+  'edit-personal-information': 'Edit Personal information',
   'order-placed': 'Order Placed',
   // maps
   'find-my-position': 'Find my position',

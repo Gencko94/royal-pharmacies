@@ -2,10 +2,11 @@ import React from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
 import axios from 'axios';
-import { searchBarSearch } from '../../Queries/Queries';
 import Autosuggest from 'react-autosuggest';
 import theme from './theme.module.css';
-import { BeatLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+
 let cancelToken;
 export default function MobileSearchbar({ isLightTheme }) {
   const [searchBarValue, setSearchBarValue] = React.useState('');
@@ -24,7 +25,7 @@ export default function MobileSearchbar({ isLightTheme }) {
       </div>
     );
   };
-  const onSuggestionsFetchRequested = ({ value }) => {
+  const onSuggestionsFetchRequested = async ({ value }) => {
     if (cancelToken) {
       cancelToken.cancel();
     }
@@ -33,10 +34,21 @@ export default function MobileSearchbar({ isLightTheme }) {
     const inputLength = inputValue.length;
     if (inputLength < 2) return [];
     setLoading(true);
-    searchBarSearch(value, cancelToken).then(res => {
-      setData(res);
-      setLoading(false);
-    });
+    try {
+      const res = await axios({
+        method: 'GET',
+        url: `${process.env.REACT_APP_MAIN_URL}/search-products`,
+        params: { value: value, page: 1 },
+        cancelToken: cancelToken.token,
+      });
+      console.log(res.data.data.data);
+      if (res) {
+        setData(res.data.data.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      if (axios.isCancel(error)) return [];
+    }
   };
   const onSuggestionsClearRequested = () => {
     setData([]);
@@ -105,7 +117,13 @@ export default function MobileSearchbar({ isLightTheme }) {
         className="p-2 flex items-center justify-center"
         style={{ width: '15%' }}
       >
-        <BeatLoader loading={isLoading} size={8} color={'#b72b2b'} />
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={30}
+          width={30}
+          visible={isLoading}
+        />
       </div>
       {/* <form onSubmit={handleSearch} className="flex-1">
         <input

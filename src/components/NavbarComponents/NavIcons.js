@@ -5,12 +5,17 @@ import { Link } from 'react-router-dom';
 import { DataProvider } from '../../contexts/DataContext';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
-import { MoonLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+
 export default function NavIcons({ color = 'nav-secondary' }) {
   const { getCartAndWishListLength, isLightTheme } = React.useContext(
     DataProvider
   );
   const { formatMessage, locale } = useIntl();
+  /**
+   * Main Fetch
+   */
   const { data, isLoading } = useQuery(
     'cartAndWishListLength',
     async () => {
@@ -38,7 +43,9 @@ export default function NavIcons({ color = 'nav-secondary' }) {
               : 'bg-second-nav-dark text-second-nav-text-dark '
           }`}
         >
-          {isLoading && <MoonLoader size={11} color="#b72b2b" />}
+          {isLoading && (
+            <Loader type="TailSpin" color="#b72b2b" height={12} width={12} />
+          )}
           {!isLoading && data.cart}
         </span>
       </Link>
@@ -57,18 +64,12 @@ export default function NavIcons({ color = 'nav-secondary' }) {
               : 'bg-second-nav-dark text-second-nav-text-dark '
           }`}
         >
-          {isLoading && <MoonLoader size={11} color="#b72b2b" />}
+          {isLoading && (
+            <Loader type="TailSpin" color="#b72b2b" height={12} width={12} />
+          )}
           {!isLoading && data.wishlist}
         </span>
       </Link>
-
-      {/* <Link
-        to={`/${locale}/wishlist`}
-        className="p-1 flex items-center font-semibold  "
-      >
-        <h1 className=" text-sm ">{formatMessage({ id: 'nav.wishlist' })}</h1>
-        <AiOutlineHeart className="w-30p h-30p mx-1" />
-      </Link> */}
     </div>
   );
 }
