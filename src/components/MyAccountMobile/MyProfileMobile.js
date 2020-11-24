@@ -37,20 +37,20 @@ export default function MyProfileMobile() {
 
   const [editMutation] = useMutation(
     async data => {
-      console.log(data);
       return await editUserProfileInfo(data);
     },
     {
       onSuccess: data => {
-        console.log(data);
         queryCache.setQueryData('userProfile', prev => {
           return {
             ...prev,
-            ...data,
+            name: data.name,
+            email: data.email,
           };
         });
         setProfileEditModalOpen(false);
       },
+      throwOnError: true,
     }
   );
 

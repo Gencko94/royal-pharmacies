@@ -7,11 +7,11 @@ import Locations from './MyAddresses/Locations';
 import NoAddresses from './MyAddresses/NoAddresses';
 import { useQuery, useMutation, queryCache } from 'react-query';
 import { motion } from 'framer-motion';
+import { getUserAddresses } from '../../Queries/Queries';
 
 export default function MyAddresses() {
   const [showMap, setShowMap] = React.useState(false);
   const {
-    getUserLocations,
     handleAddLocation,
     handleRemoveLocation,
     isLightTheme,
@@ -21,8 +21,8 @@ export default function MyAddresses() {
   const { isLoading, data, refetch, isError } = useQuery(
     'addresses',
     async () => {
-      const res = await getUserLocations();
-      return res.locations;
+      const res = await getUserAddresses();
+      return res;
     },
     { refetchOnWindowFocus: false }
   );

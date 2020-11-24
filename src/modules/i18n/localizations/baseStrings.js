@@ -29,6 +29,7 @@ const baseStrings = {
   'full-name': 'Full Name',
   'phone-number': 'Phone Number',
   'date-of-birth': 'Date of Birth',
+  'date-joined': 'Date Joined',
   security: 'Security',
   'email-address': 'Email Address',
   password: 'Password',
@@ -170,6 +171,14 @@ const baseStrings = {
   'maps-detailed-address-apartment': 'House or Apartment Number',
   'maps-detailed-address-building': 'Building or Tower Number',
   'maps-detailed-address-phone': 'Phone Number',
+  'maps-details-extra-details': 'Additional Details',
+  'maps-detailed-address-apartment-placeholder':
+    'Enter House or Apartment Number..',
+  'maps-detailed-address-building-placeholder':
+    'Enter Building or Tower Number.. ',
+  'maps-detailed-address-phone-placeholder': 'Enter a Phone number..',
+  'maps-details-extra-details-placeholder': 'Enter Any additional details..',
+  'maps-details-optional': 'Optional',
   'apartment-empty': 'Please enter House or Apartment Number',
   'building-empty': 'Please enter Building or Tower Number',
   'phone-empty': 'Please Enter a phone number',

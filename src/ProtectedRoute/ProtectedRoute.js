@@ -4,7 +4,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-export default function ProtectedRoute({ children, ...args }) {
+export default function ProtectedRoute({ children, path, ...args }) {
   const { locale } = useIntl();
   const { isAuthenticated, authenticationLoading } = React.useContext(
     AuthProvider
@@ -12,7 +12,8 @@ export default function ProtectedRoute({ children, ...args }) {
   return (
     <Route
       {...args}
-      render={() => {
+      path={path}
+      render={({ location }) => {
         if (authenticationLoading)
           return (
             <div className="min-h-screen flex items-center justify-center">
@@ -28,7 +29,14 @@ export default function ProtectedRoute({ children, ...args }) {
         if (isAuthenticated === true) {
           return children;
         } else {
-          return <Redirect to={`/${locale}/app/login`} />;
+          return (
+            <Redirect
+              to={{
+                pathname: `/${locale}/app/login`,
+                state: { from: location },
+              }}
+            />
+          );
         }
       }}
     />

@@ -13,7 +13,7 @@ export default function SearchBar() {
   const [searchBarValue, setSearchBarValue] = React.useState('');
   const [data, setData] = React.useState([]);
   const [isLoading, setLoading] = React.useState(false);
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   //with controlling the arrows
   const getSuggestionValue = suggestion => {
@@ -23,7 +23,7 @@ export default function SearchBar() {
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div className={`p-2 ${isHighlighted && 'bg-gray-300 rounded'}`}>
-        {suggestion.translation[0].title}
+        {suggestion.translation[locale].title}
       </div>
     );
   };

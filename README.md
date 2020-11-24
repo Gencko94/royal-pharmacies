@@ -58,7 +58,11 @@
 
 - [ ] Complete Profile Modal Desktop (3hrs)
 
-**API BUGS** -[loginApi] when sending login request the "mobile" key is not validated, for example i can send a "mobil" key instead of "mobile" . . if possible please rename to phoneNumber. -[getUserApi] not returning an error code when sending without token.
+- [ ] login and register number and password validation (discuss)
+
+-[ ] discuss change user Info (phoneNumber and email)
+
+**API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 
 # MRG API Structure :
 
@@ -83,18 +87,18 @@ Feel free to Choose between one of the Two Variations :
 - The response Object should be somewhat similar to this :
 
 ```
-responseObject = {
- en: {
-  id: id,
-  url : String,
-  link: String
- },
-  ar: {
-  id: id,
-  url : String,
-  link: String
- }
-}
+requestObject = {
+              lat: Number | String,
+              lng: Number | String,
+              defaultLocation: Boolean,
+              addressDetails: {
+                markerAddress: String,
+                apartmentOrHouseNumber: Number | String,
+                buildingOrTowerNumber: Number | String,
+                phoneNumber: String,
+                additionalDetails: String, (Not Required)
+              },
+            }
 
 ```
 

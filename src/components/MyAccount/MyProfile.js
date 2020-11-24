@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileModal from '../Modals/ProfileModal';
+import ProfileEditModal from '../Modals/ProfileEditModal';
 import Select from 'react-select';
 import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
@@ -7,12 +7,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { editUserProfileInfo, getUserProfileInfo } from '../../Queries/Queries';
 export default function MyProfile() {
-  const {
-    isLightTheme,
-    getUserProfileInfo,
-    editUserProfileInfo,
-  } = React.useContext(DataProvider);
+  const { isLightTheme } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
   const languages = [
     { value: 'Arabic', label: 'Arabic' },
@@ -25,11 +22,11 @@ export default function MyProfile() {
    * Main Fetch
    */
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     'userProfile',
     async () => {
       const res = await getUserProfileInfo();
-      return res;
+      return res.userData;
     },
     { refetchOnWindowFocus: false }
   );
@@ -40,18 +37,21 @@ export default function MyProfile() {
 
   const [editMutation] = useMutation(
     async data => {
-      return await editUserProfileInfo();
+      const res = await editUserProfileInfo(data);
+      return res.userData;
     },
     {
       onSuccess: data => {
         queryCache.setQueryData('userProfile', prev => {
           return {
             ...prev,
-            data,
+            email: data.email,
+            name: data.name,
           };
         });
         setProfileEditModalOpen(false);
       },
+      throwOnError: true,
     }
   );
   const containerVariants = {
@@ -90,6 +90,24 @@ export default function MyProfile() {
       </motion.div>
     );
   }
+  if (isError) {
+    return (
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="relative"
+        style={{ height: 'calc(-90px + 100vh)' }}
+      >
+        <div className="flex h-full justify-center items-center">
+          <h1 className="text-lg font-semibold">
+            {formatMessage({ id: 'something-went-wrong-snackbar' })}
+          </h1>
+        </div>
+      </motion.div>
+    );
+  }
   return (
     <motion.div
       variants={containerVariants}
@@ -115,7 +133,7 @@ export default function MyProfile() {
           <div>
             <div className={` py-4 px-3 flex    `}>
               <h1 className="  w-2/4">{formatMessage({ id: 'full-name' })}</h1>
-              <h1 className="">{data.fullName}</h1>
+              <h1 className="">{data.name}</h1>
             </div>
             <hr />
           </div>
@@ -124,7 +142,7 @@ export default function MyProfile() {
               <h1 className="  w-2/4">
                 {formatMessage({ id: 'phone-number' })}
               </h1>
-              <h1 className="">{data.phoneNumber}</h1>
+              <h1 className="">{data.mobile}</h1>
             </div>
             <hr />
           </div>
@@ -134,6 +152,15 @@ export default function MyProfile() {
                 {formatMessage({ id: 'email-address' })}
               </h1>
               <h1 className="">{data.email}</h1>
+            </div>
+            <hr />
+          </div>
+          <div>
+            <div className={` py-4 px-3 flex    `}>
+              <h1 className="  w-2/4">
+                {formatMessage({ id: 'date-joined' })}
+              </h1>
+              <h1 className="">{data.created_at}</h1>
             </div>
             <hr />
           </div>
@@ -185,7 +212,13 @@ export default function MyProfile() {
       </div>
 
       <AnimatePresence>
-        {profileEditModalOpen && <ProfileModal editMutation={editMutation} />}
+        {profileEditModalOpen && (
+          <ProfileEditModal
+            editMutation={editMutation}
+            data={data}
+            setProfileEditModalOpen={setProfileEditModalOpen}
+          />
+        )}
       </AnimatePresence>
     </motion.div>
   );

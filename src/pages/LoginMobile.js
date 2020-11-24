@@ -1,6 +1,6 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import logo from '../assets/mrg.svg';
 import * as Yup from 'yup';
 import { useIntl } from 'react-intl';
@@ -110,6 +110,8 @@ export default function LoginMobile() {
   const closeError = () => {
     setErrorOpen(false);
   };
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: `/${locale}/` } };
   const history = useHistory();
   const validationSchema = Yup.object({
     password: Yup.string()
@@ -152,9 +154,8 @@ export default function LoginMobile() {
               try {
                 const res = await userLoginMutation(values);
                 console.log(res);
-                if (res === true) {
-                  resetForm();
-                  history.goBack();
+                if (res.isAuthenticated === true) {
+                  history.replace(from);
                 }
               } catch (error) {
                 if (error.response.data.message) {

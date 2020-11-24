@@ -54,11 +54,7 @@ export default function GoogleMapsAddress({ addMutation }) {
         )
         .then(res => {
           console.log(res.data);
-          setMarkerAddress(
-            `${res.data.results[0].address_components
-              .map(address => address.short_name)
-              .join(', ')}`
-          );
+          setMarkerAddress(`${res.data.results[0].formatted_address}`);
           setMarkerInfoWindowDetails(
             `${res.data.results[0].address_components
               .map(address => address.short_name)

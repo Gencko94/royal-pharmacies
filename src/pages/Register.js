@@ -1,6 +1,6 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import logo from '../assets/mrg.svg';
 import * as Yup from 'yup';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -30,7 +30,11 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
       >
         {label}
       </label>
-      <div className="flex rounded-lg border items-center relative  overflow-hidden ">
+      <div
+        className={`${
+          meta.error && 'border-main-color'
+        } flex rounded-lg border items-center relative  overflow-hidden `}
+      >
         <div
           ref={menuRef}
           onClick={() => setMenuOpen(!menuOpen)}
@@ -56,7 +60,7 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
           onBlur={e => {
             field.onBlur(e);
           }}
-          className={`${meta.error && 'border-main-color'} w-full  p-2`}
+          className={` w-full  p-2`}
         />
       </div>
       {meta.touched && meta.error ? (
@@ -87,7 +91,7 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
           field.onBlur(e);
         }}
         className={`${
-          meta.error && 'border-main-color'
+          meta.error && meta.touched && 'border-main-color'
         } w-full rounded-lg border  p-2`}
       />
       {meta.touched && meta.error ? (
@@ -106,6 +110,8 @@ export default function Register() {
   const { userRegisterMutation } = React.useContext(AuthProvider);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: `/${locale}/` } };
   const closeError = () => {
     setErrorOpen(false);
   };
@@ -163,15 +169,15 @@ export default function Register() {
                 setErrorOpen(false);
                 try {
                   const res = await userRegisterMutation(values);
-                  if (res === true) {
-                    actions.resetForm();
-                    history.goBack();
+                  if (res.isAuthenticated === true) {
+                    history.replace(from);
                   }
                 } catch (error) {
+                  console.log(error.response);
                   if (error.response.data.message) {
                     actions.setErrors({
                       email: error.response.data.message.email?.[0],
-                      phoneNumber: error.response.data.message.phone?.[0],
+                      phoneNumber: error.response.data.message.mobile?.[0],
                     });
                     return;
                   }

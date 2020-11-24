@@ -19,14 +19,30 @@ export default function AuthContext({ children }) {
   //   });
   // };
 
-  const { data: isAuthenticated, isLoading: authenticationLoading } = useQuery(
+  const {
+    data,
+    isLoading: authenticationLoading,
+    isError,
+    isFetching: authenticationFetching,
+  } = useQuery(
     'authentication',
     async () => {
       const mrgAuthToken = localStorage.getItem('mrgAuthToken');
-      const { isAuthenticated } = await checkAuth(mrgAuthToken);
-      return isAuthenticated;
+      const res = await checkAuth(mrgAuthToken);
+      return res;
     },
-    { retry: 0 }
+    {
+      retry: 0,
+      refetchOnWindowFocus: false,
+      onSuccess: data => {
+        queryCache.setQueryData('userProfile', prev => {
+          return {
+            ...prev,
+            ...data.userData,
+          };
+        });
+      },
+    }
   );
 
   /**
@@ -40,14 +56,18 @@ export default function AuthContext({ children }) {
       });
       if (res.status === true) {
         localStorage.setItem('mrgAuthToken', res.data.access_token);
-        return res.status;
+        return { isAuthenticated: true };
       }
     },
     {
       onSuccess: () => {
-        queryCache.setQueryData('authentication', () => {
-          return true;
+        queryCache.setQueryData('authentication', prev => {
+          return {
+            ...prev,
+            isAuthenticated: true,
+          };
         });
+        queryCache.invalidateQueries('authentication');
       },
       throwOnError: true,
     }
@@ -58,7 +78,6 @@ export default function AuthContext({ children }) {
    */
   const [userRegisterMutation] = useMutation(
     async data => {
-      console.log(data);
       const res = await userRegister({
         email: data.email,
         password: data.password,
@@ -68,14 +87,18 @@ export default function AuthContext({ children }) {
 
       if (res.status === true) {
         localStorage.setItem('mrgAuthToken', res.data.access_token);
-        return res.status;
+        return { isAuthenticated: true };
       }
     },
     {
       onSuccess: () => {
-        queryCache.setQueryData('authentication', () => {
-          return true;
+        queryCache.setQueryData('authentication', prev => {
+          return {
+            ...prev,
+            isAuthenticated: true,
+          };
         });
+        queryCache.invalidateQueries('authentication');
       },
       throwOnError: true,
     }
@@ -84,9 +107,9 @@ export default function AuthContext({ children }) {
   /**
    * User Logout
    */
-  const [userLogout] = useMutation(() => {
+  const [userLogoutMutation] = useMutation(() => {
     queryCache.setQueryData('authentication', () => {
-      return false;
+      return { isAuthenticated: false };
     });
     localStorage.removeItem('mrgAuthToken');
   });
@@ -119,11 +142,13 @@ export default function AuthContext({ children }) {
   return (
     <AuthProvider.Provider
       value={{
-        isAuthenticated,
+        isAuthenticated: isError ? false : data?.isAuthenticated,
+        authenticationFetching,
         authenticationLoading,
         userRegisterMutation,
         userLoginMutation,
-        userLogout,
+        userLogoutMutation,
+        userData: data?.userData,
       }}
     >
       {children}

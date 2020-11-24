@@ -6,9 +6,10 @@ import ContentLoader from 'react-content-loader';
 import { useQuery } from 'react-query';
 import { getMainCarouselItems } from '../../Queries/Queries';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useIntl } from 'react-intl';
 const MainCarousel = () => {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 668px)' });
-
+  const { locale } = useIntl();
   const { data, isLoading } = useQuery(
     ['mainCarousel', isTabletOrAbove],
     getMainCarouselItems,
@@ -87,7 +88,7 @@ const MainCarousel = () => {
                 className="px-0 md:px-1"
               >
                 <LazyLoadImage
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.translation[0].image.link}`}
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.translation[locale].image.link}`}
                   alt="something"
                   effect="blur"
                   className=" md:rounded w-full h-full "

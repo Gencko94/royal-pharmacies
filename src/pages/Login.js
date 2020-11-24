@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import logo from '../assets/mrg.svg';
 import { Formik, useField } from 'formik';
 import * as Yup from 'yup';
@@ -91,7 +91,7 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
           field.onBlur(e);
         }}
         className={`${
-          meta.error && 'border-main-color'
+          meta.error && meta.touched && 'border-main-color'
         } w-full rounded-lg border  p-2`}
       />
       {meta.touched && meta.error ? (
@@ -110,6 +110,8 @@ export default function Login() {
   const { userLoginMutation } = React.useContext(AuthProvider);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: `/${locale}/` } };
   const closeError = () => {
     setErrorOpen(false);
   };
@@ -160,10 +162,11 @@ export default function Login() {
                 setErrorOpen(false);
                 try {
                   const res = await userLoginMutation(values);
-                  if (res === true) {
-                    history.goBack();
+                  if (res.isAuthenticated === true) {
+                    history.replace(from);
                   }
                 } catch (error) {
+                  console.log(error.response);
                   if (error.response.data.message) {
                     actions.setErrors({
                       phoneNumber: formatMessage({

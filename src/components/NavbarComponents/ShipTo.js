@@ -17,7 +17,6 @@ export default function ShipTo() {
   const countryListRef = React.useRef(null);
   useClickAway(countryListRef, () => {
     if (countryListOpen) {
-      countryListRef.current.classList.replace('scale-100', 'scale-0');
       setCountryListOpen(false);
     }
   });

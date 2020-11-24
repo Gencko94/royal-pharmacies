@@ -1,6 +1,6 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import logo from '../assets/mrg.svg';
 import * as Yup from 'yup';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -109,6 +109,8 @@ export default function RegisterMobile() {
   const { userRegisterMutation } = React.useContext(AuthProvider);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: `/${locale}/` } };
   const closeError = () => {
     setErrorOpen(false);
   };
@@ -158,15 +160,14 @@ export default function RegisterMobile() {
               setErrorOpen(false);
               try {
                 const res = await userRegisterMutation(values);
-                if (res === true) {
-                  resetForm();
-                  history.goBack();
+                if (res.isAuthenticated === true) {
+                  history.replace(from);
                 }
               } catch (error) {
                 if (error.response.data.message) {
                   setErrors({
                     email: error.response.data.message.email?.[0],
-                    phoneNumber: error.response.data.message.phone?.[0],
+                    phoneNumber: error.response.data.message.mobile?.[0],
                   });
                   return;
                 }
