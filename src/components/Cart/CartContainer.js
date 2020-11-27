@@ -6,8 +6,8 @@ import CartItem from './CartItem';
 import CartContainerLoader from './loaders/CartContainerLoader';
 
 export default function CartContainer({
-  isLoading,
-  data,
+  cartItemsLoading,
+  cartItems,
   removefromCartButtonLoading,
   handleRemoveItemFromCart,
   handleAddItemToWishlist,
@@ -15,29 +15,29 @@ export default function CartContainer({
   addToWishListButtonLoading,
 }) {
   const resolvePlural = () => {
-    switch (data.cartItems.length) {
+    switch (cartItems.length) {
       case 1:
         return formatMessage({ id: 'one-item' });
 
       case 2:
         return formatMessage({ id: 'two-items' });
 
-      case data.cartItems.length > 10:
+      case cartItems.length > 10:
         return formatMessage({ id: 'one-items' });
       default:
         return formatMessage({ id: 'multiple-items' });
     }
   };
   const { formatMessage, locale } = useIntl();
-  if (isLoading) {
+  if (cartItemsLoading) {
     return <CartContainerLoader locale={locale} />;
   }
   return (
     <div className="">
       <AnimatePresence>
-        {data.cartItems.length === 0 && <CartEmpty />}
+        {cartItems.length === 0 && <CartEmpty />}
       </AnimatePresence>
-      {data.cartItems.length !== 0 && (
+      {cartItems.length !== 0 && (
         <>
           <div className="cart-grid-titles font-semibold text-lg">
             <div></div>
@@ -53,7 +53,7 @@ export default function CartContainer({
               className=" grid grid-cols-1 gap-2"
             >
               <AnimatePresence>
-                {data.cartItems.map(item => {
+                {cartItems.map(item => {
                   return (
                     <CartItem
                       key={item.id}
@@ -79,11 +79,11 @@ export default function CartContainer({
               <h1 className="mx-1 whitespace-no-wrap ">
                 (
                 {locale === 'ar'
-                  ? data.cartItems.length > 2 && data.cartItems.length
-                  : `${data.cartItems.length} `}
+                  ? cartItems.length > 2 && cartItems.length
+                  : `${cartItems.length} `}
                 {resolvePlural()})
               </h1>
-              <h1>{data.cartTotal}</h1> KD
+              <h1>bla</h1> KD
             </motion.div>
             <motion.div layout className="text-sm my-4">
               <h1>{formatMessage({ id: 'cart-tos' })}</h1>

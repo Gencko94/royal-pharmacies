@@ -8,6 +8,7 @@ import DataContextProvider from './contexts/DataContext';
 
 import SearchContext from './contexts/SearchContext';
 import AuthContext from './contexts/AuthContext';
+import CartAndWishlistContext from './contexts/CartAndWishlistContext';
 
 const localCart = localStorage.getItem('cartItems');
 if (!localCart) {
@@ -37,11 +38,13 @@ if (!myLocalLocations) {
 ReactDOM.render(
   <AuthContext>
     <DataContextProvider>
-      <SearchContext>
-        <div className={` antialiased relative`}>
-          <App />
-        </div>
-      </SearchContext>
+      <CartAndWishlistContext>
+        <SearchContext>
+          <div className={` antialiased relative`}>
+            <App />
+          </div>
+        </SearchContext>
+      </CartAndWishlistContext>
     </DataContextProvider>
   </AuthContext>,
 

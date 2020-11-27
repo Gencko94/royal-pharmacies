@@ -7,7 +7,7 @@ import 'react-medium-image-zoom/dist/styles.css';
 
 // import { useMediaQuery } from 'react-responsive';
 import { useIntl } from 'react-intl';
-export default function ImageZoom({ data: { name, images } }) {
+export default function ImageZoom({ data, selectedVariation }) {
   const sliderRef = React.useRef();
 
   const { locale } = useIntl();
@@ -22,7 +22,6 @@ export default function ImageZoom({ data: { name, images } }) {
     sliderRef.current.slickGoTo(i);
     setCurrentSlide(i);
   }, []);
-
   return (
     <div className="sticky" style={{ alignSelf: 'self-start', top: '130px' }}>
       <Slider
@@ -30,36 +29,61 @@ export default function ImageZoom({ data: { name, images } }) {
         {...mainSettings}
         className={`${locale === 'ar' ? 'mr-16' : 'ml-16'}`}
       >
-        {images.map((photo, i) => {
-          return (
-            <div key={i}>
-              <Zoom>
-                <img src={photo} alt={name} />
-              </Zoom>
-            </div>
-          );
-        })}
+        {data.type === 'simple' ? (
+          [data.image, ...data.gallery].map(item => {
+            return (
+              <div key={item.id}>
+                <Zoom>
+                  <img
+                    src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.link}`}
+                    alt={data.name}
+                  />
+                </Zoom>
+              </div>
+            );
+          })
+        ) : (
+          <div>
+            <Zoom>
+              <img
+                src={`${process.env.REACT_APP_IMAGES_URL}/original/${data.variation_addons[selectedVariation].image.link}`}
+                alt={data.name}
+              />
+            </Zoom>
+          </div>
+        )}
       </Slider>
       <div
         className={`absolute top-0  grid grid-cols-1 gap-2 ${
           locale === 'ar' ? 'right-0' : 'left-0'
         }`}
       >
-        {images.map((photo, i) => {
-          return (
-            <div key={i}>
+        {data.type === 'simple' ? (
+          [data.image, ...data.gallery].map((item, i) => {
+            return (
+              <div key={item.id}>
+                <img
+                  onClick={() => handleChangeSlide(i)}
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.link}`}
+                  alt={item.id}
+                  className={`${
+                    currentSlide === i ? 'border border-red-700' : ''
+                  }`}
+                  style={{ width: '50px', height: '50px' }}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div>
+            <Zoom>
               <img
-                onClick={() => handleChangeSlide(i)}
-                src={photo}
-                alt={name}
-                className={`${
-                  currentSlide === i ? 'border border-red-700' : ''
-                }`}
-                style={{ width: '50px', height: '50px' }}
+                src={`${process.env.REACT_APP_IMAGES_URL}/small/${data.variation_addons[selectedVariation].image.link}`}
+                alt={data.name}
               />
-            </div>
-          );
-        })}
+            </Zoom>
+          </div>
+        )}
       </div>
     </div>
   );

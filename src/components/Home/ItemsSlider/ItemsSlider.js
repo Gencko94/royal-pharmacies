@@ -30,7 +30,7 @@ const LeftArrow = ({ onClick }) => {
   );
 };
 
-export default function ItemsSlider({ title, isLightTheme, type }) {
+export default function ItemsSlider({ title, type }) {
   const settings = {
     className: '',
     arrows: true,
@@ -221,7 +221,6 @@ export default function ItemsSlider({ title, isLightTheme, type }) {
                 loadingButton={loadingButton}
                 isItemInCart={isItemInCart}
                 data={item}
-                isLightTheme={isLightTheme}
                 activeBuyOptions={activeBuyOptions}
                 setQuantity={setQuantity}
                 handleBuyOptionsToggle={handleBuyOptionsToggle}

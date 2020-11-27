@@ -7,10 +7,10 @@ import NoAddresses from '../MyAccount/MyAddresses/NoAddresses';
 import GoogleMapsAddress from '../GoogleMapsAddress';
 import LocationsMobile from './MyAddressesMobile/LocationsMobile';
 import { motion } from 'framer-motion';
+import { getUserAddresses } from '../../Queries/Queries';
 export default function MyAddressesMobile() {
   const [showMap, setShowMap] = React.useState(false);
   const {
-    getUserLocations,
     handleAddLocation,
     handleRemoveLocation,
     isLightTheme,
@@ -18,8 +18,8 @@ export default function MyAddressesMobile() {
   const { isLoading, data, refetch, isError } = useQuery(
     'addresses',
     async () => {
-      const res = await getUserLocations();
-      return res.locations;
+      const res = await getUserAddresses();
+      return res;
     },
     { refetchOnWindowFocus: false }
   );
@@ -65,28 +65,31 @@ export default function MyAddressesMobile() {
   );
   if (isError) {
     return (
-      <div div className=" p-4 " style={{ height: 'calc(-173px + 100vh)' }}>
-        <div className="flex h-full justify-center items-center font-semibold">
-          <h1>Oops, Something Went Wrong</h1>
-          <button className="bg-gray-300 rounded px-2 py-1" onClick={refetch}>
-            Try Again
-          </button>
-        </div>
+      <div
+        div
+        className=" p-4 flex items-center justify-center font-semibold"
+        style={{ minHeight: 'calc(-173px + 100vh)' }}
+      >
+        <h1>Oops, Something Went Wrong</h1>
+        <button className="bg-gray-300 rounded px-2 py-1" onClick={refetch}>
+          Try Again
+        </button>
       </div>
     );
   }
   if (isLoading)
     return (
-      <div className=" p-4 " style={{ height: 'calc(-173px + 100vh)' }}>
-        <div className="flex h-full justify-center items-center">
-          <Loader
-            type="ThreeDots"
-            color="#b72b2b"
-            height={40}
-            width={40}
-            visible={isLoading}
-          />
-        </div>
+      <div
+        className=" p-4 flex justify-center items-center "
+        style={{ minHeight: 'calc(-173px + 100vh)' }}
+      >
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={40}
+          width={40}
+          visible={isLoading}
+        />
       </div>
     );
   const containerVariants = {

@@ -10,107 +10,115 @@ import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
 import MainContentLoader from '../components/CartMobile/ContentLoaders/MainContentLoader';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
+import { getCartItems, removeFromCart } from '../Queries/Queries';
+import CheckoutPopupMobile from '../components/CartMobile/CheckoutPopupMobile';
+import { AuthProvider } from '../contexts/AuthContext';
+import { useHistory } from 'react-router-dom';
+import MobileCheckoutSection from '../components/CartMobile/MobileCheckoutSection';
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 
 export default function CartMobile() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
+  const [
+    removefromCartButtonLoading,
+    setRemoveFromCartButtonLoading,
+  ] = React.useState(null);
+  const [
+    addToWishListButtonLoading,
+    setAddToWishListButtonLoading,
+  ] = React.useState(null);
+  const { isAuthenticated, userId } = React.useContext(AuthProvider);
+  const [checkoutPopupOpen, setCheckOutPopupOpen] = React.useState(false);
   const {
-    removeItemFromCart,
-
-    isLightTheme,
-    getCartItems,
-  } = React.useContext(DataProvider);
-
+    cartItems,
+    cartItemsLoading,
+    isGetCartError,
+    getCartError,
+    removeFromCartMutation,
+  } = React.useContext(CartAndWishlistProvider);
+  const history = useHistory();
   /**
    * Main Fetch
    */
-  const { data, isLoading, refetch } = useQuery('cartItems', async () => {
-    const res = await getCartItems();
-    return res;
-  });
 
   /**
    * Remove Mutation
    */
-  const [removeMutation] = useMutation(
-    async id => {
-      setRemoveButtonLoading(id);
-      const res = await removeItemFromCart(id);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-          };
-        });
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            cart: data.cartItems.length,
-          };
-        });
-        queryCache.setQueryData('wishListItems', prev => {
-          return {
-            ...prev,
-            wishListItems: data.wishListItems,
-          };
-        });
-        setRemoveButtonLoading(null);
-        refetch();
-      },
-    }
-  );
 
-  const [removeButtonLoading, setRemoveButtonLoading] = React.useState(null);
-
-  // const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-  const handleRemoveItem = async id => {
+  const handleRemoveItemFromCart = async (id, cart_id) => {
     try {
-      await removeMutation(id);
+      await removeFromCartMutation(id, userId, cart_id);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const handleCheckout = () => {
+    if (!isAuthenticated) {
+      setCheckOutPopupOpen(true);
+    } else {
+      history.push(`/${locale}/checkout`);
+    }
+  };
+  if (isGetCartError) {
+    return (
+      <LayoutMobile>
+        <div
+          className="py-1 mx-2 flex items-center justify-center"
+          style={{ minHeight: 'calc(-80px + 100vh)' }}
+        >
+          <h1>{formatMessage({ id: 'something-went-wrong-snackbar' })}</h1>
+        </div>
+      </LayoutMobile>
+    );
+  }
   return (
     <LayoutMobile>
-      <div className=" py-1 px-2">
-        {!isLoading && data.cartItems.length !== 0 && (
-          <CheckoutButton data={data.cartItems} cartTotal={data.cartTotal} />
-        )}
-        {isLoading && <MainContentLoader />}
-        {!isLoading && data.cartItems.length === 0 && <CartEmptyMobile />}
-
-        {!isLoading && data.cartItems.length !== 0 && (
+      <div className=" py-1 px-2 relative">
+        <AnimatePresence>
+          {checkoutPopupOpen && (
+            <CheckoutPopupMobile setCheckOutPopupOpen={setCheckOutPopupOpen} />
+          )}
+        </AnimatePresence>
+        {/* {!isLoading && data.length !== 0 && (
+          <CheckoutButton
+            data={data}
+            cartTotal="50"
+            handleCheckout={handleCheckout}
+          />
+        )} */}
+        {!cartItemsLoading && cartItems.length === 0 && <CartEmptyMobile />}
+        <MobileCheckoutSection
+          cartItemsLoading={cartItemsLoading}
+          cartItems={cartItems}
+          handleCheckout={handleCheckout}
+        />
+        {cartItemsLoading && <MainContentLoader />}
+        {!cartItemsLoading && cartItems.length !== 0 && (
           <AnimateSharedLayout>
             <motion.div initial={false} layout className="mb-2">
               <AnimatePresence>
-                {data.cartItems.map(item => (
+                {cartItems.map(item => (
                   <CartItemMobile
                     key={item.id}
                     item={item}
-                    handleRemoveItem={handleRemoveItem}
-                    removeButtonLoading={removeButtonLoading}
+                    handleRemoveItemFromCart={handleRemoveItemFromCart}
+                    removefromCartButtonLoading={removefromCartButtonLoading}
                   />
                 ))}
               </AnimatePresence>
             </motion.div>
+            <motion.h1 layout className="text-xs my-2 px-2">
+              {formatMessage({ id: 'cart-tos' })}
+            </motion.h1>
+            <motion.hr layout />
           </AnimateSharedLayout>
         )}
 
-        <h1 className="text-xs my-2 px-2">
-          {formatMessage({ id: 'cart-tos' })}
-        </h1>
-        <hr />
         {/* <RecentlyVisitedHorizontal visitedItems={visitedItems} /> */}
 
         <ItemsSlider
           type="phone"
           miniLogo={false}
-          isLightTheme={isLightTheme}
           title="Save Big with Phones & Tablets"
         />
       </div>

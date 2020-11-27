@@ -3,28 +3,25 @@ import { AiFillStar, AiOutlineHeart, AiOutlineStar } from 'react-icons/ai';
 import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
 import Rating from 'react-rating';
-import MoonLoader from 'react-spinners/MoonLoader';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Colors from '../SingleProduct/Colors';
 import Sizes from '../SingleProduct/Sizes';
 import { scrollIntoView } from 'scroll-js';
 export default function ItemDescription({
-  data: {
-    name,
-    priceBefore,
-    price,
-    id,
-    colors,
-    availableColors,
-    sizes,
-    availableSizes,
-  },
+  data,
   deliveryCountry,
   handleRemoveFromCart,
   handleAddToCart,
   itemInCart,
+  itemInWishList,
   quantity,
   setQuantity,
   addToCartButtonLoading,
+  addToWishListButtonLoading,
+  handleAddToWishList,
+  handleRemoveFromWishList,
+  isAuthenticated,
   size,
   setSize,
   color,
@@ -33,7 +30,8 @@ export default function ItemDescription({
   setDetailsTab,
   rating,
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
+  const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const resolvePlural = () => {
     switch (reviews.length) {
       case 1:
@@ -49,18 +47,34 @@ export default function ItemDescription({
         return formatMessage({ id: 'reviews' });
     }
   };
+  const addToWishList = () => {
+    if (!isAuthenticated) {
+      setSnackBarOpen(true);
+      setTimeout(() => {
+        setSnackBarOpen(false);
+      }, 5000);
+      return;
+    }
+    if (itemInWishList) {
+      handleRemoveFromWishList(data.id);
+    } else {
+      handleAddToWishList();
+    }
+  };
   return (
     <div className="mb-3">
-      <h1 className="font-semibold text-xl">{name}</h1>
+      <h1 className="font-semibold text-xl">
+        {data.translation[locale].title}
+      </h1>
       <div className="flex items-center ">
         <Rating
-          initialRating={rating}
+          initialRating={4.5}
           emptySymbol={<AiOutlineStar className="text-red-700" />}
           fullSymbol={<AiFillStar className="text-red-700" />}
           className="pt-1"
         />
 
-        <div
+        {/* <div
           onClick={() => {
             scrollIntoView(document.getElementById('details'));
             setDetailsTab(1);
@@ -71,28 +85,37 @@ export default function ItemDescription({
             <h1>{reviews.length > 2 && reviews.length}</h1>
             <h1 className="mx-1">{resolvePlural()}</h1>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <h1 className=" font-semibold mb-1 text-green-600">
         {formatMessage({ id: 'in-stock' })}
       </h1>
       <h1 className="text-sm   mb-1 text-gray-700">
-        {formatMessage({ id: 'model-number' })} : NK2O-4952
+        {formatMessage({ id: 'model-number' })} : {data.simple_addons.sku}
       </h1>
 
       <hr />
       <div className=" mb-1 text-sm  font-bold">
+        {data.simple_addons.promotion_price && (
+          <div className="flex flex-wrap items-center">
+            <h1 className=" ">{formatMessage({ id: 'price-before' })} :</h1>
+            <h1 className=" text-base italic mx-2  line-through text-gray-700">
+              {data.simple_addons.promotion_price} KD
+            </h1>
+          </div>
+        )}
         <div className="flex flex-wrap items-center">
-          <h1 className=" ">{formatMessage({ id: 'price-before' })} :</h1>
-          <h1 className=" text-base italic mx-2  line-through text-gray-700">
-            {priceBefore} KD
+          <h1 className="">
+            {data.simple_addons.promotion_price
+              ? formatMessage({ id: 'price-now' })
+              : formatMessage({ id: 'price' })}{' '}
+            :
           </h1>
-        </div>
-        <div className="flex flex-wrap items-center">
-          <h1 className="">{formatMessage({ id: 'price-now' })} :</h1>
-          <h1 className=" text-xl mx-2 text-red-700">{price} KD</h1>
-          <h1 className=" font-normal  text-gray-700">
+          <h1 className=" text-xl mx-2 text-red-700">
+            {data.simple_addons.price} KD
+          </h1>
+          <h1 className=" font-normal  text-gray-700 uppercase">
             ({formatMessage({ id: 'vat-inclusive' })})
           </h1>
         </div>
@@ -122,7 +145,7 @@ export default function ItemDescription({
           <option>3</option>
         </select>
       </div>
-      {sizes && (
+      {/* {sizes && (
         <>
           <Sizes
             size={size}
@@ -143,16 +166,10 @@ export default function ItemDescription({
           />
           <hr className="my-2" />
         </>
-      )}
+      )} */}
       <div className="relative flex items-center justify-between">
         <button
-          onClick={() => {
-            if (itemInCart) {
-              handleRemoveFromCart(id);
-            } else {
-              handleAddToCart({ id, quantity });
-            }
-          }}
+          onClick={itemInCart ? handleRemoveFromCart : handleAddToCart}
           className={`${
             addToCartButtonLoading
               ? 'bg-gray-300'
@@ -162,7 +179,13 @@ export default function ItemDescription({
           } flex-1 text-gray-100 text-sm py-2 px-2 rounded uppercase  flex items-center justify-center font-semibold`}
         >
           {addToCartButtonLoading ? (
-            <MoonLoader size={19} color="#b72b2b" />
+            <Loader
+              type="ThreeDots"
+              color="#b72b2b"
+              height={20}
+              width={20}
+              visible={addToCartButtonLoading}
+            />
           ) : itemInCart ? (
             <>
               <span>
@@ -181,14 +204,50 @@ export default function ItemDescription({
             </>
           )}
         </button>
-        <button className="border border-main-color mx-2 py-2 px-2 rounded flex-1 text-sm  text-main-color flex items-center justify-center font-semibold ">
+        <button
+          onClick={addToWishList}
+          className={`${
+            addToWishListButtonLoading
+              ? 'bg-gray-300'
+              : ' border border-main-color text-main-color'
+          } flex-1 text-sm py-2 px-2 rounded uppercase  flex items-center justify-center font-semibold`}
+        >
+          {addToWishListButtonLoading ? (
+            <Loader
+              type="ThreeDots"
+              color="#b72b2b"
+              height={20}
+              width={20}
+              visible={addToCartButtonLoading}
+            />
+          ) : itemInWishList ? (
+            <>
+              <span>
+                <AiOutlineHeart className="w-25p h-25p " />
+              </span>
+              <h1 className="mx-2 whitespace-no-wrap">
+                {formatMessage({ id: 'remove-from-wishlist' })}
+              </h1>
+            </>
+          ) : (
+            <>
+              <span>
+                <AiOutlineHeart className="w-25p h-25p" />
+              </span>
+              <h1 className="mx-2">
+                {formatMessage({ id: 'add-to-wishlist' })}
+              </h1>
+            </>
+          )}
+        </button>
+        {/* <button className="border border-main-color mx-2 py-2 px-2 rounded flex-1 text-sm  text-main-color flex items-center justify-center font-semibold ">
           <span>
             <AiOutlineHeart className="w-25p h-25p" />
           </span>
           <h1 className="mx-2 whitespace-no-wrap">
             {formatMessage({ id: 'add-to-wishlist' })}
           </h1>
-        </button>
+        </button> */}
       </div>
     </div>
   );

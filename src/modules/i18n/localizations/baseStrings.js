@@ -149,13 +149,14 @@ const baseStrings = {
     'The price and availability of items at mrg.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
   subtotal: 'Subtotal',
   'cart-total': 'Cart Total',
-  'cart-enter-code-or-coupon': 'Enter Code or Coupon here',
+  'cart-enter-code-or-coupon': 'Enter Code or Coupon',
   'cart-code-button': 'Enter',
   'cart-empty': 'Oops, Your cart is Empty !',
   'cart-delivery-cost': 'Delivery Cost',
   'cart-free': 'Free',
   'check-today-deals': 'Check today deals',
   'shopping-cart': 'Shopping cart',
+  'wishlist-empty': 'Your Wishlist is Empty !',
   single: '1',
   // guest check out
   // stepper
@@ -187,7 +188,7 @@ const baseStrings = {
   // checkout modal
   'not-signed-in': 'You are not signed in',
   'you-can': 'you can',
-  'fly-checkout': 'Checkout on the fly',
+  'guest-checkout': 'Checkout as guest',
   'checkout-modal-tos':
     'Having an account at mrg.com help us make a better user experience for you and other customers.',
   'confirm-location': 'Confirm Location',

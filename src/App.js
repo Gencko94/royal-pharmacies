@@ -14,12 +14,10 @@ import { appLanguages } from './modules/const';
 import Loading from './helpers/Loading';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import Test from './pages/test';
-import NotFound from './pages/NotFound';
-import NotFoundMobile from './pages/NotFoundMobile';
-import Wishlist from './pages/Wishlist';
 import RegisterMobile from './pages/RegisterMobile';
 import LoginMobile from './pages/LoginMobile';
 import PasswordReset from './pages/PasswordReset';
+import { ReactQueryDevtools } from 'react-query-devtools';
 // import Loadable from 'react-loadable';
 
 // const Home = Loadable({
@@ -92,6 +90,12 @@ const CartMobile = React.lazy(() => import('./pages/CartMobile'));
 const Category = React.lazy(() => import('./pages/Category'));
 const ViewedItems = React.lazy(() => import('./pages/ViewedItems'));
 const ViewedItemsMobile = React.lazy(() => import('./pages/ViewedItemsMobile'));
+const Wishlist = React.lazy(() => import('./pages/Wishlist'));
+const WishlistMobile = React.lazy(() => import('./pages/WishlistMobile'));
+const Checkout = React.lazy(() => import('./pages/Checkout'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
+const NotFoundMobile = React.lazy(() => import('./pages/NotFoundMobile'));
+
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
@@ -128,12 +132,15 @@ function App() {
           <Route exact path="/app/password-reset" component={PasswordReset} />
           <Route exact path="/" component={Home} />
 
-          <ProtectedRoute path="/user/account">
-            {isTabletOrAbove ? <MyAccount /> : <MyAccountMobile />}
-          </ProtectedRoute>
-          <ProtectedRoute path="/wishlist">
-            {isTabletOrAbove ? <Wishlist /> : <MyAccountMobile />}
-          </ProtectedRoute>
+          <ProtectedRoute
+            path="/user/account"
+            Component={isTabletOrAbove ? MyAccount : MyAccountMobile}
+          />
+
+          <ProtectedRoute
+            path="/wishlist"
+            Component={isTabletOrAbove ? Wishlist : WishlistMobile}
+          />
 
           <Route
             path="/cart"
@@ -159,7 +166,7 @@ function App() {
           />
 
           <Route
-            path="/search/q=:query"
+            path="/categories/:category"
             render={props => {
               if (isTabletOrAbove) {
                 return <Category {...props} />;
@@ -170,7 +177,7 @@ function App() {
           />
 
           <Route
-            path="/checkout/quickcheckout"
+            path="/checkout/guest-checkout"
             render={props => {
               if (isTabletOrAbove) {
                 return <GuestCheckOut {...props} />;
@@ -179,10 +186,14 @@ function App() {
               }
             }}
           />
+          <ProtectedRoute
+            path="/checkout"
+            Component={isTabletOrAbove ? Checkout : MyAccountMobile}
+          />
           <Route path="/test" component={Test} />
           <Route
             exact
-            path="/:category/:name/:id"
+            path="/:category/:id"
             render={props => {
               if (isTabletOrAbove) {
                 return <SingleProduct {...props} />;
@@ -201,6 +212,7 @@ function App() {
             }}
           />
         </LocalizedSwitch>
+        <ReactQueryDevtools initialIsOpen={false} />
       </LocalizedRouter>
     </Suspense>
   );

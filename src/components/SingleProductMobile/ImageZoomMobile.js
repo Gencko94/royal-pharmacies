@@ -24,11 +24,14 @@ export default function ImageZoomMobile({ data: { images, name } }) {
         {...mainSettings}
         className={`mb-2`}
       >
-        {images.map((photo, i) => {
+        {images.map(photo => {
           return (
-            <div key={i}>
+            <div key={photo.id}>
               <Zoom>
-                <img src={photo} alt={name} />
+                <img
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${photo.link}`}
+                  alt={name}
+                />
               </Zoom>
             </div>
           );
@@ -37,10 +40,10 @@ export default function ImageZoomMobile({ data: { images, name } }) {
       <div className={`flex justify-evenly items-center overflow-x-auto `}>
         {images.map((photo, i) => {
           return (
-            <div key={i} className="">
+            <div key={photo.id} className="">
               <img
                 onClick={() => handleChangeSlide(i)}
-                src={photo}
+                src={`${process.env.REACT_APP_IMAGES_URL}/original/${photo.link}`}
                 alt={name}
                 className={`${
                   currentSlide === i ? 'border border-red-700' : ''

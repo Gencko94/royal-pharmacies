@@ -3,10 +3,12 @@ import { AiOutlineHeart } from 'react-icons/ai';
 import { AiOutlineLock } from 'react-icons/ai';
 import { TiShoppingCart } from 'react-icons/ti';
 import { MdLocationOn } from 'react-icons/md';
-import MoonLoader from 'react-spinners/MoonLoader';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Select from 'react-select';
 import { DataProvider } from '../../contexts/DataContext';
 import { useIntl } from 'react-intl';
+import { AnimatePresence, motion } from 'framer-motion';
 export default function RightSection({
   data,
   handleAddToCart,
@@ -20,10 +22,25 @@ export default function RightSection({
   handleRemoveFromWishList,
   itemInWishList,
   itemInCart,
+  isAuthenticated,
 }) {
   const { formatMessage } = useIntl();
+  const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const { deliveryCountry } = React.useContext(DataProvider);
-
+  const addToWishList = () => {
+    if (!isAuthenticated) {
+      setSnackBarOpen(true);
+      setTimeout(() => {
+        setSnackBarOpen(false);
+      }, 5000);
+      return;
+    }
+    if (itemInWishList) {
+      handleRemoveFromWishList(data.id);
+    } else {
+      handleAddToWishList();
+    }
+  };
   return (
     <div
       className="border  p-2 rounded shadow-sm self-start sticky  "
@@ -90,7 +107,7 @@ export default function RightSection({
         </h1>
         <AiOutlineLock className="h-5 w-5 mx-1 " />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col relative">
         <button
           onClick={() => {
             if (itemInCart) {
@@ -108,7 +125,13 @@ export default function RightSection({
           } flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToCartButtonLoading ? (
-            <MoonLoader size={19} color="#b72b2b" />
+            <Loader
+              type="ThreeDots"
+              color="#b72b2b"
+              height={20}
+              width={20}
+              visible={addToCartButtonLoading}
+            />
           ) : itemInCart ? (
             <>
               <span>
@@ -129,13 +152,7 @@ export default function RightSection({
         </button>
 
         <button
-          onClick={() => {
-            if (itemInWishList) {
-              handleRemoveFromWishList(data.id);
-            } else {
-              handleAddToWishList();
-            }
-          }}
+          onClick={addToWishList}
           className={`${
             addToWishListButtonLoading
               ? 'bg-gray-300'
@@ -145,7 +162,13 @@ export default function RightSection({
           } flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToWishListButtonLoading ? (
-            <MoonLoader size={19} color="#b72b2b" />
+            <Loader
+              type="ThreeDots"
+              color="#b72b2b"
+              height={20}
+              width={20}
+              visible={addToWishListButtonLoading}
+            />
           ) : itemInWishList ? (
             <>
               <span>
@@ -166,6 +189,18 @@ export default function RightSection({
             </>
           )}
         </button>
+        <AnimatePresence>
+          {snackBarOpen && (
+            <motion.div
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 10, opacity: 0 }}
+              className="box-arrow text-xs shadow text-center rounded p-2 "
+            >
+              Please log in to Add
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* <button className="border border-main-color py-2 px-2 rounded uppercase  text-main-color flex items-center justify-center font-semibold ">
           <span>

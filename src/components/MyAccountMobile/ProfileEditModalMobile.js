@@ -29,9 +29,9 @@ export default function ProfileEditModalMobile({
     email: Yup.string().email(formatMessage({ id: 'email-validation' })),
 
     name: Yup.string().required(formatMessage({ id: 'fullname-empty' })),
-    phoneNumber: Yup.string()
-      .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
-      .required(formatMessage({ id: 'phone-empty' })),
+    // phoneNumber: Yup.string()
+    //   .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
+    //   .required(formatMessage({ id: 'phone-empty' })),
   });
 
   const containerVariants = {
@@ -84,7 +84,6 @@ export default function ProfileEditModalMobile({
         initialValues={{
           email: data.email,
           name: data.name,
-          phoneNumber: data.phoneNumber,
         }}
         validationSchema={validationSchema}
         onSubmit={async values => {
@@ -106,12 +105,12 @@ export default function ProfileEditModalMobile({
                 value={values.name}
                 type="text"
               />
-              <PhoneNumberCustomInput
+              {/* <PhoneNumberCustomInput
                 label={formatMessage({ id: 'phone-number' })}
                 name="phoneNumber"
                 value={values.phoneNumber}
                 type="text"
-              />
+              /> */}
 
               <CustomTextInput
                 label={formatMessage({ id: 'email-address' })}

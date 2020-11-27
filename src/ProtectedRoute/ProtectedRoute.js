@@ -4,9 +4,9 @@ import { Redirect, Route } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-export default function ProtectedRoute({ children, path, ...args }) {
+export default function ProtectedRoute({ Component, path, ...args }) {
   const { locale } = useIntl();
-  const { isAuthenticated, authenticationLoading } = React.useContext(
+  const { isAuthenticated, authenticationLoading, userId } = React.useContext(
     AuthProvider
   );
   return (
@@ -27,7 +27,7 @@ export default function ProtectedRoute({ children, path, ...args }) {
             </div>
           );
         if (isAuthenticated === true) {
-          return children;
+          return <Component userId={userId} />;
         } else {
           return (
             <Redirect

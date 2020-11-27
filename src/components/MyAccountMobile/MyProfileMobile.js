@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import Select from 'react-select';
-import { DataProvider } from '../../contexts/DataContext';
+import { editUserProfileInfo, getUserProfileInfo } from '../../Queries/Queries';
 import ProfileEditModalMobile from './ProfileEditModalMobile';
 
 export default function MyProfileMobile() {
@@ -14,9 +14,6 @@ export default function MyProfileMobile() {
     { value: 'English', label: 'English' },
   ];
   const [language, setLanguage] = React.useState(languages[1]);
-  const { getUserProfileInfo, editUserProfileInfo } = React.useContext(
-    DataProvider
-  );
   const [profileEditModalOpen, setProfileEditModalOpen] = React.useState(false);
   /**
    * Main Fetch
@@ -26,7 +23,7 @@ export default function MyProfileMobile() {
     'userProfile',
     async () => {
       const res = await getUserProfileInfo();
-      return res;
+      return res.userData;
     },
     { refetchOnWindowFocus: false }
   );
@@ -37,15 +34,16 @@ export default function MyProfileMobile() {
 
   const [editMutation] = useMutation(
     async data => {
-      return await editUserProfileInfo(data);
+      const res = await editUserProfileInfo(data);
+      return res.userData;
     },
     {
       onSuccess: data => {
         queryCache.setQueryData('userProfile', prev => {
           return {
             ...prev,
-            name: data.name,
             email: data.email,
+            name: data.name,
           };
         });
         setProfileEditModalOpen(false);
@@ -109,14 +107,14 @@ export default function MyProfileMobile() {
               <h1 className=" font-semibold w-2/4">
                 {formatMessage({ id: 'full-name' })}
               </h1>
-              <h1 className="">{data.fullName}</h1>
+              <h1 className="">{data.name}</h1>
             </div>
 
             <div className="py-4 px-3 flex  bg-red-100">
               <h1 className=" font-semibold w-2/4">
                 {formatMessage({ id: 'phone-number' })}
               </h1>
-              <h1 className="">{data.phoneNumber}</h1>
+              <h1 className="">{data.mobile}</h1>
             </div>
             <div className="py-4 px-3 flex  ">
               <h1 className=" font-semibold w-2/4">

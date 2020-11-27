@@ -138,7 +138,6 @@ export default function AuthContext({ children }) {
   //     }, 1500);
   //   });
   // };
-
   return (
     <AuthProvider.Provider
       value={{
@@ -149,6 +148,7 @@ export default function AuthContext({ children }) {
         userLoginMutation,
         userLogoutMutation,
         userData: data?.userData,
+        userId: data?.userData?.id,
       }}
     >
       {children}

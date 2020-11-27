@@ -356,9 +356,179 @@ export default function DataContextProvider({ children }) {
 
         if (item) {
           resolve({
-            item,
-            itemInCart: Boolean(isItemInCart),
-            itemInWishList: Boolean(isItemInWishList),
+            id: item.id,
+            slug: item.slug,
+            brand: {
+              brand_id: item.brand_id,
+              brand_slug: item.brand_slug,
+              en_name: item.brand.en_name,
+              ar_name: item.brand.ar_name,
+            },
+            category: {
+              // i need the category for the breadcrumbs (the mini category tree on the top)
+              category_id: item.category_id,
+              category_slug: item.category_slug,
+              category_en_name: item.category.en_name,
+              category_ar_name: item.category.ar_name,
+              // i don't know how to deal with this when the product belongs to a sub-category
+            },
+            type: item.type,
+            delivery: item.delivery,
+            simple: {
+              // if the product has no options (color,size)
+              name_en: item.name_en,
+              name_ar: item.name_ar,
+              sku: item.sku, // sku or model number
+              is_promotion: Boolean, // if item has sale
+              price: item.price, // regular price
+              sale_price: item.sale_price, // sale price
+              promotion_end: item.promotion_end, // date of the promotion end so i can parse it
+              availableQuantity: item.availableQuantity, // available quantity of the product
+              maxQuantity: item.maxQuantity, // maximum quantity per order
+              images: [
+                // the Images to be shown in the slider
+                { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+                { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+                { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+              ],
+              gallery: [
+                // the Images to be shown below the after the product details(big images like noon.com) (optional)
+                { id: 'id', url: 'imageUrl' },
+                { id: 'id', url: 'imageUrl' },
+                { id: 'id', url: 'imageUrl' },
+              ],
+            },
+            // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+
+            product_options: [
+              // variation_addons (if the product has multiple options)
+              // variation 1 - example : blue shoes
+              {
+                variation_id: 'variation_id',
+                sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
+                name_en: item.name_en,
+                name_ar: item.name_ar,
+                is_promotion: Boolean, // if item has sale
+                price: item.price, // regular price
+                sale_price: item.sale_price, // sale price
+                promotion_end: item.promotion_end, // date of the promotion end so i can parse it
+                maxQuantity: item.maxQuantity, // maximum quantity per order
+
+                sizes: [
+                  // i will conditionally render the sizes based on quantity left
+                  { id: 'size_id', value: 'S', quantity: 5 },
+                  { id: 'size_id', value: 'M', quantity: 2 },
+                  { id: 'size_id', value: 'L', quantity: 0 },
+                ],
+
+                images: [
+                  // the Images to be shown in the slider
+                  {
+                    id: 'id',
+                    url: 'imageUrl',
+                    zoomedImageUrl: 'zoomedImageUrl',
+                  },
+                  {
+                    id: 'id',
+                    url: 'imageUrl',
+                    zoomedImageUrl: 'zoomedImageUrl',
+                  },
+                  {
+                    id: 'id',
+                    url: 'imageUrl',
+                    zoomedImageUrl: 'zoomedImageUrl',
+                  },
+                ],
+                gallery: [
+                  // the Images to be shown below the after the product details(big images like noon.com) (optional)
+                  { id: 'id', url: 'imageUrl' },
+                  { id: 'id', url: 'imageUrl' },
+                  { id: 'id', url: 'imageUrl' },
+                ],
+                // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+                rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+                numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+              },
+              {
+                // variation 2 - example : red shoes
+                variation_id: 'variation_id',
+                sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
+                name_en: item.name_en,
+                name_ar: item.name_ar,
+                is_promotion: Boolean, // if item has sale
+                price: item.price, // regular price
+                sale_price: item.sale_price, // sale price
+                promotion_end: item.promotion_end, // date of the promotion end so i can parse it
+                maxQuantity: item.maxQuantity, // maximum quantity per order
+
+                sizes: [
+                  // i will conditionally render the sizes based on quantity left
+                  { id: 'size_id', value: 'S', quantity: 5 },
+                  { id: 'size_id', value: 'M', quantity: 2 },
+                  { id: 'size_id', value: 'L', quantity: 0 },
+                ],
+
+                images: [
+                  // the Images to be shown in the slider
+                  {
+                    id: 'id',
+                    url: 'imageUrl',
+                    zoomedImageUrl: 'zoomedImageUrl',
+                  },
+                  {
+                    id: 'id',
+                    url: 'imageUrl',
+                    zoomedImageUrl: 'zoomedImageUrl',
+                  },
+                  {
+                    id: 'id',
+                    url: 'imageUrl',
+                    zoomedImageUrl: 'zoomedImageUrl',
+                  },
+                ],
+                gallery: [
+                  // the Images to be shown below the after the product details(big images like noon.com) (optional)
+                  { id: 'id', url: 'imageUrl' },
+                  { id: 'id', url: 'imageUrl' },
+                  { id: 'id', url: 'imageUrl' },
+                ],
+                // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+                rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+                numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+              },
+            ],
+
+            details: {
+              // we either have one details for the whole product || or each variation has its own details, here i implenemented the whole product version
+              en: {
+                // please dont send me html , it's a pain the ass
+                description: 'a short or long description of the product', // the product description
+                features: ['feature 1', 'feature 2'],
+                // product features need to be a list of features
+                specifications: {
+                  // any specifications like size and materials
+                  width: '',
+                  height: '',
+                  size: '',
+                  weight: '',
+                  materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+                },
+              },
+              ar: {
+                // please dont send me html , it's a pain the ass
+                description: 'a short or long description of the product', // the product description
+                features: ['feature 1', 'feature 2'],
+                // product features need to be a list of features
+                specifications: {
+                  // any specifications like size and materials
+                  width: '',
+                  height: '',
+                  size: '',
+                  weight: '',
+                  materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+                },
+              },
+            },
           });
         } else {
           reject({ message: 'no product' });

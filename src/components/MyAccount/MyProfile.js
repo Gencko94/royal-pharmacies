@@ -26,6 +26,7 @@ export default function MyProfile() {
     'userProfile',
     async () => {
       const res = await getUserProfileInfo();
+      console.log(res);
       return res.userData;
     },
     { refetchOnWindowFocus: false }
@@ -198,7 +199,7 @@ export default function MyProfile() {
                 : 'bg-body-dark text-body-text-dark'
             } py-3 px-3 flex items-center   `}
           >
-            <h1 className=" font-semibold flex-1">
+            <h1 className="flex-1">
               {formatMessage({ id: 'preffered-language' })}
             </h1>
             <Select

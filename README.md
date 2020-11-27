@@ -48,7 +48,7 @@
 
 - [x] Add React query to order history. (2.5hrs)
 
-- [ ] Add payment Method for Mobile & Desktop (3hrs) (discuss with maher)
+- [x] Add payment Method for Mobile & Desktop (3hrs) (discuss with maher)
 
 - [x] Add Viewed Items for Mobile & Desktop (3hrs)
 
@@ -56,7 +56,7 @@
 
 - [ ] Nest Lazyloading deep (3hrs)
 
-- [ ] Complete Profile Modal Desktop (3hrs)
+- [x] Complete Profile Modal Desktop (3hrs)
 
 - [ ] login and register number and password validation (discuss)
 
@@ -64,178 +64,187 @@
 
 **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 
+**NOTES**
+
+- [ ] Send back the Wishlist items after adding a new item.
+- [ ] Each Product color should have its corresponding Size.
+
 # MRG API Structure :
 
-## 1. Home page :
-
-- ### 1. **_Main Slider_** :
-  Image Sizes should be :
-  - Desktop :
-    - **Width** : from **1366px** up to **1566px**,
-    - **Height**: from **300px** up to **400px**.
-  - Mobile :
-    - **Width** : **800px,**
-    - **Height**: **300px**.
-
-Feel free to Choose between one of the Two Variations :
-
-1. **Two Routes** for **Desktop** and **Mobile** : (_Recommended_)
-   - **Desktop Route**
-   - **Mobile Route**
-2. **One Route** that supports the two viewports
-
-- The response Object should be somewhat similar to this :
+## 1. Single Product
 
 ```
-requestObject = {
-              lat: Number | String,
-              lng: Number | String,
-              defaultLocation: Boolean,
-              addressDetails: {
-                markerAddress: String,
-                apartmentOrHouseNumber: Number | String,
-                buildingOrTowerNumber: Number | String,
-                phoneNumber: String,
-                additionalDetails: String, (Not Required)
-              },
-            }
+{
+  id: item.id,
+  slug: item.slug,
+  brand: {
+    brand_id: item.brand_id,
+    brand_slug: item.brand_slug,
+    en_name: item.brand.en_name,
+    ar_name: item.brand.ar_name,
+  },
+  category: {  // i need the category for the breadcrumbs (the mini category tree on the top)
+    category_id: item.category_id,
+    category_slug: item.category_slug,
+    category_en_name: item.category.en_name,
+    category_ar_name: item.category.ar_name,
+    // i don't know how to deal with this when the product belongs to a sub-category
+  },
+  type: item.type,
+  delivery: item.delivery,
+  simple: {  // if the product has no options (color,size)
 
-```
+    name_en: item.name_en,
+    name_ar: item.name_ar,
+    sku: item.sku, // sku or model number
+    is_promotion: Boolean, // if item has sale
+    price: item.price, // regular price
+    sale_price: item.sale_price, // sale price
+    promotion_end: item.promotion_end, // date of the promotion end so i can parse it
+    availableQuantity: item.availableQuantity, // available quantity of the product
+    maxQuantity: item.maxQuantity, // maximum quantity per order
+    images: [ // the Images to be shown in the slider
 
-- ### 2. Item Slider: (ex: _BestSellers or Mobile Items.._ )
-- It's going to be an array of at least **7 Items**.
-- Desktop and Mobile are the same.
-- This Route Should return a list of product Items.
-- The returned Image Should be :
-  - Width: **286px MAX**
-  - Height: Same as Width for rectangle Images or **MAX** **210px** .
-- The response Object should be somewhat similar to this :
+      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+    ],
+    gallery: [ // the Images to be shown below the after the product details(big images like noon.com) (optional)
 
-```
-responseObject = {
- status:'ok',
- data: [
+      { id: 'id', url: 'imageUrl' },
+      { id: 'id', url: 'imageUrl' },
+      { id: 'id', url: 'imageUrl' },
+      ],
+  },
+
+ product_options: [  // variation_addons (if the product has multiple options)
+              // variation 1 - example : blue shoes
+
   {
-   id: id,
-   name : String,
-   brand: String (optional),
-   url: String,
-   seoTitle or slug : String (This should mention also the item category for SEO purposes),
-   sale: Boolean, (if the Item has sale on not),
-   price: String || Number,
-   priceAfterSale: String || Number,
-   salePercent:String,
-   image: url,
-   ... any additional extras, Those were just the Basics
-  }
- ],
+    variation_id: 'variation_id',
+    sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
+    name_en: item.name_en,
+    name_ar: item.name_ar,
+    is_promotion: Boolean, // if item has sale
+    price: item.price, // regular price
+    sale_price: item.sale_price, // sale price
+    promotion_end: item.promotion_end, // date of the promotion end so i can parse it
+    maxQuantity: item.maxQuantity, // maximum quantity per order
 
-}
+    sizes: [ // i will conditionally render the sizes based on quantity left
 
-```
+     { id: 'size_id', value: 'S', quantity: 5 },
+     { id: 'size_id', value: 'M', quantity: 2 },
+     { id: 'size_id', value: 'L', quantity: 0 },
+    ],
 
-- ### 3. Category Slider:
-- It's going to be an array of at least **4 Items**.
-- Desktop and Mobile are the same.
-- This Route Should return an array of Photo Categories.
-- Each Photo Category Contains a **Main Title**, **URL** ,**Link**, **Background Image** and **SubCategories** (_Either 3 or 4 Sub Categories_ ). The Category Background Image Should match :
+    images: [ // the Images to be shown in the slider
 
-  - Width: **1110px MAX**
-  - Height: Same as Width for rectangle Images or **400px MAX** .
-
-- a Sub Category contains a **Photo URL**(PNG), a **Link**, a **Background color Property that matches the Parent Category Image background Color** (eg : if the Parent Category image background is blue the subcategories image background should be the same hex code ), and a **Title**. The SubCategory Photo Should match :
-
-  - Width: **270px**
-  - Height: Same as Width for rectangle Images or **150px** .
-
-- The response Object should be somewhat similar to this :
-
-```
-responseObject = {
- status:'ok',
- data: [
+      {
+        id: 'id',
+        url: 'imageUrl',
+        zoomedImageUrl: 'zoomedImageUrl',
+      },
+      {
+        id: 'id',
+        url: 'imageUrl',
+        zoomedImageUrl: 'zoomedImageUrl',
+      },
+      {
+        id: 'id',
+        url: 'imageUrl',
+        zoomedImageUrl: 'zoomedImageUrl',
+      },
+    ],
+    gallery: [
+      // the Images to be shown below the after the product details(big images like noon.com) (optional)
+      { id: 'id', url: 'imageUrl' },
+      { id: 'id', url: 'imageUrl' },
+      { id: 'id', url: 'imageUrl' },
+    ],
+    // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+    rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+    numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+  },
   {
-   id: id,
-   title: String,
-   backgroundImage: url,
-   link: String,
-   subCategories :[
-	{
-		id:id,
-		title,String,
-		backgroundColor:String(hex),
-		link:String
-	},
-	{
-		id:id,
-		title,String,
-		backgroundColor:String(hex),
-		link:String
-	},
-	...
-   ]
-  }
- ],
+    // variation 2 - example : red shoes
+    variation_id: 'variation_id',
+    sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
+    name_en: item.name_en,
+    name_ar: item.name_ar,
+    is_promotion: Boolean, // if item has sale
+    price: item.price, // regular price
+    sale_price: item.sale_price, // sale price
+    promotion_end: item.promotion_end, // date of the promotion end so i can parse it
+    maxQuantity: item.maxQuantity, // maximum quantity per order
 
-}
+    sizes: [
+      // i will conditionally render the sizes based on quantity left
+      { id: 'size_id', value: 'S', quantity: 5 },
+      { id: 'size_id', value: 'M', quantity: 2 },
+      { id: 'size_id', value: 'L', quantity: 0 },
+    ],
 
-```
+    images: [
+      // the Images to be shown in the slider
+      {
+        id: 'id',
+        url: 'imageUrl',
+        zoomedImageUrl: 'zoomedImageUrl',
+      },
+      {
+        id: 'id',
+        url: 'imageUrl',
+        zoomedImageUrl: 'zoomedImageUrl',
+      },
+      {
+        id: 'id',
+        url: 'imageUrl',
+        zoomedImageUrl: 'zoomedImageUrl',
+      },
+    ],
+    gallery: [
+      // the Images to be shown below the after the product details(big images like noon.com) (optional)
+      { id: 'id', url: 'imageUrl' },
+      { id: 'id', url: 'imageUrl' },
+      { id: 'id', url: 'imageUrl' },
+    ],
+    // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+    rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+    numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+  },
+],
 
-- ### 4. Banners
-  - an Image that size is the same as the Main Slider Image
-    - Desktop :
-    - **Width** : from **1366px** up to **1566px**,
-    - **Height**: from **300px** up to **400px**.
-    - Mobile :
-    - **Width** : **800px,**
-    - **Height**: **300px**.
-
-## 2. Single Product :
-
-- The response Object should be somewhat similar to this :
-
-```
-responseObject = {
- status:'ok',
- data: [
-  {
-   id: id,
-   title: String,
-   brand:String,(optional)
-   sale:Boolean,
-   salePercent:String,
-   price: String || Number,
-   PriceAfterSale:String || Number,
-   description: feel free to shape this out,
-   addons : [
-	   sizes: {
-		   supported: String[an array of supported Sizes],
-		   available: String[an array of available Sizes]
-	   },
-	   colors :{
-	    supported: img[an array of supported Sizes (preferabley Images )],
-	    available: img[an array of available Sizes]
-	   }
-	]
-   rating: Number,
-   reviews:[
-	{
-		id:id,
-		title,String,
-		backgroundColor:String(hex),
-		link:String
-	},
-	{
-		id:id,
-		title,String,
-		backgroundColor:String(hex),
-		link:String
-	},
-	...
-   ]
-  }
- ],
-
-}
-
+details: {
+  // we either have one details for the whole product || or each variation has its own details, here i implenemented the whole product version
+  en: {
+    // please dont send me html , it's a pain the ass
+    description: 'a short or long description of the product', // the product description
+    features: ['feature 1', 'feature 2'],
+    // product features need to be a list of features
+    specifications: {
+      // any specifications like size and materials
+      width: '',
+      height: '',
+      size: '',
+      weight: '',
+      materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+    },
+  },
+  ar: {
+    // please dont send me html , it's a pain the ass
+    description: 'a short or long description of the product', // the product description
+    features: ['feature 1', 'feature 2'],
+    // product features need to be a list of features
+    specifications: {
+      // any specifications like size and materials
+      width: '',
+      height: '',
+      size: '',
+      weight: '',
+      materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+    },
+  },
+},
+          }
 ```

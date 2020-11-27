@@ -29,13 +29,19 @@ import PhotoCategories from '../components/Home/PhotoCategories';
 import { useMediaQuery } from 'react-responsive';
 import Layout from '../components/Layout';
 import { useIntl } from 'react-intl';
+import { useQuery } from 'react-query';
+import { getHomeItems } from '../Queries/Queries';
 // import AnimatedSlides from '../components/Home/AnimatedSlides';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
   const { formatMessage } = useIntl();
   const { isLightTheme } = React.useContext(DataProvider);
+  /**
+   * Main Fetch
+   */
 
+  const { data, isLoading } = useQuery('homeShowcase', getHomeItems);
   return (
     <Layout>
       <Helmet>

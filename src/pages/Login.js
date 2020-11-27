@@ -32,21 +32,21 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
         {label}
       </label>
       <div
-        className={`flex rounded-lg border items-center relative  overflow-hidden ${
+        className={`flex rounded-lg border relative  ${
           meta.error && 'border-main-color'
         }`}
       >
         <div
           ref={menuRef}
           onClick={() => setMenuOpen(!menuOpen)}
-          className="  cursor-pointer flex items-center p-1 border-r"
+          className=" relative cursor-pointer flex items-center p-1 border-r"
           style={{ width: '74px' }}
         >
           <span>+965</span>
           <BiChevronDown className="mx-1 w-5 h-5" />
           {menuOpen && (
             <div
-              className="absolute top-100 left-0 w-full border z-1 bg-body-light"
+              className="absolute top-100 left-0 w-full border z-3 bg-body-light shadow"
               style={{ width: '74px' }}
             >
               <div className="hover:bg-main-color p-2 hover:text-main-text flex justify-start items-center">
@@ -137,7 +137,7 @@ export default function Login() {
         {errorOpen && (
           <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
         )}
-        <div className=" rounded z-2  max-w-screen-xs w-5/6   overflow-hidden">
+        <div className=" rounded z-2  max-w-screen-xs w-5/6">
           <div className="flex items-center flex-col mb-2  rounded-lg ">
             <Link to="/">
               <img

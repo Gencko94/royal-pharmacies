@@ -10,18 +10,18 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 let cancelToken;
 export default function MobileSearchbar({ isLightTheme }) {
   const [searchBarValue, setSearchBarValue] = React.useState('');
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   const [data, setData] = React.useState([]);
   const [isLoading, setLoading] = React.useState(false);
   const getSuggestionValue = suggestion => {
-    return suggestion.translation[0].title;
+    return suggestion.translation[locale].title;
   };
 
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div className={`p-2 ${isHighlighted && 'bg-gray-300 rounded'}`}>
-        {suggestion.translation[0].title}
+        {suggestion.translation[locale].title}
       </div>
     );
   };

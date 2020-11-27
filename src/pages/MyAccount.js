@@ -4,7 +4,6 @@ import SideTabs from '../components/MyAccount/SideTabs';
 import MyProfile from '../components/MyAccount/MyProfile';
 import MyAddresses from '../components/MyAccount/MyAddresses';
 import MyOrders from '../components/MyAccount/MyOrders';
-import PaymentDetails from '../components/MyAccount/PaymentDetails';
 import { DataProvider } from '../contexts/DataContext';
 import Layout from '../components/Layout';
 import { Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
@@ -59,10 +58,6 @@ export default function MyAccount() {
                 <Route path={`${path}`} exact component={MyProfile} />
                 <Route path={`${path}/addresses`} component={MyAddresses} />
                 <Route path={`${path}/orders`} component={MyOrders} />
-                <Route
-                  path={`${path}/paymentdetails`}
-                  component={PaymentDetails}
-                />
               </Switch>
             </AnimatePresence>
           </motion.div>

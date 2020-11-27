@@ -17,19 +17,30 @@ import { queryCache, useMutation, useQuery } from 'react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import SingleProductLoader from '../components/SingleProduct/SingleProductLoader';
 import AdditionalDetails from '../components/SingleProduct/AdditionalDetails';
+import { addToWishlist, getSingleItem } from '../Queries/Queries';
+import { useIntl } from 'react-intl';
+import { AuthProvider } from '../contexts/AuthContext';
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 
 export default function SingleProduct() {
-  const { id, name } = useParams();
+  const { id } = useParams();
   const {
     deliveryCountry,
-    addItemToCart,
-    removeItemFromCart,
+
     allItems,
-    addItemToWishList,
-    removeItemFromWishList,
-    getSingleItemDetails,
+
     addViewedItems,
   } = React.useContext(DataProvider);
+  const {
+    addToCartMutation,
+    removeFromCartMutation,
+    addToWishListMutation,
+    removeFromWishListMutation,
+  } = React.useContext(CartAndWishlistProvider);
+  const { userId, isAuthenticated } = React.useContext(AuthProvider);
+  const [selectedVariation, setSelectedVariant] = React.useState(0);
+  const [selectedSize, setSelectedSize] = React.useState(0);
+  const { locale } = useIntl();
   const quantityOptions = [
     { value: 1, label: 1 },
     { value: 2, label: 2 },
@@ -43,7 +54,7 @@ export default function SingleProduct() {
   const { data, isLoading } = useQuery(
     ['singleProduct', id],
     async (key, id) => {
-      const res = await getSingleItemDetails(id);
+      const res = await getSingleItem(id);
       return res;
     },
     {
@@ -55,143 +66,6 @@ export default function SingleProduct() {
     }
   );
 
-  /**
-   * Add Mutation
-   */
-
-  const [addToCartMutation] = useMutation(
-    async item => {
-      setAddToCartButtonLoading(true);
-      const res = await addItemToCart(item);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData(['singleProduct', id], prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-            itemInCart: true,
-          };
-        });
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            cart: data.cartItems.length,
-          };
-        });
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-          };
-        });
-        setAddToCartButtonLoading(false);
-        setSideMenuOpen(true);
-      },
-    }
-  );
-  const [addToWishListMutation] = useMutation(
-    async item => {
-      setAddToWishListButtonLoading(true);
-      const res = await addItemToWishList(item);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            wishlist: data.wishListItems.length,
-          };
-        });
-        queryCache.setQueryData('wishListItems', prev => {
-          return {
-            ...prev,
-            wishListItems: data.wishListItems,
-          };
-        });
-
-        queryCache.setQueryData(['singleProduct', id], prev => {
-          return {
-            ...prev,
-            itemInWishList: true,
-          };
-        });
-        setAddToWishListButtonLoading(false);
-        // setSideMenuOpen(true);
-      },
-    }
-  );
-  /**
-   * Remove Mutation
-   */
-
-  const [removeFromCartMutation] = useMutation(
-    async id => {
-      setAddToCartButtonLoading(true);
-      const res = await removeItemFromCart(id);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData(['singleProduct', id], prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-            itemInCart: false,
-          };
-        });
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-          };
-        });
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            cart: data.cartItems.length,
-          };
-        });
-        setAddToCartButtonLoading(false);
-      },
-    }
-  );
-  const [removeFromWishListMutation] = useMutation(
-    async id => {
-      setAddToWishListButtonLoading(true);
-      const res = await removeItemFromWishList(id);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData(['singleProduct', id], prev => {
-          return {
-            ...prev,
-            itemInWishList: false,
-          };
-        });
-        queryCache.setQueryData('wishListItems', prev => {
-          return {
-            ...prev,
-            wishListItems: data.wishListItems,
-          };
-        });
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            wishlist: data.wishListItems.length,
-          };
-        });
-        setAddToWishListButtonLoading(false);
-      },
-    }
-  );
   const [quantity, setQuantity] = React.useState(quantityOptions[0]);
   const [size, setSize] = React.useState(null);
   const [color, setColor] = React.useState(null);
@@ -200,7 +74,8 @@ export default function SingleProduct() {
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
   const [related, setRelated] = React.useState(null);
-
+  const [itemInCart, setItemInCart] = React.useState(false);
+  const [itemInWishList, setItemInWishList] = React.useState(false);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
@@ -217,51 +92,57 @@ export default function SingleProduct() {
     }
   };
   const handleAddToCart = async () => {
+    setAddToCartButtonLoading(true);
     try {
-      await addToCartMutation({
-        id: data.item.id,
-        quantity: quantity.value,
-        price: data.item.price,
-        name: data.item.name,
-        photo: data.item.photos.small,
-        category: data.item.category,
-        size,
-        color,
-        rating: data.item.rating,
-      });
+      await addToCartMutation(
+        {
+          id: data.id,
+          quantity: quantity.value,
+          size,
+          color,
+        },
+        userId
+      );
+      setAddToCartButtonLoading(false);
+      setSideMenuOpen(true);
+      setItemInCart(true);
     } catch (error) {
+      console.log(error.response);
       console.log(error);
+      setAddToCartButtonLoading(false);
     }
   };
   const handleAddToWishList = async () => {
+    setAddToWishListButtonLoading(true);
     try {
-      await addToWishListMutation({
-        id: data.item.id,
-        quantity: quantity.value,
-        price: data.item.price,
-        name: data.item.name,
-        photo: data.item.photos.small,
-        category: data.item.category,
-        size,
-        color,
-        rating: data.rating,
-      });
+      await addToWishListMutation(data.id, userId);
+      setAddToWishListButtonLoading(false);
+      setItemInWishList(true);
     } catch (error) {
+      setAddToWishListButtonLoading(false);
       console.log(error);
     }
   };
   const handleRemoveFromCart = async id => {
+    setAddToCartButtonLoading(true);
     try {
-      await removeFromCartMutation(id);
+      await removeFromCartMutation(id, userId);
+      setAddToCartButtonLoading(false);
+      setItemInCart(false);
     } catch (error) {
-      console.log(error);
+      setAddToCartButtonLoading(false);
+      console.log(error.response);
     }
   };
   const handleRemoveFromWishList = async id => {
+    setAddToWishListButtonLoading(true);
     try {
-      await removeFromWishListMutation(id);
+      await removeFromWishListMutation(id, userId);
+      setAddToWishListButtonLoading(false);
+      setItemInWishList(false);
     } catch (error) {
-      console.log(error);
+      setAddToWishListButtonLoading(false);
+      console.log(error.response);
     }
   };
 
@@ -278,26 +159,14 @@ export default function SingleProduct() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  // Add item to localStorage //
-  // React.useEffect(() => {
-  //   const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-  //   const isItemInHistory = visitedItems.find(item => item.id === id);
-  //   if (isItemInHistory !== undefined) {
-  //     return;
-  //   } else {
-  //     visitedItems.push({ id });
-  //     localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
-  //   }
-  // }, [id]);
-
   return (
     <Layout>
       <Helmet>
-        <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
+        {/* <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
         <meta
           name="description"
           content={`Shop  ${name.split('-').join(' ')} | MRG`}
-        />
+        /> */}
       </Helmet>
 
       <AnimatePresence>
@@ -324,26 +193,28 @@ export default function SingleProduct() {
 
       <div className=" px-4 ">
         <div className="mx-auto max-w-default">
-          <Breadcrumbs />
+          {!isLoading && <Breadcrumbs data={data.categories} />}
           {isLoading && <SingleProductLoader />}
           {!isLoading && (
             <div className="single-product__container-desktop">
               <div className=" ">
-                <ImageZoom
-                  data={{ images: data.item.photos.main, name: data.item.name }}
-                />
+                <ImageZoom data={data} selectedVariation={selectedVariation} />
               </div>
 
               <MiddleSection
-                data={data.item}
+                selectedVariation={selectedVariation}
+                data={data}
                 deliveryCountry={deliveryCountry}
                 setColor={setColor}
                 color={color}
                 setSize={setSize}
                 size={size}
+                setSelectedVariant={setSelectedVariant}
+                selectedSize={selectedSize}
+                setSelectedSize={setSelectedSize}
               />
               <RightSection
-                data={data.item}
+                data={data}
                 quantity={quantity}
                 setQuantity={setQuantity}
                 handleAddToCart={handleAddToCart}
@@ -353,13 +224,23 @@ export default function SingleProduct() {
                 quantityOptions={quantityOptions}
                 addToCartButtonLoading={addToCartButtonLoading}
                 addToWishListButtonLoading={addToWishListButtonLoading}
-                itemInCart={data.itemInCart}
-                itemInWishList={data.itemInWishList}
+                itemInCart={itemInCart}
+                itemInWishList={itemInWishList}
+                userId={userId}
+                isAuthenticated={isAuthenticated}
               />
             </div>
           )}
           <div id="details" className="py-2 mb-2">
-            {!isLoading && <AdditionalDetails data={data.item} />}
+            {!isLoading && (
+              <AdditionalDetails
+                data={
+                  data.type === 'simple'
+                    ? data.simple_addons
+                    : data.variation_addons
+                }
+              />
+            )}
           </div>
           {related && <RelatedItems relatedData={related} />}
           {isFetching && <div>Loading ...</div>}

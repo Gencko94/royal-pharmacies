@@ -6,8 +6,8 @@ import NoWishListItems from './NoWishListItems';
 import WishListItem from './WishListItem';
 
 export default function WishlistContainer({
-  isLoading,
-  data,
+  wishlistItemsLoading,
+  wishlistItems,
   handleRemoveItemFromWishList,
   removeFromWishListButtonLoading,
   addToCartButtonLoading,
@@ -15,22 +15,21 @@ export default function WishlistContainer({
   handleAddToCart,
 }) {
   const { formatMessage, locale } = useIntl();
-  if (isLoading) {
+  if (wishlistItemsLoading) {
     return <CartContainerLoader locale={locale} />;
   }
   return (
     <div>
-      {data.wishListItems.length === 0 && <NoWishListItems />}
-      {data.wishListItems.length !== 0 && (
+      {wishlistItems.length === 0 && <NoWishListItems />}
+      {wishlistItems.length !== 0 && (
         <AnimateSharedLayout>
-          <motion.div layout className="grid grid-cols-1 gap-2">
-            <div className="wishlist-grid-titles mb-2">
+          <motion.div layout initial={false} className="grid grid-cols-1 gap-2">
+            <motion.div layout className="wishlist-grid-titles mb-2">
               <h1 className="  ">{formatMessage({ id: 'wishlist' })}</h1>
-              {/* <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1> */}
-            </div>
-            <hr />
+            </motion.div>
+            <motion.hr layout />
             <AnimatePresence>
-              {data.wishListItems.map(item => {
+              {wishlistItems.map(item => {
                 return (
                   <WishListItem
                     key={item.id}

@@ -15,119 +15,34 @@ import { queryCache, useMutation, useQuery } from 'react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import SingleProductMobileLoader from '../components/SingleProductMobile/SingleProductMobileLoader';
 import AdditionalDetailsMobile from '../components/SingleProductMobile/AdditionalDetailsMobile';
+import { addToWishlist, getSingleItem } from '../Queries/Queries';
+import { useParams } from 'react-router-dom';
+import { AuthProvider } from '../contexts/AuthContext';
+import { useIntl } from 'react-intl';
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 
-export default function SingleProductMobile({
-  match: {
-    params: { id, name },
-  },
-}) {
+export default function SingleProductMobile() {
+  const { id } = useParams();
   const {
-    addItemToCart,
-
-    removeItemFromCart,
     deliveryCountry,
-    getSingleItemDetails,
+
     allItems,
     addViewedItems,
   } = React.useContext(DataProvider);
-
-  /**
-   * Main Fetch
-   */
-  const { data, isLoading } = useQuery(
-    ['singleProductMobile', id],
-    async (key, id) => {
-      const res = await getSingleItemDetails(id);
-      return res;
-    },
-    {
-      refetchOnWindowFocus: false,
-      onSuccess: async () => {
-        // add Item to localStorage
-        return await addViewedItems(id);
-      },
-    }
-  );
-
-  /**
-   * Add Mutation
-   */
-
-  const [addToCartMutation] = useMutation(
-    async item => {
-      setAddToCartButtonLoading(true);
-      const res = await addItemToCart(item);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData(['singleProductMobile', id], prev => {
-          console.log(data.cartTotal);
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-            itemInCart: true,
-          };
-        });
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            cart: data.cartItems.length,
-          };
-        });
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-          };
-        });
-        setAddToCartButtonLoading(false);
-        setSideMenuOpen(true);
-      },
-    }
-  );
-
-  /**
-   * Remove Mutation
-   */
-
-  const [removeFromCartMutation] = useMutation(
-    async id => {
-      setAddToCartButtonLoading(true);
-      const res = await removeItemFromCart(id);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData(['singleProductMobile', id], prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-            itemInCart: false,
-          };
-        });
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-          };
-        });
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            cart: data.cartItems.length,
-          };
-        });
-
-        setAddToCartButtonLoading(false);
-      },
-    }
-  );
-
+  const { locale } = useIntl();
+  const { userId } = React.useContext(AuthProvider);
+  const {
+    addToCartMutation,
+    removeFromCartMutation,
+    removeFromWishListMutation,
+    addToWishListMutation,
+  } = React.useContext(CartAndWishlistProvider);
+  const [itemInCart, setItemInCart] = React.useState(false);
+  const [itemInWishList, setItemInWishList] = React.useState(false);
+  const [
+    addToWishListButtonLoading,
+    setAddToWishListButtonLoading,
+  ] = React.useState(false);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
@@ -143,6 +58,53 @@ export default function SingleProductMobile({
 
   const [triggerRef, inView] = useInView();
 
+  /**
+   * Main Fetch
+   */
+  const { data, isLoading } = useQuery(
+    ['singleProduct', id],
+    async (key, id) => {
+      const res = await getSingleItem(id);
+      return res;
+    },
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: async () => {
+        // add Item to localStorage
+        return await addViewedItems(id);
+      },
+    }
+  );
+  /**
+   * Add Mutation
+   */
+
+  /**
+   * Remove Mutation
+   */
+
+  const handleAddToWishList = async () => {
+    setAddToWishListButtonLoading(true);
+    try {
+      await addToWishListMutation(data.id, userId);
+      setAddToWishListButtonLoading(false);
+      setItemInWishList(true);
+    } catch (error) {
+      setAddToWishListButtonLoading(false);
+      console.log(error.response);
+    }
+  };
+  const handleRemoveFromWishList = async id => {
+    setAddToWishListButtonLoading(true);
+    try {
+      await removeFromWishListMutation(id, userId);
+      setAddToWishListButtonLoading(false);
+      setItemInWishList(true);
+    } catch (error) {
+      setAddToWishListButtonLoading(false);
+      console.log(error.response);
+    }
+  };
   const handleSubstractQuantity = () => {
     if (quantity === 1) {
       return;
@@ -170,6 +132,7 @@ export default function SingleProductMobile({
   };
 
   const handleAddToCart = async ({ id, quantity }) => {
+    setAddToCartButtonLoading(true);
     try {
       await addToCartMutation({
         id,
@@ -182,15 +145,22 @@ export default function SingleProductMobile({
         size,
         rating: data.rating,
       });
+      setAddToCartButtonLoading(false);
+      setSideMenuOpen(true);
     } catch (error) {
-      console.log(error);
+      setAddToCartButtonLoading(false);
+      console.log(error.response);
     }
   };
   const handleRemoveFromCart = async id => {
+    setAddToCartButtonLoading(true);
     try {
       await removeFromCartMutation(id);
+      setAddToCartButtonLoading(false);
+      setItemInCart(false);
     } catch (error) {
-      console.log(error);
+      setAddToCartButtonLoading(false);
+      console.log(error.response);
     }
   };
   React.useEffect(() => {
@@ -200,11 +170,11 @@ export default function SingleProductMobile({
   return (
     <LayoutMobile>
       <Helmet>
-        <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
+        {/* <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
         <meta
           name="description"
           content={`${name.split('-').join(' ')} | MRG`}
-        />
+        /> */}
       </Helmet>
       <div className="overflow-hidden">
         <AnimatePresence>
@@ -233,7 +203,10 @@ export default function SingleProductMobile({
         {!isLoading && (
           <div className="">
             <ImageZoomMobile
-              data={{ images: data.item.photos.main, name: data.item.name }}
+              data={{
+                images: [data.image, ...data.gallery],
+                name: data.translation[locale].title,
+              }}
             />
 
             <hr />
@@ -241,27 +214,22 @@ export default function SingleProductMobile({
               <ItemDescription
                 handleAddToCart={handleAddToCart}
                 handleRemoveFromCart={handleRemoveFromCart}
+                handleAddToWishList={handleAddToWishList}
+                handleRemoveFromWishList={handleRemoveFromWishList}
                 deliveryCountry={deliveryCountry}
-                data={{
-                  price: data.item.price,
-                  priceBefore: data.item.priceBefore,
-                  name: data.item.name,
-                  id: data.item.id,
-                  colors: data.item.colors,
-                  availableColors: data.item.availableColors,
-                  sizes: data.item.sizes,
-                  availableSizes: data.item.availableSizes,
-                }}
-                itemInCart={data.itemInCart}
+                data={data}
+                itemInCart={itemInCart}
+                itemInWishList={itemInWishList}
                 addToCartButtonLoading={addToCartButtonLoading}
+                addToWishListButtonLoading={addToWishListButtonLoading}
                 quantity={quantity}
                 setQuantity={setQuantity}
                 size={size}
                 setSize={setSize}
                 color={color}
                 setColor={setColor}
-                reviews={data.item.reviews}
-                rating={data.item.rating}
+                reviews={data.reviews}
+                rating={data.rating}
                 setDetailsTab={setDetailsTab}
               />
 
@@ -269,15 +237,15 @@ export default function SingleProductMobile({
             </div>
           </div>
         )}
-        {!isLoading && (
+        {/* {!isLoading && (
           <AdditionalDetailsMobile
-            data={data.item}
+            data={data}
             detailsTab={detailsTab}
             setDetailsTab={setDetailsTab}
           />
-        )}
+        )} */}
 
-        {!isLoading && (
+        {/* {!isLoading && (
           <FloatingAddToCart
             handleSubstractQuantity={handleSubstractQuantity}
             quantity={quantity}
@@ -290,7 +258,7 @@ export default function SingleProductMobile({
             inView={inView}
             itemInCart={data.itemInCart}
           />
-        )}
+        )} */}
 
         <hr />
         <div ref={triggerRef}>

@@ -120,8 +120,7 @@ export default function MyAddresses() {
       exit="exit"
       className="h-full"
     >
-      {!isLoading &&
-        !showMap &&
+      {!showMap &&
         (data.length === 0 ? (
           <NoAddresses isLightTheme={isLightTheme} setShowMap={setShowMap} />
         ) : (

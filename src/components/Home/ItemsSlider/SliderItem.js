@@ -8,7 +8,6 @@ import BuyOptions from './BuyOptions';
 
 export default function SliderItem({
   data,
-  isLightTheme,
   isItemInCart,
   activeBuyOptions,
   loadingButton,
@@ -47,9 +46,9 @@ export default function SliderItem({
   return (
     <div className="my-4  px-2   ">
       <div
-        className={`overflow-hidden flex flex-col relative ${
-          isLightTheme ? 'shadow-itemsSlider-shallow' : 'shadow-itemsSlider'
-        } rounded`}
+        className={`overflow-hidden flex flex-col relative
+         shadow-itemsSlider-shallow
+         rounded`}
       >
         <span className="sale-mini__banner text-xs font-semibold bg-main-color text-main-text px-1 ">
           50% OFF
@@ -72,11 +71,10 @@ export default function SliderItem({
         <div
           className={` 
                     
-                      ${
-                        isLightTheme
-                          ? 'bg-body-light text-body-text-light'
-                          : 'bg-body-dark text-body-text-dark'
-                      }`}
+                     
+                         bg-body-light text-body-text-light
+                          
+                      `}
         >
           <div className="p-2" style={{ height: '40px' }}>
             <a
@@ -87,11 +85,7 @@ export default function SliderItem({
                 '-'
               )}/${data.name.replace(/\s|%|,|-/g, '-')}/${data.id}`}
             >
-              <MultiClamp
-                className="text-sm text-gray-800"
-                clamp={2}
-                ellipsis="..."
-              >
+              <MultiClamp className=" text-gray-800" clamp={2} ellipsis="...">
                 {data.name}
               </MultiClamp>
             </a>

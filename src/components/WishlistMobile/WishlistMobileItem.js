@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Rating from 'react-rating';
 import { Link } from 'react-router-dom';
-
-export default function CartItemMobile({
+export default function WishlistMobileItem({
   item,
-  handleRemoveItemFromCart,
-  EditItemFromCart,
-  removefromCartButtonLoading,
+  removeFromWishListButtonLoading,
+  handleRemoveItemFromWishList,
 }) {
   const { formatMessage, locale } = useIntl();
   const variant = {
@@ -45,46 +45,36 @@ export default function CartItemMobile({
             alt={`${item[`name_${locale}`]}`}
           />
         </Link>
-        <div className="text-sm">
+        <div className="">
           <Link to={`/${locale}/item/${item.id}}`}>
-            <h1 className="font-semibold text-base ">{`${
-              item[`name_${locale}`]
-            }`}</h1>
+            <h1 className="font-semibold ">{`${item[`name_${locale}`]}`}</h1>
           </Link>
-          <h1 className=" font-semibold text-green-700">
-            {formatMessage({ id: 'in-stock' })}
-          </h1>
-          <div className="text-red-700 font-bold text-base">
-            {item.price * item.qty} KD
-          </div>
-          <div className=" flex items-center ">
-            <h1 className=" font-semibold">
-              {formatMessage({ id: 'quantity' })} :{' '}
-            </h1>
-            <select
-              value={item.quantity}
-              onChange={e => EditItemFromCart(e.target.value, item)}
-              className="select-mobile  border-gray-400 border py-1 px-2 rounded mx-2"
-            >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-            </select>
+
+          <Rating
+            initialRating={4.5}
+            readonly
+            emptySymbol={<AiOutlineStar className="text-main-color" />}
+            fullSymbol={<AiFillStar className="text-main-color" />}
+            className=" pt-0"
+          />
+          <div className="flex items-center mb-2">
+            <h1 className=" font-semibold">{formatMessage({ id: 'price' })}</h1>
+            <span className="mx-2">{item.price}</span>
           </div>
         </div>
       </div>
       <div className="flex justify-center text-sm  items-center my-2 ">
         <button
           onClick={() => {
-            handleRemoveItemFromCart(item.id, item.cart_id);
+            handleRemoveItemFromWishList(item.id);
           }}
           className={`${
-            removefromCartButtonLoading === item.id
+            removeFromWishListButtonLoading === item.id
               ? 'bg-gray-300'
               : 'bg-main-color'
-          }  text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded uppercase  font-semibold`}
+          }  text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded  font-semibold`}
         >
-          {removefromCartButtonLoading === item.id ? (
+          {removeFromWishListButtonLoading === item.id ? (
             <Loader
               type="ThreeDots"
               color="#b72b2b"

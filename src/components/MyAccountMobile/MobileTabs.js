@@ -11,7 +11,6 @@ export default function MobileTabs() {
     { url: '', name: 'my-profile' },
     { url: '/addresses', name: 'my-addresses' },
     { url: '/orders', name: 'my-orders' },
-    { url: '/paymentdetails', name: 'my-payment-details' },
   ];
 
   return (

@@ -7,143 +7,25 @@ import { Helmet } from 'react-helmet';
 import CheckoutModal from '../components/Cart/CheckoutModal';
 import useClickAway from '../hooks/useClickAway';
 import Layout from '../components/Layout';
-import { queryCache, useMutation, useQuery } from 'react-query';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import CartContainer from '../components/Cart/CartContainer';
 import CartRightSide from '../components/Cart/CartRightSide';
+import { AnimatePresence } from 'framer-motion';
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
+import { AuthProvider } from '../contexts/AuthContext';
 export default function Cart() {
+  const { healthCare, isLightTheme } = React.useContext(DataProvider);
   const {
-    healthCare,
-    isLightTheme,
-    getCartItems,
-    removeItemFromCart,
-    addItemToWishListFromCart,
-    removeItemFromWishListFromCart,
-  } = React.useContext(DataProvider);
-  /**
-   * Main Fetch
-   */
-  const { data, isLoading, refetch } = useQuery(
-    'cartItems',
-    async () => {
-      const res = await getCartItems();
-      return res;
-    },
-    {
-      refetchOnWindowFocus: false,
-      onError: error => {
-        setErrorOpen(true);
-        setErrorMessage(error);
-      },
-    }
-  );
+    cartItems,
+    cartItemsLoading,
+    isGetCartError,
+    getCartError,
+    removeFromCartMutation,
+    addToWishListMutation,
+    removeFromWishListMutation,
+  } = React.useContext(CartAndWishlistProvider);
+  const { userId } = React.useContext(AuthProvider);
 
-  /**
-   * Remove From Cart Mutation
-   */
-  const [removeFromCartMutation] = useMutation(
-    async id => {
-      setRemoveFromCartButtonLoading(id);
-      const res = await removeItemFromCart(id);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-          };
-        });
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            cart: data.cartItems.length,
-          };
-        });
-        queryCache.setQueryData('wishListItems', prev => {
-          return {
-            ...prev,
-            wishListItems: data.wishListItems,
-          };
-        });
-        setRemoveFromCartButtonLoading(null);
-        refetch();
-      },
-      onError: error => {
-        setErrorOpen(true);
-        setErrorMessage(error);
-      },
-    }
-  );
-
-  /**
-   * add to wishlist mutation
-   */
-
-  const [addToWishListMutation] = useMutation(
-    async item => {
-      setAddToWishListButtonLoading(item.id);
-      const res = await addItemToWishListFromCart(item);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            wishlist: data.wishListItems.length,
-          };
-        });
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-          };
-        });
-        queryCache.setQueryData('wishListItems', () => {
-          return {
-            wishListItems: data.wishListItems,
-          };
-        });
-        setAddToWishListButtonLoading(null);
-      },
-    }
-  );
-  /**
-   * remove from wishlist mutation
-   */
-
-  const [removeFromWishListMutation] = useMutation(
-    async id => {
-      setAddToWishListButtonLoading(id);
-      const res = await removeItemFromWishListFromCart(id);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData('cartAndWishListLength', prev => {
-          return {
-            ...prev,
-            wishlist: data.wishListItems.length,
-          };
-        });
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-          };
-        });
-        queryCache.setQueryData('wishListItems', () => {
-          return {
-            wishListItems: data.wishListItems,
-          };
-        });
-        setAddToWishListButtonLoading(null);
-      },
-    }
-  );
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
   const [
     removefromCartButtonLoading,
@@ -155,34 +37,49 @@ export default function Cart() {
   ] = React.useState(null);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
-  const modalRef = React.useRef();
-  useClickAway(modalRef, () => {
-    setCheckOutModalOpen(false);
-  });
-  const handleRemoveItemFromCart = async id => {
+
+  const handleRemoveItemFromCart = async (id, item_id) => {
+    setRemoveFromCartButtonLoading(id);
     try {
-      await removeFromCartMutation(id);
+      await removeFromCartMutation(id, userId, item_id);
+      setRemoveFromCartButtonLoading(null);
     } catch (error) {
-      console.log(error);
+      setRemoveFromCartButtonLoading(null);
+      console.log(error.response);
     }
   };
   const handleRemoveItemFromWishlist = async id => {
+    setAddToWishListButtonLoading(id);
     try {
-      await removeFromWishListMutation(id);
+      await removeFromWishListMutation(id, userId);
+      setAddToWishListButtonLoading(null);
     } catch (error) {
-      console.log(error);
+      setAddToWishListButtonLoading(null);
+      console.log(error.response);
     }
   };
   const handleAddItemToWishlist = async item => {
+    setAddToWishListButtonLoading(item.id);
     try {
       await addToWishListMutation(item);
+      setAddToWishListButtonLoading(null);
     } catch (error) {
-      console.log(error);
+      setAddToWishListButtonLoading(null);
+      console.log(error.response);
     }
   };
   const closeErrorSnackbar = () => {
     setErrorOpen(false);
   };
+  if (isGetCartError) {
+    return (
+      <Layout>
+        <div className="px-4 py-2 max-w-default mx-auto">
+          Something Went Wrong,Please try again
+        </div>
+      </Layout>
+    );
+  }
   return (
     <Layout>
       <Helmet>
@@ -195,19 +92,19 @@ export default function Cart() {
         />
       )}
       <div className="px-4 py-2 max-w-default mx-auto">
-        <div className=" cart-main-grid  ">
+        <div className="cart-main-grid">
           <CartContainer
-            isLoading={isLoading}
+            cartItemsLoading={cartItemsLoading}
             handleRemoveItemFromCart={handleRemoveItemFromCart}
-            data={data}
+            cartItems={cartItems}
             removefromCartButtonLoading={removefromCartButtonLoading}
             handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
             handleAddItemToWishlist={handleAddItemToWishlist}
             addToWishListButtonLoading={addToWishListButtonLoading}
           />
           <CartRightSide
-            data={data}
-            isLoading={isLoading}
+            cartItems={cartItems}
+            cartItemsLoading={cartItemsLoading}
             setCheckOutModalOpen={setCheckOutModalOpen}
           />
         </div>
@@ -218,12 +115,11 @@ export default function Cart() {
           title="Health Care Essentials"
           isLightTheme={isLightTheme}
         />
-        <CheckoutModal
-          checkoutModalOpen={checkoutModalOpen}
-          isLightTheme={isLightTheme}
-          modalRef={modalRef}
-          setCheckOutModalOpen={setCheckOutModalOpen}
-        />
+        <AnimatePresence>
+          {checkoutModalOpen && (
+            <CheckoutModal setCheckOutModalOpen={setCheckOutModalOpen} />
+          )}
+        </AnimatePresence>
       </div>
     </Layout>
   );

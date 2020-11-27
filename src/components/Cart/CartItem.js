@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { MoonLoader } from 'react-spinners';
 import { DataProvider } from '../../contexts/DataContext';
 
@@ -13,7 +14,7 @@ export default function CartItem({
   addToWishListButtonLoading,
 }) {
   const { EditItemFromCart } = React.useContext(DataProvider);
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const variant = {
     hidden: {
       opacity: 0,
@@ -39,9 +40,15 @@ export default function CartItem({
       exit="exited"
       className="cart-item py-2 border-b"
     >
-      <img className="" src={item.photo} alt={item.name} />
+      <Link to={`/${locale}/c/${item.id}`}>
+        <img
+          className=""
+          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image}`}
+          alt={`${item[`name_${locale}`]}`}
+        />
+      </Link>
       <div className="">
-        <h1 className="font-semibold ">{item.name}</h1>
+        <h1 className="font-semibold ">{`${item[`name_${locale}`]}`}</h1>
         <h1 className=" font-semibold text-sm mb-1 text-green-700">
           {formatMessage({ id: 'in-stock' })}
         </h1>
@@ -50,7 +57,7 @@ export default function CartItem({
             {formatMessage({ id: 'quantity' })}
           </h1>
           <select
-            value={item.quantity}
+            value={item.qty}
             onChange={e => EditItemFromCart(e.target.value, item)}
             className="pr-8 py-0 mx-2 form-select border-gray-400 border rounded"
           >
@@ -62,7 +69,7 @@ export default function CartItem({
         <div className="flex text-sm  items-center ">
           <button
             onClick={() => {
-              handleRemoveItemFromCart(item.id);
+              handleRemoveItemFromCart(item.id, item.cart_id);
             }}
             className={`${
               removefromCartButtonLoading === item.id
@@ -81,7 +88,7 @@ export default function CartItem({
               </>
             )}
           </button>
-          <button
+          {/* <button
             onClick={() => {
               if (item.itemInWishList) {
                 handleRemoveItemFromWishlist(item.id);
@@ -113,7 +120,7 @@ export default function CartItem({
                 </h1>
               </>
             )}
-          </button>
+          </button> */}
           {/* <button
             onClick={() => handleRemoveItemFromCart(item.id)}
             className="p-2 border uppercase border-main-color  text-main-color font-semibold rounded mx-2"
@@ -123,9 +130,7 @@ export default function CartItem({
           </button> */}
         </div>
       </div>
-      <div className="text-center font-bold">
-        {item.price * item.quantity} KD
-      </div>
+      <div className="text-center font-bold">{item.price * item.qty} KD</div>
     </motion.div>
   );
 }

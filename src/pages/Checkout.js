@@ -1,12 +1,12 @@
 import React from 'react';
-import SelectAddress from '../components/Cart/GuestCheckout/SelectAddress';
 import OrderPlaced from '../components/Cart/GuestCheckout/OrderPlaced';
 import PersonalInformation from '../components/Cart/GuestCheckout/PersonalInformation';
+import SelectAddress from '../components/Cart/GuestCheckout/SelectAddress';
 import Stepper from '../components/Cart/Stepper';
 import Layout from '../components/Layout';
 
-export default function GuestCheckOut() {
-  const [selectedStep, setSelectedStep] = React.useState(0);
+export default function Checkout() {
+  const [selectedStep, setSelectedStep] = React.useState(1);
   const [address, setAddress] = React.useState(null);
   const [stepDone, setStepDone] = React.useState({
     0: false,

@@ -41,28 +41,20 @@ export default function WishListItem({
       exit="exited"
       className="wishlist-item"
     >
-      <Link
-        to={`/${locale}/${item.category.replace(
-          /\s|%|,/g,
-          '-'
-        )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
-      >
-        <img className="" src={item.photo} alt={item.name} />
+      <Link to={`/${locale}/item/${item.id}}`}>
+        <img
+          className=""
+          src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
+          alt={`${item[`name_${locale}`]}`}
+        />
       </Link>
       <div className="">
-        <Link
-          to={`/${locale}/${item.category.replace(
-            /\s|%|,/g,
-            '-'
-          )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
-        >
-          <h1 className="font-semibold ">{item.name}</h1>
+        <Link to={`/${locale}/item/${item.id}}`}>
+          <h1 className="font-semibold ">{`${item[`name_${locale}`]}`}</h1>
         </Link>
-        <h1 className=" font-semibold text-sm mb-1 text-green-700">
-          {formatMessage({ id: 'in-stock' })}
-        </h1>
+
         <Rating
-          initialRating={item.rating}
+          initialRating={4.5}
           readonly
           emptySymbol={<AiOutlineStar className="text-main-color" />}
           fullSymbol={<AiFillStar className="text-main-color" />}
@@ -96,7 +88,7 @@ export default function WishListItem({
             )}
           </button>
 
-          <button
+          {/* <button
             onClick={() => {
               if (item.itemInCart) {
                 handleRemoveFromCart(item.id);
@@ -126,7 +118,7 @@ export default function WishListItem({
                 <h1 className="mx-2">{formatMessage({ id: 'add-to-cart' })}</h1>
               </>
             )}
-          </button>
+          </button> */}
         </div>
       </div>
     </motion.div>

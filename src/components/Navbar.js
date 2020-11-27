@@ -10,7 +10,9 @@ export default function Navbar() {
   const hideAllCategories = useMediaQuery({ query: '(min-width:1040px)' });
   const { pathname } = useLocation();
   const specialPages =
-    pathname.includes('/user/account') || pathname.includes('/quickcheckout');
+    pathname.includes('/user/account') ||
+    pathname.includes('/guest-checkout') ||
+    pathname.includes('/checkout');
 
   return (
     <>

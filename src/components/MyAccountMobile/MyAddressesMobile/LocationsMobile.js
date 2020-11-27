@@ -20,7 +20,7 @@ export default function LocationsMobile({
     }
   };
   return (
-    <div style={{ height: 'calc(-176px + 100vh)' }}>
+    <div style={{ minHeight: 'calc(-173px + 100vh)' }}>
       <div className="flex p-3 items-center justify-between bg-main-color text-main-text">
         <h1 className="text-lg">
           {formatMessage({ id: 'we-have-found' })}

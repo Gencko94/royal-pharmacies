@@ -144,13 +144,14 @@ export const ar = {
     'إن سعر وتوافر العناصر على mrg.com عرضة للتغيير. تعتبر عربة التسوق مكانًا مؤقتًا لتخزين قائمة بالعناصر الخاصة بك وتعكس أحدث سعر لكل عنصر.',
   subtotal: 'المبلغ الإجمالي',
   'cart-total': 'إجمالي العربة',
-  'cart-enter-code-or-coupon': 'أدخل الكود او رقم الكوبون هنا',
+  'cart-enter-code-or-coupon': 'أدخل الكود او رقم الكوبون',
   'cart-code-button': 'إدخال',
   'cart-empty': 'إن عربة التسوق الخاصة بك فارغة !',
   'cart-delivery-cost': 'كلفة التوصيل',
   'cart-free': 'مجانا',
   'check-today-deals': 'إلق نظرة على عروض اليوم',
   'shopping-cart': 'عربة التسوق',
+  'wishlist-empty': 'إن قائمة المفضلة الخاصة بك فارغة !',
   single: 'واحدة',
   //guest check out
   // stepper
@@ -179,7 +180,7 @@ export const ar = {
   // checkout modal
   'not-signed-in': 'لم تقم بتسجيل الدخول ',
   'you-can': 'بإمكانك',
-  'fly-checkout': 'إتمام الدفع عالطاير',
+  'guest-checkout': 'إتمام الدفع كزائر',
   'checkout-modal-tos':
     'يساعدنا امتلاكك لحساب على mrg.com على تقديم افضل الخدمات لك ولعملائنا الآخرين .',
   'confirm-location': 'تأكيد الموقع',
