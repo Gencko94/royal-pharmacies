@@ -120,131 +120,131 @@
  product_options: [  // variation_addons (if the product has multiple options)
               // variation 1 - example : blue shoes
 
-  {
-    variation_id: 'variation_id',
-    sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
-    name_en: item.name_en,
-    name_ar: item.name_ar,
-    is_promotion: Boolean, // if item has sale
-    price: item.price, // regular price
-    sale_price: item.sale_price, // sale price
-    promotion_end: item.promotion_end, // date of the promotion end so i can parse it
-    maxQuantity: item.maxQuantity, // maximum quantity per order
+    {
+      variation_id: 'variation_id',
+      sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
+      name_en: item.name_en,
+      name_ar: item.name_ar,
+      is_promotion: Boolean, // if item has sale
+      price: item.price, // regular price
+      sale_price: item.sale_price, // sale price
+      promotion_end: item.promotion_end, // date of the promotion end so i can parse it
+      maxQuantity: item.maxQuantity, // maximum quantity per order
 
-    sizes: [ // i will conditionally render the sizes based on quantity left
+      sizes: [ // i will conditionally render the sizes based on quantity left
 
-     { id: 'size_id', value: 'S', quantity: 5 },
-     { id: 'size_id', value: 'M', quantity: 2 },
-     { id: 'size_id', value: 'L', quantity: 0 },
-    ],
-
-    images: [ // the Images to be shown in the slider
-
-      {
-        id: 'id',
-        url: 'imageUrl',
-        zoomedImageUrl: 'zoomedImageUrl',
-      },
-      {
-        id: 'id',
-        url: 'imageUrl',
-        zoomedImageUrl: 'zoomedImageUrl',
-      },
-      {
-        id: 'id',
-        url: 'imageUrl',
-        zoomedImageUrl: 'zoomedImageUrl',
-      },
-    ],
-    gallery: [
-      // the Images to be shown below the after the product details(big images like noon.com) (optional)
-      { id: 'id', url: 'imageUrl' },
-      { id: 'id', url: 'imageUrl' },
-      { id: 'id', url: 'imageUrl' },
-    ],
-    // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-    rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-    numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-  },
-  {
-    // variation 2 - example : red shoes
-    variation_id: 'variation_id',
-    sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
-    name_en: item.name_en,
-    name_ar: item.name_ar,
-    is_promotion: Boolean, // if item has sale
-    price: item.price, // regular price
-    sale_price: item.sale_price, // sale price
-    promotion_end: item.promotion_end, // date of the promotion end so i can parse it
-    maxQuantity: item.maxQuantity, // maximum quantity per order
-
-    sizes: [
-      // i will conditionally render the sizes based on quantity left
       { id: 'size_id', value: 'S', quantity: 5 },
       { id: 'size_id', value: 'M', quantity: 2 },
       { id: 'size_id', value: 'L', quantity: 0 },
-    ],
+      ],
 
-    images: [
-      // the Images to be shown in the slider
-      {
-        id: 'id',
-        url: 'imageUrl',
-        zoomedImageUrl: 'zoomedImageUrl',
-      },
-      {
-        id: 'id',
-        url: 'imageUrl',
-        zoomedImageUrl: 'zoomedImageUrl',
-      },
-      {
-        id: 'id',
-        url: 'imageUrl',
-        zoomedImageUrl: 'zoomedImageUrl',
-      },
-    ],
-    gallery: [
-      // the Images to be shown below the after the product details(big images like noon.com) (optional)
-      { id: 'id', url: 'imageUrl' },
-      { id: 'id', url: 'imageUrl' },
-      { id: 'id', url: 'imageUrl' },
-    ],
-    // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-    rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-    numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-  },
-],
+      images: [ // the Images to be shown in the slider
 
-details: {
-  // we either have one details for the whole product || or each variation has its own details, here i implenemented the whole product version
-  en: {
-    // please dont send me html , it's a pain the ass
-    description: 'a short or long description of the product', // the product description
-    features: ['feature 1', 'feature 2'],
-    // product features need to be a list of features
-    specifications: {
-      // any specifications like size and materials
-      width: '',
-      height: '',
-      size: '',
-      weight: '',
-      materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+      ],
+      gallery: [
+        // the Images to be shown below the after the product details(big images like noon.com) (optional)
+        { id: 'id', url: 'imageUrl' },
+        { id: 'id', url: 'imageUrl' },
+        { id: 'id', url: 'imageUrl' },
+      ],
+      // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+      rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+      numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+    },
+    {
+      // variation 2 - example : red shoes
+      variation_id: 'variation_id',
+      sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
+      name_en: item.name_en,
+      name_ar: item.name_ar,
+      is_promotion: Boolean, // if item has sale
+      price: item.price, // regular price
+      sale_price: item.sale_price, // sale price
+      promotion_end: item.promotion_end, // date of the promotion end so i can parse it
+      maxQuantity: item.maxQuantity, // maximum quantity per order
+
+      sizes: [
+        // i will conditionally render the sizes based on quantity left
+        { id: 'size_id', value: 'S', quantity: 5 },
+        { id: 'size_id', value: 'M', quantity: 2 },
+        { id: 'size_id', value: 'L', quantity: 0 },
+      ],
+
+      images: [
+        // the Images to be shown in the slider
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+      ],
+      gallery: [
+        // the Images to be shown below the after the product details(big images like noon.com) (optional)
+        { id: 'id', url: 'imageUrl' },
+        { id: 'id', url: 'imageUrl' },
+        { id: 'id', url: 'imageUrl' },
+      ],
+      // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+      rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+      numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+    },
+  ],
+
+  details: {
+    // we either have one details for the whole product || or each variation has its own details, here i implenemented the whole product version
+    en: {
+      // please dont send me html , it's a pain the ass
+      description: 'a short or long description of the product', // the product description
+      features: ['feature 1', 'feature 2'],
+      // product features need to be a list of features
+      specifications: {
+        // any specifications like size and materials
+        width: '',
+        height: '',
+        size: '',
+        weight: '',
+        materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+      },
+    },
+    ar: {
+      // please dont send me html , it's a pain the ass
+      description: 'a short or long description of the product', // the product description
+      features: ['feature 1', 'feature 2'],
+      // product features need to be a list of features
+      specifications: {
+        // any specifications like size and materials
+        width: '',
+        height: '',
+        size: '',
+        weight: '',
+        materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+      },
     },
   },
-  ar: {
-    // please dont send me html , it's a pain the ass
-    description: 'a short or long description of the product', // the product description
-    features: ['feature 1', 'feature 2'],
-    // product features need to be a list of features
-    specifications: {
-      // any specifications like size and materials
-      width: '',
-      height: '',
-      size: '',
-      weight: '',
-      materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
-    },
-  },
-},
-          }
+}
 ```
