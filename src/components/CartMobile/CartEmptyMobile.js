@@ -25,13 +25,13 @@ export default function CartEmptyMobile() {
       <div className="flex flex-col justify-center p-2">
         <Link
           to={`/${locale}/app/login`}
-          className={`  text-center rounded p-2 bg-green-700 text-second-nav-text-light `}
+          className={`  text-center rounded p-2 uppercase bg-green-700 text-second-nav-text-light `}
         >
           {formatMessage({ id: 'login' })}
         </Link>
         <Link
           to={`/${locale}/app/register`}
-          className={` text-center  rounded p-2 bg-blue-700 text-second-nav-text-light mt-2 `}
+          className={` text-center  rounded p-2 uppercase bg-blue-700 text-second-nav-text-light mt-2 `}
         >
           {formatMessage({ id: 'register' })}
         </Link>

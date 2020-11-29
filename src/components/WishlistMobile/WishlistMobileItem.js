@@ -10,6 +10,10 @@ export default function WishlistMobileItem({
   item,
   removeFromWishListButtonLoading,
   handleRemoveItemFromWishList,
+  handleAddToCart,
+  itemInCart,
+  handleRemoveItemFromCart,
+  addToCartButtonLoading,
 }) {
   const { formatMessage, locale } = useIntl();
   const variant = {
@@ -72,7 +76,7 @@ export default function WishlistMobileItem({
             removeFromWishListButtonLoading === item.id
               ? 'bg-gray-300'
               : 'bg-main-color'
-          }  text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded  font-semibold`}
+          }  text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded  font-semibold uppercase`}
         >
           {removeFromWishListButtonLoading === item.id ? (
             <Loader
@@ -85,13 +89,50 @@ export default function WishlistMobileItem({
           ) : (
             <>
               <h1 className="mx-2 whitespace-no-wrap">
-                {formatMessage({ id: 'remove-from-cart' })}
+                {formatMessage({ id: 'remove-from-wishlist' })}
               </h1>
             </>
           )}
         </button>
+        <button
+          onClick={() => {
+            if (itemInCart.includes(item.id)) {
+              handleRemoveItemFromCart(item.id);
+            } else {
+              handleAddToCart(item);
+            }
+          }}
+          className={`${
+            addToCartButtonLoading === item.id
+              ? 'bg-gray-300'
+              : itemInCart.includes(item.id)
+              ? 'bg-main-color'
+              : 'bg-green-700'
+          } text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded  font-semibold uppercase`}
+          style={{ width: '200px' }}
+        >
+          {addToCartButtonLoading === item.id ? (
+            <Loader
+              type="ThreeDots"
+              color="#b72b2b"
+              height={20}
+              width={20}
+              visible={true}
+            />
+          ) : itemInCart.includes(item.id) ? (
+            <>
+              <h1 className="mx-2 whitespace-no-wrap">
+                {formatMessage({ id: 'remove-from-cart' })}
+              </h1>
+            </>
+          ) : (
+            <>
+              <h1 className="mx-2">{formatMessage({ id: 'add-to-cart' })}</h1>
+            </>
+          )}
+        </button>
         {/* <button
-          onClick={() => handleRemoveItem(item.id)}
+          onClick={() => handleAddToCart(item.id)}
           className="p-2 flex-1  text-sm border border-main-color text-main-color  rounded font-semibold mx-2  "
         >
           {formatMessage({ id: 'add-to-wishlist' })}

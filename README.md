@@ -44,7 +44,7 @@
 
 - [ ] Add delivery country context.(1hr)
 
-- [ ] Add Wishlist Page Desktop & Mobile.(3hrs) (discuss with maher)
+- [x] Add Wishlist Page Desktop & Mobile.(3hrs) (discuss with maher)
 
 - [x] Add React query to order history. (2.5hrs)
 
@@ -60,7 +60,7 @@
 
 - [ ] login and register number and password validation (discuss)
 
--[ ] discuss change user Info (phoneNumber and email)
+-[x] discuss change user Info (phoneNumber and email)
 
 **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 
@@ -68,6 +68,8 @@
 
 - [ ] Send back the Wishlist items after adding a new item.
 - [ ] Each Product color should have its corresponding Size.
+- [ ] Remove cartId condition from remove from cart
+- [ ] Allow gif image upload in the dashboard
 
 # MRG API Structure :
 

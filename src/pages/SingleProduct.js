@@ -13,11 +13,11 @@ import InView from 'react-intersection-observer';
 import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
-import { queryCache, useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import SingleProductLoader from '../components/SingleProduct/SingleProductLoader';
 import AdditionalDetails from '../components/SingleProduct/AdditionalDetails';
-import { addToWishlist, getSingleItem } from '../Queries/Queries';
+import { getSingleItem } from '../Queries/Queries';
 import { useIntl } from 'react-intl';
 import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
@@ -36,6 +36,7 @@ export default function SingleProduct() {
     removeFromCartMutation,
     addToWishListMutation,
     removeFromWishListMutation,
+    addToGuestCartMutation,
   } = React.useContext(CartAndWishlistProvider);
   const { userId, isAuthenticated } = React.useContext(AuthProvider);
   const [selectedVariation, setSelectedVariant] = React.useState(0);
@@ -91,42 +92,38 @@ export default function SingleProduct() {
       }
     }
   };
+
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
-    try {
-      await addToCartMutation(
-        {
-          id: data.id,
-          quantity: quantity.value,
-          size,
-          color,
-        },
-        userId
-      );
-      setAddToCartButtonLoading(false);
-      setSideMenuOpen(true);
-      setItemInCart(true);
-    } catch (error) {
-      console.log(error.response);
-      console.log(error);
-      setAddToCartButtonLoading(false);
+    if (userId) {
+      try {
+        const newItem = { id: data.id, quantity: quantity.value, size, color };
+        await addToCartMutation({ newItem, userId });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        console.log(error.response);
+        setAddToCartButtonLoading(false);
+      }
+    } else {
     }
   };
   const handleAddToWishList = async () => {
     setAddToWishListButtonLoading(true);
     try {
-      await addToWishListMutation(data.id, userId);
+      await addToWishListMutation({ id: data.id, userId });
       setAddToWishListButtonLoading(false);
       setItemInWishList(true);
     } catch (error) {
       setAddToWishListButtonLoading(false);
-      console.log(error);
+      console.log(error.response);
     }
   };
-  const handleRemoveFromCart = async id => {
+  const handleRemoveFromCart = async (id, cart_id) => {
     setAddToCartButtonLoading(true);
     try {
-      await removeFromCartMutation(id, userId);
+      await removeFromCartMutation({ id, cart_id, userId });
       setAddToCartButtonLoading(false);
       setItemInCart(false);
     } catch (error) {
@@ -137,7 +134,7 @@ export default function SingleProduct() {
   const handleRemoveFromWishList = async id => {
     setAddToWishListButtonLoading(true);
     try {
-      await removeFromWishListMutation(id, userId);
+      await removeFromWishListMutation({ id, userId });
       setAddToWishListButtonLoading(false);
       setItemInWishList(false);
     } catch (error) {
@@ -153,7 +150,11 @@ export default function SingleProduct() {
       setFetching(false);
     }, 1500);
   };
+  // React.useEffect(() => {
+  //   if (data) {
 
+  //   }
+  // }, [data, id]);
   React.useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -173,8 +174,8 @@ export default function SingleProduct() {
         {sideMenuOpen && (
           <SideCartMenu
             key={879}
-            cartItems={data.cartItems}
-            cartTotal={data.cartTotal}
+            // cartItems={data.cartItems}
+            // cartTotal={data.cartTotal}
             setSideMenuOpen={setSideMenuOpen}
             handleRemoveFromCart={handleRemoveFromCart}
           />

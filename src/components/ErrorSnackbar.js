@@ -17,6 +17,7 @@ export default function ErrorSnackbar({ message, closeFunction }) {
       opacity: 0,
     },
   };
+  console.log('hi');
   return (
     <motion.div
       variants={containerVariants}

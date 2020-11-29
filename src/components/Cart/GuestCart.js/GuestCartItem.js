@@ -1,21 +1,14 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
-import { DataProvider } from '../../contexts/DataContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-export default function CartItem({
+import { Link } from 'react-router-dom';
+export default function GuestCartItem({
   item,
+  handleEditItem,
   handleRemoveItemFromCart,
-  removefromCartButtonLoading,
-  handleAddItemToWishlist,
-  handleRemoveItemFromWishlist,
-  addToWishListButtonLoading,
-  wishlistItems,
 }) {
-  console.log(wishlistItems);
-  const { EditItemFromCart } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
   const variant = {
     hidden: {
@@ -50,9 +43,7 @@ export default function CartItem({
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/c/${item.id}`}>
-          <h1 className="font-semibold ">{`${item[`name_${locale}`]}`}</h1>
-        </Link>
+        <h1 className="font-semibold ">{`${item[`name_${locale}`]}`}</h1>
         <h1 className=" font-semibold text-sm mb-1 text-green-700">
           {formatMessage({ id: 'in-stock' })}
         </h1>
@@ -62,7 +53,7 @@ export default function CartItem({
           </h1>
           <select
             value={item.qty}
-            onChange={e => EditItemFromCart(e.target.value, item)}
+            onChange={e => handleEditItem(e.target.value, item)}
             className="pr-8 py-0 mx-2 form-select border-gray-400 border rounded"
           >
             <option>1</option>
@@ -75,60 +66,55 @@ export default function CartItem({
             onClick={() => {
               handleRemoveItemFromCart(item.id, item.cart_id);
             }}
-            className={`${
-              removefromCartButtonLoading === item.id
-                ? 'bg-gray-300'
+            className={`
                 : 'bg-main-color'
-            }  text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold uppercase `}
+              text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold uppercase `}
             style={{ width: '200px' }}
-            disabled={removefromCartButtonLoading}
           >
-            {removefromCartButtonLoading === item.id ? (
-              <Loader
-                type="ThreeDots"
-                color="#b72b2b"
-                height={21}
-                width={21}
-                visible={true}
-              />
-            ) : (
-              <>
-                <h1 className="mx-2 whitespace-no-wrap">
-                  {formatMessage({ id: 'remove-from-cart' })}
-                </h1>
-              </>
-            )}
+            <h1 className="mx-2 whitespace-no-wrap">
+              {formatMessage({ id: 'remove-from-cart' })}
+            </h1>
           </button>
-          <button
+          {/* <button
             onClick={() => {
-              if (wishlistItems.includes(item.id)) {
+              if (item.itemInWishList) {
                 handleRemoveItemFromWishlist(item.id);
               } else {
                 handleAddItemToWishlist(item);
               }
             }}
-            className={`border border-main-color text-main-color  p-2 rounded flex items-center justify-center mx-2 font-semibold uppercase`}
+            className={`${
+              addToWishListButtonLoading
+                ? 'bg-gray-300'
+                : item.itemInWishList
+                ? 'bg-main-color'
+                : 'bg-green-700'
+            }  text-main-text   p-2 rounded flex items-center justify-center mx-2 font-semibold uppercase`}
             style={{ width: '200px' }}
-            disabled={addToWishListButtonLoading}
           >
-            {addToWishListButtonLoading === item.id ? (
-              <Loader
-                type="ThreeDots"
-                color="#b72b2b"
-                height={21}
-                width={21}
-                visible={true}
-              />
-            ) : wishlistItems.includes(item.id) ? (
-              <h1 className="mx-2 whitespace-no-wrap">
-                {formatMessage({ id: 'remove-from-wishlist' })}
-              </h1>
+            {addToWishListButtonLoading ? (
+              <MoonLoader size={19} color="#b72b2b" />
+            ) : item.itemInWishList ? (
+              <>
+                <h1 className="mx-2 whitespace-no-wrap">
+                  {formatMessage({ id: 'remove-from-wishlist' })}
+                </h1>
+              </>
             ) : (
-              <h1 className="mx-2">
-                {formatMessage({ id: 'add-to-wishlist' })}
-              </h1>
+              <>
+                <h1 className="mx-2">
+                  {formatMessage({ id: 'add-to-wishlist' })}
+                </h1>
+              </>
             )}
-          </button>
+          </button> */}
+          {/* <button
+            onClick={() => handleRemoveItemFromCart(item.id)}
+            className="p-2 border uppercase border-main-color  text-main-color font-semibold rounded mx-2"
+            style={{ width: '160px' }}
+          >
+            {formatMessage({ id: 'add-to-wishlist' })}
+          </button> */}
         </div>
       </div>
       <div className="text-center font-bold">{item.price * item.qty} KD</div>

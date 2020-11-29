@@ -174,7 +174,7 @@ export default function Register() {
                   }
                 } catch (error) {
                   console.log(error.response);
-                  if (error.response.data.message) {
+                  if (error.response?.data.message) {
                     actions.setErrors({
                       email: error.response.data.message.email?.[0],
                       phoneNumber: error.response.data.message.mobile?.[0],

@@ -1,19 +1,13 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
-import { AuthProvider } from '../../contexts/AuthContext';
-import RecentlyViewedVertical from '../RecentlyViewedVertical';
-import FeaturedItemsVertical from './FeaturedItemsVertical';
-import CartRightSideLoader from './loaders/CartRightSideLoader';
-
-export default function CartRightSide({
+import CartRightSideLoader from '../loaders/CartRightSideLoader';
+import FeaturedItemsVertical from '../FeaturedItemsVertical';
+export default function GuestCartRightSide({
   cartItemsLoading,
   cartItems,
-  setCheckOutModalOpen,
   cartTotal,
 }) {
-  const { isAuthenticated } = React.useContext(AuthProvider);
-  const history = useHistory();
+  const { formatMessage, locale } = useIntl();
   const resolvePlural = () => {
     switch (cartItems.length) {
       case 1:
@@ -26,15 +20,6 @@ export default function CartRightSide({
         return formatMessage({ id: 'one-items' });
       default:
         return formatMessage({ id: 'multiple-items' });
-    }
-  };
-  const { formatMessage, locale } = useIntl();
-  const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-  const handleCheckout = () => {
-    if (isAuthenticated) {
-      history.push(`/${locale}/checkout`);
-    } else {
-      setCheckOutModalOpen(true);
     }
   };
   return (
@@ -85,7 +70,7 @@ export default function CartRightSide({
             <h1>{cartTotal}</h1> KD
           </div>
           <button
-            onClick={handleCheckout}
+            // onClick={handleCheckout}
             className={`${
               cartItems.length === 0
                 ? 'cursor-not-allowed  bg-gray-600'
@@ -97,12 +82,12 @@ export default function CartRightSide({
           </button>
         </div>
       )}
-
-      {visitedItems.length > 4 ? (
+      <FeaturedItemsVertical />
+      {/* {visitedItems.length > 4 ? (
         <RecentlyViewedVertical visitedItems={visitedItems} />
       ) : (
-        <FeaturedItemsVertical />
-      )}
+        
+      )} */}
     </div>
   );
 }

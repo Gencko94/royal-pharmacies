@@ -10,9 +10,9 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 export default function ProfileEditModal({
-  editMutation,
-  data,
+  userData,
   setProfileEditModalOpen,
+  editMutation,
 }) {
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -76,14 +76,15 @@ export default function ProfileEditModal({
       </div>
       <Formik
         initialValues={{
-          email: data.email,
-          name: data.name,
+          email: userData.email || '',
+          name: userData.name,
         }}
         validationSchema={validationSchema}
         onSubmit={async values => {
           setErrorOpen(false);
           try {
             await editMutation(values);
+            setProfileEditModalOpen(false);
           } catch (error) {
             console.log(error.response);
             setErrorOpen(true);

@@ -7,13 +7,13 @@ import {
   getWishlistItems,
   removeFromCart,
   removeFromWishlist,
+  getGuestCartItems,
+  addToGuestCart,
 } from '../Queries/Queries';
 import { AuthProvider } from './AuthContext';
 export const CartAndWishlistProvider = React.createContext();
 export default function CartAndWishlistContext({ children }) {
-  const { userId, authenticationLoading, isAuthenticated } = React.useContext(
-    AuthProvider
-  );
+  const { userId, authenticationLoading } = React.useContext(AuthProvider);
   /**
    * Cart Main Fetch
    */
@@ -22,32 +22,38 @@ export default function CartAndWishlistContext({ children }) {
     isLoading: cartItemsLoading,
     isError: isGetCartError,
     error: getCartError,
+    isIdle: cartIdle,
   } = useQuery(['cartItems', userId], getCartItems, {
     refetchOnWindowFocus: false,
-    enabled: !authenticationLoading && isAuthenticated,
+    enabled: !authenticationLoading && userId,
+    retry: true,
+  });
+  const {
+    data: guestCartData,
+    isLoading: guestCartItemsLoading,
+    isError: isGuestGetCartError,
+    error: getGuestCartError,
+  } = useQuery('guestCartItems', getGuestCartItems, {
+    refetchOnWindowFocus: false,
+    enabled: !authenticationLoading && !userId,
+    retry: true,
   });
 
   const [addToCartMutation] = useMutation(addToCart, {
     onSuccess: data => {
-      queryCache.setQueryData('cartItems', prev => {
-        return {
-          ...prev,
-          cartItems: data.cartItems,
-          cartTotal: data.cartTotal,
-        };
-      });
+      queryCache.invalidateQueries(['cartItems', userId]);
+    },
+    throwOnError: true,
+  });
+  const [addToGuestCartMutation] = useMutation(addToGuestCart, {
+    onSuccess: data => {
+      queryCache.invalidateQueries(['cartItems', userId]);
     },
     throwOnError: true,
   });
   const [removeFromCartMutation] = useMutation(removeFromCart, {
     onSuccess: data => {
-      queryCache.setQueryData('cartItems', prev => {
-        return {
-          ...prev,
-          cartItems: data.cartItems,
-          cartTotal: data.cartTotal,
-        };
-      });
+      queryCache.invalidateQueries(['cartItems', userId]);
     },
     throwOnError: true,
   });
@@ -61,31 +67,30 @@ export default function CartAndWishlistContext({ children }) {
     getWishlistError,
   } = useQuery(['wishlistItems', userId], getWishlistItems, {
     refetchOnWindowFocus: false,
+    enabled: userId,
+    retry: true,
   });
   const [addToWishListMutation] = useMutation(addToWishlist, {
     onSuccess: data => {
-      queryCache.setQueryData('cartAndWishListLength', prev => {
-        return {
-          ...prev,
-          wishlist: prev.wishlist + 1,
-        };
-      });
-      queryCache.setQueryData('wishlistItems', prev => {
-        return {
-          ...prev,
-          wishListItems: data.wishListItems,
-        };
-      });
-      // queryCache.invalidateQueries('wishListItems');
+      // queryCache.setQueryData(['wishlistItems', userId], prev => {
+      //   return {
+      //     ...prev,
+      //     wishlistItems: data.wishlistItems,
+      //   };
+      // });
+      queryCache.invalidateQueries(['wishlistItems', userId]);
     },
     throwOnError: true,
   });
 
   const [removeFromWishListMutation] = useMutation(removeFromWishlist, {
     onSuccess: data => {
-      queryCache.setQueryData('wishlistItems', prev => {
-        const updated = prev.filter(i => i.id !== data);
-        return [...updated];
+      queryCache.setQueryData(['wishlistItems', userId], prev => {
+        console.log(prev);
+        const updated = prev.wishlistItems.filter(i => i.id !== data);
+        return {
+          wishlistItems: [...updated],
+        };
       });
     },
 
@@ -95,9 +100,16 @@ export default function CartAndWishlistContext({ children }) {
     <CartAndWishlistProvider.Provider
       value={{
         cartItems: cartData?.cartItems,
+        cartTotal: cartData?.cartTotal,
+        guestCartItems: guestCartData?.cartItems,
+        guestCartTotal: guestCartData?.cartTotal,
         wishlistItems: wishListData?.wishlistItems,
+        cartIdle,
         cartItemsLoading,
+        guestCartItemsLoading,
         wishlistItemsLoading,
+        isGuestGetCartError,
+        getGuestCartError,
         isGetCartError,
         isGetWishlistError,
         getCartError,
@@ -106,6 +118,7 @@ export default function CartAndWishlistContext({ children }) {
         removeFromCartMutation,
         addToWishListMutation,
         removeFromWishListMutation,
+        addToGuestCartMutation,
       }}
     >
       {children}

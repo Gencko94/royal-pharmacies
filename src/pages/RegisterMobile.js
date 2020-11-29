@@ -164,7 +164,7 @@ export default function RegisterMobile() {
                   history.replace(from);
                 }
               } catch (error) {
-                if (error.response.data.message) {
+                if (error.response?.data.message) {
                   setErrors({
                     email: error.response.data.message.email?.[0],
                     phoneNumber: error.response.data.message.mobile?.[0],

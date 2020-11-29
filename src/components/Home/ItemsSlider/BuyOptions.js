@@ -2,19 +2,20 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
-import { MoonLoader } from 'react-spinners';
 
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function BuyOptions({
-  data,
+  item,
   setQuantity,
   options: { size, quantity },
   setSize,
-  handleAddItemToCart,
-  handleRemoveItemFromCart,
-  isItemInCart,
+  handleAddToCart,
+  handleRemoveFromCart,
   loadingButton,
+  cartItems,
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const sizes = ['xs', 'sm', 'md', 'lg', 'xl'];
   const buyOptionsVariants = {
     hidden: {
@@ -47,7 +48,9 @@ export default function BuyOptions({
     },
   };
   const handleAddQuantity = () => {
-    setQuantity(quantity + 1);
+    if (quantity < item.simple_addons.quantity) {
+      setQuantity(quantity + 1);
+    }
   };
   const handleSubstractQuantity = () => {
     if (quantity === 1) {
@@ -65,7 +68,7 @@ export default function BuyOptions({
     >
       <div className="p-1">
         <h1 className="text-xs font-semibold text-center text-body-light truncate">
-          {data.name}
+          {item.translation[locale].title}
         </h1>
       </div>
       <hr />
@@ -113,23 +116,29 @@ export default function BuyOptions({
       <motion.div variants={{ childVariants }} className="px-2 mt-2 ">
         <button
           onClick={() => {
-            if (isItemInCart(data.id)) {
-              handleRemoveItemFromCart(data.id);
+            if (cartItems.includes(item.id)) {
+              handleRemoveFromCart(item.id);
             } else {
-              handleAddItemToCart(data);
+              handleAddToCart(item.id);
             }
           }}
           className={`${
-            loadingButton === data.id
+            loadingButton === item.id
               ? 'bg-gray-300'
-              : isItemInCart(data.id)
+              : cartItems.includes(item.id)
               ? 'bg-main-color'
               : 'bg-green-700'
           } flex-1 text-main-text shadow-itemsSlider-shallow uppercase  p-2 rounded-lg text-xs sm:text-sm w-full   flex items-center justify-center font-semibold`}
         >
-          {loadingButton === data.id ? (
-            <MoonLoader size={15} color="#b72b2b" />
-          ) : isItemInCart(data.id) ? (
+          {loadingButton === item.id ? (
+            <Loader
+              type="ThreeDots"
+              color="#b72b2b"
+              height={15}
+              width={15}
+              visible={true}
+            />
+          ) : cartItems.includes(item.id) ? (
             <>
               <h1 className="whitespace-no-wrap">
                 {formatMessage({ id: 'remove-from-cart' })}

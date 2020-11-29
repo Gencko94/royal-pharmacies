@@ -1,16 +1,14 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { Link } from 'react-router-dom';
-
-export default function CartItemMobile({
+export default function GuestCartItemMobile({
   item,
-  handleRemoveItemFromCart,
   EditItemFromCart,
   removefromCartButtonLoading,
-  wishlistItems,
+  handleRemoveItemFromCart,
 }) {
   const { formatMessage, locale } = useIntl();
   const variant = {

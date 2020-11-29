@@ -7,9 +7,14 @@ import { FaHeart } from 'react-icons/fa';
 import { BsBagFill } from 'react-icons/bs';
 import { useIntl } from 'react-intl';
 import { motion } from 'framer-motion';
-
+import { AuthProvider } from '../../contexts/AuthContext';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function TopSection({ isLightTheme, toggleSideMenu }) {
   const { locale, formatMessage } = useIntl();
+  const { userId, authenticationLoading, userData } = React.useContext(
+    AuthProvider
+  );
   const listContainerVariants = {
     hidden: {
       y: -20,
@@ -23,19 +28,49 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
       },
     },
   };
+  const resolveUser = () => {
+    if (authenticationLoading) {
+      return (
+        <Loader
+          type="ThreeDots"
+          color="#fff"
+          height={15}
+          width={15}
+          visible={true}
+        />
+      );
+    } else if (!authenticationLoading && !userId) {
+      return (
+        <Link
+          to={`/${locale}/app/login`}
+          className="font-semibold inline-block"
+        >
+          {formatMessage({ id: 'hello-signin' })}
+        </Link>
+      );
+    } else if (!authenticationLoading && userId) {
+      return (
+        <h1 className="font-semibold">
+          {formatMessage({ id: 'hello' })} {userData.name} !
+        </h1>
+      );
+    }
+  };
   return (
     <div
-      className={`${
-        isLightTheme
-          ? 'bg-second-nav-light text-second-nav-text-light'
-          : 'bg-second-nav-dark text-second-nav-text-dark'
-      } p-1`}
+      className={`
+        bg-second-nav-light text-second-nav-text-light
+         
+       p-1`}
     >
       <div className={`p-1 flex items-center `}>
         <Hamburger toggleSideMenu={toggleSideMenu} />
         <div className=" flex-1 justify-center ">
           <NavLogoMobile />
         </div>
+      </div>
+      <div className="px-1 my-2 flex items-center justify-center">
+        {resolveUser()}
       </div>
       <div className="  px-1 my-2 ">
         <motion.div
@@ -44,7 +79,7 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
           animate="visible"
           initial="hidden"
         >
-          <motion.button className="  ">
+          <button className="  ">
             <Link
               to={`/${locale}`}
               style={{ width: '60px' }}
@@ -57,8 +92,8 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
                 {formatMessage({ id: 'home' })}
               </h1>
             </Link>
-          </motion.button>
-          <motion.button className="">
+          </button>
+          <button className="">
             <Link
               style={{ width: '60px' }}
               to={`/${locale}/cart`}
@@ -71,8 +106,8 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
                 {formatMessage({ id: 'cart' })}
               </h1>
             </Link>
-          </motion.button>
-          <motion.button className="">
+          </button>
+          <button className="">
             <Link
               style={{ width: '60px' }}
               to={`/${locale}/wishlist/`}
@@ -85,7 +120,7 @@ export default function TopSection({ isLightTheme, toggleSideMenu }) {
                 {formatMessage({ id: 'wishlist-short' })}
               </h1>
             </Link>
-          </motion.button>
+          </button>
         </motion.div>
       </div>
     </div>

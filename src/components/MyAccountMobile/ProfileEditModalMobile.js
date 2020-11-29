@@ -12,7 +12,7 @@ import ErrorSnackbar from '../ErrorSnackbar';
 
 export default function ProfileEditModalMobile({
   setProfileEditModalOpen,
-  data,
+  userData,
   editMutation,
 }) {
   const [errorOpen, setErrorOpen] = React.useState(false);
@@ -82,14 +82,15 @@ export default function ProfileEditModalMobile({
       </div>
       <Formik
         initialValues={{
-          email: data.email,
-          name: data.name,
+          email: userData.email || '',
+          name: userData.name,
         }}
         validationSchema={validationSchema}
         onSubmit={async values => {
           setErrorOpen(false);
           try {
             await editMutation(values);
+            setProfileEditModalOpen(false);
           } catch (error) {
             setErrorOpen(true);
             setErrorMessage('Something went wrong, Please try again');

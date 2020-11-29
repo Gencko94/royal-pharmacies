@@ -146,7 +146,7 @@ input {
 .wishlist-main-grid {
   display: grid;
   position: relative;
-  grid-template-columns: minmax(300px, 2.2fr) minmax(250px, 0.8fr);
+  grid-template-columns: minmax(300px, 0.7fr) minmax(250px, 0.3fr);
   gap: 0.5em;
 }
 .wishlist-grid-titles {
@@ -165,13 +165,13 @@ input {
 .cart-main-grid {
   display: grid;
   position: relative;
-  grid-template-columns: minmax(300px, 2.2fr) minmax(250px, 0.8fr);
+  grid-template-columns: 0.7fr minmax(250px, 0.3fr);
   gap: 0.5em;
 }
 
 .cart-grid-titles {
   display: grid;
-  grid-template-columns: 0.1fr 0.8fr 0.1fr;
+  grid-template-columns: 0.2fr 0.7fr 0.1fr;
   gap: 0.5em;
   margin-bottom: 0.2em;
 }

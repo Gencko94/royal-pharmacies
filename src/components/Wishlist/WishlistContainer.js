@@ -13,6 +13,7 @@ export default function WishlistContainer({
   addToCartButtonLoading,
   handleRemoveFromCart,
   handleAddToCart,
+  cartItems,
 }) {
   const { formatMessage, locale } = useIntl();
   if (wishlistItemsLoading) {
@@ -41,6 +42,7 @@ export default function WishlistContainer({
                     addToCartButtonLoading={addToCartButtonLoading}
                     handleAddToCart={handleAddToCart}
                     handleRemoveFromCart={handleRemoveFromCart}
+                    cartItems={cartItems}
                   />
                 );
               })}

@@ -34,7 +34,7 @@ export default function NavCategory() {
         style={{ top: '62px' }}
       >
         <div className="max-w-default mx-auto  px-4 ">
-          <div className="relative items-center flex">
+          <div className="relative flex">
             {hideAllCategories && <AllCategories />}
             <ReactHoverObserver hoverDelayInMs={300}>
               <NavCategoriesContainer

@@ -1,21 +1,16 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import CartEmpty from './CartEmpty';
-import CartItem from './CartItem';
-import CartContainerLoader from './loaders/CartContainerLoader';
+import CartEmpty from '../CartEmpty';
+import CartContainerLoader from '../loaders/CartContainerLoader';
+import GuestCartItem from './GuestCartItem';
 
-export default function CartContainer({
+export default function GuestCartContainer({
   cartItemsLoading,
   cartItems,
-  removefromCartButtonLoading,
-  handleRemoveItemFromCart,
-  handleAddItemToWishlist,
-  handleRemoveItemFromWishlist,
-  addToWishListButtonLoading,
   cartTotal,
-  wishlistItems,
 }) {
+  const { formatMessage, locale } = useIntl();
   const resolvePlural = () => {
     switch (cartItems.length) {
       case 1:
@@ -30,7 +25,6 @@ export default function CartContainer({
         return formatMessage({ id: 'multiple-items' });
     }
   };
-  const { formatMessage, locale } = useIntl();
   if (cartItemsLoading) {
     return <CartContainerLoader locale={locale} />;
   }
@@ -43,7 +37,6 @@ export default function CartContainer({
         <>
           <div className="cart-grid-titles font-semibold text-lg">
             <div></div>
-            {/* <h1 className="  ">{formatMessage({ id: 'shopping-cart' })}</h1> */}
             <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1>
             <h1 className="text-center">{formatMessage({ id: 'price' })}</h1>
           </div>
@@ -57,17 +50,16 @@ export default function CartContainer({
               <AnimatePresence>
                 {cartItems.map(item => {
                   return (
-                    <CartItem
+                    <GuestCartItem
                       key={item.id}
                       item={item}
-                      handleRemoveItemFromCart={handleRemoveItemFromCart}
-                      removefromCartButtonLoading={removefromCartButtonLoading}
-                      handleRemoveItemFromWishlist={
-                        handleRemoveItemFromWishlist
-                      }
-                      handleAddItemToWishlist={handleAddItemToWishlist}
-                      addToWishListButtonLoading={addToWishListButtonLoading}
-                      wishlistItems={wishlistItems}
+                      // handleRemoveItemFromCart={handleRemoveItemFromCart}
+                      // removefromCartButtonLoading={removefromCartButtonLoading}
+                      // handleRemoveItemFromWishlist={
+                      //   handleRemoveItemFromWishlist
+                      // }
+                      // handleAddItemToWishlist={handleAddItemToWishlist}
+                      // addToWishListButtonLoading={addToWishListButtonLoading}
                     />
                   );
                 })}

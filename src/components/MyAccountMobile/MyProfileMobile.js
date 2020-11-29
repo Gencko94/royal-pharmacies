@@ -2,9 +2,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
-import { queryCache, useMutation, useQuery } from 'react-query';
 import Select from 'react-select';
-import { editUserProfileInfo, getUserProfileInfo } from '../../Queries/Queries';
+import { AuthProvider } from '../../contexts/AuthContext';
 import ProfileEditModalMobile from './ProfileEditModalMobile';
 
 export default function MyProfileMobile() {
@@ -15,42 +14,12 @@ export default function MyProfileMobile() {
   ];
   const [language, setLanguage] = React.useState(languages[1]);
   const [profileEditModalOpen, setProfileEditModalOpen] = React.useState(false);
-  /**
-   * Main Fetch
-   */
-
-  const { data, isLoading } = useQuery(
-    'userProfile',
-    async () => {
-      const res = await getUserProfileInfo();
-      return res.userData;
-    },
-    { refetchOnWindowFocus: false }
-  );
-
-  /**
-   * Edit Fetch
-   */
-
-  const [editMutation] = useMutation(
-    async data => {
-      const res = await editUserProfileInfo(data);
-      return res.userData;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData('userProfile', prev => {
-          return {
-            ...prev,
-            email: data.email,
-            name: data.name,
-          };
-        });
-        setProfileEditModalOpen(false);
-      },
-      throwOnError: true,
-    }
-  );
+  const {
+    userData,
+    editMutation,
+    authenticationLoading,
+    authenticationFetching,
+  } = React.useContext(AuthProvider);
 
   const containerVariants = {
     hidden: {
@@ -66,7 +35,7 @@ export default function MyProfileMobile() {
       opacity: 0,
     },
   };
-  if (isLoading)
+  if (authenticationLoading || authenticationFetching)
     return (
       <div className=" p-4 " style={{ height: 'calc(-173px + 100vh)' }}>
         <div className="flex h-full justify-center items-center">
@@ -75,7 +44,7 @@ export default function MyProfileMobile() {
             color="#b72b2b"
             height={40}
             width={40}
-            visible={isLoading}
+            visible={true}
           />
         </div>
       </div>
@@ -107,20 +76,20 @@ export default function MyProfileMobile() {
               <h1 className=" font-semibold w-2/4">
                 {formatMessage({ id: 'full-name' })}
               </h1>
-              <h1 className="">{data.name}</h1>
+              <h1 className="">{userData.name}</h1>
             </div>
 
             <div className="py-4 px-3 flex  bg-red-100">
               <h1 className=" font-semibold w-2/4">
                 {formatMessage({ id: 'phone-number' })}
               </h1>
-              <h1 className="">{data.mobile}</h1>
+              <h1 className="">{userData.mobile}</h1>
             </div>
             <div className="py-4 px-3 flex  ">
               <h1 className=" font-semibold w-2/4">
                 {formatMessage({ id: 'email-address' })}
               </h1>
-              <h1 className="">{data.email}</h1>
+              <h1 className="">{userData.email}</h1>
             </div>
           </div>
         </div>
@@ -171,7 +140,7 @@ export default function MyProfileMobile() {
       <AnimatePresence>
         {profileEditModalOpen && (
           <ProfileEditModalMobile
-            data={data}
+            userData={userData}
             setProfileEditModalOpen={setProfileEditModalOpen}
             editMutation={editMutation}
           />

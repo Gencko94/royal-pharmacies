@@ -1,6 +1,11 @@
 import React from 'react';
 import { queryCache, useMutation, useQuery } from 'react-query';
-import { checkAuth, userLogin, userRegister } from '../Queries/Queries';
+import {
+  checkAuth,
+  editUserProfileInfo,
+  userLogin,
+  userRegister,
+} from '../Queries/Queries';
 export const AuthProvider = React.createContext();
 export default function AuthContext({ children }) {
   /**
@@ -24,27 +29,32 @@ export default function AuthContext({ children }) {
     isLoading: authenticationLoading,
     isError,
     isFetching: authenticationFetching,
-  } = useQuery(
-    'authentication',
-    async () => {
-      const mrgAuthToken = localStorage.getItem('mrgAuthToken');
-      const res = await checkAuth(mrgAuthToken);
-      return res;
+  } = useQuery('authentication', checkAuth, {
+    retry: 0,
+    refetchOnWindowFocus: false,
+    // onSuccess: data => {
+    //   queryCache.setQueryData('userProfile', prev => {
+    //     return {
+    //       ...prev,
+    //       ...data.userData,
+    //     };
+    //   });
+    // },
+  });
+  /**
+   * Edit user Info
+   */
+  const [editMutation] = useMutation(editUserProfileInfo, {
+    onSuccess: data => {
+      queryCache.setQueryData('authentication', prev => {
+        return {
+          ...prev,
+          userData: data.userData,
+        };
+      });
     },
-    {
-      retry: 0,
-      refetchOnWindowFocus: false,
-      onSuccess: data => {
-        queryCache.setQueryData('userProfile', prev => {
-          return {
-            ...prev,
-            ...data.userData,
-          };
-        });
-      },
-    }
-  );
-
+    throwOnError: true,
+  });
   /**
    * User Login
    */
@@ -109,7 +119,7 @@ export default function AuthContext({ children }) {
    */
   const [userLogoutMutation] = useMutation(() => {
     queryCache.setQueryData('authentication', () => {
-      return { isAuthenticated: false };
+      return { isAuthenticated: false, userData: { userId: null } };
     });
     localStorage.removeItem('mrgAuthToken');
   });
@@ -149,6 +159,7 @@ export default function AuthContext({ children }) {
         userLogoutMutation,
         userData: data?.userData,
         userId: data?.userData?.id,
+        editMutation,
       }}
     >
       {children}

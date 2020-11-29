@@ -23,7 +23,9 @@ export default function SideMenu({
   sideMenuRef,
   isLightTheme,
 }) {
-  const { isAuthenticated, userLogout } = React.useContext(AuthProvider);
+  const { isAuthenticated, userLogoutMutation } = React.useContext(
+    AuthProvider
+  );
   const { sidebarCategories } = React.useContext(DataProvider);
   const [products, setProducts] = React.useState(false);
   const [page, setPage] = React.useState(0);
@@ -272,7 +274,7 @@ export default function SideMenu({
                 variants={childVariants}
                 onClick={() => {
                   toggleSideMenu();
-                  userLogout();
+                  userLogoutMutation();
                 }}
                 className="py-2 px-2 mb-2"
               >

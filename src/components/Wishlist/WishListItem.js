@@ -4,7 +4,8 @@ import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import Rating from 'react-rating';
 import { Link } from 'react-router-dom';
-import { MoonLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 export default function WishListItem({
   item,
@@ -13,6 +14,7 @@ export default function WishListItem({
   addToCartButtonLoading,
   handleAddToCart,
   handleRemoveFromCart,
+  cartItems,
 }) {
   const { formatMessage, locale } = useIntl();
   const variant = {
@@ -78,7 +80,13 @@ export default function WishListItem({
             style={{ width: '200px' }}
           >
             {removeFromWishListButtonLoading === item.id ? (
-              <MoonLoader size={18} color="#b72b2b" />
+              <Loader
+                type="ThreeDots"
+                color="#b72b2b"
+                height={20}
+                width={20}
+                visible={true}
+              />
             ) : (
               <>
                 <h1 className="mx-2 whitespace-no-wrap">
@@ -88,26 +96,32 @@ export default function WishListItem({
             )}
           </button>
 
-          {/* <button
+          <button
             onClick={() => {
-              if (item.itemInCart) {
+              if (cartItems.includes(item.id)) {
                 handleRemoveFromCart(item.id);
               } else {
                 handleAddToCart(item);
               }
             }}
             className={`${
-              addToCartButtonLoading
+              addToCartButtonLoading === item.id
                 ? 'bg-gray-300'
-                : item.itemInCart
+                : cartItems.includes(item.id)
                 ? 'bg-main-color'
                 : 'bg-green-700'
             }  text-main-text   p-2 rounded flex items-center justify-center mx-2 font-semibold uppercase`}
             style={{ width: '200px' }}
           >
-            {addToCartButtonLoading ? (
-              <MoonLoader size={19} color="#b72b2b" />
-            ) : item.itemInCart ? (
+            {addToCartButtonLoading === item.id ? (
+              <Loader
+                type="ThreeDots"
+                color="#b72b2b"
+                height={20}
+                width={20}
+                visible={true}
+              />
+            ) : cartItems.includes(item.id) ? (
               <>
                 <h1 className="mx-2 whitespace-no-wrap">
                   {formatMessage({ id: 'remove-from-cart' })}
@@ -118,7 +132,7 @@ export default function WishListItem({
                 <h1 className="mx-2">{formatMessage({ id: 'add-to-cart' })}</h1>
               </>
             )}
-          </button> */}
+          </button>
         </div>
       </div>
     </motion.div>

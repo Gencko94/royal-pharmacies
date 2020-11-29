@@ -4,10 +4,9 @@ import Select from 'react-select';
 import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { queryCache, useMutation, useQuery } from 'react-query';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { editUserProfileInfo, getUserProfileInfo } from '../../Queries/Queries';
+import { AuthProvider } from '../../contexts/AuthContext';
 export default function MyProfile() {
   const { isLightTheme } = React.useContext(DataProvider);
   const { formatMessage } = useIntl();
@@ -17,44 +16,13 @@ export default function MyProfile() {
   ];
   const [language, setLanguage] = React.useState(languages[1]);
   const [profileEditModalOpen, setProfileEditModalOpen] = React.useState(false);
+  const {
+    userData,
+    editMutation,
+    authenticationLoading,
+    authenticationFetching,
+  } = React.useContext(AuthProvider);
 
-  /**
-   * Main Fetch
-   */
-
-  const { data, isLoading, isError } = useQuery(
-    'userProfile',
-    async () => {
-      const res = await getUserProfileInfo();
-      console.log(res);
-      return res.userData;
-    },
-    { refetchOnWindowFocus: false }
-  );
-
-  /**
-   * Edit Fetch
-   */
-
-  const [editMutation] = useMutation(
-    async data => {
-      const res = await editUserProfileInfo(data);
-      return res.userData;
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData('userProfile', prev => {
-          return {
-            ...prev,
-            email: data.email,
-            name: data.name,
-          };
-        });
-        setProfileEditModalOpen(false);
-      },
-      throwOnError: true,
-    }
-  );
   const containerVariants = {
     hidden: {
       x: '100%',
@@ -69,7 +37,7 @@ export default function MyProfile() {
       opacity: 0,
     },
   };
-  if (isLoading) {
+  if (authenticationLoading || authenticationFetching) {
     return (
       <motion.div
         variants={containerVariants}
@@ -85,30 +53,30 @@ export default function MyProfile() {
             color="#b72b2b"
             height={40}
             width={40}
-            visible={isLoading}
+            visible={true}
           />
         </div>
       </motion.div>
     );
   }
-  if (isError) {
-    return (
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="relative"
-        style={{ height: 'calc(-90px + 100vh)' }}
-      >
-        <div className="flex h-full justify-center items-center">
-          <h1 className="text-lg font-semibold">
-            {formatMessage({ id: 'something-went-wrong-snackbar' })}
-          </h1>
-        </div>
-      </motion.div>
-    );
-  }
+  // if (isError) {
+  //   return (
+  //     <motion.div
+  //       variants={containerVariants}
+  //       initial="hidden"
+  //       animate="visible"
+  //       exit="exit"
+  //       className="relative"
+  //       style={{ height: 'calc(-90px + 100vh)' }}
+  //     >
+  //       <div className="flex h-full justify-center items-center">
+  //         <h1 className="text-lg font-semibold">
+  //           {formatMessage({ id: 'something-went-wrong-snackbar' })}
+  //         </h1>
+  //       </div>
+  //     </motion.div>
+  //   );
+  // }
   return (
     <motion.div
       variants={containerVariants}
@@ -134,7 +102,7 @@ export default function MyProfile() {
           <div>
             <div className={` py-4 px-3 flex    `}>
               <h1 className="  w-2/4">{formatMessage({ id: 'full-name' })}</h1>
-              <h1 className="">{data.name}</h1>
+              <h1 className="">{userData.name}</h1>
             </div>
             <hr />
           </div>
@@ -143,7 +111,7 @@ export default function MyProfile() {
               <h1 className="  w-2/4">
                 {formatMessage({ id: 'phone-number' })}
               </h1>
-              <h1 className="">{data.mobile}</h1>
+              <h1 className="">{userData.mobile}</h1>
             </div>
             <hr />
           </div>
@@ -152,7 +120,7 @@ export default function MyProfile() {
               <h1 className="  w-2/4">
                 {formatMessage({ id: 'email-address' })}
               </h1>
-              <h1 className="">{data.email}</h1>
+              <h1 className="">{userData.email}</h1>
             </div>
             <hr />
           </div>
@@ -161,7 +129,7 @@ export default function MyProfile() {
               <h1 className="  w-2/4">
                 {formatMessage({ id: 'date-joined' })}
               </h1>
-              <h1 className="">{data.created_at}</h1>
+              <h1 className="">{userData.created_at}</h1>
             </div>
             <hr />
           </div>
@@ -215,9 +183,9 @@ export default function MyProfile() {
       <AnimatePresence>
         {profileEditModalOpen && (
           <ProfileEditModal
-            editMutation={editMutation}
-            data={data}
+            userData={userData}
             setProfileEditModalOpen={setProfileEditModalOpen}
+            editMutation={editMutation}
           />
         )}
       </AnimatePresence>

@@ -7,6 +7,8 @@ import { useIntl } from 'react-intl';
 import { DataProvider } from '../../../contexts/DataContext';
 import SliderItem from './SliderItem';
 import { queryCache, useMutation, useQuery } from 'react-query';
+import { addToCart, removeFromCart } from '../../../Queries/Queries';
+import { AuthProvider } from '../../../contexts/AuthContext';
 // import { getItemsByType } from '../../../Queries/Queries';
 
 const RightArrow = ({ onClick }) => {
@@ -30,7 +32,7 @@ const LeftArrow = ({ onClick }) => {
   );
 };
 
-export default function ItemsSlider({ title, type }) {
+export default function ItemsSlider({ data, title }) {
   const settings = {
     className: '',
     arrows: true,
@@ -95,7 +97,7 @@ export default function ItemsSlider({ title, type }) {
   const [size, setSize] = React.useState('xs');
   const [quantity, setQuantity] = React.useState(1);
   const [activeBuyOptions, setActiveBuyOptions] = React.useState(null);
-
+  const { userId } = React.useContext(AuthProvider);
   const [loadingButton, setLoadingButton] = React.useState(null);
   const handleBuyOptionsToggle = id => {
     if (activeBuyOptions === id) {
@@ -108,84 +110,38 @@ export default function ItemsSlider({ title, type }) {
     setSize('xs');
     setQuantity(1);
   };
+  const [cartItems, setCartItems] = React.useState([]);
 
-  const isItemInCart = id => {
-    const itemInCart = data.cartItems.find(item => id === item.id);
-    if (!itemInCart) {
-      return false;
-    } else {
-      return true;
+  const handleAddToCart = async id => {
+    setLoadingButton(id);
+    try {
+      const res = await addToCart(
+        {
+          id,
+          quantity,
+        },
+        userId
+      );
+      setCartItems(prev => {
+        return prev.push(id);
+      });
+    } catch (error) {
+      setLoadingButton(null);
+      console.error(error.response);
     }
   };
-
-  /**
-   * Main Fetch
-   */
-  const { data, isLoading, refetch } = useQuery(
-    ['slides', type],
-    async (key, type) => {
-      const res = await getItemsByType(type);
-      // const res = await getItemsByType()
-      return res;
-    },
-    { refetchOnWindowFocus: false }
-  );
-
-  /**
-   * Add to cart Mutation
-   */
-
-  const [addMutation] = useMutation(
-    async item => {
-      setLoadingButton(item.id);
-      const res = await addItemToCart(item);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        setLoadingButton(null);
-        queryCache.setQueryData(['slides', type], prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-          };
-        });
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-          };
-        });
-        refetch();
-      },
+  const handleRemoveFromCart = async id => {
+    setLoadingButton(id);
+    try {
+      const res = await removeFromCart(id, userId);
+      setCartItems(prev => {
+        return prev.filter(i => i !== id);
+      });
+    } catch (error) {
+      setLoadingButton(null);
+      console.error(error.response);
     }
-  );
-  /**
-   * remove from cart Mutation
-   */
-
-  const [removeMutation] = useMutation(
-    async id => {
-      setLoadingButton(id);
-      const res = await removeItemFromCart(id);
-      return res;
-    },
-    {
-      onSuccess: data => {
-        setLoadingButton(null);
-        queryCache.setQueryData('cartItems', prev => {
-          return {
-            ...prev,
-            cartItems: data.cartItems,
-            cartTotal: data.cartTotal,
-          };
-        });
-        refetch();
-      },
-    }
-  );
-
+  };
   return (
     <div className="my-6 overflow-hidden   ">
       <div className="flex items-center mb-4">
@@ -195,7 +151,7 @@ export default function ItemsSlider({ title, type }) {
         </button>
       </div>
       <Slider className="" {...settings}>
-        {isLoading &&
+        {/* {isLoading &&
           [0, 1, 2, 3, 4, 5].map(i => (
             <div key={i} className="px-2 my-4">
               <ContentLoader
@@ -212,25 +168,24 @@ export default function ItemsSlider({ title, type }) {
                 <rect x="0" y="500" rx="5" ry="5" width="100%" height="50" />
               </ContentLoader>
             </div>
-          ))}
-        {!isLoading &&
-          data.items.map(item => {
-            return (
-              <SliderItem
-                key={item.id}
-                loadingButton={loadingButton}
-                isItemInCart={isItemInCart}
-                data={item}
-                activeBuyOptions={activeBuyOptions}
-                setQuantity={setQuantity}
-                handleBuyOptionsToggle={handleBuyOptionsToggle}
-                options={{ size, quantity }}
-                setSize={setSize}
-                addMutation={addMutation}
-                removeMutation={removeMutation}
-              />
-            );
-          })}
+          ))} */}
+        {data.map(item => {
+          return (
+            <SliderItem
+              key={item.id}
+              handleAddToCart={handleAddToCart}
+              handleRemoveFromCart={handleRemoveFromCart}
+              loadingButton={loadingButton}
+              cartItems={cartItems}
+              item={item}
+              activeBuyOptions={activeBuyOptions}
+              setQuantity={setQuantity}
+              handleBuyOptionsToggle={handleBuyOptionsToggle}
+              options={{ size, quantity }}
+              setSize={setSize}
+            />
+          );
+        })}
       </Slider>
     </div>
   );

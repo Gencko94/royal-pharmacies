@@ -35,13 +35,53 @@ import { getHomeItems } from '../Queries/Queries';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const { isLightTheme } = React.useContext(DataProvider);
   /**
    * Main Fetch
    */
 
-  const { data, isLoading } = useQuery('homeShowcase', getHomeItems);
+  const { data, isLoading } = useQuery('homeShowcase', getHomeItems, {
+    retry: true,
+    refetchOnWindowFocus: false,
+  });
+  const resolveType = item => {
+    switch (item.type) {
+      case 'best_seller':
+        return (
+          <LazyLoad>
+            <ItemsSlider
+              data={item.data}
+              title={item.translation[locale].title}
+            />
+          </LazyLoad>
+        );
+      case 'product_by_category':
+        return (
+          <LazyLoad>
+            <ItemsSlider
+              data={item.data}
+              title={item.translation[locale].title}
+            />
+          </LazyLoad>
+        );
+      case 'banner':
+        return (
+          <LazyLoad>
+            <Banner
+              url={
+                isTabletOrAbove
+                  ? item.data.banner_desktop.link
+                  : item.data.banner_mobile.link
+              }
+            />
+          </LazyLoad>
+        );
+
+      default:
+        return null;
+    }
+  };
   return (
     <Layout>
       <Helmet>
@@ -68,19 +108,21 @@ export default function Home() {
           } mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
         >
           <Categories />
-          <ItemsSlider
+          {!isLoading && data.map(i => resolveType(i))}
+
+          {/* <ItemsSlider
             type="bestSellers"
             miniLogo={false}
             title={formatMessage({ id: 'bestSellers' })}
             isLightTheme={isLightTheme}
-          />
-          {!isTabletOrAbove && <Banner img={ipad} />}
-          <LazyLoad>
+          /> */}
+          {/* {!isTabletOrAbove && <Banner img={ipad} />} */}
+          {/* <LazyLoad>
             <PhotoCategories
               data={[mobiles, tablets, computers, audiovideo]}
               title={formatMessage({ id: 'mobilesElectronics' })}
             />
-          </LazyLoad>
+          </LazyLoad> */}
 
           {/* <AnimatedSlides
             data={[
@@ -90,43 +132,43 @@ export default function Home() {
               { title: 'iPhone Red', photo: iphonered },
             ]}
           /> */}
-          <LazyLoad offset={300}>
+          {/* <LazyLoad offset={300}>
             <ItemsSlider
               type="phone"
               miniLogo={false}
               isLightTheme={isLightTheme}
               title="Save Big with Phones & Tablets"
             />
-          </LazyLoad>
-          <LazyLoad offset={200}>
+          </LazyLoad> */}
+          {/* <LazyLoad offset={200}>
             {!isTabletOrAbove && <Banner img={earbuds} />}
-          </LazyLoad>
-          {isTabletOrAbove && <Banner img={offer} />}
-          <LazyLoad>
+          </LazyLoad> */}
+          {/* {isTabletOrAbove && <Banner img={offer} />} */}
+          {/* <LazyLoad>
             <PhotoCategories data={[homeapp, kitchen, appliances]} />
-          </LazyLoad>
-          <LazyLoad offset={300}>
+          </LazyLoad> */}
+          {/* <LazyLoad offset={300}>
             <ItemsSlider
               type="home"
               miniLogo={false}
               isLightTheme={isLightTheme}
               title="Explore our Household Collection"
             />
-          </LazyLoad>
+          </LazyLoad> */}
           {/* Fashion Section */}
           {/* <div className="bg-red-200"> */}
-          {isTabletOrAbove && <Banner img={fashionbanner} />}
-          <LazyLoad>
+          {/* {isTabletOrAbove && <Banner img={fashionbanner} />} */}
+          {/* <LazyLoad>
             <PhotoCategories data={[men, women, kids]} />
-          </LazyLoad>
-          <LazyLoad offset={300}>
+          </LazyLoad> */}
+          {/* <LazyLoad offset={300}>
             <ItemsSlider
               type="fashion"
               miniLogo={false}
               isLightTheme={isLightTheme}
               title="Check out the latest fashion trends"
             />
-          </LazyLoad>
+          </LazyLoad> */}
           {/* </div> */}
         </div>
       </div>

@@ -10,7 +10,12 @@ export default function Logo() {
       style={{ flexBasis: '120px' }}
     >
       <Link to={`/${locale}/`} className="text-second-nav-light">
-        <img src={logo} alt="MRG-logo" className="w-24" />
+        <img
+          // src={`${process.env.REACT_ARR_IMAGES_URL}/original/1606668053-mrgnavlogo-setting-store_logo.png`}
+          src={logo}
+          alt="MRG-logo"
+          className="w-24"
+        />
       </Link>
     </div>
   );

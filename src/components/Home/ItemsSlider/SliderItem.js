@@ -5,44 +5,45 @@ import { BsPlus } from 'react-icons/bs';
 import { useIntl } from 'react-intl';
 import MultiClamp from 'react-multi-clamp';
 import BuyOptions from './BuyOptions';
+import { useHistory } from 'react-router-dom';
 
 export default function SliderItem({
-  data,
+  item,
   isItemInCart,
   activeBuyOptions,
   loadingButton,
   setSize,
-
+  handleAddToCart,
+  handleRemoveFromCart,
   setQuantity,
   handleBuyOptionsToggle,
   options,
-  addMutation,
-  removeMutation,
+  cartItems,
 }) {
   const { locale } = useIntl();
 
-  const handleAddItemToCart = async data => {
-    try {
-      await addMutation({
-        id: data.id,
-        photo: data.photos.small,
-        quantity: options.quantity,
-        price: data.price,
-        name: data.name,
-        options,
-        category: data.category,
-        rating: data.rating,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleRemoveItemFromCart = async data => {
-    try {
-      await removeMutation(data);
-    } catch (error) {}
-  };
-
+  // const handleAddItemToCart = async data => {
+  //   try {
+  //     await addMutation({
+  //       id: data.id,
+  //       photo: data.photos.small,
+  //       quantity: options.quantity,
+  //       price: data.price,
+  //       name: data.name,
+  //       options,
+  //       category: data.category,
+  //       rating: data.rating,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // const handleRemoveItemFromCart = async data => {
+  //   try {
+  //     await removeMutation(data);
+  //   } catch (error) {}
+  // };
+  const history = useHistory();
   return (
     <div className="my-4  px-2   ">
       <div
@@ -53,16 +54,11 @@ export default function SliderItem({
         <span className="sale-mini__banner text-xs font-semibold bg-main-color text-main-text px-1 ">
           50% OFF
         </span>
-        <a
-          href={`/${locale}/${data.category.replace(
-            /\s|%|,/g,
-            '-'
-          )}/${data.name.replace(/\s|%|,|-/g, '-')}/${data.id}`}
-        >
+        <a href={`/${locale}/c/${item.id}`}>
           <img
-            title={data.name}
-            src={data.photos.small}
-            alt={data.name}
+            title={item.translation[locale].title}
+            src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.image.link}`}
+            alt={item.translation[locale].title}
             className=""
           />
         </a>
@@ -78,25 +74,22 @@ export default function SliderItem({
         >
           <div className="p-2" style={{ height: '40px' }}>
             <a
-              title={data.name}
+              title={item.translation[locale].title}
               className="hover:underline"
-              href={`/${locale}/${data.category.replace(
-                /\s|%|,/g,
-                '-'
-              )}/${data.name.replace(/\s|%|,|-/g, '-')}/${data.id}`}
+              href={`/${locale}/c/${item.id}`}
             >
               <MultiClamp className=" text-gray-800" clamp={2} ellipsis="...">
-                {data.name}
+                {item.translation[locale].title}
               </MultiClamp>
             </a>
           </div>
 
           <div className=" py-2 px-3 flex items-center justify-between">
             <p className="   text-lg font-semibold text-main-color whitespace-no-wrap">
-              {data.price} <span className="text-xs ">KD</span>
+              50 <span className="text-xs ">KD</span>
             </p>
             <button
-              onClick={() => handleBuyOptionsToggle(data.id)}
+              onClick={() => handleBuyOptionsToggle(item.id)}
               className=" rounded-full  p-2  shadow-itemsSlider-shallow relative text-body-light z-3 bg-main-color"
             >
               <TiShoppingCart
@@ -121,16 +114,17 @@ export default function SliderItem({
           </div>
         </div>
         <AnimatePresence>
-          {activeBuyOptions === data.id && (
+          {activeBuyOptions === item.id && (
             <BuyOptions
+              cartItems={cartItems}
               setQuantity={setQuantity}
-              data={data}
+              item={item}
               options={options}
               setSize={setSize}
               loadingButton={loadingButton}
               isItemInCart={isItemInCart}
-              handleRemoveItemFromCart={handleRemoveItemFromCart}
-              handleAddItemToCart={handleAddItemToCart}
+              handleRemoveFromCart={handleRemoveFromCart}
+              handleAddToCart={handleAddToCart}
             />
           )}
         </AnimatePresence>

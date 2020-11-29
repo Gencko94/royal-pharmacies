@@ -5,13 +5,13 @@ import { useIntl } from 'react-intl';
 import MultiClamp from 'react-multi-clamp';
 import { Link } from 'react-router-dom';
 import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
+import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 
 export default function SideCartMenuMobile({
-  cartItems,
   handleRemoveFromCart,
   setSideMenuOpen,
-  cartTotal,
 }) {
+  const { cartItems, cartTotal } = React.useContext(CartAndWishlistProvider);
   const handleCloseMenu = () => {
     setSideMenuOpen(false);
   };
@@ -101,46 +101,40 @@ export default function SideCartMenuMobile({
                   >
                     <div className="">
                       <Link
-                        title={item.name}
+                        title={`${item[`name_${locale}`]}`}
                         className="hover:underline"
-                        to={`/${locale}/${item.category.replace(
-                          /\s|%|,/g,
-                          '-'
-                        )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
+                        to={`/${locale}/c/${item.id}`}
                       >
                         <img
-                          src={item.photo}
-                          alt={item.name}
+                          src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.image}`}
+                          alt={`${item[`name_${locale}`]}`}
                           className="max-w-full h-auto"
                         />
                       </Link>
                     </div>
                     <div className="">
                       <Link
-                        title={item.name}
+                        title={`${item[`name_${locale}`]}`}
                         className="hover:underline"
-                        to={`/${locale}/${item.category.replace(
-                          /\s|%|,/g,
-                          '-'
-                        )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
+                        to={`/${locale}/c/${item.id}`}
                       >
                         <MultiClamp
                           className="font-semibold text-sm "
                           clamp={4}
                           ellipsis="..."
                         >
-                          {item.name}
+                          {`${item[`name_${locale}`]}`}
                         </MultiClamp>
                       </Link>
 
                       <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-                        {item.price} KD
+                        {item.price * item.qty} KD
                       </h1>
                       <div>
                         <button
                           className="bg-main-color text-main-text text-xs rounded p-1 my-1"
                           onClick={() => {
-                            handleRemoveFromCart(item.id);
+                            handleRemoveFromCart(item.id, item.cart_id);
                           }}
                         >
                           {formatMessage({ id: 'remove-from-cart' })}

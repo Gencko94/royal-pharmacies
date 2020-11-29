@@ -86,7 +86,7 @@ export default function SingleProductMobile() {
   const handleAddToWishList = async () => {
     setAddToWishListButtonLoading(true);
     try {
-      await addToWishListMutation(data.id, userId);
+      await addToWishListMutation({ id: data.id, userId });
       setAddToWishListButtonLoading(false);
       setItemInWishList(true);
     } catch (error) {
@@ -131,31 +131,25 @@ export default function SingleProductMobile() {
     }, 2000);
   };
 
-  const handleAddToCart = async ({ id, quantity }) => {
+  const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
     try {
-      await addToCartMutation({
-        id,
-        quantity: quantity.value,
-        price: data.item.price,
-        name: data.item.name,
-        photo: data.item.photos.small,
-        category: data.item.category,
-        color,
-        size,
-        rating: data.rating,
-      });
+      const newItem = { id: data.id, quantity: quantity, size, color };
+      console.log(userId);
+      await addToCartMutation({ newItem, userId });
       setAddToCartButtonLoading(false);
       setSideMenuOpen(true);
+      setItemInCart(true);
     } catch (error) {
-      setAddToCartButtonLoading(false);
       console.log(error.response);
+      console.log(error);
+      setAddToCartButtonLoading(false);
     }
   };
-  const handleRemoveFromCart = async id => {
+  const handleRemoveFromCart = async (id, cart_id) => {
     setAddToCartButtonLoading(true);
     try {
-      await removeFromCartMutation(id);
+      await removeFromCartMutation({ id, cart_id, userId });
       setAddToCartButtonLoading(false);
       setItemInCart(false);
     } catch (error) {
@@ -231,6 +225,7 @@ export default function SingleProductMobile() {
                 reviews={data.reviews}
                 rating={data.rating}
                 setDetailsTab={setDetailsTab}
+                userId={userId}
               />
 
               <hr />

@@ -2,7 +2,7 @@ import React from 'react';
 import { FaMapMarkedAlt } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
 import manWithMap from '../../../assets/illustrations/manWithMap.svg';
-export default function NoAddresses({ isLightTheme, setShowMap }) {
+export default function NoAddresses({ setShowMap }) {
   const { formatMessage } = useIntl();
   return (
     <div
@@ -21,11 +21,11 @@ export default function NoAddresses({ isLightTheme, setShowMap }) {
         </h1>
         <button
           onClick={() => setShowMap(true)}
-          className={` mt-3  font-semibold flex items-center rounded px-4 py-2  ${
-            isLightTheme
-              ? 'bg-btn-primary-light text-btn-secondary-light'
-              : 'bg-btn-primary-dark text-btn-secondary-dark'
-          } `}
+          className={` mt-3  font-semibold flex items-center rounded px-4 py-2 
+           
+             bg-btn-primary-light text-btn-secondary-light
+            
+           `}
         >
           <h1 className="mx-2 uppercase">
             {formatMessage({ id: 'add-new-address' })}

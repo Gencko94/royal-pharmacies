@@ -21,7 +21,7 @@ export default function ItemDescription({
   addToWishListButtonLoading,
   handleAddToWishList,
   handleRemoveFromWishList,
-  isAuthenticated,
+  userId,
   size,
   setSize,
   color,
@@ -48,7 +48,7 @@ export default function ItemDescription({
     }
   };
   const addToWishList = () => {
-    if (!isAuthenticated) {
+    if (!userId) {
       setSnackBarOpen(true);
       setTimeout(() => {
         setSnackBarOpen(false);
@@ -167,9 +167,22 @@ export default function ItemDescription({
           <hr className="my-2" />
         </>
       )} */}
-      <div className="relative flex items-center justify-between">
+      <div
+        className="relative"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '0.5fr 0.5fr',
+          gap: '0.5rem',
+        }}
+      >
         <button
-          onClick={itemInCart ? handleRemoveFromCart : handleAddToCart}
+          onClick={() => {
+            if (itemInCart) {
+              handleRemoveFromCart(data.id);
+            } else {
+              handleAddToCart();
+            }
+          }}
           className={`${
             addToCartButtonLoading
               ? 'bg-gray-300'
@@ -182,8 +195,8 @@ export default function ItemDescription({
             <Loader
               type="ThreeDots"
               color="#b72b2b"
-              height={20}
-              width={20}
+              height={25}
+              width={25}
               visible={addToCartButtonLoading}
             />
           ) : itemInCart ? (
@@ -206,19 +219,17 @@ export default function ItemDescription({
         </button>
         <button
           onClick={addToWishList}
-          className={`${
-            addToWishListButtonLoading
-              ? 'bg-gray-300'
-              : ' border border-main-color text-main-color'
-          } flex-1 text-sm py-2 px-2 rounded uppercase  flex items-center justify-center font-semibold`}
+          className={`
+              border border-main-color text-main-color
+           flex-1 text-sm py-2 px-2 rounded uppercase  flex items-center justify-center font-semibold`}
         >
           {addToWishListButtonLoading ? (
             <Loader
               type="ThreeDots"
               color="#b72b2b"
-              height={20}
-              width={20}
-              visible={addToCartButtonLoading}
+              height={25}
+              width={25}
+              visible={true}
             />
           ) : itemInWishList ? (
             <>

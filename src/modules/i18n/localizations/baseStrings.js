@@ -93,6 +93,8 @@ const baseStrings = {
   oops: 'Oops !',
   'press-enter-to-search': 'Press Enter to search ',
   'something-went-wrong-snackbar': 'Something went wrong, Please try again',
+  'hello-signin': 'Hello,Sign in',
+  hello: 'Hello',
 
   //
   'home.title': 'Home',

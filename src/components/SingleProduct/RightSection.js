@@ -128,8 +128,8 @@ export default function RightSection({
             <Loader
               type="ThreeDots"
               color="#b72b2b"
-              height={20}
-              width={20}
+              height={25}
+              width={25}
               visible={addToCartButtonLoading}
             />
           ) : itemInCart ? (
@@ -165,8 +165,8 @@ export default function RightSection({
             <Loader
               type="ThreeDots"
               color="#b72b2b"
-              height={20}
-              width={20}
+              height={25}
+              width={25}
               visible={addToWishListButtonLoading}
             />
           ) : itemInWishList ? (
@@ -201,13 +201,6 @@ export default function RightSection({
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* <button className="border border-main-color py-2 px-2 rounded uppercase  text-main-color flex items-center justify-center font-semibold ">
-          <span>
-            <AiOutlineHeart className="w-25p h-25p" />
-          </span>
-          <h1 className="mx-1">{formatMessage({ id: 'add-to-wishlist' })}</h1>
-        </button> */}
       </div>
     </div>
   );

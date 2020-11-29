@@ -1,11 +1,9 @@
 import React from 'react';
 // import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
-import { DataProvider } from '../contexts/DataContext';
 
 import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
 import { Helmet } from 'react-helmet';
 import CheckoutModal from '../components/Cart/CheckoutModal';
-import useClickAway from '../hooks/useClickAway';
 import Layout from '../components/Layout';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import CartContainer from '../components/Cart/CartContainer';
@@ -13,19 +11,20 @@ import CartRightSide from '../components/Cart/CartRightSide';
 import { AnimatePresence } from 'framer-motion';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import { AuthProvider } from '../contexts/AuthContext';
+import GuestCart from '../components/Cart/GuestCart.js/GuestCart';
+import CartLoader from '../components/Cart/loaders/CartLoader';
+import { useIntl } from 'react-intl';
 export default function Cart() {
-  const { healthCare, isLightTheme } = React.useContext(DataProvider);
   const {
     cartItems,
+    cartTotal,
     cartItemsLoading,
     isGetCartError,
-    getCartError,
     removeFromCartMutation,
     addToWishListMutation,
     removeFromWishListMutation,
   } = React.useContext(CartAndWishlistProvider);
-  const { userId } = React.useContext(AuthProvider);
-
+  const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
   const [
     removefromCartButtonLoading,
@@ -37,11 +36,13 @@ export default function Cart() {
   ] = React.useState(null);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
-
-  const handleRemoveItemFromCart = async (id, item_id) => {
+  const [wishlistItems, setWishlistItems] = React.useState([]);
+  const { formatMessage } = useIntl();
+  const handleRemoveItemFromCart = async (id, cart_id) => {
+    console.log(cart_id);
     setRemoveFromCartButtonLoading(id);
     try {
-      await removeFromCartMutation(id, userId, item_id);
+      await removeFromCartMutation({ id, userId, cart_id });
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
@@ -51,8 +52,13 @@ export default function Cart() {
   const handleRemoveItemFromWishlist = async id => {
     setAddToWishListButtonLoading(id);
     try {
-      await removeFromWishListMutation(id, userId);
+      await removeFromWishListMutation({ id, userId });
       setAddToWishListButtonLoading(null);
+      console.log(id);
+      console.log(wishlistItems.filter(item => item.id !== id));
+      setWishlistItems(prev => {
+        return prev.filter(item => item !== id);
+      });
     } catch (error) {
       setAddToWishListButtonLoading(null);
       console.log(error.response);
@@ -61,8 +67,11 @@ export default function Cart() {
   const handleAddItemToWishlist = async item => {
     setAddToWishListButtonLoading(item.id);
     try {
-      await addToWishListMutation(item);
+      await addToWishListMutation({ id: item.id, userId });
       setAddToWishListButtonLoading(null);
+      setWishlistItems(prev => {
+        return [...prev, item.id];
+      });
     } catch (error) {
       setAddToWishListButtonLoading(null);
       console.log(error.response);
@@ -71,11 +80,12 @@ export default function Cart() {
   const closeErrorSnackbar = () => {
     setErrorOpen(false);
   };
-  if (isGetCartError) {
+
+  if (!cartItemsLoading && isGetCartError) {
     return (
       <Layout>
-        <div className="px-4 py-2 max-w-default mx-auto">
-          Something Went Wrong,Please try again
+        <div className="px-4 py-2 max-w-default mx-auto min-h-screen">
+          <h1>{formatMessage({ id: 'something-went-wrong-snackbar' })}</h1>
         </div>
       </Layout>
     );
@@ -92,29 +102,36 @@ export default function Cart() {
         />
       )}
       <div className="px-4 py-2 max-w-default mx-auto">
-        <div className="cart-main-grid">
-          <CartContainer
-            cartItemsLoading={cartItemsLoading}
-            handleRemoveItemFromCart={handleRemoveItemFromCart}
-            cartItems={cartItems}
-            removefromCartButtonLoading={removefromCartButtonLoading}
-            handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
-            handleAddItemToWishlist={handleAddItemToWishlist}
-            addToWishListButtonLoading={addToWishListButtonLoading}
-          />
-          <CartRightSide
-            cartItems={cartItems}
-            cartItemsLoading={cartItemsLoading}
-            setCheckOutModalOpen={setCheckOutModalOpen}
-          />
-        </div>
-        <ItemsSlider
+        {authenticationLoading && <CartLoader />}
+        {!authenticationLoading && userId && !isGetCartError && (
+          <div className="cart-main-grid">
+            <CartContainer
+              cartItemsLoading={cartItemsLoading}
+              handleRemoveItemFromCart={handleRemoveItemFromCart}
+              cartItems={cartItems}
+              removefromCartButtonLoading={removefromCartButtonLoading}
+              handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
+              handleAddItemToWishlist={handleAddItemToWishlist}
+              addToWishListButtonLoading={addToWishListButtonLoading}
+              cartTotal={cartTotal}
+              wishlistItems={wishlistItems}
+            />
+            <CartRightSide
+              cartTotal={cartTotal}
+              cartItems={cartItems}
+              cartItemsLoading={cartItemsLoading}
+              setCheckOutModalOpen={setCheckOutModalOpen}
+            />
+          </div>
+        )}
+        {!authenticationLoading && !userId && <GuestCart />}
+        {/* <ItemsSlider
           data={healthCare}
           miniLogo={false}
           type="healthCare"
           title="Health Care Essentials"
           isLightTheme={isLightTheme}
-        />
+        /> */}
         <AnimatePresence>
           {checkoutModalOpen && (
             <CheckoutModal setCheckOutModalOpen={setCheckOutModalOpen} />

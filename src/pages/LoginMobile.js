@@ -158,7 +158,7 @@ export default function LoginMobile() {
                   history.replace(from);
                 }
               } catch (error) {
-                if (error.response.data.message) {
+                if (error.response?.data.message) {
                   setErrors({
                     phoneNumber: formatMessage({
                       id: error.response.data.message,

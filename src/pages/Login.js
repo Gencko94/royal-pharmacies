@@ -166,8 +166,9 @@ export default function Login() {
                     history.replace(from);
                   }
                 } catch (error) {
+                  console.log(error);
                   console.log(error.response);
-                  if (error.response.data.message) {
+                  if (error.response?.data.message) {
                     actions.setErrors({
                       phoneNumber: formatMessage({
                         id: error.response.data.message,
@@ -177,11 +178,12 @@ export default function Login() {
                       }),
                     });
                     return;
+                  } else {
+                    setErrorOpen(true);
+                    setErrorMessage(
+                      formatMessage({ id: 'something-went-wrong-snackbar' })
+                    );
                   }
-                  setErrorOpen(true);
-                  setErrorMessage(
-                    formatMessage({ id: 'something-went-wrong-snackbar' })
-                  );
                 }
               }}
             >

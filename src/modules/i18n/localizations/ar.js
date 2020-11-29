@@ -86,6 +86,8 @@ export const ar = {
   oops: 'عذرا !',
   'press-enter-to-search': 'إضغط على Enter للبحث عن ',
   'something-went-wrong-snackbar': 'حصل خطأ ما , الرجاء المحاولة مرة أخرى',
+  'hello-signin': 'مرحبا , سجل الدخول',
+  hello: 'مرحبا ',
 
   //
   'nav.cart': 'عربة التسوق',

@@ -1,19 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
-import { AuthProvider } from '../../contexts/AuthContext';
-import RecentlyViewedVertical from '../RecentlyViewedVertical';
-import FeaturedItemsVertical from './FeaturedItemsVertical';
-import CartRightSideLoader from './loaders/CartRightSideLoader';
+import MobileCheckoutSectionLoader from '../ContentLoaders/MobileCheckoutSectionLoader';
 
-export default function CartRightSide({
-  cartItemsLoading,
+export default function MobileGuestCheckoutSection({
   cartItems,
-  setCheckOutModalOpen,
-  cartTotal,
+  handleCheckout,
+  cartItemsLoading,
 }) {
-  const { isAuthenticated } = React.useContext(AuthProvider);
-  const history = useHistory();
   const resolvePlural = () => {
     switch (cartItems.length) {
       case 1:
@@ -29,22 +22,11 @@ export default function CartRightSide({
     }
   };
   const { formatMessage, locale } = useIntl();
-  const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-  const handleCheckout = () => {
-    if (isAuthenticated) {
-      history.push(`/${locale}/checkout`);
-    } else {
-      setCheckOutModalOpen(true);
-    }
-  };
   return (
-    <div
-      className="font-semibold overflow-hidden  sticky top-0"
-      style={{ top: '134px' }}
-    >
-      {cartItemsLoading && <CartRightSideLoader locale={locale} />}
+    <div className="-mx-2 -mt-1">
+      {cartItemsLoading && <MobileCheckoutSectionLoader locale={locale} />}
       {!cartItemsLoading && cartItems.length !== 0 && (
-        <div className=" rounded border bg-gray-100 p-2 flex justify-center flex-col mb-2 ">
+        <div className=" border font-semibold bg-gray-100 p-2 flex justify-center flex-col mb-2 ">
           <div className="mb-2 ">
             <div className="rounded border w-full flex  overflow-hidden">
               <input
@@ -65,7 +47,7 @@ export default function CartRightSide({
               {formatMessage({ id: 'cart-free' })}
             </h1>
           </div>
-          <div className=" flex mb-2  ">
+          <div className="  flex mb-2  ">
             <h1 className="text-gray-900">
               {formatMessage({ id: 'cart-total' })}
             </h1>
@@ -76,32 +58,21 @@ export default function CartRightSide({
                 : `${cartItems.length} `}
               {resolvePlural()})
             </h1>
-            <h1>{cartTotal}</h1> KD
+            <h1>code total here</h1> KD
           </div>
           <div className="  flex mb-2 ">
             <h1 className="flex-1 text-gray-900">
               {formatMessage({ id: 'subtotal' })}
             </h1>
-            <h1>{cartTotal}</h1> KD
+            <h1>code total here</h1> KD
           </div>
           <button
             onClick={handleCheckout}
-            className={`${
-              cartItems.length === 0
-                ? 'cursor-not-allowed  bg-gray-600'
-                : 'bg-green-600'
-            } p-2 rounded text-body-light uppercase  `}
-            disabled={cartItems.length === 0}
+            className="p-2 rounded font-semibold block text-center uppercase text-sm  w-full text-gray-100 bg-green-600"
           >
             {formatMessage({ id: 'checkout' })}
           </button>
         </div>
-      )}
-
-      {visitedItems.length > 4 ? (
-        <RecentlyViewedVertical visitedItems={visitedItems} />
-      ) : (
-        <FeaturedItemsVertical />
       )}
     </div>
   );

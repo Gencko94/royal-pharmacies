@@ -43,15 +43,19 @@ export default function LocationForm({
           }}
           validationSchema={validationSchema}
           onSubmit={async values => {
-            await addMutation({
-              lat: marker.lat,
-              lng: marker.lng,
-              defaultLocation: defaultLocationChecked,
-              addressDetails: {
-                ...values,
-                markerAddress: markerAddress,
-              },
-            });
+            try {
+              await addMutation({
+                lat: marker.lat,
+                lng: marker.lng,
+                defaultLocation: defaultLocationChecked,
+                addressDetails: {
+                  ...values,
+                  markerAddress: markerAddress,
+                },
+              });
+            } catch (error) {
+              console.log(error.response);
+            }
           }}
         >
           {({ handleSubmit, values, isSubmitting }) => {

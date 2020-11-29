@@ -5,15 +5,14 @@ import { Link } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
 import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
 import { AnimatePresence, motion } from 'framer-motion';
+import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 
 export default function SideCartMenu({
-  cartItems,
   handleRemoveFromCart,
   setSideMenuOpen,
-  cartTotal,
 }) {
+  const { cartItems, cartTotal } = React.useContext(CartAndWishlistProvider);
   const { formatMessage, locale } = useIntl();
-
   const sideMenuVariants = {
     hidden: {
       x: `${locale === 'ar' ? '-100%' : '100%'}`,
@@ -98,46 +97,44 @@ export default function SideCartMenu({
                   >
                     <div className="">
                       <Link
-                        title={item.name}
+                        title={`${item[`name_${locale}`]}`}
                         className="hover:underline"
-                        to={`/${locale}/${item.category.replace(
-                          /\s|%|,/g,
-                          '-'
-                        )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
+                        to={`/${locale}/c/${item.id}`}
                       >
                         <img
-                          src={item.photo}
-                          alt={item.name}
+                          src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.image}`}
+                          alt={`${item[`name_${locale}`]}`}
                           className="max-w-full h-auto"
                         />
                       </Link>
                     </div>
                     <div className="">
                       <Link
-                        title={item.name}
+                        title={`${item[`name_${locale}`]}`}
                         className="hover:underline"
-                        to={`/${locale}/${item.category.replace(
-                          /\s|%|,/g,
-                          '-'
-                        )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
+                        to={`/${locale}/c/${item.id}`}
                       >
                         <MultiClamp
                           className="font-semibold text-sm "
                           clamp={4}
                           ellipsis="..."
                         >
-                          {item.name}
+                          {`${item[`name_${locale}`]}`}
                         </MultiClamp>
                       </Link>
-
-                      <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-                        {item.price} KD
-                      </h1>
+                      <div className="flex items-center">
+                        <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
+                          {item.price * item.qty} KD
+                        </h1>
+                        <h1 className="mx-1 text-sm">
+                          {formatMessage({ id: 'quantity' })} : {item.qty}
+                        </h1>
+                      </div>
                       <div>
                         <button
                           className="bg-main-color text-main-text text-xs rounded p-1 my-1"
                           onClick={() => {
-                            handleRemoveFromCart(item.id);
+                            handleRemoveFromCart(item.id, item.cart_id);
                           }}
                         >
                           {formatMessage({ id: 'remove-from-cart' })}
@@ -160,7 +157,7 @@ export default function SideCartMenu({
             <hr className="my-1" />
             <div className=" flex items-center my-2 text-center text-second-nav-text-light ">
               <Link
-                to={`/${locale}/checkout/guestcheckout`}
+                to={`/${locale}/checkout/guest-checkout`}
                 className={`flex-1 py-2  px-3  bg-green-700 w-full  rounded `}
               >
                 {formatMessage({ id: 'checkout' })}

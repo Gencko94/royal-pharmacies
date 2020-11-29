@@ -1,5 +1,4 @@
 import React from 'react';
-import { DataProvider } from '../../contexts/DataContext';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -7,14 +6,14 @@ import NoAddresses from '../MyAccount/MyAddresses/NoAddresses';
 import GoogleMapsAddress from '../GoogleMapsAddress';
 import LocationsMobile from './MyAddressesMobile/LocationsMobile';
 import { motion } from 'framer-motion';
-import { getUserAddresses } from '../../Queries/Queries';
+import {
+  addUserAddress,
+  getUserAddresses,
+  removeUserAddress,
+} from '../../Queries/Queries';
 export default function MyAddressesMobile() {
   const [showMap, setShowMap] = React.useState(false);
-  const {
-    handleAddLocation,
-    handleRemoveLocation,
-    isLightTheme,
-  } = React.useContext(DataProvider);
+
   const { isLoading, data, refetch, isError } = useQuery(
     'addresses',
     async () => {
@@ -24,45 +23,35 @@ export default function MyAddressesMobile() {
     { refetchOnWindowFocus: false }
   );
 
-  /* Add Mutation */
   const [addMutation] = useMutation(
-    async location => {
-      const res = await handleAddLocation(location);
-      if (res.message === 'ok') {
-        return res.newLocation;
-      }
-    },
+    addUserAddress,
+
     {
-      onSuccess: newLocation => {
+      onSuccess: newAddress => {
+        console.log('success');
         queryCache.setQueryData('addresses', prev => {
-          return [...prev, newLocation];
+          return [...prev, newAddress];
         });
         refetch();
 
         setShowMap(false);
       },
+      throwOnError: true,
     }
   );
 
   /* Delete Mutation */
-  const [deleteMutation] = useMutation(
-    async location => {
-      const res = await handleRemoveLocation(location);
-      if (res.message === 'ok') {
-        return res.locations;
-      }
-    },
-    {
-      onSuccess: locations => {
-        queryCache.setQueryData('addresses', () => {
-          return locations;
-        });
-        refetch();
+  const [deleteMutation] = useMutation(removeUserAddress, {
+    onSuccess: id => {
+      queryCache.setQueryData('addresses', prev => {
+        return prev.map(item => item.id !== id);
+      });
+      refetch();
 
-        setShowMap(false);
-      },
-    }
-  );
+      setShowMap(false);
+    },
+    throwOnError: true,
+  });
   if (isError) {
     return (
       <div
@@ -115,7 +104,7 @@ export default function MyAddressesMobile() {
     >
       {!showMap &&
         (data.length === 0 ? (
-          <NoAddresses isLightTheme={isLightTheme} setShowMap={setShowMap} />
+          <NoAddresses setShowMap={setShowMap} />
         ) : (
           <LocationsMobile
             locations={data}

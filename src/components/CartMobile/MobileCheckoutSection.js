@@ -1,12 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
 import MobileCheckoutSectionLoader from './ContentLoaders/MobileCheckoutSectionLoader';
 
 export default function MobileCheckoutSection({
   cartItems,
   cartItemsLoading,
   handleCheckout,
+  cartTotal,
 }) {
   const resolvePlural = () => {
     switch (cartItems.length) {
@@ -59,13 +59,13 @@ export default function MobileCheckoutSection({
                 : `${cartItems.length} `}
               {resolvePlural()})
             </h1>
-            <h1>code total here</h1> KD
+            <h1>{cartTotal}</h1> KD
           </div>
           <div className="  flex mb-2 ">
             <h1 className="flex-1 text-gray-900">
               {formatMessage({ id: 'subtotal' })}
             </h1>
-            <h1>code total here</h1> KD
+            <h1>{cartTotal}</h1> KD
           </div>
           <button
             onClick={handleCheckout}
