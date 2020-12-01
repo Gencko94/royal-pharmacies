@@ -6,6 +6,7 @@ import Rating from 'react-rating';
 import { Link } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import LazyImage from '../../helpers/LazyImage';
 
 export default function WishListItem({
   item,
@@ -44,11 +45,16 @@ export default function WishListItem({
       className="wishlist-item"
     >
       <Link to={`/${locale}/item/${item.id}}`}>
-        <img
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image}`}
+          alt={`${item[`name_${locale}`]}`}
+          pb="calc(100% * 286/210)"
+        />
+        {/* <img
           className=""
           src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
           alt={`${item[`name_${locale}`]}`}
-        />
+        /> */}
       </Link>
       <div className="">
         <Link to={`/${locale}/item/${item.id}}`}>

@@ -6,7 +6,8 @@ import { useIntl } from 'react-intl';
 import MultiClamp from 'react-multi-clamp';
 import BuyOptions from './BuyOptions';
 import { useHistory } from 'react-router-dom';
-
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 export default function SliderItem({
   item,
   isItemInCart,
@@ -22,39 +23,26 @@ export default function SliderItem({
 }) {
   const { locale } = useIntl();
 
-  // const handleAddItemToCart = async data => {
-  //   try {
-  //     await addMutation({
-  //       id: data.id,
-  //       photo: data.photos.small,
-  //       quantity: options.quantity,
-  //       price: data.price,
-  //       name: data.name,
-  //       options,
-  //       category: data.category,
-  //       rating: data.rating,
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const handleRemoveItemFromCart = async data => {
-  //   try {
-  //     await removeMutation(data);
-  //   } catch (error) {}
-  // };
   const history = useHistory();
   return (
     <div className="my-4  px-2   ">
       <div
-        className={`overflow-hidden flex flex-col relative
+        className={`overflow-hidden slider-item relative
          shadow-itemsSlider-shallow
          rounded`}
       >
-        <span className="sale-mini__banner text-xs font-semibold bg-main-color text-main-text px-1 ">
+        {/* <span className="sale-mini__banner text-xs font-semibold bg-main-color text-main-text px-1 ">
           50% OFF
-        </span>
+        </span> */}
         <a href={`/${locale}/c/${item.id}`}>
+          {/* <LazyLoadImage
+            title={item.translation[locale].title}
+            src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
+            alt={item.translation[locale].title}
+            effect="blur"
+            placeholderSrc={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image.link}`}
+            // height="auto"
+          /> */}
           <img
             title={item.translation[locale].title}
             src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.image.link}`}
@@ -62,7 +50,7 @@ export default function SliderItem({
             className=""
           />
         </a>
-        <hr />
+        {/* <hr /> */}
 
         <div
           className={` 

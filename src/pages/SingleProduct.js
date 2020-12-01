@@ -73,7 +73,7 @@ export default function SingleProduct() {
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
-  const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
+  // const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
   const [related, setRelated] = React.useState(null);
   const [itemInCart, setItemInCart] = React.useState(false);
   const [itemInWishList, setItemInWishList] = React.useState(false);
@@ -84,14 +84,14 @@ export default function SingleProduct() {
     addToWishListButtonLoading,
     setAddToWishListButtonLoading,
   ] = React.useState(false);
-  const handleLoadMore = inView => {
-    if (inView) {
-      if (hasMore) {
-        setFetching(true);
-        setPage(page + 1);
-      }
-    }
-  };
+  // const handleLoadMore = inView => {
+  //   if (inView) {
+  //     if (hasMore) {
+  //       setFetching(true);
+  //       setPage(page + 1);
+  //     }
+  //   }
+  // };
 
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
@@ -143,22 +143,18 @@ export default function SingleProduct() {
     }
   };
 
-  const fetchData = () => {
-    setTimeout(() => {
-      setRelated(relatedData);
+  // const fetchData = () => {
+  //   setTimeout(() => {
+  //     setRelated(relatedData);
 
-      setFetching(false);
-    }, 1500);
-  };
+  //     setFetching(false);
+  //   }, 1500);
+  // };
+
   // React.useEffect(() => {
-  //   if (data) {
-
-  //   }
-  // }, [data, id]);
-  React.useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  //   fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [page]);
 
   return (
     <Layout>
@@ -174,8 +170,6 @@ export default function SingleProduct() {
         {sideMenuOpen && (
           <SideCartMenu
             key={879}
-            // cartItems={data.cartItems}
-            // cartTotal={data.cartTotal}
             setSideMenuOpen={setSideMenuOpen}
             handleRemoveFromCart={handleRemoveFromCart}
           />
@@ -243,7 +237,7 @@ export default function SingleProduct() {
               />
             )}
           </div>
-          {related && <RelatedItems relatedData={related} />}
+          {/* {related && <RelatedItems relatedData={related} />}
           {isFetching && <div>Loading ...</div>}
           <InView
             as="div"
@@ -252,7 +246,7 @@ export default function SingleProduct() {
             }}
           >
             <div></div>
-          </InView>
+          </InView> */}
         </div>
       </div>
     </Layout>

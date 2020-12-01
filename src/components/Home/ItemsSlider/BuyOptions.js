@@ -8,7 +8,8 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function BuyOptions({
   item,
   setQuantity,
-  options: { size, quantity },
+  size,
+  quantity,
   setSize,
   handleAddToCart,
   handleRemoveFromCart,
@@ -116,9 +117,11 @@ export default function BuyOptions({
       <motion.div variants={{ childVariants }} className="px-2 mt-2 ">
         <button
           onClick={() => {
+            console.log('remove');
             if (cartItems.includes(item.id)) {
               handleRemoveFromCart(item.id);
             } else {
+              console.log('add');
               handleAddToCart(item.id);
             }
           }}

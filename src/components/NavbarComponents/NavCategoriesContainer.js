@@ -1,9 +1,10 @@
 import React from 'react';
+import { useQuery } from 'react-query';
+import { getAllCategories } from '../../Queries/Queries';
 import CategoryButton from './CategoryButton';
 
 export default function NavCategoriesContainer({
   isHovering,
-  isLightTheme,
   data,
   setDropDownOpen,
   handleDropDownOpen,
@@ -23,18 +24,17 @@ export default function NavCategoriesContainer({
   return (
     <div id="menu-trigger" className="w-full  ">
       <div
-        className={` ${
-          isLightTheme
-            ? 'bg-nav-cat-light text-nav-cat-text-light'
-            : 'bg-nav-cat-dark text-nav-cat-text-dark'
-        } flex items-center  `}
+        className={` 
+          
+            bg-nav-cat-light text-nav-cat-text-light
+          
+         flex items-center  `}
       >
         {!isLoading &&
           data.map(item => (
             <CategoryButton
-              key={item.category}
+              key={item.id}
               item={item}
-              isLightTheme={isLightTheme}
               handleDropDownOpen={handleDropDownOpen}
             />
           ))}

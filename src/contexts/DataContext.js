@@ -143,6 +143,8 @@ import kitchen from '../assets/navCategories/kitchen.jpg';
 import bedding from '../assets/navCategories/bedding.jpg';
 import menphoto from '../assets/navCategories/menphoto.jpg';
 import women from '../assets/navCategories/women.jpg';
+import { useQuery } from 'react-query';
+import { getAllCategories } from '../Queries/Queries';
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState('kuwait');
@@ -3214,13 +3216,17 @@ export default function DataContextProvider({ children }) {
       ],
     },
   ];
+  const {
+    data: categories,
+    isLoading: categoriesLoading,
+  } = useQuery('categories', getAllCategories, { retry: true });
   return (
     <DataProvider.Provider
       value={{
-        getMainCarouselItems,
+        categories: categories,
+        categoriesLoading: categoriesLoading,
         deliveryCountry,
         setDeliveryCountry,
-        bestSeller,
         navCategories,
         countries,
         selectedStore,
@@ -3228,44 +3234,19 @@ export default function DataContextProvider({ children }) {
         stores,
         flags,
         sidebarCategories,
-        addItemToCart,
-        removeItemFromCart,
-        cartItems,
         EditItemFromCart,
         phone,
-        calculateItemsPrice,
         isLightTheme,
         setLightTheme,
-        healthCare,
-        home,
-        fashion,
-        allItems,
         allCategories,
         orderedItems,
         language,
         handleLanguageChange,
 
-        getSingleItemDetails,
-        getCartItems,
-        getItemsByType,
-        getUserLocations,
-        handleAddLocation,
-        handleRemoveLocation,
-        getCartAndWishListLength,
         getNavCategoryData,
         getOrderedItems,
         getRecentlyViewedVertical,
-        getUserProfileInfo,
-        editUserProfileInfo,
-        getHomePageCategories,
-        getWishListItems,
-        addItemToWishList,
-        removeItemFromWishList,
         getFeaturedItems,
-        addItemToCartFromWishlist,
-        removeItemFromCartFromWishlist,
-        removeItemFromWishListFromCart,
-        addItemToWishListFromCart,
         getViewedItems,
         addViewedItems,
         removeViewedItem,

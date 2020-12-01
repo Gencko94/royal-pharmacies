@@ -17,7 +17,7 @@ export default function SearchBar() {
 
   //with controlling the arrows
   const getSuggestionValue = suggestion => {
-    return suggestion.translation[0].title;
+    return suggestion.translation[locale].title;
   };
 
   const renderSuggestion = (suggestion, { isHighlighted }) => {

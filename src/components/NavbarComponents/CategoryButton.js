@@ -1,24 +1,21 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 
-export default function CategoryButton({
-  item,
-  handleDropDownOpen,
-  isLightTheme,
-}) {
+export default function CategoryButton({ item, handleDropDownOpen }) {
+  const { locale } = useIntl();
   return (
     <div
       id={`navButton${item.category}`}
-      key={item.category}
       onMouseEnter={() => {
-        handleDropDownOpen(item.category);
+        handleDropDownOpen(item.id);
       }}
-      className={`p-2 text-sm  font-semibold cursor-pointer ${
-        isLightTheme
-          ? 'hover:bg-second-nav-text-light'
-          : 'hover:bg-second-nav-dark'
-      }`}
+      className={`p-2 text-sm  font-semibold cursor-pointer 
+       
+        hover:bg-second-nav-text-light
+          
+      `}
     >
-      {item.category}
+      {item.translation[locale].name}
     </div>
   );
 }

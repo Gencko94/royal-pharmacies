@@ -27,10 +27,10 @@ export default function MyAddresses() {
     addUserAddress,
 
     {
-      onSuccess: newAddress => {
+      onSuccess: data => {
         console.log('success');
-        queryCache.setQueryData('addresses', prev => {
-          return [...prev, newAddress];
+        queryCache.setQueryData('addresses', () => {
+          return data;
         });
         refetch();
 

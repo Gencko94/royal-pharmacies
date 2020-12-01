@@ -88,7 +88,7 @@ export const ar = {
   'something-went-wrong-snackbar': 'حصل خطأ ما , الرجاء المحاولة مرة أخرى',
   'hello-signin': 'مرحبا , سجل الدخول',
   hello: 'مرحبا ',
-
+  off: 'خصم',
   //
   'nav.cart': 'عربة التسوق',
   'nav.wishlist': 'المفضلة',

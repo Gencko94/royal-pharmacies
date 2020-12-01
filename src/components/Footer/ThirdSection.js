@@ -1,11 +1,17 @@
 import React from 'react';
-import { FaFacebook } from 'react-icons/fa';
-import { FaTwitter } from 'react-icons/fa';
-import { FaInstagram } from 'react-icons/fa';
-import { FaLinkedin } from 'react-icons/fa';
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaWhatsapp,
+} from 'react-icons/fa';
 import { useIntl } from 'react-intl';
+import { useQuery } from 'react-query';
 import logomrg from '../../assets/mrg.png';
+import { getSocialMediaData } from '../../Queries/Queries';
 export default function ThirdSection() {
+  const { data } = useQuery('socialMedia', getSocialMediaData, { retry: true });
   const { formatMessage } = useIntl();
   return (
     <div
@@ -18,20 +24,50 @@ export default function ThirdSection() {
           &copy; 2020 MRG . {formatMessage({ id: 'footer-all-rights' })}
         </h1>
       </div>
-      <div className="flex justify-evenly">
-        <button className="mr-4">
-          <FaFacebook className=" text-blue-600 h-25p w-25p" />
-        </button>
-        <button className="mr-4">
-          <FaTwitter className=" text-blue-400 h-25p w-25p" />
-        </button>
-        <button className="mr-4">
-          <FaInstagram className="h-25p w-25p text-red-400" />
-        </button>
-        <button className="mr-4">
-          <FaLinkedin className="h-25p w-25p text-blue-600" />
-        </button>
-      </div>
+      {data && (
+        <div className="flex justify-evenly">
+          <a
+            rel="noopener noreferrer"
+            href={`${data.sm_facebook}`}
+            target="_blank"
+            className="mr-4"
+          >
+            <FaFacebook className=" text-blue-600 h-25p w-25p" />
+          </a>
+          <a
+            rel="noopener noreferrer"
+            href={`${data.sm_twitter}`}
+            target="_blank"
+            className="mr-4"
+          >
+            <FaTwitter className=" text-blue-400 h-25p w-25p" />
+          </a>
+          <a
+            rel="noopener noreferrer"
+            href={`${data.sm_instagram}`}
+            target="_blank"
+            className="mr-4"
+          >
+            <FaInstagram className="h-25p w-25p text-red-400" />
+          </a>
+          <a
+            rel="noopener noreferrer"
+            href={`${data.sm_linkedin}`}
+            target="_blank"
+            className="mr-4"
+          >
+            <FaLinkedin className="h-25p w-25p text-blue-600" />
+          </a>
+          <a
+            rel="noopener noreferrer"
+            href={`${data.sm_whatsapp}`}
+            target="_blank"
+            className="mr-4"
+          >
+            <FaWhatsapp className="h-25p w-25p text-green-600" />
+          </a>
+        </div>
+      )}
     </div>
   );
 }

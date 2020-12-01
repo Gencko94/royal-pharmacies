@@ -12,6 +12,8 @@ import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import MobileCartLoader from '../components/CartMobile/ContentLoaders/MobileCartLoader';
 import MobileCartContainer from '../components/CartMobile/MobileCartContainer';
 import MobileGuestCart from '../components/CartMobile/MobileGuestCart/MobileGuestCart';
+import StaticSwiper from '../components/Swipers/StaticSwiper';
+import Layout from '../components/Layout';
 
 export default function CartMobile() {
   const { formatMessage, locale } = useIntl();
@@ -57,18 +59,18 @@ export default function CartMobile() {
   };
   if (isGetCartError) {
     return (
-      <LayoutMobile>
+      <Layout>
         <div
           className="py-1 mx-2 flex items-center justify-center"
           style={{ minHeight: 'calc(-80px + 100vh)' }}
         >
           <h1>{formatMessage({ id: 'something-went-wrong-snackbar' })}</h1>
         </div>
-      </LayoutMobile>
+      </Layout>
     );
   }
   return (
-    <LayoutMobile>
+    <Layout>
       <div className=" py-1 px-2 relative">
         <AnimatePresence>
           {checkoutPopupOpen && (
@@ -100,13 +102,9 @@ export default function CartMobile() {
 
         {/* <RecentlyVisitedHorizontal visitedItems={visitedItems} /> */}
 
-        {/* <ItemsSlider
-          type="phone"
-          miniLogo={false}
-          title="Save Big with Phones & Tablets"
-        /> */}
+        <StaticSwiper type="electronics" />
       </div>
-    </LayoutMobile>
+    </Layout>
   );
 }
 // {!isLoading && data.length !== 0 && (

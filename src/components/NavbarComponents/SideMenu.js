@@ -18,18 +18,17 @@ import { Link } from 'react-router-dom';
 import TopSection from '../SideMenuMobile/TopSection';
 import { motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
-export default function SideMenu({
-  toggleSideMenu,
-  sideMenuRef,
-  isLightTheme,
-}) {
+import SideMenuCategories from '../SideMenu/SideMenuCategories';
+export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   const { isAuthenticated, userLogoutMutation } = React.useContext(
     AuthProvider
   );
-  const { sidebarCategories } = React.useContext(DataProvider);
-  const [products, setProducts] = React.useState(false);
+  const { sidebarCategories, categories, categoriesLoading } = React.useContext(
+    DataProvider
+  );
+  const [showCategories, setShowCategories] = React.useState(false);
   const [page, setPage] = React.useState(0);
-  const [subPage, setSubPage] = React.useState(0);
+  const [subCategory, setSubCategory] = React.useState(0);
   const [secondSubPage, setSecondSubPage] = React.useState(0);
   const innerRef = React.useRef(null);
   const { locale, formatMessage } = useIntl();
@@ -37,7 +36,7 @@ export default function SideMenu({
   const handleClickBackFirst = () => {
     setPage(page - 1);
     setTimeout(() => {
-      setProducts(false);
+      setShowCategories(false);
     }, 400);
   };
   const handleClickBackSecond = i => {
@@ -45,12 +44,15 @@ export default function SideMenu({
     setSecondSubPage(i);
   };
   const handleClickNextZero = () => {
+    if (categoriesLoading) {
+      return;
+    }
     setPage(page + 1);
-    setProducts(true);
+    setShowCategories(true);
   };
   const handleClickNextFirst = i => {
     setPage(page + 1);
-    setSubPage(i);
+    setSubCategory(i);
   };
   const handleClickNextSecond = i => {
     setPage(page + 1);
@@ -112,20 +114,20 @@ export default function SideMenu({
       animate="to"
       exit="exited"
       ref={sideMenuRef}
-      className={`${
-        isLightTheme
-          ? 'bg-side-light text-side-light-text'
-          : 'bg-side-dark text-side-dark-text'
-      }  z-20  fixed top-0 ${
-        locale === 'ar' ? 'right-0' : 'left-0'
-      } min-w-75p h-screen sm:text-lg`}
+      className={`
+        
+         bg-side-light text-side-light-text
+         
+        z-30  fixed top-0 ${
+          locale === 'ar' ? 'right-0' : 'left-0'
+        } min-w-75p h-screen sm:text-lg`}
       style={{ maxWidth: '75%' }}
     >
-      <TopSection isLightTheme={isLightTheme} toggleSideMenu={toggleSideMenu} />
+      <TopSection toggleSideMenu={toggleSideMenu} />
 
       <div className="relative overflow-hidden mt-2 ">
         <div ref={innerRef} className="sidebar__inner  ">
-          <div className="sidebar-first ">
+          <div className="sidebar-first__page ">
             <motion.button
               key="allCategories"
               variants={childVariants}
@@ -285,82 +287,16 @@ export default function SideMenu({
               </motion.button>
             )}
           </div>
-          {products && (
-            <>
-              <div className="sidebar-second">
-                <button
-                  onClick={handleClickBackFirst}
-                  className="py-2 px-2 mb-2   "
-                >
-                  {formatMessage({ id: 'go-back' })}
-                </button>
-                <hr />
-                {sidebarCategories.map((category, i) => {
-                  return (
-                    <button
-                      onClick={() => handleClickNextFirst(i)}
-                      key={category.title}
-                      className="py-2 px-2 mb-2 flex items-center  justify-between"
-                    >
-                      <div className=" flex items-center">
-                        <CgProfile className="mr-2 w-25p h-25p" />
-                        <h1>{category.title}</h1>
-                      </div>
-                      {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="sidebar-second">
-                <button
-                  onClick={() => handleClickBackSecond(subPage)}
-                  className="py-2 px-2 mb-2    "
-                >
-                  {formatMessage({ id: 'go-back' })}
-                </button>
-                <hr />
-                {sidebarCategories[subPage].sub.map((category, i) => {
-                  return (
-                    <button
-                      onClick={() => handleClickNextSecond(i)}
-                      key={i}
-                      className="py-2 px-2 mb-2 flex items-center  justify-between"
-                    >
-                      <div className=" flex items-center">
-                        <CgProfile className="mr-2 w-25p h-25p" />
-                        <h1>{category.title}</h1>
-                      </div>
-                      {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="sidebar-second">
-                {/* third flex div aka third page */}
-                <button
-                  onClick={() => handleClickBackSecond(secondSubPage)}
-                  className="py-2 px-2 mb-2    "
-                >
-                  {formatMessage({ id: 'go-back' })}
-                </button>
-                <hr />
-                {sidebarCategories[subPage].sub[secondSubPage].sub.map(
-                  (category, i) => {
-                    return (
-                      <button
-                        key={i}
-                        className="py-2 px-2 mb-2 flex items-center  justify-between"
-                      >
-                        <div className=" flex items-center">
-                          <CgProfile className="mr-2 w-25p h-25p" />
-                          <h1>{category}</h1>
-                        </div>
-                      </button>
-                    );
-                  }
-                )}
-              </div>
-            </>
+          {showCategories && (
+            <SideMenuCategories
+              handleClickBackFirst={handleClickBackFirst}
+              handleClickBackSecond={handleClickBackSecond}
+              handleClickNextFirst={handleClickNextFirst}
+              handleClickNextSecond={handleClickNextSecond}
+              secondSubPage={secondSubPage}
+              subCategory={subCategory}
+              categories={categories}
+            />
           )}
         </div>
       </div>

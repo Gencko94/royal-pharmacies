@@ -95,6 +95,7 @@ const baseStrings = {
   'something-went-wrong-snackbar': 'Something went wrong, Please try again',
   'hello-signin': 'Hello,Sign in',
   hello: 'Hello',
+  off: 'OFF',
 
   //
   'home.title': 'Home',

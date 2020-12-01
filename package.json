@@ -45,6 +45,7 @@
     "react-transition-group": "^4.4.1",
     "scroll-js": "^3.3.0",
     "slick-carousel": "^1.8.1",
+    "swiper": "^6.3.5",
     "use-places-autocomplete": "^1.5.9",
     "uuid": "^8.3.0",
     "yup": "^0.29.3"

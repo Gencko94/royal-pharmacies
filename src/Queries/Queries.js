@@ -3,8 +3,28 @@ import axios from 'axios';
 export const getItemsByType = async () => {
   // const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/`);
 };
+export const getAllCategories = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/categories`);
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
+export const getFooterCategories = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/categories`);
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
 export const getHomeItems = async () => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/showcase`);
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
+export const getStaticSwiperData = async (k, type) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_MAIN_URL}/category-products/${type}`
+  );
   if (res.data.status === true) {
     return res.data.data;
   }
@@ -136,8 +156,9 @@ export const addUserAddress = async newAddress => {
     address,
     config
   );
+  console.log(res.data);
   if (res.data.status === true) {
-    return { newAddress: address };
+    return res.data.data;
   }
 };
 export const removeUserAddress = async id => {
@@ -210,9 +231,8 @@ export const addToCart = async ({ newItem, userId }) => {
     },
     config
   );
-  console.log(res.data);
-  if (res.data.message === 'Item Added successfully') {
-    return true;
+  if (res.data.status === true) {
+    return { cartItems: res.data.data.items, cartTotal: res.data.data.total };
   }
 };
 export const removeFromCart = async ({ id, cart_id, userId }) => {
@@ -229,6 +249,7 @@ export const removeFromCart = async ({ id, cart_id, userId }) => {
     },
     config
   );
+  console.log(res.data);
   if (res.data.status === true) {
     return res.data.status;
   }
@@ -315,7 +336,7 @@ export const addToWishlist = async ({ id, userId }) => {
   );
 
   if (res.data.status === true) {
-    return res.message;
+    return { wishlistItems: res.data.data };
   }
 };
 export const removeFromWishlist = async ({ id, userId }) => {
@@ -329,6 +350,7 @@ export const removeFromWishlist = async ({ id, userId }) => {
       product: id,
     },
   });
+  console.log(res.data);
   if (res.data.status === true) {
     return id;
   }
@@ -336,3 +358,16 @@ export const removeFromWishlist = async ({ id, userId }) => {
 /**
  * End of Wishlist
  */
+
+/**
+ * Settings
+ */
+
+export const getSocialMediaData = async () => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_MAIN_URL}/setting/social-media`
+  );
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};

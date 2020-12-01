@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { AuthProvider } from '../../contexts/AuthContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-export default function TopSection({ isLightTheme, toggleSideMenu }) {
+export default function TopSection({ toggleSideMenu }) {
   const { locale, formatMessage } = useIntl();
   const { userId, authenticationLoading, userData } = React.useContext(
     AuthProvider

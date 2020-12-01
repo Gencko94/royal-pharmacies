@@ -2,6 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
+import Layout from '../components/Layout';
 import LayoutMobile from '../components/LayoutMobile';
 import MobileTabs from '../components/MyAccountMobile/MobileTabs';
 import MyAddressesMobile from '../components/MyAccountMobile/MyAddressesMobile';
@@ -12,7 +13,7 @@ export default function MyAccountMobile() {
   const { path } = useRouteMatch();
 
   return (
-    <LayoutMobile>
+    <Layout>
       <Helmet>
         <title>My Account | MRG</title>
       </Helmet>
@@ -28,6 +29,6 @@ export default function MyAccountMobile() {
           </AnimatePresence>
         </div>
       </div>
-    </LayoutMobile>
+    </Layout>
   );
 }

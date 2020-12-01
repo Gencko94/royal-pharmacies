@@ -20,6 +20,7 @@ import { useParams } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
 import { useIntl } from 'react-intl';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
+import Layout from '../components/Layout';
 
 export default function SingleProductMobile() {
   const { id } = useParams();
@@ -46,7 +47,7 @@ export default function SingleProductMobile() {
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [isFetching, setFetching] = React.useState(true);
   const [page, setPage] = React.useState(0);
-  const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
+  // const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
   const [related, setRelated] = React.useState(null);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
@@ -115,21 +116,21 @@ export default function SingleProductMobile() {
     setQuantity(quantity + 1);
   };
 
-  const handleLoadMore = inView => {
-    if (inView) {
-      if (hasMore) {
-        setFetching(true);
-        setPage(page + 1);
-      }
-    }
-  };
-  const fetchData = () => {
-    setTimeout(() => {
-      setRelated(relatedData);
+  // const handleLoadMore = inView => {
+  //   if (inView) {
+  //     if (hasMore) {
+  //       setFetching(true);
+  //       setPage(page + 1);
+  //     }
+  //   }
+  // };
+  // const fetchData = () => {
+  //   setTimeout(() => {
+  //     setRelated(relatedData);
 
-      setFetching(false);
-    }, 2000);
-  };
+  //     setFetching(false);
+  //   }, 2000);
+  // };
 
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
@@ -157,12 +158,12 @@ export default function SingleProductMobile() {
       console.log(error.response);
     }
   };
-  React.useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  // React.useEffect(() => {
+  //   fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [page]);
   return (
-    <LayoutMobile>
+    <Layout>
       <Helmet>
         {/* <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
         <meta
@@ -256,7 +257,7 @@ export default function SingleProductMobile() {
         )} */}
 
         <hr />
-        <div ref={triggerRef}>
+        {/* <div ref={triggerRef}>
           {related && <RelatedItems relatedData={related} />}
           {isFetching && <div>Loading ...</div>}
           <InView
@@ -267,8 +268,8 @@ export default function SingleProductMobile() {
           >
             <div></div>
           </InView>
-        </div>
+        </div> */}
       </div>
-    </LayoutMobile>
+    </Layout>
   );
 }

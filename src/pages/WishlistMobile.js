@@ -8,6 +8,7 @@ import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import MobileCartLoader from '../components/CartMobile/ContentLoaders/MobileCartLoader';
 import { AuthProvider } from '../contexts/AuthContext';
 import WishlistMobileContainer from '../components/WishlistMobile/WishlistMobileContainer';
+import Layout from '../components/Layout';
 export default function WishlistMobile({ userId }) {
   const { formatMessage } = useIntl();
   const [
@@ -67,8 +68,20 @@ export default function WishlistMobile({ userId }) {
       console.log(error.response);
     }
   };
+  if (isGetWishlistError) {
+    return (
+      <Layout>
+        <div
+          className="py-1 mx-2 flex items-center justify-center"
+          style={{ minHeight: 'calc(-80px + 100vh)' }}
+        >
+          <h1>{formatMessage({ id: 'something-went-wrong-snackbar' })}</h1>
+        </div>
+      </Layout>
+    );
+  }
   return (
-    <LayoutMobile>
+    <Layout>
       <div className=" py-1 px-2">
         {authenticationLoading && <MobileCartLoader />}
         {wishlistItemsLoading && <MainContentLoader />}
@@ -93,6 +106,6 @@ export default function WishlistMobile({ userId }) {
           title="Save Big with Phones & Tablets"
         /> */}
       </div>
-    </LayoutMobile>
+    </Layout>
   );
 }

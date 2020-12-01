@@ -7,19 +7,17 @@ import MegaMenu from './MegaMenu';
 import NavCategoriesContainer from './NavCategoriesContainer';
 import { useQuery } from 'react-query';
 import { useMediaQuery } from 'react-responsive';
+import { getAllCategories } from '../../Queries/Queries';
 export default function NavCategory() {
   const dropDownbgRef = React.useRef(null);
-  const { getNavCategoryData, isLightTheme } = React.useContext(DataProvider);
+  const { isLightTheme } = React.useContext(DataProvider);
   const hideAllCategories = useMediaQuery({ query: '(min-width:1290px)' });
-  const { data, isLoading } = useQuery('navCategoryItems', async () => {
-    return await getNavCategoryData();
-  });
-
+  const { categories, categoriesLoading } = React.useContext(DataProvider);
   const [dropDownOpen, setDropDownOpen] = React.useState(false);
   const [catData, setCatData] = React.useState(null);
 
   const handleDropDownOpen = id => {
-    const category = data.find(item => item.category === id);
+    const category = categories.find(item => item.id === id);
     setCatData(category);
   };
 
@@ -38,18 +36,15 @@ export default function NavCategory() {
             {hideAllCategories && <AllCategories />}
             <ReactHoverObserver hoverDelayInMs={300}>
               <NavCategoriesContainer
-                isLightTheme={isLightTheme}
-                data={data}
-                isLoading={isLoading}
+                data={categories}
+                isLoading={categoriesLoading}
                 handleDropDownOpen={handleDropDownOpen}
                 setCatData={setCatData}
                 setDropDownOpen={setDropDownOpen}
                 catData={catData}
               />
               <AnimatePresence>
-                {dropDownOpen && (
-                  <MegaMenu data={catData} isLightTheme={isLightTheme} />
-                )}
+                {dropDownOpen && <MegaMenu data={catData} />}
               </AnimatePresence>
             </ReactHoverObserver>
           </div>

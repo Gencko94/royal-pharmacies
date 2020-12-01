@@ -14,6 +14,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import GuestCart from '../components/Cart/GuestCart.js/GuestCart';
 import CartLoader from '../components/Cart/loaders/CartLoader';
 import { useIntl } from 'react-intl';
+import StaticSwiper from '../components/Swipers/StaticSwiper';
 export default function Cart() {
   const {
     cartItems,
@@ -54,7 +55,6 @@ export default function Cart() {
     try {
       await removeFromWishListMutation({ id, userId });
       setAddToWishListButtonLoading(null);
-      console.log(id);
       console.log(wishlistItems.filter(item => item.id !== id));
       setWishlistItems(prev => {
         return prev.filter(item => item !== id);
@@ -125,13 +125,7 @@ export default function Cart() {
           </div>
         )}
         {!authenticationLoading && !userId && <GuestCart />}
-        {/* <ItemsSlider
-          data={healthCare}
-          miniLogo={false}
-          type="healthCare"
-          title="Health Care Essentials"
-          isLightTheme={isLightTheme}
-        /> */}
+        <StaticSwiper type="electronics" />
         <AnimatePresence>
           {checkoutModalOpen && (
             <CheckoutModal setCheckOutModalOpen={setCheckOutModalOpen} />

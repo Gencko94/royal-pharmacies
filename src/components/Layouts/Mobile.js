@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
-import useClickAway from '../hooks/useClickAway';
-import MobileFooter from './MobileFooter';
-import MobileNavbar from './MobileNavbar';
-import SideMenu from './NavbarComponents/SideMenu';
+import useClickAway from '../../hooks/useClickAway';
+import MobileFooter from '../MobileFooter';
+import MobileNavbar from '../MobileNavbar';
+import SideMenu from '../NavbarComponents/SideMenu';
 
-export default function LayoutMobile({ children }) {
+export default function Mobile({ children }) {
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const sideMenuRef = React.useRef(null);
   const toggleSideMenu = () => {

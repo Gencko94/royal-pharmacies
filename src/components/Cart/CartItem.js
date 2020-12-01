@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { DataProvider } from '../../contexts/DataContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import LazyImage from '../../helpers/LazyImage';
 export default function CartItem({
   item,
   handleRemoveItemFromCart,
@@ -43,10 +44,10 @@ export default function CartItem({
       className="cart-item py-2 border-b"
     >
       <Link to={`/${locale}/c/${item.id}`}>
-        <img
-          className=""
+        <LazyImage
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image}`}
           alt={`${item[`name_${locale}`]}`}
+          pb="calc(100% * 286/210)"
         />
       </Link>
       <div className="">

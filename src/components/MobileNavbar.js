@@ -8,51 +8,42 @@ import { DataProvider } from '../contexts/DataContext';
 import NavLogoMobile from './MobileNavbar/NavLogoMobile';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export default function MobileNavbar() {
+export default function MobileNavbar({
+  sideMenuOpen,
+  setSideMenuOpen,
+  toggleSideMenu,
+}) {
   const { isLightTheme } = React.useContext(DataProvider);
-  const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [sideMenuOpenSecond, setSideMenuSecondOpen] = React.useState(false);
   const [windowScrolled, setWindowScrolled] = React.useState(false);
-  const sideMenuRef = React.useRef(null);
-  const sideMenuRefSecond = React.useRef(null);
-  useClickAway(sideMenuRef, () => {
-    if (sideMenuOpen) {
-      sideMenuRef.current.classList.add('-translate-x-full');
-      setSideMenuOpen(false);
-    }
-  });
-  useClickAway(sideMenuRefSecond, () => {
-    if (sideMenuOpenSecond) {
-      sideMenuRefSecond.current.classList.add('-translate-x-full');
-      setSideMenuSecondOpen(false);
-    }
-  });
 
-  const toggleSideMenu = () => {
-    if (sideMenuOpen) {
-      setSideMenuOpen(false);
-    } else {
-      setSideMenuOpen(true);
-    }
-  };
-  const toggleSideMenuSecond = () => {
-    if (sideMenuOpenSecond) {
-      setSideMenuSecondOpen(false);
-    } else {
-      setSideMenuSecondOpen(true);
-    }
-  };
+  const sideMenuRefSecond = React.useRef(null);
+
+  // useClickAway(sideMenuRefSecond, () => {
+  //   if (sideMenuOpenSecond) {
+  //     sideMenuRefSecond.current.classList.add('-translate-x-full');
+  //     setSideMenuSecondOpen(false);
+  //   }
+  // });
+
+  // const toggleSideMenuSecond = () => {
+  //   if (sideMenuOpenSecond) {
+  //     setSideMenuSecondOpen(false);
+  //   } else {
+  //     setSideMenuSecondOpen(true);
+  //   }
+  // };
   React.useEffect(() => {
     const checkScrolling = () => {
       if (window.scrollY >= 140) {
         setWindowScrolled(true);
-        if (sideMenuOpen) {
-          toggleSideMenu();
-        }
+        // if (sideMenuOpen) {
+        //   toggleSideMenu();
+        // }
       } else {
-        if (sideMenuOpenSecond) {
-          toggleSideMenuSecond();
-        }
+        // if (sideMenuOpenSecond) {
+        //   toggleSideMenuSecond();
+        // }
         setWindowScrolled(false);
       }
     };
@@ -78,7 +69,7 @@ export default function MobileNavbar() {
           </button> */}
 
           <MobileIcons />
-          <AnimatePresence>
+          {/* <AnimatePresence>
             {!windowScrolled && sideMenuOpen && (
               <SideMenu
                 toggleSideMenu={toggleSideMenu}
@@ -95,7 +86,7 @@ export default function MobileNavbar() {
                 className="bg-gray-900 opacity-25 fixed z-10 top-0 left-0 w-full h-screen"
               ></motion.div>
             )}
-          </AnimatePresence>
+          </AnimatePresence> */}
         </nav>
         <div
           className={`p-2 ${
@@ -124,14 +115,14 @@ export default function MobileNavbar() {
                 : 'bg-nav-cat-dark text-nav-cat-text-dark'
             } p-2  z-10 top-0 left-0 `}
           >
-            <Hamburger toggleSideMenu={toggleSideMenuSecond} />
+            <Hamburger toggleSideMenu={toggleSideMenu} />
             <div className="mx-2 flex-1">
               <MobileSearchbar isLightTheme={isLightTheme} />
             </div>
 
             <MobileIcons withoutLanguage={true} withoutFlag={true} />
 
-            {windowScrolled && sideMenuOpenSecond && (
+            {/* {windowScrolled && sideMenuOpenSecond && (
               <SideMenu
                 toggleSideMenu={toggleSideMenuSecond}
                 sideMenuRef={sideMenuRefSecond}
@@ -146,7 +137,7 @@ export default function MobileNavbar() {
                 key={5687452}
                 className="bg-gray-900 opacity-25 fixed z-10 top-0 left-0 w-full h-screen"
               ></motion.div>
-            )}
+            )} */}
           </motion.div>
         )}
       </AnimatePresence>

@@ -41,7 +41,8 @@ export default function CartAndWishlistContext({ children }) {
 
   const [addToCartMutation] = useMutation(addToCart, {
     onSuccess: data => {
-      queryCache.invalidateQueries(['cartItems', userId]);
+      queryCache.setQueryData(['cartItems', userId], () => data);
+      // queryCache.invalidateQueries(['cartItems', userId]);
     },
     throwOnError: true,
   });
@@ -72,13 +73,8 @@ export default function CartAndWishlistContext({ children }) {
   });
   const [addToWishListMutation] = useMutation(addToWishlist, {
     onSuccess: data => {
-      // queryCache.setQueryData(['wishlistItems', userId], prev => {
-      //   return {
-      //     ...prev,
-      //     wishlistItems: data.wishlistItems,
-      //   };
-      // });
-      queryCache.invalidateQueries(['wishlistItems', userId]);
+      queryCache.setQueryData(['wishlistItems', userId], data);
+      // queryCache.invalidateQueries(['wishlistItems', userId]);
     },
     throwOnError: true,
   });

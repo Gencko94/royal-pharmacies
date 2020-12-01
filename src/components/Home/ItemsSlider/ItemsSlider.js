@@ -38,9 +38,11 @@ export default function ItemsSlider({ data, title }) {
     arrows: true,
     infinite: true,
     slidesToShow: 6,
+    lazyLoad: true,
     slidesToScroll: 4,
     nextArrow: <RightArrow />,
     prevArrow: <LeftArrow />,
+    // adaptiveHeight: true,
 
     responsive: [
       {

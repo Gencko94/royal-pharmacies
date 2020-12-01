@@ -21,52 +21,37 @@
 - [x] Add default location support.
 - [x] Localize Footers.
 - [x] Add 404 page.
-
-- [ ] Add Edit Cart item support. (discuss with maher)
-
 - [x] Add a Review system for Mobile.(2hrs)
-
-- [ ] Look into lazy loading and progressive images.
-
-- [ ] Add React Query & Localizations to the Search page.
-
-- [ ] Add Scroll Pagination to SingleProduct Pages.
-
+- [x] Look into lazy loading and progressive images.
 - [x] Add auto Complete to the Search bar.(1hr)
-
-- [ ] Complete the Checkout Page.(2hrs)
-
-- [ ] Search Engine optimization.
-
 - [x] Add keys to env variables.(0.5hr)
-
-- [ ] Add auto detect locale and localstorage language.(1hr)
-
-- [ ] Add delivery country context.(1hr)
-
 - [x] Add Wishlist Page Desktop & Mobile.(3hrs) (discuss with maher)
-
 - [x] Add React query to order history. (2.5hrs)
-
 - [x] Add payment Method for Mobile & Desktop (3hrs) (discuss with maher)
-
 - [x] Add Viewed Items for Mobile & Desktop (3hrs)
-
-- [ ] Look into re-algothiming side menu (3hrs)
-
-- [ ] Nest Lazyloading deep (3hrs)
-
+- [x] Look into re-algothiming side menu (3hrs)
 - [x] Complete Profile Modal Desktop (3hrs)
+- [x] discuss change user Info (phoneNumber and email)
 
+- [ ] Add Side Cart Menu Desktop & Mobile
+- [ ] Add category items placeholders
+- [ ] fix image zoom on single product mobile
+- [ ] Add Language Page to side menu
+- [ ] Add React Query & Localizations to the Search page.
+- [ ] Add Scroll Pagination to SingleProduct Pages.
+- [ ] Complete the Checkout Page.(2hrs)
+- [ ] Search Engine optimization.
+- [ ] Add Edit Cart item support. (discuss with maher)
+- [ ] Add auto detect locale and localstorage language.(1hr)
+- [ ] Add delivery country context.(1hr)
+- [ ] Nest Lazyloading deep (3hrs)
 - [ ] login and register number and password validation (discuss)
 
--[x] discuss change user Info (phoneNumber and email)
-
-**API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
+      **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 
 **NOTES**
 
-- [ ] Send back the Wishlist items after adding a new item.
+- [x] Send back the Wishlist items after adding a new item.
 - [ ] Each Product color should have its corresponding Size.
 - [ ] Remove cartId condition from remove from cart
 - [ ] Allow gif image upload in the dashboard
