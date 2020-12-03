@@ -1,19 +1,17 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
-import Slider from 'react-slick';
 // import { useMediaQuery } from 'react-responsive';
-// import MultiClamp from 'react-multi-clamp';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
 import ContentLoader from 'react-content-loader';
-import { useQuery } from 'react-query';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import { useIntl } from 'react-intl';
 SwiperCore.use([Navigation]);
 export default function Categories() {
   const { categories, categoriesLoading } = React.useContext(DataProvider);
   // const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
-
+  const { locale } = useIntl();
   // const isMobile = useMediaQuery({ query: '(min-width: 360px)' });
 
   const breakpoints = {
@@ -68,11 +66,13 @@ export default function Categories() {
             return (
               <SwiperSlide key={item.id} className="rounded-full">
                 <div className="  overflow-hidden  relative ">
-                  <img
-                    src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
-                    alt="something"
-                    className=" h-auto w-full "
-                  />
+                  <a href={`/${locale}/categories/${item.slug}`}>
+                    <img
+                      src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
+                      alt="something"
+                      className=" h-auto w-full "
+                    />
+                  </a>
                 </div>
               </SwiperSlide>
             );

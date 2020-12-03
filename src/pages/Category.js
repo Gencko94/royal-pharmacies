@@ -9,14 +9,18 @@ import { MdClose } from 'react-icons/md';
 import Layout from '../components/Layout';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { getCategories, getCategoryProducts } from '../Queries/Queries';
+import {
+  getCategories,
+  getCategoryProducts,
+  getSingleCategoryInfo,
+} from '../Queries/Queries';
 export default function Category({
   match: {
     params: { query },
   },
 }) {
   const { category } = useParams();
-  const { getSearchResults } = React.useContext(SearchProvider);
+  // const { getSearchResults } = React.useContext(SearchProvider);
   // const [loading, setLoading] = React.useState(true);
   // const [queryData, setQueryData] = React.useState([]);
   // const [filteredData, setFilteredData] = React.useState([]);
@@ -40,11 +44,11 @@ export default function Category({
 
   const { data: products, isLoading: productsLoading } = useQuery(
     ['categoryProducts', category],
-    async (key, category) => {
-      const res = await getCategoryProducts(category);
-      console.log(res);
-      return res;
-    }
+    getCategoryProducts
+  );
+  const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
+    ['categoryInfo', category],
+    getSingleCategoryInfo
   );
 
   // const filterQueryData = (data, filter) => {
@@ -240,7 +244,8 @@ export default function Category({
         {/* <Breadcrumbs data={categories} /> */}
         <div className="search-page__container">
           <CategoryLeftSide
-            category={category}
+            categoryInfo={categoryInfo}
+            categoryInfoLoading={categoryInfoLoading}
             products={products}
             productsLoading={productsLoading}
             // categories={categories}
@@ -300,16 +305,16 @@ export default function Category({
               </div>
             </div>
           )} */}
-          {!productsLoading && (
-            <div className="search-page-items__grid py-2 ">
-              <CategoryRightSide
-                data={products}
-                // queryData={queryData}
-                // filtersApplied={filtersApplied}
-                // filteredData={filteredData}
-              />
-            </div>
-          )}
+
+          <CategoryRightSide
+            products={products}
+            productsLoading={productsLoading}
+            categoryInfo={categoryInfo}
+            categoryInfoLoading={categoryInfoLoading}
+            // queryData={queryData}
+            // filtersApplied={filtersApplied}
+            // filteredData={filteredData}
+          />
         </div>
       </div>
     </Layout>

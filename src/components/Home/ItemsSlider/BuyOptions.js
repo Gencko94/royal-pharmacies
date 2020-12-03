@@ -122,7 +122,7 @@ export default function BuyOptions({
               handleRemoveFromCart(item.id);
             } else {
               console.log('add');
-              handleAddToCart(item.id);
+              handleAddToCart({ id: item.id, quantity: quantity, size });
             }
           }}
           className={`${
@@ -131,14 +131,14 @@ export default function BuyOptions({
               : cartItems.includes(item.id)
               ? 'bg-main-color'
               : 'bg-green-700'
-          } flex-1 text-main-text shadow-itemsSlider-shallow uppercase  p-2 rounded-lg text-xs sm:text-sm w-full   flex items-center justify-center font-semibold`}
+          } flex-1 text-main-text shadow-itemsSlider-shallow uppercase  p-2 rounded-lg text-xs sm:text-sm w-full transition duration-150   flex items-center justify-center font-semibold`}
         >
           {loadingButton === item.id ? (
             <Loader
               type="ThreeDots"
               color="#b72b2b"
-              height={15}
-              width={15}
+              height={21}
+              width={21}
               visible={true}
             />
           ) : cartItems.includes(item.id) ? (

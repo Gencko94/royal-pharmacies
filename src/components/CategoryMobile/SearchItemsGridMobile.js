@@ -1,14 +1,58 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import CategoryProductItem from '../Category/CategoryProductItem';
+import CategoryChildrenMobile from '../CategoryMobile/CategoryChildrenMobile';
+import { useIntl } from 'react-intl';
 export default function SearchItemsGridMobile({
-  queryData,
-  filteredData,
-  filtersApplied,
+  // queryData,
+  // filteredData,
+  // filtersApplied,
+  productsLoading,
+  products,
+  categoryInfoLoading,
+  categoryInfo,
 }) {
+  const { locale } = useIntl();
+  if (productsLoading || categoryInfoLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={40}
+          width={40}
+          visible={true}
+        />
+      </div>
+    );
+  }
   return (
-    <div className="search-page-items-mobile__grid px-1 my-1">
-      {!filtersApplied &&
+    <div>
+      <div
+        className="py-16 px-2 flex justify-center items-center"
+        style={{
+          backgroundImage: `url(${process.env.REACT_APP_IMAGES_URL}/original/${categoryInfo.image.link})`,
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+        }}
+      >
+        <h1 className="text-2xl text-main-text font-bold">
+          {categoryInfo.translation[locale].name}
+        </h1>
+      </div>
+      {categoryInfo.children.length !== 0 && (
+        <CategoryChildrenMobile categoryInfo={categoryInfo} />
+      )}
+      <hr />
+      {products.length !== 0 && (
+        <div className="search-page-items-mobile__grid px-1 my-1">
+          {products.map(item => {
+            return <CategoryProductItem key={item.id} item={item} />;
+          })}
+
+          {/* {!filtersApplied &&
         queryData.map((item, i) => {
           return (
             <div key={i} className="">
@@ -91,7 +135,9 @@ export default function SearchItemsGridMobile({
               </div>
             </div>
           );
-        })}
+        })} */}
+        </div>
+      )}
     </div>
   );
 }

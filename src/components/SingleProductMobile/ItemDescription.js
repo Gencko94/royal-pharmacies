@@ -167,14 +167,7 @@ export default function ItemDescription({
           <hr className="my-2" />
         </>
       )} */}
-      <div
-        className="relative"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '0.5fr 0.5fr',
-          gap: '0.5rem',
-        }}
-      >
+      <div className="relative">
         <button
           onClick={() => {
             if (itemInCart) {
@@ -189,7 +182,7 @@ export default function ItemDescription({
               : itemInCart
               ? 'bg-main-color'
               : 'bg-green-700'
-          } flex-1 text-gray-100 text-sm py-2 px-2 rounded uppercase  flex items-center justify-center font-semibold`}
+          } text-gray-100 text-sm py-2 px-2 mb-2 rounded uppercase w-full  flex items-center justify-center font-semibold`}
         >
           {addToCartButtonLoading ? (
             <Loader
@@ -221,7 +214,7 @@ export default function ItemDescription({
           onClick={addToWishList}
           className={`
               border border-main-color text-main-color
-           flex-1 text-sm py-2 px-2 rounded uppercase  flex items-center justify-center font-semibold`}
+            text-sm py-2 px-2 rounded uppercase w-full flex items-center justify-center font-semibold`}
         >
           {addToWishListButtonLoading ? (
             <Loader

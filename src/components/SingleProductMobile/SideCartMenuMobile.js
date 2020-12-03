@@ -2,21 +2,34 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { MdClose } from 'react-icons/md';
 import { useIntl } from 'react-intl';
-import MultiClamp from 'react-multi-clamp';
 import { Link } from 'react-router-dom';
 import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
+import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 
-export default function SideCartMenuMobile({
-  handleRemoveFromCart,
-  setSideMenuOpen,
-}) {
+import SideCartMenuItemMobile from './SideCartMenuItemMobile';
+export default function SideCartMenuMobile({ setSideMenuOpen }) {
   const { cartItems, cartTotal } = React.useContext(CartAndWishlistProvider);
   const handleCloseMenu = () => {
     setSideMenuOpen(false);
   };
   const { formatMessage, locale } = useIntl();
-
+  const [
+    removeFromCartButtonLoading,
+    setRemoveFromCartButtonLoading,
+  ] = React.useState(null);
+  const { removeFromCartMutation } = React.useContext(CartAndWishlistProvider);
+  const { userId } = React.useContext(AuthProvider);
+  const handleRemoveFromCart = async (id, cart_id) => {
+    setRemoveFromCartButtonLoading(id);
+    try {
+      await removeFromCartMutation({ id, cart_id, userId });
+      setRemoveFromCartButtonLoading(null);
+    } catch (error) {
+      setRemoveFromCartButtonLoading(null);
+      console.log(error.response);
+    }
+  };
   const sideMenuVariants = {
     hidden: {
       x: `${locale === 'ar' ? '100%' : '-100%'}`,
@@ -35,17 +48,6 @@ export default function SideCartMenuMobile({
         when: 'afterChildren',
         type: 'tween',
       },
-    },
-  };
-  const cartItemVariant = {
-    hidden: {
-      x: `${locale === 'ar' ? '100%' : '-100%'}`,
-    },
-    visible: {
-      x: 0,
-    },
-    exited: {
-      opacity: 0,
     },
   };
 
@@ -91,57 +93,12 @@ export default function SideCartMenuMobile({
             <AnimatePresence>
               {cartItems.map(item => {
                 return (
-                  <motion.div
-                    variants={cartItemVariant}
+                  <SideCartMenuItemMobile
                     key={item.id}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exited"
-                    className=" after__addToCart-related mb-2"
-                  >
-                    <div className="">
-                      <Link
-                        title={`${item[`name_${locale}`]}`}
-                        className="hover:underline"
-                        to={`/${locale}/c/${item.id}`}
-                      >
-                        <img
-                          src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.image}`}
-                          alt={`${item[`name_${locale}`]}`}
-                          className="max-w-full h-auto"
-                        />
-                      </Link>
-                    </div>
-                    <div className="">
-                      <Link
-                        title={`${item[`name_${locale}`]}`}
-                        className="hover:underline"
-                        to={`/${locale}/c/${item.id}`}
-                      >
-                        <MultiClamp
-                          className="font-semibold text-sm "
-                          clamp={4}
-                          ellipsis="..."
-                        >
-                          {`${item[`name_${locale}`]}`}
-                        </MultiClamp>
-                      </Link>
-
-                      <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-                        {item.price * item.qty} KD
-                      </h1>
-                      <div>
-                        <button
-                          className="bg-main-color text-main-text text-xs rounded p-1 my-1"
-                          onClick={() => {
-                            handleRemoveFromCart(item.id, item.cart_id);
-                          }}
-                        >
-                          {formatMessage({ id: 'remove-from-cart' })}
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
+                    item={item}
+                    handleRemoveFromCart={handleRemoveFromCart}
+                    removeFromCartButtonLoading={removeFromCartButtonLoading}
+                  />
                 );
               })}
             </AnimatePresence>
@@ -157,7 +114,7 @@ export default function SideCartMenuMobile({
             <hr className="my-1" />
             <div className=" flex items-center my-2 text-center text-second-nav-text-light ">
               <Link
-                to={`/${locale}/checkout/guestcheckout`}
+                to={`/${locale}/checkout/guest-checkout`}
                 className={`flex-1 py-2  px-3  bg-green-700 w-full  rounded `}
               >
                 {formatMessage({ id: 'checkout' })}

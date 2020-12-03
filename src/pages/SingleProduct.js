@@ -168,15 +168,11 @@ export default function SingleProduct() {
 
       <AnimatePresence>
         {sideMenuOpen && (
-          <SideCartMenu
-            key={879}
-            setSideMenuOpen={setSideMenuOpen}
-            handleRemoveFromCart={handleRemoveFromCart}
-          />
+          <SideCartMenu key="side-cart" setSideMenuOpen={setSideMenuOpen} />
         )}
         {sideMenuOpen && (
           <motion.div
-            key={268}
+            key="sidecart-bg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}

@@ -31,14 +31,18 @@ export default function Mobile({ children }) {
       {children}
       <AnimatePresence>
         {sideMenuOpen && (
-          <SideMenu toggleSideMenu={toggleSideMenu} sideMenuRef={sideMenuRef} />
+          <SideMenu
+            key="side-menu"
+            toggleSideMenu={toggleSideMenu}
+            sideMenuRef={sideMenuRef}
+          />
         )}
         {sideMenuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.25 }}
             exit={{ opacity: 0 }}
-            key={5687452}
+            key="sidemenu-bg"
             className="bg-gray-900 opacity-25 fixed z-10 top-0 left-0 w-full h-screen"
           ></motion.div>
         )}

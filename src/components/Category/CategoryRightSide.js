@@ -1,62 +1,44 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import CategoryChildren from './CategoryChildren';
+import CategoryProductItem from './CategoryProductItem';
 export default function CategoryRightSide({
-  data,
+  products,
   queryData,
   filteredData,
   filtersApplied,
+  productsLoading,
+  categoryInfo,
+  categoryInfoLoading,
 }) {
-  const { locale } = useIntl();
-  console.log(data);
+  console.log(products);
+  if (productsLoading || categoryInfoLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={40}
+          width={40}
+          visible={true}
+        />
+      </div>
+    );
+  }
   return (
-    <>
-      {data.length !== 0 &&
-        data.map(item => {
-          return (
-            <div key={item.id} className="">
-              <div
-                style={{ minHeight: '350px' }}
-                className=" bg-white border overflow-hidden flex flex-col relative  rounded-lg shadow-lg "
-              >
-                <Link to={`/${locale}/products/${item.id}`}>
-                  <img
-                    src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
-                    alt="something"
-                    className="w-full h-auto  "
-                  />
-                </Link>
-                <hr />
-
-                <div className=" relative flex flex-col pt-2 p-3 bg-white text-black">
-                  <h1 className="text-clamp-2 text-sm font-semibold">
-                    <Link
-                      title={item.translation[locale].title}
-                      className="hover:underline"
-                      to={`/products/${item.id}`}
-                    >
-                      {item.translation[locale].title}
-                    </Link>
-                  </h1>
-
-                  <div className="flex items-center">
-                    <p className=" mr-3  text-xs font-semibold text-red-700 whitespace-no-wrap">
-                      {item.simple_addons.price}{' '}
-                      <span className="text-xs ">KD</span>
-                    </p>
-                    {/* {item.sale && (
-                        <p className="text-xs  line-through text-gray-500  font-bold whitespace-no-wrap">
-                          {' '}
-                          {item.priceBefore}{' '}
-                          <span className="font-normal">KD</span>
-                        </p>
-                      )} */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+    <div className="py-2">
+      <CategoryChildren
+        categoryInfo={categoryInfo}
+        categoryInfoLoading={categoryInfoLoading}
+      />
+      {products.length !== 0 && (
+        <div className="search-page-items__grid py-2 ">
+          {products.map(item => {
+            return <CategoryProductItem key={item.id} item={item} />;
+          })}
+        </div>
+      )}
       {/* {filtersApplied &&
         (filteredData.length !== 0 ? (
           filteredData.map((item, i) => {
@@ -110,6 +92,6 @@ export default function CategoryRightSide({
             </h1>
           </div>
         ))} */}
-    </>
+    </div>
   );
 }

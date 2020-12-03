@@ -15,7 +15,9 @@ import { getHomeItems } from '../Queries/Queries';
 import HomeSwiper from '../components/HomeSwiper';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
 import SwiperLoader from '../components/Home/SwiperLoader';
-import LayoutMobile from '../components/LayoutMobile';
+import { AnimatePresence, motion } from 'framer-motion';
+import SideCartMenu from '../components/SingleProduct/SideCartMenu';
+import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 // import AnimatedSlides from '../components/Home/AnimatedSlides';
 
 export default function Home() {
@@ -29,43 +31,7 @@ export default function Home() {
     retry: true,
     refetchOnWindowFocus: false,
   });
-  const resolveType = item => {
-    switch (item.type) {
-      case 'best_seller':
-        return (
-          <LazyLoad>
-            <ItemsSlider
-              data={item.data}
-              title={item.translation[locale].title}
-            />
-          </LazyLoad>
-        );
-      case 'product_by_category':
-        return (
-          <LazyLoad>
-            <ItemsSlider
-              data={item.data}
-              title={item.translation[locale].title}
-            />
-          </LazyLoad>
-        );
-      case 'banner':
-        return (
-          <LazyLoad>
-            <Banner
-              url={
-                isTabletOrAbove
-                  ? item.data.banner_desktop.link
-                  : item.data.banner_mobile.link
-              }
-            />
-          </LazyLoad>
-        );
-
-      default:
-        return null;
-    }
-  };
+  const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const resolveSwiper = item => {
     switch (item.type) {
       case 'best_seller':
@@ -123,6 +89,24 @@ export default function Home() {
         `}
         style={{ minHeight: 'calc(100vh - 140px)' }}
       >
+        <AnimatePresence>
+          {cartMenuOpen &&
+            (isTabletOrAbove ? (
+              <SideCartMenu key="side-cart" setSideMenuOpen={setCartMenuOpen} />
+            ) : (
+              <SideCartMenuMobile key={998} setSideMenuOpen={setCartMenuOpen} />
+            ))}
+          {cartMenuOpen && (
+            <motion.div
+              key="sidecart-bg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setCartMenuOpen(false)}
+              className="side__addCart-bg"
+            ></motion.div>
+          )}
+        </AnimatePresence>
         <MainCarousel />
         <div
           className={`
@@ -132,8 +116,8 @@ export default function Home() {
            mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
         >
           <Categories />
-          <StaticSwiper type="electronics" />
-          <StaticSwiper type="home-kitchen" />
+          <StaticSwiper type="electronics" setCartMenuOpen={setCartMenuOpen} />
+          <StaticSwiper type="home-kitchen" setCartMenuOpen={setCartMenuOpen} />
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}

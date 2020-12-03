@@ -288,11 +288,24 @@ export const addToGuestCart = async () => {
     }, [1000]);
   });
 };
-
+/**
+ * Single Category info
+ */
+export const getSingleCategoryInfo = async (k, categorySlug) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
+  );
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
+/**
+ * End of Single Category Info
+ */
 /**
  * Category Products
  */
-export const getCategoryProducts = async categorySlug => {
+export const getCategoryProducts = async (k, categorySlug) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category-products/${categorySlug}`
   );

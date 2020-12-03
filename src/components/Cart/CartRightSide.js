@@ -39,8 +39,8 @@ export default function CartRightSide({
   };
   return (
     <div
-      className="font-semibold overflow-hidden  sticky top-0"
-      style={{ top: '134px' }}
+      className="font-semibold overflow-hidden  sticky top-0 self-start"
+      style={{ top: '110px' }}
     >
       {cartItemsLoading && <CartRightSideLoader locale={locale} />}
       {!cartItemsLoading && cartItems.length !== 0 && (

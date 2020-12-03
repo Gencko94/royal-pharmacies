@@ -95,7 +95,7 @@ export default function HomeSwiper({ data, title }) {
     },
   };
   return (
-    <div className="my-6 overflow-hidden   ">
+    <div className="my-8 overflow-hidden   ">
       <div className="flex items-center mb-4">
         <h1 className="text-xl font-bold flex-1 ">{title}</h1>
         <button className="py-1 px-2  bg-second-nav-light text-second-nav-text-light rounded whitespace-no-wrap">

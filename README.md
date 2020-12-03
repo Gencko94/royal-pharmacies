@@ -33,8 +33,8 @@
 - [x] Complete Profile Modal Desktop (3hrs)
 - [x] discuss change user Info (phoneNumber and email)
 
-- [ ] Add Side Cart Menu Desktop & Mobile
-- [ ] Add category items placeholders
+- [x] Add Side Cart Menu Desktop & Mobile
+- [x] Add category items placeholders
 - [ ] fix image zoom on single product mobile
 - [ ] Add Language Page to side menu
 - [ ] Add React Query & Localizations to the Search page.
@@ -46,6 +46,7 @@
 - [ ] Add delivery country context.(1hr)
 - [ ] Nest Lazyloading deep (3hrs)
 - [ ] login and register number and password validation (discuss)
+- [ ] Single Product
 
       **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 

@@ -174,13 +174,7 @@ export default function SingleProductMobile() {
       <div className="overflow-hidden">
         <AnimatePresence>
           {sideMenuOpen && (
-            <SideCartMenuMobile
-              key={998}
-              cartItems={data.cartItems}
-              cartTotal={data.cartTotal}
-              setSideMenuOpen={setSideMenuOpen}
-              handleRemoveFromCart={handleRemoveFromCart}
-            />
+            <SideCartMenuMobile key={998} setSideMenuOpen={setSideMenuOpen} />
           )}
           {sideMenuOpen && (
             <motion.div

@@ -18,15 +18,17 @@ export default function CategoryLeftSide({
   products,
   brandFilters,
   handleBrandChange,
+  categoryInfo,
+  categoryInfoLoading,
 }) {
-  const { data: categories, isLoading: categoriesLoading } = useQuery(
-    ['categoryTree', category],
-    async (key, category) => {
-      const res = await getCategories(category);
-      console.log(res);
-      return res;
-    }
-  );
+  // const { data: categories, isLoading: categoriesLoading } = useQuery(
+  //   ['categoryTree', category],
+  //   async (key, category) => {
+  //     const res = await getCategories(category);
+  //     console.log(res);
+  //     return res;
+  //   }
+  // );
   // const { data: brands, isLoading: brandsLoading } = useQuery(
   //   ['brands', category],
   //   async (key, category) => {
@@ -39,21 +41,21 @@ export default function CategoryLeftSide({
 
   return (
     <div className="py-2">
-      {categoriesLoading && <div>loading</div>}
-      {!categoriesLoading && (
+      {categoryInfoLoading && <div>loading</div>}
+      {!categoryInfoLoading && (
         <div className="mb-4">
           <h1 className="text-xl font-semibold">Category</h1>
           <hr className="my-2" />
 
-          <div className="my-2" key={categories.id}>
+          <div className="my-2" key={categoryInfo.id}>
             <div className="flex justify-between">
               <h1 className="font-semibold text-sm">
-                {categories.translation[locale].name}
+                {categoryInfo.translation[locale].name}
               </h1>
               {/* <div>{numberOfItems[category]}</div> */}
             </div>
-            {categories.children.length !== 0 &&
-              categories.children.map(subCategory => (
+            {categoryInfo.children.length !== 0 &&
+              categoryInfo.children.map(subCategory => (
                 <Link
                   to={`/${locale}/categories/${subCategory.slug}`}
                   key={subCategory.id}

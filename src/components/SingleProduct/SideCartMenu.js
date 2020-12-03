@@ -1,18 +1,32 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import MultiClamp from 'react-multi-clamp';
 import { Link } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
 import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
-
-export default function SideCartMenu({
-  handleRemoveFromCart,
-  setSideMenuOpen,
-}) {
+import { AuthProvider } from '../../contexts/AuthContext';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+export default function SideCartMenu({ setSideMenuOpen }) {
   const { cartItems, cartTotal } = React.useContext(CartAndWishlistProvider);
   const { formatMessage, locale } = useIntl();
+  const [
+    removeFromCartButtonLoading,
+    setRemoveFromCartButtonLoading,
+  ] = React.useState(null);
+  const { removeFromCartMutation } = React.useContext(CartAndWishlistProvider);
+  const { userId } = React.useContext(AuthProvider);
+  const handleRemoveFromCart = async (id, cart_id) => {
+    setRemoveFromCartButtonLoading(id);
+    try {
+      await removeFromCartMutation({ id, cart_id, userId });
+      setRemoveFromCartButtonLoading(null);
+    } catch (error) {
+      setRemoveFromCartButtonLoading(null);
+      console.log(error.response);
+    }
+  };
   const sideMenuVariants = {
     hidden: {
       x: `${locale === 'ar' ? '-100%' : '100%'}`,
@@ -79,6 +93,7 @@ export default function SideCartMenu({
             </Link>
           </div>
         )}
+
         {cartItems.length !== 0 && (
           <div
             className="flex-1 overflow-y-auto overflow-x-hidden"
@@ -114,13 +129,9 @@ export default function SideCartMenu({
                         className="hover:underline"
                         to={`/${locale}/c/${item.id}`}
                       >
-                        <MultiClamp
-                          className="font-semibold text-sm "
-                          clamp={4}
-                          ellipsis="..."
-                        >
+                        <h1 className="text-clamp-2 text-sm font-semibold">
                           {`${item[`name_${locale}`]}`}
-                        </MultiClamp>
+                        </h1>
                       </Link>
                       <div className="flex items-center">
                         <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
@@ -132,12 +143,26 @@ export default function SideCartMenu({
                       </div>
                       <div>
                         <button
-                          className="bg-main-color text-main-text text-xs rounded p-1 my-1"
+                          className={`${
+                            removeFromCartButtonLoading === item.id
+                              ? 'bg-gray-300'
+                              : 'bg-main-color text-main-text'
+                          } text-xs rounded p-1 my-1 uppercase`}
                           onClick={() => {
                             handleRemoveFromCart(item.id, item.cart_id);
                           }}
                         >
-                          {formatMessage({ id: 'remove-from-cart' })}
+                          {removeFromCartButtonLoading === item.id ? (
+                            <Loader
+                              type="ThreeDots"
+                              color="#b72b2b"
+                              height={21}
+                              width={21}
+                              visible={true}
+                            />
+                          ) : (
+                            formatMessage({ id: 'remove-from-cart' })
+                          )}
                         </button>
                       </div>
                     </div>
@@ -147,6 +172,7 @@ export default function SideCartMenu({
             </AnimatePresence>
           </div>
         )}
+
         <hr className="my-1" />
         {cartItems.length !== 0 && (
           <div>
