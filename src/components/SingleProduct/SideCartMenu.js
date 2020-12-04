@@ -108,7 +108,7 @@ export default function SideCartMenu({ setSideMenuOpen }) {
                     animate="visible"
                     exit="exited"
                     variants={cartItemVariant}
-                    className=" after__addToCart-related mb-2"
+                    className=" side-cart-menu__item mb-2"
                   >
                     <div className="">
                       <Link

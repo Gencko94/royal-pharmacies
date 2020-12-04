@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 import ItemDescription from './AdditionalDetails/ItemDescription';
 import ItemReviews from './AdditionalDetails/ItemReviews';
 
-export default function AdditionalDetails({ data }) {
+export default function AdditionalDetails({ data, reviews, reviewsLoading }) {
   const { formatMessage } = useIntl();
   const [detailsTab, setDetailsTab] = React.useState(0);
   return (
@@ -14,7 +14,7 @@ export default function AdditionalDetails({ data }) {
       <div className="flex justify-center rounded overflow-hidden">
         <button
           onClick={() => setDetailsTab(0)}
-          className={`text-lg py-2 flex-1 text-center   ${
+          className={`text-lg py-2 flex-1 text-center font-semibold  ${
             detailsTab === 0 && 'bg-main-color  text-main-text'
           }   bg-gray-400`}
         >
@@ -23,7 +23,7 @@ export default function AdditionalDetails({ data }) {
 
         <button
           onClick={() => setDetailsTab(1)}
-          className={`text-lg py-2 flex-1 text-center   ${
+          className={`text-lg py-2 flex-1 text-center font-semibold  ${
             detailsTab === 1 && 'bg-main-color  text-main-text'
           }   bg-gray-400`}
         >
@@ -34,7 +34,7 @@ export default function AdditionalDetails({ data }) {
         {detailsTab === 0 && <ItemDescription description={data.description} />}
 
         {detailsTab === 1 && (
-          <ItemReviews reviews={data.reviews} rating={data.rating} />
+          <ItemReviews reviews={reviews} reviewsLoading={reviewsLoading} />
         )}
       </div>
     </div>

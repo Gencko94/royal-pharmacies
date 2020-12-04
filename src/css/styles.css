@@ -444,6 +444,11 @@ input {
   grid-template-columns: 0.5fr 1fr;
   gap: 4px;
 }
+.side-cart-menu__item {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  gap: 4px;
+}
 .side-cart-menu__item-mobile {
   display: grid;
   grid-template-columns: 0.5fr 1fr;
@@ -650,13 +655,13 @@ input {
 
 .deliver-to__desktop {
   position: absolute;
-  left: 0;
+  /* left: 0; */
   top: 100%;
   /* padding: 0.5em; */
   z-index: 30;
   margin-top: 0.25em;
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .en-deliver-to__mobile {
   position: absolute;

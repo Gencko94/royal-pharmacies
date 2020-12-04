@@ -42,7 +42,6 @@ export default function CartAndWishlistContext({ children }) {
   const [addToCartMutation] = useMutation(addToCart, {
     onSuccess: data => {
       queryCache.setQueryData(['cartItems', userId], () => data);
-      // queryCache.invalidateQueries(['cartItems', userId]);
     },
     throwOnError: true,
   });
@@ -54,7 +53,7 @@ export default function CartAndWishlistContext({ children }) {
   });
   const [removeFromCartMutation] = useMutation(removeFromCart, {
     onSuccess: data => {
-      queryCache.invalidateQueries(['cartItems', userId]);
+      queryCache.setQueryData(['cartItems', userId], () => data);
     },
     throwOnError: true,
   });

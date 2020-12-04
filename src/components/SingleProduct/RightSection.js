@@ -24,7 +24,7 @@ export default function RightSection({
   itemInCart,
   isAuthenticated,
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const { deliveryCountry } = React.useContext(DataProvider);
   const addToWishList = () => {
@@ -46,41 +46,50 @@ export default function RightSection({
       className="border  p-2 rounded shadow-sm self-start sticky  "
       style={{ top: '108px' }}
     >
-      <div className="">
-        <h1>
-          Sold By <span className="font-semibold">MRG</span>
-        </h1>
-        <h1>
-          Delivered By <span className="font-semibold">MRG</span>
-        </h1>
-      </div>
-      <hr />
-      <div className={` rounded py-1  my-1 text-sm`}>
+      <div className={` rounded `}>
         <div className="flex justify-between items-center font-semibold  ">
           <div className="flex items-center ">
             <div className="flex items-center">
               <h1>{formatMessage({ id: 'deliver-to' })}</h1>
-              <h1 className="uppercase mx-2">{deliveryCountry}</h1>
-              <MdLocationOn className="w-5 h-5 text-red-800 " />
+              <h1 className="uppercase mx-2">
+                {deliveryCountry?.translation[locale].name}
+              </h1>
+              <MdLocationOn className="w-5 h-5 text-main-color " />
             </div>
           </div>
-          <button className={`py-0 px-2 text-xs bg-gray-200 rounded`}>
+          <button
+            className={`py-0 px-2 text-xs uppercase bg-main-color text-main-text rounded`}
+          >
             {formatMessage({ id: 'change' })}
           </button>
         </div>
-        <div className="">
+        <div className="mb-2">
           <div className="flex items-center">
             <h1 className="text-gray-700">
               {formatMessage({ id: 'estimated-delivery' })} :
             </h1>
-            <h1 className="mx-1">October 8</h1>
+            <h1 className="mx-1">
+              {deliveryCountry.delivery_time}
+              <span className="mx-1">
+                {deliveryCountry.delivery_time === '1'
+                  ? formatMessage({ id: 'day' })
+                  : formatMessage({ id: 'days' })}
+              </span>
+            </h1>
           </div>
-
           <div className="flex items-center">
             <h1 className="text-gray-700">
-              {formatMessage({ id: 'fastest-delivery' })} :
+              {formatMessage({ id: 'delivery-cost' })} :
             </h1>
-            <h1 className="mx-1">October 6</h1>
+            <h1 className="mx-1">
+              {deliveryCountry.delivery_cost === 0 ? (
+                <h1 className="text-green-700 uppercase font-semibold">
+                  {formatMessage({ id: 'free' })}
+                </h1>
+              ) : (
+                deliveryCountry.delivery_cost
+              )}
+            </h1>
           </div>
         </div>
       </div>

@@ -16,17 +16,18 @@ export default function MiddleSection({
   setSelectedVariant,
   setSelectedSize,
   selectedSize,
+  reviewsLength,
 }) {
   const { formatMessage, locale } = useIntl();
   const resolvePlural = () => {
-    switch (data.reviews.length) {
+    switch (reviewsLength) {
       case 1:
         return formatMessage({ id: 'one-review' });
 
       case 2:
         return formatMessage({ id: 'two-reviews' });
 
-      case data.reviews.length > 10:
+      case reviewsLength > 10:
         return formatMessage({ id: 'one-review' });
 
       default:
@@ -46,12 +47,12 @@ export default function MiddleSection({
           fullSymbol={<AiFillStar className="text-main-color" />}
           className=" pt-1"
         />
-        {/* <div className="text-sm mx-2">
+        <div className="text-sm mx-2">
           <div className="text-sm text-gray-600 flex items-center">
-            <h1>{data.reviews.length > 2 && data.reviews.length}</h1>
-            <h1 className="mx-1">{resolvePlural()}</h1>
+            <h1>{reviewsLength > 2 && reviewsLength}</h1>
+            <h1 className="mx-1">({resolvePlural()})</h1>
           </div>
-        </div> */}
+        </div>
       </div>
       <h1 className=" font-semibold mb-1 text-green-700">
         {formatMessage({ id: 'in-stock' })}

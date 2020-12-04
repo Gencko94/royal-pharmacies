@@ -1,59 +1,83 @@
 import React from 'react';
 import Slider from 'react-slick';
-import Zoom from 'react-medium-image-zoom';
+// import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
-export default function ImageZoomMobile({ data: { images, name } }) {
-  const sliderRef = React.useRef();
+import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
+import LazyImage from '../../helpers/LazyImage';
+SwiperCore.use([Thumbs, Navigation, Zoom]);
+export default function ImageZoomMobile({ data, selectedVariation }) {
+  // const sliderRef = React.useRef();
 
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  const mainSettings = {
-    arrows: false,
-    dots: false,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-  const handleChangeSlide = React.useCallback(i => {
-    sliderRef.current.slickGoTo(i);
-    setCurrentSlide(i);
-  }, []);
+  // const mainSettings = {
+  //   arrows: false,
+  //   dots: false,
+  //   infinite: true,
+  //   slidesToShow: 1,
+  //   slidesToScroll: 1,
+  // };
+  // const handleChangeSlide = React.useCallback(i => {
+  //   sliderRef.current.slickGoTo(i);
+  //   setCurrentSlide(i);
+  // }, []);
+  const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   return (
     <div className="mb-2">
-      <Slider
-        ref={slider => (sliderRef.current = slider)}
-        {...mainSettings}
-        className={`mb-2`}
-      >
-        {images.map(photo => {
-          return (
-            <div key={photo.id}>
-              <Zoom>
-                <img
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${photo.link}`}
-                  alt={name}
+      <Swiper id="main" slidesPerView={1} thumbs={{ swiper: thumbsSwiper }}>
+        {data.type === 'simple' ? (
+          [data.image, ...data.gallery].map(item => {
+            console.log(item.id);
+            return (
+              <SwiperSlide key={item.id}>
+                <LazyImage
+                  pb="calc(100% * 681/500)"
+                  src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.link}`}
+                  alt={data.name}
                 />
-              </Zoom>
-            </div>
-          );
-        })}
-      </Slider>
-      <div className={`flex justify-evenly items-center overflow-x-auto `}>
-        {images.map((photo, i) => {
-          return (
-            <div key={photo.id} className="">
-              <img
-                onClick={() => handleChangeSlide(i)}
-                src={`${process.env.REACT_APP_IMAGES_URL}/original/${photo.link}`}
-                alt={name}
-                className={`${
-                  currentSlide === i ? 'border border-red-700' : ''
-                }`}
-                style={{ width: '50px', height: '50px' }}
-              />
-            </div>
-          );
-        })}
-      </div>
+              </SwiperSlide>
+            );
+          })
+        ) : (
+          <div>
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/original/${data.variation_addons[selectedVariation].image.link}`}
+              alt={data.name}
+            />
+          </div>
+        )}
+      </Swiper>
+      <Swiper
+        id="thumbs"
+        onSwiper={setThumbsSwiper}
+        slidesPerView={5}
+        freeMode={true}
+        spaceBetween={10}
+        watchSlidesVisibility
+        watchSlidesProgress
+      >
+        {data.type === 'simple' ? (
+          [data.image, ...data.gallery].map(item => {
+            return (
+              <SwiperSlide key={item.id}>
+                <img
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.link}`}
+                  alt={item.id}
+                  style={{ width: '50px', height: '50px' }}
+                />
+              </SwiperSlide>
+            );
+          })
+        ) : (
+          <div>
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${data.variation_addons[selectedVariation].image.link}`}
+              alt={data.name}
+            />
+          </div>
+        )}
+      </Swiper>
     </div>
   );
 }

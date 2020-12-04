@@ -102,15 +102,7 @@ export default function HomeSwiper({ data, title }) {
           {formatMessage({ id: 'seeAll' })}
         </button>
       </div>
-      <Swiper
-        navigation
-        id="main"
-        spaceBetween={10}
-        // slidesPerView={'auto'}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={swiper => console.log(swiper)}
-        breakpoints={breakpoints}
-      >
+      <Swiper navigation id="main" spaceBetween={10} breakpoints={breakpoints}>
         {data.map(item => {
           return (
             <SwiperSlide

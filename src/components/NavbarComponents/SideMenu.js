@@ -19,14 +19,14 @@ import TopSection from '../SideMenuMobile/TopSection';
 import { motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import SideMenuCategories from '../SideMenu/SideMenuCategories';
+import SideMenuLanguages from '../SideMenu/SideMenuLanguages';
 export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   const { isAuthenticated, userLogoutMutation } = React.useContext(
     AuthProvider
   );
-  const { sidebarCategories, categories, categoriesLoading } = React.useContext(
-    DataProvider
-  );
+  const { categories, categoriesLoading } = React.useContext(DataProvider);
   const [showCategories, setShowCategories] = React.useState(false);
+  const [showLanguages, setShowLanguages] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [subCategory, setSubCategory] = React.useState(0);
   const [secondSubPage, setSecondSubPage] = React.useState(0);
@@ -49,6 +49,16 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
     }
     setPage(page + 1);
     setShowCategories(true);
+  };
+  const handleShowLanguages = () => {
+    setPage(page + 1);
+    setShowLanguages(true);
+  };
+  const handleHideLanguages = () => {
+    setPage(page - 1);
+    setTimeout(() => {
+      setShowLanguages(false);
+    }, 400);
   };
   const handleClickNextFirst = i => {
     setPage(page + 1);
@@ -262,13 +272,14 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
             <motion.button
               key="language"
               variants={childVariants}
-              onClick={toggleSideMenu}
-              className="py-2 px-2 mb-2"
+              onClick={handleShowLanguages}
+              className="py-2 px-2 mb-2 flex items-center justify-between "
             >
               <div className=" flex items-center">
                 <FaLanguage className=" w-25p h-25p" />
                 <h1 className="mx-2">{formatMessage({ id: 'language' })}</h1>
               </div>
+              {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
             </motion.button>
             {isAuthenticated && (
               <motion.button
@@ -297,6 +308,9 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               subCategory={subCategory}
               categories={categories}
             />
+          )}
+          {showLanguages && (
+            <SideMenuLanguages handleHideLanguages={handleHideLanguages} />
           )}
         </div>
       </div>

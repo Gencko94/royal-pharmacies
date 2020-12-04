@@ -30,6 +30,13 @@ const myLocalLocations = localStorage.getItem('myLocalLocations');
 if (!myLocalLocations) {
   localStorage.setItem('myLocalLocations', JSON.stringify([]));
 }
+const deliveryCountry = localStorage.getItem('deliveryCountry');
+if (!deliveryCountry) {
+  localStorage.setItem(
+    'deliveryCountry',
+    JSON.stringify({ deliveryCountry: { en: 'Kuwait', ar: 'الكويت' } })
+  );
+}
 
 // const localAuthenticated = localStorage.getItem('localAuthenticated');
 // if (!localAuthenticated) {
@@ -40,9 +47,7 @@ ReactDOM.render(
     <DataContextProvider>
       <CartAndWishlistContext>
         <SearchContext>
-          <div className={` antialiased relative`}>
-            <App />
-          </div>
+          <App />
         </SearchContext>
       </CartAndWishlistContext>
     </DataContextProvider>

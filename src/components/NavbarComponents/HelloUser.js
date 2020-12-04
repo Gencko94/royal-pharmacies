@@ -42,7 +42,9 @@ export default function HelloUser() {
       } rounded p-1 text-body-light relative hover:bg-main-color`}
     >
       <button className="flex items-center" onClick={() => setOpen(!open)}>
-        <h1 className="font-semibold">Welcome {userData.name} !</h1>
+        <h1 className="font-semibold">
+          {formatMessage({ id: 'welcome-user' })} {userData.name} !
+        </h1>
         <span className="mx-1"></span>
         <BiChevronDown className="w-5 h-5 " />
       </button>

@@ -96,6 +96,11 @@ const baseStrings = {
   'hello-signin': 'Hello,Sign in',
   hello: 'Hello',
   off: 'OFF',
+  'loading-reviews': 'Loading Reviews...',
+  'welcome-user': 'Welcome',
+  day: 'Day',
+  days: 'Days',
+  'delivery-cost': 'Delivery Cost',
 
   //
   'home.title': 'Home',
@@ -231,6 +236,7 @@ const baseStrings = {
   'additional-details__item-reviews': 'Item Reviews',
 
   'single-product-product-review': 'Product Rating',
+  'single-product-average-rating': 'Average Product Rating',
   /**
    * Viewed Items Page
    *

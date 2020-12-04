@@ -10,27 +10,19 @@ import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import InView from 'react-intersection-observer';
-import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { useQuery } from 'react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import SingleProductLoader from '../components/SingleProduct/SingleProductLoader';
 import AdditionalDetails from '../components/SingleProduct/AdditionalDetails';
-import { getSingleItem } from '../Queries/Queries';
-import { useIntl } from 'react-intl';
+import { getProductReviews, getSingleItem } from '../Queries/Queries';
 import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 
 export default function SingleProduct() {
   const { id } = useParams();
-  const {
-    deliveryCountry,
-
-    allItems,
-
-    addViewedItems,
-  } = React.useContext(DataProvider);
+  const { deliveryCountry, addViewedItems } = React.useContext(DataProvider);
   const {
     addToCartMutation,
     removeFromCartMutation,
@@ -41,7 +33,6 @@ export default function SingleProduct() {
   const { userId, isAuthenticated } = React.useContext(AuthProvider);
   const [selectedVariation, setSelectedVariant] = React.useState(0);
   const [selectedSize, setSelectedSize] = React.useState(0);
-  const { locale } = useIntl();
   const quantityOptions = [
     { value: 1, label: 1 },
     { value: 2, label: 2 },
@@ -66,7 +57,11 @@ export default function SingleProduct() {
       },
     }
   );
-
+  const { data: reviews, isLoading: reviewsLoading } = useQuery(
+    ['product-reviews', id],
+    getProductReviews,
+    { retry: true, enabled: data }
+  );
   const [quantity, setQuantity] = React.useState(quantityOptions[0]);
   const [size, setSize] = React.useState(null);
   const [color, setColor] = React.useState(null);
@@ -143,19 +138,6 @@ export default function SingleProduct() {
     }
   };
 
-  // const fetchData = () => {
-  //   setTimeout(() => {
-  //     setRelated(relatedData);
-
-  //     setFetching(false);
-  //   }, 1500);
-  // };
-
-  // React.useEffect(() => {
-  //   fetchData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [page]);
-
   return (
     <Layout>
       <Helmet>
@@ -203,6 +185,7 @@ export default function SingleProduct() {
                 setSelectedVariant={setSelectedVariant}
                 selectedSize={selectedSize}
                 setSelectedSize={setSelectedSize}
+                reviewsLength={reviews?.length}
               />
               <RightSection
                 data={data}
@@ -230,6 +213,8 @@ export default function SingleProduct() {
                     ? data.simple_addons
                     : data.variation_addons
                 }
+                reviews={reviews}
+                reviewsLoading={reviewsLoading}
               />
             )}
           </div>

@@ -2,13 +2,11 @@ import React from 'react';
 import LoginRegister from './LoginRegister';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import { DataProvider } from '../../contexts/DataContext';
 import { AuthProvider } from '../../contexts/AuthContext';
 import Language from './Language';
 import ShipTo from './ShipTo';
 import HelloUser from './HelloUser';
 export default function FirstNav() {
-  const { isLightTheme } = React.useContext(DataProvider);
   const {
     authenticationLoading,
     isAuthenticated,
@@ -16,11 +14,11 @@ export default function FirstNav() {
   } = React.useContext(AuthProvider);
   return (
     <div
-      className={` font-semibold py-1 z-30 ${
-        isLightTheme
-          ? 'bg-first-nav-light text-main-text'
-          : 'bg-main-color text-main-text'
-      } text-sm `}
+      className={` font-semibold py-1 z-30 
+      
+        bg-first-nav-light text-main-text
+          
+       text-sm `}
     >
       <div className="max-w-default mx-auto flex items-center justify-between px-6">
         <div className="flex">

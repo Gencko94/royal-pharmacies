@@ -89,6 +89,12 @@ export const ar = {
   'hello-signin': 'مرحبا , سجل الدخول',
   hello: 'مرحبا ',
   off: 'خصم',
+  'loading-reviews': 'جاري تحميل المراجعات...',
+  'welcome-user': 'اهلا',
+  day: 'يوم واحد',
+  days: 'أيام',
+  'delivery-cost': 'كلفة التوصيل',
+
   //
   'nav.cart': 'عربة التسوق',
   'nav.wishlist': 'المفضلة',
@@ -222,6 +228,7 @@ export const ar = {
   'additional-details__item-reviews': 'تقييمات المنتج',
 
   'single-product-product-review': 'تقييم المنتج',
+  'single-product-average-rating': 'تقييم المنتج',
   /**
    * Footer
    */

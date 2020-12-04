@@ -144,10 +144,12 @@ import bedding from '../assets/navCategories/bedding.jpg';
 import menphoto from '../assets/navCategories/menphoto.jpg';
 import women from '../assets/navCategories/women.jpg';
 import { useQuery } from 'react-query';
-import { getAllCategories } from '../Queries/Queries';
+import { getAllCategories, getDeliveryCountries } from '../Queries/Queries';
+import { useIntl } from 'react-intl';
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
-  const [deliveryCountry, setDeliveryCountry] = React.useState('kuwait');
+  const localDeliveryCountry = localStorage.getItem('deliveryCountry');
+  const [deliveryCountry, setDeliveryCountry] = React.useState(null);
   const [selectedStore, setSelectedStore] = React.useState('kuwait');
   const [isLightTheme, setLightTheme] = React.useState(true);
   const localItems = localStorage.getItem('cartItems');
@@ -223,321 +225,7 @@ export default function DataContextProvider({ children }) {
       }, 1000);
     });
   };
-  const addItemToWishList = ({
-    id,
-    quantity,
-    price,
-    name,
-    photo,
-    category,
-    rating,
-  }) => {
-    return new Promise(resolve => {
-      const isItemInCart = cartItems.find(item => item.id === id);
-      setTimeout(() => {
-        const newItem = {
-          id,
-          price,
-          name,
-          photo,
-          quantity,
-          category,
-          rating,
-          itemInCart: Boolean(isItemInCart),
-        };
-        const wishListCopy = [...wishListItems];
-        wishListCopy.push(newItem);
-        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
-        setWishListItems(wishListCopy);
-        resolve({
-          wishListItems: wishListCopy,
-        });
-      }, 750);
-    });
-  };
-  const addItemToWishListFromCart = ({
-    id,
-    quantity,
-    price,
-    name,
-    photo,
-    category,
-    rating,
-  }) => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const newItem = {
-          id,
-          price,
-          name,
-          photo,
-          quantity,
-          category,
-          rating,
-          itemInWishList: true,
-        };
-        console.log(newItem);
-        const cartCopy = [...cartItems];
-        const modifiedCartItemIndex = cartCopy.findIndex(i => i.id === id);
-        if (modifiedCartItemIndex !== -1) {
-          cartCopy[modifiedCartItemIndex].itemInWishList = true;
-        }
-        const wishListCopy = [...wishListItems];
-        wishListCopy.push(newItem);
-        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
-        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
-        setWishListItems(wishListCopy);
-        setCartItems(cartCopy);
-        resolve({
-          cartItems: cartCopy,
-          wishListItems: wishListCopy,
-        });
-      }, 750);
-    });
-  };
-  const removeItemFromWishList = id => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const wishListCopy = wishListItems.filter(i => {
-          return i.id !== id;
-        });
 
-        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
-        setWishListItems(wishListCopy);
-        resolve({
-          wishListItems: wishListCopy,
-        });
-      }, 750);
-    });
-  };
-  const removeItemFromWishListFromCart = id => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const wishListCopy = wishListItems.filter(i => {
-          return i.id !== id;
-        });
-        const cartCopy = [...cartItems];
-        const modifiedCartItemIndex = cartCopy.findIndex(i => id === i.id);
-        if (modifiedCartItemIndex !== -1) {
-          cartCopy[modifiedCartItemIndex].itemInWishList = false;
-        }
-
-        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
-        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
-        setCartItems(cartCopy);
-        setWishListItems(wishListCopy);
-        resolve({
-          cartItems: cartCopy,
-          wishListItems: wishListCopy,
-        });
-      }, 750);
-    });
-  };
-  const getWishListItems = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({
-          wishListItems,
-        });
-      }, 1000);
-    });
-  };
-  const getCartItems = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({ cartItems, cartTotal: calculateItemsPrice(cartItems) });
-      }, 500);
-    });
-  };
-  const getSingleItemDetails = id => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const item = allItems.find(item => item.id === id);
-        const isItemInCart = cartItems.find(item => item.id === id);
-        const isItemInWishList = wishListItems.find(item => item.id === id);
-
-        if (item) {
-          resolve({
-            id: item.id,
-            slug: item.slug,
-            brand: {
-              brand_id: item.brand_id,
-              brand_slug: item.brand_slug,
-              en_name: item.brand.en_name,
-              ar_name: item.brand.ar_name,
-            },
-            category: {
-              // i need the category for the breadcrumbs (the mini category tree on the top)
-              category_id: item.category_id,
-              category_slug: item.category_slug,
-              category_en_name: item.category.en_name,
-              category_ar_name: item.category.ar_name,
-              // i don't know how to deal with this when the product belongs to a sub-category
-            },
-            type: item.type,
-            delivery: item.delivery,
-            simple: {
-              // if the product has no options (color,size)
-              name_en: item.name_en,
-              name_ar: item.name_ar,
-              sku: item.sku, // sku or model number
-              is_promotion: Boolean, // if item has sale
-              price: item.price, // regular price
-              sale_price: item.sale_price, // sale price
-              promotion_end: item.promotion_end, // date of the promotion end so i can parse it
-              availableQuantity: item.availableQuantity, // available quantity of the product
-              maxQuantity: item.maxQuantity, // maximum quantity per order
-              images: [
-                // the Images to be shown in the slider
-                { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-                { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-                { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-              ],
-              gallery: [
-                // the Images to be shown below the after the product details(big images like noon.com) (optional)
-                { id: 'id', url: 'imageUrl' },
-                { id: 'id', url: 'imageUrl' },
-                { id: 'id', url: 'imageUrl' },
-              ],
-            },
-            // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-
-            product_options: [
-              // variation_addons (if the product has multiple options)
-              // variation 1 - example : blue shoes
-              {
-                variation_id: 'variation_id',
-                sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
-                name_en: item.name_en,
-                name_ar: item.name_ar,
-                is_promotion: Boolean, // if item has sale
-                price: item.price, // regular price
-                sale_price: item.sale_price, // sale price
-                promotion_end: item.promotion_end, // date of the promotion end so i can parse it
-                maxQuantity: item.maxQuantity, // maximum quantity per order
-
-                sizes: [
-                  // i will conditionally render the sizes based on quantity left
-                  { id: 'size_id', value: 'S', quantity: 5 },
-                  { id: 'size_id', value: 'M', quantity: 2 },
-                  { id: 'size_id', value: 'L', quantity: 0 },
-                ],
-
-                images: [
-                  // the Images to be shown in the slider
-                  {
-                    id: 'id',
-                    url: 'imageUrl',
-                    zoomedImageUrl: 'zoomedImageUrl',
-                  },
-                  {
-                    id: 'id',
-                    url: 'imageUrl',
-                    zoomedImageUrl: 'zoomedImageUrl',
-                  },
-                  {
-                    id: 'id',
-                    url: 'imageUrl',
-                    zoomedImageUrl: 'zoomedImageUrl',
-                  },
-                ],
-                gallery: [
-                  // the Images to be shown below the after the product details(big images like noon.com) (optional)
-                  { id: 'id', url: 'imageUrl' },
-                  { id: 'id', url: 'imageUrl' },
-                  { id: 'id', url: 'imageUrl' },
-                ],
-                // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-                rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-                numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-              },
-              {
-                // variation 2 - example : red shoes
-                variation_id: 'variation_id',
-                sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
-                name_en: item.name_en,
-                name_ar: item.name_ar,
-                is_promotion: Boolean, // if item has sale
-                price: item.price, // regular price
-                sale_price: item.sale_price, // sale price
-                promotion_end: item.promotion_end, // date of the promotion end so i can parse it
-                maxQuantity: item.maxQuantity, // maximum quantity per order
-
-                sizes: [
-                  // i will conditionally render the sizes based on quantity left
-                  { id: 'size_id', value: 'S', quantity: 5 },
-                  { id: 'size_id', value: 'M', quantity: 2 },
-                  { id: 'size_id', value: 'L', quantity: 0 },
-                ],
-
-                images: [
-                  // the Images to be shown in the slider
-                  {
-                    id: 'id',
-                    url: 'imageUrl',
-                    zoomedImageUrl: 'zoomedImageUrl',
-                  },
-                  {
-                    id: 'id',
-                    url: 'imageUrl',
-                    zoomedImageUrl: 'zoomedImageUrl',
-                  },
-                  {
-                    id: 'id',
-                    url: 'imageUrl',
-                    zoomedImageUrl: 'zoomedImageUrl',
-                  },
-                ],
-                gallery: [
-                  // the Images to be shown below the after the product details(big images like noon.com) (optional)
-                  { id: 'id', url: 'imageUrl' },
-                  { id: 'id', url: 'imageUrl' },
-                  { id: 'id', url: 'imageUrl' },
-                ],
-                // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-                rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-                numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-              },
-            ],
-
-            details: {
-              // we either have one details for the whole product || or each variation has its own details, here i implenemented the whole product version
-              en: {
-                // please dont send me html , it's a pain the ass
-                description: 'a short or long description of the product', // the product description
-                features: ['feature 1', 'feature 2'],
-                // product features need to be a list of features
-                specifications: {
-                  // any specifications like size and materials
-                  width: '',
-                  height: '',
-                  size: '',
-                  weight: '',
-                  materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
-                },
-              },
-              ar: {
-                // please dont send me html , it's a pain the ass
-                description: 'a short or long description of the product', // the product description
-                features: ['feature 1', 'feature 2'],
-                // product features need to be a list of features
-                specifications: {
-                  // any specifications like size and materials
-                  width: '',
-                  height: '',
-                  size: '',
-                  weight: '',
-                  materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
-                },
-              },
-            },
-          });
-        } else {
-          reject({ message: 'no product' });
-        }
-      }, 500);
-    });
-  };
   const getRecentlyViewedVertical = visitedItems => {
     return new Promise(resolve => {
       let iDs = visitedItems.map(item => item.id);
@@ -554,81 +242,6 @@ export default function DataContextProvider({ children }) {
       }, 1250);
     });
   };
-  const addItemToCartFromWishlist = ({
-    id,
-    quantity,
-    price,
-    name,
-    photo,
-    category,
-  }) => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const cartCopy = [...cartItems];
-        const wishListCopy = [...wishListItems];
-        const newCartItem = {
-          id,
-          price,
-          name,
-          photo,
-          quantity,
-          category,
-        };
-        cartCopy.push(newCartItem);
-        const modifiedWishListItemIndex = wishListCopy.findIndex(
-          i => id === i.id
-        );
-        if (modifiedWishListItemIndex !== -1) {
-          wishListCopy[modifiedWishListItemIndex].itemInCart = true;
-        }
-
-        setCartItems(cartCopy);
-        setWishListItems(wishListCopy);
-        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
-        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
-        resolve({
-          message: 'ok',
-          cartItems: cartCopy,
-          wishListItems: wishListCopy,
-          cartTotal: calculateItemsPrice(cartCopy),
-        });
-      }, 1000);
-    });
-  };
-  const addItemToCart = ({
-    id,
-    quantity,
-    price,
-    name,
-    photo,
-    category,
-    rating,
-  }) => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const cartCopy = [...cartItems];
-        const newItem = {
-          id,
-          price,
-          name,
-          photo,
-          quantity,
-          category,
-          rating,
-        };
-        cartCopy.push(newItem);
-
-        setCartItems(cartCopy);
-
-        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
-        resolve({
-          message: 'ok',
-          cartItems: cartCopy,
-          cartTotal: calculateItemsPrice(cartCopy),
-        });
-      }, 1000);
-    });
-  };
 
   const EditItemFromCart = (quantity, item) => {
     const cartCopy = [...cartItems];
@@ -640,147 +253,7 @@ export default function DataContextProvider({ children }) {
     setCartItems(cartCopy);
     localStorage.setItem('cartItems', JSON.stringify(cartCopy));
   };
-  const removeItemFromCart = id => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const cartCopy = cartItems.filter(cartItem => id !== cartItem.id);
-        setCartItems(cartCopy);
-        const wishListCopy = [...wishListItems];
-        const modifiedWishListItemIndex = wishListCopy.findIndex(
-          i => id === i.id
-        );
-        if (modifiedWishListItemIndex !== -1) {
-          wishListCopy[modifiedWishListItemIndex].itemInCart = false;
-        }
-        setWishListItems(wishListCopy);
-        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
-        resolve({
-          message: 'ok',
-          cartItems: cartCopy,
-          wishListItems: wishListCopy,
-          cartTotal: calculateItemsPrice(cartCopy),
-        });
-      }, 1000);
-    });
-  };
-  const removeItemFromCartFromWishlist = id => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const wishListCopy = [...wishListItems];
-        const cartCopy = cartItems.filter(cartItem => id !== cartItem.id);
-        const modifiedWishListItemIndex = wishListCopy.findIndex(
-          i => id === i.id
-        );
-        if (modifiedWishListItemIndex !== -1) {
-          wishListCopy[modifiedWishListItemIndex].itemInCart = false;
-        }
-        setCartItems(cartCopy);
-        setWishListItems(wishListCopy);
 
-        localStorage.setItem('cartItems', JSON.stringify(cartCopy));
-        localStorage.setItem('localWish', JSON.stringify(wishListCopy));
-        resolve({
-          message: 'ok',
-          cartItems: cartCopy,
-          wishListItems: wishListCopy,
-          cartTotal: calculateItemsPrice(cartCopy),
-        });
-      }, 1000);
-    });
-  };
-  const calculateItemsPrice = item => {
-    let price = 0;
-    item.forEach(item => {
-      price = price + item.quantity * parseInt(item.price);
-    });
-    return price;
-  };
-  const getItemsByType = type => {
-    return new Promise((resolve, reject) => {
-      let group;
-      switch (type) {
-        case 'bestSellers':
-          group = bestSeller;
-          break;
-        case 'phone':
-          group = phone;
-          break;
-        case 'home':
-          group = home;
-          break;
-        case 'fashion':
-          group = fashion;
-          break;
-        case 'healthCare':
-          group = healthCare;
-          break;
-
-        default:
-          reject({ message: 'No group was selected' });
-          break;
-      }
-      setTimeout(() => {
-        resolve({ items: group, cartItems });
-      }, [100]);
-    });
-  };
-  const getUserLocations = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        let myLocalLocations = localStorage.getItem('myLocalLocations');
-        if (!myLocalLocations) {
-          localStorage.setItem('myLocalLocations', JSON.stringify([]));
-        }
-        myLocalLocations = JSON.parse(localStorage.getItem('myLocalLocations'));
-
-        resolve({ locations: [...myLocalLocations] });
-      }, 2000);
-    });
-  };
-  const handleAddLocation = newLocation => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        let myLocalLocations = localStorage.getItem('myLocalLocations');
-        if (!myLocalLocations) {
-          localStorage.setItem('myLocalLocations', JSON.stringify([]));
-        }
-        myLocalLocations = JSON.parse(localStorage.getItem('myLocalLocations'));
-        myLocalLocations.push(newLocation);
-        localStorage.setItem(
-          'myLocalLocations',
-          JSON.stringify(myLocalLocations)
-        );
-        resolve({ message: 'ok', newLocation });
-      }, 2000);
-    });
-  };
-  const handleRemoveLocation = location => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        let myLocalLocations = localStorage.getItem('myLocalLocations');
-        if (!myLocalLocations) {
-          localStorage.setItem('myLocalLocations', JSON.stringify([]));
-          reject({ message: 'No DB Found' });
-        }
-        myLocalLocations = JSON.parse(myLocalLocations);
-        myLocalLocations = myLocalLocations.filter(
-          item => item.lat !== location.lat && item.lng !== location.lng
-        );
-        localStorage.setItem(
-          'myLocalLocations',
-          JSON.stringify(myLocalLocations)
-        );
-        resolve({ message: 'ok', locations: myLocalLocations });
-      }, 2000);
-    });
-  };
-  const getCartAndWishListLength = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({ cart: cartItems.length, wishlist: wishListItems.length });
-      }, 1000);
-    });
-  };
   const getNavCategoryData = () => {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -788,17 +261,7 @@ export default function DataContextProvider({ children }) {
       }, 1500);
     });
   };
-  const getMainCarouselItems = screen => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        if (screen === 'desktop') {
-          resolve(mainCarouselItemsDesktop);
-        } else {
-          resolve(mainCarouselItemsMobile);
-        }
-      }, 500);
-    });
-  };
+
   const getOrderedItems = () => {
     return new Promise(resolve => {
       setTimeout(() => {
@@ -807,31 +270,6 @@ export default function DataContextProvider({ children }) {
     });
   };
 
-  const getUserProfileInfo = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({
-          fullName: 'John Doe',
-          phoneNumber: '+96568712323',
-          email: 'Not Added',
-        });
-      }, 500);
-    });
-  };
-  const editUserProfileInfo = data => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(data);
-      }, 1000);
-    });
-  };
-  const getHomePageCategories = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(cat);
-      }, 1000);
-    });
-  };
   const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
   const stores = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
 
@@ -3220,12 +2658,37 @@ export default function DataContextProvider({ children }) {
     data: categories,
     isLoading: categoriesLoading,
   } = useQuery('categories', getAllCategories, { retry: true });
+  const {
+    data: deliveryCountries,
+    isLoading: deliveryCountriesLoading,
+  } = useQuery('delivery-countries', getDeliveryCountries, {
+    retry: true,
+    onSuccess: data => {
+      console.log(
+        data.find(
+          country =>
+            country.translation.en.name ===
+            JSON.parse(localDeliveryCountry).deliveryCountry.en
+        )
+      );
+      setDeliveryCountry(
+        data.find(
+          country =>
+            country.translation.en.name ===
+            JSON.parse(localDeliveryCountry).deliveryCountry.en
+        )
+      );
+    },
+  });
   return (
     <DataProvider.Provider
       value={{
         categories: categories,
         categoriesLoading: categoriesLoading,
-        deliveryCountry,
+        deliveryCountry: deliveryCountry,
+        deliveryCountries,
+        deliveryCountriesLoading,
+
         setDeliveryCountry,
         navCategories,
         countries,

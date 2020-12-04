@@ -36,9 +36,7 @@ export default function AdditionalDetailsMobile({
       </div>
       <div className="px-3 text-sm">
         {detailsTab === 0 && <ItemDescription />}
-        {detailsTab === 1 && (
-          <ItemReviews rating={data.rating} reviews={data.reviews} />
-        )}
+        {detailsTab === 1 && <ItemReviews id={data.id} />}
       </div>
     </div>
   );

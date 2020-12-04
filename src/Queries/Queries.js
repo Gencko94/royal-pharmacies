@@ -199,6 +199,13 @@ export const getSingleItem = async id => {
     return res.data.data;
   }
 };
+export const getProductReviews = async (k, id) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_MAIN_URL}/product-reviews/${id}`
+  );
+  console.log(res);
+  return res.data.data;
+};
 /**
  * End of SingleProduct
  */
@@ -251,7 +258,7 @@ export const removeFromCart = async ({ id, cart_id, userId }) => {
   );
   console.log(res.data);
   if (res.data.status === true) {
-    return res.data.status;
+    return { cartItems: res.data.data.items, cartTotal: res.data.data.total };
   }
 };
 /**
@@ -380,6 +387,12 @@ export const getSocialMediaData = async () => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/setting/social-media`
   );
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
+export const getDeliveryCountries = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/countries`);
   if (res.data.status === true) {
     return res.data.data;
   }

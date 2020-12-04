@@ -13,7 +13,6 @@
 - [x] Make buttons bigger || or make classes for buttons.
 - [x] Add forgot password support .
 - [x] Add routes to account page and try to animate them.
-- [x] Add Coupon Support.
 - [x] Complete desktop view order history.
 - [x] Add Buy Options to SingleProduct in Desktop and Mobile View.
 - [x] Add Loaders to Vertical Items.
@@ -35,15 +34,21 @@
 
 - [x] Add Side Cart Menu Desktop & Mobile
 - [x] Add category items placeholders
-- [ ] fix image zoom on single product mobile
-- [ ] Add Language Page to side menu
+- [x] fix image zoom on single product mobile
+- [x] add reviews to single product
+- [x] Add Language Page to side menu
+- [ ] Add Coupon Support in Cart.
+- [ ] Add Currencies and modify checkout delivery cost
+- [ ] Add payment methods Logos in Cart
+- [ ] Complete Item Reviews
+- [ ] Add Delivery Country Page to side menu
 - [ ] Add React Query & Localizations to the Search page.
 - [ ] Add Scroll Pagination to SingleProduct Pages.
 - [ ] Complete the Checkout Page.(2hrs)
 - [ ] Search Engine optimization.
 - [ ] Add Edit Cart item support. (discuss with maher)
 - [ ] Add auto detect locale and localstorage language.(1hr)
-- [ ] Add delivery country context.(1hr)
+- [x] Add delivery country context.(1hr)
 - [ ] Nest Lazyloading deep (3hrs)
 - [ ] login and register number and password validation (discuss)
 - [ ] Single Product

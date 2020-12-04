@@ -5,7 +5,10 @@ import Rating from 'react-rating';
 import moment from 'moment';
 import 'moment/locale/ar';
 
-export default function ItemReviews({ reviews, rating }) {
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+
+export default function ItemReviews({ reviews, reviewsLoading }) {
   const { formatMessage, locale } = useIntl();
   moment.locale(locale);
   const resolvePlural = () => {
@@ -23,18 +26,37 @@ export default function ItemReviews({ reviews, rating }) {
         return formatMessage({ id: 'reviews' });
     }
   };
+  if (reviewsLoading) {
+    return (
+      <div
+        className="w-full flex flex-col items-center justify-center "
+        style={{ height: '160px' }}
+      >
+        <h1 className="font-semibold mb-4 text-lg">
+          {formatMessage({ id: 'loading-reviews' })}
+        </h1>
+        <Loader
+          type="TailSpin"
+          color="#b72b2b"
+          height={50}
+          width={50}
+          visible={true}
+        />
+      </div>
+    );
+  }
   return (
     <div>
       <div className="flex items-center flex-wrap mb-2">
         <h1 className="font-semibold text-xl">
-          {formatMessage({ id: 'single-product-product-review' })}:
+          {formatMessage({ id: 'single-product-average-rating' })}:
         </h1>
         <div className="mx-2">
           <Rating
-            initialRating={rating}
+            initialRating={2.5}
             readonly
-            emptySymbol={<AiOutlineStar className="text-gold h-6 w-6" />}
-            fullSymbol={<AiFillStar className="text-gold h-6 w-6" />}
+            emptySymbol={<AiOutlineStar className="text-main-color h-6 w-6" />}
+            fullSymbol={<AiFillStar className="text-main-color h-6 w-6" />}
             className=" pt-1"
           />
         </div>
@@ -44,13 +66,13 @@ export default function ItemReviews({ reviews, rating }) {
         </div>
       </div>
 
-      {reviews.length !== 0 && (
+      {!reviewsLoading && reviews.length !== 0 && (
         <div className="grid grid-cols-1 gap-2 p-3 bg-gray-100 rounded">
           {reviews.map((review, i) => {
             return (
               <div key={review.id}>
                 <div>
-                  <h1 className="font-semibold">{review.author}</h1>
+                  <h1 className="font-semibold">{review.customer.name}</h1>
                 </div>
                 <div className="flex items-center">
                   <Rating
@@ -62,11 +84,11 @@ export default function ItemReviews({ reviews, rating }) {
                   />
 
                   <h1 className="text-gray-600 text-sm mx-1">
-                    {moment(review.date, 'DD-MM-YYYY').fromNow()}
+                    {moment(review.created_at).fromNow()}
                   </h1>
                 </div>
                 <div className="mb-2">
-                  <p className="">{review.body}</p>
+                  <p className="">{review.review}</p>
                 </div>
                 {i !== reviews.length - 1 && <hr className="mt-2" />}
               </div>

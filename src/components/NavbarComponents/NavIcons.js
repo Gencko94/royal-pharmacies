@@ -37,7 +37,7 @@ export default function NavIcons({ color = 'nav-secondary' }) {
             locale === 'ar' ? 'rtl-cart-icon' : 'right-0'
           } h-4 w-4  font-bold rounded-full  top-0 text-xs flex items-center justify-center 
        
-          bg-second-nav-text-light text-second-nav-light
+          bg-body-light text-main-color
          
       `}
         >

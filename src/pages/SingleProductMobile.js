@@ -191,12 +191,7 @@ export default function SingleProductMobile() {
         {isLoading && <SingleProductMobileLoader />}
         {!isLoading && (
           <div className="">
-            <ImageZoomMobile
-              data={{
-                images: [data.image, ...data.gallery],
-                name: data.translation[locale].title,
-              }}
-            />
+            <ImageZoomMobile data={data} />
 
             <hr />
             <div className="flex flex-col w-full  px-3 py-2 bg-white">
@@ -227,13 +222,13 @@ export default function SingleProductMobile() {
             </div>
           </div>
         )}
-        {/* {!isLoading && (
+        {!isLoading && (
           <AdditionalDetailsMobile
             data={data}
             detailsTab={detailsTab}
             setDetailsTab={setDetailsTab}
           />
-        )} */}
+        )}
 
         {/* {!isLoading && (
           <FloatingAddToCart
