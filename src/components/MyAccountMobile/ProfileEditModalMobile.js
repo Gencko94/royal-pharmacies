@@ -2,9 +2,9 @@ import { Formik, useField } from 'formik';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
-import { BiChevronDown } from 'react-icons/bi';
+// import { BiChevronDown } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
-import useClickAway from '../../hooks/useClickAway';
+// import useClickAway from '../../hooks/useClickAway';
 import * as Yup from 'yup';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -173,56 +173,56 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
     </div>
   );
 };
-const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
-  const [menuOpen, setMenuOpen] = React.useState(false);
-  const menuRef = React.useRef();
-  useClickAway(menuRef, () => {
-    if (menuRef.current) {
-      setMenuOpen(false);
-    }
-  });
-  const [field, meta] = useField(name);
-  return (
-    <div className="mb-2">
-      <label htmlFor={name} className={`font-semibold `}>
-        {label}
-      </label>
-      <div className="flex rounded-lg border items-center relative  overflow-hidden mt-1 ">
-        <div
-          ref={menuRef}
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="  cursor-pointer flex items-center p-1 border-r"
-          style={{ width: '74px' }}
-        >
-          <span>+965</span>
-          <BiChevronDown className="mx-1 w-5 h-5" />
-          {menuOpen && (
-            <div
-              className="absolute top-100 left-0 w-full border z-1 bg-body-light"
-              style={{ width: '74px' }}
-            >
-              <div className="hover:bg-main-color px-1 py-2 hover:text-main-text flex justify-start items-center">
-                +965
-              </div>
-            </div>
-          )}
-        </div>
-        <input
-          {...field}
-          {...props}
-          onBlur={e => {
-            field.onBlur(e);
-          }}
-          className=" w-full  p-2"
-        />
-      </div>
-      {meta.touched && meta.error ? (
-        <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
-      ) : (
-        <h1 className="text-xs text-main-color mt-1" style={{ height: '18px' }}>
-          {' '}
-        </h1>
-      )}
-    </div>
-  );
-};
+// const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
+//   const [menuOpen, setMenuOpen] = React.useState(false);
+//   const menuRef = React.useRef();
+//   useClickAway(menuRef, () => {
+//     if (menuRef.current) {
+//       setMenuOpen(false);
+//     }
+//   });
+//   const [field, meta] = useField(name);
+//   return (
+//     <div className="mb-2">
+//       <label htmlFor={name} className={`font-semibold `}>
+//         {label}
+//       </label>
+//       <div className="flex rounded-lg border items-center relative  overflow-hidden mt-1 ">
+//         <div
+//           ref={menuRef}
+//           onClick={() => setMenuOpen(!menuOpen)}
+//           className="  cursor-pointer flex items-center p-1 border-r"
+//           style={{ width: '74px' }}
+//         >
+//           <span>+965</span>
+//           <BiChevronDown className="mx-1 w-5 h-5" />
+//           {menuOpen && (
+//             <div
+//               className="absolute top-100 left-0 w-full border z-1 bg-body-light"
+//               style={{ width: '74px' }}
+//             >
+//               <div className="hover:bg-main-color px-1 py-2 hover:text-main-text flex justify-start items-center">
+//                 +965
+//               </div>
+//             </div>
+//           )}
+//         </div>
+//         <input
+//           {...field}
+//           {...props}
+//           onBlur={e => {
+//             field.onBlur(e);
+//           }}
+//           className=" w-full  p-2"
+//         />
+//       </div>
+//       {meta.touched && meta.error ? (
+//         <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
+//       ) : (
+//         <h1 className="text-xs text-main-color mt-1" style={{ height: '18px' }}>
+//           {' '}
+//         </h1>
+//       )}
+//     </div>
+//   );
+// };

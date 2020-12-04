@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -6,8 +7,24 @@ import { AuthProvider } from '../../contexts/AuthContext';
 export default function CartEmptyMobile() {
   const { userId } = React.useContext(AuthProvider);
   const { formatMessage, locale } = useIntl();
+  const { variants } = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: {
+      opacity: 1,
+    },
+    exited: {
+      opacity: 0,
+    },
+  };
   return (
-    <div>
+    <motion.div
+      variants={variants}
+      initial="hidden"
+      animate="visible"
+      exit="exited"
+    >
       <div className="p-2">
         <div
           className="flex items-center justify-center"
@@ -40,6 +57,6 @@ export default function CartEmptyMobile() {
           </Link>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

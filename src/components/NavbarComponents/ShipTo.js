@@ -60,14 +60,16 @@ export default function ShipTo() {
   return (
     <div className="relative">
       {deliveryCountriesLoading && (
-        <Loader
-          type="ThreeDots"
-          color="#fff"
-          secondaryColor="black"
-          height={20}
-          width={20}
-          visible={true}
-        />
+        <div className="p-1">
+          <Loader
+            type="ThreeDots"
+            color="#fff"
+            secondaryColor="black"
+            height={20}
+            width={20}
+            visible={true}
+          />
+        </div>
       )}
       {!deliveryCountriesLoading && (
         <button
@@ -123,7 +125,7 @@ export default function ShipTo() {
                 >
                   <input
                     type="checkbox"
-                    className="form-checkbox rounded-full text-red-500 mx-1"
+                    className="form-checkbox rounded-full text-main-color mx-1"
                     checked={
                       deliveryCountry.translation[locale].name ===
                       country.translation[locale].name

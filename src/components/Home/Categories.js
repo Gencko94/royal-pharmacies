@@ -5,7 +5,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
 import ContentLoader from 'react-content-loader';
-import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { useIntl } from 'react-intl';
 SwiperCore.use([Navigation]);
 export default function Categories() {
@@ -81,23 +80,3 @@ export default function Categories() {
     </div>
   );
 }
-const RightArrow = ({ onClick }) => {
-  return (
-    <button
-      className="items-slider__next-button hover:bg-gray-300  rounded       bg-white transition duration-150 shadow-2xl border border-gray-300"
-      onClick={onClick}
-    >
-      <BsChevronRight className="w-5 h-5" />
-    </button>
-  );
-};
-const LeftArrow = ({ onClick }) => {
-  return (
-    <button
-      className=" items-slider__prev-button hover:bg-gray-300 rounded     bg-white transition-colors duration-150 shadow-2xl border border-gray-300"
-      onClick={onClick}
-    >
-      <BsChevronLeft className="w-5 h-5" />
-    </button>
-  );
-};

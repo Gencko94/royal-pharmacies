@@ -1,8 +1,5 @@
 import React from 'react';
-import LayoutMobile from '../components/LayoutMobile';
 import MainContentLoader from '../components/CartMobile/ContentLoaders/MainContentLoader';
-import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
-import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
 import { useIntl } from 'react-intl';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import MobileCartLoader from '../components/CartMobile/ContentLoaders/MobileCartLoader';

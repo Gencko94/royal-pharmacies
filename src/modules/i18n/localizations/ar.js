@@ -37,9 +37,10 @@ export const ar = {
   'go-back': 'للخلف',
   'add-to-cart': 'أضف إلى السلة',
   'added-to-cart': 'اضيفت الى السلة',
+  'added-to-wishlist': 'إضيفت الى المفضلة',
   'your-recently-visited-items': 'قمت بزيارتها مسبقا',
   'model-number': 'رقم الموديل',
-  'one-rating': 'تقييم',
+  'one-rating': ' تقييم واحد',
   'two-rating': 'تقييمان',
   ratings: 'تقييمات',
   'the-rating': 'التقييم',
@@ -59,6 +60,7 @@ export const ar = {
   specifications: 'المواصفات',
   'the-reviews': 'المراجعات',
   reviews: 'مراجعات',
+  review: 'مراجعة',
   'one-review': 'مراجعة واحدة',
   'two-reviews': 'مراجعتان',
   'secure-transaction': 'دفع آمن',
@@ -94,6 +96,7 @@ export const ar = {
   day: 'يوم واحد',
   days: 'أيام',
   'delivery-cost': 'كلفة التوصيل',
+  'accepted-payments': 'طرق الدفع المتاحة',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -222,13 +225,16 @@ export const ar = {
    */
   'single-product-size': 'المقاسات المتوفرة لهذا المنتج',
   'single-product-color': 'الألوان المتوفرة لهذا المنتج',
-  'single-product-additional-details': 'معلومات إضافية لهذا المنتج',
   'additional-details__item-specifications': 'مواصفات المنتج',
   'additional-details__item-description': 'لمحة عن المنتج',
   'additional-details__item-reviews': 'تقييمات المنتج',
 
   'single-product-product-review': 'تقييم المنتج',
   'single-product-average-rating': 'تقييم المنتج',
+  'no-ratings': 'لا يوجد تقييمات بعد , كن اول من يقيم هذا المنتج ',
+  'how-to-rate': 'كيف يمكنني ان اقيم منتج ؟',
+  'rating-guide':
+    'إن قمت بشراء هذا المنتج يمكنك التقييم والتعليق من خلال صفحة <link>طلباتي</link>',
   /**
    * Footer
    */

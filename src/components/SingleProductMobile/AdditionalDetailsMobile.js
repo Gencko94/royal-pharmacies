@@ -4,16 +4,14 @@ import ItemDescription from '../SingleProduct/AdditionalDetails/ItemDescription'
 import ItemReviews from '../SingleProduct/AdditionalDetails/ItemReviews';
 
 export default function AdditionalDetailsMobile({
-  data,
   detailsTab,
   setDetailsTab,
+  reviewsLoading,
+  reviews,
 }) {
   const { formatMessage } = useIntl();
   return (
     <div className="py-2">
-      <h1 className="text-xl font-semibold mb-3 px-3">
-        {formatMessage({ id: 'single-product-additional-details' })}
-      </h1>
       <div className="flex justify-center mb-2">
         <button
           onClick={() => setDetailsTab(0)}
@@ -36,7 +34,9 @@ export default function AdditionalDetailsMobile({
       </div>
       <div className="px-3 text-sm">
         {detailsTab === 0 && <ItemDescription />}
-        {detailsTab === 1 && <ItemReviews id={data.id} />}
+        {detailsTab === 1 && (
+          <ItemReviews reviews={reviews} reviewsLoading={reviewsLoading} />
+        )}
       </div>
     </div>
   );

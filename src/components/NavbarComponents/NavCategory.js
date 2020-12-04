@@ -5,12 +5,9 @@ import { AnimatePresence } from 'framer-motion';
 import ReactHoverObserver from 'react-hover-observer';
 import MegaMenu from './MegaMenu';
 import NavCategoriesContainer from './NavCategoriesContainer';
-import { useQuery } from 'react-query';
 import { useMediaQuery } from 'react-responsive';
-import { getAllCategories } from '../../Queries/Queries';
 export default function NavCategory() {
   const dropDownbgRef = React.useRef(null);
-  const { isLightTheme } = React.useContext(DataProvider);
   const hideAllCategories = useMediaQuery({ query: '(min-width:1290px)' });
   const { categories, categoriesLoading } = React.useContext(DataProvider);
   const [dropDownOpen, setDropDownOpen] = React.useState(false);
@@ -24,11 +21,7 @@ export default function NavCategory() {
   return (
     <>
       <div
-        className={`   sticky     z-10  ${
-          isLightTheme
-            ? 'bg-nav-cat-light text-nav-cat-text-light'
-            : 'bg-nav-cat-dark text-nav-cat-text-dark'
-        }  `}
+        className={`sticky z-10  bg-nav-cat-light text-nav-cat-text-light`}
         style={{ top: '62px' }}
       >
         <div className="max-w-default mx-auto  px-4 ">

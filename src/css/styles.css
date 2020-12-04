@@ -32,7 +32,7 @@ input {
   display: grid;
   gap: 15px;
   grid-template-columns: minmax(250px, 1.2fr) minmax(250px, 1.3fr) minmax(
-      200px,
+      250px,
       0.7fr
     );
   grid-template-rows: auto;
@@ -212,22 +212,6 @@ input {
   padding: 1em;
   padding-bottom: 1.2em;
   z-index: 999;
-}
-.floating-cart-button-enter {
-  bottom: -48px;
-}
-.floating-cart-button-enter-active {
-  bottom: 0px;
-
-  transition: bottom 200ms;
-}
-.floating-cart-button-exit {
-  bottom: 0px;
-}
-.floating-cart-button-exit-active {
-  bottom: -48px;
-
-  transition: bottom 200ms;
 }
 
 /* Animated Slides */
@@ -425,9 +409,9 @@ input {
   z-index: 50;
   height: 100%;
   top: 0;
-
-  min-width: 75%;
-  max-width: 75%;
+  width: 100%;
+  /* min-width: 75%; */
+  /* max-width: 75%; */
 }
 .side__addCart-bg {
   position: fixed;
@@ -472,7 +456,7 @@ input {
 }
 .search-page-items__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 190px));
   gap: 0.5em;
 }
 .search-page-items-mobile__grid {
@@ -890,11 +874,6 @@ input {
   grid-template-rows: 0.9fr 0.5fr;
 } */
 
-.category-children__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 150px);
-  gap: 0.5rem;
-}
 .category-children__grid-mobile {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -905,6 +884,19 @@ input {
 }
 .category-children__grid-mobile button:last-child:nth-child(2n - 1) {
   grid-column-end: 4;
+}
+.category-child__button {
+  background: #c31432; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #240b36,
+    #c31432
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #240b36,
+    #c31432
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .category-child__button-mobile {
   background: #ff00cc; /* fallback for old browsers */

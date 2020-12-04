@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
-import { DataProvider } from '../../contexts/DataContext';
 import DeliverTo from './DeliverTo';
 import LanguageMobile from './LanguageMobile';
 import Loader from 'react-loader-spinner';
@@ -19,8 +18,6 @@ export default function MobileIcons({
     guestCartItemsLoading,
     cartItems,
     guestCartItems,
-    wishlistItems,
-    wishlistItemsLoading,
   } = React.useContext(CartAndWishlistProvider);
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const { locale } = useIntl();

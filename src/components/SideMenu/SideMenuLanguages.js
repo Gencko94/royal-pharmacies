@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function SideMenuLanguages({ handleHideLanguages }) {
   const { formatMessage, locale } = useIntl();

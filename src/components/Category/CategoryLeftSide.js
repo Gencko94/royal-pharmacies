@@ -1,22 +1,21 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useQuery } from 'react-query';
+// import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../../Queries/Queries';
+// import { getCategories } from '../../Queries/Queries';
 
 export default function CategoryLeftSide({
   loading,
   category,
   productsLoading,
-  numberOfItems,
-  lowestPrice,
+
   setLowestPrice,
-  highestPrice,
+
   setHighestPrice,
   handlePriceChange,
   handleCategoryChange,
   products,
-  brandFilters,
+
   handleBrandChange,
   categoryInfo,
   categoryInfoLoading,
@@ -98,7 +97,6 @@ export default function CategoryLeftSide({
           </div>
         </div>
       )}
-      {/* price */}
       <div className="mb-4">
         <h1 className="text-xl font-semibold">Price (KW)</h1>
         <hr className="my-2" />

@@ -1,12 +1,13 @@
 import React from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Rating from 'react-rating';
 import moment from 'moment';
 import 'moment/locale/ar';
 
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { Link } from 'react-router-dom';
 
 export default function ItemReviews({ reviews, reviewsLoading }) {
   const { formatMessage, locale } = useIntl();
@@ -14,16 +15,16 @@ export default function ItemReviews({ reviews, reviewsLoading }) {
   const resolvePlural = () => {
     switch (reviews.length) {
       case 1:
-        return formatMessage({ id: 'one-review' });
+        return formatMessage({ id: 'one-rating' });
 
       case 2:
-        return formatMessage({ id: 'two-reviews' });
+        return formatMessage({ id: 'two-ratings' });
 
       case reviews.length > 10:
-        return formatMessage({ id: 'one-review' });
+        return formatMessage({ id: 'one-rating' });
 
       default:
-        return formatMessage({ id: 'reviews' });
+        return formatMessage({ id: 'ratings' });
     }
   };
   if (reviewsLoading) {
@@ -42,6 +43,35 @@ export default function ItemReviews({ reviews, reviewsLoading }) {
           width={50}
           visible={true}
         />
+      </div>
+    );
+  }
+
+  if (!reviewsLoading && reviews.length === 0) {
+    return (
+      <div
+        style={{ height: '160px' }}
+        className="flex items-center justify-center flex-col"
+      >
+        <h1 className="text-xl mb-2">
+          {formatMessage({ id: 'no-ratings' })} !
+        </h1>
+        <h1 className="mb-2">{formatMessage({ id: 'how-to-rate' })}</h1>
+        <h1 className="mb-2">
+          <FormattedMessage
+            id="rating-guide"
+            values={{
+              link: word => (
+                <Link
+                  className="text-main-color hover:underline"
+                  to={`/${locale}/user/account/orders`}
+                >
+                  {word}
+                </Link>
+              ),
+            }}
+          />
+        </h1>
       </div>
     );
   }
@@ -66,7 +96,7 @@ export default function ItemReviews({ reviews, reviewsLoading }) {
         </div>
       </div>
 
-      {!reviewsLoading && reviews.length !== 0 && (
+      {reviews.length !== 0 && (
         <div className="grid grid-cols-1 gap-2 p-3 bg-gray-100 rounded">
           {reviews.map((review, i) => {
             return (

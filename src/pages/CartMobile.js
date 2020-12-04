@@ -1,7 +1,5 @@
 import React from 'react';
 // import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
-import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
-import LayoutMobile from '../components/LayoutMobile';
 import { useIntl } from 'react-intl';
 import { AnimatePresence } from 'framer-motion';
 import CheckoutPopupMobile from '../components/CartMobile/CheckoutPopupMobile';
@@ -14,6 +12,7 @@ import MobileCartContainer from '../components/CartMobile/MobileCartContainer';
 import MobileGuestCart from '../components/CartMobile/MobileGuestCart/MobileGuestCart';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
 import Layout from '../components/Layout';
+import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
 
 export default function CartMobile() {
   const { formatMessage, locale } = useIntl();
@@ -21,10 +20,7 @@ export default function CartMobile() {
     removefromCartButtonLoading,
     setRemoveFromCartButtonLoading,
   ] = React.useState(null);
-  const [
-    addToWishListButtonLoading,
-    setAddToWishListButtonLoading,
-  ] = React.useState(null);
+
   const { isAuthenticated, userId, authenticationLoading } = React.useContext(
     AuthProvider
   );
@@ -42,11 +38,34 @@ export default function CartMobile() {
   const history = useHistory();
 
   const handleRemoveItemFromCart = async (id, cart_id) => {
+    console.log(id);
     setRemoveFromCartButtonLoading(id);
     try {
       await removeFromCartMutation({ id, userId, cart_id });
+      setRemoveFromCartButtonLoading(null);
     } catch (error) {
-      setRemoveFromCartButtonLoading(id);
+      setRemoveFromCartButtonLoading(null);
+      console.log(error.response);
+    }
+  };
+  const handleAddItemToWishlist = async item => {
+    try {
+      await addToWishListMutation({ id: item.id, userId });
+      setWishlistItems(prev => {
+        return [...prev, item.id];
+      });
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  const handleRemoveItemFromWishlist = async id => {
+    try {
+      await removeFromWishListMutation({ id, userId });
+      console.log(wishlistItems.filter(item => item.id !== id));
+      setWishlistItems(prev => {
+        return prev.filter(item => item !== id);
+      });
+    } catch (error) {
       console.log(error.response);
     }
   };
@@ -79,25 +98,36 @@ export default function CartMobile() {
         </AnimatePresence>
 
         {authenticationLoading && <MobileCartLoader />}
+        <AnimatePresence>
+          {!authenticationLoading &&
+            userId &&
+            !cartItemsLoading &&
+            !isGetCartError &&
+            cartItems.length === 0 && <CartEmptyMobile />}
+        </AnimatePresence>
+        {!authenticationLoading &&
+          userId &&
+          !isGetCartError &&
+          cartItems?.length !== 0 && (
+            <>
+              <MobileCheckoutSection
+                cartItemsLoading={cartItemsLoading}
+                cartItems={cartItems}
+                handleCheckout={handleCheckout}
+                cartTotal={cartTotal}
+              />
 
-        {!authenticationLoading && userId && !isGetCartError && (
-          <>
-            <MobileCheckoutSection
-              cartItemsLoading={cartItemsLoading}
-              cartItems={cartItems}
-              handleCheckout={handleCheckout}
-              cartTotal={cartTotal}
-            />
-
-            <MobileCartContainer
-              cartItems={cartItems}
-              handleRemoveItemFromCart={handleRemoveItemFromCart}
-              removefromCartButtonLoading={removefromCartButtonLoading}
-              cartItemsLoading={cartItemsLoading}
-              wishlistItems={wishlistItems}
-            />
-          </>
-        )}
+              <MobileCartContainer
+                cartItems={cartItems}
+                handleRemoveItemFromCart={handleRemoveItemFromCart}
+                removefromCartButtonLoading={removefromCartButtonLoading}
+                cartItemsLoading={cartItemsLoading}
+                wishlistItems={wishlistItems}
+                handleAddItemToWishlist={handleAddItemToWishlist}
+                handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
+              />
+            </>
+          )}
         {!authenticationLoading && !userId && <MobileGuestCart />}
 
         {/* <RecentlyVisitedHorizontal visitedItems={visitedItems} /> */}

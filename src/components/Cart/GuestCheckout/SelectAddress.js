@@ -1,5 +1,4 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import { DataProvider } from '../../../contexts/DataContext';
 import { getUserAddresses } from '../../../Queries/Queries';
@@ -46,7 +45,6 @@ export default function SelectAddress({
       },
     }
   );
-  const { formatMessage } = useIntl();
   if (isError) {
     return (
       <div

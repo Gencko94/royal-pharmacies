@@ -1,6 +1,6 @@
 import React from 'react';
 import { GrClose } from 'react-icons/gr';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { motion } from 'framer-motion';
 export default function CheckoutModal({ setCheckOutModalOpen }) {

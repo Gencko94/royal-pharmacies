@@ -3,7 +3,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import Layout from '../components/Layout';
-import LayoutMobile from '../components/LayoutMobile';
 import MobileTabs from '../components/MyAccountMobile/MobileTabs';
 import MyAddressesMobile from '../components/MyAccountMobile/MyAddressesMobile';
 import MyOrdersMobile from '../components/MyAccountMobile/MyOrdersMobile';

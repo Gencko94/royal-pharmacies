@@ -5,7 +5,7 @@ import { getFooterCategories } from '../../Queries/Queries';
 
 export default function SecondSection() {
   const { locale } = useIntl();
-  const { data, isLoading } = useQuery('footerCategories', getFooterCategories);
+  const { data } = useQuery('footerCategories', getFooterCategories);
   return (
     <div
       className={`px-4 py-2 footer-site-map bg-first-nav-light text-first-nav-text-light `}
@@ -13,13 +13,13 @@ export default function SecondSection() {
       {data &&
         data.slice(0, 5).map(item => {
           return (
-            <div className="grid mt-2  gap-1">
+            <div key={item.id} className="grid mt-2  gap-1">
               <button className="text-lg font-semibold">
                 {item.translation[locale].name}
               </button>
               {item.children.map(sub => {
                 return (
-                  <button className="text-sm">
+                  <button key={sub.id} className="text-sm">
                     {sub.translation[locale].name}
                   </button>
                 );

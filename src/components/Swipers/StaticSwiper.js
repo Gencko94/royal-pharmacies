@@ -6,18 +6,13 @@ import 'swiper/swiper-bundle.css';
 
 import { AuthProvider } from '../../contexts/AuthContext';
 import { getStaticSwiperData } from '../../Queries/Queries';
-import { AnimatePresence } from 'framer-motion';
-import BuyOptions from '../Home/ItemsSlider/BuyOptions';
-import { TiShoppingCart } from 'react-icons/ti';
-import { BsPlus } from 'react-icons/bs';
 import { useQuery } from 'react-query';
-import LazyImage from '../../helpers/LazyImage';
 import SwiperLoader from '../Home/SwiperLoader';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import SwiperItem from './SwiperItem';
 SwiperCore.use([Navigation]);
 export default function StaticSwiper({ type, setCartMenuOpen }) {
-  const { formatMessage, locale } = useIntl();
+  const { formatMessage } = useIntl();
 
   const { addToCartMutation, removeFromCartMutation } = React.useContext(
     CartAndWishlistProvider
@@ -89,7 +84,7 @@ export default function StaticSwiper({ type, setCartMenuOpen }) {
     },
   };
   return (
-    <div className="my-8 overflow-hidden   ">
+    <div className="my-8">
       {isLoading && <div className="mb-4 " style={{ height: '30px' }}></div>}
       {!isLoading && (
         <div className="flex items-center mb-4">

@@ -220,7 +220,7 @@ export const getCartItems = async (k, userId) => {
   );
   if (res.data.status === true && res.data.data.items) {
     return { cartItems: res.data.data.items, cartTotal: res.data.data.total };
-  } else {
+  } else if (res.data.status === true && res.data.data.total === 0) {
     return { cartItems: [], cartTotal: 0 };
   }
 };
@@ -258,6 +258,9 @@ export const removeFromCart = async ({ id, cart_id, userId }) => {
   );
   console.log(res.data);
   if (res.data.status === true) {
+    if (res.data.data.total === 0) {
+      return { cartItems: [], cartTotal: 0 };
+    }
     return { cartItems: res.data.data.items, cartTotal: res.data.data.total };
   }
 };

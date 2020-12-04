@@ -6,10 +6,8 @@ import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
 import ImageZoom from '../components/SingleProduct/ImageZoom';
 import MiddleSection from '../components/SingleProduct/MiddleSection';
 import RightSection from '../components/SingleProduct/RightSection';
-import RelatedItems from '../components/SingleProduct/RelatedItems';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
-import InView from 'react-intersection-observer';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { useQuery } from 'react-query';
@@ -25,10 +23,8 @@ export default function SingleProduct() {
   const { deliveryCountry, addViewedItems } = React.useContext(DataProvider);
   const {
     addToCartMutation,
-    removeFromCartMutation,
+
     addToWishListMutation,
-    removeFromWishListMutation,
-    addToGuestCartMutation,
   } = React.useContext(CartAndWishlistProvider);
   const { userId, isAuthenticated } = React.useContext(AuthProvider);
   const [selectedVariation, setSelectedVariant] = React.useState(0);
@@ -55,6 +51,7 @@ export default function SingleProduct() {
         // add Item to localStorage
         return await addViewedItems(id);
       },
+      retry: true,
     }
   );
   const { data: reviews, isLoading: reviewsLoading } = useQuery(
@@ -65,28 +62,18 @@ export default function SingleProduct() {
   const [quantity, setQuantity] = React.useState(quantityOptions[0]);
   const [size, setSize] = React.useState(null);
   const [color, setColor] = React.useState(null);
-  const [isFetching, setFetching] = React.useState(true);
-  const [page, setPage] = React.useState(0);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   // const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
-  const [related, setRelated] = React.useState(null);
   const [itemInCart, setItemInCart] = React.useState(false);
   const [itemInWishList, setItemInWishList] = React.useState(false);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
+  const [detailsTab, setDetailsTab] = React.useState(0);
   const [
     addToWishListButtonLoading,
     setAddToWishListButtonLoading,
   ] = React.useState(false);
-  // const handleLoadMore = inView => {
-  //   if (inView) {
-  //     if (hasMore) {
-  //       setFetching(true);
-  //       setPage(page + 1);
-  //     }
-  //   }
-  // };
 
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
@@ -98,7 +85,12 @@ export default function SingleProduct() {
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
+        console.clear();
+
         console.log(error.response);
+        if (error.response.data.message === 'Item founded on the Cart') {
+          setItemInCart(true);
+        }
         setAddToCartButtonLoading(false);
       }
     } else {
@@ -111,28 +103,10 @@ export default function SingleProduct() {
       setAddToWishListButtonLoading(false);
       setItemInWishList(true);
     } catch (error) {
-      setAddToWishListButtonLoading(false);
-      console.log(error.response);
-    }
-  };
-  const handleRemoveFromCart = async (id, cart_id) => {
-    setAddToCartButtonLoading(true);
-    try {
-      await removeFromCartMutation({ id, cart_id, userId });
-      setAddToCartButtonLoading(false);
-      setItemInCart(false);
-    } catch (error) {
-      setAddToCartButtonLoading(false);
-      console.log(error.response);
-    }
-  };
-  const handleRemoveFromWishList = async id => {
-    setAddToWishListButtonLoading(true);
-    try {
-      await removeFromWishListMutation({ id, userId });
-      setAddToWishListButtonLoading(false);
-      setItemInWishList(false);
-    } catch (error) {
+      console.clear();
+      if (error.response.data.message === 'Item founded on the Wishlist') {
+        setItemInWishList(true);
+      }
       setAddToWishListButtonLoading(false);
       console.log(error.response);
     }
@@ -186,6 +160,8 @@ export default function SingleProduct() {
                 selectedSize={selectedSize}
                 setSelectedSize={setSelectedSize}
                 reviewsLength={reviews?.length}
+                reviewsLoading={reviewsLoading}
+                setDetailsTab={setDetailsTab}
               />
               <RightSection
                 data={data}
@@ -193,8 +169,6 @@ export default function SingleProduct() {
                 setQuantity={setQuantity}
                 handleAddToCart={handleAddToCart}
                 handleAddToWishList={handleAddToWishList}
-                handleRemoveFromWishList={handleRemoveFromWishList}
-                handleRemoveFromCart={handleRemoveFromCart}
                 quantityOptions={quantityOptions}
                 addToCartButtonLoading={addToCartButtonLoading}
                 addToWishListButtonLoading={addToWishListButtonLoading}
@@ -215,6 +189,8 @@ export default function SingleProduct() {
                 }
                 reviews={reviews}
                 reviewsLoading={reviewsLoading}
+                detailsTab={detailsTab}
+                setDetailsTab={setDetailsTab}
               />
             )}
           </div>

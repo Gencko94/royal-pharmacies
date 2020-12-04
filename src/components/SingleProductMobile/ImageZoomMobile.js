@@ -1,5 +1,4 @@
 import React from 'react';
-import Slider from 'react-slick';
 // import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
@@ -8,27 +7,12 @@ import 'swiper/swiper-bundle.css';
 import LazyImage from '../../helpers/LazyImage';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
 export default function ImageZoomMobile({ data, selectedVariation }) {
-  // const sliderRef = React.useRef();
-
-  const [currentSlide, setCurrentSlide] = React.useState(0);
-  // const mainSettings = {
-  //   arrows: false,
-  //   dots: false,
-  //   infinite: true,
-  //   slidesToShow: 1,
-  //   slidesToScroll: 1,
-  // };
-  // const handleChangeSlide = React.useCallback(i => {
-  //   sliderRef.current.slickGoTo(i);
-  //   setCurrentSlide(i);
-  // }, []);
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   return (
     <div className="mb-2">
       <Swiper id="main" slidesPerView={1} thumbs={{ swiper: thumbsSwiper }}>
         {data.type === 'simple' ? (
           [data.image, ...data.gallery].map(item => {
-            console.log(item.id);
             return (
               <SwiperSlide key={item.id}>
                 <LazyImage

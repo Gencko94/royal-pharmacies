@@ -2,41 +2,16 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import CategoryLeftSide from '../components/Category/CategoryLeftSide';
 import CategoryRightSide from '../components/Category/CategoryRightSide';
-import SortInfoPanel from '../components/Category/SortInfoPanel';
-import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
-import { SearchProvider } from '../contexts/SearchContext';
-import { MdClose } from 'react-icons/md';
+// import SortInfoPanel from '../components/Category/SortInfoPanel';
+// import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
+// import { SearchProvider } from '../contexts/SearchContext';
 import Layout from '../components/Layout';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import {
-  getCategories,
-  getCategoryProducts,
-  getSingleCategoryInfo,
-} from '../Queries/Queries';
-export default function Category({
-  match: {
-    params: { query },
-  },
-}) {
+import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
+import CategoryHeader from '../components/Category/CategoryHeader';
+export default function Category() {
   const { category } = useParams();
-  // const { getSearchResults } = React.useContext(SearchProvider);
-  // const [loading, setLoading] = React.useState(true);
-  // const [queryData, setQueryData] = React.useState([]);
-  // const [filteredData, setFilteredData] = React.useState([]);
-  // const [brandFilters, setBrandFilters] = React.useState([]);
-  // const [subCategoryFilter, setSubCategoryFilter] = React.useState(null);
-  // const [categories, setCategories] = React.useState(null);
-  // const [brands, setBrands] = React.useState([]);
-  // const [numberOfItems, setNumberOfItems] = React.useState(null);
-  // const [lowestPrice, setLowestPrice] = React.useState(0);
-  // const [highestPrice, setHighestPrice] = React.useState(0);
-  // const [filtersApplied, setFiltersApplied] = React.useState(false);
-  // const [filters, setFilters] = React.useState({
-  //   subCategory: null,
-  //   brand: null,
-  // });
-  // const [sortBy, setSortBy] = React.useState('Popularity');
 
   /**
    * Main Fetch
@@ -44,203 +19,25 @@ export default function Category({
 
   const { data: products, isLoading: productsLoading } = useQuery(
     ['categoryProducts', category],
-    getCategoryProducts
+    getCategoryProducts,
+    { retry: true }
   );
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
-    getSingleCategoryInfo
+    getSingleCategoryInfo,
+    { retry: true }
   );
 
-  // const filterQueryData = (data, filter) => {
-  //   console.log(filter, 'filter function');
-  //   if (!filter) return;
-  //   const filterKeys = Object.keys(filter);
-  //   return data.filter(item => {
-  //     return filterKeys.every(key => {
-  //       if (typeof filter[key] !== 'function') {
-  //         return true;
-  //       } else {
-  //         return filter[key](item[key]);
-  //       }
-  //     });
-  //   });
-  // };
-  // const handleSettingBrands = () => {
-  //   if (filtersApplied) return;
-  //   let brands = [];
-  //   queryData.forEach(item => {
-  //     if (item.brand) {
-  //       brands.push(item.brand);
-  //     }
-  //   });
-  //   setBrands([...new Set(brands)]);
-  // };
-
-  // const handleSettingCategories = () => {
-  //   let categories = {};
-  //   let numberOfItems = {};
-
-  //   queryData.forEach(queryItem => {
-  //     if (!categories[queryItem.category]) {
-  //       categories[queryItem.category] = [];
-  //     }
-
-  //     if (!categories[queryItem.category].includes(queryItem.subCategory)) {
-  //       categories[queryItem.category].push(queryItem.subCategory);
-  //     }
-  //   });
-  //   // number of items
-  //   queryData.forEach(queryItem => {
-  //     if (!numberOfItems[queryItem.category]) {
-  //       numberOfItems[queryItem.category] = 1;
-  //     } else {
-  //       numberOfItems[queryItem.category] =
-  //         numberOfItems[queryItem.category] + 1;
-  //     }
-  //   });
-  //   setNumberOfItems(numberOfItems);
-  //   setCategories(categories);
-  // };
-
-  // const calculateMinMax = () => {
-  //   if (!filtersApplied) {
-  //     let prices = [];
-
-  //     queryData.forEach(filteredItem => {
-  //       prices.push(parseInt(filteredItem.price));
-  //     });
-
-  //     let min = Math.min(...prices);
-  //     let max = Math.max(...prices);
-  //     setLowestPrice(min);
-  //     setHighestPrice(max);
-  //   }
-  // };
-
-  // const handlePriceChange = () => {
-  //   if (filtersApplied) {
-  //     setFilteredData(
-  //       queryData.filter(item => {
-  //         return (
-  //           parseInt(item.price) >= lowestPrice &&
-  //           parseInt(item.price) <= highestPrice
-  //         );
-  //       })
-  //     );
-  //   } else {
-  //     setQueryData(
-  //       queryData.filter(item => {
-  //         return (
-  //           parseInt(item.price) >= lowestPrice &&
-  //           parseInt(item.price) <= highestPrice
-  //         );
-  //       })
-  //     );
-  //   }
-  // };
-
-  // const handleSortByChange = sortBy => {
-  //   if (sortBy === 'Popularity') return;
-  //   if (filtersApplied) {
-  //     if (sortBy === 'Price (Low to High)') {
-  //       setFilteredData(
-  //         filteredData.sort((a, b) => parseInt(a.price) > parseInt(b.price))
-  //       );
-  //     } else if (sortBy === 'Price (High to Low)') {
-  //       setFilteredData(
-  //         filteredData.sort((a, b) => parseInt(a.price) < parseInt(b.price))
-  //       );
-  //     }
-  //   } else {
-  //     if (sortBy === 'Price (Low to High)') {
-  //       setQueryData(
-  //         queryData.sort((a, b) => parseInt(a.price) > parseInt(b.price))
-  //       );
-  //     } else if (sortBy === 'Price (High to Low)') {
-  //       setQueryData(
-  //         queryData.sort((a, b) => parseInt(a.price) < parseInt(b.price))
-  //       );
-  //     } else {
-  //       setQueryData(getSearchResults({ query }));
-  //     }
-  //   }
-  // };
-  // const handleBrandChange = name => {
-  //   let brands = [...brandFilters];
-  //   if (brands.includes(name)) {
-  //     brands = brands.filter(item => item !== name);
-  //     if (brands.length === 0) {
-  //       setBrandFilters([]);
-  //     } else {
-  //       setBrandFilters(brands);
-  //     }
-  //   } else {
-  //     brands.push(name);
-  //     setBrandFilters(brands);
-  //   }
-  // };
-  // const handleCategoryChange = name => {
-  //   setSubCategoryFilter(name);
-  // };
-  // React.useEffect(() => {
-  //   if (loading) return;
-  //   if (filtersApplied) {
-  //     setFilteredData(filterQueryData(queryData, filters));
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [filters]);
-  // React.useEffect(() => {
-  //   setFiltersApplied(false);
-  //   setQueryData(getSearchResults({ query }));
-  //   setLoading(false);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [query]);
-
-  // React.useEffect(() => {
-  //   handleSettingCategories();
-  //   handleSettingBrands();
-  //   calculateMinMax();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [queryData]);
-  // function sortByBrand(brand) {
-  //   return brandFilters.includes(brand);
-  // }
-  // function sortBysubCategory(subCategory) {
-  //   return subCategory === subCategoryFilter;
-  // }
-  // React.useEffect(() => {
-  //   if (!queryData) {
-  //     return;
-  //   }
-  //   if (brandFilters.length === 0 && !subCategoryFilter) {
-  //     setFilters({
-  //       subCategory: null,
-  //       brand: null,
-  //     });
-  //     setFiltersApplied(false);
-  //   } else if (brandFilters.length === 0 && subCategoryFilter) {
-  //     setFiltersApplied(true);
-  //     setFilters({ subCategory: sortBysubCategory, brand: null });
-  //   } else if (brandFilters.length > 0 && !subCategoryFilter) {
-  //     setFiltersApplied(true);
-  //     setFilters({
-  //       subCategory: null,
-  //       brand: sortByBrand,
-  //     });
-  //   } else {
-  //     setFilters({
-  //       subCategory: sortBysubCategory,
-  //       brand: sortByBrand,
-  //     });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [brandFilters, subCategoryFilter]);
   return (
     <Layout>
       <Helmet>
         <title>Search</title>
       </Helmet>
-      <div className="max-w-default mx-auto px-4">
+      <div className="max-w-default mx-auto p-4 overflow-hidden">
+        <CategoryHeader
+          categoryInfo={categoryInfo}
+          categoryInfoLoading={categoryInfoLoading}
+        />
         {/* <Breadcrumbs data={categories} /> */}
         <div className="search-page__container">
           <CategoryLeftSide
@@ -248,18 +45,6 @@ export default function Category({
             categoryInfoLoading={categoryInfoLoading}
             products={products}
             productsLoading={productsLoading}
-            // categories={categories}
-            // loading={loading}
-            // numberOfItems={numberOfItems}
-            // lowestPrice={lowestPrice}
-            // setLowestPrice={setLowestPrice}
-            // highestPrice={highestPrice}
-            // setHighestPrice={setHighestPrice}
-            // handlePriceChange={handlePriceChange}
-            // handleCategoryChange={handleCategoryChange}
-            // handleBrandChange={handleBrandChange}
-            // brands={brands}
-            // brandFilters={brandFilters}
           />
           {/* {!isLoading && (
             <div className="relative">

@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import Ink from 'react-ink';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -11,6 +13,8 @@ export default function CartItemMobile({
   EditItemFromCart,
   removefromCartButtonLoading,
   wishlistItems,
+  handleRemoveItemFromWishlist,
+  handleAddItemToWishlist,
 }) {
   const { formatMessage, locale } = useIntl();
   const variant = {
@@ -83,30 +87,47 @@ export default function CartItemMobile({
             removefromCartButtonLoading === item.id
               ? 'bg-gray-300'
               : 'bg-main-color'
-          }  text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded uppercase  font-semibold`}
+          }  text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
         >
           {removefromCartButtonLoading === item.id ? (
             <Loader
               type="ThreeDots"
               color="#b72b2b"
-              height={20}
-              width={20}
+              height={22}
+              width={22}
               visible={true}
             />
           ) : (
             <>
+              <Ink background={true} />
               <h1 className="mx-2 whitespace-no-wrap">
                 {formatMessage({ id: 'remove-from-cart' })}
               </h1>
             </>
           )}
         </button>
-        {/* <button
-          onClick={() => handleRemoveItem(item.id)}
-          className="p-2 flex-1  text-sm border border-main-color text-main-color  rounded font-semibold mx-2  "
+        <button
+          onClick={() => {
+            if (wishlistItems.includes(item.id)) {
+              handleRemoveItemFromWishlist(item.id);
+            } else {
+              handleAddItemToWishlist(item);
+            }
+          }}
+          className={`
+              border mx-2
+            text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}
         >
-          {formatMessage({ id: 'add-to-wishlist' })}
-        </button> */}
+          {wishlistItems.includes(item.id) ? (
+            <AiFillHeart
+              className={`w-25p h-25p hover:scale-125 text-main-color  transition-all duration-150 `}
+            />
+          ) : (
+            <AiOutlineHeart
+              className={`w-25p h-25p hover:scale-125 text-main-color  transition-all duration-150 `}
+            />
+          )}
+        </button>
       </div>
     </motion.div>
   );

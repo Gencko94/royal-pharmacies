@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import FiltersMobile from '../components/CategoryMobile/FiltersMobile';
+// import FiltersMobile from '../components/CategoryMobile/FiltersMobile';
 import SearchItemsGridMobile from '../components/CategoryMobile/SearchItemsGridMobile';
-import SortByMobile from '../components/CategoryMobile/SortByMobile';
-import SortInfoPanelMobile from '../components/CategoryMobile/SortInfoPanelMobile';
+// import SortByMobile from '../components/CategoryMobile/SortByMobile';
+// import SortInfoPanelMobile from '../components/CategoryMobile/SortInfoPanelMobile';
 import Layout from '../components/Layout';
-import { SearchProvider } from '../contexts/SearchContext';
+// import { SearchProvider } from '../contexts/SearchContext';
 import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
 
 export default function CategoryMobile({
@@ -16,9 +16,9 @@ export default function CategoryMobile({
 }) {
   const { category } = useParams();
   // const { getSearchResults } = React.useContext(SearchProvider);
-  const [loading, setLoading] = React.useState(true);
-  const [queryData, setQueryData] = React.useState([]);
-  const [filteredData, setFilteredData] = React.useState([]);
+  // const [loading, setLoading] = React.useState(true);
+  // const [queryData, setQueryData] = React.useState([]);
+  // const [filteredData, setFilteredData] = React.useState([]);
   // const [categories, setCategories] = React.useState(null);
   // const [brands, setBrands] = React.useState([]);
   // const [numberOfItems, setNumberOfItems] = React.useState(null);
@@ -269,10 +269,6 @@ export default function CategoryMobile({
           categoryInfoLoading={categoryInfoLoading}
           products={products}
           productsLoading={productsLoading}
-          // queryData={queryData}
-          // loading={loading}
-          // filteredData={filteredData}
-          // filtersApplied={filtersApplied}
         />
       </div>
     </Layout>

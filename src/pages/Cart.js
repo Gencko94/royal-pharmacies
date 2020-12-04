@@ -1,11 +1,9 @@
 import React from 'react';
 // import RecentlyVisitedHorizontal from '../components/Cart/RecentlyVisitedHorizontal';
 
-import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
 import { Helmet } from 'react-helmet';
 import CheckoutModal from '../components/Cart/CheckoutModal';
 import Layout from '../components/Layout';
-import ErrorSnackbar from '../components/ErrorSnackbar';
 import CartContainer from '../components/Cart/CartContainer';
 import CartRightSide from '../components/Cart/CartRightSide';
 import { AnimatePresence } from 'framer-motion';
@@ -31,12 +29,7 @@ export default function Cart() {
     removefromCartButtonLoading,
     setRemoveFromCartButtonLoading,
   ] = React.useState(null);
-  const [
-    addToWishListButtonLoading,
-    setAddToWishListButtonLoading,
-  ] = React.useState(null);
-  const [errorOpen, setErrorOpen] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
+
   const [wishlistItems, setWishlistItems] = React.useState([]);
   const { formatMessage } = useIntl();
   const handleRemoveItemFromCart = async (id, cart_id) => {
@@ -51,34 +44,25 @@ export default function Cart() {
     }
   };
   const handleRemoveItemFromWishlist = async id => {
-    setAddToWishListButtonLoading(id);
     try {
       await removeFromWishListMutation({ id, userId });
-      setAddToWishListButtonLoading(null);
       console.log(wishlistItems.filter(item => item.id !== id));
       setWishlistItems(prev => {
         return prev.filter(item => item !== id);
       });
     } catch (error) {
-      setAddToWishListButtonLoading(null);
       console.log(error.response);
     }
   };
   const handleAddItemToWishlist = async item => {
-    setAddToWishListButtonLoading(item.id);
     try {
       await addToWishListMutation({ id: item.id, userId });
-      setAddToWishListButtonLoading(null);
       setWishlistItems(prev => {
         return [...prev, item.id];
       });
     } catch (error) {
-      setAddToWishListButtonLoading(null);
       console.log(error.response);
     }
-  };
-  const closeErrorSnackbar = () => {
-    setErrorOpen(false);
   };
 
   if (!cartItemsLoading && isGetCartError) {
@@ -95,12 +79,7 @@ export default function Cart() {
       <Helmet>
         <title>Cart | MRG</title>
       </Helmet>
-      {errorOpen && (
-        <ErrorSnackbar
-          message={errorMessage}
-          closeFunction={closeErrorSnackbar}
-        />
-      )}
+
       <div className="px-4 py-2 max-w-default mx-auto">
         {authenticationLoading && <CartLoader />}
         {!authenticationLoading && userId && !isGetCartError && (
@@ -112,7 +91,6 @@ export default function Cart() {
               removefromCartButtonLoading={removefromCartButtonLoading}
               handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
               handleAddItemToWishlist={handleAddItemToWishlist}
-              addToWishListButtonLoading={addToWishListButtonLoading}
               cartTotal={cartTotal}
               wishlistItems={wishlistItems}
             />

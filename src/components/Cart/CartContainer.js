@@ -12,7 +12,6 @@ export default function CartContainer({
   handleRemoveItemFromCart,
   handleAddItemToWishlist,
   handleRemoveItemFromWishlist,
-  addToWishListButtonLoading,
   cartTotal,
   wishlistItems,
 }) {
@@ -66,7 +65,6 @@ export default function CartContainer({
                         handleRemoveItemFromWishlist
                       }
                       handleAddItemToWishlist={handleAddItemToWishlist}
-                      addToWishListButtonLoading={addToWishListButtonLoading}
                       wishlistItems={wishlistItems}
                     />
                   );

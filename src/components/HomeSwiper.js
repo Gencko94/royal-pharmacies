@@ -11,8 +11,6 @@ import BuyOptions from './Home/ItemsSlider/BuyOptions';
 import { TiShoppingCart } from 'react-icons/ti';
 import { BsPlus } from 'react-icons/bs';
 import MultiClamp from 'react-multi-clamp';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import ContentLoader from 'react-content-loader';
 import LazyImage from '../helpers/LazyImage';
 SwiperCore.use([Navigation]);
 export default function HomeSwiper({ data, title }) {
@@ -38,7 +36,7 @@ export default function HomeSwiper({ data, title }) {
   const handleAddToCart = async id => {
     setLoadingButton(id);
     try {
-      const res = await addToCart(
+      await addToCart(
         {
           id,
           quantity,
@@ -56,7 +54,7 @@ export default function HomeSwiper({ data, title }) {
   const handleRemoveFromCart = async id => {
     setLoadingButton(id);
     try {
-      const res = await removeFromCart(id, userId);
+      await removeFromCart(id, userId);
       setCartItems(prev => {
         return prev.filter(i => i !== id);
       });
@@ -174,6 +172,7 @@ export default function HomeSwiper({ data, title }) {
                     cartItems={cartItems}
                     setQuantity={setQuantity}
                     item={item}
+                    size={size}
                     // options={options}
                     setSize={setSize}
                     loadingButton={loadingButton}

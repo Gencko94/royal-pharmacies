@@ -8,7 +8,7 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 let cancelToken;
-export default function MobileSearchbar({ isLightTheme }) {
+export default function MobileSearchbar() {
   const [searchBarValue, setSearchBarValue] = React.useState('');
   const { formatMessage, locale } = useIntl();
 
@@ -69,11 +69,11 @@ export default function MobileSearchbar({ isLightTheme }) {
       <input
         {...inputProps}
         className={`w-full p-2
-            ${
-              isLightTheme
-                ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
-                : 'bg-nav-cat-dark text-nav-cat-text-dark placeholder-gray-500'
-            }  `}
+            
+             
+              bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700
+                
+              `}
       />
     );
   };
@@ -82,18 +82,18 @@ export default function MobileSearchbar({ isLightTheme }) {
   };
   return (
     <div
-      className={`${
-        isLightTheme
-          ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700 '
-          : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500 shadow-itemsSlider-shallow'
-      } rounded flex items-center overflow-hidden flex-1 `}
+      className={`
+     
+          bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700
+         
+       rounded flex items-center overflow-hidden flex-1 `}
     >
       <div
-        className={`${
-          isLightTheme
-            ? 'bg-nav-cat-light text-nav-cat-text-light'
-            : 'bg-nav-cat-dark text-nav-cat-text-dark'
-        }  p-1  `}
+        className={`
+         
+            bg-nav-cat-light text-nav-cat-text-light
+           
+         p-1  `}
       >
         <BiSearch className=" w-5 h-5 " />
       </div>

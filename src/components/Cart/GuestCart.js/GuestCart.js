@@ -1,8 +1,8 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 import { CartAndWishlistProvider } from '../../../contexts/CartAndWishlistContext';
-import ErrorSnackbar from '../../ErrorSnackbar';
-import Layout from '../../Layout';
+// import ErrorSnackbar from '../../ErrorSnackbar';
+// import Layout from '../../Layout';
 import GuestCartContainer from './GuestCartContainer';
 import GuestCartRightSide from './GuestCartRightSide';
 
@@ -20,8 +20,8 @@ export default function GuestCart() {
     guestCartItems,
     guestCartTotal,
     guestCartItemsLoading,
-    isGuestGetCartError,
-    getGuestCartError,
+    // isGuestGetCartError,
+    // getGuestCartError,
   } = React.useContext(CartAndWishlistProvider);
   return (
     <div className="cart-main-grid">

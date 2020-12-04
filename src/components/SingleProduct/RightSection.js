@@ -14,12 +14,10 @@ export default function RightSection({
   handleAddToCart,
   quantity,
   setQuantity,
-  handleRemoveFromCart,
   quantityOptions,
   addToCartButtonLoading,
   addToWishListButtonLoading,
   handleAddToWishList,
-  handleRemoveFromWishList,
   itemInWishList,
   itemInCart,
   isAuthenticated,
@@ -36,7 +34,7 @@ export default function RightSection({
       return;
     }
     if (itemInWishList) {
-      handleRemoveFromWishList(data.id);
+      return;
     } else {
       handleAddToWishList();
     }
@@ -46,19 +44,19 @@ export default function RightSection({
       className="border  p-2 rounded shadow-sm self-start sticky  "
       style={{ top: '108px' }}
     >
-      <div className={` rounded `}>
+      <div className={`rounded`}>
         <div className="flex justify-between items-center font-semibold  ">
           <div className="flex items-center ">
             <div className="flex items-center">
               <h1>{formatMessage({ id: 'deliver-to' })}</h1>
-              <h1 className="uppercase mx-2">
+              <h1 className="uppercase mx-2 text-sm">
                 {deliveryCountry?.translation[locale].name}
               </h1>
               <MdLocationOn className="w-5 h-5 text-main-color " />
             </div>
           </div>
           <button
-            className={`py-0 px-2 text-xs uppercase bg-main-color text-main-text rounded`}
+            className={`px-2 text-xs uppercase bg-main-color text-main-text rounded`}
           >
             {formatMessage({ id: 'change' })}
           </button>
@@ -69,26 +67,12 @@ export default function RightSection({
               {formatMessage({ id: 'estimated-delivery' })} :
             </h1>
             <h1 className="mx-1">
-              {deliveryCountry.delivery_time}
+              {deliveryCountry?.delivery_time}
               <span className="mx-1">
-                {deliveryCountry.delivery_time === '1'
+                {deliveryCountry?.delivery_time === '1'
                   ? formatMessage({ id: 'day' })
                   : formatMessage({ id: 'days' })}
               </span>
-            </h1>
-          </div>
-          <div className="flex items-center">
-            <h1 className="text-gray-700">
-              {formatMessage({ id: 'delivery-cost' })} :
-            </h1>
-            <h1 className="mx-1">
-              {deliveryCountry.delivery_cost === 0 ? (
-                <h1 className="text-green-700 uppercase font-semibold">
-                  {formatMessage({ id: 'free' })}
-                </h1>
-              ) : (
-                deliveryCountry.delivery_cost
-              )}
             </h1>
           </div>
         </div>
@@ -120,17 +104,13 @@ export default function RightSection({
         <button
           onClick={() => {
             if (itemInCart) {
-              handleRemoveFromCart(data.id);
+              return;
             } else {
               handleAddToCart();
             }
           }}
           className={`${
-            addToCartButtonLoading
-              ? 'bg-gray-300'
-              : itemInCart
-              ? 'bg-main-color'
-              : 'bg-green-700'
+            addToCartButtonLoading ? 'bg-gray-300' : 'bg-green-700'
           } flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToCartButtonLoading ? (
@@ -147,7 +127,7 @@ export default function RightSection({
                 <TiShoppingCart className="w-25p h-25p " />
               </span>
               <h1 className="mx-2 whitespace-no-wrap">
-                {formatMessage({ id: 'remove-from-cart' })}
+                {formatMessage({ id: 'added-to-cart' })}
               </h1>
             </>
           ) : (
@@ -184,7 +164,7 @@ export default function RightSection({
                 <TiShoppingCart className="w-25p h-25p " />
               </span>
               <h1 className="mx-2 whitespace-no-wrap">
-                {formatMessage({ id: 'remove-from-wishlist' })}
+                {formatMessage({ id: 'added-to-wishlist' })}
               </h1>
             </>
           ) : (

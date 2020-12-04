@@ -20,13 +20,26 @@ import { motion } from 'framer-motion';
 import { useIntl } from 'react-intl';
 import SideMenuCategories from '../SideMenu/SideMenuCategories';
 import SideMenuLanguages from '../SideMenu/SideMenuLanguages';
+import SideMenuDeliveryCountries from '../SideMenu/SideMenuDeliveryCountries';
+import SideMenuCustomerService from '../SideMenu/SideMenuCustomerService';
 export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   const { isAuthenticated, userLogoutMutation } = React.useContext(
     AuthProvider
   );
-  const { categories, categoriesLoading } = React.useContext(DataProvider);
+  const {
+    categories,
+    categoriesLoading,
+    deliveryCountry,
+    deliveryCountries,
+    deliveryCountriesLoading,
+    setDeliveryCountry,
+  } = React.useContext(DataProvider);
   const [showCategories, setShowCategories] = React.useState(false);
   const [showLanguages, setShowLanguages] = React.useState(false);
+  const [showDeliveryCountries, setShowDeliveryCountries] = React.useState(
+    false
+  );
+  const [showCustomerService, setShowCustomerService] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [subCategory, setSubCategory] = React.useState(0);
   const [secondSubPage, setSecondSubPage] = React.useState(0);
@@ -58,6 +71,29 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
     setPage(page - 1);
     setTimeout(() => {
       setShowLanguages(false);
+    }, 400);
+  };
+  const handleShowDeliveryCountries = () => {
+    if (deliveryCountriesLoading) {
+      return;
+    }
+    setPage(page + 1);
+    setShowDeliveryCountries(true);
+  };
+  const handleHideDeliveryCountries = () => {
+    setPage(page - 1);
+    setTimeout(() => {
+      setShowDeliveryCountries(false);
+    }, 400);
+  };
+  const handleShowCustomerService = () => {
+    setPage(page + 1);
+    setShowCustomerService(true);
+  };
+  const handleHideCustomerService = () => {
+    setPage(page - 1);
+    setTimeout(() => {
+      setShowCustomerService(false);
     }, 400);
   };
   const handleClickNextFirst = i => {
@@ -245,27 +281,34 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
             <motion.button
               key="deliverTo"
               variants={childVariants}
-              onClick={toggleSideMenu}
-              className="py-2 px-2 mb-2    "
+              onClick={handleShowDeliveryCountries}
+              className="p-2 mb-2"
             >
-              <div className=" flex items-center">
-                <MdLocationOn className=" w-25p h-25p" />
-                <h1 className="mx-2">
-                  {formatMessage({ id: 'deliver-to' })} : Kuwait
-                </h1>
+              <div className=" flex items-center justify-between">
+                <div className="flex items-center">
+                  <MdLocationOn className=" w-25p h-25p" />
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'deliver-to' })} :{' '}
+                    {deliveryCountry?.translation[locale].name}
+                  </h1>
+                </div>
+                {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
               </div>
             </motion.button>
             <motion.button
               key="customerService"
               variants={childVariants}
-              onClick={toggleSideMenu}
-              className="py-2 px-2 mb-2"
+              onClick={handleShowCustomerService}
+              className="p-2 mb-2"
             >
-              <div className=" flex items-center">
-                <RiCustomerServiceFill className=" w-25p h-25p" />
-                <h1 className="mx-2">
-                  {formatMessage({ id: 'customer-service' })}
-                </h1>
+              <div className=" flex items-center justify-between">
+                <div className="flex items-center">
+                  <RiCustomerServiceFill className=" w-25p h-25p" />
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'customer-service' })}
+                  </h1>
+                </div>
+                {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
               </div>
             </motion.button>
             <hr />
@@ -311,6 +354,22 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
           )}
           {showLanguages && (
             <SideMenuLanguages handleHideLanguages={handleHideLanguages} />
+          )}
+          {showDeliveryCountries && (
+            <SideMenuDeliveryCountries
+              handleHideDeliveryCountries={handleHideDeliveryCountries}
+              deliveryCountries={deliveryCountries}
+              deliveryCountry={deliveryCountry}
+              setDeliveryCountry={setDeliveryCountry}
+            />
+          )}
+          {showCustomerService && (
+            <SideMenuCustomerService
+              handleHideCustomerService={handleHideCustomerService}
+              deliveryCountries={deliveryCountries}
+              deliveryCountry={deliveryCountry}
+              setDeliveryCountry={setDeliveryCountry}
+            />
           )}
         </div>
       </div>

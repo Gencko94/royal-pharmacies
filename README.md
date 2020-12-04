@@ -37,16 +37,18 @@
 - [x] fix image zoom on single product mobile
 - [x] add reviews to single product
 - [x] Add Language Page to side menu
+- [ ] Add Edit Cart item support. (discuss with maher)
+- [x] deliver to mobile.
+- [ ] Complete Viewed Items.
 - [ ] Add Coupon Support in Cart.
 - [ ] Add Currencies and modify checkout delivery cost
-- [ ] Add payment methods Logos in Cart
-- [ ] Complete Item Reviews
-- [ ] Add Delivery Country Page to side menu
+- [x] Add payment methods Logos in Cart
+- [x] Complete Item Reviews
+- [x] Add Delivery Country Page to side menu
 - [ ] Add React Query & Localizations to the Search page.
 - [ ] Add Scroll Pagination to SingleProduct Pages.
 - [ ] Complete the Checkout Page.(2hrs)
 - [ ] Search Engine optimization.
-- [ ] Add Edit Cart item support. (discuss with maher)
 - [ ] Add auto detect locale and localstorage language.(1hr)
 - [x] Add delivery country context.(1hr)
 - [ ] Nest Lazyloading deep (3hrs)

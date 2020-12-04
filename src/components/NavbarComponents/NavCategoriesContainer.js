@@ -1,6 +1,4 @@
 import React from 'react';
-import { useQuery } from 'react-query';
-import { getAllCategories } from '../../Queries/Queries';
 import CategoryButton from './CategoryButton';
 
 export default function NavCategoriesContainer({

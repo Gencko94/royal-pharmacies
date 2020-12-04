@@ -3,10 +3,9 @@ import Helmet from 'react-helmet';
 import LazyLoad from 'react-lazyload';
 import MainCarousel from '../components/Home/MainCarousel';
 
-import ItemsSlider from '../components/Home/ItemsSlider/ItemsSlider';
 import Banner from '../components/Home/Banner';
 import Categories from '../components/Home/Categories';
-import PhotoCategories from '../components/Home/PhotoCategories';
+// import PhotoCategories from '../components/Home/PhotoCategories';
 import { useMediaQuery } from 'react-responsive';
 import Layout from '../components/Layout';
 import { useIntl } from 'react-intl';
@@ -32,11 +31,12 @@ export default function Home() {
     refetchOnWindowFocus: false,
   });
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
-  const resolveSwiper = item => {
+  const resolveSwiper = (item, index) => {
     switch (item.type) {
       case 'best_seller':
         return (
           <LazyLoad
+            key={index}
             height="calc(100% * 1279/383.44)"
             // placeholder={<Loader height="calc(100% * 1279/383.44)" />}
           >
@@ -49,6 +49,7 @@ export default function Home() {
       case 'product_by_category':
         return (
           <LazyLoad
+            key={index}
             height={377}
             // placeholder={<Loader height="377px" />}
           >
@@ -60,7 +61,7 @@ export default function Home() {
         );
       case 'banner':
         return (
-          <LazyLoad>
+          <LazyLoad key={index}>
             <Banner
               url={
                 isTabletOrAbove
@@ -121,8 +122,8 @@ export default function Home() {
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}
-          {!isLoading && data.map(i => resolveSwiper(i))}
-          {!isLoading && data.map(i => resolveSwiper(i))}
+          {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
+          {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
 
           {/* <AnimatedSlides
             data={[

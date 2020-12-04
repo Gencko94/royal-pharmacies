@@ -6,13 +6,13 @@ import { DataProvider } from '../../contexts/DataContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import LazyImage from '../../helpers/LazyImage';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 export default function CartItem({
   item,
   handleRemoveItemFromCart,
   removefromCartButtonLoading,
   handleAddItemToWishlist,
   handleRemoveItemFromWishlist,
-  addToWishListButtonLoading,
   wishlistItems,
 }) {
   console.log(wishlistItems);
@@ -108,26 +108,18 @@ export default function CartItem({
                 handleAddItemToWishlist(item);
               }
             }}
-            className={`border border-main-color text-main-color  p-2 rounded flex items-center justify-center mx-2 font-semibold uppercase`}
-            style={{ width: '200px' }}
-            disabled={addToWishListButtonLoading}
+            className={`
+              border mx-2
+            text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}
           >
-            {addToWishListButtonLoading === item.id ? (
-              <Loader
-                type="ThreeDots"
-                color="#b72b2b"
-                height={21}
-                width={21}
-                visible={true}
+            {wishlistItems.includes(item.id) ? (
+              <AiFillHeart
+                className={`w-25p h-25p hover:scale-125 text-main-color  transition-all duration-150 `}
               />
-            ) : wishlistItems.includes(item.id) ? (
-              <h1 className="mx-2 whitespace-no-wrap">
-                {formatMessage({ id: 'remove-from-wishlist' })}
-              </h1>
             ) : (
-              <h1 className="mx-2">
-                {formatMessage({ id: 'add-to-wishlist' })}
-              </h1>
+              <AiOutlineHeart
+                className={`w-25p h-25p hover:scale-125 text-main-color  transition-all duration-150 `}
+              />
             )}
           </button>
         </div>

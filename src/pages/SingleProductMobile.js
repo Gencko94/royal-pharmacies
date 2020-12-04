@@ -1,54 +1,42 @@
 import React from 'react';
 
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import { DataProvider } from '../contexts/DataContext';
-import InView, { useInView } from 'react-intersection-observer';
-import RelatedItems from '../components/SingleProduct/RelatedItems';
+import { useInView } from 'react-intersection-observer';
 import { Helmet } from 'react-helmet';
-import { useLazyLoadFetch } from '../hooks/useLazyLoadFetch';
-import LayoutMobile from '../components/LayoutMobile';
 import ImageZoomMobile from '../components/SingleProductMobile/ImageZoomMobile';
 import ItemDescription from '../components/SingleProductMobile/ItemDescription';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 import FloatingAddToCart from '../components/SingleProductMobile/FloatingAddToCart';
-import { queryCache, useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import SingleProductMobileLoader from '../components/SingleProductMobile/SingleProductMobileLoader';
 import AdditionalDetailsMobile from '../components/SingleProductMobile/AdditionalDetailsMobile';
-import { addToWishlist, getSingleItem } from '../Queries/Queries';
+import { getProductReviews, getSingleItem } from '../Queries/Queries';
 import { useParams } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
-import { useIntl } from 'react-intl';
+
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import Layout from '../components/Layout';
 
 export default function SingleProductMobile() {
   const { id } = useParams();
-  const {
-    deliveryCountry,
+  const { addViewedItems } = React.useContext(DataProvider);
 
-    allItems,
-    addViewedItems,
-  } = React.useContext(DataProvider);
-  const { locale } = useIntl();
   const { userId } = React.useContext(AuthProvider);
   const {
     addToCartMutation,
-    removeFromCartMutation,
+
     removeFromWishListMutation,
     addToWishListMutation,
   } = React.useContext(CartAndWishlistProvider);
   const [itemInCart, setItemInCart] = React.useState(false);
   const [itemInWishList, setItemInWishList] = React.useState(false);
-  const [
-    addToWishListButtonLoading,
-    setAddToWishListButtonLoading,
-  ] = React.useState(false);
+
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
-  const [isFetching, setFetching] = React.useState(true);
-  const [page, setPage] = React.useState(0);
+  // const [isFetching, setFetching] = React.useState(true);
+  // const [page, setPage] = React.useState(0);
   // const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
-  const [related, setRelated] = React.useState(null);
+  // const [related, setRelated] = React.useState(null);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
@@ -76,33 +64,28 @@ export default function SingleProductMobile() {
       },
     }
   );
-  /**
-   * Add Mutation
-   */
-
-  /**
-   * Remove Mutation
-   */
+  const { data: reviews, isLoading: reviewsLoading } = useQuery(
+    ['product-reviews', id],
+    getProductReviews,
+    { retry: true, enabled: data }
+  );
 
   const handleAddToWishList = async () => {
-    setAddToWishListButtonLoading(true);
     try {
       await addToWishListMutation({ id: data.id, userId });
-      setAddToWishListButtonLoading(false);
       setItemInWishList(true);
     } catch (error) {
-      setAddToWishListButtonLoading(false);
+      console.clear();
+      setItemInWishList(true);
       console.log(error.response);
     }
   };
   const handleRemoveFromWishList = async id => {
-    setAddToWishListButtonLoading(true);
     try {
-      await removeFromWishListMutation(id, userId);
-      setAddToWishListButtonLoading(false);
-      setItemInWishList(true);
+      await removeFromWishListMutation({ id, userId });
+      setItemInWishList(false);
     } catch (error) {
-      setAddToWishListButtonLoading(false);
+      console.clear();
       console.log(error.response);
     }
   };
@@ -116,52 +99,25 @@ export default function SingleProductMobile() {
     setQuantity(quantity + 1);
   };
 
-  // const handleLoadMore = inView => {
-  //   if (inView) {
-  //     if (hasMore) {
-  //       setFetching(true);
-  //       setPage(page + 1);
-  //     }
-  //   }
-  // };
-  // const fetchData = () => {
-  //   setTimeout(() => {
-  //     setRelated(relatedData);
-
-  //     setFetching(false);
-  //   }, 2000);
-  // };
-
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
     try {
       const newItem = { id: data.id, quantity: quantity, size, color };
-      console.log(userId);
       await addToCartMutation({ newItem, userId });
       setAddToCartButtonLoading(false);
       setSideMenuOpen(true);
       setItemInCart(true);
     } catch (error) {
+      console.clear();
+
+      if (error.response.data.message === 'Item founded on the Cart') {
+        setItemInCart(true);
+      }
       console.log(error.response);
-      console.log(error);
       setAddToCartButtonLoading(false);
     }
   };
-  const handleRemoveFromCart = async (id, cart_id) => {
-    setAddToCartButtonLoading(true);
-    try {
-      await removeFromCartMutation({ id, cart_id, userId });
-      setAddToCartButtonLoading(false);
-      setItemInCart(false);
-    } catch (error) {
-      setAddToCartButtonLoading(false);
-      console.log(error.response);
-    }
-  };
-  // React.useEffect(() => {
-  //   fetchData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [page]);
+
   return (
     <Layout>
       <Helmet>
@@ -197,15 +153,11 @@ export default function SingleProductMobile() {
             <div className="flex flex-col w-full  px-3 py-2 bg-white">
               <ItemDescription
                 handleAddToCart={handleAddToCart}
-                handleRemoveFromCart={handleRemoveFromCart}
                 handleAddToWishList={handleAddToWishList}
-                handleRemoveFromWishList={handleRemoveFromWishList}
-                deliveryCountry={deliveryCountry}
                 data={data}
                 itemInCart={itemInCart}
                 itemInWishList={itemInWishList}
                 addToCartButtonLoading={addToCartButtonLoading}
-                addToWishListButtonLoading={addToWishListButtonLoading}
                 quantity={quantity}
                 setQuantity={setQuantity}
                 size={size}
@@ -216,6 +168,7 @@ export default function SingleProductMobile() {
                 rating={data.rating}
                 setDetailsTab={setDetailsTab}
                 userId={userId}
+                handleRemoveFromWishList={handleRemoveFromWishList}
               />
 
               <hr />
@@ -227,37 +180,27 @@ export default function SingleProductMobile() {
             data={data}
             detailsTab={detailsTab}
             setDetailsTab={setDetailsTab}
+            reviews={reviews}
+            reviewsLoading={reviewsLoading}
           />
         )}
-
-        {/* {!isLoading && (
-          <FloatingAddToCart
-            handleSubstractQuantity={handleSubstractQuantity}
-            quantity={quantity}
-            handleAddQuantity={handleAddQuantity}
-            handleRemoveFromCart={handleRemoveFromCart}
-            handleAddToCart={handleAddToCart}
-            id={data.item.id}
-            price={data.item.price}
-            addToCartButtonLoading={addToCartButtonLoading}
-            inView={inView}
-            itemInCart={data.itemInCart}
-          />
-        )} */}
+        <br ref={triggerRef} />
+        <AnimatePresence>
+          {inView && !itemInCart && !isLoading && (
+            <FloatingAddToCart
+              handleSubstractQuantity={handleSubstractQuantity}
+              quantity={quantity}
+              handleAddQuantity={handleAddQuantity}
+              handleAddToCart={handleAddToCart}
+              id={data.id}
+              price={data.simple_addons.price}
+              addToCartButtonLoading={addToCartButtonLoading}
+              itemInCart={itemInCart}
+            />
+          )}
+        </AnimatePresence>
 
         <hr />
-        {/* <div ref={triggerRef}>
-          {related && <RelatedItems relatedData={related} />}
-          {isFetching && <div>Loading ...</div>}
-          <InView
-            as="div"
-            onChange={(inView, entry) => {
-              handleLoadMore(inView);
-            }}
-          >
-            <div></div>
-          </InView>
-        </div> */}
       </div>
     </Layout>
   );

@@ -48,10 +48,11 @@ const baseStrings = {
   'go-back': 'Go back',
   'add-to-cart': 'Add to Cart',
   'added-to-cart': 'Added to Cart',
+  'added-to-wishlist': 'Added to Wishlist',
   'your-recently-visited-items': 'Your Recently visited items',
   'model-number': 'Model Number',
-  'one-rating': 'Rating',
-  'two-ratings': 'Ratings',
+  'one-rating': 'One Rating',
+  'two-ratings': 'Two Ratings',
   ratings: 'Ratings',
   'the-rating': 'Rating',
   'in-stock': 'In Stock',
@@ -69,9 +70,10 @@ const baseStrings = {
   description: 'Description',
   specifications: 'Specifications',
   reviews: 'Reviews',
+  review: 'Review',
   'the-reviews': 'Reviews',
-  'one-review': 'Review',
-  'two-reviews': 'Reviews',
+  'one-review': 'One Review',
+  'two-reviews': 'Two Reviews',
   'secure-transaction': 'Secure transaction',
   quantity: 'Quantity',
   'estimated-delivery': 'Estimated Delivery',
@@ -101,6 +103,7 @@ const baseStrings = {
   day: 'Day',
   days: 'Days',
   'delivery-cost': 'Delivery Cost',
+  'accepted-payments': 'Accepted Payment Methods',
 
   //
   'home.title': 'Home',
@@ -230,13 +233,17 @@ const baseStrings = {
    */
   'single-product-size': 'Available sizes for this product',
   'single-product-color': 'Available colors for this product',
-  'single-product-additional-details': 'Additional Details for this product',
   'additional-details__item-specifications': 'Item Specifications',
   'additional-details__item-description': 'Item Description',
   'additional-details__item-reviews': 'Item Reviews',
 
   'single-product-product-review': 'Product Rating',
   'single-product-average-rating': 'Average Product Rating',
+  'no-ratings':
+    'There are no Ratings for this Product yet, Be the first to Rate ',
+  'how-to-rate': 'How do i rate this Product ?',
+  'rating-guide':
+    'If you have Purchased this item, you can Rate and Leave a Feedback at <link>My Orders</link>',
   /**
    * Viewed Items Page
    *
