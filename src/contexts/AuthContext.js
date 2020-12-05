@@ -8,22 +8,6 @@ import {
 } from '../Queries/Queries';
 export const AuthProvider = React.createContext();
 export default function AuthContext({ children }) {
-  /**
-   * Authentication
-   */
-  // const checkAuthenticationStatus = () => {
-  //   const localAuthenticated = localStorage.getItem('localAuthenticated');
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       if (localAuthenticated === 'true') {
-  //         resolve({ isAuthenticated: true });
-  //       } else {
-  //         resolve({ isAuthenticated: false });
-  //       }
-  //     }, 2000);
-  //   });
-  // };
-
   const {
     data,
     isLoading: authenticationLoading,
@@ -32,14 +16,6 @@ export default function AuthContext({ children }) {
   } = useQuery('authentication', checkAuth, {
     retry: 0,
     refetchOnWindowFocus: false,
-    // onSuccess: data => {
-    //   queryCache.setQueryData('userProfile', prev => {
-    //     return {
-    //       ...prev,
-    //       ...data.userData,
-    //     };
-    //   });
-    // },
   });
   /**
    * Edit user Info
@@ -55,6 +31,22 @@ export default function AuthContext({ children }) {
     },
     throwOnError: true,
   });
+
+  /**
+   * Change Password
+   */
+  const [changePasswordMutation] = useMutation(editUserProfileInfo, {
+    onSuccess: data => {
+      queryCache.setQueryData('authentication', prev => {
+        return {
+          ...prev,
+          userData: data.userData,
+        };
+      });
+    },
+    throwOnError: true,
+  });
+
   /**
    * User Login
    */
@@ -128,26 +120,6 @@ export default function AuthContext({ children }) {
    *
    */
 
-  // const handleUserRegister = data => {
-  //   return new Promise(resolve => {
-  //     localStorage.setItem('localAuthenticated', true);
-  //     setTimeout(() => {
-  //       resolve({
-  //         message: 'ok',
-  //       });
-  //     }, 1500);
-  //   });
-  // };
-  // const handleUserLogin = data => {
-  //   return new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       localStorage.setItem('localAuthenticated', true);
-  //       resolve({
-  //         message: 'ok',
-  //       });
-  //     }, 1500);
-  //   });
-  // };
   return (
     <AuthProvider.Provider
       value={{
@@ -160,6 +132,7 @@ export default function AuthContext({ children }) {
         userData: data?.userData,
         userId: data?.userData?.id,
         editMutation,
+        changePasswordMutation,
       }}
     >
       {children}

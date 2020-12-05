@@ -1440,23 +1440,21 @@ export default function DataContextProvider({ children }) {
       ],
     },
   ];
-  const {
-    data: categories,
-    isLoading: categoriesLoading,
-  } = useQuery('categories', getAllCategories, { retry: true });
+  const { data: categories, isLoading: categoriesLoading } = useQuery(
+    'categories',
+    getAllCategories,
+    {
+      retry: true,
+      refetchOnWindowFocus: false,
+    }
+  );
   const {
     data: deliveryCountries,
     isLoading: deliveryCountriesLoading,
   } = useQuery('delivery-countries', getDeliveryCountries, {
     retry: true,
+    refetchOnWindowFocus: false,
     onSuccess: data => {
-      console.log(
-        data.find(
-          country =>
-            country.translation.en.name ===
-            JSON.parse(localDeliveryCountry).deliveryCountry.en
-        )
-      );
       setDeliveryCountry(
         data.find(
           country =>

@@ -117,6 +117,7 @@ export const ar = {
   'password-min-6': '6 أحرف كحد ادنى',
   'password-max-15': '15 حرف كحد اقصى',
   'password-empty': 'الرجاء إدخال كلمة المرور',
+  'same-password': 'كلمتا المرور يجب ان تكونا متطابقتين',
   'fullname-empty': 'الرجاء إدخال اسم الكامل',
   'email-label': 'البريد الإلكتروني',
   'password-label': 'كلمة المرور',
@@ -137,6 +138,10 @@ export const ar = {
   'one-address': 'عنوان',
   'password-reset': 'إعادة تعيين كلمة المرور',
   'password-reset-send-button': 'إرسال الكود',
+  'change-password': 'تغيير كلمة المرور',
+  'old-password': 'كلمة المرور القديمة',
+  'new-password': 'كلمة المرور الجديدة',
+  'confirm-password': 'تأكيد كلمة المرور',
   'already-have-an-account':
     'هل لديك حساب مسبق ؟ <link>سجل الدخول الآن </link>',
   'terms-of-service':

@@ -2,23 +2,23 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
-import Select from 'react-select';
 import { AuthProvider } from '../../contexts/AuthContext';
+import PasswordChangeModalMobile from './PasswordChangeModalMobile';
 import ProfileEditModalMobile from './ProfileEditModalMobile';
 
 export default function MyProfileMobile() {
   const { formatMessage } = useIntl();
-  const languages = [
-    { value: 'Arabic', label: 'Arabic' },
-    { value: 'English', label: 'English' },
-  ];
-  const [language, setLanguage] = React.useState(languages[1]);
+
   const [profileEditModalOpen, setProfileEditModalOpen] = React.useState(false);
+  const [passwordChangeModalOpen, setPasswordChangeModalOpen] = React.useState(
+    false
+  );
   const {
     userData,
     editMutation,
     authenticationLoading,
     authenticationFetching,
+    changePasswordMutation,
   } = React.useContext(AuthProvider);
 
   const containerVariants = {
@@ -70,7 +70,6 @@ export default function MyProfileMobile() {
               {formatMessage({ id: 'edit' })}
             </button>
           </div>
-          <hr />
           <div className=" ">
             <div className="py-4 px-3 flex  ">
               <h1 className=" font-semibold w-2/4">
@@ -94,47 +93,15 @@ export default function MyProfileMobile() {
           </div>
         </div>
         <hr className="mt-4 mb-2" />
-        <div className="">
-          <div className="px-3 py-3 flex justify-between text-gray-900">
-            <h1 className="text-xl font-semibold">
-              {' '}
-              {formatMessage({ id: 'security' })}
-            </h1>
-            <button className="py-1 px-2 text-sm  font-semibold bg-main-color text-main-text rounded">
-              {formatMessage({ id: 'edit' })}
-            </button>
-          </div>
-          <hr />
-          <div className="">
-            <div className="py-4 px-3 flex  bg-red-100">
-              <h1 className=" font-semibold w-2/4">
-                {formatMessage({ id: 'password' })}
-              </h1>
-              <h1 className="">**********</h1>
-            </div>
-          </div>
-        </div>
-        <hr className="mt-5 mb-2" />
-        <div className="">
-          <div className="px-3 py-3 text-gray-900">
-            <h1 className="text-xl font-semibold">
-              {formatMessage({ id: 'language' })}
-            </h1>
-          </div>
-          <hr />
-          <div className="">
-            <div className="py-4 px-3 flex items-center ">
-              <h1 className=" font-semibold w-2/4">
-                {formatMessage({ id: 'preffered-language' })}
-              </h1>
-              <Select
-                defaultValue={language}
-                onChange={e => setLanguage(e)}
-                options={languages}
-                className="flex-1 text-center"
-              />
-            </div>
-          </div>
+
+        <hr />
+        <div className="px-3 py-3 flex items-center justify-end">
+          <button
+            onClick={() => setPasswordChangeModalOpen(true)}
+            className="py-1 px-2 text-sm  font-semibold bg-main-color text-main-text rounded"
+          >
+            {formatMessage({ id: 'change-password' })}
+          </button>
         </div>
       </motion.div>
       <AnimatePresence>
@@ -143,6 +110,14 @@ export default function MyProfileMobile() {
             userData={userData}
             setProfileEditModalOpen={setProfileEditModalOpen}
             editMutation={editMutation}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {passwordChangeModalOpen && (
+          <PasswordChangeModalMobile
+            setPasswordChangeModalOpen={setPasswordChangeModalOpen}
+            changePasswordMutation={changePasswordMutation}
           />
         )}
       </AnimatePresence>

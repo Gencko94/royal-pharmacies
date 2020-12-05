@@ -39,6 +39,8 @@
 - [x] Add Language Page to side menu
 - [ ] Add Edit Cart item support. (discuss with maher)
 - [x] deliver to mobile.
+- [ ] add password modals in account.
+- [ ] fix search bar mobile.
 - [ ] Complete Viewed Items.
 - [ ] Add Coupon Support in Cart.
 - [ ] Add Currencies and modify checkout delivery cost

@@ -1,14 +1,14 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
-import AllCategories from './AllCategories/AllCategories';
+// import AllCategories from './AllCategories/AllCategories';
 import { AnimatePresence } from 'framer-motion';
 import ReactHoverObserver from 'react-hover-observer';
 import MegaMenu from './MegaMenu';
 import NavCategoriesContainer from './NavCategoriesContainer';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 export default function NavCategory() {
   const dropDownbgRef = React.useRef(null);
-  const hideAllCategories = useMediaQuery({ query: '(min-width:1290px)' });
+  // const hideAllCategories = useMediaQuery({ query: '(min-width:1290px)' });
   const { categories, categoriesLoading } = React.useContext(DataProvider);
   const [dropDownOpen, setDropDownOpen] = React.useState(false);
   const [catData, setCatData] = React.useState(null);
@@ -26,7 +26,7 @@ export default function NavCategory() {
       >
         <div className="max-w-default mx-auto  px-4 ">
           <div className="relative flex">
-            {hideAllCategories && <AllCategories />}
+            {/* {hideAllCategories && <AllCategories />} */}
             <ReactHoverObserver hoverDelayInMs={300}>
               <NavCategoriesContainer
                 data={categories}

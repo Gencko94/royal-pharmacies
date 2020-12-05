@@ -141,6 +141,12 @@ const baseStrings = {
   'save-button': 'Save',
   'password-reset': 'Password Reset',
   'password-reset-send-button': 'Send Code',
+
+  'change-password': 'Change your password',
+  'old-password': 'Old Password',
+  'new-password': 'New Password',
+  'same-password': 'Both password need to be the same',
+  'confirm-password': 'Confirm Password',
   'already-have-an-account':
     'Already have an account ? <link>Log in instead</link>',
   'terms-of-service':
