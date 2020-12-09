@@ -8,7 +8,10 @@ import Layout from '../components/Layout';
 export default function GuestCheckOutMobile() {
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [guestAddress, setGuestAddress] = React.useState(null);
-
+  const [personalInfo, setPersonalInfo] = React.useState({
+    fullName: '',
+    phoneNumber: '',
+  });
   const [stepDone, setStepDone] = React.useState({
     0: false,
     1: false,
@@ -55,6 +58,8 @@ export default function GuestCheckOutMobile() {
             handleStepForward={handleStepForward}
             handleStepBack={handleStepBack}
             guestAddress={guestAddress}
+            personalInfo={personalInfo}
+            setPersonalInfo={setPersonalInfo}
           />
         )}
         {selectedStep === 2 && (

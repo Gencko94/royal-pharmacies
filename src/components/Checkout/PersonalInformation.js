@@ -13,7 +13,6 @@ export default function PersonalInformation({
 }) {
   const { formatMessage } = useIntl();
 
-  console.log(selectedAddress);
   const paymentMethodOptions = [
     { name: 'K-net', photo: knet },
     { name: 'Visa ', photo: visa },

@@ -88,6 +88,7 @@ export default function StaticSwiper({ type, setCartMenuOpen }) {
   return (
     <div className="my-8">
       {isLoading && <div className="mb-4 " style={{ height: '30px' }}></div>}
+      {isLoading && <SwiperLoader />}
       {!isLoading && (
         <div className="flex items-center mb-4">
           <h1 className="text-xl font-bold flex-1 ">{type}</h1>
@@ -96,7 +97,6 @@ export default function StaticSwiper({ type, setCartMenuOpen }) {
           </button>
         </div>
       )}
-      {isLoading && <SwiperLoader />}
       {!isLoading && (
         <Swiper
           navigation

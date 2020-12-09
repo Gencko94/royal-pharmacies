@@ -49,6 +49,7 @@ export default function AuthContext({ children }) {
    */
   const [userLoginMutation] = useMutation(
     async data => {
+      console.log(data);
       const res = await userLogin({
         mobile: data.phoneNumber,
         password: data.password,

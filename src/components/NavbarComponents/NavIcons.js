@@ -19,14 +19,8 @@ export default function NavIcons({ color = 'nav-secondary' }) {
     wishlistItemsLoading,
   } = React.useContext(CartAndWishlistProvider);
   const { formatMessage, locale } = useIntl();
-
   const resolveCartLength = () => {
-    if (
-      authenticationLoading ||
-      cartItemsLoading ||
-      guestCartItemsLoading ||
-      !cartItems
-    ) {
+    if (authenticationLoading || cartItemsLoading || guestCartItemsLoading) {
       return <Loader type="TailSpin" color="#b72b2b" height={12} width={12} />;
     } else if (!authenticationLoading && userId) {
       return cartItems.length;

@@ -103,10 +103,10 @@ export default function Home() {
             ></motion.div>
           )}
         </AnimatePresence>
-        <MainCarousel />
         <div
           className={` bg-body-light text-body-text-light mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
         >
+          <MainCarousel />
           <Categories />
           <StaticSwiper type="electronics" setCartMenuOpen={setCartMenuOpen} />
           <StaticSwiper type="home-kitchen" setCartMenuOpen={setCartMenuOpen} />

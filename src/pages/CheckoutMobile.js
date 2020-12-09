@@ -50,6 +50,7 @@ export default function CheckoutMobile() {
           {selectedStep === 0 && (
             <SelectAddressMobile
               handleStepForward={handleStepForward}
+              selectedAddress={selectedAddress}
               setSelectedAddress={setSelectedAddress}
             />
           )}

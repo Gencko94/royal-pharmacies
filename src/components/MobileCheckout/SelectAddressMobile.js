@@ -1,20 +1,52 @@
 import React from 'react';
 import { AuthProvider } from '../../contexts/AuthContext';
 import GoogleMapsAddress from '../GoogleMapsAddress';
-
-export default function SelectAddressMobile({ handleStepForward }) {
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import AvailableAddressesMobile from './AvailableAddressesMobile';
+export default function SelectAddressMobile({
+  handleStepForward,
+  selectedAddress,
+  setSelectedAddress,
+}) {
   const [showMap, setShowMap] = React.useState(false);
   const { userAddresses, userAddressesLoading } = React.useContext(
     AuthProvider
   );
-  return (
-    <div className="h-full">
-      <div className=" border mb-2 h-full">
-        <GoogleMapsAddress
-          setShowMap={setShowMap}
-          handleStepForward={handleStepForward}
+  if (userAddressesLoading)
+    return (
+      <div
+        className="flex h-full justify-center items-center"
+        style={{ minHeight: 'calc(100vh - 102px)' }}
+      >
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={40}
+          width={40}
+          visible={true}
         />
       </div>
+    );
+  return (
+    <div className="h-full">
+      {userAddresses.length !== 0 && !showMap && (
+        <AvailableAddressesMobile
+          userAddresses={userAddresses}
+          setShowMap={setShowMap}
+          selectedAddress={selectedAddress}
+          setSelectedAddress={setSelectedAddress}
+          handleStepForward={handleStepForward}
+        />
+      )}
+      {(userAddresses.length === 0 || showMap) && (
+        <div className=" border mb-2 h-full">
+          <GoogleMapsAddress
+            setShowMap={setShowMap}
+            handleStepForward={handleStepForward}
+          />
+        </div>
+      )}
     </div>
   );
 }

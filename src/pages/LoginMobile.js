@@ -8,18 +8,21 @@ import { AuthProvider } from '../contexts/AuthContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import ErrorSnackbar from '../components/ErrorSnackbar';
-import { BiChevronDown } from 'react-icons/bi';
-import useClickAway from '../hooks/useClickAway';
+import Select from 'react-select';
 import Language from '../components/NavbarComponents/Language';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
-const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
-  const [menuOpen, setMenuOpen] = React.useState(false);
-  const menuRef = React.useRef();
-  useClickAway(menuRef, () => {
-    if (menuRef.current) {
-      setMenuOpen(false);
-    }
-  });
+const options = [
+  { value: '+965', label: '+965' },
+  { value: '+966', label: '+966' },
+];
+const PhoneNumberCustomInput = ({
+  label,
+  value,
+  name,
+  countryCode,
+  setCountryCode,
+  ...props
+}) => {
   const [field, meta] = useField(name);
   return (
     <div className="w-full mb-2 flex flex-col ">
@@ -30,36 +33,41 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
         {label}
       </label>
       <div
-        className={`${
-          meta.error && 'border'
-        } flex rounded-lg border items-center relative  overflow-hidden`}
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '0.3fr 0.7fr',
+          gap: '0.5rem',
+        }}
       >
-        <div
-          ref={menuRef}
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="  cursor-pointer flex items-center p-1 border-r"
-          style={{ width: '74px' }}
-        >
-          <span>+965</span>
-          <BiChevronDown className="mx-1 w-5 h-5" />
-          {menuOpen && (
-            <div
-              className="absolute top-100 left-0 w-full border z-1 bg-body-light"
-              style={{ width: '74px' }}
-            >
-              <div className="hover:bg-main-color p-2 hover:text-main-text flex justify-start items-center">
-                +965
-              </div>
-            </div>
-          )}
-        </div>
+        <Select
+          options={options}
+          isSearchable={false}
+          value={countryCode}
+          onChange={setCountryCode}
+          styles={{
+            dropdownIndicator: provided => {
+              return {
+                ...provided,
+                padding: '0.25rem',
+              };
+            },
+            valueContainer: provided => {
+              return {
+                ...provided,
+                padding: '0.5rem',
+              };
+            },
+          }}
+        />
         <input
           {...field}
           {...props}
           onBlur={e => {
             field.onBlur(e);
           }}
-          className=" w-full   p-2"
+          className={` w-full border rounded  p-2 ${
+            meta.error && 'border-main-color'
+          }`}
         />
       </div>
       {meta.touched && meta.error ? (
@@ -107,6 +115,7 @@ export default function LoginMobile() {
   const { userLoginMutation } = React.useContext(AuthProvider);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [countryCode, setCountryCode] = React.useState(options[0]);
   const closeError = () => {
     setErrorOpen(false);
   };
@@ -152,7 +161,10 @@ export default function LoginMobile() {
             onSubmit={async (values, { resetForm, setErrors }) => {
               setErrorOpen(false);
               try {
-                await userLoginMutation(values);
+                await userLoginMutation({
+                  phoneNumber: `${countryCode.value}${values.phoneNumber}`,
+                  password: values.password,
+                });
 
                 history.replace(from);
               } catch (error) {
@@ -182,6 +194,8 @@ export default function LoginMobile() {
                     name="phoneNumber"
                     value={values.phoneNumber}
                     type="text"
+                    countryCode={countryCode}
+                    setCountryCode={setCountryCode}
                   />
                   <CustomTextInput
                     label={formatMessage({ id: 'password-label' })}
@@ -217,12 +231,12 @@ export default function LoginMobile() {
             }}
           </Formik>
         </div>
-        <div className="">
+        <div className="text-sm">
           <div className="px-3 py-2">
-            <h1 className="text-sm">
+            <h1>
               {formatMessage({ id: 'new-to-family' })}
               <Link
-                className="text-second-nav-light"
+                className="text-main-color hover:underline"
                 to={`/${locale}/app/register`}
               >
                 {formatMessage({ id: 'join-us-here' })}
@@ -230,7 +244,7 @@ export default function LoginMobile() {
             </h1>
             <Link
               to={`/${locale}/app/password-reset`}
-              className=" text-sm text-second-nav-light"
+              className=" text-main-color hover:underline"
             >
               {formatMessage({ id: 'forgot-password' })}
             </Link>

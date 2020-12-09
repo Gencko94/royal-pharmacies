@@ -93,6 +93,7 @@ const ViewedItemsMobile = React.lazy(() => import('./pages/ViewedItemsMobile'));
 const Wishlist = React.lazy(() => import('./pages/Wishlist'));
 const WishlistMobile = React.lazy(() => import('./pages/WishlistMobile'));
 const Checkout = React.lazy(() => import('./pages/Checkout'));
+const CheckoutMobile = React.lazy(() => import('./pages/CheckoutMobile'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 const NotFoundMobile = React.lazy(() => import('./pages/NotFoundMobile'));
 
@@ -189,7 +190,7 @@ function App() {
 
           <ProtectedRoute
             path="/checkout"
-            Component={isTabletOrAbove ? Checkout : MyAccountMobile}
+            Component={isTabletOrAbove ? Checkout : CheckoutMobile}
           />
           <Route path="/test" component={Test} />
           <Route

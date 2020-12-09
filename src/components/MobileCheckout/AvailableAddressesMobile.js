@@ -4,11 +4,11 @@ import { AiOutlineInfoCircle, AiOutlinePlus } from 'react-icons/ai';
 import Ink from 'react-ink';
 import { useIntl } from 'react-intl';
 
-export default function AvailableAddresses({
-  setShowMap,
+export default function AvailableAddressesMobile({
   userAddresses,
-  setSelectedAddress,
+  setShowMap,
   selectedAddress,
+  setSelectedAddress,
   handleStepForward,
 }) {
   const { formatMessage } = useIntl();
@@ -44,8 +44,8 @@ export default function AvailableAddresses({
   };
   return (
     <div className="min-h-full">
-      <div className=" p-3 flex items-center justify-between bg-main-color text-main-text">
-        <h1 className="text-lg">
+      <div className=" p-2 flex items-center justify-between bg-main-color text-main-text">
+        <h1 className="text-sm font-semibold">
           {formatMessage({ id: 'select-address-header' })}
         </h1>
         <button
@@ -54,16 +54,15 @@ export default function AvailableAddresses({
             selectedAddress
               ? 'bg-body-light text-main-color'
               : 'bg-gray-600 cursor-not-allowed'
-          } rounded p-2 uppercase font-semibold `}
+          } rounded p-1 text-xs uppercase font-semibold `}
           disabled={!selectedAddress}
         >
           {formatMessage({ id: 'btn-proceed' })}
         </button>
       </div>
       <AnimateSharedLayout>
-        <motion.div layout className="p-3 locations-grid__desktop">
+        <motion.div layout className="p-2 locations-grid__mobile">
           {userAddresses.map(address => {
-            console.log(address);
             return (
               <motion.div
                 layout
@@ -76,7 +75,7 @@ export default function AvailableAddresses({
                 <motion.div layout>
                   <div style={{ minHeight: '150px', position: 'relative' }}>
                     <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${address.lat},${address.lng}&zoom=15&size=200x200&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${address.lat},${address.lng}&zoom=15&size=175x175&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
                       alt="thumbnail"
                     />
                     <motion.div
@@ -99,7 +98,7 @@ export default function AvailableAddresses({
                             animate={{ opacity: 1, marginLeft: '35px' }}
                             exit={{ opacity: 0 }}
                             layout
-                            className="text-sm"
+                            className="text-xs"
                           >
                             <div>
                               <h1>
@@ -133,16 +132,16 @@ export default function AvailableAddresses({
                       </AnimatePresence>
                     </motion.div>
                   </div>
-                  <div className="p-2">
+                  <div className="p-1">
                     <div
-                      className="text-sm mb-2 font-semibold"
-                      style={{ height: '65px' }}
+                      className="text-xs mb-2 font-semibold"
+                      style={{ height: '50px' }}
                     >
                       <h1>{address.marked_address}</h1>
                     </div>
                     <button
                       onClick={() => handleAddressSelection(address)}
-                      className={`w-full p-1 rounded uppercase ${
+                      className={`w-full text-sm p-1 rounded uppercase ${
                         selectedAddress?.id === address.id
                           ? 'bg-green-700 shadow'
                           : 'bg-main-color'
