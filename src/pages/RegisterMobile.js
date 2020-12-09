@@ -159,10 +159,8 @@ export default function RegisterMobile() {
             onSubmit={async (values, { resetForm, setErrors }) => {
               setErrorOpen(false);
               try {
-                const res = await userRegisterMutation(values);
-                if (res.isAuthenticated === true) {
-                  history.replace(from);
-                }
+                await userRegisterMutation(values);
+                history.replace(from);
               } catch (error) {
                 if (error.response?.data.message) {
                   setErrors({

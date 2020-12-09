@@ -186,6 +186,7 @@ function App() {
               }
             }}
           />
+
           <ProtectedRoute
             path="/checkout"
             Component={isTabletOrAbove ? Checkout : MyAccountMobile}

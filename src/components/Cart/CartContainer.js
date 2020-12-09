@@ -1,20 +1,23 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
+import { DataProvider } from '../../contexts/DataContext';
 import CartEmpty from './CartEmpty';
 import CartItem from './CartItem';
 import CartContainerLoader from './loaders/CartContainerLoader';
 
 export default function CartContainer({
-  cartItemsLoading,
-  cartItems,
   removefromCartButtonLoading,
   handleRemoveItemFromCart,
   handleAddItemToWishlist,
   handleRemoveItemFromWishlist,
-  cartTotal,
   wishlistItems,
 }) {
+  const { cartItems, cartItemsLoading, cartSubtotal } = React.useContext(
+    CartAndWishlistProvider
+  );
+  const { deliveryCountry } = React.useContext(DataProvider);
   const resolvePlural = () => {
     switch (cartItems.length) {
       case 1:
@@ -84,7 +87,8 @@ export default function CartContainer({
                   : `${cartItems.length} `}
                 {resolvePlural()})
               </h1>
-              <h1>{cartTotal}</h1> KD
+              <h1>{cartSubtotal}</h1>{' '}
+              {deliveryCountry?.currency.translation[locale].symbol}
             </motion.div>
             <motion.div layout className="text-sm my-4">
               <h1>{formatMessage({ id: 'cart-tos' })}</h1>

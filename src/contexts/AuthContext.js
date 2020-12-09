@@ -1,17 +1,21 @@
 import React from 'react';
 import { queryCache, useMutation, useQuery } from 'react-query';
 import {
+  changeUserPassword,
   checkAuth,
   editUserProfileInfo,
+  getUserAddresses,
   userLogin,
   userRegister,
+  addUserAddress,
+  removeUserAddress,
 } from '../Queries/Queries';
 export const AuthProvider = React.createContext();
 export default function AuthContext({ children }) {
   const {
     data,
     isLoading: authenticationLoading,
-    isError,
+
     isFetching: authenticationFetching,
   } = useQuery('authentication', checkAuth, {
     retry: 0,
@@ -35,15 +39,8 @@ export default function AuthContext({ children }) {
   /**
    * Change Password
    */
-  const [changePasswordMutation] = useMutation(editUserProfileInfo, {
-    onSuccess: data => {
-      queryCache.setQueryData('authentication', prev => {
-        return {
-          ...prev,
-          userData: data.userData,
-        };
-      });
-    },
+  const [changePasswordMutation] = useMutation(changeUserPassword, {
+    onSuccess: () => console.log('succes'),
     throwOnError: true,
   });
 
@@ -58,17 +55,16 @@ export default function AuthContext({ children }) {
       });
       if (res.status === true) {
         localStorage.setItem('mrgAuthToken', res.data.access_token);
-        return { isAuthenticated: true };
       }
     },
     {
       onSuccess: () => {
-        queryCache.setQueryData('authentication', prev => {
-          return {
-            ...prev,
-            isAuthenticated: true,
-          };
-        });
+        // queryCache.setQueryData('authentication', prev => {
+        //   return {
+        //     ...prev,
+        //     isAuthenticated: true,
+        //   };
+        // });
         queryCache.invalidateQueries('authentication');
       },
       throwOnError: true,
@@ -89,17 +85,16 @@ export default function AuthContext({ children }) {
 
       if (res.status === true) {
         localStorage.setItem('mrgAuthToken', res.data.access_token);
-        return { isAuthenticated: true };
       }
     },
     {
       onSuccess: () => {
-        queryCache.setQueryData('authentication', prev => {
-          return {
-            ...prev,
-            isAuthenticated: true,
-          };
-        });
+        // queryCache.setQueryData('authentication', prev => {
+        //   return {
+        //     ...prev,
+        //     isAuthenticated: true,
+        //   };
+        // });
         queryCache.invalidateQueries('authentication');
       },
       throwOnError: true,
@@ -111,19 +106,48 @@ export default function AuthContext({ children }) {
    */
   const [userLogoutMutation] = useMutation(() => {
     queryCache.setQueryData('authentication', () => {
-      return { isAuthenticated: false, userData: { userId: null } };
+      return { userData: { userId: null } };
     });
     localStorage.removeItem('mrgAuthToken');
   });
 
   /**
-   *
+   * User Addresses
    */
+
+  const { isLoading: userAddressesLoading, data: userAddresses } = useQuery(
+    'addresses',
+    getUserAddresses,
+    {
+      refetchOnWindowFocus: false,
+      retry: true,
+      enabled: data?.userData?.id,
+    }
+  );
+  const [addAddressMutation] = useMutation(
+    addUserAddress,
+
+    {
+      onSuccess: data => {
+        queryCache.setQueryData('addresses', () => {
+          return data;
+        });
+      },
+      throwOnError: true,
+    }
+  );
+  const [deleteAddressMutation] = useMutation(removeUserAddress, {
+    onSuccess: data => {
+      queryCache.setQueryData('addresses', () => {
+        return data;
+      });
+    },
+    throwOnError: true,
+  });
 
   return (
     <AuthProvider.Provider
       value={{
-        isAuthenticated: isError ? false : data?.isAuthenticated,
         authenticationFetching,
         authenticationLoading,
         userRegisterMutation,
@@ -131,6 +155,10 @@ export default function AuthContext({ children }) {
         userLogoutMutation,
         userData: data?.userData,
         userId: data?.userData?.id,
+        userAddresses,
+        userAddressesLoading,
+        addAddressMutation,
+        deleteAddressMutation,
         editMutation,
         changePasswordMutation,
       }}

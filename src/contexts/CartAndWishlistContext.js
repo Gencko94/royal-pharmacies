@@ -9,10 +9,13 @@ import {
   removeFromWishlist,
   getGuestCartItems,
   addToGuestCart,
+  checkCoupon,
 } from '../Queries/Queries';
 import { AuthProvider } from './AuthContext';
+import { DataProvider } from './DataContext';
 export const CartAndWishlistProvider = React.createContext();
 export default function CartAndWishlistContext({ children }) {
+  const { deliveryCountry } = React.useContext(DataProvider);
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   /**
    * Cart Main Fetch
@@ -23,7 +26,7 @@ export default function CartAndWishlistContext({ children }) {
     isError: isGetCartError,
     error: getCartError,
     isIdle: cartIdle,
-  } = useQuery(['cartItems', userId], getCartItems, {
+  } = useQuery(['cartItems', userId, deliveryCountry], getCartItems, {
     refetchOnWindowFocus: false,
     enabled: !authenticationLoading && userId,
     retry: true,
@@ -41,7 +44,10 @@ export default function CartAndWishlistContext({ children }) {
 
   const [addToCartMutation] = useMutation(addToCart, {
     onSuccess: data => {
-      queryCache.setQueryData(['cartItems', userId], () => data);
+      queryCache.setQueryData(
+        ['cartItems', userId, deliveryCountry],
+        () => data
+      );
     },
     throwOnError: true,
   });
@@ -53,7 +59,10 @@ export default function CartAndWishlistContext({ children }) {
   });
   const [removeFromCartMutation] = useMutation(removeFromCart, {
     onSuccess: data => {
-      queryCache.setQueryData(['cartItems', userId], () => data);
+      queryCache.setQueryData(
+        ['cartItems', userId, deliveryCountry],
+        () => data
+      );
     },
     throwOnError: true,
   });
@@ -91,11 +100,20 @@ export default function CartAndWishlistContext({ children }) {
 
     throwOnError: true,
   });
+  const [checkCouponMutation, { isLoading: isCheckingCoupon }] = useMutation(
+    checkCoupon,
+    {
+      throwOnError: true,
+    }
+  );
   return (
     <CartAndWishlistProvider.Provider
       value={{
         cartItems: cartData?.cartItems,
         cartTotal: cartData?.cartTotal,
+        cartSubtotal: cartData?.cartSubtotal,
+        shippingCost: cartData?.shippingCost,
+        couponCost: cartData?.couponCost,
         guestCartItems: guestCartData?.cartItems,
         guestCartTotal: guestCartData?.cartTotal,
         wishlistItems: wishListData?.wishlistItems,
@@ -114,6 +132,8 @@ export default function CartAndWishlistContext({ children }) {
         addToWishListMutation,
         removeFromWishListMutation,
         addToGuestCartMutation,
+        checkCouponMutation,
+        isCheckingCoupon,
       }}
     >
       {children}

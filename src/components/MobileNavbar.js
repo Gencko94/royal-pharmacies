@@ -23,7 +23,7 @@ export default function MobileNavbar({ toggleSideMenu }) {
   });
   return (
     <>
-      <div className=" w-full left-0 top-0 z-10 ">
+      <div className=" w-full left-0 top-0 z-10 relative">
         <nav
           className={` relative p-2  flex items-center bg-main-color text-main-text`}
         >
@@ -32,13 +32,7 @@ export default function MobileNavbar({ toggleSideMenu }) {
 
           <MobileIcons />
         </nav>
-        <div
-          className={`p-2 
-         
-              bg-main-color text-main-text
-        
-          `}
-        >
+        <div className={`p-2 bg-main-color text-main-text`}>
           <MobileSearchbar />
         </div>
       </div>
@@ -53,11 +47,7 @@ export default function MobileNavbar({ toggleSideMenu }) {
             transition={{
               type: 'tween',
             }}
-            className={`fixed w-full flex  
-              
-              bg-main-color text-main-text
-                
-             p-2  z-10 top-0 left-0 `}
+            className={`fixed w-full flex  bg-main-color text-main-text p-2  z-10 top-0 left-0 `}
           >
             <Hamburger toggleSideMenu={toggleSideMenu} />
             <div className="mx-2 flex-1">

@@ -4,73 +4,15 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import GoogleMapsAddress from '../GoogleMapsAddress';
 import Locations from './MyAddresses/Locations';
 import NoAddresses from './MyAddresses/NoAddresses';
-import { useQuery, useMutation, queryCache } from 'react-query';
 import { motion } from 'framer-motion';
-import {
-  addUserAddress,
-  getUserAddresses,
-  removeUserAddress,
-} from '../../Queries/Queries';
+
+import { AuthProvider } from '../../contexts/AuthContext';
 
 export default function MyAddresses() {
   const [showMap, setShowMap] = React.useState(false);
-
-  /* Main Fetching */
-  const { isLoading, data, refetch, isError } = useQuery(
-    'addresses',
-    getUserAddresses,
-    { refetchOnWindowFocus: false, retry: true }
+  const { userAddresses, userAddressesLoading } = React.useContext(
+    AuthProvider
   );
-
-  /* Add Mutation */
-  const [addMutation] = useMutation(
-    addUserAddress,
-
-    {
-      onSuccess: data => {
-        console.log('success');
-        queryCache.setQueryData('addresses', () => {
-          return data;
-        });
-        refetch();
-
-        setShowMap(false);
-      },
-      throwOnError: true,
-    }
-  );
-
-  /* Delete Mutation */
-  const [deleteMutation] = useMutation(removeUserAddress, {
-    onSuccess: id => {
-      queryCache.setQueryData('addresses', prev => {
-        return prev.map(item => item.id !== id);
-      });
-      refetch();
-
-      setShowMap(false);
-    },
-    throwOnError: true,
-  });
-
-  if (isError) {
-    return (
-      <div
-        className={`rounded-lg overflow-hidden 
-       
-          shadow-itemsSlider-shallow
-            
-        `}
-      >
-        <div className="flex h-full justify-center items-center font-semibold">
-          <h1>Oops, Something Went Wrong</h1>
-          <button className="bg-gray-300 rounded px-2 py-1" onClick={refetch}>
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   const containerVariants = {
     hidden: {
@@ -86,7 +28,7 @@ export default function MyAddresses() {
       opacity: 0,
     },
   };
-  if (isLoading)
+  if (userAddressesLoading)
     return (
       <div className="flex h-full justify-center items-center">
         <Loader
@@ -94,7 +36,7 @@ export default function MyAddresses() {
           color="#b72b2b"
           height={40}
           width={40}
-          visible={isLoading}
+          visible={true}
         />
       </div>
     );
@@ -107,18 +49,14 @@ export default function MyAddresses() {
       className="h-full"
     >
       {!showMap &&
-        (data.length === 0 ? (
+        (userAddresses.length === 0 ? (
           <NoAddresses setShowMap={setShowMap} />
         ) : (
-          <Locations
-            locations={data}
-            setShowMap={setShowMap}
-            deleteMutation={deleteMutation}
-          />
+          <Locations locations={userAddresses} setShowMap={setShowMap} />
         ))}
       {showMap && (
         <div className="relative h-full">
-          <GoogleMapsAddress addMutation={addMutation} />
+          <GoogleMapsAddress setShowMap={setShowMap} />
         </div>
       )}
     </motion.div>

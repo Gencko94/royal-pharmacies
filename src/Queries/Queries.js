@@ -16,7 +16,9 @@ export const getFooterCategories = async () => {
   }
 };
 export const getHomeItems = async () => {
-  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/showcase`);
+  const res = await axios.get(
+    `${process.env.REACT_APP_MAIN_URL}/showcase-list`
+  );
   if (res.data.status === true) {
     return res.data.data;
   }
@@ -74,7 +76,7 @@ export const checkAuth = async () => {
     config
   );
   if (res.data.status === true) {
-    return { isAuthenticated: true, userData: res.data.data };
+    return { userData: res.data.data };
   }
 };
 /**
@@ -113,6 +115,25 @@ export const editUserProfileInfo = async data => {
   console.log(res.data);
   if (res.data.status === true) {
     return { userData: res.data.data };
+  }
+};
+export const changeUserPassword = async data => {
+  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const config = {
+    headers: { Authorization: `Bearer ${mrgAuthToken}` },
+  };
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/customer-update-password`,
+    {
+      current_password: data.oldPassword,
+      password: data.newPassword,
+      password_confirmation: data.confirmPassword,
+    },
+    config
+  );
+  console.log(res.data);
+  if (res.data.status === true) {
+    return { message: 'Password Changed' };
   }
 };
 
@@ -172,8 +193,9 @@ export const removeUserAddress = async id => {
 
     config
   );
+  console.log(res);
   if (res.data.status === true) {
-    return id;
+    return res.data.data;
   }
 };
 /**
@@ -187,7 +209,6 @@ export const getSingleItem = async id => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product/${id}`
   );
-  console.log(res);
   if (res.data.status === true) {
     const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
 
@@ -203,8 +224,13 @@ export const getProductReviews = async (k, id) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product-reviews/${id}`
   );
-  console.log(res);
-  return res.data.data;
+  if (res.data.status === true) {
+    return {
+      reviews: res.data.data.list,
+      averageRating: res.data.data.avg,
+      ratingCount: res.data.data.count,
+    };
+  }
 };
 /**
  * End of SingleProduct
@@ -214,21 +240,41 @@ export const getProductReviews = async (k, id) => {
  * Cart Methods
  */
 
-export const getCartItems = async (k, userId) => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/cart/${userId}`
+export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
+  console.log(deliveryCountry.code);
+  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const config = {
+    headers: {
+      Authorization: `Bearer ${mrgAuthToken}`,
+      country: deliveryCountry?.code,
+    },
+  };
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/cart/${userId}`,
+    { coupon },
+    config
   );
+  console.log(res);
   if (res.data.status === true && res.data.data.items) {
-    return { cartItems: res.data.data.items, cartTotal: res.data.data.total };
-  } else if (res.data.status === true && res.data.data.total === 0) {
+    return {
+      cartItems: res.data.data.items,
+      cartTotal: res.data.data.total,
+      shippingCost: res.data.data.shipping_cost,
+      cartSubtotal: res.data.data.subtotal,
+      couponCost: res.data.data.coupon_cost,
+    };
+  } else if (res.data.status === true && res.data.data) {
     return { cartItems: [], cartTotal: 0 };
   }
 };
 
-export const addToCart = async ({ newItem, userId }) => {
+export const addToCart = async ({ newItem, userId, deliveryCountry }) => {
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
-    headers: { Authorization: `Bearer ${mrgAuthToken}` },
+    headers: {
+      Authorization: `Bearer ${mrgAuthToken}`,
+      country: deliveryCountry.code,
+    },
   };
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/cart/store/${userId}`,
@@ -239,13 +285,27 @@ export const addToCart = async ({ newItem, userId }) => {
     config
   );
   if (res.data.status === true) {
-    return { cartItems: res.data.data.items, cartTotal: res.data.data.total };
+    return {
+      cartItems: res.data.data.items,
+      cartTotal: res.data.data.total,
+      shippingCost: res.data.data.shipping_cost,
+      cartSubtotal: res.data.data.subtotal,
+      couponCost: res.data.data.coupon_cost,
+    };
   }
 };
-export const removeFromCart = async ({ id, cart_id, userId }) => {
+export const removeFromCart = async ({
+  id,
+  cart_id,
+  userId,
+  deliveryCountry,
+}) => {
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
-    headers: { Authorization: `Bearer ${mrgAuthToken}` },
+    headers: {
+      Authorization: `Bearer ${mrgAuthToken}`,
+      country: deliveryCountry.code,
+    },
   };
 
   const res = await axios.post(
@@ -256,12 +316,31 @@ export const removeFromCart = async ({ id, cart_id, userId }) => {
     },
     config
   );
-  console.log(res.data);
+  console.log(res);
   if (res.data.status === true) {
     if (res.data.data.total === 0) {
       return { cartItems: [], cartTotal: 0 };
     }
-    return { cartItems: res.data.data.items, cartTotal: res.data.data.total };
+    return {
+      cartItems: res.data.data.items,
+      cartTotal: res.data.data.total,
+      shippingCost: res.data.data.shipping_cost,
+      cartSubtotal: res.data.data.subtotal,
+      couponCost: res.data.data.coupon_cost,
+    };
+  }
+};
+
+export const checkCoupon = async ({ code, subtotal }) => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/check-coupon`,
+    {
+      code,
+      subtotal,
+    }
+  );
+  if (res.data.status === true) {
+    return res.data.data;
   }
 };
 /**

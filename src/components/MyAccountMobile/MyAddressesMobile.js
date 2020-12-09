@@ -1,72 +1,22 @@
 import React from 'react';
-import { queryCache, useMutation, useQuery } from 'react-query';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import NoAddresses from '../MyAccount/MyAddresses/NoAddresses';
 import GoogleMapsAddress from '../GoogleMapsAddress';
 import LocationsMobile from './MyAddressesMobile/LocationsMobile';
 import { motion } from 'framer-motion';
-import {
-  addUserAddress,
-  getUserAddresses,
-  removeUserAddress,
-} from '../../Queries/Queries';
+
+import { AuthProvider } from '../../contexts/AuthContext';
 export default function MyAddressesMobile() {
+  const {
+    userAddresses,
+    addAddressMutation,
+    deleteAddressMutation,
+    userAddressesLoading,
+  } = React.useContext(AuthProvider);
   const [showMap, setShowMap] = React.useState(false);
 
-  const { isLoading, data, refetch, isError } = useQuery(
-    'addresses',
-    async () => {
-      const res = await getUserAddresses();
-      return res;
-    },
-    { refetchOnWindowFocus: false }
-  );
-
-  const [addMutation] = useMutation(
-    addUserAddress,
-
-    {
-      onSuccess: newAddress => {
-        console.log('success');
-        queryCache.setQueryData('addresses', prev => {
-          return [...prev, newAddress];
-        });
-        refetch();
-
-        setShowMap(false);
-      },
-      throwOnError: true,
-    }
-  );
-
-  /* Delete Mutation */
-  const [deleteMutation] = useMutation(removeUserAddress, {
-    onSuccess: id => {
-      queryCache.setQueryData('addresses', prev => {
-        return prev.map(item => item.id !== id);
-      });
-      refetch();
-
-      setShowMap(false);
-    },
-    throwOnError: true,
-  });
-  if (isError) {
-    return (
-      <div
-        div
-        className=" p-4 flex items-center justify-center font-semibold"
-        style={{ minHeight: 'calc(-173px + 100vh)' }}
-      >
-        <h1>Oops, Something Went Wrong</h1>
-        <button className="bg-gray-300 rounded px-2 py-1" onClick={refetch}>
-          Try Again
-        </button>
-      </div>
-    );
-  }
-  if (isLoading)
+  if (userAddressesLoading)
     return (
       <div
         className=" p-4 flex justify-center items-center "
@@ -77,7 +27,7 @@ export default function MyAddressesMobile() {
           color="#b72b2b"
           height={40}
           width={40}
-          visible={isLoading}
+          visible={true}
         />
       </div>
     );
@@ -103,18 +53,18 @@ export default function MyAddressesMobile() {
       exit="exit"
     >
       {!showMap &&
-        (data.length === 0 ? (
+        (userAddresses.length === 0 ? (
           <NoAddresses setShowMap={setShowMap} />
         ) : (
           <LocationsMobile
-            locations={data}
+            locations={userAddresses}
             setShowMap={setShowMap}
-            deleteMutation={deleteMutation}
+            deleteMutation={deleteAddressMutation}
           />
         ))}
       {showMap && (
         <div className="relative" style={{ minHeight: 'calc(-176px + 100vh)' }}>
-          <GoogleMapsAddress addMutation={addMutation} />
+          <GoogleMapsAddress addMutation={addAddressMutation} />
         </div>
       )}
     </motion.div>

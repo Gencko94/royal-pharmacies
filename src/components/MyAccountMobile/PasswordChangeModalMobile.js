@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import ErrorSnackbar from '../ErrorSnackbar';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import SuccessSnackbar from '../SuccessSnackbar';
 export default function PasswordChangeModalMobile({
   changePasswordMutation,
   setPasswordChangeModalOpen,
@@ -14,6 +15,8 @@ export default function PasswordChangeModalMobile({
   const { formatMessage, locale } = useIntl();
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [successOpen, setSuccessOpen] = React.useState(false);
+  const [successMessage, setSuccessMessage] = React.useState('');
   const closeError = () => {
     setErrorOpen(false);
   };
@@ -68,6 +71,9 @@ export default function PasswordChangeModalMobile({
       {errorOpen && (
         <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
       )}
+      {successOpen && (
+        <SuccessSnackbar message={successMessage} closeFunction={closeError} />
+      )}
       <div className=" sticky top-0 p-3 flex items-center bg-main-color text-main-text z-1">
         <button
           className="text-main-text text-center"
@@ -94,7 +100,8 @@ export default function PasswordChangeModalMobile({
           setErrorOpen(false);
           try {
             await changePasswordMutation(values);
-            setPasswordChangeModalOpen(false);
+            setSuccessMessage(formatMessage({ id: 'password-change-success' }));
+            setSuccessOpen(true);
           } catch (error) {
             setErrorOpen(true);
             setErrorMessage('Something went wrong, Please try again');

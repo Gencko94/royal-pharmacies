@@ -10,6 +10,7 @@ import { useQuery } from 'react-query';
 import SwiperLoader from '../Home/SwiperLoader';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import SwiperItem from './SwiperItem';
+import { DataProvider } from '../../contexts/DataContext';
 SwiperCore.use([Navigation]);
 export default function StaticSwiper({ type, setCartMenuOpen }) {
   const { formatMessage } = useIntl();
@@ -17,6 +18,7 @@ export default function StaticSwiper({ type, setCartMenuOpen }) {
   const { addToCartMutation, removeFromCartMutation } = React.useContext(
     CartAndWishlistProvider
   );
+  const { deliveryCountry } = React.useContext(DataProvider);
   const { userId } = React.useContext(AuthProvider);
   const [loadingButton, setLoadingButton] = React.useState(null);
 
@@ -31,7 +33,7 @@ export default function StaticSwiper({ type, setCartMenuOpen }) {
     setLoadingButton(newItem.id);
     // const newItem = { id:newItem.id, quantity: quantity, size };
     try {
-      await addToCartMutation({ newItem, userId });
+      await addToCartMutation({ newItem, userId, deliveryCountry });
       setCartMenuOpen(true);
       setCartItems(prev => {
         return [...prev, newItem.id];

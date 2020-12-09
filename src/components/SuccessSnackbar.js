@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { MdClose } from 'react-icons/md';
-export default function ErrorSnackbar({ message, closeFunction }) {
+export default function SuccessSnackbar({ message, closeFunction }) {
   const containerVariants = {
     hidden: {
       y: '20px',
@@ -23,7 +23,7 @@ export default function ErrorSnackbar({ message, closeFunction }) {
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="snackbar bg-main-color text-main-text rounded font-semibold flex text-sm"
+      className="snackbar bg-green-800 text-main-text rounded font-semibold flex text-sm"
     >
       <h1 className="mx-3">{message}</h1>
       <button onClick={closeFunction} className="mx-3">

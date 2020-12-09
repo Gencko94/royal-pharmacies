@@ -9,6 +9,9 @@ export default function MobileCheckoutSection({
   cartItemsLoading,
   handleCheckout,
   cartTotal,
+  cartSubtotal,
+  shippingCost,
+  couponCost,
 }) {
   const { deliveryCountry } = React.useContext(DataProvider);
   const resolvePlural = () => {
@@ -68,13 +71,15 @@ export default function MobileCheckoutSection({
             : `${cartItems.length} `}
           {resolvePlural()})
         </h1>
-        <h1>{cartTotal}</h1> KD
+        <h1>{cartSubtotal}</h1>{' '}
+        {deliveryCountry?.currency.translation[locale].symbol}
       </div>
       <div className="  flex mb-2 ">
         <h1 className="flex-1 text-gray-900">
           {formatMessage({ id: 'subtotal' })}
         </h1>
-        <h1>{cartTotal + deliveryCountry?.delivery_cost}</h1> KD
+        <h1>{cartTotal}</h1>{' '}
+        {deliveryCountry?.currency.translation[locale].symbol}
       </div>
       <button
         onClick={handleCheckout}

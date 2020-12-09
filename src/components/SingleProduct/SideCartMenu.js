@@ -8,14 +8,17 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { AuthProvider } from '../../contexts/AuthContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { DataProvider } from '../../contexts/DataContext';
 export default function SideCartMenu({ setSideMenuOpen }) {
-  const { cartItems, cartTotal } = React.useContext(CartAndWishlistProvider);
+  const { cartItems, cartSubtotal, removeFromCartMutation } = React.useContext(
+    CartAndWishlistProvider
+  );
+  const { deliveryCountry } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
   const [
     removeFromCartButtonLoading,
     setRemoveFromCartButtonLoading,
   ] = React.useState(null);
-  const { removeFromCartMutation } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
   const handleRemoveFromCart = async (id, cart_id) => {
     setRemoveFromCartButtonLoading(id);
@@ -135,7 +138,8 @@ export default function SideCartMenu({ setSideMenuOpen }) {
                       </Link>
                       <div className="flex items-center">
                         <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-                          {item.price * item.qty} KD
+                          {item.total}{' '}
+                          {deliveryCountry?.currency.translation[locale].symbol}
                         </h1>
                         <h1 className="mx-1 text-sm">
                           {formatMessage({ id: 'quantity' })} : {item.qty}
@@ -178,16 +182,19 @@ export default function SideCartMenu({ setSideMenuOpen }) {
           <div>
             <div className="flex justify-between semibold items-center  my-2">
               <h1 className="">{formatMessage({ id: 'subtotal' })}</h1>
-              <h1 className=" font-semibold">{cartTotal} KD</h1>
+              <h1 className=" font-semibold">
+                {cartSubtotal}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </h1>
             </div>
             <hr className="my-1" />
             <div className=" flex items-center my-2 text-center text-second-nav-text-light ">
-              <Link
+              {/* <Link
                 to={`/${locale}/checkout/guest-checkout`}
                 className={`flex-1 py-2  px-3  bg-green-700 w-full  rounded `}
               >
                 {formatMessage({ id: 'checkout' })}
-              </Link>
+              </Link> */}
               <Link
                 to={`/${locale}/cart`}
                 className={`flex-1 py-2 px-3 border border-main-color text-main-color mx-1    rounded`}

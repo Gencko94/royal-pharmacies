@@ -29,9 +29,12 @@ export default function ItemDescription({
   setSize,
   color,
   setColor,
-  reviews,
+  
   setDetailsTab,
-  rating,
+  reviewsLength,
+  reviewsLoading,
+  ratingCount,
+  averageRating,
   handleRemoveFromWishList,
 }) {
   const { formatMessage, locale } = useIntl();

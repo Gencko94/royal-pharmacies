@@ -57,7 +57,7 @@ export default function MobileSearchbar() {
     return (
       <div
         {...containerProps}
-        className="absolute  left-0 bg-body-light w-full rounded"
+        className="absolute left-0 bg-body-light w-full rounded"
         style={{ top: '110%' }}
       >
         {children}
@@ -68,12 +68,7 @@ export default function MobileSearchbar() {
     return (
       <input
         {...inputProps}
-        className={`w-full p-2
-            
-             
-              bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700
-                
-              `}
+        className={`w-full p-2 bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700`}
       />
     );
   };
@@ -82,19 +77,9 @@ export default function MobileSearchbar() {
   };
   return (
     <div
-      className={`
-     
-          bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700
-         
-       rounded flex items-center overflow-hidden flex-1 `}
+      className={`bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700 rounded flex items-center overflow-hidden flex-1 `}
     >
-      <div
-        className={`
-         
-            bg-nav-cat-light text-nav-cat-text-light
-           
-         p-1  `}
-      >
+      <div className={`bg-nav-cat-light text-nav-cat-text-light p-1  `}>
         <BiSearch className=" w-5 h-5 " />
       </div>
       <Autosuggest
@@ -120,8 +105,8 @@ export default function MobileSearchbar() {
         <Loader
           type="ThreeDots"
           color="#b72b2b"
-          height={30}
-          width={30}
+          height={22}
+          width={22}
           visible={isLoading}
         />
       </div>

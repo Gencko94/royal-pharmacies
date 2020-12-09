@@ -8,7 +8,7 @@ import NoOrders from './MyOrders/NoOrders';
 import Orders from './MyOrders/Orders';
 
 export default function MyOrders() {
-  const { getOrderedItems, isLightTheme } = React.useContext(DataProvider);
+  const { getOrderedItems } = React.useContext(DataProvider);
 
   /**
    * Main Fetch
@@ -46,8 +46,8 @@ export default function MyOrders() {
       exit="exit"
       className="h-full"
     >
-      {data.length === 0 && <NoOrders isLightTheme={isLightTheme} />}
-      {data.length !== 0 && <Orders data={data} isLightTheme={isLightTheme} />}
+      {data.length === 0 && <NoOrders />}
+      {data.length !== 0 && <Orders data={data} />}
     </motion.div>
   );
 }

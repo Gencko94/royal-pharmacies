@@ -15,8 +15,7 @@ export default function CartItem({
   handleRemoveItemFromWishlist,
   wishlistItems,
 }) {
-  console.log(wishlistItems);
-  const { EditItemFromCart } = React.useContext(DataProvider);
+  const { EditItemFromCart, deliveryCountry } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
   const variant = {
     hidden: {
@@ -124,7 +123,9 @@ export default function CartItem({
           </button>
         </div>
       </div>
-      <div className="text-center font-bold">{item.price * item.qty} KD</div>
+      <div className="text-center font-bold">
+        {item.total} {deliveryCountry?.currency.translation[locale].symbol}
+      </div>
     </motion.div>
   );
 }

@@ -13,10 +13,9 @@ import GuestCart from '../components/Cart/GuestCart.js/GuestCart';
 import CartLoader from '../components/Cart/loaders/CartLoader';
 import { useIntl } from 'react-intl';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
+import { DataProvider } from '../contexts/DataContext';
 export default function Cart() {
   const {
-    cartItems,
-    cartTotal,
     cartItemsLoading,
     isGetCartError,
     removeFromCartMutation,
@@ -25,6 +24,7 @@ export default function Cart() {
   } = React.useContext(CartAndWishlistProvider);
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
+  const { deliveryCountry } = React.useContext(DataProvider);
   const [
     removefromCartButtonLoading,
     setRemoveFromCartButtonLoading,
@@ -36,7 +36,7 @@ export default function Cart() {
     console.log(cart_id);
     setRemoveFromCartButtonLoading(id);
     try {
-      await removeFromCartMutation({ id, userId, cart_id });
+      await removeFromCartMutation({ id, userId, cart_id, deliveryCountry });
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
@@ -85,21 +85,13 @@ export default function Cart() {
         {!authenticationLoading && userId && !isGetCartError && (
           <div className="cart-main-grid">
             <CartContainer
-              cartItemsLoading={cartItemsLoading}
               handleRemoveItemFromCart={handleRemoveItemFromCart}
-              cartItems={cartItems}
               removefromCartButtonLoading={removefromCartButtonLoading}
               handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
               handleAddItemToWishlist={handleAddItemToWishlist}
-              cartTotal={cartTotal}
               wishlistItems={wishlistItems}
             />
-            <CartRightSide
-              cartTotal={cartTotal}
-              cartItems={cartItems}
-              cartItemsLoading={cartItemsLoading}
-              setCheckOutModalOpen={setCheckOutModalOpen}
-            />
+            <CartRightSide setCheckOutModalOpen={setCheckOutModalOpen} />
           </div>
         )}
         {!authenticationLoading && !userId && <GuestCart />}

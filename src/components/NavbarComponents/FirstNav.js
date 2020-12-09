@@ -9,7 +9,7 @@ import HelloUser from './HelloUser';
 export default function FirstNav() {
   const {
     authenticationLoading,
-    isAuthenticated,
+    userId,
     authenticationFetching,
   } = React.useContext(AuthProvider);
   return (
@@ -36,7 +36,7 @@ export default function FirstNav() {
               width={20}
               visible={authenticationLoading}
             />
-          ) : isAuthenticated ? (
+          ) : userId ? (
             <HelloUser />
           ) : (
             <LoginRegister />

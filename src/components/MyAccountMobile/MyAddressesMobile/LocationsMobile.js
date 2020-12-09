@@ -43,7 +43,7 @@ export default function LocationsMobile({
             {locations.map(location => {
               return (
                 <LocationMobile
-                  key={location.lat}
+                  key={location.id}
                   data={location}
                   handleRemoveLocation={handleRemoveLocation}
                   deleteButtonLoading={deleteButtonLoading}

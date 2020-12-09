@@ -152,19 +152,17 @@ export default function LoginMobile() {
             onSubmit={async (values, { resetForm, setErrors }) => {
               setErrorOpen(false);
               try {
-                const res = await userLoginMutation(values);
-                console.log(res);
-                if (res.isAuthenticated === true) {
-                  history.replace(from);
-                }
+                await userLoginMutation(values);
+
+                history.replace(from);
               } catch (error) {
                 if (error.response?.data.message) {
                   setErrors({
                     phoneNumber: formatMessage({
-                      id: error.response.data.message,
+                      id: 'invalid-credentials',
                     }),
                     password: formatMessage({
-                      id: error.response.data.message,
+                      id: 'invalid-credentials',
                     }),
                   });
                   return;

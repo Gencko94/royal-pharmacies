@@ -21,12 +21,10 @@ import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 export default function SingleProduct() {
   const { id } = useParams();
   const { deliveryCountry, addViewedItems } = React.useContext(DataProvider);
-  const {
-    addToCartMutation,
-
-    addToWishListMutation,
-  } = React.useContext(CartAndWishlistProvider);
-  const { userId, isAuthenticated } = React.useContext(AuthProvider);
+  const { addToCartMutation, addToWishListMutation } = React.useContext(
+    CartAndWishlistProvider
+  );
+  const { userId } = React.useContext(AuthProvider);
   const [selectedVariation, setSelectedVariant] = React.useState(0);
   const [selectedSize, setSelectedSize] = React.useState(0);
   const quantityOptions = [
@@ -63,7 +61,6 @@ export default function SingleProduct() {
   const [size, setSize] = React.useState(null);
   const [color, setColor] = React.useState(null);
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
-  // const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
   const [itemInCart, setItemInCart] = React.useState(false);
   const [itemInWishList, setItemInWishList] = React.useState(false);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
@@ -80,7 +77,7 @@ export default function SingleProduct() {
     if (userId) {
       try {
         const newItem = { id: data.id, quantity: quantity.value, size, color };
-        await addToCartMutation({ newItem, userId });
+        await addToCartMutation({ newItem, userId, deliveryCountry });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
@@ -159,12 +156,13 @@ export default function SingleProduct() {
                 setSelectedVariant={setSelectedVariant}
                 selectedSize={selectedSize}
                 setSelectedSize={setSelectedSize}
-                reviewsLength={reviews?.length}
+                reviewsLength={reviews?.reviews.length}
                 reviewsLoading={reviewsLoading}
+                ratingCount={reviews?.ratingCount}
+                averageRating={reviews?.averageRating}
                 setDetailsTab={setDetailsTab}
               />
               <RightSection
-                data={data}
                 quantity={quantity}
                 setQuantity={setQuantity}
                 handleAddToCart={handleAddToCart}
@@ -175,7 +173,6 @@ export default function SingleProduct() {
                 itemInCart={itemInCart}
                 itemInWishList={itemInWishList}
                 userId={userId}
-                isAuthenticated={isAuthenticated}
               />
             </div>
           )}
@@ -187,8 +184,10 @@ export default function SingleProduct() {
                     ? data.simple_addons
                     : data.variation_addons
                 }
-                reviews={reviews}
+                reviews={reviews?.reviews}
+                averageRating={reviews?.averageRating}
                 reviewsLoading={reviewsLoading}
+                ratingCount={reviews?.ratingCount}
                 detailsTab={detailsTab}
                 setDetailsTab={setDetailsTab}
               />

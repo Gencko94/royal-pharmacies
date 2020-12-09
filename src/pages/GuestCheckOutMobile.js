@@ -1,13 +1,13 @@
 import React from 'react';
-import AddressMobile from '../components/CartMobile/GuestCheckoutMobile/AddressMobile';
+import GuestPersonalInformationMobile from '../components/CartMobile/GuestCheckoutMobile/GuestPersonalInformationMobile';
+import GuestSelectAddressMobile from '../components/CartMobile/GuestCheckoutMobile/GuestSelectAddressMobile';
 import OrderPlacedMobile from '../components/CartMobile/GuestCheckoutMobile/OrderPlacedMobile';
-import PersonalInformationMobile from '../components/CartMobile/GuestCheckoutMobile/PersonalInformationMobile';
 import StepperMobile from '../components/CartMobile/GuestCheckoutMobile/StepperMobile';
-import LayoutMobile from '../components/LayoutMobile';
+import Layout from '../components/Layout';
 
 export default function GuestCheckOutMobile() {
   const [selectedStep, setSelectedStep] = React.useState(0);
-  const [address, setAddress] = React.useState(null);
+  const [guestAddress, setGuestAddress] = React.useState(null);
 
   const [stepDone, setStepDone] = React.useState({
     0: false,
@@ -40,20 +40,21 @@ export default function GuestCheckOutMobile() {
     window.scrollTo(0, 0);
   }, [selectedStep]);
   return (
-    <LayoutMobile>
+    <Layout>
       <StepperMobile selectedStep={selectedStep} stepDone={stepDone} />
       <div className="mb-3" style={{ minHeight: 'calc(100vh - 180px)' }}>
         {selectedStep === 0 && (
-          <AddressMobile
+          <GuestSelectAddressMobile
             handleStepForward={handleStepForward}
-            address={address}
-            setAddress={setAddress}
+            guestAddress={guestAddress}
+            setGuestAddress={setGuestAddress}
           />
         )}
         {selectedStep === 1 && (
-          <PersonalInformationMobile
+          <GuestPersonalInformationMobile
             handleStepForward={handleStepForward}
             handleStepBack={handleStepBack}
+            guestAddress={guestAddress}
           />
         )}
         {selectedStep === 2 && (
@@ -63,6 +64,6 @@ export default function GuestCheckOutMobile() {
           />
         )}
       </div>
-    </LayoutMobile>
+    </Layout>
   );
 }

@@ -1,13 +1,17 @@
 import React from 'react';
-import SelectAddress from '../components/Cart/GuestCheckout/SelectAddress';
+import SelectGuestAddress from '../components/Cart/GuestCheckout/SelectGuestAddress';
 import OrderPlaced from '../components/Cart/GuestCheckout/OrderPlaced';
-import PersonalInformation from '../components/Cart/GuestCheckout/PersonalInformation';
+import GuestPersonalInformation from '../components/Cart/GuestCheckout/GuestPersonalInformation';
 import Stepper from '../components/Cart/Stepper';
 import Layout from '../components/Layout';
 
 export default function GuestCheckOut() {
   const [selectedStep, setSelectedStep] = React.useState(0);
-  const [address, setAddress] = React.useState(null);
+  const [guestAddress, setGuestAddress] = React.useState(null);
+  const [personalInfo, setPersonalInfo] = React.useState({
+    fullName: '',
+    phoneNumber: '',
+  });
   const [stepDone, setStepDone] = React.useState({
     0: false,
     1: false,
@@ -44,16 +48,18 @@ export default function GuestCheckOut() {
         <Stepper selectedStep={selectedStep} stepDone={stepDone} />
         <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
           {selectedStep === 0 && (
-            <SelectAddress
+            <SelectGuestAddress
               handleStepForward={handleStepForward}
-              address={address}
-              setAddress={setAddress}
+              setGuestAddress={setGuestAddress}
             />
           )}
           {selectedStep === 1 && (
-            <PersonalInformation
+            <GuestPersonalInformation
               handleStepForward={handleStepForward}
               handleStepBack={handleStepBack}
+              guestAddress={guestAddress}
+              personalInfo={personalInfo}
+              setPersonalInfo={setPersonalInfo}
             />
           )}
           {selectedStep === 2 && (

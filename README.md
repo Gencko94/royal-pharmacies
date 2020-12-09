@@ -37,9 +37,10 @@
 - [x] fix image zoom on single product mobile
 - [x] add reviews to single product
 - [x] Add Language Page to side menu
+- [x] wrong credentials handling.
 - [ ] Add Edit Cart item support. (discuss with maher)
 - [x] deliver to mobile.
-- [ ] add password modals in account.
+- [x] add password modals in account.
 - [ ] fix search bar mobile.
 - [ ] Complete Viewed Items.
 - [ ] Add Coupon Support in Cart.
@@ -57,7 +58,17 @@
 - [ ] login and register number and password validation (discuss)
 - [ ] Single Product
 
+- [x] look into fixing home loaders
+
       **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
+
+      -- checking coupon validity per user
+      -- tell why coupon is invalid
+      -- coupon add route and coupon remove route.
+      -- add banners data to showcase
+      -- organize payment methods in countries
+      -- add route for getting multiple products
+      --refresh roken explanation
 
 **NOTES**
 

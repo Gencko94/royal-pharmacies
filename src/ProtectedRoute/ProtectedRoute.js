@@ -6,9 +6,7 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function ProtectedRoute({ Component, path, ...args }) {
   const { locale } = useIntl();
-  const { isAuthenticated, authenticationLoading, userId } = React.useContext(
-    AuthProvider
-  );
+  const { authenticationLoading, userId } = React.useContext(AuthProvider);
   return (
     <Route
       {...args}
@@ -26,7 +24,7 @@ export default function ProtectedRoute({ Component, path, ...args }) {
               />
             </div>
           );
-        if (isAuthenticated === true) {
+        if (userId) {
           return <Component userId={userId} />;
         } else {
           return (

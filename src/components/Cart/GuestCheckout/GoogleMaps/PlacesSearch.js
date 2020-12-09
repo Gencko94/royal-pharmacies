@@ -1,5 +1,7 @@
 import React from 'react';
-import PulseLoader from 'react-spinners/PulseLoader';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+
 import usePlacesAutoComplete, {
   getGeocode,
   getLatLng,
@@ -116,7 +118,13 @@ export default function PlacesSearch({ panTo, markerAddress }) {
           style={{ position: 'absolute', top: '19px' }}
           className={`${locale === 'ar' ? 'left-10' : 'right-10'}`}
         >
-          <PulseLoader size={7} color={'#b72b2b'} loading={loading} />
+          <Loader
+            type="ThreeDots"
+            color="#b72b2b"
+            height={20}
+            width={20}
+            visible={loading}
+          />
         </div>
         <AutoSuggest
           inputProps={{

@@ -52,9 +52,7 @@ export default function CartItemMobile({
         </Link>
         <div className="text-sm">
           <Link to={`/${locale}/item/${item.id}}`}>
-            <h1 className="font-semibold text-base ">{`${
-              item[`name_${locale}`]
-            }`}</h1>
+            <h1 className="text-base ">{`${item[`name_${locale}`]}`}</h1>
           </Link>
           <h1 className=" font-semibold text-green-700">
             {formatMessage({ id: 'in-stock' })}

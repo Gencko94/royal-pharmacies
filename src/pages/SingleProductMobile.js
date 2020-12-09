@@ -20,12 +20,11 @@ import Layout from '../components/Layout';
 
 export default function SingleProductMobile() {
   const { id } = useParams();
-  const { addViewedItems } = React.useContext(DataProvider);
+  const { addViewedItems, deliveryCountry } = React.useContext(DataProvider);
 
   const { userId } = React.useContext(AuthProvider);
   const {
     addToCartMutation,
-
     removeFromWishListMutation,
     addToWishListMutation,
   } = React.useContext(CartAndWishlistProvider);
@@ -103,7 +102,7 @@ export default function SingleProductMobile() {
     setAddToCartButtonLoading(true);
     try {
       const newItem = { id: data.id, quantity: quantity, size, color };
-      await addToCartMutation({ newItem, userId });
+      await addToCartMutation({ newItem, userId, deliveryCountry });
       setAddToCartButtonLoading(false);
       setSideMenuOpen(true);
       setItemInCart(true);
@@ -164,8 +163,10 @@ export default function SingleProductMobile() {
                 setSize={setSize}
                 color={color}
                 setColor={setColor}
-                reviews={data.reviews}
-                rating={data.rating}
+                reviewsLength={reviews?.reviews.length}
+                reviewsLoading={reviewsLoading}
+                ratingCount={reviews?.ratingCount}
+                averageRating={reviews?.averageRating}
                 setDetailsTab={setDetailsTab}
                 userId={userId}
                 handleRemoveFromWishList={handleRemoveFromWishList}
@@ -180,8 +181,10 @@ export default function SingleProductMobile() {
             data={data}
             detailsTab={detailsTab}
             setDetailsTab={setDetailsTab}
-            reviews={reviews}
+            reviewsLength={reviews?.reviews.length}
             reviewsLoading={reviewsLoading}
+            ratingCount={reviews?.ratingCount}
+            averageRating={reviews?.averageRating}
           />
         )}
         <br ref={triggerRef} />

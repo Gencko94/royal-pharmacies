@@ -2,20 +2,30 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { AuthProvider } from '../../contexts/AuthContext';
+import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import RecentlyViewedVertical from '../RecentlyViewedVertical';
 import AcceptedPayments from './AcceptedPayments';
 import FeaturedItemsVertical from './FeaturedItemsVertical';
 import CartRightSideLoader from './loaders/CartRightSideLoader';
-
-export default function CartRightSide({
-  cartItemsLoading,
-  cartItems,
-  setCheckOutModalOpen,
-  cartTotal,
-}) {
-  const { isAuthenticated } = React.useContext(AuthProvider);
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+export default function CartRightSide({ setCheckOutModalOpen }) {
+  const {
+    cartItems,
+    cartItemsLoading,
+    cartTotal,
+    couponCost,
+    shippingCost,
+    cartSubtotal,
+    checkCouponMutation,
+    isCheckingCoupon,
+  } = React.useContext(CartAndWishlistProvider);
+  const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
+  const [couponCode, setCouponCode] = React.useState('');
+  const [validCoupon, setValidCoupon] = React.useState(false);
+  const [couponError, setCouponError] = React.useState('');
   const history = useHistory();
   const resolvePlural = () => {
     switch (cartItems.length) {
@@ -34,10 +44,27 @@ export default function CartRightSide({
   const { formatMessage, locale } = useIntl();
   const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
   const handleCheckout = () => {
-    if (isAuthenticated) {
+    if (userId) {
       history.push(`/${locale}/checkout`);
     } else {
       setCheckOutModalOpen(true);
+    }
+  };
+  const handleCheckCoupon = async e => {
+    e.preventDefault();
+    if (!couponCode) {
+      return;
+    }
+    try {
+      await checkCouponMutation({
+        code: couponCode,
+        subtotal: cartSubtotal.toString(),
+      });
+      setValidCoupon(true);
+    } catch (error) {
+      setValidCoupon(false);
+      setCouponError(true);
+      console.log(error.response);
     }
   };
   return (
@@ -49,31 +76,67 @@ export default function CartRightSide({
       {!cartItemsLoading && cartItems.length !== 0 && (
         <div className=" rounded border bg-gray-100 p-2 flex justify-center flex-col mb-2 ">
           <div className="mb-2 ">
-            <div className="rounded border w-full flex  overflow-hidden">
+            <form
+              onSubmit={handleCheckCoupon}
+              className="rounded border w-full flex mb-1  overflow-hidden"
+            >
               <input
                 type="text"
+                value={couponCode}
+                onChange={e => setCouponCode(e.target.value)}
                 placeholder={formatMessage({ id: 'cart-enter-code-or-coupon' })}
                 className="flex-1 placeholder-gray-700  p-2"
               />
-              <button className="bg-main-color text-main-text p-2 ">
-                {formatMessage({ id: 'cart-code-button' })}
+              <button
+                type="submit"
+                className="bg-main-color flex items-center justify-center p-2 text-main-text uppercase "
+                style={{ width: '60px' }}
+              >
+                {isCheckingCoupon ? (
+                  <Loader
+                    type="ThreeDots"
+                    color="#fff"
+                    height={22}
+                    width={22}
+                    visible={true}
+                  />
+                ) : (
+                  formatMessage({ id: 'cart-code-button' })
+                )}
               </button>
-            </div>
+            </form>
+            {couponError && (
+              <h1 className="text-main-color text-xs">Invalid Coupon</h1>
+            )}
           </div>
           <div className="flex items-center mb-2">
-            <h1 className="text-gray-900 flex-1">
-              {formatMessage({ id: 'delivery-cost' })}
-            </h1>
+            <h1 className="flex-1">{formatMessage({ id: 'delivery-cost' })}</h1>
             <h1 className="mx-1">
-              {deliveryCountry?.delivery_cost === 0 ? (
+              {shippingCost === 0 ? (
                 <span className="text-green-700 uppercase font-semibold">
                   {formatMessage({ id: 'cart-free' })}
                 </span>
               ) : (
-                deliveryCountry?.delivery_cost
+                shippingCost
               )}
             </h1>
           </div>
+          {validCoupon && (
+            <div className="flex items-center mb-2">
+              <h1 className="text-gray-900 flex-1">
+                {formatMessage({ id: 'coupon-sale' })}
+              </h1>
+              <h1 className="mx-1">
+                {couponCost === 0 ? (
+                  <span className="text-green-700 uppercase font-semibold">
+                    {formatMessage({ id: 'coupon-sale' })}
+                  </span>
+                ) : (
+                  couponCost
+                )}
+              </h1>
+            </div>
+          )}
           <div className=" flex mb-2  ">
             <h1 className="text-gray-900">
               {formatMessage({ id: 'cart-total' })}
@@ -85,29 +148,33 @@ export default function CartRightSide({
                 : `${cartItems.length} `}
               {resolvePlural()})
             </h1>
-            <h1>{cartTotal}</h1> KD
+            <h1>{cartSubtotal}</h1>{' '}
+            {deliveryCountry?.currency.translation[locale].symbol}
           </div>
-          <div className="  flex mb-2 ">
+          <hr className="mb-3" />
+          <div className="  flex mb-2 text-lg ">
             <h1 className="flex-1 text-gray-900">
               {formatMessage({ id: 'subtotal' })}
             </h1>
-            <h1>{cartTotal + deliveryCountry?.delivery_cost}</h1> KD
+            <h1>{cartTotal}</h1>{' '}
+            {deliveryCountry?.currency.translation[locale].symbol}
           </div>
+          <hr className="mb-3" />
           <button
             onClick={handleCheckout}
             className={`${
               cartItems.length === 0
                 ? 'cursor-not-allowed  bg-gray-600'
                 : 'bg-green-600'
-            } p-2 rounded text-body-light uppercase  `}
+            } p-2 rounded text-body-light uppercase mb-3  `}
             disabled={cartItems.length === 0}
           >
             {formatMessage({ id: 'checkout' })}
           </button>
+          <AcceptedPayments deliveryCountry={deliveryCountry} />
         </div>
       )}
-      <AcceptedPayments deliveryCountry={deliveryCountry} />
-      <hr className="my-8" />
+      {/* <hr className="my-8" /> */}
       {visitedItems.length > 4 ? (
         <RecentlyViewedVertical visitedItems={visitedItems} />
       ) : (

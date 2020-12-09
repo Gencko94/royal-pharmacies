@@ -9,6 +9,8 @@ export default function AdditionalDetails({
   reviewsLoading,
   detailsTab,
   setDetailsTab,
+  averageRating,
+  ratingCount,
 }) {
   const { formatMessage } = useIntl();
 
@@ -34,10 +36,17 @@ export default function AdditionalDetails({
         </button>
       </div>
       <div className="py-2">
-        {detailsTab === 0 && <ItemDescription description={data.description} />}
+        {detailsTab === 0 && (
+          <ItemDescription description={data?.description} />
+        )}
 
         {detailsTab === 1 && (
-          <ItemReviews reviews={reviews} reviewsLoading={reviewsLoading} />
+          <ItemReviews
+            reviews={reviews}
+            reviewsLoading={reviewsLoading}
+            ratingCount={ratingCount}
+            averageRating={averageRating}
+          />
         )}
       </div>
     </div>

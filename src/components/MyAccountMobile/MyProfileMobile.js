@@ -65,7 +65,7 @@ export default function MyProfileMobile() {
             </h1>
             <button
               onClick={() => setProfileEditModalOpen(true)}
-              className="px-2 py-1 text-sm  font-semibold bg-main-color text-main-text rounded"
+              className="px-2 py-1 text-sm  font-semibold bg-main-color text-main-text rounded uppercase"
             >
               {formatMessage({ id: 'edit' })}
             </button>
@@ -92,13 +92,12 @@ export default function MyProfileMobile() {
             </div>
           </div>
         </div>
-        <hr className="mt-4 mb-2" />
+        <hr className="my-4" />
 
-        <hr />
         <div className="px-3 py-3 flex items-center justify-end">
           <button
             onClick={() => setPasswordChangeModalOpen(true)}
-            className="py-1 px-2 text-sm  font-semibold bg-main-color text-main-text rounded"
+            className="py-2 px-3 text-sm  font-semibold bg-main-color text-main-text rounded uppercase"
           >
             {formatMessage({ id: 'change-password' })}
           </button>

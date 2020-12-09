@@ -3,6 +3,7 @@ import React from 'react';
 import { BsPlus } from 'react-icons/bs';
 import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
+import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import BuyOptions from '../Home/ItemsSlider/BuyOptions';
 export default function SwiperItem({
@@ -13,6 +14,7 @@ export default function SwiperItem({
   handleRemoveFromCart,
 }) {
   const { formatMessage, locale } = useIntl();
+  const { deliveryCountry } = React.useContext(DataProvider);
   const [activeBuyOptions, setActiveBuyOptions] = React.useState(null);
   const [size, setSize] = React.useState('xs');
   const [quantity, setQuantity] = React.useState(1);
@@ -54,8 +56,11 @@ export default function SwiperItem({
         </div>
 
         <div className=" py-1 px-3 flex items-center justify-between">
-          <p className="   text-lg font-semibold text-main-color whitespace-no-wrap">
-            50 <span className="text-xs ">KD</span>
+          <p className="   text-lg  font-semibold text-main-color whitespace-no-wrap">
+            50{' '}
+            <span className="text-xs ">
+              {deliveryCountry?.currency.translation[locale].symbol}
+            </span>
           </p>
           <button
             onClick={() => handleBuyOptionsToggle(item.id)}

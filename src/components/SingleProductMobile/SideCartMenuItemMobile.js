@@ -4,12 +4,14 @@ import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Link } from 'react-router-dom';
+import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 export default function SideCartMenuItemMobile({
   item,
   removeFromCartButtonLoading,
   handleRemoveFromCart,
 }) {
+  const { deliveryCountry } = React.useContext(DataProvider);
   const { locale, formatMessage } = useIntl();
   const cartItemVariant = {
     hidden: {
@@ -55,7 +57,7 @@ export default function SideCartMenuItemMobile({
         </Link>
 
         <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-          {item.price * item.qty} KD
+          {item.total} {deliveryCountry?.currency.translation[locale].symbol}
         </h1>
         <div>
           <button

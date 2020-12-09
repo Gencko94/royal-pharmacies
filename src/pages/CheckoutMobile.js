@@ -1,11 +1,11 @@
 import React from 'react';
-import OrderPlaced from '../components/Cart/GuestCheckout/OrderPlaced';
-import Stepper from '../components/Cart/Stepper';
-import SelectAddress from '../components/Checkout/SelectAddress';
+import OrderPlacedMobile from '../components/CartMobile/GuestCheckoutMobile/OrderPlacedMobile';
+import PersonalInformationMobile from '../components/MobileCheckout/PersonalInformationMobile';
+import StepperMobile from '../components/CartMobile/GuestCheckoutMobile/StepperMobile';
 import Layout from '../components/Layout';
-import PersonalInformation from '../components/Checkout/PersonalInformation';
+import SelectAddressMobile from '../components/MobileCheckout/SelectAddressMobile';
 
-export default function Checkout() {
+export default function CheckoutMobile() {
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [selectedAddress, setSelectedAddress] = React.useState(null);
   const [personalInfo, setPersonalInfo] = React.useState({
@@ -45,26 +45,25 @@ export default function Checkout() {
   return (
     <Layout>
       <div className="xxl:max-w-default md:max-w-screen-xl mx-auto">
-        <Stepper selectedStep={selectedStep} stepDone={stepDone} />
+        <StepperMobile selectedStep={selectedStep} stepDone={stepDone} />
         <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
           {selectedStep === 0 && (
-            <SelectAddress
+            <SelectAddressMobile
               handleStepForward={handleStepForward}
-              selectedAddress={selectedAddress}
               setSelectedAddress={setSelectedAddress}
             />
           )}
           {selectedStep === 1 && (
-            <PersonalInformation
+            <PersonalInformationMobile
               handleStepForward={handleStepForward}
               handleStepBack={handleStepBack}
+              selectedAddress={selectedAddress}
               personalInfo={personalInfo}
               setPersonalInfo={setPersonalInfo}
-              selectedAddress={selectedAddress}
             />
           )}
           {selectedStep === 2 && (
-            <OrderPlaced
+            <OrderPlacedMobile
               handleStepForward={handleStepForward}
               handleStepBack={handleStepBack}
             />

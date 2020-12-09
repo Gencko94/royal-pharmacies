@@ -1,8 +1,8 @@
 import React from 'react';
 import { BiRadioCircle, BiRadioCircleMarked } from 'react-icons/bi';
-import knet from '../../../assets/paymentLogos/knet.png';
-import mastercard from '../../../assets/paymentLogos/mastercard.png';
-import visa from '../../../assets/paymentLogos/visa.png';
+import knet from '../../assets/paymentLogos/knet.png';
+import mastercard from '../../assets/paymentLogos/mastercard.png';
+import visa from '../../assets/paymentLogos/visa.png';
 export default function PersonalInformationMobile({
   handleStepForward,
   handleStepBack,

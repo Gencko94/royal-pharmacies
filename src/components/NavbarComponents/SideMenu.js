@@ -23,9 +23,7 @@ import SideMenuLanguages from '../SideMenu/SideMenuLanguages';
 import SideMenuDeliveryCountries from '../SideMenu/SideMenuDeliveryCountries';
 import SideMenuCustomerService from '../SideMenu/SideMenuCustomerService';
 export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
-  const { isAuthenticated, userLogoutMutation } = React.useContext(
-    AuthProvider
-  );
+  const { userId, userLogoutMutation } = React.useContext(AuthProvider);
   const {
     categories,
     categoriesLoading,
@@ -199,7 +197,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 <h1 className="mx-2">{formatMessage({ id: 'cart' })}</h1>
               </Link>
             </motion.button>
-            {!isAuthenticated && (
+            {!userId && (
               <motion.button
                 key="login"
                 onClick={toggleSideMenu}
@@ -214,7 +212,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 </Link>
               </motion.button>
             )}
-            {isAuthenticated && (
+            {userId && (
               <motion.button
                 key="profile"
                 className="py-2 px-2 mb-2"
@@ -246,7 +244,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               </div>
             </motion.button>
             <hr />
-            {isAuthenticated && (
+            {userId && (
               <motion.button
                 key="wishlist"
                 variants={childVariants}
@@ -259,7 +257,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 </Link>
               </motion.button>
             )}
-            {isAuthenticated && (
+            {userId && (
               <motion.button
                 key="viewedItems"
                 variants={childVariants}
@@ -324,7 +322,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               </div>
               {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
             </motion.button>
-            {isAuthenticated && (
+            {userId && (
               <motion.button
                 key="logout"
                 variants={childVariants}

@@ -171,7 +171,7 @@ input {
 
 .cart-grid-titles {
   display: grid;
-  grid-template-columns: 0.2fr 0.7fr 0.1fr;
+  grid-template-columns: 0.2fr 0.7fr 0.2fr;
   gap: 0.5em;
   margin-bottom: 0.2em;
 }
@@ -179,7 +179,7 @@ input {
   display: grid;
 
   align-items: flex-start;
-  grid-template-columns: 0.2fr 0.7fr 0.1fr;
+  grid-template-columns: 0.2fr 0.7fr 0.2fr;
   gap: 1em;
 }
 .cart__item-mobile {
@@ -554,9 +554,10 @@ input {
 
 .locations-grid__desktop {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 200px);
+  grid-template-columns: repeat(auto-fill, 199px);
   gap: 0.5em;
 }
+
 .locations-grid__mobile {
   display: grid;
   grid-template-columns: repeat(auto-fit, 150px);
@@ -662,7 +663,7 @@ input {
   left: 60px;
 }
 /* Error SnackBar */
-.snackbar__error {
+.snackbar {
   position: fixed;
   z-index: 50;
   padding: 0.5em;

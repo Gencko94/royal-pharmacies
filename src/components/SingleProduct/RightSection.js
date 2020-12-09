@@ -10,7 +10,6 @@ import { DataProvider } from '../../contexts/DataContext';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 export default function RightSection({
-  data,
   handleAddToCart,
   quantity,
   setQuantity,
@@ -20,13 +19,13 @@ export default function RightSection({
   handleAddToWishList,
   itemInWishList,
   itemInCart,
-  isAuthenticated,
+  userId,
 }) {
   const { formatMessage, locale } = useIntl();
   const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const { deliveryCountry } = React.useContext(DataProvider);
   const addToWishList = () => {
-    if (!isAuthenticated) {
+    if (!userId) {
       setSnackBarOpen(true);
       setTimeout(() => {
         setSnackBarOpen(false);

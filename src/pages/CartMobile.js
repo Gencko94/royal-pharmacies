@@ -13,6 +13,7 @@ import MobileGuestCart from '../components/CartMobile/MobileGuestCart/MobileGues
 import StaticSwiper from '../components/Swipers/StaticSwiper';
 import Layout from '../components/Layout';
 import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
+import { DataProvider } from '../contexts/DataContext';
 
 export default function CartMobile() {
   const { formatMessage, locale } = useIntl();
@@ -21,9 +22,8 @@ export default function CartMobile() {
     setRemoveFromCartButtonLoading,
   ] = React.useState(null);
 
-  const { isAuthenticated, userId, authenticationLoading } = React.useContext(
-    AuthProvider
-  );
+  const { userId, authenticationLoading } = React.useContext(AuthProvider);
+  const { deliveryCountry } = React.useContext(DataProvider);
   const [checkoutPopupOpen, setCheckOutPopupOpen] = React.useState(false);
   const [wishlistItems, setWishlistItems] = React.useState([]);
   const {
@@ -41,7 +41,7 @@ export default function CartMobile() {
     console.log(id);
     setRemoveFromCartButtonLoading(id);
     try {
-      await removeFromCartMutation({ id, userId, cart_id });
+      await removeFromCartMutation({ id, userId, cart_id, deliveryCountry });
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
@@ -70,7 +70,7 @@ export default function CartMobile() {
     }
   };
   const handleCheckout = () => {
-    if (!isAuthenticated) {
+    if (!userId) {
       setCheckOutPopupOpen(true);
     } else {
       history.push(`/${locale}/checkout`);

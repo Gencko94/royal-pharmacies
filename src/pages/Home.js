@@ -8,10 +8,10 @@ import Categories from '../components/Home/Categories';
 // import PhotoCategories from '../components/Home/PhotoCategories';
 import { useMediaQuery } from 'react-responsive';
 import Layout from '../components/Layout';
-import { useIntl } from 'react-intl';
+// import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
 import { getHomeItems } from '../Queries/Queries';
-import HomeSwiper from '../components/HomeSwiper';
+// import HomeSwiper from '../components/HomeSwiper';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
 import SwiperLoader from '../components/Home/SwiperLoader';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -21,7 +21,6 @@ import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMo
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
-  const { locale } = useIntl();
   /**
    * Main Fetch
    */
@@ -37,31 +36,27 @@ export default function Home() {
         return (
           <LazyLoad
             key={index}
-            height="calc(100% * 1279/383.44)"
+            height="calc(100% * 1285/492.92)"
+            offset={200}
             // placeholder={<Loader height="calc(100% * 1279/383.44)" />}
           >
-            <HomeSwiper
-              data={item.data}
-              title={item.translation[locale].title}
-            />
+            <StaticSwiper type={item.key} />
           </LazyLoad>
         );
       case 'product_by_category':
         return (
           <LazyLoad
             key={index}
-            height={377}
+            offset={200}
+            height="calc(100% * 1285/492.92)"
             // placeholder={<Loader height="377px" />}
           >
-            <HomeSwiper
-              data={item.data}
-              title={item.translation[locale].title}
-            />
+            <StaticSwiper type={item.key} />
           </LazyLoad>
         );
       case 'banner':
         return (
-          <LazyLoad key={index}>
+          <LazyLoad offset={200} key={index}>
             <Banner
               url={
                 isTabletOrAbove
@@ -110,11 +105,7 @@ export default function Home() {
         </AnimatePresence>
         <MainCarousel />
         <div
-          className={`
-          
-              bg-body-light text-body-text-light
-              
-           mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
+          className={` bg-body-light text-body-text-light mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
         >
           <Categories />
           <StaticSwiper type="electronics" setCartMenuOpen={setCartMenuOpen} />

@@ -9,7 +9,12 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Link } from 'react-router-dom';
 
-export default function ItemReviews({ reviews, reviewsLoading }) {
+export default function ItemReviews({
+  reviews,
+  reviewsLoading,
+  averageRating,
+  ratingCount,
+}) {
   const { formatMessage, locale } = useIntl();
   moment.locale(locale);
   const resolvePlural = () => {
@@ -83,7 +88,7 @@ export default function ItemReviews({ reviews, reviewsLoading }) {
         </h1>
         <div className="mx-2">
           <Rating
-            initialRating={2.5}
+            initialRating={averageRating}
             readonly
             emptySymbol={<AiOutlineStar className="text-main-color h-6 w-6" />}
             fullSymbol={<AiFillStar className="text-main-color h-6 w-6" />}
@@ -91,40 +96,46 @@ export default function ItemReviews({ reviews, reviewsLoading }) {
           />
         </div>
         <div className="text-sm text-gray-600 flex items-center">
-          <h1>{reviews.length > 2 && reviews.length}</h1>
+          <h1>{ratingCount > 2 && ratingCount}</h1>
           <h1 className="mx-1">{resolvePlural()}</h1>
         </div>
       </div>
-
       {reviews.length !== 0 && (
-        <div className="grid grid-cols-1 gap-2 p-3 bg-gray-100 rounded">
-          {reviews.map((review, i) => {
-            return (
-              <div key={review.id}>
-                <div>
-                  <h1 className="font-semibold">{review.customer.name}</h1>
-                </div>
-                <div className="flex items-center">
-                  <Rating
-                    initialRating={review.rating}
-                    readonly
-                    emptySymbol={<AiOutlineStar className="text-main-color" />}
-                    fullSymbol={<AiFillStar className="text-main-color" />}
-                    className=" pt-1"
-                  />
+        <>
+          <h1 className="font-semibold mb-1">
+            {formatMessage({ id: 'customers-feedback' })} ({reviews.length})
+          </h1>
+          <div className="grid grid-cols-1 gap-2 p-3 bg-gray-100 rounded">
+            {reviews.map((review, i) => {
+              return (
+                <div key={review.id}>
+                  <div>
+                    <h1 className="font-semibold">{review.customer.name}</h1>
+                  </div>
+                  <div className="flex items-center">
+                    <Rating
+                      initialRating={review.rating}
+                      readonly
+                      emptySymbol={
+                        <AiOutlineStar className="text-main-color" />
+                      }
+                      fullSymbol={<AiFillStar className="text-main-color" />}
+                      className=" pt-1"
+                    />
 
-                  <h1 className="text-gray-600 text-sm mx-1">
-                    {moment(review.created_at).fromNow()}
-                  </h1>
+                    <h1 className="text-gray-600 text-sm mx-1">
+                      {moment(review.created_at).fromNow()}
+                    </h1>
+                  </div>
+                  <div className="mb-2">
+                    <p className="">{review.review}</p>
+                  </div>
+                  {i !== reviews.length - 1 && <hr className="mt-2" />}
                 </div>
-                <div className="mb-2">
-                  <p className="">{review.review}</p>
-                </div>
-                {i !== reviews.length - 1 && <hr className="mt-2" />}
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );

@@ -7,6 +7,7 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { AuthProvider } from '../../contexts/AuthContext';
 import PasswordChangeModal from '../Modals/PasswordChangeModal';
+import moment from 'moment';
 export default function MyProfile() {
   const { formatMessage } = useIntl();
 
@@ -111,7 +112,9 @@ export default function MyProfile() {
               <h1 className="  w-2/4">
                 {formatMessage({ id: 'date-joined' })}
               </h1>
-              <h1 className="">{userData.created_at}</h1>
+              <h1 className="">
+                {moment(userData.created_at).format('DD/MM/YYYY')}
+              </h1>
             </div>
             <hr />
           </div>

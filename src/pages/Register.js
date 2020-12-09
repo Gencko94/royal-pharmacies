@@ -168,10 +168,9 @@ export default function Register() {
               onSubmit={async (values, actions) => {
                 setErrorOpen(false);
                 try {
-                  const res = await userRegisterMutation(values);
-                  if (res.isAuthenticated === true) {
-                    history.replace(from);
-                  }
+                  await userRegisterMutation(values);
+
+                  history.replace(from);
                 } catch (error) {
                   console.log(error.response);
                   if (error.response?.data.message) {

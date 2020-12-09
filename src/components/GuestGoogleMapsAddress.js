@@ -11,7 +11,7 @@ import {
 } from '@react-google-maps/api';
 import PlacesSearch from './Cart/GuestCheckout/GoogleMaps/PlacesSearch';
 import { useMediaQuery } from 'react-responsive';
-import LocationForm from './LocationForm';
+import GuestLocationForm from './GuestLocationForm';
 const libraries = ['places'];
 
 const center = {
@@ -23,7 +23,10 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-export default function GoogleMapsAddress({ setShowMap }) {
+export default function GuestGoogleMapsAddress({
+  setGuestAddress,
+  handleStepForward,
+}) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -135,10 +138,11 @@ export default function GoogleMapsAddress({ setShowMap }) {
           )}
         </GoogleMap>
       </div>
-      <LocationForm
+      <GuestLocationForm
         markerAddress={markerAddress}
         marker={marker}
-        setShowMap={setShowMap}
+        setGuestAddress={setGuestAddress}
+        handleStepForward={handleStepForward}
       />
     </div>
   );

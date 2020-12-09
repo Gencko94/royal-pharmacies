@@ -6,6 +6,7 @@ import WishlistContainer from '../components/Wishlist/WishlistContainer';
 import WishlistRightSide from '../components/Wishlist/WishlistRightSide';
 import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
+import { DataProvider } from '../contexts/DataContext';
 
 export default function Wishlist({ userId }) {
   const [
@@ -15,6 +16,7 @@ export default function Wishlist({ userId }) {
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     null
   );
+  const { deliveryCountry } = React.useContext(DataProvider);
   const { authenticationLoading } = React.useContext(AuthProvider);
   const [cartItems, setCartItems] = React.useState([]);
   const {
@@ -43,7 +45,7 @@ export default function Wishlist({ userId }) {
       quantity: 1,
     };
     try {
-      await addToCartMutation({ newItem, userId });
+      await addToCartMutation({ newItem, userId, deliveryCountry });
       setAddToCartButtonLoading(null);
       setCartItems(prev => {
         return [...prev, item.id];

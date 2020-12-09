@@ -1,22 +1,23 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import GoogleMapsAddress from '../../GoogleMapsAddress';
+import GuestGoogleMapsAddress from '../../GuestGoogleMapsAddress';
 
-export default function AddressMobile({
+export default function GuestSelectAddressMobile({
   handleStepForward,
-  address,
-  setAddress,
+  setGuestAddress,
 }) {
-  const { formatMessage } = useIntl();
   return (
     <div className="h-full">
       <div className=" border mb-2 h-full">
-        <GoogleMapsAddress setAddress={setAddress} />
-        <div className="flex justify-end items-center p-2">
+        <GuestGoogleMapsAddress
+          setGuestAddress={setGuestAddress}
+          handleStepForward={handleStepForward}
+        />
+        {/* <div className="flex justify-end items-center p-2">
           <button
-            disabled={!address}
+            disabled={!guestAddress}
             className={`px-3 py-1 ${
-              address
+              guestAddress
                 ? 'bg-btn-primary-light text-btn-secondary-light'
                 : 'bg-gray-500 text-main-text cursor-not-allowed'
             } rounded font-semibold`}
@@ -24,7 +25,7 @@ export default function AddressMobile({
           >
             {formatMessage({ id: 'next' })}
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -6,13 +6,14 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import * as Yup from 'yup';
 import { BiChevronDown } from 'react-icons/bi';
 import useClickAway from '../hooks/useClickAway';
-import { AuthProvider } from '../contexts/AuthContext';
-export default function LocationForm({ markerAddress, setShowMap, marker }) {
-  const { addAddressMutation } = React.useContext(AuthProvider);
+export default function GuestLocationForm({
+  markerAddress,
+  marker,
+  setGuestAddress,
+  handleStepForward,
+}) {
   const { formatMessage } = useIntl();
-  const [defaultLocationChecked, setDefaultLocationChecked] = React.useState(
-    false
-  );
+
   const validationSchema = Yup.object({
     apartmentOrHouseNumber: Yup.number().required(
       formatMessage({ id: 'apartment-empty' })
@@ -39,21 +40,17 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
             additionalDetails: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={async values => {
-            try {
-              await addAddressMutation({
-                lat: marker.lat,
-                lng: marker.lng,
-                defaultLocation: defaultLocationChecked,
-                addressDetails: {
-                  ...values,
-                  markerAddress: markerAddress,
-                },
-              });
-              setShowMap(false);
-            } catch (error) {
-              console.log(error.response);
-            }
+          onSubmit={values => {
+            setGuestAddress({
+              lat: marker.lat,
+              lng: marker.lng,
+
+              addressDetails: {
+                ...values,
+                markerAddress: markerAddress,
+              },
+            });
+            handleStepForward();
           }}
         >
           {({ handleSubmit, values, isSubmitting }) => {
@@ -102,17 +99,6 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
                 />
 
                 <div className=" ">
-                  <div className="flex items-center mb-2">
-                    <label>{formatMessage({ id: 'mark-as-default' })}</label>
-                    <input
-                      className=" mx-2"
-                      type="checkbox"
-                      checked={defaultLocationChecked}
-                      onChange={() =>
-                        setDefaultLocationChecked(!defaultLocationChecked)
-                      }
-                    />
-                  </div>
                   <button
                     type="submit"
                     disabled={!markerAddress}

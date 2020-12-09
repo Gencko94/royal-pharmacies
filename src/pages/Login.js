@@ -161,20 +161,17 @@ export default function Login() {
               onSubmit={async (values, actions) => {
                 setErrorOpen(false);
                 try {
-                  const res = await userLoginMutation(values);
-                  if (res.isAuthenticated === true) {
-                    history.replace(from);
-                  }
+                  await userLoginMutation(values);
+                  history.replace(from);
                 } catch (error) {
-                  console.log(error);
                   console.log(error.response);
                   if (error.response?.data.message) {
                     actions.setErrors({
                       phoneNumber: formatMessage({
-                        id: error.response.data.message,
+                        id: 'invalid-credentials',
                       }),
                       password: formatMessage({
-                        id: error.response.data.message,
+                        id: 'invalid-credentials',
                       }),
                     });
                     return;
