@@ -257,6 +257,9 @@
 }
 ```
 
+## 2. Single Product Example
+
+```
 {
 id: 1,
 slug: adidas-blouse,
@@ -437,6 +440,8 @@ materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
 },
 },
 }
+
+```
 
 ```
 
