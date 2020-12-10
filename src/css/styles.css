@@ -465,24 +465,6 @@ input {
 
   gap: 0.5em;
 }
-.sortby-box-enter {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-.sortby-box-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: 100ms ease;
-}
-.sortby-box-exit {
-  opacity: 1;
-  transform: translateY(0);
-}
-.sortby-box-exit-active {
-  opacity: 0;
-  transform: translateY(-10px);
-  /* transition: 100ms ease; */
-}
 
 .search-filter-panel__mobile-enter {
   /* visibility: hidden; */

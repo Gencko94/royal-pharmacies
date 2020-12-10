@@ -256,3 +256,188 @@
   },
 }
 ```
+
+{
+id: 1,
+slug: adidas-blouse,
+brand: {
+brand_id: 1,
+brand_slug: adidas,
+en_name: Adidas,
+ar_name: أديداس,
+},
+category: { // i need the category for the breadcrumbs (the mini category tree on the top)
+category_id: 1,
+category_slug: men-clothing,
+category_en_name: Men Clothing,
+category_ar_name: ملابس رجالية,
+// i don't know how to deal with this when the product belongs to a sub-category
+},
+type: simple or multi // check below ,
+delivery: {
+local:true,
+international:true
+
+},
+simple: { // if the product has no options (color,size)
+
+    name_en: Adidas Blouse,
+    name_ar: كنزة اديداس,
+    sku: item.68742, // sku or model number
+    is_promotion: true || false, // if item has sale
+    price: 100, // regular price
+    sale_price: 80, // sale price,
+    sale_percent:20%,
+    promotion_end: 1/1/2021 // date of the promotion end so i can parse it
+    availableQuantity: 20, // available quantity of the product
+    maxQuantity: 2, // maximum quantity per order
+    images: [ // the Images to be shown in the slider
+
+      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
+    ],
+    gallery: [ // the Images to be shown below the after the product details(big images like noon.com) (optional)
+
+      { id: 'id', url: 'imageUrl' },
+      { id: 'id', url: 'imageUrl' },
+      { id: 'id', url: 'imageUrl' },
+      ],
+
+},
+
+product_options: [ // multi (if the product has multiple options)
+// variation 1 - example : blue blouse
+
+    {
+      variation_id: '1',
+      sku: 168578, // sku or model number // i will send this,and the size_id when adding to cart
+      name_en: Adidas Blouse - Blue,
+      name_ar: كنزة اديداس - لون ازرق,
+      is_promotion: true || false, // if item has sale
+      price: 200, // regular price
+      sale_price: 150, // sale price
+      promotion_end: 1/1/2021, // date of the promotion end so i can parse it
+      maxQuantity: 5, // maximum quantity per order
+
+      sizes: [ // i will conditionally render the sizes based on quantity left
+
+      { id: '1', value: 'S', quantity: 5 },
+      { id: '2', value: 'M', quantity: 2 },
+      { id: '3', value: 'L', quantity: 0 },
+      ],
+
+      images: [ // the Images to be shown in the slider
+
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+      ],
+      gallery: [
+        // the Images to be shown below the after the product details(big images like noon.com) (optional)
+        { id: 'id', url: 'imageUrl' },
+        { id: 'id', url: 'imageUrl' },
+        { id: 'id', url: 'imageUrl' },
+      ],
+      // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+      rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+      numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+    },
+    {
+      // variation 2 - example : red shoes
+      variation_id: '2',
+      sku: 20165, // sku or model number // i will send this,and the size_id when adding to cart
+      name_en: Adidas Blouse - Red,
+      name_ar: كنزة اديداس - لون احمر,
+      is_promotion: true || false, // if item has sale
+      price: 100, // regular price
+      sale_price: null, // sale price
+      promotion_end: 1/1/2021, // date of the promotion end so i can parse it
+      maxQuantity: 5, // maximum quantity per order
+
+      sizes: [
+        // i will conditionally render the sizes based on quantity left
+        { id: 'size_id', value: 'S', quantity: 5 },
+        { id: 'size_id', value: 'M', quantity: 2 },
+        { id: 'size_id', value: 'L', quantity: 0 },
+      ],
+
+      images: [
+        // the Images to be shown in the slider
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+        {
+          id: 'id',
+          url: 'imageUrl',
+          zoomedImageUrl: 'zoomedImageUrl',
+        },
+      ],
+      gallery: [
+        // the Images to be shown below the after the product details(big images like noon.com) (optional)
+        { id: 'id', url: 'imageUrl' },
+        { id: 'id', url: 'imageUrl' },
+        { id: 'id', url: 'imageUrl' },
+      ],
+      // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
+      rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+      numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
+    },
+
+],
+
+details: {
+// we either have one details for the whole product || or each variation has its own details, here i implenemented the whole product version
+en: {
+// please dont send me html , it's a pain the ass
+description: 'a short or long description of the product', // the product description
+features: ['feature 1', 'feature 2'],
+// product features need to be a list of features
+specifications: {
+// any specifications like size and materials
+width: '',
+height: '',
+size: '',
+weight: '',
+materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+},
+},
+ar: {
+// please dont send me html , it's a pain the ass
+description: 'a short or long description of the product', // the product description
+features: ['feature 1', 'feature 2'],
+// product features need to be a list of features
+specifications: {
+// any specifications like size and materials
+width: '',
+height: '',
+size: '',
+weight: '',
+materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
+},
+},
+},
+}
+
+```
+
+```

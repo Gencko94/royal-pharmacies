@@ -410,7 +410,21 @@ export const getCategories = async categorySlug => {
     return res.data.data;
   }
 };
-
+export const sortCategories = async query => {
+  const req = {
+    page: query.page,
+    category: query.category,
+    sort_by: query.sortBy,
+    sort_language: query.sort_language,
+  };
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/filter-products`,
+    req
+  );
+  if (res.data.status === true) {
+    return res.data.data.data;
+  }
+};
 /**
  * End of Category Products
  */

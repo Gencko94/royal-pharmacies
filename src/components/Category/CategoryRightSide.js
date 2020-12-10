@@ -1,16 +1,15 @@
 import React from 'react';
 import CategoryItemLoader from './CategoryItemLoader';
 import CategoryProductItem from './CategoryProductItem';
+import SortInfoPanel from './SortInfoPanel';
 
 export default function CategoryRightSide({
   products,
-  queryData,
-  filteredData,
-  filtersApplied,
   productsLoading,
-  categoryInfo,
   categoryInfoLoading,
+  handleSortBy,
 }) {
+  console.log(products);
   if (productsLoading || categoryInfoLoading) {
     return (
       <div className="search-page-items__grid py-2  min-h-screen">
@@ -22,6 +21,7 @@ export default function CategoryRightSide({
   }
   return (
     <div className="py-2">
+      <SortInfoPanel handleSortBy={handleSortBy} />
       {products.length !== 0 && (
         <div className="search-page-items__grid py-2 ">
           {products.map(item => {

@@ -17,6 +17,7 @@ export default function CategoryChildren({
       {categoryInfo.children.map(child => {
         return (
           <button
+            key={child.id}
             onClick={() => history.push(`/${locale}/categories/${child.slug}`)}
             className="rounded-full category-child__button relative my-1 mx-2 px-2 py-4 flex items-center justify-center text-main-text text-center font-semibold "
             style={{

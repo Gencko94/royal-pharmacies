@@ -2,16 +2,21 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import CategoryLeftSide from '../components/Category/CategoryLeftSide';
 import CategoryRightSide from '../components/Category/CategoryRightSide';
-// import SortInfoPanel from '../components/Category/SortInfoPanel';
 // import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
 // import { SearchProvider } from '../contexts/SearchContext';
 import Layout from '../components/Layout';
-import { useQuery } from 'react-query';
+import { queryCache, useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
+import {
+  getCategoryProducts,
+  getSingleCategoryInfo,
+  sortCategories,
+} from '../Queries/Queries';
 import CategoryHeader from '../components/Category/CategoryHeader';
+import { useIntl } from 'react-intl';
 export default function Category() {
   const { category } = useParams();
+  const { locale } = useIntl();
 
   /**
    * Main Fetch
@@ -27,7 +32,35 @@ export default function Category() {
     getSingleCategoryInfo,
     { retry: true }
   );
-
+  const [sortByMutation] = useMutation(
+    async query => {
+      return await sortCategories(query);
+    },
+    {
+      throwOnError: true,
+      onSuccess: data => {
+        console.log(data);
+        queryCache.setQueryData(['categoryProducts', category], () => {
+          return data;
+        });
+      },
+    }
+  );
+  const handleSortBy = async sortBy => {
+    try {
+      console.log(categoryInfo.id);
+      const query = {
+        page: 1,
+        category: categoryInfo.id,
+        sortBy,
+        sort_language: locale,
+      };
+      const res = await sortByMutation(query);
+      console.log(res);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   return (
     <Layout>
       <Helmet>
@@ -46,6 +79,7 @@ export default function Category() {
             products={products}
             productsLoading={productsLoading}
           />
+
           {/* {!isLoading && (
             <div className="relative">
               <SortInfoPanel
@@ -94,8 +128,9 @@ export default function Category() {
           <CategoryRightSide
             products={products}
             productsLoading={productsLoading}
-            categoryInfo={categoryInfo}
+            // categoryInfo={categoryInfo}
             categoryInfoLoading={categoryInfoLoading}
+            handleSortBy={handleSortBy}
             // queryData={queryData}
             // filtersApplied={filtersApplied}
             // filteredData={filteredData}

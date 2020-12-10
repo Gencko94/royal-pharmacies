@@ -46,7 +46,7 @@ export default function CategoryLeftSide({
           <h1 className="text-xl font-semibold">Category</h1>
           <hr className="my-2" />
 
-          <div className="my-2" key={categoryInfo.id}>
+          <div className="my-2">
             <div className="flex justify-between">
               <h1 className="font-semibold text-sm">
                 {categoryInfo.translation[locale].name}
@@ -54,10 +54,10 @@ export default function CategoryLeftSide({
               {/* <div>{numberOfItems[category]}</div> */}
             </div>
             {categoryInfo.children.length !== 0 &&
-              categoryInfo.children.map(subCategory => (
+              categoryInfo.children.map((subCategory, i) => (
                 <Link
                   to={`/${locale}/categories/${subCategory.slug}`}
-                  key={subCategory.id}
+                  key={i}
                   // onClick={() => handleCategoryChange(subCategory)}
                   className="text-sm block hover:underline hover:text-blue-700"
                 >
@@ -73,12 +73,9 @@ export default function CategoryLeftSide({
           <h1 className="text-xl font-semibold">Brand</h1>
           <hr className="my-2" />
           <div className="flex flex-col justify-center">
-            {products.map(product => {
+            {products.map((product, i) => {
               return product.brand_id ? (
-                <div
-                  key={product.brand_id}
-                  className="flex items-center mb-2 text-sm "
-                >
+                <div key={i} className="flex items-center mb-2 text-sm ">
                   <input
                     type="checkbox"
                     className="form-checkbox border-gray-600 text-red-700 mr-5"
