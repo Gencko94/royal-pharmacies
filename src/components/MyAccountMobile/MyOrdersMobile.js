@@ -1,5 +1,4 @@
 import React from 'react';
-import { DataProvider } from '../../contexts/DataContext';
 import NoOrdersMobile from './MyOrdersMobile/NoOrdersMobile';
 import OrderMobile from './MyOrdersMobile/OrderMobile';
 import OrderDetailsMobile from './MyOrdersMobile/OrderDetailsMobile';
@@ -7,16 +6,16 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useQuery } from 'react-query';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { getUserOrders } from '../../Queries/Queries';
 export default function MyOrdersMobile() {
-  const { getOrderedItems, isLightTheme } = React.useContext(DataProvider);
   const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
 
   /**
    * Main Fetch
    */
-  const { data, isLoading } = useQuery('orders', async () => {
-    const res = await getOrderedItems();
+  const { data, isLoading } = useQuery('userOrders', async () => {
+    const res = await getUserOrders();
 
     return res;
   });
@@ -76,9 +75,8 @@ export default function MyOrdersMobile() {
           <div className="p-3 my-orders-items__grid-mobile">
             {data.map(order => {
               return (
-                <div key={order.orderNo}>
+                <div key={order.id}>
                   <OrderMobile
-                    isLightTheme={isLightTheme}
                     order={order}
                     setSelectedOrder={setSelectedOrder}
                   />
@@ -94,7 +92,6 @@ export default function MyOrdersMobile() {
             selectedOrder={selectedOrder}
             handleOrderDetailsClose={handleOrderDetailsClose}
             orderDetailsOpen={orderDetailsOpen}
-            isLightTheme={isLightTheme}
           />
         )}
       </AnimatePresence>

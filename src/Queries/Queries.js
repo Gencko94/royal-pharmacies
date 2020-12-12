@@ -205,18 +205,20 @@ export const removeUserAddress = async id => {
 /**
  * Single Product
  */
-export const getSingleItem = async id => {
+export const getSingleItem = async (k, id) => {
+  console.log('hi');
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product/${id}`
   );
   if (res.data.status === true) {
-    const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+    console.log(res.data);
+    // const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
 
-    const isItemInHistory = visitedItems.find(item => item.id === id);
-    if (!isItemInHistory) {
-      visitedItems.push({ id });
-      localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
-    }
+    // const isItemInHistory = visitedItems.find(item => item.id === id);
+    // if (!isItemInHistory) {
+    //   visitedItems.push({ id });
+    //   localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
+    // }
     return res.data.data;
   }
 };
@@ -331,6 +333,19 @@ export const removeFromCart = async ({
   }
 };
 
+export const editCart = async ({ cartId, itemId, quantity, userId }) => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/cart/update/${userId}`,
+    {
+      cart_id: cartId,
+      product: itemId,
+      qty: quantity,
+    }
+  );
+  if (res.data.status === true) {
+    return true;
+  }
+};
 export const checkCoupon = async ({ code, subtotal }) => {
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/check-coupon`,
@@ -489,6 +504,63 @@ export const getSocialMediaData = async () => {
 };
 export const getDeliveryCountries = async () => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/countries`);
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
+
+/**
+ * User Orders
+ */
+
+export const getUserOrders = async () => {
+  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const config = {
+    headers: { Authorization: `Bearer ${mrgAuthToken}` },
+  };
+  const res = await axios.get(
+    `${process.env.REACT_APP_MAIN_URL}/orders`,
+
+    config
+  );
+
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
+export const checkout = async ({ deliveryCountry, order }) => {
+  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const config = {
+    headers: {
+      Authorization: `Bearer ${mrgAuthToken}`,
+      country: deliveryCountry.code,
+    },
+  };
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/new-order-customer`,
+    { ...order },
+    config
+  );
+  console.log(res);
+  if (res.data.status === true) {
+    return res.data;
+  }
+};
+
+export const getVisitedItems = async () => {
+  console.log('hi');
+  let localVisited = localStorage.getItem('visitedItems');
+  let parsed = JSON.parse(localVisited);
+  console.log(parsed);
+  if (parsed.length === 0) {
+    return [];
+  }
+  localVisited = parsed.map(i => i.id);
+  console.log(localVisited);
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/multiple-product`,
+    { products: localVisited }
+  );
   if (res.data.status === true) {
     return res.data.data;
   }

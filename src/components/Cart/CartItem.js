@@ -6,7 +6,14 @@ import { DataProvider } from '../../contexts/DataContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import LazyImage from '../../helpers/LazyImage';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineMinusCircle,
+  AiOutlinePlusCircle,
+} from 'react-icons/ai';
+import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
+import { AuthProvider } from '../../contexts/AuthContext';
 export default function CartItem({
   item,
   handleRemoveItemFromCart,
@@ -15,8 +22,32 @@ export default function CartItem({
   handleRemoveItemFromWishlist,
   wishlistItems,
 }) {
-  const { EditItemFromCart, deliveryCountry } = React.useContext(DataProvider);
+  const { editCartMutation } = React.useContext(CartAndWishlistProvider);
+  const { userId } = React.useContext(AuthProvider);
+  const { deliveryCountry } = React.useContext(DataProvider);
+  const [quantity, setQuantity] = React.useState(item.qty);
+  const [editLoading, setEditLoading] = React.useState(false);
   const { formatMessage, locale } = useIntl();
+  const handleSubstractQuantity = () => {
+    if (parseInt(quantity) === 1) {
+      return;
+    }
+    setQuantity(parseInt(quantity) - 1);
+  };
+  const handleAddQuantity = () => {
+    setQuantity(parseInt(quantity) + 1);
+  };
+  const handleEditItemFromCart = async (cartId, itemId, quantity) => {
+    if (item.qty === quantity || quantity === 0) return;
+    setEditLoading(true);
+    try {
+      await editCartMutation({ cartId, itemId, userId, quantity });
+      setEditLoading(false);
+    } catch (error) {
+      setEditLoading(false);
+      console.log(error.response);
+    }
+  };
   const variant = {
     hidden: {
       opacity: 0,
@@ -56,19 +87,52 @@ export default function CartItem({
         <h1 className=" font-semibold text-sm mb-1 text-green-700">
           {formatMessage({ id: 'in-stock' })}
         </h1>
-        <div className="flex items-center mb-2">
+        <div className="flex items-center mb-2 ">
           <h1 className=" font-semibold">
             {formatMessage({ id: 'quantity' })}
           </h1>
-          <select
-            value={item.qty}
-            onChange={e => EditItemFromCart(e.target.value, item)}
-            className="pr-8 py-0 mx-2 form-select border-gray-400 border rounded"
+          <div className=" flex items-center justify-center mx-3">
+            <button onClick={handleSubstractQuantity} className="p-1">
+              <AiOutlineMinusCircle
+                className={`w-6 h-6 ${
+                  quantity === 1 ? 'text-gray-700' : 'text-blue-700'
+                }`}
+              />
+            </button>
+            <input
+              value={quantity}
+              onChange={e => setQuantity(e.target.value)}
+              className="mx-1 px-2 py-1 border rounded"
+              style={{ maxWidth: '50px', textAlign: 'center' }}
+            />
+            <button onClick={handleAddQuantity} className="p-1">
+              <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
+            </button>
+          </div>
+          <button
+            onClick={() =>
+              handleEditItemFromCart(item.cart_id, item.id, quantity)
+            }
+            style={{ width: '50px' }}
+            disabled={item.qty === quantity || quantity === 0}
+            className={`p-1 flex items-center justify-center text-xs rounded ${
+              quantity === item.qty || quantity === 0
+                ? 'bg-gray-600 text-gray-400'
+                : 'bg-main-color text-main-text'
+            }`}
           >
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-          </select>
+            {editLoading ? (
+              <Loader
+                type="ThreeDots"
+                color="#fff"
+                height={20}
+                width={20}
+                visible={true}
+              />
+            ) : (
+              formatMessage({ id: 'update-btn' })
+            )}
+          </button>
         </div>
         <div className="flex text-sm  items-center ">
           <button

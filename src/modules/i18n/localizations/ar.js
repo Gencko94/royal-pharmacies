@@ -42,6 +42,7 @@ export const ar = {
   'model-number': 'رقم الموديل',
   'one-rating': ' تقييم واحد',
   'two-rating': 'تقييمان',
+  'more-than-10-ratings': 'تقييم',
   ratings: 'تقييمات',
   'the-rating': 'التقييم',
   'in-stock': 'متوفرة',
@@ -97,11 +98,14 @@ export const ar = {
   off: 'خصم',
   'loading-reviews': 'جاري تحميل المراجعات...',
   'welcome-user': 'اهلا',
-  day: 'يوم واحد',
+  'one-day': 'يوم واحد',
+  'two-days': 'يومان',
   days: 'أيام',
+  'more-than-10-days': 'يوم',
   'delivery-cost': 'كلفة التوصيل',
   'accepted-payments': 'طرق الدفع المتاحة',
   'coupon-sale': 'خصم الكوبون',
+  'update-btn': 'تحديث',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -183,6 +187,7 @@ export const ar = {
   'order-placed': 'وضع الطلب',
   'btn-back-to-addresses': 'العودة الى اختيار العنوان',
   'btn-proceed': 'التالي',
+  'order-placed-msg': 'تهانينا , تم وضع الطلب !',
   // maps
   'find-my-position': 'حدد مكاني',
   'location-details': 'تفاصيل الموقع',
@@ -242,8 +247,8 @@ export const ar = {
   /**
    * Single product sizes & colors
    */
-  'single-product-size': 'المقاسات المتوفرة لهذا المنتج',
-  'single-product-color': 'الألوان المتوفرة لهذا المنتج',
+  'single-product-size': 'اختيار المقاس',
+  'single-product-color': 'اختيار اللون',
   'additional-details__item-specifications': 'مواصفات المنتج',
   'additional-details__item-description': 'لمحة عن المنتج',
   'additional-details__item-reviews': 'تقييمات المنتج',

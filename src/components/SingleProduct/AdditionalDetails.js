@@ -4,7 +4,6 @@ import ItemDescription from './AdditionalDetails/ItemDescription';
 import ItemReviews from './AdditionalDetails/ItemReviews';
 
 export default function AdditionalDetails({
-  data,
   reviews,
   reviewsLoading,
   detailsTab,
@@ -36,9 +35,7 @@ export default function AdditionalDetails({
         </button>
       </div>
       <div className="py-2">
-        {detailsTab === 0 && (
-          <ItemDescription description={data?.description} />
-        )}
+        {detailsTab === 0 && <ItemDescription />}
 
         {detailsTab === 1 && (
           <ItemReviews

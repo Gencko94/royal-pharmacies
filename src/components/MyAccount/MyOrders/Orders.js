@@ -18,7 +18,7 @@ export default function Orders({ data }) {
       </motion.div>
       <motion.div layout initial={false} className="grid grid-cols-1 gap-2 p-3">
         {data.map(order => {
-          return <Order key={order.orderNo} order={order} />;
+          return <Order key={order.id} order={order} />;
         })}
       </motion.div>
     </motion.div>

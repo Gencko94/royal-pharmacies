@@ -8,6 +8,8 @@ export default function AdditionalDetailsMobile({
   setDetailsTab,
   reviewsLoading,
   reviews,
+  ratingCount,
+  averageRating,
 }) {
   const { formatMessage } = useIntl();
   return (
@@ -35,7 +37,12 @@ export default function AdditionalDetailsMobile({
       <div className="px-3 text-sm">
         {detailsTab === 0 && <ItemDescription />}
         {detailsTab === 1 && (
-          <ItemReviews reviews={reviews} reviewsLoading={reviewsLoading} />
+          <ItemReviews
+            reviews={reviews}
+            reviewsLoading={reviewsLoading}
+            ratingCount={ratingCount}
+            averageRating={averageRating}
+          />
         )}
       </div>
     </div>

@@ -1,36 +1,33 @@
 import React from 'react';
-// import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
-// import Rating from 'react-rating';
 import miniBanner from '../../assets/banners/miniBanner.gif';
-import Colors from './Colors';
-// import Sizes from './Sizes';
+import Colors from './VariantProduct/Colors/ColorsAndSizes';
 import { scrollIntoView } from 'scroll-js';
+import Rating from 'react-rating';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+import { DataProvider } from '../../contexts/DataContext';
 export default function MiddleSection({
   data,
   selectedVariation,
-  // deliveryCountry,
-  // size,
-  // setSize,
   color,
   setColor,
   setSelectedVariant,
-  // setSelectedSize,
-  // selectedSize,
-  reviewsLength,
+  ratingCount,
+  averageRating,
   reviewsLoading,
   setDetailsTab,
 }) {
   const { formatMessage, locale } = useIntl();
+  const { deliveryCountry } = React.useContext(DataProvider);
   const resolvePlural = () => {
-    switch (reviewsLength) {
+    switch (ratingCount) {
       case 1:
         return formatMessage({ id: 'one-rating' });
 
       case 2:
         return formatMessage({ id: 'two-ratings' });
 
-      case reviewsLength > 10:
+      case ratingCount > 10:
         return formatMessage({ id: 'one-rating' });
 
       default:
@@ -43,13 +40,13 @@ export default function MiddleSection({
         {data.translation[locale].title}
       </h1>
       <div className="flex items-center ">
-        {/* <Rating
-          initialRating={4.5}
+        <Rating
+          initialRating={averageRating}
           readonly
           emptySymbol={<AiOutlineStar className="text-main-color" />}
           fullSymbol={<AiFillStar className="text-main-color" />}
           className=" pt-1"
-        /> */}
+        />
       </div>
       <h1 className=" font-semibold mb-1 text-green-700">
         {formatMessage({ id: 'in-stock' })}
@@ -65,7 +62,7 @@ export default function MiddleSection({
               : data.variation_addons[selectedVariation].sku}
           </h1>
         </div>
-        {!reviewsLoading && reviewsLength !== 0 && (
+        {!reviewsLoading && ratingCount !== 0 && (
           <div
             onClick={() => {
               scrollIntoView(document.getElementById('details'));
@@ -74,12 +71,12 @@ export default function MiddleSection({
             className="text-sm mx-2 flex items-center"
           >
             <div className="rounded p-1 text-xs bg-green-700 text-main-text cursor-pointer">
-              2.5
+              {ratingCount}
             </div>
 
             <div className="text-sm text-gray-600 flex items-center mx-1  hover:underline cursor-pointer">
               <h1 className="mx-1">
-                ({reviewsLength} {resolvePlural()})
+                ({ratingCount > 2 && ratingCount} {resolvePlural()})
               </h1>
             </div>
           </div>
@@ -101,8 +98,10 @@ export default function MiddleSection({
                 <div className=" flex items-center ">
                   <h1>{formatMessage({ id: 'price-before' })} :</h1>
                   <h1 className=" mx-2 text-base italic  line-through text-gray-700">
-                    {data.variation_addons[selectedVariation].promotion_price}{' '}
-                    KD
+                    {data.variation_addons[selectedVariation].promotion_price}
+                    <span className="mx-1">
+                      {deliveryCountry?.currency.translation[locale].symbol}
+                    </span>
                   </h1>{' '}
                 </div>
               )}
@@ -121,7 +120,9 @@ export default function MiddleSection({
                 {data.type === 'simple'
                   ? data.simple_addons.price
                   : data.variation_addons[selectedVariation].price}
-                KD
+                <span className="mx-1">
+                  {deliveryCountry?.currency.translation[locale].symbol}
+                </span>
               </h1>
               <h1 className=" font-normal uppercase  text-gray-700">
                 ({formatMessage({ id: 'vat-inclusive' })})
@@ -145,16 +146,6 @@ export default function MiddleSection({
       </div>
       <hr className="my-2" />
       <div>
-        {/* {data.type === 'variation' &&
-          data.variation_addons[selectedVariation].addons_details.Size && (
-          <Sizes
-          data={data.variation_addons}
-              sizes={data.sizes}
-              size={size}
-              setSize={setSize}
-              availableSizes={data.availableSizes}
-            />
-          )} */}
         <hr className="my-2" />
         {data.type === 'variation' &&
           data.variation_addons[selectedVariation].addons_details.Color && (

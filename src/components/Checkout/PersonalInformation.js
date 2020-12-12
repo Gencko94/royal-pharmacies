@@ -4,12 +4,17 @@ import { useIntl } from 'react-intl';
 import knet from '../../assets/paymentLogos/knet.png';
 import mastercard from '../../assets/paymentLogos/mastercard.png';
 import visa from '../../assets/paymentLogos/visa.png';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function PersonalInformation({
-  handleStepForward,
   handleStepBack,
   selectedAddress,
   personalInfo,
   setPersonalInfo,
+  paymentMethod,
+  setPaymentMethod,
+  handleCheckout,
+  checkoutLoading,
 }) {
   const { formatMessage } = useIntl();
 
@@ -18,7 +23,7 @@ export default function PersonalInformation({
     { name: 'Visa ', photo: visa },
     { name: 'Master Card', photo: mastercard },
   ];
-  const [paymentMethod, setPaymentMethod] = React.useState('K-net');
+
   const handleInputChange = (e, type) => {
     setPersonalInfo({
       ...personalInfo,
@@ -153,10 +158,22 @@ export default function PersonalInformation({
             {formatMessage({ id: 'btn-back-to-addresses' })}
           </button>
           <button
-            className="px-3 py-1 mx-3 bg-btn-primary-light text-btn-secondary-light rounded font-semibold"
-            onClick={handleStepForward}
+            className={`
+              
+             flex items-center justify-center bg-main-color text-main-text px-3 py-1 mx-3  rounded font-semibold`}
+            onClick={handleCheckout}
           >
-            {formatMessage({ id: 'btn-proceed' })}
+            {checkoutLoading ? (
+              <Loader
+                type="ThreeDots"
+                color="#fff"
+                height={24}
+                width={24}
+                visible={true}
+              />
+            ) : (
+              formatMessage({ id: 'checkout' })
+            )}
           </button>
         </div>
       </div>

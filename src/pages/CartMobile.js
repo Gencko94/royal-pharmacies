@@ -28,7 +28,6 @@ export default function CartMobile() {
   const [wishlistItems, setWishlistItems] = React.useState([]);
   const {
     cartItems,
-    cartTotal,
     cartItemsLoading,
     isGetCartError,
     removeFromCartMutation,
@@ -110,13 +109,6 @@ export default function CartMobile() {
           !isGetCartError &&
           cartItems?.length !== 0 && (
             <>
-              <MobileCheckoutSection
-                cartItemsLoading={cartItemsLoading}
-                cartItems={cartItems}
-                handleCheckout={handleCheckout}
-                cartTotal={cartTotal}
-              />
-
               <MobileCartContainer
                 cartItems={cartItems}
                 handleRemoveItemFromCart={handleRemoveItemFromCart}
@@ -126,6 +118,7 @@ export default function CartMobile() {
                 handleAddItemToWishlist={handleAddItemToWishlist}
                 handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
               />
+              <MobileCheckoutSection handleCheckout={handleCheckout} />
             </>
           )}
         {!authenticationLoading && !userId && <MobileGuestCart />}

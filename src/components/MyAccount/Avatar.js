@@ -25,7 +25,7 @@ export default function Avatar() {
           {userData?.name.split(' ')[0].charAt(0).toUpperCase()}
         </div>
       </div>
-      <div className=" flex flex-col items-center flex-1 justify-center font-semibold mx-2 ">
+      <div className=" flex flex-col items-center text-sm flex-1 justify-center font-semibold mx-2 ">
         <div className="flex mb-1 items-center ">
           <h1>{formatMessage({ id: 'welcome-user' })} </h1>
           <h1 className="mx-1">{userData?.name}</h1>

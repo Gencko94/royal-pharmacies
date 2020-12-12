@@ -10,6 +10,7 @@ import {
   getGuestCartItems,
   addToGuestCart,
   checkCoupon,
+  editCart,
 } from '../Queries/Queries';
 import { AuthProvider } from './AuthContext';
 import { DataProvider } from './DataContext';
@@ -63,6 +64,12 @@ export default function CartAndWishlistContext({ children }) {
         ['cartItems', userId, deliveryCountry],
         () => data
       );
+    },
+    throwOnError: true,
+  });
+  const [editCartMutation] = useMutation(editCart, {
+    onSuccess: () => {
+      queryCache.invalidateQueries(['cartItems', userId, deliveryCountry]);
     },
     throwOnError: true,
   });
@@ -134,6 +141,7 @@ export default function CartAndWishlistContext({ children }) {
         addToGuestCartMutation,
         checkCouponMutation,
         isCheckingCoupon,
+        editCartMutation,
       }}
     >
       {children}

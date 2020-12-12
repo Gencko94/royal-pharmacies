@@ -73,9 +73,9 @@ export default function AvailableAddressesMobile({
                 } rounded border relative  bg-body-light`}
               >
                 <motion.div layout>
-                  <div style={{ minHeight: '150px', position: 'relative' }}>
+                  <div style={{ position: 'relative' }}>
                     <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${address.lat},${address.lng}&zoom=15&size=175x175&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${address.lat},${address.lng}&zoom=15&size=350x250&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
                       alt="thumbnail"
                     />
                     <motion.div
@@ -156,13 +156,15 @@ export default function AvailableAddressesMobile({
               </motion.div>
             );
           })}
-          <button
-            onClick={() => setShowMap(true)}
-            className="p-3 flex items-center justify-center self-center justify-self-center bg-main-color hover:bg-red-900 transition duration-150 relative rounded-lg text-main-text"
-          >
-            <Ink background={true} />
-            <AiOutlinePlus className="h-8 w-8" />
-          </button>
+          <div className="p-3 flex items-center justify-center ">
+            <button
+              onClick={() => setShowMap(true)}
+              className="p-3 flex items-center justify-center place-self-center justify-self-center bg-main-color hover:bg-red-900 transition duration-150 relative rounded-lg text-main-text"
+            >
+              <Ink background={true} />
+              <AiOutlinePlus className="h-8 w-8" />
+            </button>
+          </div>
         </motion.div>
       </AnimateSharedLayout>
     </div>

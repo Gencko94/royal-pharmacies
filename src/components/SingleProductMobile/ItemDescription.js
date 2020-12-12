@@ -4,6 +4,8 @@ import {
   AiFillHeart,
   AiOutlineStar,
   AiOutlineHeart,
+  AiOutlineMinusCircle,
+  AiOutlinePlusCircle,
 } from 'react-icons/ai';
 import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
@@ -12,7 +14,7 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 // import Colors from '../SingleProduct/Colors';
 // import Sizes from '../SingleProduct/Sizes';
-// import { scrollIntoView } from 'scroll-js';
+import { scrollIntoView } from 'scroll-js';
 import { DataProvider } from '../../contexts/DataContext';
 import { MdLocationOn } from 'react-icons/md';
 export default function ItemDescription({
@@ -25,13 +27,8 @@ export default function ItemDescription({
   addToCartButtonLoading,
   handleAddToWishList,
   userId,
-  size,
-  setSize,
-  color,
-  setColor,
-  
+
   setDetailsTab,
-  reviewsLength,
   reviewsLoading,
   ratingCount,
   averageRating,
@@ -40,21 +37,36 @@ export default function ItemDescription({
   const { formatMessage, locale } = useIntl();
   // const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const { deliveryCountry } = React.useContext(DataProvider);
-  // const resolvePlural = () => {
-  //   switch (reviews.length) {
-  //     case 1:
-  //       return formatMessage({ id: 'one-rating' });
+  const resolvePlural = () => {
+    switch (ratingCount) {
+      case 1:
+        return formatMessage({ id: 'one-rating' });
 
-  //     case 2:
-  //       return formatMessage({ id: 'two-ratings' });
+      case 2:
+        return formatMessage({ id: 'two-ratings' });
 
-  //     case reviews.length > 10:
-  //       return formatMessage({ id: 'one-rating' });
+      case ratingCount > 10:
+        return formatMessage({ id: 'more-than-10-ratings' });
 
-  //     default:
-  //       return formatMessage({ id: 'ratings' });
-  //   }
-  // };
+      default:
+        return formatMessage({ id: 'ratings' });
+    }
+  };
+  const formatDaysPlural = () => {
+    switch (parseInt(deliveryCountry.delivery_time)) {
+      case 1:
+        return formatMessage({ id: 'one-day' });
+
+      case 2:
+        return formatMessage({ id: 'two-days' });
+
+      case parseInt(deliveryCountry.delivery_time > 10):
+        return formatMessage({ id: 'more-than-10-days' });
+
+      default:
+        return formatMessage({ id: 'days' });
+    }
+  };
   const addToWishList = () => {
     if (!userId) {
       return;
@@ -69,6 +81,22 @@ export default function ItemDescription({
       handleAddToWishList();
     }
   };
+  const handleSubstractQuantity = () => {
+    if (parseInt(quantity) === 1) {
+      return;
+    }
+    setQuantity(parseInt(quantity) - 1);
+  };
+  const handleAddQuantity = () => {
+    setQuantity(parseInt(quantity) + 1);
+  };
+  const handleChangeQuantity = e => {
+    if (e.target.value < 1) {
+      return;
+    } else {
+      setQuantity(e.target.value);
+    }
+  };
   return (
     <div className="mb-3">
       <h1 className="font-semibold text-xl">
@@ -76,24 +104,39 @@ export default function ItemDescription({
       </h1>
       <div className="flex items-center ">
         <Rating
-          initialRating={4.5}
+          initialRating={averageRating}
           emptySymbol={<AiOutlineStar className="text-red-700" />}
           fullSymbol={<AiFillStar className="text-red-700" />}
           className="pt-1"
+          readonly
         />
-
-        {/* <div
-          onClick={() => {
-            scrollIntoView(document.getElementById('details'));
-            setDetailsTab(1);
-          }}
-          className="text-sm mx-2 cursor-pointer"
-        >
-          <div className="text-sm text-gray-600 flex items-center  hover:underline">
-            <h1>{reviews.length > 2 && reviews.length}</h1>
-            <h1 className="mx-1">{resolvePlural()}</h1>
+        <div className="flex items-center mb-1">
+          <div className="flex items-center text-gray-600 text-sm">
+            <h1 className="text-gray-600 text-sm">
+              {formatMessage({ id: 'model-number' })} :
+            </h1>
+            <h1 className="mx-1">{data.new_variation_addons.id}</h1>
           </div>
-        </div> */}
+          {!reviewsLoading && ratingCount !== 0 && (
+            <div
+              onClick={() => {
+                scrollIntoView(document.getElementById('details'));
+                setDetailsTab(1);
+              }}
+              className="text-sm mx-2 flex items-center"
+            >
+              <div className="rounded p-1 text-xs bg-green-700 text-main-text cursor-pointer">
+                {averageRating}
+              </div>
+
+              <div className="text-sm text-gray-600 flex items-center mx-1  hover:underline cursor-pointer">
+                <h1 className="mx-1">
+                  ({ratingCount > 2 && ratingCount} {resolvePlural()})
+                </h1>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <h1 className=" font-semibold mb-1 text-green-600">
@@ -155,54 +198,33 @@ export default function ItemDescription({
             {formatMessage({ id: 'estimated-delivery' })} :
           </h1>
           <h1 className="mx-1">
-            {deliveryCountry?.delivery_time}
-            <span className="mx-1">
-              {deliveryCountry?.delivery_time === '1'
-                ? formatMessage({ id: 'day' })
-                : formatMessage({ id: 'days' })}
-            </span>
+            {deliveryCountry?.delivery_time > 2 &&
+              deliveryCountry.delivery_time}
+            <span className="mx-1">{formatDaysPlural()}</span>
           </h1>
         </div>
       </div>
 
-      {/* {sizes && (
-        <>
-          <Sizes
-            size={size}
-            setSize={setSize}
-            sizes={sizes}
-            availableSizes={availableSizes}
-          />
-          <hr className="my-2" />
-        </>
-      )}
-      {colors && (
-        <>
-          <Colors
-            colors={colors}
-            color={color}
-            setColor={setColor}
-            availableColors={availableColors}
-          />
-          <hr className="my-2" />
-        </>
-      )} */}
       <div className="relative flex items-center flex-wrap">
-        <div className="flex items-center">
-          <h1 className="font-semibold text-sm">
-            {formatMessage({ id: 'quantity' })}
-          </h1>
-
-          <select
+        <div className=" flex items-center justify-center mx-3">
+          <button onClick={handleSubstractQuantity} className="p-1">
+            <AiOutlineMinusCircle
+              className={`w-6 h-6 ${
+                quantity === 1 ? 'text-gray-700' : 'text-blue-700'
+              }`}
+            />
+          </button>
+          <input
             value={quantity}
-            onChange={e => setQuantity(e.target.value)}
-            className="select-mobile border-gray-400 border py-1 px-2 rounded mx-1"
-          >
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-          </select>
+            onChange={handleChangeQuantity}
+            className="mx-1 px-2 py-1 border rounded"
+            style={{ maxWidth: '40px', textAlign: 'center' }}
+          />
+          <button onClick={handleAddQuantity} className="p-1">
+            <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
+          </button>
         </div>
+
         <button
           onClick={() => {
             if (itemInCart) {

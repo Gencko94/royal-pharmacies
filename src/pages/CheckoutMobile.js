@@ -4,14 +4,23 @@ import PersonalInformationMobile from '../components/MobileCheckout/PersonalInfo
 import StepperMobile from '../components/CartMobile/GuestCheckoutMobile/StepperMobile';
 import Layout from '../components/Layout';
 import SelectAddressMobile from '../components/MobileCheckout/SelectAddressMobile';
+import { DataProvider } from '../contexts/DataContext';
+import { checkout } from '../Queries/Queries';
+import { useMutation } from 'react-query';
 
 export default function CheckoutMobile() {
+  const { deliveryCountry } = React.useContext(DataProvider);
   const [selectedStep, setSelectedStep] = React.useState(0);
+
   const [selectedAddress, setSelectedAddress] = React.useState(null);
   const [personalInfo, setPersonalInfo] = React.useState({
     fullName: '',
     phoneNumber: '',
   });
+  const [
+    checkoutMutation,
+    { isLoading: checkoutLoading },
+  ] = useMutation(checkout, { throwOnError: true });
   const [stepDone, setStepDone] = React.useState({
     0: false,
     1: false,
@@ -39,6 +48,22 @@ export default function CheckoutMobile() {
       });
     }
   };
+  const handleCheckout = async () => {
+    const order = {
+      address: selectedAddress.id,
+      payment_method: 'knet',
+      order_type: 'local',
+    };
+    try {
+      await checkoutMutation({
+        deliveryCountry,
+        order,
+      });
+      setSelectedStep(2);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedStep]);
@@ -56,19 +81,15 @@ export default function CheckoutMobile() {
           )}
           {selectedStep === 1 && (
             <PersonalInformationMobile
-              handleStepForward={handleStepForward}
               handleStepBack={handleStepBack}
               selectedAddress={selectedAddress}
               personalInfo={personalInfo}
               setPersonalInfo={setPersonalInfo}
+              handleCheckout={handleCheckout}
+              checkoutLoading={checkoutLoading}
             />
           )}
-          {selectedStep === 2 && (
-            <OrderPlacedMobile
-              handleStepForward={handleStepForward}
-              handleStepBack={handleStepBack}
-            />
-          )}
+          {selectedStep === 2 && <OrderPlacedMobile />}
         </div>
       </div>
     </Layout>

@@ -1,31 +1,21 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
-export default function OrderPlacedMobile({
-  handleStepForward,
-  handleStepBack,
-}) {
+export default function OrderPlacedMobile() {
+  const { formatMessage, locale } = useIntl();
   return (
     <div className="h-full">
       <div className=" border mb-2 h-full">
         <div
-          className="flex justify-center items-center "
+          className="flex flex-col justify-center items-center "
           style={{ height: '430px' }}
         >
-          <h1 className="text-lg">Confirmation OR Order Placed Dialog ?</h1>
-        </div>
-        <div className="flex justify-end items-center p-2">
-          <button
-            className="px-3 py-1 bg-btn-primary-light text-btn-secondary-light rounded font-semibold mr-3"
-            onClick={handleStepBack}
-          >
-            Back
-          </button>
-          <button
-            className="px-3 py-1 bg-btn-primary-light text-btn-secondary-light rounded font-semibold"
-            onClick={handleStepForward}
-          >
-            Next
-          </button>
+          <h1 className="text-lg">
+            {' '}
+            {formatMessage({ id: 'order-placed-msg' })}
+          </h1>
+          <Link to={`/${locale}/user/account/orders`}>My Orders</Link>
         </div>
       </div>
     </div>

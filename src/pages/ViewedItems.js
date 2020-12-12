@@ -2,52 +2,40 @@ import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
-import { queryCache, useMutation, useQuery } from 'react-query';
+import { queryCache, useQuery } from 'react-query';
 import { BeatLoader } from 'react-spinners';
 import Layout from '../components/Layout';
-import { DataProvider } from '../contexts/DataContext';
 import ViewedItem from '../components/ViewedItems/ViewedItem';
 import NoViewedItems from '../components/ViewedItems/NoViewedItems';
 import FeaturedItemsVertical from '../components/Cart/FeaturedItemsVertical';
+import { getVisitedItems } from '../Queries/Queries';
 export default function ViewedItems() {
-  const { getViewedItems, removeViewedItem } = React.useContext(DataProvider);
-  const [removeButtonLoading, setRemoveButtonLoading] = React.useState(null);
   const { formatMessage } = useIntl();
   /**
    * Main Fetch
    */
-  const { data, isLoading } = useQuery('viewedItems', async () => {
-    return await getViewedItems();
+  const { data, isLoading } = useQuery('viewedItems', getVisitedItems, {
+    retry: true,
+    refetchOnWindowFocus: false,
   });
-  /**
-   * Delete Mutation
-   */
-  const [deleteMutation] = useMutation(
-    async id => {
-      setRemoveButtonLoading(id);
-      return await removeViewedItem(id);
-    },
-    {
-      onSuccess: data => {
-        queryCache.setQueryData('viewedItems', prev => {
-          const visitedItems = prev.visitedItems.filter(i => i.id !== data.id);
 
-          return {
-            ...prev,
-            visitedItems,
-          };
-        });
-        setRemoveButtonLoading(null);
-      },
-    }
-  );
+  const handleRemoveItem = id => {
+    let localVisited = localStorage.getItem('visitedItems');
+    let parsed = JSON.parse(localVisited);
+    localVisited = parsed.filter(i => {
+      return i.id !== id.toString();
+    });
+    console.log(
+      parsed.filter(i => {
+        console.log(i.id, 'i', id, 'id');
+        return i.id !== id;
+      })
+    );
+    localStorage.setItem('visitedItems', JSON.stringify(localVisited));
 
-  const handleRemoveItem = async id => {
-    try {
-      await deleteMutation(id);
-    } catch (error) {
-      console.error(error);
-    }
+    queryCache.setQueryData('viewedItems', prev => {
+      return prev.filter(i => i.id !== id.toString());
+    });
   };
   return (
     <Layout>
@@ -69,20 +57,17 @@ export default function ViewedItems() {
             <AnimateSharedLayout>
               <motion.div layout>
                 <AnimatePresence>
-                  {data.visitedItems.length !== 0 &&
-                    data.visitedItems.map(item => {
+                  {data.length !== 0 &&
+                    data.map(item => {
                       return (
                         <ViewedItem
                           key={item.id}
                           item={item}
                           handleRemoveItem={handleRemoveItem}
-                          removeButtonLoading={removeButtonLoading}
                         />
                       );
                     })}
-                  {data.visitedItems.length === 0 && (
-                    <NoViewedItems key={'No Viewed Items'} />
-                  )}
+                  {data.length === 0 && <NoViewedItems key="No Viewed Items" />}
                 </AnimatePresence>
               </motion.div>
             </AnimateSharedLayout>

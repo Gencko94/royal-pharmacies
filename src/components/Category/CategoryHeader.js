@@ -22,7 +22,7 @@ export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
       <div
         className="h-64 flex items-center justify-center text-6xl"
         style={{
-          backgroundImage: `url(${process.env.REACT_APP_IMAGES_URL}/small/${categoryInfo.image.link})`,
+          backgroundImage: `url(${process.env.REACT_APP_IMAGES_URL}/original/${categoryInfo.image.link})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
         }}

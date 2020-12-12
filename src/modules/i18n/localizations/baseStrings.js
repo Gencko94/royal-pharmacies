@@ -54,6 +54,7 @@ const baseStrings = {
   'one-rating': 'One Rating',
   'two-ratings': 'Two Ratings',
   ratings: 'Ratings',
+  'more-than-10-ratings': 'Ratings',
   'the-rating': 'Rating',
   'in-stock': 'In Stock',
   'price-before': 'Price Before',
@@ -101,11 +102,14 @@ const baseStrings = {
   off: 'OFF',
   'loading-reviews': 'Loading Reviews...',
   'welcome-user': 'Welcome',
-  day: 'Day',
+  'one-day': 'One Day',
+  'two-days': 'Two Days',
   days: 'Days',
+  'more-than-10-days': 'Days',
   'delivery-cost': 'Delivery Cost',
   'accepted-payments': 'Accepted Payment Methods',
   'coupon-sale': 'Coupon Discount',
+  'update-btn': 'Update',
 
   //
   'home.title': 'Home',
@@ -189,6 +193,7 @@ const baseStrings = {
   'select-btn': 'Select',
   'selected-btn': 'Selected',
   'btn-proceed': 'Proceed',
+  'order-placed-msg': 'Congratulations, Your Order has been Placed !',
   // maps
   'find-my-position': 'Find my position',
   'location-details': 'Location Details',
@@ -250,8 +255,8 @@ const baseStrings = {
   /**
    * Single product sizes & colors
    */
-  'single-product-size': 'Available sizes for this product',
-  'single-product-color': 'Available colors for this product',
+  'single-product-size': 'Size',
+  'single-product-color': 'Color',
   'additional-details__item-specifications': 'Item Specifications',
   'additional-details__item-description': 'Item Description',
   'additional-details__item-reviews': 'Item Reviews',

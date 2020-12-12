@@ -17,6 +17,7 @@ import AdditionalDetails from '../components/SingleProduct/AdditionalDetails';
 import { getProductReviews, getSingleItem } from '../Queries/Queries';
 import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
+import VariantProduct from '../components/SingleProduct/VariantProduct/VariantProduct';
 
 export default function SingleProduct() {
   const { id } = useParams();
@@ -24,42 +25,30 @@ export default function SingleProduct() {
   const { addToCartMutation, addToWishListMutation } = React.useContext(
     CartAndWishlistProvider
   );
+  // const [size, setSize] = React.useState(null);
+  // const [color, setColor] = React.useState(null);
   const { userId } = React.useContext(AuthProvider);
   const [selectedVariation, setSelectedVariant] = React.useState(0);
   const [selectedSize, setSelectedSize] = React.useState(0);
-  const quantityOptions = [
-    { value: 1, label: 1 },
-    { value: 2, label: 2 },
-    { value: 3, label: 3 },
-    { value: 4, label: 4 },
-  ];
 
   /**
    * Main Fetch
    */
-  const { data, isLoading } = useQuery(
-    ['singleProduct', id],
-    async (key, id) => {
-      const res = await getSingleItem(id);
-      return res;
+  const { data, isLoading } = useQuery(['singleProduct', id], getSingleItem, {
+    refetchOnWindowFocus: false,
+    onSuccess: () => {
+      // add Item to localStorage
+      addViewedItems(id);
     },
-    {
-      refetchOnWindowFocus: false,
-      onSuccess: async () => {
-        // add Item to localStorage
-        return await addViewedItems(id);
-      },
-      retry: true,
-    }
-  );
+    retry: true,
+  });
   const { data: reviews, isLoading: reviewsLoading } = useQuery(
     ['product-reviews', id],
     getProductReviews,
-    { retry: true, enabled: data }
+    { retry: true, enabled: data, refetchOnWindowFocus: false }
   );
-  const [quantity, setQuantity] = React.useState(quantityOptions[0]);
-  const [size, setSize] = React.useState(null);
-  const [color, setColor] = React.useState(null);
+  // const [quantity, setQuantity] = React.useState(quantityOptions[0]);
+
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [itemInCart, setItemInCart] = React.useState(false);
   const [itemInWishList, setItemInWishList] = React.useState(false);
@@ -72,11 +61,11 @@ export default function SingleProduct() {
     setAddToWishListButtonLoading,
   ] = React.useState(false);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async quantity => {
     setAddToCartButtonLoading(true);
     if (userId) {
       try {
-        const newItem = { id: data.id, quantity: quantity.value, size, color };
+        const newItem = { id: data.id, quantity };
         await addToCartMutation({ newItem, userId, deliveryCountry });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
@@ -108,7 +97,6 @@ export default function SingleProduct() {
       console.log(error.response);
     }
   };
-
   return (
     <Layout>
       <Helmet>
@@ -139,51 +127,50 @@ export default function SingleProduct() {
         <div className="mx-auto max-w-default">
           {!isLoading && <Breadcrumbs data={data.categories} />}
           {isLoading && <SingleProductLoader />}
-          {!isLoading && (
-            <div className="single-product__container-desktop">
-              <div className=" ">
-                <ImageZoom data={data} selectedVariation={selectedVariation} />
-              </div>
+          {!isLoading &&
+            (data.type === 'simple' ? (
+              <div className="single-product__container-desktop">
+                <div className=" ">
+                  <ImageZoom
+                    data={data}
+                    selectedVariation={selectedVariation}
+                  />
+                </div>
 
-              <MiddleSection
-                selectedVariation={selectedVariation}
+                <MiddleSection
+                  selectedVariation={selectedVariation}
+                  data={data}
+                  deliveryCountry={deliveryCountry}
+                  setSelectedVariant={setSelectedVariant}
+                  selectedSize={selectedSize}
+                  setSelectedSize={setSelectedSize}
+                  reviewsLoading={reviewsLoading}
+                  ratingCount={reviews?.ratingCount}
+                  averageRating={reviews?.averageRating}
+                  setDetailsTab={setDetailsTab}
+                />
+                <RightSection
+                  handleAddToCart={handleAddToCart}
+                  handleAddToWishList={handleAddToWishList}
+                  addToCartButtonLoading={addToCartButtonLoading}
+                  addToWishListButtonLoading={addToWishListButtonLoading}
+                  itemInCart={itemInCart}
+                  itemInWishList={itemInWishList}
+                  userId={userId}
+                />
+              </div>
+            ) : (
+              <VariantProduct
                 data={data}
-                deliveryCountry={deliveryCountry}
-                setColor={setColor}
-                color={color}
-                setSize={setSize}
-                size={size}
-                setSelectedVariant={setSelectedVariant}
-                selectedSize={selectedSize}
-                setSelectedSize={setSelectedSize}
-                reviewsLength={reviews?.reviews.length}
                 reviewsLoading={reviewsLoading}
-                ratingCount={reviews?.ratingCount}
-                averageRating={reviews?.averageRating}
+                reviews={reviews}
+                setSideMenuOpen={setSideMenuOpen}
                 setDetailsTab={setDetailsTab}
               />
-              <RightSection
-                quantity={quantity}
-                setQuantity={setQuantity}
-                handleAddToCart={handleAddToCart}
-                handleAddToWishList={handleAddToWishList}
-                quantityOptions={quantityOptions}
-                addToCartButtonLoading={addToCartButtonLoading}
-                addToWishListButtonLoading={addToWishListButtonLoading}
-                itemInCart={itemInCart}
-                itemInWishList={itemInWishList}
-                userId={userId}
-              />
-            </div>
-          )}
+            ))}
           <div id="details" className="py-2 mb-2">
             {!isLoading && (
               <AdditionalDetails
-                data={
-                  data.type === 'simple'
-                    ? data.simple_addons
-                    : data.variation_addons
-                }
                 reviews={reviews?.reviews}
                 averageRating={reviews?.averageRating}
                 reviewsLoading={reviewsLoading}

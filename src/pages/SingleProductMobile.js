@@ -17,6 +17,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import Layout from '../components/Layout';
+import VariantProductMobile from '../components/SingleProductMobile/VariantProductMobile/VariantProductMobile';
 
 export default function SingleProductMobile() {
   const { id } = useParams();
@@ -32,16 +33,12 @@ export default function SingleProductMobile() {
   const [itemInWishList, setItemInWishList] = React.useState(false);
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
-  // const [isFetching, setFetching] = React.useState(true);
-  // const [page, setPage] = React.useState(0);
-  // const [relatedData, hasMore] = useLazyLoadFetch(allItems, page);
-  // const [related, setRelated] = React.useState(null);
+
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
   const [quantity, setQuantity] = React.useState(1);
-  const [size, setSize] = React.useState(null);
-  const [color, setColor] = React.useState(null);
+
   const [detailsTab, setDetailsTab] = React.useState(0);
 
   const [triggerRef, inView] = useInView();
@@ -49,21 +46,14 @@ export default function SingleProductMobile() {
   /**
    * Main Fetch
    */
-  const { data, isLoading } = useQuery(
-    ['singleProduct', id],
-    async (key, id) => {
-      const res = await getSingleItem(id);
-      return res;
+  const { data, isLoading } = useQuery(['singleProduct', id], getSingleItem, {
+    refetchOnWindowFocus: false,
+    onSuccess: async () => {
+      // add Item to localStorage
+      return await addViewedItems(id);
     },
-    {
-      refetchOnWindowFocus: false,
-      onSuccess: async () => {
-        // add Item to localStorage
-        return await addViewedItems(id);
-      },
-    }
-  );
-  const { data: reviews, isLoading: reviewsLoading } = useQuery(
+  });
+  const { data: reviewsData, isLoading: reviewsLoading } = useQuery(
     ['product-reviews', id],
     getProductReviews,
     { retry: true, enabled: data }
@@ -88,20 +78,11 @@ export default function SingleProductMobile() {
       console.log(error.response);
     }
   };
-  const handleSubstractQuantity = () => {
-    if (quantity === 1) {
-      return;
-    }
-    setQuantity(quantity - 1);
-  };
-  const handleAddQuantity = () => {
-    setQuantity(quantity + 1);
-  };
 
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
     try {
-      const newItem = { id: data.id, quantity: quantity, size, color };
+      const newItem = { id: data.id, quantity: quantity };
       await addToCartMutation({ newItem, userId, deliveryCountry });
       setAddToCartButtonLoading(false);
       setSideMenuOpen(true);
@@ -144,56 +125,62 @@ export default function SingleProductMobile() {
         </AnimatePresence>
 
         {isLoading && <SingleProductMobileLoader />}
-        {!isLoading && (
-          <div className="">
-            <ImageZoomMobile data={data} />
-
-            <hr />
-            <div className="flex flex-col w-full  px-3 py-2 bg-white">
-              <ItemDescription
-                handleAddToCart={handleAddToCart}
-                handleAddToWishList={handleAddToWishList}
-                data={data}
-                itemInCart={itemInCart}
-                itemInWishList={itemInWishList}
-                addToCartButtonLoading={addToCartButtonLoading}
-                quantity={quantity}
-                setQuantity={setQuantity}
-                size={size}
-                setSize={setSize}
-                color={color}
-                setColor={setColor}
-                reviewsLength={reviews?.reviews.length}
-                reviewsLoading={reviewsLoading}
-                ratingCount={reviews?.ratingCount}
-                averageRating={reviews?.averageRating}
-                setDetailsTab={setDetailsTab}
-                userId={userId}
-                handleRemoveFromWishList={handleRemoveFromWishList}
-              />
+        {!isLoading &&
+          (data.type === 'simple' ? (
+            <div className="">
+              <ImageZoomMobile data={data} />
 
               <hr />
+              <div className="flex flex-col w-full  px-3 py-2 bg-white">
+                <ItemDescription
+                  handleAddToCart={handleAddToCart}
+                  handleAddToWishList={handleAddToWishList}
+                  data={data}
+                  itemInCart={itemInCart}
+                  itemInWishList={itemInWishList}
+                  addToCartButtonLoading={addToCartButtonLoading}
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  reviewsLoading={reviewsLoading}
+                  ratingCount={reviewsData?.ratingCount}
+                  averageRating={reviewsData?.averageRating}
+                  setDetailsTab={setDetailsTab}
+                  userId={userId}
+                  handleRemoveFromWishList={handleRemoveFromWishList}
+                />
+
+                <hr />
+              </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <VariantProductMobile
+              data={data}
+              quantity={quantity}
+              setQuantity={setQuantity}
+              reviews={reviewsData}
+              reviewsLoading={reviewsLoading}
+              setSideMenuOpen={setSideMenuOpen}
+              setDetailsTab={setDetailsTab}
+              inView={inView}
+            />
+          ))}
         {!isLoading && (
           <AdditionalDetailsMobile
             data={data}
             detailsTab={detailsTab}
             setDetailsTab={setDetailsTab}
-            reviewsLength={reviews?.reviews.length}
+            reviews={reviewsData?.reviews}
             reviewsLoading={reviewsLoading}
-            ratingCount={reviews?.ratingCount}
-            averageRating={reviews?.averageRating}
+            ratingCount={reviewsData?.ratingCount}
+            averageRating={reviewsData?.averageRating}
           />
         )}
         <br ref={triggerRef} />
         <AnimatePresence>
-          {inView && !itemInCart && !isLoading && (
+          {inView && !itemInCart && !isLoading && data.type === 'simple' && (
             <FloatingAddToCart
-              handleSubstractQuantity={handleSubstractQuantity}
               quantity={quantity}
-              handleAddQuantity={handleAddQuantity}
+              setQuantity={setQuantity}
               handleAddToCart={handleAddToCart}
               id={data.id}
               price={data.simple_addons.price}

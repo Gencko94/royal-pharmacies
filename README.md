@@ -58,17 +58,19 @@
 - [ ] login and register number and password validation (discuss)
 - [ ] Single Product
 
+- [ ] single product quantity input number validation
 - [x] look into fixing home loaders
 
       **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 
-      -- checking coupon validity per user
+      -- check coupon validity per user
       -- tell why coupon is invalid
       -- coupon add route and coupon remove route.
       -- add banners data to showcase
       -- organize payment methods in countries
-      -- add route for getting multiple products
-      --refresh roken explanation
+      -- add route for getting multiple products based on id
+      -- refresh roken explanation
+      -- in filter category api make product structure same as get category product
 
 **NOTES**
 
@@ -313,10 +315,7 @@ product_options: [ // multi (if the product has multiple options)
 // variation 1 - example : blue blouse
 
     {
-      variation_id: '1',
-      sku: 168578, // sku or model number // i will send this,and the size_id when adding to cart
-      name_en: Adidas Blouse - Blue,
-      name_ar: كنزة اديداس - لون ازرق,
+
       is_promotion: true || false, // if item has sale
       price: 200, // regular price
       sale_price: 150, // sale price
@@ -360,10 +359,7 @@ product_options: [ // multi (if the product has multiple options)
     },
     {
       // variation 2 - example : red shoes
-      variation_id: '2',
-      sku: 20165, // sku or model number // i will send this,and the size_id when adding to cart
-      name_en: Adidas Blouse - Red,
-      name_ar: كنزة اديداس - لون احمر,
+
       is_promotion: true || false, // if item has sale
       price: 100, // regular price
       sale_price: null, // sale price

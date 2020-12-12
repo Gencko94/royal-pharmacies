@@ -1,22 +1,54 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineMinusCircle,
+  AiOutlinePlusCircle,
+} from 'react-icons/ai';
 import Ink from 'react-ink';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Link } from 'react-router-dom';
+import { AuthProvider } from '../../contexts/AuthContext';
+import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
+import { DataProvider } from '../../contexts/DataContext';
 
 export default function CartItemMobile({
   item,
   handleRemoveItemFromCart,
-  EditItemFromCart,
   removefromCartButtonLoading,
   wishlistItems,
   handleRemoveItemFromWishlist,
   handleAddItemToWishlist,
 }) {
+  const { editCartMutation } = React.useContext(CartAndWishlistProvider);
+  const { userId } = React.useContext(AuthProvider);
+  const { deliveryCountry } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
+  const [quantity, setQuantity] = React.useState(item.qty);
+  const [editLoading, setEditLoading] = React.useState(false);
+  const handleSubstractQuantity = () => {
+    if (parseInt(quantity) === 1) {
+      return;
+    }
+    setQuantity(parseInt(quantity) - 1);
+  };
+  const handleAddQuantity = () => {
+    setQuantity(parseInt(quantity) + 1);
+  };
+  const handleEditItemFromCart = async (cartId, itemId, quantity) => {
+    if (item.qty === quantity || quantity === 0) return;
+    setEditLoading(true);
+    try {
+      await editCartMutation({ cartId, itemId, userId, quantity });
+      setEditLoading(false);
+    } catch (error) {
+      setEditLoading(false);
+      console.log(error.response);
+    }
+  };
   const variant = {
     hidden: {
       opacity: 0,
@@ -57,23 +89,56 @@ export default function CartItemMobile({
           <h1 className=" font-semibold text-green-700">
             {formatMessage({ id: 'in-stock' })}
           </h1>
-          <div className="text-red-700 font-bold text-base">
-            {item.price * item.qty} KD
+          <div className="text-main0color font-bold text-base">
+            {item.total} {deliveryCountry?.currency.translation[locale].symbol}
           </div>
-          <div className=" flex items-center ">
+          <div className=" flex items-center flex-wrap ">
             <h1 className=" font-semibold">
               {formatMessage({ id: 'quantity' })} :{' '}
             </h1>
-            <select
-              value={item.quantity}
-              onChange={e => EditItemFromCart(e.target.value, item)}
-              className="select-mobile  border-gray-400 border py-1 px-2 rounded mx-2"
-            >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-            </select>
+            <div className=" flex items-center justify-center mx-3">
+              <button onClick={handleSubstractQuantity} className="p-1">
+                <AiOutlineMinusCircle
+                  className={`w-6 h-6 ${
+                    quantity === 1 ? 'text-gray-700' : 'text-blue-700'
+                  }`}
+                />
+              </button>
+              <input
+                value={quantity}
+                onChange={e => setQuantity(e.target.value)}
+                className="mx-1 px-2 py-1 border rounded"
+                style={{ maxWidth: '40px', textAlign: 'center' }}
+              />
+              <button onClick={handleAddQuantity} className="p-1">
+                <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
+              </button>
+            </div>
           </div>
+          <button
+            onClick={() =>
+              handleEditItemFromCart(item.cart_id, item.id, quantity)
+            }
+            style={{ width: '50px' }}
+            disabled={item.qty === quantity || quantity === 0}
+            className={`p-1 flex items-center justify-center text-xs rounded mt-1 ${
+              quantity === item.qty || quantity === 0
+                ? 'bg-gray-600 text-gray-400'
+                : 'bg-main-color text-main-text'
+            }`}
+          >
+            {editLoading ? (
+              <Loader
+                type="ThreeDots"
+                color="#fff"
+                height={20}
+                width={20}
+                visible={true}
+              />
+            ) : (
+              formatMessage({ id: 'update-btn' })
+            )}
+          </button>
         </div>
       </div>
       <div className="flex justify-center text-sm  items-center my-2 ">

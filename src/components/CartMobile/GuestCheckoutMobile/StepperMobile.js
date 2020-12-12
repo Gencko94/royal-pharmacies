@@ -60,7 +60,7 @@ export default function StepperMobile({ selectedStep, stepDone }) {
               } absolute text-center my-2 text-xs uppercase ${
                 selectedStep === 1 && 'font-bold '
               } `}
-              style={{ left: '-19px' }}
+              style={{ left: '-21px' }}
             >
               {formatMessage({ id: 'personal-information' })}
             </div>

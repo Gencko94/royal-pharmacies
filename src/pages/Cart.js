@@ -33,7 +33,6 @@ export default function Cart() {
   const [wishlistItems, setWishlistItems] = React.useState([]);
   const { formatMessage } = useIntl();
   const handleRemoveItemFromCart = async (id, cart_id) => {
-    console.log(cart_id);
     setRemoveFromCartButtonLoading(id);
     try {
       await removeFromCartMutation({ id, userId, cart_id, deliveryCountry });

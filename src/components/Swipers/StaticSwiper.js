@@ -108,7 +108,7 @@ export default function StaticSwiper({ type, setCartMenuOpen }) {
             return (
               <SwiperSlide
                 key={item.id}
-                className={`overflow-hidden slider-item border  relative my-1
+                className={`overflow-hidden  border  relative my-1
              shadow
             rounded`}
               >

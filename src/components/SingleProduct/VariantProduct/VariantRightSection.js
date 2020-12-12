@@ -10,10 +10,10 @@ import { MdLocationOn } from 'react-icons/md';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
-import { DataProvider } from '../../contexts/DataContext';
+import { DataProvider } from '../../../contexts/DataContext';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
-export default function RightSection({
+export default function VariantRightSection({
   handleAddToCart,
   addToCartButtonLoading,
   addToWishListButtonLoading,
@@ -22,6 +22,21 @@ export default function RightSection({
   itemInCart,
   userId,
 }) {
+  const formatDaysPlural = () => {
+    switch (parseInt(deliveryCountry.delivery_time)) {
+      case 1:
+        return formatMessage({ id: 'one-day' });
+
+      case 2:
+        return formatMessage({ id: 'two-days' });
+
+      case parseInt(deliveryCountry.delivery_time > 10):
+        return formatMessage({ id: 'more-than-10-days' });
+
+      default:
+        return formatMessage({ id: 'days' });
+    }
+  };
   const handleSubstractQuantity = () => {
     if (parseInt(quantity) === 1) {
       return;
@@ -84,12 +99,9 @@ export default function RightSection({
               {formatMessage({ id: 'estimated-delivery' })} :
             </h1>
             <h1 className="mx-1">
-              {deliveryCountry?.delivery_time}
-              <span className="mx-1">
-                {deliveryCountry?.delivery_time === '1'
-                  ? formatMessage({ id: 'day' })
-                  : formatMessage({ id: 'days' })}
-              </span>
+              {deliveryCountry?.delivery_time > 2 &&
+                deliveryCountry.delivery_time}
+              <span className="mx-1">{formatDaysPlural()}</span>
             </h1>
           </div>
         </div>

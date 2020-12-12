@@ -26,7 +26,7 @@ export default function ItemReviews({
         return formatMessage({ id: 'two-ratings' });
 
       case reviews.length > 10:
-        return formatMessage({ id: 'one-rating' });
+        return formatMessage({ id: 'more-than-10-ratings' });
 
       default:
         return formatMessage({ id: 'ratings' });
@@ -56,9 +56,9 @@ export default function ItemReviews({
     return (
       <div
         style={{ height: '160px' }}
-        className="flex items-center justify-center flex-col"
+        className="flex items-center text-center justify-center text-base flex-col"
       >
-        <h1 className="text-xl mb-2">
+        <h1 className="text-xl mb-2 ">
           {formatMessage({ id: 'no-ratings' })} !
         </h1>
         <h1 className="mb-2">{formatMessage({ id: 'how-to-rate' })}</h1>

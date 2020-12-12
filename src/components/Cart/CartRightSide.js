@@ -109,15 +109,36 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
               <h1 className="text-main-color text-xs">Invalid Coupon</h1>
             )}
           </div>
+          <div className=" flex mb-2  ">
+            <h1 className="text-gray-900">
+              {formatMessage({ id: 'cart-total' })}
+            </h1>
+            <h1 className="mx-1 whitespace-no-wrap flex-1">
+              (
+              {locale === 'ar'
+                ? cartItems.length > 2 && cartItems.length
+                : `${cartItems.length} `}
+              {resolvePlural()})
+            </h1>
+            <h1>{cartSubtotal}</h1>
+            <span className="mx-1">
+              {deliveryCountry?.currency.translation[locale].symbol}
+            </span>
+          </div>
           <div className="flex items-center mb-2">
             <h1 className="flex-1">{formatMessage({ id: 'delivery-cost' })}</h1>
-            <h1 className="mx-1">
+            <h1>
               {shippingCost === 0 ? (
                 <span className="text-green-700 uppercase font-semibold">
                   {formatMessage({ id: 'cart-free' })}
                 </span>
               ) : (
-                shippingCost
+                <h1>
+                  {shippingCost}
+                  <span className="mx-1">
+                    {deliveryCountry?.currency.translation[locale].symbol}
+                  </span>
+                </h1>
               )}
             </h1>
           </div>
@@ -137,27 +158,16 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
               </h1>
             </div>
           )}
-          <div className=" flex mb-2  ">
-            <h1 className="text-gray-900">
-              {formatMessage({ id: 'cart-total' })}
-            </h1>
-            <h1 className="mx-1 whitespace-no-wrap flex-1">
-              (
-              {locale === 'ar'
-                ? cartItems.length > 2 && cartItems.length
-                : `${cartItems.length} `}
-              {resolvePlural()})
-            </h1>
-            <h1>{cartSubtotal}</h1>{' '}
-            {deliveryCountry?.currency.translation[locale].symbol}
-          </div>
+
           <hr className="mb-3" />
           <div className="  flex mb-2 text-lg ">
             <h1 className="flex-1 text-gray-900">
               {formatMessage({ id: 'subtotal' })}
             </h1>
             <h1>{cartTotal}</h1>{' '}
-            {deliveryCountry?.currency.translation[locale].symbol}
+            <span className="mx-1">
+              {deliveryCountry?.currency.translation[locale].symbol}
+            </span>
           </div>
           <hr className="mb-3" />
           <button

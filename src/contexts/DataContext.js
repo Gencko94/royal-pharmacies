@@ -63,14 +63,6 @@ export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState(null);
   const [isLightTheme, setLightTheme] = React.useState(true);
 
-  const localViewed = localStorage.getItem('visitedItems');
-  const [viewedItems, setViewedItems] = React.useState(() => {
-    if (localViewed) {
-      return JSON.parse(localViewed);
-    } else {
-      return [];
-    }
-  });
   const prefferedLanguage = localStorage.getItem('prefferedLanguage');
 
   const [language, setLanguage] = React.useState(() => {
@@ -85,36 +77,31 @@ export default function DataContextProvider({ children }) {
     localStorage.setItem('prefferedLanguage', lang);
     setLanguage(lang);
   };
-  const getViewedItems = () => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const visitedItems = allItems.filter(item =>
-          viewedItems.includes(item.id)
-        );
-        resolve({ visitedItems });
-      }, 1500);
-    });
-  };
+  // const getViewedItems = () => {
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       const visitedItems = allItems.filter(item =>
+  //         viewedItems.includes(item.id)
+  //       );
+  //       resolve({ visitedItems });
+  //     }, 1500);
+  //   });
+  // };
   const addViewedItems = id => {
-    return new Promise(resolve => {
-      const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
-      const isItemInHistory = visitedItems.find(item => item.id === id);
-      if (!isItemInHistory) {
-        visitedItems.push(id);
-        localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
-        setViewedItems(visitedItems);
-      }
-      setTimeout(() => {
-        resolve({ msg: 'ok' });
-      }, 500);
-    });
+    const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+    const isItemInHistory = visitedItems.find(item => item.id === id);
+    if (!isItemInHistory) {
+      visitedItems.push({ id });
+      localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
+      // setViewedItems(visitedItems);
+    }
   };
   const removeViewedItem = id => {
     return new Promise(resolve => {
       setTimeout(() => {
-        const updated = viewedItems.filter(i => i !== id);
-        setViewedItems(updated);
-        localStorage.setItem('visitedItems', JSON.stringify(updated));
+        // const updated = viewedItems.filter(i => i !== id);
+        // setViewedItems(updated);
+        // localStorage.setItem('visitedItems', JSON.stringify(updated));
         resolve({
           message: 'ok',
           id,
@@ -1485,7 +1472,7 @@ export default function DataContextProvider({ children }) {
         getOrderedItems,
         getRecentlyViewedVertical,
         getFeaturedItems,
-        getViewedItems,
+        // getViewedItems,
         addViewedItems,
         removeViewedItem,
       }}

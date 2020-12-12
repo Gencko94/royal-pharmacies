@@ -3,21 +3,23 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { BeatLoader } from 'react-spinners';
 
-import { DataProvider } from '../../contexts/DataContext';
+import { getUserOrders } from '../../Queries/Queries';
 import NoOrders from './MyOrders/NoOrders';
 import Orders from './MyOrders/Orders';
 
 export default function MyOrders() {
-  const { getOrderedItems } = React.useContext(DataProvider);
-
   /**
    * Main Fetch
    */
-  const { data, isLoading } = useQuery('orders', async () => {
-    const res = await getOrderedItems();
+  const { data, isLoading } = useQuery(
+    'userOrders',
+    async () => {
+      const res = await getUserOrders();
 
-    return res;
-  });
+      return res;
+    },
+    { retry: true }
+  );
   if (isLoading)
     return (
       <div className="flex h-full justify-center items-center">

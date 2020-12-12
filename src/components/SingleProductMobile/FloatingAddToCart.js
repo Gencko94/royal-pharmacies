@@ -4,18 +4,32 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
 import { MoonLoader } from 'react-spinners';
+import { DataProvider } from '../../contexts/DataContext';
 
 export default function FloatingAddToCart({
-  handleSubstractQuantity,
   quantity,
-  handleAddQuantity,
+  setQuantity,
   itemInCart,
   handleAddToCart,
-  price,
-  id,
+
+  data,
   addToCartButtonLoading,
+  selectedOption,
+  selectedVariation,
 }) {
-  const { formatMessage } = useIntl();
+  const { deliveryCountry } = React.useContext(DataProvider);
+
+  const handleSubstractQuantity = () => {
+    if (parseInt(quantity) === 1) {
+      return;
+    }
+    setQuantity(parseInt(quantity) - 1);
+  };
+  const handleAddQuantity = () => {
+    setQuantity(parseInt(quantity) + 1);
+  };
+
+  const { formatMessage, locale } = useIntl();
   const variants = {
     hidden: {
       y: '100%',
@@ -39,7 +53,7 @@ export default function FloatingAddToCart({
       exit="exited"
       className={`floating-button border-t bg-second-nav-text-light`}
     >
-      <div className=" flex items-center justify-center flex-1">
+      <div className=" flex items-center justify-center">
         <button onClick={handleSubstractQuantity} className="p-1">
           <AiOutlineMinusCircle
             className={`w-6 h-6 ${
@@ -47,18 +61,43 @@ export default function FloatingAddToCart({
             }`}
           />
         </button>
-        <span className="mx-2">{quantity}</span>
+        <input
+          value={quantity}
+          onChange={e => setQuantity(e.target.value)}
+          className="mx-1 px-2 py-1 border rounded"
+          style={{ maxWidth: '40px', textAlign: 'center' }}
+        />
         <button onClick={handleAddQuantity} className="p-1">
           <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
         </button>
       </div>
-      <div className="p-1 text-center">{quantity * price} KD</div>
+      <div className="p-1 text-center mx-1">
+        {data.new_variation_addons[selectedVariation].options
+          ? data.new_variation_addons[selectedVariation].options[
+              selectedOption[selectedVariation]
+            ].promotion_price
+            ? quantity *
+              data.new_variation_addons[selectedVariation].options[
+                selectedOption[selectedVariation]
+              ].promotion_price
+            : quantity *
+              data.new_variation_addons[selectedVariation].options[
+                selectedOption[selectedVariation]
+              ].price
+          : data.new_variation_addons[selectedVariation].promotion_price
+          ? quantity *
+            data.new_variation_addons[selectedVariation].promotion_price
+          : quantity * data.new_variation_addons[selectedVariation].price}
+        <span className="mx-1">
+          {deliveryCountry?.currency.translation[locale].symbol}
+        </span>
+      </div>
       <button
         onClick={() => {
           if (itemInCart) {
             return;
           } else {
-            handleAddToCart({ id, quantity });
+            handleAddToCart({ id: data.id, quantity });
           }
         }}
         className={`${

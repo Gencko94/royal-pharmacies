@@ -3,6 +3,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import moment from 'moment';
 export default function Order({ order }) {
   const { formatMessage } = useIntl();
   const [isOpen, setOpen] = React.useState(false);
@@ -18,48 +19,53 @@ export default function Order({ order }) {
         }`}
       >
         <h1>
-          {formatMessage({ id: 'status' })} :{' '}
-          {order.delivered
-            ? formatMessage({ id: 'delivered' })
-            : formatMessage({ id: 'pending' })}
+          {formatMessage({ id: 'status' })} : {order.status}
+          {/* ? formatMessage({ id: 'delivered' })
+             : formatMessage({ id: 'pending' })} */}
         </h1>
       </motion.div>
       <motion.div layout className="my-orders-grid__desktop text-sm p-2">
         <motion.div layout>
           <h1 className="font-semibold ">
-            {formatMessage({ id: 'order-number' })} : {order.orderNo}
+            {formatMessage({ id: 'order-number' })} : {order.id}
           </h1>
           <div className="flex items-center">
             <h1 className="">{formatMessage({ id: 'order-date' })} :</h1>
-            <h1 className="text-gray-600 mx-1">{order.orderDate}</h1>
+            <h1 className="text-gray-600 mx-1">
+              {' '}
+              {moment(order.created_at).format('DD/MM/YYYY-HH:MM')}
+            </h1>
           </div>
           <div className="flex items-center">
             <h1 className="">
-              {order.delivered
+              {order.status === 'delivered'
                 ? formatMessage({ id: 'delivered-at' })
                 : formatMessage({ id: 'expected-delivery' })}{' '}
               :
             </h1>
             <h1 className="mx-1 text-gray-600">
-              {order.delivered ? order.deliveryDate : order.expectedDelivery}
+              {order.status === 'delivered' ? order.deliveryDate : 'soon'}
             </h1>
           </div>
           <div className="flex items-center">
             <h1 className="">
-              {order.delivered
+              {order.status === 'delivered'
                 ? formatMessage({ id: 'delivered-to' })
                 : formatMessage({ id: 'deliver-to' })}
               :
             </h1>
-            <h1 className="mx-1 text-gray-600"> {order.deliveryDestination}</h1>
+            <h1 className="mx-1 text-gray-600">
+              {' '}
+              {order.address.marked_address}
+            </h1>
           </div>
           <div className="flex items-center">
             <h1>{formatMessage({ id: 'payment-method' })}:</h1>
-            <h1 className="text-gray-600 mx-1">K-net</h1>
+            <h1 className="text-gray-600 mx-1">{order.payment_method}</h1>
           </div>
         </motion.div>
         <motion.div layout>
-          <img src={order.orderItems[0].photos.small} alt={order.orderNo} />
+          {/* <img src={order.orderItems[0].photos.small} alt={order.id} /> */}
         </motion.div>
       </motion.div>
       <motion.div layout className="p-2 flex items-center ">
@@ -79,8 +85,10 @@ export default function Order({ order }) {
       <AnimatePresence>
         {isOpen && (
           <Content
-            orderItems={order.orderItems}
-            orderAmount={order.orderAmount}
+            orderItems={order.items}
+            orderSubtotal={order.subtotal}
+            orderTotal={order.total}
+            shippingCost={order.shipping_cost}
           />
         )}
       </AnimatePresence>
@@ -88,7 +96,7 @@ export default function Order({ order }) {
   );
 }
 
-const Content = ({ orderItems, orderAmount }) => {
+const Content = ({ orderItems, orderTotal, orderSubtotal, shippingCost }) => {
   const { locale, formatMessage } = useIntl();
   const containerVariants = {
     hidden: {
@@ -112,6 +120,7 @@ const Content = ({ orderItems, orderAmount }) => {
       <div className="my-orders-items__table-desktop font-semibold ">
         <h1>#</h1>
         <h1>{formatMessage({ id: 'the-item' })}</h1>
+        <h1>{formatMessage({ id: 'quantity' })}</h1>
         <h1>{formatMessage({ id: 'price' })}</h1>
       </div>
       <br />
@@ -122,14 +131,16 @@ const Content = ({ orderItems, orderAmount }) => {
               <h1 className="">{i + 1}</h1>
             </div>
             <Link
-              to={`/${locale}/${orderItem.category.replace(
-                /\s|%|,/g,
-                '-'
-              )}/${orderItem.name.replace(/\s|%|,|-/g, '-')}/${orderItem.id}`}
+              to={`/${locale}/c/${orderItem.id}`}
               className="hover:underline"
             >
-              <h1 className="truncate  semibold">{orderItem.name}</h1>
+              <h1 className="truncate  semibold">
+                {orderItem.product.translation[locale].title}
+              </h1>
             </Link>
+            <div className="">
+              <h1 className="">{orderItem.qty}</h1>
+            </div>
             <div className="">
               <h1 className="">{orderItem.price}</h1>
             </div>
@@ -139,13 +150,17 @@ const Content = ({ orderItems, orderAmount }) => {
       <hr className="my-1" />
       <div className="my-orders-receipt-summary font-bold text-sm">
         <h1>{formatMessage({ id: 'cart-total' })}</h1>
-        <h1>{orderAmount}</h1>
+        <h1>{orderSubtotal}</h1>
         <h1>{formatMessage({ id: 'cart-delivery-cost' })}</h1>
-        <h1 className="mb-2">{formatMessage({ id: 'cart-free' })}</h1>
+        <h1 className="mb-2">
+          {shippingCost === '0'
+            ? formatMessage({ id: 'cart-free' })
+            : shippingCost}
+        </h1>
         <h1 className="text-green-700 text-base">
           {formatMessage({ id: 'subtotal' })}
         </h1>
-        <h1 className="text-green-700 text-base">{orderAmount}</h1>
+        <h1 className="text-green-700 text-base">{orderTotal}</h1>
       </div>
     </motion.div>
   );

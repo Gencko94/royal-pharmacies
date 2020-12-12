@@ -4,12 +4,15 @@ import { useIntl } from 'react-intl';
 import knet from '../../assets/paymentLogos/knet.png';
 import mastercard from '../../assets/paymentLogos/mastercard.png';
 import visa from '../../assets/paymentLogos/visa.png';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function PersonalInformationMobile({
-  handleStepForward,
   handleStepBack,
   personalInfo,
   setPersonalInfo,
   selectedAddress,
+  handleCheckout,
+  checkoutLoading,
 }) {
   const { formatMessage } = useIntl();
   const paymentMethodOptions = [
@@ -144,16 +147,26 @@ export default function PersonalInformationMobile({
 
         <div className="flex justify-end items-center p-2">
           <button
-            className="px-3 py-1 bg-btn-primary-light text-btn-secondary-light rounded font-semibold mr-3"
+            className="px-3 py-1 bg-main-color text-main-text rounded font-semibold mr-3"
             onClick={handleStepBack}
           >
             {formatMessage({ id: 'btn-back-to-addresses' })}
           </button>
           <button
-            className="px-3 py-1 bg-btn-primary-light text-btn-secondary-light rounded font-semibold"
-            onClick={handleStepForward}
+            className="px-3 py-1 bg-main-color text-main-text rounded font-semibold"
+            onClick={handleCheckout}
           >
-            {formatMessage({ id: 'btn-proceed' })}
+            {checkoutLoading ? (
+              <Loader
+                type="ThreeDots"
+                color="#fff"
+                height={24}
+                width={24}
+                visible={true}
+              />
+            ) : (
+              formatMessage({ id: 'checkout' })
+            )}
           </button>
         </div>
       </div>
