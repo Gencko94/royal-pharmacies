@@ -132,7 +132,7 @@ export default function RightSection({
             if (itemInCart) {
               return;
             } else {
-              handleAddToCart(quantity.value);
+              handleAddToCart(quantity);
             }
           }}
           className={`${

@@ -91,7 +91,7 @@ export default function DataContextProvider({ children }) {
     const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
     const isItemInHistory = visitedItems.find(item => item.id === id);
     if (!isItemInHistory) {
-      visitedItems.push({ id });
+      visitedItems.unshift({ id });
       localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
       // setViewedItems(visitedItems);
     }

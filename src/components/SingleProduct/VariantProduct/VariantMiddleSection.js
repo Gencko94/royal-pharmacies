@@ -99,10 +99,10 @@ export default function VariantMiddleSection({
   return (
     <div className="flex flex-col w-full self-start ">
       <Link
-        to={`/${locale}/brands/${data.brand.slug}`}
+        to={`/${locale}/brands/${data.brand?.slug}`}
         className="hover:underline font-semibold text-sm text-gray-700 uppercase"
       >
-        {data.brand.translation[locale].name}
+        {data.brand?.translation[locale].name}
       </Link>
       <h1 className="font-bold text-2xl">{data.translation[locale].title}</h1>
       <div className="flex items-center ">
@@ -172,7 +172,7 @@ export default function VariantMiddleSection({
                     {
                       data.new_variation_addons[selectedVariation]
                         .promotion_price
-                    }{' '}
+                    }
                     <span className="mx-1">
                       {deliveryCountry?.currency.translation[locale].symbol}
                     </span>

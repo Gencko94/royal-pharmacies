@@ -271,6 +271,7 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
 };
 
 export const addToCart = async ({ newItem, userId, deliveryCountry }) => {
+  console.log(newItem);
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
     headers: {
@@ -283,9 +284,14 @@ export const addToCart = async ({ newItem, userId, deliveryCountry }) => {
     {
       qty: newItem.quantity,
       product: newItem.id,
+      addons: {
+        [newItem.variation?.id]: newItem.variation?.item_id,
+        [newItem.option?.id]: newItem.option?.item_id,
+      },
     },
     config
   );
+  console.log(res.data);
   if (res.data.status === true) {
     return {
       cartItems: res.data.data.items,
@@ -561,6 +567,7 @@ export const getVisitedItems = async () => {
     `${process.env.REACT_APP_MAIN_URL}/multiple-product`,
     { products: localVisited }
   );
+  console.log(res.data);
   if (res.data.status === true) {
     return res.data.data;
   }

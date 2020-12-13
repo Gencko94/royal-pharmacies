@@ -85,7 +85,7 @@ export default function AvailableAddressesMobile({
                       layout
                       exit="partial"
                       onClick={() => handleInfoTabOpen(address.id)}
-                      className="absolute overflow-hidden p-2 text-main-text  transition cursor-pointer duration-150 opacity-50 bg-gray-800 hover:opacity-75"
+                      className="absolute overflow-hidden p-2 text-main-text  transition cursor-pointer duration-150 opacity-75 bg-gray-800"
                     >
                       <AiOutlineInfoCircle
                         style={{ left: '10px' }}

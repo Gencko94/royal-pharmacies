@@ -12,10 +12,6 @@ export default function WishListItem({
   item,
   handleRemoveItemFromWishList,
   removeFromWishListButtonLoading,
-  addToCartButtonLoading,
-  handleAddToCart,
-  handleRemoveFromCart,
-  cartItems,
 }) {
   const { formatMessage, locale } = useIntl();
   const variant = {
@@ -50,11 +46,6 @@ export default function WishListItem({
           alt={`${item[`name_${locale}`]}`}
           pb="calc(100% * 286/210)"
         />
-        {/* <img
-          className=""
-          src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
-          alt={`${item[`name_${locale}`]}`}
-        /> */}
       </Link>
       <div className="">
         <Link to={`/${locale}/item/${item.id}}`}>
@@ -102,7 +93,7 @@ export default function WishListItem({
             )}
           </button>
 
-          <button
+          {/* <button
             onClick={() => {
               if (cartItems.includes(item.id)) {
                 handleRemoveFromCart(item.id);
@@ -138,7 +129,7 @@ export default function WishListItem({
                 <h1 className="mx-2">{formatMessage({ id: 'add-to-cart' })}</h1>
               </>
             )}
-          </button>
+          </button> */}
         </div>
       </div>
     </motion.div>

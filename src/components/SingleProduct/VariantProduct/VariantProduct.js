@@ -42,18 +42,37 @@ export default function VariantProduct({
     setAddToCartButtonLoading(true);
     if (userId) {
       try {
-        const newItem = { id: data.id, quantity };
+        const newItem = {
+          id: data.id,
+          quantity,
+          variation: {
+            id: data.new_variation_addons?.[selectedVariation].id,
+            item_id:
+              data.new_variation_addons?.[selectedVariation].addon_item_id,
+          },
+          option: {
+            id:
+              data.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].id,
+            item_id:
+              data.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].addon_item_id,
+          },
+        };
         await addToCartMutation({ newItem, userId, deliveryCountry });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        console.clear();
+        // console.clear();
 
+        console.log(error);
         console.log(error.response);
-        if (error.response.data.message === 'Item founded on the Cart') {
-          setItemInCart(true);
-        }
+        // if (error.response.data.message === 'Item founded on the Cart') {
+        //   setItemInCart(true);
+        // }
         setAddToCartButtonLoading(false);
       }
     } else {

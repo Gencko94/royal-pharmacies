@@ -6,26 +6,26 @@ import WishlistContainer from '../components/Wishlist/WishlistContainer';
 import WishlistRightSide from '../components/Wishlist/WishlistRightSide';
 import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
-import { DataProvider } from '../contexts/DataContext';
+// import { DataProvider } from '../contexts/DataContext';
 
 export default function Wishlist({ userId }) {
   const [
     removeFromWishListButtonLoading,
     setRemoveFromWishListButtonLoading,
   ] = React.useState(null);
-  const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
-    null
-  );
-  const { deliveryCountry } = React.useContext(DataProvider);
+  // const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
+  //   null
+  // );
+  // const { deliveryCountry } = React.useContext(DataProvider);
   const { authenticationLoading } = React.useContext(AuthProvider);
-  const [cartItems, setCartItems] = React.useState([]);
+  // const [cartItems, setCartItems] = React.useState([]);
   const {
     wishlistItems,
     wishlistItemsLoading,
     isGetWishlistError,
     removeFromWishListMutation,
-    addToCartMutation,
-    removeFromCartMutation,
+    // addToCartMutation,
+    // removeFromCartMutation,
   } = React.useContext(CartAndWishlistProvider);
 
   const handleRemoveItemFromWishList = async id => {
@@ -38,36 +38,36 @@ export default function Wishlist({ userId }) {
       console.log(error.response);
     }
   };
-  const handleAddToCart = async item => {
-    setAddToCartButtonLoading(item.id);
-    const newItem = {
-      id: item.id,
-      quantity: 1,
-    };
-    try {
-      await addToCartMutation({ newItem, userId, deliveryCountry });
-      setAddToCartButtonLoading(null);
-      setCartItems(prev => {
-        return [...prev, item.id];
-      });
-    } catch (error) {
-      setAddToCartButtonLoading(null);
-      console.log(error.response);
-    }
-  };
-  const handleRemoveFromCart = async id => {
-    setAddToCartButtonLoading(id);
-    try {
-      await removeFromCartMutation({ id, userId });
-      setAddToCartButtonLoading(null);
-      setCartItems(prev => {
-        return prev.filter(i => i !== id);
-      });
-    } catch (error) {
-      setAddToCartButtonLoading(null);
-      console.log(error.response);
-    }
-  };
+  // const handleAddToCart = async item => {
+  //   setAddToCartButtonLoading(item.id);
+  //   const newItem = {
+  //     id: item.id,
+  //     quantity: 1,
+  //   };
+  //   try {
+  //     await addToCartMutation({ newItem, userId, deliveryCountry });
+  //     setAddToCartButtonLoading(null);
+  //     setCartItems(prev => {
+  //       return [...prev, item.id];
+  //     });
+  //   } catch (error) {
+  //     setAddToCartButtonLoading(null);
+  //     console.log(error.response);
+  //   }
+  // };
+  // const handleRemoveFromCart = async id => {
+  //   setAddToCartButtonLoading(id);
+  //   try {
+  //     await removeFromCartMutation({ id, userId });
+  //     setAddToCartButtonLoading(null);
+  //     setCartItems(prev => {
+  //       return prev.filter(i => i !== id);
+  //     });
+  //   } catch (error) {
+  //     setAddToCartButtonLoading(null);
+  //     console.log(error.response);
+  //   }
+  // };
   return (
     <Layout>
       <Helmet>
@@ -82,10 +82,10 @@ export default function Wishlist({ userId }) {
               wishlistItems={wishlistItems}
               handleRemoveItemFromWishList={handleRemoveItemFromWishList}
               removeFromWishListButtonLoading={removeFromWishListButtonLoading}
-              addToCartButtonLoading={addToCartButtonLoading}
-              handleAddToCart={handleAddToCart}
-              handleRemoveFromCart={handleRemoveFromCart}
-              cartItems={cartItems}
+              // addToCartButtonLoading={addToCartButtonLoading}
+              // handleAddToCart={handleAddToCart}
+              // handleRemoveFromCart={handleRemoveFromCart}
+              // cartItems={cartItems}
             />
             <WishlistRightSide
               wishlistItems={wishlistItems}

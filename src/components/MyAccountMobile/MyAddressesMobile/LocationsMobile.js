@@ -3,18 +3,16 @@ import { useIntl } from 'react-intl';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import LocationMobile from './LocationMobile';
+import { AuthProvider } from '../../../contexts/AuthContext';
 
-export default function LocationsMobile({
-  locations,
-  setShowMap,
-  deleteMutation,
-}) {
+export default function LocationsMobile({ locations, setShowMap }) {
+  const { deleteAddressMutation } = React.useContext(AuthProvider);
   const { formatMessage } = useIntl();
   const [deleteButtonLoading, setDeleteButtonLoading] = React.useState(null);
   const handleRemoveLocation = async id => {
     try {
       setDeleteButtonLoading(id);
-      await deleteMutation(id);
+      await deleteAddressMutation(id);
     } catch (error) {
       console.log(error.response);
     }
@@ -37,14 +35,14 @@ export default function LocationsMobile({
         <motion.div
           layout
           initial={false}
-          className="p-3 locations-grid__mobile"
+          className="p-2 locations-grid__mobile"
         >
           <AnimatePresence>
             {locations.map(location => {
               return (
                 <LocationMobile
                   key={location.id}
-                  data={location}
+                  address={location}
                   handleRemoveLocation={handleRemoveLocation}
                   deleteButtonLoading={deleteButtonLoading}
                 />

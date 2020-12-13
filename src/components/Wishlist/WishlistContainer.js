@@ -10,10 +10,6 @@ export default function WishlistContainer({
   wishlistItems,
   handleRemoveItemFromWishList,
   removeFromWishListButtonLoading,
-  addToCartButtonLoading,
-  handleRemoveFromCart,
-  handleAddToCart,
-  cartItems,
 }) {
   const { formatMessage, locale } = useIntl();
   if (wishlistItemsLoading) {
@@ -39,10 +35,6 @@ export default function WishlistContainer({
                     removeFromWishListButtonLoading={
                       removeFromWishListButtonLoading
                     }
-                    addToCartButtonLoading={addToCartButtonLoading}
-                    handleAddToCart={handleAddToCart}
-                    handleRemoveFromCart={handleRemoveFromCart}
-                    cartItems={cartItems}
                   />
                 );
               })}

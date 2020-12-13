@@ -133,12 +133,12 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
                   {formatMessage({ id: 'cart-free' })}
                 </span>
               ) : (
-                <h1>
+                <span>
                   {shippingCost}
                   <span className="mx-1">
                     {deliveryCountry?.currency.translation[locale].symbol}
                   </span>
-                </h1>
+                </span>
               )}
             </h1>
           </div>

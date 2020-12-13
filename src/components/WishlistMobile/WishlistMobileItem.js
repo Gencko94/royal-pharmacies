@@ -10,10 +10,10 @@ export default function WishlistMobileItem({
   item,
   removeFromWishListButtonLoading,
   handleRemoveItemFromWishList,
-  handleAddToCart,
-  itemInCart,
-  handleRemoveItemFromCart,
-  addToCartButtonLoading,
+  // handleAddToCart,
+  // itemInCart,
+  // handleRemoveItemFromCart,
+  // addToCartButtonLoading,
 }) {
   const { formatMessage, locale } = useIntl();
   const variant = {
@@ -94,7 +94,7 @@ export default function WishlistMobileItem({
             </>
           )}
         </button>
-        <button
+        {/* <button
           onClick={() => {
             if (itemInCart.includes(item.id)) {
               handleRemoveItemFromCart(item.id);
@@ -130,12 +130,6 @@ export default function WishlistMobileItem({
               <h1 className="mx-2">{formatMessage({ id: 'add-to-cart' })}</h1>
             </>
           )}
-        </button>
-        {/* <button
-          onClick={() => handleAddToCart(item.id)}
-          className="p-2 flex-1  text-sm border border-main-color text-main-color  rounded font-semibold mx-2  "
-        >
-          {formatMessage({ id: 'add-to-wishlist' })}
         </button> */}
       </div>
     </motion.div>

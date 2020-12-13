@@ -10,8 +10,7 @@ import { AuthProvider } from '../../contexts/AuthContext';
 export default function MyAddressesMobile() {
   const {
     userAddresses,
-    addAddressMutation,
-    deleteAddressMutation,
+
     userAddressesLoading,
   } = React.useContext(AuthProvider);
   const [showMap, setShowMap] = React.useState(false);
@@ -45,6 +44,7 @@ export default function MyAddressesMobile() {
       opacity: 0,
     },
   };
+  console.log(userAddresses);
   return (
     <motion.div
       variants={containerVariants}
@@ -56,15 +56,11 @@ export default function MyAddressesMobile() {
         (userAddresses.length === 0 ? (
           <NoAddresses setShowMap={setShowMap} />
         ) : (
-          <LocationsMobile
-            locations={userAddresses}
-            setShowMap={setShowMap}
-            deleteMutation={deleteAddressMutation}
-          />
+          <LocationsMobile locations={userAddresses} setShowMap={setShowMap} />
         ))}
       {showMap && (
         <div className="relative" style={{ minHeight: 'calc(-176px + 100vh)' }}>
-          <GoogleMapsAddress addMutation={addAddressMutation} />
+          <GoogleMapsAddress setShowMap={setShowMap} />
         </div>
       )}
     </motion.div>

@@ -6,23 +6,24 @@ import MobileCartLoader from '../components/CartMobile/ContentLoaders/MobileCart
 import { AuthProvider } from '../contexts/AuthContext';
 import WishlistMobileContainer from '../components/WishlistMobile/WishlistMobileContainer';
 import Layout from '../components/Layout';
+import StaticSwiper from '../components/Swipers/StaticSwiper';
 export default function WishlistMobile({ userId }) {
   const { formatMessage } = useIntl();
   const [
     removeFromWishListButtonLoading,
     setRemoveFromWishListButtonLoading,
   ] = React.useState(null);
-  const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
-    null
-  );
-  const [itemInCart, setItemInCart] = React.useState([]);
+  // const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
+  //   null
+  // );
+  // const [itemInCart, setItemInCart] = React.useState([]);
   const {
     wishlistItems,
     wishlistItemsLoading,
     isGetWishlistError,
     removeFromWishListMutation,
-    addToCartMutation,
-    removeFromCartMutation,
+    // addToCartMutation,
+    // removeFromCartMutation,
   } = React.useContext(CartAndWishlistProvider);
   const { authenticationLoading } = React.useContext(AuthProvider);
   const handleRemoveItemFromWishList = async id => {
@@ -35,36 +36,36 @@ export default function WishlistMobile({ userId }) {
       console.log(error.response);
     }
   };
-  const handleAddToCart = async item => {
-    setAddToCartButtonLoading(item.id);
-    const addedItem = {
-      id: item.id,
-      quantity: 1,
-    };
-    try {
-      await addToCartMutation({ addedItem, userId });
-      setAddToCartButtonLoading(null);
-      setItemInCart(prev => {
-        return [...prev, item.id];
-      });
-    } catch (error) {
-      setAddToCartButtonLoading(null);
-      console.log(error.response);
-    }
-  };
-  const handleRemoveItemFromCart = async id => {
-    setAddToCartButtonLoading(id);
-    try {
-      await removeFromCartMutation({ id, userId });
-      setAddToCartButtonLoading(null);
-      setItemInCart(prev => {
-        return prev.filter(i => i !== id);
-      });
-    } catch (error) {
-      setAddToCartButtonLoading(null);
-      console.log(error.response);
-    }
-  };
+  // const handleAddToCart = async item => {
+  //   setAddToCartButtonLoading(item.id);
+  //   const addedItem = {
+  //     id: item.id,
+  //     quantity: 1,
+  //   };
+  //   try {
+  //     await addToCartMutation({ addedItem, userId });
+  //     setAddToCartButtonLoading(null);
+  //     setItemInCart(prev => {
+  //       return [...prev, item.id];
+  //     });
+  //   } catch (error) {
+  //     setAddToCartButtonLoading(null);
+  //     console.log(error.response);
+  //   }
+  // };
+  // const handleRemoveItemFromCart = async id => {
+  //   setAddToCartButtonLoading(id);
+  //   try {
+  //     await removeFromCartMutation({ id, userId });
+  //     setAddToCartButtonLoading(null);
+  //     setItemInCart(prev => {
+  //       return prev.filter(i => i !== id);
+  //     });
+  //   } catch (error) {
+  //     setAddToCartButtonLoading(null);
+  //     console.log(error.response);
+  //   }
+  // };
   if (isGetWishlistError) {
     return (
       <Layout>
@@ -85,11 +86,11 @@ export default function WishlistMobile({ userId }) {
 
         {!wishlistItemsLoading && !isGetWishlistError && (
           <WishlistMobileContainer
-            itemInCart={itemInCart}
-            handleAddToCart={handleAddToCart}
-            handleRemoveItemFromCart={handleRemoveItemFromCart}
+            // itemInCart={itemInCart}
+            // handleAddToCart={handleAddToCart}
+            // handleRemoveItemFromCart={handleRemoveItemFromCart}
             handleRemoveItemFromWishList={handleRemoveItemFromWishList}
-            addToCartButtonLoading={addToCartButtonLoading}
+            // addToCartButtonLoading={addToCartButtonLoading}
             removeFromWishListButtonLoading={removeFromWishListButtonLoading}
             wishlistItems={wishlistItems}
             wishlistItemsLoading={wishlistItemsLoading}
@@ -97,11 +98,7 @@ export default function WishlistMobile({ userId }) {
         )}
 
         <hr />
-        {/* <ItemsSlider
-          type="phone"
-          miniLogo={false}
-          title="Save Big with Phones & Tablets"
-        /> */}
+        <StaticSwiper type="electronics" />
       </div>
     </Layout>
   );

@@ -165,7 +165,7 @@ input {
 .cart-main-grid {
   display: grid;
   position: relative;
-  grid-template-columns: 0.7fr minmax(270px, 0.3fr);
+  grid-template-columns: 1fr minmax(270px, 0.3fr);
   gap: 0.5em;
 }
 
@@ -670,6 +670,7 @@ input {
   bottom: 50px;
   text-align: center;
   left: 50%;
+  max-width: 300px;
   display: flex;
   justify-content: space-between;
   align-items: center;

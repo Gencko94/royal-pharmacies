@@ -39,7 +39,12 @@ export default function CartItemMobile({
     setQuantity(parseInt(quantity) + 1);
   };
   const handleEditItemFromCart = async (cartId, itemId, quantity) => {
-    if (item.qty === quantity || quantity === 0) return;
+    if (
+      quantity > item.options.max_quantity ||
+      quantity === 0 ||
+      item.qty === quantity
+    )
+      return;
     setEditLoading(true);
     try {
       await editCartMutation({ cartId, itemId, userId, quantity });
@@ -79,12 +84,18 @@ export default function CartItemMobile({
           <img
             className=""
             src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
-            alt={`${item[`name_${locale}`]}`}
+            alt={item[`name_${locale}`]}
           />
         </Link>
         <div className="text-sm">
           <Link to={`/${locale}/item/${item.id}}`}>
-            <h1 className="text-base ">{`${item[`name_${locale}`]}`}</h1>
+            <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
+              item.options.addons.length !== 0
+                ? ` - ${Object.keys(item.options.addons)
+                    .map(variation => item.options.addons[variation])
+                    .join(' - ')}`
+                : ''
+            }`}</h1>
           </Link>
           <h1 className=" font-semibold text-green-700">
             {formatMessage({ id: 'in-stock' })}
@@ -120,9 +131,15 @@ export default function CartItemMobile({
               handleEditItemFromCart(item.cart_id, item.id, quantity)
             }
             style={{ width: '50px' }}
-            disabled={item.qty === quantity || quantity === 0}
+            disabled={
+              quantity > item.options.max_quantity ||
+              quantity === 0 ||
+              item.qty === quantity
+            }
             className={`p-1 flex items-center justify-center text-xs rounded mt-1 ${
-              quantity === item.qty || quantity === 0
+              quantity > item.options.max_quantity ||
+              quantity === 0 ||
+              item.qty === quantity
                 ? 'bg-gray-600 text-gray-400'
                 : 'bg-main-color text-main-text'
             }`}

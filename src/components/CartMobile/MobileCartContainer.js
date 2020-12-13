@@ -20,6 +20,11 @@ export default function MobileCartContainer({
   return (
     <AnimateSharedLayout>
       <motion.div initial={false} layout className="mb-2">
+        <motion.div layout className="px-2 py-3 border-b">
+          <h1 className="text-lg font-semibold">
+            {formatMessage({ id: 'cart' })}
+          </h1>
+        </motion.div>
         <AnimatePresence>
           {cartItems.map(item => (
             <CartItemMobile

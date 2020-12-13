@@ -44,7 +44,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   const innerRef = React.useRef(null);
   const { locale, formatMessage } = useIntl();
 
-  const handleClickBackFirst = () => {
+  const handleHideCategories = () => {
     setPage(page - 1);
     setTimeout(() => {
       setShowCategories(false);
@@ -54,7 +54,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
     setPage(page - 1);
     setSecondSubPage(i);
   };
-  const handleClickNextZero = () => {
+  const handleShowCategories = () => {
     if (categoriesLoading) {
       return;
     }
@@ -164,19 +164,19 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
          
         z-30  fixed top-0 ${
           locale === 'ar' ? 'right-0' : 'left-0'
-        } min-w-75p h-screen sm:text-lg`}
+        } min-w-75p h-screen sm:text-lg overflow-hidden`}
       style={{ maxWidth: '75%' }}
     >
       <TopSection toggleSideMenu={toggleSideMenu} />
 
-      <div className="relative overflow-hidden mt-2 ">
+      <div className="relative overflow-hidden ">
         <div ref={innerRef} className="sidebar__inner  ">
           <div className="sidebar-first__page ">
             <motion.button
               key="allCategories"
               variants={childVariants}
-              onClick={handleClickNextZero}
-              className="py-2 px-2 mb-2 flex items-center justify-between "
+              onClick={handleShowCategories}
+              className="p-3 flex items-center justify-between "
             >
               <div className="flex items-center">
                 <AiOutlineApartment className=" w-25p h-25p" />
@@ -189,7 +189,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
             <motion.button
               key="cart"
               onClick={toggleSideMenu}
-              className="py-2 px-2 mb-2   "
+              className="p-3   "
               variants={childVariants}
             >
               <Link to={`/${locale}/cart`} className="flex items-center">
@@ -201,7 +201,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               <motion.button
                 key="login"
                 onClick={toggleSideMenu}
-                className="py-2 px-2 mb-2 "
+                className="p-3"
                 variants={childVariants}
               >
                 <Link to={`/${locale}/app/login`} className="flex items-center">
@@ -215,7 +215,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
             {userId && (
               <motion.button
                 key="profile"
-                className="py-2 px-2 mb-2"
+                className="p-3"
                 onClick={toggleSideMenu}
                 variants={childVariants}
               >
@@ -234,7 +234,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               key="orderHistory"
               variants={childVariants}
               onClick={toggleSideMenu}
-              className="py-2 px-2 mb-2  "
+              className="p-3"
             >
               <div className=" flex items-center">
                 <AiOutlineHistory className=" w-25p h-25p" />
@@ -249,7 +249,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 key="wishlist"
                 variants={childVariants}
                 onClick={toggleSideMenu}
-                className="py-2 px-2 mb-2  "
+                className="p-3"
               >
                 <Link to={`/${locale}/wishlist`} className="flex items-center">
                   <AiOutlineHeart className=" w-25p h-25p" />
@@ -262,7 +262,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 key="viewedItems"
                 variants={childVariants}
                 onClick={toggleSideMenu}
-                className="py-2 px-2 mb-2    "
+                className="p-3"
               >
                 <Link
                   to={`/${locale}/vieweditems`}
@@ -280,7 +280,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               key="deliverTo"
               variants={childVariants}
               onClick={handleShowDeliveryCountries}
-              className="p-2 mb-2"
+              className="p-3"
             >
               <div className=" flex items-center justify-between">
                 <div className="flex items-center">
@@ -297,7 +297,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               key="customerService"
               variants={childVariants}
               onClick={handleShowCustomerService}
-              className="p-2 mb-2"
+              className="p-3"
             >
               <div className=" flex items-center justify-between">
                 <div className="flex items-center">
@@ -314,7 +314,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               key="language"
               variants={childVariants}
               onClick={handleShowLanguages}
-              className="py-2 px-2 mb-2 flex items-center justify-between "
+              className="p-3 flex items-center justify-between "
             >
               <div className=" flex items-center">
                 <FaLanguage className=" w-25p h-25p" />
@@ -330,7 +330,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                   toggleSideMenu();
                   userLogoutMutation();
                 }}
-                className="py-2 px-2 mb-2"
+                className="p-3"
               >
                 <div className=" flex items-center">
                   <AiOutlinePoweroff className=" w-25p h-25p" />
@@ -341,7 +341,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
           </div>
           {showCategories && (
             <SideMenuCategories
-              handleClickBackFirst={handleClickBackFirst}
+              handleHideCategories={handleHideCategories}
               handleClickBackSecond={handleClickBackSecond}
               handleClickNextFirst={handleClickNextFirst}
               handleClickNextSecond={handleClickNextSecond}

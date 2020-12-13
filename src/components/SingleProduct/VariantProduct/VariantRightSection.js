@@ -144,7 +144,7 @@ export default function VariantRightSection({
             if (itemInCart) {
               return;
             } else {
-              handleAddToCart(quantity.value);
+              handleAddToCart(quantity);
             }
           }}
           className={`${

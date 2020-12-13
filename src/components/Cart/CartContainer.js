@@ -37,7 +37,7 @@ export default function CartContainer({
     return <CartContainerLoader locale={locale} />;
   }
   return (
-    <div className="">
+    <div>
       <AnimatePresence>
         {cartItems.length === 0 && <CartEmpty />}
       </AnimatePresence>
@@ -45,7 +45,6 @@ export default function CartContainer({
         <>
           <div className="cart-grid-titles font-semibold text-lg">
             <div></div>
-            {/* <h1 className="  ">{formatMessage({ id: 'shopping-cart' })}</h1> */}
             <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1>
             <h1 className="text-center">{formatMessage({ id: 'price' })}</h1>
           </div>

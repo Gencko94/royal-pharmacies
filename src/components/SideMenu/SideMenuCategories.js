@@ -1,12 +1,14 @@
 import React from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import Ink from 'react-ink';
 import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 export default function SideMenuCategories({
   categories,
   subCategory,
   secondSubPage,
-  handleClickBackFirst,
+  handleHideCategories,
   handleClickBackSecond,
   handleClickNextFirst,
   handleClickNextSecond,
@@ -14,46 +16,83 @@ export default function SideMenuCategories({
   const { formatMessage, locale } = useIntl();
   return (
     <>
-      <div className="sidebar-page">
-        <button
-          onClick={handleClickBackFirst}
-          className="py-2 px-2 mb-2 font-semibold uppercase"
-        >
-          {formatMessage({ id: 'go-back' })}
-        </button>
+      <div
+        className="sidebar-page"
+        style={{
+          maxHeight: 'calc(-160px + 100vh)',
+          overflowY: 'auto',
+          overFlowx: 'hidden',
+        }}
+      >
+        <div className="p-3 font-semibold justify-between flex items-center">
+          <button
+            className="relative rounded-full p-1"
+            onClick={handleHideCategories}
+          >
+            <Ink />
+            {locale === 'ar' ? (
+              <BsChevronRight className="w-5 h-5" />
+            ) : (
+              <BsChevronLeft className="w-5 h-5" />
+            )}
+          </button>
+          <h1 className="flex-1 text-center">
+            {formatMessage({ id: 'all-categories' })}
+          </h1>
+        </div>
         <hr />
         {categories.map((category, i) => {
           return (
             <button
               onClick={() => handleClickNextFirst(i)}
               key={category.id}
-              className="py-2 px-2 mb-2 flex items-center  justify-between"
+              className="p-3 flex items-center   justify-between"
             >
               <h1>{category.translation[locale].name}</h1>
 
-              {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
+              {locale === 'ar' ? (
+                <BsChevronLeft className="w-5 h-5" />
+              ) : (
+                <BsChevronRight className="w-5 h-5" />
+              )}
             </button>
           );
         })}
       </div>
-      <div className="sidebar-page">
-        <button
-          onClick={() => handleClickBackSecond(subCategory)}
-          className="py-2 px-2 mb-2 font-semibold uppercase"
-        >
-          {formatMessage({ id: 'go-back' })}
-        </button>
+      <div
+        className="sidebar-page"
+        style={{
+          maxHeight: 'calc(-160px + 100vh)',
+          overflowY: 'auto',
+          overFlowx: 'hidden',
+        }}
+      >
+        <div className="p-3 font-semibold justify-between flex items-center">
+          <button
+            className="relative rounded-full p-1"
+            onClick={() => handleClickBackSecond(subCategory)}
+          >
+            <Ink />
+            {locale === 'ar' ? (
+              <BsChevronRight className="w-5 h-5" />
+            ) : (
+              <BsChevronLeft className="w-5 h-5" />
+            )}
+          </button>
+          <h1 className="flex-1 text-center">
+            {categories[subCategory].translation[locale].name}
+          </h1>
+        </div>
         <hr />
-        {categories[subCategory].children.map((subCategory, i) => {
+        {categories[subCategory].children.map(subCategory => {
           return (
-            <button
-              onClick={() => handleClickNextSecond(i)}
-              key={i}
-              className="py-2 px-2 mb-2 flex items-center  justify-between"
+            <Link
+              to={`/${locale}/categories/${subCategory.slug}`}
+              key={subCategory.id}
+              className="p-3"
             >
-              <h1>{subCategory.translation[locale].name}</h1>
-              {locale === 'ar' ? <BsChevronLeft /> : <BsChevronRight />}
-            </button>
+              {subCategory.translation[locale].name}
+            </Link>
           );
         })}
       </div>

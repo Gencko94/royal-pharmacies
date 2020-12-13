@@ -71,7 +71,7 @@ export default function SingleProduct() {
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        console.clear();
+        // console.clear();
 
         console.log(error.response);
         if (error.response.data.message === 'Item founded on the Cart') {
