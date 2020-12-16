@@ -1,23 +1,22 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function BuyOptions({
   item,
-  setQuantity,
-  size,
-  quantity,
-  setSize,
   handleAddToCart,
   handleRemoveFromCart,
   loadingButton,
   cartItems,
+  selectedVariation,
+  selectedOption,
+  setSelectedOption,
+  setSelectedVariant,
 }) {
   const { formatMessage, locale } = useIntl();
-  const sizes = ['xs', 'sm', 'md', 'lg', 'xl'];
+
   const buyOptionsVariants = {
     hidden: {
       clipPath: ' circle(5% at 86% 92%)',
@@ -48,16 +47,49 @@ export default function BuyOptions({
       opacity: 0,
     },
   };
-  const handleAddQuantity = () => {
-    if (quantity < item.simple_addons.quantity) {
-      setQuantity(quantity + 1);
+  const resolveOptions = () => {
+    if (item.new_variation_addons[selectedVariation].options) {
+      return item.new_variation_addons[selectedVariation].options.map(
+        (option, i) => {
+          return (
+            <button
+              key={i}
+              onClick={() =>
+                setSelectedOption(prev => {
+                  return {
+                    ...prev,
+                    [selectedVariation]: i,
+                  };
+                })
+              }
+              className={`w-6 h-6 uppercase  font-semibold rounded p-1 flex items-center justify-center transition duration-150 m-1  shadow-itemsSlider-shallow ${
+                i === selectedOption[selectedVariation]
+                  ? 'bg-buy-options-main shadow-itemsSlider-shallow text-main-text'
+                  : 'bg-body-light  text-body-text-light'
+              } `}
+            >
+              {option.addon_item_value.substr(0, 1)}
+            </button>
+          );
+        }
+      );
+    } else {
+      return Object.keys(item.new_variation_addons).map((variation, i) => {
+        return (
+          <button
+            key={i}
+            onClick={() => setSelectedVariant(variation)}
+            className={`w-6 h-6 uppercase  font-semibold rounded p-1 flex items-center justify-center transition duration-150 m-1  shadow-itemsSlider-shallow ${
+              variation === selectedVariation
+                ? 'bg-buy-options-main shadow-itemsSlider-shallow text-main-text'
+                : 'bg-body-light  text-body-text-light'
+            } `}
+          >
+            {item.new_variation_addons[variation].addon_item_value.substr(0, 1)}
+          </button>
+        );
+      });
     }
-  };
-  const handleSubstractQuantity = () => {
-    if (quantity === 1) {
-      return;
-    }
-    setQuantity(quantity - 1);
   };
   return (
     <motion.div
@@ -75,54 +107,26 @@ export default function BuyOptions({
       <hr />
       <motion.div variants={childVariants}>
         <div className="px-2 py-1 text-sm  text-body-light font-bold text-center ">
-          <h1 className="">{formatMessage({ id: 'size' })}</h1>
-        </div>
-        <div className="px-2  flex items-center justify-center flex-wrap text-xs">
-          {sizes.map(unit => {
-            return (
-              <button
-                key={unit}
-                onClick={() => setSize(unit)}
-                className={`w-6 h-6 uppercase  font-semibold rounded p-1 flex items-center justify-center transition duration-150 m-1  shadow-itemsSlider-shallow ${
-                  size === unit
-                    ? 'bg-buy-options-main shadow-itemsSlider-shallow text-main-text'
-                    : 'bg-body-light  text-body-text-light'
-                } `}
-              >
-                {unit}
-              </button>
-            );
-          })}
-        </div>
-      </motion.div>
-      <motion.div variants={childVariants}>
-        <div className="p-1">
-          <h1 className="text-sm font-semibold text-center text-body-light">
-            {formatMessage({ id: 'quantity' })}
+          <h1 className="">
+            {item.new_variation_addons[selectedVariation].options
+              ? item.new_variation_addons[selectedVariation].options[
+                  selectedOption[selectedVariation]
+                ][`name_${locale}`]
+              : item.new_variation_addons[selectedVariation][`name_${locale}`]}
           </h1>
         </div>
-
-        <div className="px-2 flex  justify-center">
-          <button onClick={handleSubstractQuantity} className="">
-            <AiOutlineMinusCircle className="w-5 h-5   text-body-light" />
-          </button>
-          <div className="mx-2 rounded-full px-3 py-1 flex items-center justify-center bg-body-light">
-            {quantity}
-          </div>
-          <button onClick={handleAddQuantity} className="">
-            <AiOutlinePlusCircle className="w-5 h-5  text-body-light" />
-          </button>
+        <div className="px-2  flex items-center justify-center flex-wrap text-xs">
+          {resolveOptions()}
         </div>
       </motion.div>
+
       <motion.div variants={{ childVariants }} className="px-2 mt-2 ">
         <button
           onClick={() => {
-            console.log('remove');
             if (cartItems.includes(item.id)) {
               handleRemoveFromCart(item.id);
             } else {
-              console.log('add');
-              handleAddToCart({ id: item.id, quantity: quantity, size });
+              handleAddToCart({ id: item.id, quantity: 1 });
             }
           }}
           className={`${

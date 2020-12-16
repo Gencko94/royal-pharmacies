@@ -17,6 +17,7 @@ import SwiperLoader from '../components/Home/SwiperLoader';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
+import { useIntl } from 'react-intl';
 // import AnimatedSlides from '../components/Home/AnimatedSlides';
 
 export default function Home() {
@@ -29,6 +30,7 @@ export default function Home() {
     retry: true,
     refetchOnWindowFocus: false,
   });
+  const { locale } = useIntl();
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const resolveSwiper = (item, index) => {
     switch (item.type) {
@@ -51,7 +53,11 @@ export default function Home() {
             height="calc(100% * 1285/492.92)"
             // placeholder={<Loader height="377px" />}
           >
-            <StaticSwiper type={item.key} />
+            <StaticSwiper
+              type={item.key}
+              title={item[`title_${locale}`]}
+              setCartMenuOpen={setCartMenuOpen}
+            />
           </LazyLoad>
         );
       case 'banner':
@@ -108,8 +114,16 @@ export default function Home() {
         >
           <MainCarousel />
           <Categories />
-          <StaticSwiper type="electronics" setCartMenuOpen={setCartMenuOpen} />
-          <StaticSwiper type="home-kitchen" setCartMenuOpen={setCartMenuOpen} />
+          <StaticSwiper
+            type="men-clothing"
+            title={'Men Clothing'}
+            setCartMenuOpen={setCartMenuOpen}
+          />
+          <StaticSwiper
+            type="home-kitchen"
+            title={'Home & Kitchen'}
+            setCartMenuOpen={setCartMenuOpen}
+          />
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}

@@ -1,32 +1,32 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-export default function SizesAndColors({
-  sizes,
+export default function Options({
+  options,
   selectedOption,
   setSelectedOption,
-  variation,
+  selectedVariation,
 }) {
-  const { formatMessage } = useIntl();
+  const { locale } = useIntl();
   return (
     <div>
       <h1 className="font-semibold mb-2">
-        {formatMessage({ id: 'single-product-size' })}:
+        {options[selectedOption[selectedVariation]][`name_${locale}`]}
       </h1>
       <div className="single-product-sizes__container my-1">
-        {sizes.map((size, i) => {
-          const selected = selectedOption[variation] === i;
+        {options.map((option, i) => {
+          const selected = selectedOption[selectedVariation] === i;
           return (
             <button
               onClick={() =>
                 setSelectedOption(prev => {
                   return {
                     ...prev,
-                    [variation]: i,
+                    [selectedVariation]: i,
                   };
                 })
               }
-              key={size.addon_item_id}
+              key={option.addon_item_id}
               className={`
                 
                  hover:bg-main-color hover:text-main-text transition duration-150
@@ -37,7 +37,7 @@ export default function SizesAndColors({
                   : 'text-body-text-light'
               } `}
             >
-              {size.addon_item_value}
+              {option.addon_item_value}
             </button>
           );
         })}

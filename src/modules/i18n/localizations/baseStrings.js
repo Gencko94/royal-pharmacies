@@ -110,6 +110,8 @@ const baseStrings = {
   'accepted-payments': 'Accepted Payment Methods',
   'coupon-sale': 'Coupon Discount',
   'update-btn': 'Update',
+  'coupon-expired': 'Expired Coupon',
+  'coupon-invalid': 'Invalid Coupon',
 
   //
   'home.title': 'Home',
@@ -191,6 +193,8 @@ const baseStrings = {
   'btn-back-to-addresses': 'Back to Select Address',
   'select-address-header': 'Select a previously added Address or add new one ',
   'select-btn': 'Select',
+  select: 'Select',
+  submit: 'Submit',
   'selected-btn': 'Selected',
   'btn-proceed': 'Proceed',
   'order-placed-msg': 'Congratulations, Your Order has been Placed !',
@@ -204,6 +208,8 @@ const baseStrings = {
     'Street/Neighborhood/District',
   'maps-detailed-address-apartment': 'House or Apartment Number',
   'maps-detailed-address-building': 'Building or Tower Number',
+  'maps-detailed-address-name': 'Address Name',
+  'maps-detailed-address-name-placeholder': 'eg: Home/ Office ...',
   'maps-detailed-address-phone': 'Phone Number',
   'selected-address': 'Selected Delivery address',
   'maps-details-extra-details': 'Additional Details',
@@ -218,6 +224,7 @@ const baseStrings = {
   'building-empty': 'Please enter Building or Tower Number',
   'phone-empty': 'Please Enter a phone number',
   'number-only': 'Please enter a valid number',
+  'name-empty': 'Please enter an Address name',
 
   // checkout modal
   'not-signed-in': 'You are not signed in',

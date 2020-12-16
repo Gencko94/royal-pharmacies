@@ -5,6 +5,7 @@ import 'react-medium-image-zoom/dist/styles.css';
 import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
+import LazyImage from '../../../helpers/LazyImage';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
 export default function VariantImageZoomMobile({
   data,
@@ -13,22 +14,62 @@ export default function VariantImageZoomMobile({
 }) {
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const { locale } = useIntl();
-
+  const resolveImage = () => {
+    if (data.new_variation_addons[selectedVariation].options) {
+      return (
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+            data.new_variation_addons[selectedVariation].options[
+              selectedOption[selectedVariation]
+            ]?.image || data.image.link
+          }`}
+          alt={data.translation[locale].title}
+          pb="calc(100% * 286/210)"
+        />
+      );
+    } else {
+      return (
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+            data.new_variation_addons[selectedVariation].image ||
+            data.image.link
+          }`}
+          alt={data.translation[locale].title}
+          pb="calc(100% * 286/210)"
+        />
+      );
+    }
+  };
+  const resolveThumbnail = () => {
+    if (data.new_variation_addons[selectedVariation].options) {
+      return (
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/small/${
+            data.new_variation_addons[selectedVariation].options[
+              selectedOption[selectedVariation]
+            ]?.image || data.image.link
+          }`}
+          alt={data.translation[locale].title}
+          pb="calc(100% * 286/210)"
+        />
+      );
+    } else {
+      return (
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+            data.new_variation_addons[selectedVariation].image ||
+            data.image.link
+          }`}
+          alt={data.translation[locale].title}
+          pb="calc(100% * 286/210)"
+        />
+      );
+    }
+  };
   return (
     <div className="mb-2">
       <Swiper id="main" slidesPerView={1} thumbs={{ swiper: thumbsSwiper }}>
-        <SwiperSlide zoom>
-          <img
-            src={`${process.env.REACT_APP_IMAGES_URL}/original/${
-              data.new_variation_addons[selectedVariation].options
-                ? data.new_variation_addons[selectedVariation].options[
-                    selectedOption[selectedVariation]
-                  ].image
-                : data.new_variation_addons[selectedVariation].image
-            }`}
-            alt={data.translation[locale].title}
-          />
-        </SwiperSlide>
+        <SwiperSlide zoom>{resolveImage()}</SwiperSlide>
       </Swiper>
       <Swiper
         id="thumbs"
@@ -39,18 +80,7 @@ export default function VariantImageZoomMobile({
         watchSlidesVisibility
         watchSlidesProgress
       >
-        <SwiperSlide>
-          <img
-            src={`${process.env.REACT_APP_IMAGES_URL}/original/${
-              data.new_variation_addons[selectedVariation].options
-                ? data.new_variation_addons[selectedVariation].options[
-                    selectedOption[selectedVariation]
-                  ].image
-                : data.new_variation_addons[selectedVariation].image
-            }`}
-            alt={data.translation[locale].title}
-          />
-        </SwiperSlide>
+        <SwiperSlide>{resolveThumbnail()}</SwiperSlide>
       </Swiper>
     </div>
   );

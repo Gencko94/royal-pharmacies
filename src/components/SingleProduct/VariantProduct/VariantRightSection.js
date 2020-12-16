@@ -23,14 +23,14 @@ export default function VariantRightSection({
   userId,
 }) {
   const formatDaysPlural = () => {
-    switch (parseInt(deliveryCountry.delivery_time)) {
+    switch (parseInt(deliveryCountry?.delivery_time)) {
       case 1:
         return formatMessage({ id: 'one-day' });
 
       case 2:
         return formatMessage({ id: 'two-days' });
 
-      case parseInt(deliveryCountry.delivery_time > 10):
+      case parseInt(deliveryCountry?.delivery_time > 10):
         return formatMessage({ id: 'more-than-10-days' });
 
       default:
@@ -100,7 +100,7 @@ export default function VariantRightSection({
             </h1>
             <h1 className="mx-1">
               {deliveryCountry?.delivery_time > 2 &&
-                deliveryCountry.delivery_time}
+                deliveryCountry?.delivery_time}
               <span className="mx-1">{formatDaysPlural()}</span>
             </h1>
           </div>

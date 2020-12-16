@@ -20,6 +20,7 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
     buildingOrTowerNumber: Yup.number().required(
       formatMessage({ id: 'building-empty' })
     ),
+    addressName: Yup.string().required(formatMessage({ id: 'name-empty' })),
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
       .required(formatMessage({ id: 'phone-empty' })),
@@ -37,6 +38,7 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
             buildingOrTowerNumber: '',
             phoneNumber: '',
             additionalDetails: '',
+            addressName: '',
           }}
           validationSchema={validationSchema}
           onSubmit={async values => {
@@ -79,6 +81,17 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
                   })}
                   name="buildingOrTowerNumber"
                   value={values.buildingOrTowerNumber}
+                  type="text"
+                />
+                <CustomTextInput
+                  label={formatMessage({
+                    id: 'maps-detailed-address-name',
+                  })}
+                  placeholder={formatMessage({
+                    id: 'maps-detailed-address-name-placeholder',
+                  })}
+                  name="addressName"
+                  value={values.addressName}
                   type="text"
                 />
                 <CustomTextAreaInput

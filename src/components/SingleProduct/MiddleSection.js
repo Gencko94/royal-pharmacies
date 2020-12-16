@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import miniBanner from '../../assets/banners/miniBanner.gif';
-import Colors from './VariantProduct/Colors/ColorsAndSizes';
+// import Colors from './VariantProduct/Colors/ColorsAndSizes';
 import { scrollIntoView } from 'scroll-js';
 import Rating from 'react-rating';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
@@ -147,17 +147,7 @@ export default function MiddleSection({
       <hr className="my-2" />
       <div>
         <hr className="my-2" />
-        {data.type === 'variation' &&
-          data.variation_addons[selectedVariation].addons_details.Color && (
-            <Colors
-              data={data.variation_addons}
-              colors={data.colors}
-              color={color}
-              setColor={setColor}
-              availableColors={data.availableColors}
-              setSelectedVariant={setSelectedVariant}
-            />
-          )}
+
         <hr className="my-2" />
       </div>
       <img src={miniBanner} alt="offer" className="mt-2" />

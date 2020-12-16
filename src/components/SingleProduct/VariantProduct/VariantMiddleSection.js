@@ -4,10 +4,9 @@ import { useIntl } from 'react-intl';
 import miniBanner from '../../../assets/banners/miniBanner.gif';
 
 import { scrollIntoView } from 'scroll-js';
-import ColorsAndSizes from './Colors/ColorsAndSizes';
-import SizesAndColors from './Sizes/SizesAndColors';
-import ColorsOnly from './Colors/ColorsOnly';
-import SizesOnly from './Sizes/SizesOnly';
+import Variants from './Variants';
+import Options from './Options';
+import VariantsOnly from './VariantsOnly';
 import { Link } from 'react-router-dom';
 import Rating from 'react-rating';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
@@ -44,47 +43,29 @@ export default function VariantMiddleSection({
 
   const resolveOptions = React.useCallback(() => {
     let arr = [];
-    if (data.new_variation_addons[selectedVariation].name_en === 'Color') {
-      if (data.new_variation_addons[selectedVariation].options) {
-        console.log(data.new_variation_addons[selectedVariation]);
-        if (
-          data.new_variation_addons[selectedVariation].options[
-            selectedOption[selectedVariation]
-          ].name_en === 'Size'
-        ) {
-          arr.push(
-            <SizesAndColors
-              sizes={data.new_variation_addons[selectedVariation].options}
-              selectedOption={selectedOption}
-              setSelectedOption={setSelectedOption}
-              variation={selectedVariation}
-            />,
-            <ColorsAndSizes
-              colors={data.new_variation_addons}
-              setSelectedVariant={setSelectedVariant}
-              selectedOption={selectedOption}
-            />
-          );
-        }
-        return arr;
-      } else {
-        arr.push(
-          <ColorsOnly
-            colors={data.new_variation_addons}
-            setSelectedVariant={setSelectedVariant}
-          />
-        );
-        return arr;
-      }
-    } else if (
-      data.new_variation_addons[selectedVariation].name_en === 'Size'
-    ) {
-      console.log('size');
+    if (data.new_variation_addons[selectedVariation].options) {
       arr.push(
-        <SizesOnly
-          sizes={data.new_variation_addons}
+        <Options
+          options={data.new_variation_addons[selectedVariation].options}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
           selectedVariation={selectedVariation}
+        />,
+        <Variants
+          variants={data.new_variation_addons}
           setSelectedVariant={setSelectedVariant}
+          selectedOption={selectedOption}
+          selectedVariation={selectedVariation}
+        />
+      );
+
+      return arr;
+    } else {
+      arr.push(
+        <VariantsOnly
+          variants={data.new_variation_addons}
+          setSelectedVariant={setSelectedVariant}
+          selectedVariation={selectedVariation}
         />
       );
       return arr;

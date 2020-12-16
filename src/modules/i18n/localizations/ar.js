@@ -80,6 +80,8 @@ export const ar = {
   'add-new-address': 'إضافة عنوان',
   'select-address-header': 'اختر عنوانا مسبقا او اضف عنوان جديد',
   'select-btn': 'اختيار',
+  select: 'اختر',
+  submit: 'تأكيد',
   'selected-btn': 'تم الاختيار',
   'add-payment-method': 'إضافة طريقة دفع',
   'no-payment-method': 'لا يوجد لدينا طرق دفع خاصة بك ',
@@ -106,6 +108,8 @@ export const ar = {
   'accepted-payments': 'طرق الدفع المتاحة',
   'coupon-sale': 'خصم الكوبون',
   'update-btn': 'تحديث',
+  'coupon-expired': 'الكوبون منتهي الصلاحية',
+  'coupon-invalid': 'الرجاء التأكد من الكوبون',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -195,6 +199,8 @@ export const ar = {
   'maps-detailed-address-building-short': 'رقم البناء او البرج',
   'maps-detailed-address-phone-short': 'رقم الهاتف أو الجوال',
   'maps-detailed-address-street_neighborhood_governate': 'الشارع/الحي/المحافظة',
+  'maps-detailed-address-name': 'اسم الموقع',
+  'maps-detailed-address-name-placeholder': '...مثال: المنزل/ المكتب',
   'maps-detailed-address-apartment': 'رقم المنزل او الشقة',
   'maps-detailed-address-apartment-placeholder': 'أدخل رقم المنزل او الشقة',
   'maps-detailed-address-building-placeholder': 'أدخل رقم البناء او البرج',
@@ -209,6 +215,7 @@ export const ar = {
   'building-empty': 'الرجاء ذكر رقم البناء او البرج',
   'phone-empty': 'الرجاء ذكر رقم الهاتف او الجوال',
   'number-only': 'الرجاء التأكد من رقم الهاتف او الجوال',
+  'name-empty': 'الرجاء ادخال اسم الموقع',
 
   // checkout modal
   'not-signed-in': 'لم تقم بتسجيل الدخول ',

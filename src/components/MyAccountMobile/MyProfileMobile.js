@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { AuthProvider } from '../../contexts/AuthContext';
 import PasswordChangeModalMobile from './PasswordChangeModalMobile';
 import ProfileEditModalMobile from './ProfileEditModalMobile';

@@ -166,6 +166,7 @@ export const addUserAddress = async newAddress => {
     lat: newAddress.lat.toString(),
     lng: newAddress.lng.toString(),
     marked_address: newAddress.addressDetails.markerAddress,
+    address_name: newAddress.addressDetails.addressName,
     apartment_house_number: newAddress.addressDetails.apartmentOrHouseNumber,
     building_tower_number: newAddress.addressDetails.buildingOrTowerNumber,
     phone_number: newAddress.addressDetails.phoneNumber,
@@ -387,14 +388,36 @@ export const getGuestCartItems = async () => {
     }, [1000]);
   });
 };
-export const addToGuestCart = async () => {
+export const addToGuestCart = async ({ newItem }) => {
+  console.log(newItem);
   const localCart = localStorage.getItem('localCart');
   if (!localCart) {
     localStorage.setItem('localCart', JSON.stringify([]));
   }
+  const parsed = JSON.parse(localCart);
+  const isAvailable = item => {
+    if (
+      item.variation?.item_id === newItem.variation?.item_id &&
+      item.option?.item_id === newItem.option?.item_id
+    ) {
+      return true;
+    } else if (item.id === newItem.id && (!item.variation || !item.option)) {
+      return true;
+    }
+  };
+  const foundIndex = parsed.findIndex(isAvailable);
+  if (foundIndex !== -1) {
+    parsed[foundIndex].quantity = parsed[foundIndex].quantity + 1;
+    localStorage.setItem('localCart', JSON.stringify(parsed));
+  } else {
+    parsed.push(newItem);
+    console.log(parsed);
+    localStorage.setItem('localCart', JSON.stringify(parsed));
+  }
+
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve({ cartItems: [], cartTotal: 0 });
+      resolve({ msg: 'success' });
     }, [1000]);
   });
 };
@@ -442,6 +465,7 @@ export const sortCategories = async query => {
     `${process.env.REACT_APP_MAIN_URL}/filter-products`,
     req
   );
+  console.log(res.data.data);
   if (res.data.status === true) {
     return res.data.data.data;
   }

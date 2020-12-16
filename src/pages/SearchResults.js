@@ -12,9 +12,8 @@ import {
   getSingleCategoryInfo,
   sortCategories,
 } from '../Queries/Queries';
-import CategoryHeader from '../components/Category/CategoryHeader';
 import { useIntl } from 'react-intl';
-export default function Category() {
+export default function SearchResults() {
   const { category } = useParams();
   const { locale } = useIntl();
 
@@ -67,11 +66,6 @@ export default function Category() {
         <title>Search</title>
       </Helmet>
       <div className="max-w-default mx-auto p-4 overflow-hidden">
-        <CategoryHeader
-          categoryInfo={categoryInfo}
-          categoryInfoLoading={categoryInfoLoading}
-        />
-        {/* <Breadcrumbs data={categories} /> */}
         <div className="search-page__container">
           <CategoryLeftSide
             categoryInfo={categoryInfo}

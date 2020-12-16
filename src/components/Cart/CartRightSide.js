@@ -26,6 +26,7 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
   const [couponCode, setCouponCode] = React.useState('');
   const [validCoupon, setValidCoupon] = React.useState(false);
   const [couponError, setCouponError] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
   const history = useHistory();
   const resolvePlural = () => {
     switch (cartItems.length) {
@@ -51,6 +52,7 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
     }
   };
   const handleCheckCoupon = async e => {
+    setCouponError(false);
     e.preventDefault();
     if (!couponCode) {
       return;
@@ -65,6 +67,13 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
       setValidCoupon(false);
       setCouponError(true);
       console.log(error.response);
+      if (error.response.data.message === 'Coupon expired') {
+        setErrorMessage(formatMessage({ id: 'coupon-expired' }));
+      } else if (
+        error.response.data.message?.code[0] === 'The selected code is invalid.'
+      ) {
+        setErrorMessage(formatMessage({ id: 'coupon-invalid' }));
+      }
     }
   };
   return (
@@ -78,7 +87,9 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
           <div className="mb-2 ">
             <form
               onSubmit={handleCheckCoupon}
-              className="rounded border w-full flex mb-1  overflow-hidden"
+              className={`rounded border w-full flex mb-1  overflow-hidden ${
+                couponError && 'border-main-color'
+              }`}
             >
               <input
                 type="text"
@@ -106,7 +117,7 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
               </button>
             </form>
             {couponError && (
-              <h1 className="text-main-color text-xs">Invalid Coupon</h1>
+              <h1 className="text-main-color text-xs">{errorMessage}</h1>
             )}
           </div>
           <div className=" flex mb-2  ">

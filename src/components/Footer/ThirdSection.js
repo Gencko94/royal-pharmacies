@@ -11,7 +11,10 @@ import { useQuery } from 'react-query';
 import logomrg from '../../assets/mrg.png';
 import { getSocialMediaData } from '../../Queries/Queries';
 export default function ThirdSection() {
-  const { data } = useQuery('socialMedia', getSocialMediaData, { retry: true });
+  const { data } = useQuery('socialMedia', getSocialMediaData, {
+    retry: true,
+    refetchOnWindowFocus: false,
+  });
   const { formatMessage } = useIntl();
   return (
     <div

@@ -1,10 +1,13 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
-import CategoryChildren from './CategoryChildren';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
+import CategoryChildrenMobile from './CategoryChildrenMobile';
+export default function CategoryHeaderMobile({
+  categoryInfo,
+  categoryInfoLoading,
+}) {
   const { locale } = useIntl();
   if (categoryInfoLoading) {
     return (
@@ -63,7 +66,7 @@ export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
         {categoryInfo.translation[locale].name}
       </div>
       {categoryInfo.children.length !== 0 && (
-        <CategoryChildren categoryInfo={categoryInfo} />
+        <CategoryChildrenMobile categoryInfo={categoryInfo} />
       )}
     </div>
   );

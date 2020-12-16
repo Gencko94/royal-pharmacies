@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { AuthProvider } from '../../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../../contexts/DataContext';
@@ -13,9 +14,12 @@ export default function VariantProduct({
   setSideMenuOpen,
   setDetailsTab,
 }) {
-  const { addToCartMutation, addToWishListMutation } = React.useContext(
-    CartAndWishlistProvider
-  );
+  const { addons } = useParams();
+  const {
+    addToCartMutation,
+    addToWishListMutation,
+    addToGuestCartMutation,
+  } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const { userId } = React.useContext(AuthProvider);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
@@ -29,7 +33,11 @@ export default function VariantProduct({
   ] = React.useState(false);
 
   const [selectedVariation, setSelectedVariant] = React.useState(() => {
-    return Object.keys(data.new_variation_addons)[0];
+    if (!addons) {
+      return Object.keys(data.new_variation_addons)[0];
+    } else {
+      return addons;
+    }
   });
   const [selectedOption, setSelectedOption] = React.useState(() => {
     let keys = {};
@@ -76,6 +84,28 @@ export default function VariantProduct({
         setAddToCartButtonLoading(false);
       }
     } else {
+      const newItem = {
+        id: data.id,
+        quantity,
+        variation: {
+          id: data.new_variation_addons?.[selectedVariation].id,
+          item_id: data.new_variation_addons?.[selectedVariation].addon_item_id,
+        },
+        option: {
+          id:
+            data.new_variation_addons?.[selectedVariation].options?.[
+              selectedOption[selectedVariation]
+            ].id,
+          item_id:
+            data.new_variation_addons?.[selectedVariation].options?.[
+              selectedOption[selectedVariation]
+            ].addon_item_id,
+        },
+      };
+      await addToGuestCartMutation({ newItem });
+      setAddToCartButtonLoading(false);
+      // setSideMenuOpen(true);
+      setItemInCart(true);
     }
   };
   const handleAddToWishList = async () => {

@@ -96,6 +96,7 @@ const Checkout = React.lazy(() => import('./pages/Checkout'));
 const CheckoutMobile = React.lazy(() => import('./pages/CheckoutMobile'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 const NotFoundMobile = React.lazy(() => import('./pages/NotFoundMobile'));
+const SearchResults = React.lazy(() => import('./pages/SearchResults'));
 
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -176,6 +177,17 @@ function App() {
               }
             }}
           />
+          <Route
+            exact
+            path="/search/q=:query"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <SearchResults {...props} />;
+              } else {
+                return <CategoryMobile {...props} />;
+              }
+            }}
+          />
 
           <Route
             path="/checkout/guest-checkout"
@@ -195,7 +207,7 @@ function App() {
           <Route path="/test" component={Test} />
           <Route
             exact
-            path="/:category/:id"
+            path="/:category/:id/:addons?"
             render={props => {
               if (isTabletOrAbove) {
                 return <SingleProduct {...props} />;

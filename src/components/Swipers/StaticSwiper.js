@@ -4,58 +4,21 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
 
-import { AuthProvider } from '../../contexts/AuthContext';
 import { getStaticSwiperData } from '../../Queries/Queries';
 import { useQuery } from 'react-query';
 import SwiperLoader from '../Home/SwiperLoader';
-import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import SwiperItem from './SwiperItem';
-import { DataProvider } from '../../contexts/DataContext';
+import VariantSwiperItem from './VariantSwiperItem';
 SwiperCore.use([Navigation]);
-export default function StaticSwiper({ type, setCartMenuOpen }) {
+export default function StaticSwiper({ type, setCartMenuOpen, title }) {
   const { formatMessage } = useIntl();
-
-  const { addToCartMutation, removeFromCartMutation } = React.useContext(
-    CartAndWishlistProvider
-  );
-  const { deliveryCountry } = React.useContext(DataProvider);
-  const { userId } = React.useContext(AuthProvider);
-  const [loadingButton, setLoadingButton] = React.useState(null);
 
   const { data, isLoading } = useQuery(
     ['staticSwiper', type],
     getStaticSwiperData,
-    { retry: true }
+    { retry: true, refetchOnWindowFocus: false }
   );
-  const [cartItems, setCartItems] = React.useState([]);
 
-  const handleAddToCart = async newItem => {
-    setLoadingButton(newItem.id);
-    // const newItem = { id:newItem.id, quantity: quantity, size };
-    try {
-      await addToCartMutation({ newItem, userId, deliveryCountry });
-      setCartMenuOpen(true);
-      setCartItems(prev => {
-        return [...prev, newItem.id];
-      });
-      setLoadingButton(null);
-    } catch (error) {
-      setLoadingButton(null);
-      console.error(error.response);
-    }
-  };
-  const handleRemoveFromCart = async id => {
-    setLoadingButton(id);
-    try {
-      await removeFromCartMutation({ id, userId });
-      setCartItems(prev => {
-        return prev.filter(i => i !== id);
-      });
-    } catch (error) {
-      setLoadingButton(null);
-      console.error(error.response);
-    }
-  };
   const breakpoints = {
     // when window width is >= 320px
     320: {
@@ -91,7 +54,7 @@ export default function StaticSwiper({ type, setCartMenuOpen }) {
       {isLoading && <SwiperLoader />}
       {!isLoading && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl font-bold flex-1 ">{type}</h1>
+          <h1 className="text-xl font-bold flex-1 ">{title}</h1>
           <button className="py-1 px-2  bg-main-color text-second-nav-text-light rounded whitespace-no-wrap">
             {formatMessage({ id: 'seeAll' })}
           </button>
@@ -108,17 +71,18 @@ export default function StaticSwiper({ type, setCartMenuOpen }) {
             return (
               <SwiperSlide
                 key={item.id}
-                className={`overflow-hidden  border  relative my-1
-             shadow
+                className={`overflow-hidden   relative my-1
+             
             rounded`}
               >
-                <SwiperItem
-                  item={item}
-                  handleAddToCart={handleAddToCart}
-                  handleRemoveFromCart={handleRemoveFromCart}
-                  cartItems={cartItems}
-                  loadingButton={loadingButton}
-                />
+                {item.type === 'simple' ? (
+                  <SwiperItem item={item} setCartMenuOpen={setCartMenuOpen} />
+                ) : (
+                  <VariantSwiperItem
+                    item={item}
+                    setCartMenuOpen={setCartMenuOpen}
+                  />
+                )}
               </SwiperSlide>
             );
           })}

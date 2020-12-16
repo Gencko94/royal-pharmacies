@@ -22,11 +22,12 @@ import VariantProduct from '../components/SingleProduct/VariantProduct/VariantPr
 export default function SingleProduct() {
   const { id } = useParams();
   const { deliveryCountry, addViewedItems } = React.useContext(DataProvider);
-  const { addToCartMutation, addToWishListMutation } = React.useContext(
-    CartAndWishlistProvider
-  );
-  // const [size, setSize] = React.useState(null);
-  // const [color, setColor] = React.useState(null);
+  const {
+    addToCartMutation,
+    addToWishListMutation,
+    addToGuestCartMutation,
+  } = React.useContext(CartAndWishlistProvider);
+
   const { userId } = React.useContext(AuthProvider);
   const [selectedVariation, setSelectedVariant] = React.useState(0);
   const [selectedSize, setSelectedSize] = React.useState(0);
@@ -80,6 +81,11 @@ export default function SingleProduct() {
         setAddToCartButtonLoading(false);
       }
     } else {
+      const newItem = { id: data.id, quantity };
+      await addToGuestCartMutation({ newItem });
+      setAddToCartButtonLoading(false);
+      setSideMenuOpen(true);
+      setItemInCart(true);
     }
   };
   const handleAddToWishList = async () => {

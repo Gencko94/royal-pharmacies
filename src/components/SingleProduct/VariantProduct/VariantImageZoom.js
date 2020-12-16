@@ -7,6 +7,7 @@ import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { useIntl } from 'react-intl';
+import LazyImage from '../../../helpers/LazyImage';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
 export default function VariantImageZoom({
   data,
@@ -15,11 +16,60 @@ export default function VariantImageZoom({
 }) {
   console.log(selectedOption);
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
-  // const variation = React.useMemo(() => {
-  //   return Object.keys(data.new_variation_addons)[selectedVariation];
-  // }, [data.new_variation_addons, selectedVariation]);
-  const { locale } = useIntl();
 
+  const { locale } = useIntl();
+  const resolveImage = () => {
+    if (data.new_variation_addons[selectedVariation].options) {
+      return (
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+            data.new_variation_addons[selectedVariation].options[
+              selectedOption[selectedVariation]
+            ]?.image || data.image.link
+          }`}
+          alt={data.translation[locale].title}
+          pb="calc(100% * 286/210)"
+        />
+      );
+    } else {
+      return (
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+            data.new_variation_addons[selectedVariation].image ||
+            data.image.link
+          }`}
+          alt={data.translation[locale].title}
+          pb="calc(100% * 286/210)"
+        />
+      );
+    }
+  };
+  const resolveThumbnail = () => {
+    if (data.new_variation_addons[selectedVariation].options) {
+      return (
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/small/${
+            data.new_variation_addons[selectedVariation].options[
+              selectedOption[selectedVariation]
+            ]?.image || data.image.link
+          }`}
+          alt={data.translation[locale].title}
+          pb="calc(100% * 286/210)"
+        />
+      );
+    } else {
+      return (
+        <LazyImage
+          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+            data.new_variation_addons[selectedVariation].image ||
+            data.image.link
+          }`}
+          alt={data.translation[locale].title}
+          pb="calc(100% * 286/210)"
+        />
+      );
+    }
+  };
   return (
     <div className="sticky" style={{ alignSelf: 'self-start', top: '130px' }}>
       <div className={`${locale === 'ar' ? 'mr-16' : 'ml-16'}`}>
@@ -29,18 +79,7 @@ export default function VariantImageZoom({
           slidesPerView={1}
           thumbs={{ swiper: thumbsSwiper }}
         >
-          <SwiperSlide zoom>
-            <img
-              src={`${process.env.REACT_APP_IMAGES_URL}/original/${
-                data.new_variation_addons[selectedVariation].options
-                  ? data.new_variation_addons[selectedVariation].options[
-                      selectedOption[selectedVariation]
-                    ].image
-                  : data.new_variation_addons[selectedVariation].image
-              }`}
-              alt={data.translation[locale].title}
-            />
-          </SwiperSlide>
+          <SwiperSlide zoom>{resolveImage()}</SwiperSlide>
         </Swiper>
       </div>
       <div
@@ -56,18 +95,8 @@ export default function VariantImageZoom({
           watchSlidesVisibility
           watchSlidesProgress
         >
-          <div>
-            <img
-              src={`${process.env.REACT_APP_IMAGES_URL}/original/${
-                data.new_variation_addons[selectedVariation].options
-                  ? data.new_variation_addons[selectedVariation].options[
-                      selectedOption[selectedVariation]
-                    ].image
-                  : data.new_variation_addons[selectedVariation].image
-              }`}
-              alt={data.name}
-              style={{ width: '50px', height: '50px' }}
-            />
+          <div style={{ width: '50px', height: '50px' }}>
+            {resolveThumbnail()}
           </div>
         </Swiper>
       </div>

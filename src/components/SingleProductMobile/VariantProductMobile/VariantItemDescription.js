@@ -12,15 +12,13 @@ import { useIntl } from 'react-intl';
 import Rating from 'react-rating';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-// import Colors from '../SingleProduct/Colors';
-// import Sizes from '../SingleProduct/Sizes';
+
 import { scrollIntoView } from 'scroll-js';
 import { DataProvider } from '../../../contexts/DataContext';
 import { MdLocationOn } from 'react-icons/md';
-import SizesOnly from '../../SingleProduct/VariantProduct/Sizes/SizesOnly';
-import ColorsOnly from '../../SingleProduct/VariantProduct/Colors/ColorsOnly';
-import ColorsAndSizes from '../../SingleProduct/VariantProduct/Colors/ColorsAndSizes';
-import SizesAndColors from '../../SingleProduct/VariantProduct/Sizes/SizesAndColors';
+import VariantsOnly from '../../SingleProduct/VariantProduct/VariantsOnly';
+import Variants from '../../SingleProduct/VariantProduct/Variants';
+import Options from '../../SingleProduct/VariantProduct/Options';
 export default function VariantItemDescription({
   data,
   handleAddToCart,
@@ -42,8 +40,6 @@ export default function VariantItemDescription({
   averageRating,
   handleRemoveFromWishList,
 }) {
-  console.log(selectedOption, 'selected option');
-  console.log(selectedVariation, 'selected variation');
   const handleSubstractQuantity = () => {
     if (parseInt(quantity) === 1) {
       return;
@@ -95,47 +91,29 @@ export default function VariantItemDescription({
   };
   const resolveOptions = React.useCallback(() => {
     let arr = [];
-    if (data.new_variation_addons[selectedVariation].name_en === 'Color') {
-      if (data.new_variation_addons[selectedVariation].options) {
-        console.log(data.new_variation_addons[selectedVariation]);
-        if (
-          data.new_variation_addons[selectedVariation].options[
-            selectedOption[selectedVariation]
-          ].name_en === 'Size'
-        ) {
-          arr.push(
-            <SizesAndColors
-              sizes={data.new_variation_addons[selectedVariation].options}
-              selectedOption={selectedOption}
-              setSelectedOption={setSelectedOption}
-              variation={selectedVariation}
-            />,
-            <ColorsAndSizes
-              colors={data.new_variation_addons}
-              setSelectedVariant={setSelectedVariant}
-              selectedOption={selectedOption}
-            />
-          );
-        }
-        return arr;
-      } else {
-        arr.push(
-          <ColorsOnly
-            colors={data.new_variation_addons}
-            setSelectedVariant={setSelectedVariant}
-          />
-        );
-        return arr;
-      }
-    } else if (
-      data.new_variation_addons[selectedVariation].name_en === 'Size'
-    ) {
-      console.log('size');
+    if (data.new_variation_addons[selectedVariation].options) {
       arr.push(
-        <SizesOnly
-          sizes={data.new_variation_addons}
+        <Options
+          options={data.new_variation_addons[selectedVariation].options}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
           selectedVariation={selectedVariation}
+        />,
+        <Variants
+          variants={data.new_variation_addons}
           setSelectedVariant={setSelectedVariant}
+          selectedOption={selectedOption}
+          selectedVariation={selectedVariation}
+        />
+      );
+
+      return arr;
+    } else {
+      arr.push(
+        <VariantsOnly
+          variants={data.new_variation_addons}
+          setSelectedVariant={setSelectedVariant}
+          selectedVariation={selectedVariation}
         />
       );
       return arr;

@@ -20,16 +20,18 @@ export default function SideCartMenu({ setSideMenuOpen }) {
     setRemoveFromCartButtonLoading,
   ] = React.useState(null);
   const { userId } = React.useContext(AuthProvider);
+
   const handleRemoveFromCart = async (id, cart_id) => {
     setRemoveFromCartButtonLoading(id);
     try {
-      await removeFromCartMutation({ id, cart_id, userId });
+      await removeFromCartMutation({ id, cart_id, userId, deliveryCountry });
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
       console.log(error.response);
     }
   };
+
   const sideMenuVariants = {
     hidden: {
       x: `${locale === 'ar' ? '-100%' : '100%'}`,

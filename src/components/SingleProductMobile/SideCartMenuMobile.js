@@ -26,7 +26,7 @@ export default function SideCartMenuMobile({ setSideMenuOpen }) {
   const handleRemoveFromCart = async (id, cart_id) => {
     setRemoveFromCartButtonLoading(id);
     try {
-      await removeFromCartMutation({ id, cart_id, userId });
+      await removeFromCartMutation({ id, cart_id, userId, deliveryCountry });
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);

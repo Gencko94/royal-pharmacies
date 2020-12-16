@@ -47,6 +47,7 @@ export default function Location({
   };
   return (
     <motion.div
+      layout
       variants={cardVariants}
       initial="hidden"
       animate="visible"
