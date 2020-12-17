@@ -1,27 +1,27 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
-import CategoryItemLoader from './CategoryItemLoader';
-import CategoryProductItem from './CategoryProductItem';
-import SortInfoPanel from './SortInfoPanel';
-import VariantCategoryProductItem from './VariantCategoryProductItem';
+import CategoryItemLoader from '../Category/CategoryItemLoader';
+import SearchProductItem from './SearchProductItem';
+import SearchSortPanel from './SearchSortPanel';
+import VariantSearchProductItem from './VariantSearchProductItem';
 
-export default function CategoryRightSide({
+export default function SearchRightSide({
   products,
   productsLoading,
-  categoryInfoLoading,
   handleSortBy,
+  query,
 }) {
   console.log(products);
-  if (productsLoading || categoryInfoLoading) {
+  if (productsLoading) {
     return (
-      <div className="py-2">
+      <div>
         <ContentLoader
           speed={2}
-          viewBox="0 0 752 38"
+          viewBox="0 0 752 25"
           backgroundColor="#f3f3f3"
           foregroundColor="#ecebeb"
         >
-          <rect x="0" y="0" rx="5" ry="5" width="100%" height="38" />
+          <rect x="0" y="0" rx="5" ry="5" width="100%" height="25" />
         </ContentLoader>
         <div className="search-page-items__grid py-2  min-h-screen">
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
@@ -32,15 +32,19 @@ export default function CategoryRightSide({
     );
   }
   return (
-    <div className="py-2">
-      <SortInfoPanel handleSortBy={handleSortBy} />
+    <div>
+      <SearchSortPanel
+        handleSortBy={handleSortBy}
+        products={products}
+        query={query}
+      />
       {products.length !== 0 && (
-        <div className="category-page-items__grid py-2 ">
+        <div className="search-page-items__grid py-2 ">
           {products.map(item => {
             return item.type === 'simple' ? (
-              <CategoryProductItem key={item.id} item={item} />
+              <SearchProductItem key={item.id} item={item} query={query} />
             ) : (
-              <VariantCategoryProductItem key={item.id} item={item} />
+              <VariantSearchProductItem key={item.id} item={item} />
             );
           })}
         </div>

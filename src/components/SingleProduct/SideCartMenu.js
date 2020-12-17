@@ -10,9 +10,11 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { DataProvider } from '../../contexts/DataContext';
 export default function SideCartMenu({ setSideMenuOpen }) {
-  const { cartItems, cartSubtotal, removeFromCartMutation } = React.useContext(
-    CartAndWishlistProvider
-  );
+  const {
+    sideCartItems,
+    sideCartSubTotal,
+    removeFromCartMutation,
+  } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
   const [
@@ -84,7 +86,7 @@ export default function SideCartMenu({ setSideMenuOpen }) {
           </button>
         </div>
         <hr className="my-2" />
-        {cartItems.length === 0 && (
+        {sideCartItems?.length === 0 && (
           <div className="flex flex-col justify-center items-center">
             <img src={cartEmptyimg} alt="Empty cart" />
             <h1 className="font-bold mb-2">
@@ -99,13 +101,13 @@ export default function SideCartMenu({ setSideMenuOpen }) {
           </div>
         )}
 
-        {cartItems.length !== 0 && (
+        {sideCartItems.length !== 0 && (
           <div
             className="flex-1 overflow-y-auto overflow-x-hidden"
             style={{ maxHeight: 'calc(-110px + 100vh)' }}
           >
             <AnimatePresence>
-              {cartItems.map(item => {
+              {sideCartItems.map(item => {
                 return (
                   <motion.div
                     key={item.id}
@@ -180,23 +182,17 @@ export default function SideCartMenu({ setSideMenuOpen }) {
         )}
 
         <hr className="my-1" />
-        {cartItems.length !== 0 && (
+        {sideCartItems.length !== 0 && (
           <div>
             <div className="flex justify-between semibold items-center  my-2">
               <h1 className="">{formatMessage({ id: 'subtotal' })}</h1>
               <h1 className=" font-semibold">
-                {cartSubtotal}{' '}
+                {sideCartSubTotal}{' '}
                 {deliveryCountry?.currency.translation[locale].symbol}
               </h1>
             </div>
             <hr className="my-1" />
             <div className=" flex items-center my-2 text-center text-second-nav-text-light ">
-              {/* <Link
-                to={`/${locale}/checkout/guest-checkout`}
-                className={`flex-1 py-2  px-3  bg-green-700 w-full  rounded `}
-              >
-                {formatMessage({ id: 'checkout' })}
-              </Link> */}
               <Link
                 to={`/${locale}/cart`}
                 className={`flex-1 py-2 px-3 border border-main-color text-main-color mx-1    rounded`}

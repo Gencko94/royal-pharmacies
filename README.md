@@ -88,6 +88,8 @@
 - [ ] refresh token explanation, as i know they should live much longer than regular tokens.
 - [ ] Please Explain how many item types we do have ? what is a simple product with addons vs variant product with addons ?
 
+- [ ] add country code to combine cart api
+
 # MRG API Structure :
 
 ## 1. Single Product

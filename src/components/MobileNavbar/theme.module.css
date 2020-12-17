@@ -1,4 +1,4 @@
 .container {
-  width: 85%;
+  flex: 1;
   box-sizing: border-box;
 }

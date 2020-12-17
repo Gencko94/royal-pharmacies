@@ -6,18 +6,27 @@ import Autosuggest from 'react-autosuggest';
 import theme from './theme.module.css';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { useHistory } from 'react-router-dom';
+import { AiOutlineClose } from 'react-icons/ai';
 
 let cancelToken;
-export default function MobileSearchbar() {
+export default function MobileSearchbar({ windowScrolled }) {
   const [searchBarValue, setSearchBarValue] = React.useState('');
   const { formatMessage, locale } = useIntl();
-
+  const [noSuggestions, setNoSuggestions] = React.useState(false);
   const [data, setData] = React.useState([]);
   const [isLoading, setLoading] = React.useState(false);
   const getSuggestionValue = suggestion => {
     return suggestion.translation[locale].title;
   };
-
+  React.useEffect(() => {
+    if (windowScrolled) {
+      setData([]);
+      setSearchBarValue('');
+      setNoSuggestions(false);
+    }
+  }, [windowScrolled]);
+  const history = useHistory();
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div className={`p-2 ${isHighlighted && 'bg-gray-300 rounded'}`}>
@@ -32,6 +41,7 @@ export default function MobileSearchbar() {
     cancelToken = axios.CancelToken.source();
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
+    const inputThreshold = inputValue.length > 2;
     if (inputLength < 2) return [];
     setLoading(true);
     try {
@@ -44,6 +54,11 @@ export default function MobileSearchbar() {
       console.log(res.data.data.data);
       if (res) {
         setData(res.data.data.data);
+        if (inputThreshold && res.data.data.data.length === 0) {
+          setNoSuggestions(true);
+        } else {
+          setNoSuggestions(false);
+        }
         setLoading(false);
       }
     } catch (error) {
@@ -53,7 +68,7 @@ export default function MobileSearchbar() {
   const onSuggestionsClearRequested = () => {
     setData([]);
   };
-  const renderSuggestionsContainer = ({ containerProps, children }) => {
+  const renderSuggestionsContainer = ({ containerProps, children, query }) => {
     return (
       <div
         {...containerProps}
@@ -61,6 +76,24 @@ export default function MobileSearchbar() {
         style={{ top: '110%' }}
       >
         {children}
+        {data?.length !== 0 && (
+          <button
+            onClick={() => {
+              history.push(`/${locale}/search/q=${query}`);
+              setData([]);
+            }}
+            className="p-2  hover:bg-gray-200 w-full transition duration-75"
+          >
+            {formatMessage({ id: 'see-all-search-results' })}{' '}
+            <strong>{query}</strong>
+          </button>
+        )}
+        {noSuggestions && (
+          <div className="p-2">
+            {formatMessage({ id: 'no-search-results' })}{' '}
+            <strong>{query}</strong>
+          </div>
+        )}
       </div>
     );
   };
@@ -73,7 +106,7 @@ export default function MobileSearchbar() {
     );
   };
   const handleSelect = (event, { suggestion }) => {
-    console.log(suggestion);
+    history.push(`/${locale}/c/${suggestion.id}`);
   };
   return (
     <div
@@ -98,31 +131,28 @@ export default function MobileSearchbar() {
         renderSuggestionsContainer={renderSuggestionsContainer}
         onSuggestionSelected={handleSelect}
       />
-      <div
-        className="p-2 flex items-center justify-center"
-        style={{ width: '15%' }}
-      >
+      {searchBarValue.length !== 0 && (
+        <div className="p-1">
+          <button
+            onClick={() => {
+              setNoSuggestions(false);
+              setSearchBarValue('');
+            }}
+            className=" transition duration-100 flex items-center justify-center p-1 hover:shadow-sm hover:bg-gray-300 rounded"
+          >
+            <AiOutlineClose className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+      <div className="p-1">
         <Loader
           type="ThreeDots"
           color="#b72b2b"
-          height={22}
-          width={22}
+          height={30}
+          width={30}
           visible={isLoading}
         />
       </div>
-      {/* <form onSubmit={handleSearch} className="flex-1">
-        <input
-          value={searchBarValue}
-          onChange={e => setSearchBarValue(e.target.value)}
-          type="search"
-          className={` ${
-            isLightTheme
-              ? 'bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700'
-              : 'bg-first-nav-light text-nav-cat-text-dark placeholder-gray-500'
-          } p-1 w-full `}
-          placeholder={formatMessage({ id: 'nav.search.placeholder' })}
-        />
-      </form> */}
     </div>
   );
 }

@@ -6,18 +6,16 @@ import { DataProvider } from '../../contexts/DataContext';
 import CartEmpty from './CartEmpty';
 import CartItem from './CartItem';
 import CartContainerLoader from './loaders/CartContainerLoader';
-
-export default function CartContainer({
-  removefromCartButtonLoading,
-  handleRemoveItemFromCart,
-  handleAddItemToWishlist,
-  handleRemoveItemFromWishlist,
-  wishlistItems,
-}) {
-  const { cartItems, cartItemsLoading, cartSubtotal } = React.useContext(
-    CartAndWishlistProvider
-  );
+import { GrFormClose } from 'react-icons/gr';
+export default function CartContainer() {
+  const {
+    cartItems,
+    cartItemsLoading,
+    cartSubtotal,
+    cartMessage,
+  } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
+  const [showMessage, setShowMessage] = React.useState(true);
   const resolvePlural = () => {
     switch (cartItems.length) {
       case 1:
@@ -43,6 +41,26 @@ export default function CartContainer({
       </AnimatePresence>
       {cartItems.length !== 0 && (
         <>
+          {cartMessage && showMessage && (
+            <>
+              <div className="rounded bg-blue-400 p-4 relative">
+                {formatMessage({ id: cartMessage })}
+                <button
+                  onClick={() => setShowMessage(false)}
+                  className="absolute rounded hover:bg-gray-100 transition duration-75"
+                  style={{
+                    top: '4px',
+                    right: locale === 'en' ? '4px' : '',
+                    left: locale === 'ar' ? '4px' : '',
+                  }}
+                >
+                  <GrFormClose className="w-5 h-5" />
+                </button>
+              </div>
+              <hr className="my-1" />
+            </>
+          )}
+
           <div className="cart-grid-titles font-semibold text-lg">
             <div></div>
             <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1>
@@ -57,19 +75,7 @@ export default function CartContainer({
             >
               <AnimatePresence>
                 {cartItems.map(item => {
-                  return (
-                    <CartItem
-                      key={item.id}
-                      item={item}
-                      handleRemoveItemFromCart={handleRemoveItemFromCart}
-                      removefromCartButtonLoading={removefromCartButtonLoading}
-                      handleRemoveItemFromWishlist={
-                        handleRemoveItemFromWishlist
-                      }
-                      handleAddItemToWishlist={handleAddItemToWishlist}
-                      wishlistItems={wishlistItems}
-                    />
-                  );
+                  return <CartItem key={item.id} item={item} />;
                 })}
               </AnimatePresence>
             </motion.div>

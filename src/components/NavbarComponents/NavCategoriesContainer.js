@@ -19,6 +19,11 @@ export default function NavCategoriesContainer({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHovering]);
+  if (isLoading) {
+    return (
+      <div className="w-full bg-nav-cat-light" style={{ height: '37px' }}></div>
+    );
+  }
   return (
     <div id="menu-trigger" className="w-full  ">
       <div

@@ -1,39 +1,41 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { CartAndWishlistProvider } from '../../../contexts/CartAndWishlistContext';
 import CartEmpty from '../CartEmpty';
 import CartContainerLoader from '../loaders/CartContainerLoader';
 import GuestCartItem from './GuestCartItem';
 
-export default function GuestCartContainer({
-  cartItemsLoading,
-  cartItems,
-  cartTotal,
-}) {
+export default function GuestCartContainer() {
+  const {
+    guestCartItems,
+    guestCartTotal,
+    guestCartItemsLoading,
+  } = React.useContext(CartAndWishlistProvider);
   const { formatMessage, locale } = useIntl();
   const resolvePlural = () => {
-    switch (cartItems.length) {
+    switch (guestCartItems.length) {
       case 1:
         return formatMessage({ id: 'one-item' });
 
       case 2:
         return formatMessage({ id: 'two-items' });
 
-      case cartItems.length > 10:
+      case guestCartItems.length > 10:
         return formatMessage({ id: 'one-items' });
       default:
         return formatMessage({ id: 'multiple-items' });
     }
   };
-  if (cartItemsLoading) {
+  if (guestCartItemsLoading) {
     return <CartContainerLoader locale={locale} />;
   }
   return (
     <div className="">
       <AnimatePresence>
-        {cartItems.length === 0 && <CartEmpty />}
+        {guestCartItems.length === 0 && <CartEmpty />}
       </AnimatePresence>
-      {cartItems.length !== 0 && (
+      {guestCartItems.length !== 0 && (
         <>
           <div className="cart-grid-titles font-semibold text-lg">
             <div></div>
@@ -48,20 +50,8 @@ export default function GuestCartContainer({
               className=" grid grid-cols-1 gap-2"
             >
               <AnimatePresence>
-                {cartItems.map(item => {
-                  return (
-                    <GuestCartItem
-                      key={item.id}
-                      item={item}
-                      // handleRemoveItemFromCart={handleRemoveItemFromCart}
-                      // removefromCartButtonLoading={removefromCartButtonLoading}
-                      // handleRemoveItemFromWishlist={
-                      //   handleRemoveItemFromWishlist
-                      // }
-                      // handleAddItemToWishlist={handleAddItemToWishlist}
-                      // addToWishListButtonLoading={addToWishListButtonLoading}
-                    />
-                  );
+                {guestCartItems.map(item => {
+                  return <GuestCartItem key={item.id} item={item} />;
                 })}
               </AnimatePresence>
             </motion.div>
@@ -74,11 +64,11 @@ export default function GuestCartContainer({
               <h1 className="mx-1 whitespace-no-wrap ">
                 (
                 {locale === 'ar'
-                  ? cartItems.length > 2 && cartItems.length
-                  : `${cartItems.length} `}
+                  ? guestCartItems.length > 2 && guestCartItems.length
+                  : `${guestCartItems.length} `}
                 {resolvePlural()})
               </h1>
-              <h1>{cartTotal}</h1> KD
+              <h1>{guestCartTotal}</h1> KD
             </motion.div>
             <motion.div layout className="text-sm my-4">
               <h1>{formatMessage({ id: 'cart-tos' })}</h1>

@@ -54,10 +54,7 @@ export default function ItemReviews({
 
   if (!reviewsLoading && reviews.length === 0) {
     return (
-      <div
-        style={{ height: '160px' }}
-        className="flex items-center text-center justify-center text-base flex-col"
-      >
+      <div className="flex p-6 items-center border shadow rounded-lg text-center justify-center text-base flex-col">
         <h1 className="text-xl mb-2 ">
           {formatMessage({ id: 'no-ratings' })} !
         </h1>

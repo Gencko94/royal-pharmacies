@@ -28,6 +28,7 @@ export default function CartMobile() {
   const [wishlistItems, setWishlistItems] = React.useState([]);
   const {
     cartItems,
+    cartMessage,
     cartItemsLoading,
     isGetCartError,
     removeFromCartMutation,
@@ -117,6 +118,7 @@ export default function CartMobile() {
                 wishlistItems={wishlistItems}
                 handleAddItemToWishlist={handleAddItemToWishlist}
                 handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
+                cartMessage={cartMessage}
               />
               <MobileCheckoutSection handleCheckout={handleCheckout} />
             </>

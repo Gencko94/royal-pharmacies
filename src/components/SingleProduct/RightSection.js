@@ -84,10 +84,11 @@ export default function RightSection({
               {formatMessage({ id: 'estimated-delivery' })} :
             </h1>
             <h1 className="mx-1">
-              {deliveryCountry?.delivery_time}
+              {deliveryCountry?.delivery_time > 2 &&
+                deliveryCountry.delivery_time}
               <span className="mx-1">
                 {deliveryCountry?.delivery_time === '1'
-                  ? formatMessage({ id: 'day' })
+                  ? formatMessage({ id: 'one-day' })
                   : formatMessage({ id: 'days' })}
               </span>
             </h1>

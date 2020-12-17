@@ -81,13 +81,22 @@ export default function SingleProduct() {
         setAddToCartButtonLoading(false);
       }
     } else {
-      const newItem = { id: data.id, quantity };
-      await addToGuestCartMutation({ newItem });
-      setAddToCartButtonLoading(false);
-      setSideMenuOpen(true);
-      setItemInCart(true);
+      try {
+        const price = data.simple_addons.promotion_price
+          ? data.simple_addons.promotion_price
+          : data.simple_addons.price;
+        const sku = data.simple_addons.sku;
+        const newItem = { id: data.id, quantity, price, sku };
+        await addToGuestCartMutation({ newItem, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        console.log(error.response);
+      }
     }
   };
+
   const handleAddToWishList = async () => {
     setAddToWishListButtonLoading(true);
     try {

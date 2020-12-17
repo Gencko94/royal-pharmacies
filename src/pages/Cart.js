@@ -13,56 +13,14 @@ import GuestCart from '../components/Cart/GuestCart.js/GuestCart';
 import CartLoader from '../components/Cart/loaders/CartLoader';
 import { useIntl } from 'react-intl';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
-import { DataProvider } from '../contexts/DataContext';
 export default function Cart() {
-  const {
-    cartItemsLoading,
-    isGetCartError,
-    removeFromCartMutation,
-    addToWishListMutation,
-    removeFromWishListMutation,
-  } = React.useContext(CartAndWishlistProvider);
+  const { cartItemsLoading, isGetCartError } = React.useContext(
+    CartAndWishlistProvider
+  );
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
-  const { deliveryCountry } = React.useContext(DataProvider);
-  const [
-    removefromCartButtonLoading,
-    setRemoveFromCartButtonLoading,
-  ] = React.useState(null);
 
-  const [wishlistItems, setWishlistItems] = React.useState([]);
   const { formatMessage } = useIntl();
-  const handleRemoveItemFromCart = async (id, cart_id) => {
-    setRemoveFromCartButtonLoading(id);
-    try {
-      await removeFromCartMutation({ id, userId, cart_id, deliveryCountry });
-      setRemoveFromCartButtonLoading(null);
-    } catch (error) {
-      setRemoveFromCartButtonLoading(null);
-      console.log(error.response);
-    }
-  };
-  const handleRemoveItemFromWishlist = async id => {
-    try {
-      await removeFromWishListMutation({ id, userId });
-      console.log(wishlistItems.filter(item => item.id !== id));
-      setWishlistItems(prev => {
-        return prev.filter(item => item !== id);
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-  const handleAddItemToWishlist = async item => {
-    try {
-      await addToWishListMutation({ id: item.id, userId });
-      setWishlistItems(prev => {
-        return [...prev, item.id];
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
 
   if (!cartItemsLoading && isGetCartError) {
     return (
@@ -80,26 +38,22 @@ export default function Cart() {
       </Helmet>
 
       <div className="px-4 py-2 max-w-default mx-auto">
-        {authenticationLoading && <CartLoader />}
-        {!authenticationLoading && userId && !isGetCartError && (
-          <div className="cart-main-grid">
-            <CartContainer
-              handleRemoveItemFromCart={handleRemoveItemFromCart}
-              removefromCartButtonLoading={removefromCartButtonLoading}
-              handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
-              handleAddItemToWishlist={handleAddItemToWishlist}
-              wishlistItems={wishlistItems}
-            />
-            <CartRightSide setCheckOutModalOpen={setCheckOutModalOpen} />
-          </div>
-        )}
-        {!authenticationLoading && !userId && <GuestCart />}
-        <StaticSwiper type="electronics" />
         <AnimatePresence>
           {checkoutModalOpen && (
             <CheckoutModal setCheckOutModalOpen={setCheckOutModalOpen} />
           )}
         </AnimatePresence>
+        {authenticationLoading && <CartLoader />}
+        {!authenticationLoading && userId && !isGetCartError && (
+          <div className="cart-main-grid">
+            <CartContainer />
+            <CartRightSide setCheckOutModalOpen={setCheckOutModalOpen} />
+          </div>
+        )}
+        {!authenticationLoading && !userId && (
+          <GuestCart setCheckOutModalOpen={setCheckOutModalOpen} />
+        )}
+        <StaticSwiper type="electronics" />
       </div>
     </Layout>
   );

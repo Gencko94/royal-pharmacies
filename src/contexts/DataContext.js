@@ -62,7 +62,7 @@ export default function DataContextProvider({ children }) {
   const localDeliveryCountry = localStorage.getItem('deliveryCountry');
   const [deliveryCountry, setDeliveryCountry] = React.useState(null);
   const [isLightTheme, setLightTheme] = React.useState(true);
-
+  const [searchBarValue, setSearchBarValue] = React.useState('');
   const prefferedLanguage = localStorage.getItem('prefferedLanguage');
 
   const [language, setLanguage] = React.useState(() => {
@@ -1475,6 +1475,8 @@ export default function DataContextProvider({ children }) {
         // getViewedItems,
         addViewedItems,
         removeViewedItem,
+        searchBarValue,
+        setSearchBarValue,
       }}
     >
       {children}

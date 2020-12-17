@@ -84,28 +84,54 @@ export default function VariantProduct({
         setAddToCartButtonLoading(false);
       }
     } else {
-      const newItem = {
-        id: data.id,
-        quantity,
-        variation: {
-          id: data.new_variation_addons?.[selectedVariation].id,
-          item_id: data.new_variation_addons?.[selectedVariation].addon_item_id,
-        },
-        option: {
-          id:
-            data.new_variation_addons?.[selectedVariation].options?.[
+      try {
+        const price = data.new_variation_addons[selectedVariation].options
+          ? data.new_variation_addons[selectedVariation].options[
               selectedOption[selectedVariation]
-            ].id,
-          item_id:
-            data.new_variation_addons?.[selectedVariation].options?.[
+            ].promotion_price
+            ? data.new_variation_addons[selectedVariation].options[
+                selectedOption[selectedVariation]
+              ].promotion_price
+            : data.new_variation_addons[selectedVariation].options[
+                selectedOption[selectedVariation]
+              ].price
+          : data.new_variation_addons[selectedVariation].promotion_price
+          ? data.new_variation_addons[selectedVariation].promotion_price
+          : data.new_variation_addons[selectedVariation].price;
+        const sku = data.new_variation_addons[selectedVariation].options
+          ? data.new_variation_addons[selectedVariation].options[
               selectedOption[selectedVariation]
-            ].addon_item_id,
-        },
-      };
-      await addToGuestCartMutation({ newItem });
-      setAddToCartButtonLoading(false);
-      // setSideMenuOpen(true);
-      setItemInCart(true);
+            ].sku
+          : data.new_variation_addons[selectedVariation].sku;
+        const newItem = {
+          id: data.id,
+          quantity,
+          variation: {
+            id: data.new_variation_addons?.[selectedVariation].id,
+            item_id:
+              data.new_variation_addons?.[selectedVariation].addon_item_id,
+          },
+          option: {
+            id:
+              data.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].id,
+            item_id:
+              data.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].addon_item_id,
+          },
+          price,
+          sku,
+        };
+
+        await addToGuestCartMutation({ newItem, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        console.log(error.response);
+      }
     }
   };
   const handleAddToWishList = async () => {

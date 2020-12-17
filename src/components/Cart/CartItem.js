@@ -14,15 +14,18 @@ import {
 } from 'react-icons/ai';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { AuthProvider } from '../../contexts/AuthContext';
-export default function CartItem({
-  item,
-  handleRemoveItemFromCart,
-  removefromCartButtonLoading,
-  handleAddItemToWishlist,
-  handleRemoveItemFromWishlist,
-  wishlistItems,
-}) {
-  const { editCartMutation } = React.useContext(CartAndWishlistProvider);
+export default function CartItem({ item }) {
+  const [
+    removefromCartButtonLoading,
+    setRemoveFromCartButtonLoading,
+  ] = React.useState(false);
+  const [itemInWishlist, setItemInWishlist] = React.useState(false);
+  const {
+    editCartMutation,
+    addToWishListMutation,
+    removeFromWishListMutation,
+    removeFromCartMutation,
+  } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const [quantity, setQuantity] = React.useState(item.qty);
@@ -37,6 +40,16 @@ export default function CartItem({
   const handleAddQuantity = () => {
     setQuantity(parseInt(quantity) + 1);
   };
+  const handleRemoveItemFromCart = async (id, cart_id) => {
+    setRemoveFromCartButtonLoading(id);
+    try {
+      await removeFromCartMutation({ id, userId, cart_id, deliveryCountry });
+      setRemoveFromCartButtonLoading(null);
+    } catch (error) {
+      setRemoveFromCartButtonLoading(null);
+      console.log(error.response);
+    }
+  };
   const handleEditItemFromCart = async (cartId, itemId, quantity) => {
     if (
       quantity > item.options.max_quantity ||
@@ -50,6 +63,23 @@ export default function CartItem({
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
+      console.log(error.response);
+    }
+  };
+  const handleRemoveItemFromWishlist = async id => {
+    try {
+      await removeFromWishListMutation({ id, userId });
+
+      setItemInWishlist(false);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  const handleAddItemToWishlist = async item => {
+    try {
+      await addToWishListMutation({ id: item.id, userId });
+      setItemInWishlist(true);
+    } catch (error) {
       console.log(error.response);
     }
   };
@@ -157,14 +187,12 @@ export default function CartItem({
               handleRemoveItemFromCart(item.id, item.cart_id);
             }}
             className={`${
-              removefromCartButtonLoading === item.id
-                ? 'bg-gray-300'
-                : 'bg-main-color'
+              removefromCartButtonLoading ? 'bg-gray-300' : 'bg-main-color'
             }  text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold uppercase `}
             style={{ width: '200px' }}
             disabled={removefromCartButtonLoading}
           >
-            {removefromCartButtonLoading === item.id ? (
+            {removefromCartButtonLoading ? (
               <Loader
                 type="ThreeDots"
                 color="#b72b2b"
@@ -182,7 +210,7 @@ export default function CartItem({
           </button>
           <button
             onClick={() => {
-              if (wishlistItems.includes(item.id)) {
+              if (itemInWishlist) {
                 handleRemoveItemFromWishlist(item.id);
               } else {
                 handleAddItemToWishlist(item);
@@ -192,7 +220,7 @@ export default function CartItem({
               border mx-2
             text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}
           >
-            {wishlistItems.includes(item.id) ? (
+            {itemInWishlist ? (
               <AiFillHeart
                 className={`w-25p h-25p hover:scale-125 text-main-color  transition-all duration-150 `}
               />

@@ -110,6 +110,14 @@ export const ar = {
   'update-btn': 'تحديث',
   'coupon-expired': 'الكوبون منتهي الصلاحية',
   'coupon-invalid': 'الرجاء التأكد من الكوبون',
+  'one-search-result': 'نتيجة بحث واحدة ل',
+  'two-search-results': 'نتيجتا بحث ل',
+  'more-than-10-search-results': 'نتيجة بحث ل ',
+  'search-results': 'نتائج بحث ل',
+  'no-search-results': 'لا يوجد نتائج بحث ل ',
+  'see-all-search-results': 'إظهار كافة نتائج البحث ل ',
+  'cart-combined':
+    'تم دمج المنتجات التي قمت بإضافتها كزائر مع عربتك الحالية , تسوق ممتع !',
 
   //
   'nav.cart': 'عربة التسوق',

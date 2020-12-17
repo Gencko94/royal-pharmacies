@@ -112,6 +112,14 @@ const baseStrings = {
   'update-btn': 'Update',
   'coupon-expired': 'Expired Coupon',
   'coupon-invalid': 'Invalid Coupon',
+  'one-search-result': 'One Search Result for',
+  'two-search-results': 'Two Search Results for',
+  'more-than-10-search-results': 'Search Results for',
+  'search-results': 'Search Results for',
+  'no-search-results': 'No Search Results for',
+  'see-all-search-results': 'See all Search Results for',
+  'cart-combined':
+    'Your items that you have added as a guest has been combined with your current Cart, Happy Shopping !',
 
   //
   'home.title': 'Home',

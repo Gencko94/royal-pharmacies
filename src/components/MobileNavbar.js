@@ -33,7 +33,7 @@ export default function MobileNavbar({ toggleSideMenu }) {
           <MobileIcons />
         </nav>
         <div className={`p-2 bg-main-color text-main-text`}>
-          <MobileSearchbar />
+          <MobileSearchbar windowScrolled={windowScrolled} />
         </div>
       </div>
 

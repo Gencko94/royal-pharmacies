@@ -3,7 +3,8 @@ import React from 'react';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
-import { MoonLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { DataProvider } from '../../contexts/DataContext';
 
 export default function FloatingAddToCart({
@@ -54,7 +55,7 @@ export default function FloatingAddToCart({
       className={`floating-button border-t bg-second-nav-text-light`}
     >
       <div className=" flex items-center justify-center">
-        <button onClick={handleSubstractQuantity} className="p-1">
+        <button onClick={handleSubstractQuantity}>
           <AiOutlineMinusCircle
             className={`w-6 h-6 ${
               quantity === 1 ? 'text-gray-700' : 'text-blue-700'
@@ -67,7 +68,7 @@ export default function FloatingAddToCart({
           className="mx-1 px-2 py-1 border rounded"
           style={{ maxWidth: '40px', textAlign: 'center' }}
         />
-        <button onClick={handleAddQuantity} className="p-1">
+        <button onClick={handleAddQuantity}>
           <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
         </button>
       </div>
@@ -100,12 +101,16 @@ export default function FloatingAddToCart({
             handleAddToCart({ id: data.id, quantity });
           }
         }}
-        className={`${
-          addToCartButtonLoading ? 'bg-gray-300' : 'bg-green-700'
-        } flex-1 text-body-light uppercase text-sm py-2 px-2 rounded   flex items-center justify-center font-semibold`}
+        className={`bg-green-700 whitespace-no-wrap flex-1 text-body-light uppercase text-sm py-2 px-2 rounded flex items-center justify-center font-semibold`}
       >
         {addToCartButtonLoading ? (
-          <MoonLoader size={19} color="#b72b2b" />
+          <Loader
+            type="ThreeDots"
+            color="#fff"
+            height={22}
+            width={22}
+            visible={true}
+          />
         ) : itemInCart ? (
           <>
             <span>

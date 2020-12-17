@@ -11,6 +11,8 @@ import {
   addToGuestCart,
   checkCoupon,
   editCart,
+  removeFromGuestCart,
+  editGuestCart,
 } from '../Queries/Queries';
 import { AuthProvider } from './AuthContext';
 import { DataProvider } from './DataContext';
@@ -37,7 +39,7 @@ export default function CartAndWishlistContext({ children }) {
     isLoading: guestCartItemsLoading,
     isError: isGuestGetCartError,
     error: getGuestCartError,
-  } = useQuery('guestCartItems', getGuestCartItems, {
+  } = useQuery(['guestCartItems', deliveryCountry], getGuestCartItems, {
     refetchOnWindowFocus: false,
     enabled: !authenticationLoading && !userId,
     retry: true,
@@ -54,7 +56,7 @@ export default function CartAndWishlistContext({ children }) {
   });
   const [addToGuestCartMutation] = useMutation(addToGuestCart, {
     onSuccess: data => {
-      queryCache.invalidateQueries(['cartItems', userId]);
+      queryCache.setQueryData(['guestCartItems', deliveryCountry], () => data);
     },
     throwOnError: true,
   });
@@ -67,9 +69,20 @@ export default function CartAndWishlistContext({ children }) {
     },
     throwOnError: true,
   });
+  const [removeFromGuestCartMutation] = useMutation(removeFromGuestCart, {
+    onSuccess: data => {
+      queryCache.setQueryData(['guestCartItems', deliveryCountry], () => data);
+    },
+  });
   const [editCartMutation] = useMutation(editCart, {
     onSuccess: () => {
       queryCache.invalidateQueries(['cartItems', userId, deliveryCountry]);
+    },
+    throwOnError: true,
+  });
+  const [editGuestCartMutation] = useMutation(editGuestCart, {
+    onSuccess: data => {
+      queryCache.setQueryData(['guestCartItems', deliveryCountry], () => data);
     },
     throwOnError: true,
   });
@@ -86,6 +99,10 @@ export default function CartAndWishlistContext({ children }) {
     enabled: userId,
     retry: true,
   });
+
+  // const [combineCartsMutation] = useMutation(combineCarts, {
+  //   throwOnError:true
+  // })
   const [addToWishListMutation] = useMutation(addToWishlist, {
     onSuccess: data => {
       queryCache.setQueryData(['wishlistItems', userId], data);
@@ -118,11 +135,15 @@ export default function CartAndWishlistContext({ children }) {
       value={{
         cartItems: cartData?.cartItems,
         cartTotal: cartData?.cartTotal,
+        cartMessage: cartData?.message,
         cartSubtotal: cartData?.cartSubtotal,
         shippingCost: cartData?.shippingCost,
         couponCost: cartData?.couponCost,
         guestCartItems: guestCartData?.cartItems,
         guestCartTotal: guestCartData?.cartTotal,
+        guestCartSubtotal: guestCartData?.cartSubtotal,
+        guestShippingCost: guestCartData?.shippingCost,
+        guestCouponCost: guestCartData?.coupon_cost,
         wishlistItems: wishListData?.wishlistItems,
         cartIdle,
         cartItemsLoading,
@@ -139,9 +160,15 @@ export default function CartAndWishlistContext({ children }) {
         addToWishListMutation,
         removeFromWishListMutation,
         addToGuestCartMutation,
+        removeFromGuestCartMutation,
+        editGuestCartMutation,
         checkCouponMutation,
         isCheckingCoupon,
         editCartMutation,
+        sideCartItems: userId ? cartData?.cartItems : guestCartData?.cartItems,
+        sideCartSubTotal: userId
+          ? cartData?.cartSubtotal
+          : guestCartData?.cartSubtotal,
       }}
     >
       {children}
