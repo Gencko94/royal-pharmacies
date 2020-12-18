@@ -157,8 +157,8 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
       return (
         <LazyImage
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${
-            item.new_variation_addons[selectedVariation].options[
-              selectedOption[selectedVariation]
+            item.new_variation_addons[selectedVariation]?.options?.[
+              selectedOption?.[selectedVariation]
             ]?.image || item.image?.link
           }`}
           alt={item.translation[locale].title}
