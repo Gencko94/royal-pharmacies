@@ -57,7 +57,7 @@ export default function GuestCartItemMobile({ item }) {
       console.log(error.response);
     }
   };
-  const handleEditItemFromCart = async sku => {
+  const handleEditItemFromCart = async (sku, price) => {
     if (
       quantity > item.options.max_quantity ||
       quantity === 0 ||
@@ -66,7 +66,7 @@ export default function GuestCartItemMobile({ item }) {
       return;
     setEditLoading(true);
     try {
-      await editGuestCartMutation({ sku, quantity });
+      await editGuestCartMutation({ sku, quantity, price, deliveryCountry });
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
@@ -164,7 +164,7 @@ export default function GuestCartItemMobile({ item }) {
       <div className="flex justify-center text-sm  items-center my-2 ">
         <button
           onClick={() => {
-            handleRemoveItemFromCart(item.id, item.cart_id);
+            handleRemoveItemFromCart(item.options.sku, item.price);
           }}
           className={`${
             removefromCartButtonLoading === item.id

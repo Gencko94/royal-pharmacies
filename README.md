@@ -38,17 +38,17 @@
 - [x] add reviews to single product
 - [x] Add Language Page to side menu
 - [x] wrong credentials handling.
-- [ ] Add Edit Cart item support. (discuss with maher)
+- [x] Add Edit Cart item support. (discuss with maher)
 - [x] deliver to mobile.
 - [x] add password modals in account.
-- [ ] fix search bar mobile.
-- [ ] Complete Viewed Items.
-- [ ] Add Coupon Support in Cart.
-- [ ] Add Currencies and modify checkout delivery cost
+- [x] fix search bar mobile.
+- [x] Complete Viewed Items.
+- [x] Add Coupon Support in Cart.
+- [x] Add Currencies and modify checkout delivery cost
 - [x] Add payment methods Logos in Cart
 - [x] Complete Item Reviews
 - [x] Add Delivery Country Page to side menu
-- [ ] Add React Query & Localizations to the Search page.
+- [x] Add React Query & Localizations to the Search page.
 - [ ] Add Scroll Pagination to SingleProduct Pages.
 - [ ] Complete the Checkout Page.(2hrs)
 - [ ] Search Engine optimization.

@@ -14,11 +14,7 @@ export default function FirstNav() {
   } = React.useContext(AuthProvider);
   return (
     <div
-      className={` font-semibold py-1 z-30 
-      
-        bg-first-nav-light text-main-text
-          
-       text-sm `}
+      className={` font-semibold py-1 z-30 bg-first-nav-light text-main-text text-sm `}
     >
       <div className="max-w-default mx-auto flex items-center justify-between px-6">
         <div className="flex">
@@ -41,16 +37,6 @@ export default function FirstNav() {
           ) : (
             <LoginRegister />
           )}
-          {/* {authenticationLoading && (
-            <Loader
-              type="ThreeDots"
-              color="#fff"
-              secondaryColor="black"
-              height={20}
-              width={20}
-              visible={authenticationLoading}
-            />
-          )} */}
         </div>
       </div>
     </div>

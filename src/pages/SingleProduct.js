@@ -18,10 +18,12 @@ import { getProductReviews, getSingleItem } from '../Queries/Queries';
 import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import VariantProduct from '../components/SingleProduct/VariantProduct/VariantProduct';
+import { useIntl } from 'react-intl';
 
 export default function SingleProduct() {
   const { id } = useParams();
   const { deliveryCountry, addViewedItems } = React.useContext(DataProvider);
+  const { locale } = useIntl();
   const {
     addToCartMutation,
     addToWishListMutation,
@@ -29,8 +31,6 @@ export default function SingleProduct() {
   } = React.useContext(CartAndWishlistProvider);
 
   const { userId } = React.useContext(AuthProvider);
-  const [selectedVariation, setSelectedVariant] = React.useState(0);
-  const [selectedSize, setSelectedSize] = React.useState(0);
 
   /**
    * Main Fetch
@@ -48,7 +48,6 @@ export default function SingleProduct() {
     getProductReviews,
     { retry: true, enabled: data, refetchOnWindowFocus: false }
   );
-  // const [quantity, setQuantity] = React.useState(quantityOptions[0]);
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
   const [itemInCart, setItemInCart] = React.useState(false);
@@ -115,11 +114,13 @@ export default function SingleProduct() {
   return (
     <Layout>
       <Helmet>
-        {/* <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
+        <title>
+          {` Shop ${data?.translation?.[locale].title} on MRG` || 'MRG'}
+        </title>
         <meta
           name="description"
-          content={`Shop  ${name.split('-').join(' ')} | MRG`}
-        /> */}
+          content={`Shop  ${data?.translation?.[locale].title} | MRG` || 'MRG'}
+        />
       </Helmet>
 
       <AnimatePresence>
@@ -146,19 +147,11 @@ export default function SingleProduct() {
             (data.type === 'simple' ? (
               <div className="single-product__container-desktop">
                 <div className=" ">
-                  <ImageZoom
-                    data={data}
-                    selectedVariation={selectedVariation}
-                  />
+                  <ImageZoom data={data} />
                 </div>
 
                 <MiddleSection
-                  selectedVariation={selectedVariation}
                   data={data}
-                  deliveryCountry={deliveryCountry}
-                  setSelectedVariant={setSelectedVariant}
-                  selectedSize={selectedSize}
-                  setSelectedSize={setSelectedSize}
                   reviewsLoading={reviewsLoading}
                   ratingCount={reviews?.ratingCount}
                   averageRating={reviews?.averageRating}

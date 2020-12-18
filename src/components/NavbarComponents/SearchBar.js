@@ -22,7 +22,6 @@ export default function SearchBar() {
   const getSuggestionValue = suggestion => {
     return suggestion.translation[locale].title;
   };
-
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div
@@ -39,6 +38,12 @@ export default function SearchBar() {
       </div>
     );
   };
+
+  React.useEffect(() => {
+    if (searchBarValue.length === 0) {
+      setNoSuggestions(false);
+    }
+  }, [searchBarValue]);
   const onSuggestionsFetchRequested = async ({ value }) => {
     if (cancelToken) {
       cancelToken.cancel();
@@ -47,7 +52,12 @@ export default function SearchBar() {
     const inputValue = value.trim().toLowerCase();
     const inputThreshold = inputValue.length > 2;
     const inputLength = inputValue.length;
-    if (inputLength < 2) return [];
+
+    if (inputLength <= 2) {
+      setNoSuggestions(false);
+      setLoading(false);
+      return [];
+    }
 
     setLoading(true);
     try {
@@ -110,26 +120,6 @@ export default function SearchBar() {
           {...inputProps}
           className={`w-full rounded p-2 bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700`}
         />
-        <div className="absolute right-8">
-          <Loader
-            type="ThreeDots"
-            color="#b72b2b"
-            height={30}
-            width={30}
-            visible={isLoading}
-          />
-        </div>
-        {searchBarValue.length !== 0 && (
-          <button
-            onClick={() => {
-              setNoSuggestions(false);
-              setSearchBarValue('');
-            }}
-            className="absolute right-50 transition duration-100 p-1 hover:shadow-sm hover:bg-gray-300 rounded"
-          >
-            <AiOutlineClose className="w-4 h-4" />
-          </button>
-        )}
       </div>
     );
   };
@@ -161,6 +151,26 @@ export default function SearchBar() {
         renderSuggestionsContainer={renderSuggestionsContainer}
         onSuggestionSelected={handleSelect}
       />
+      {searchBarValue.length !== 0 && (
+        <button
+          onClick={() => {
+            setNoSuggestions(false);
+            setSearchBarValue('');
+          }}
+          className="transition duration-100 p-1 hover:shadow-sm hover:bg-gray-300 rounded"
+        >
+          <AiOutlineClose className="w-4 h-4" />
+        </button>
+      )}
+      <div className="px-2 py-1">
+        <Loader
+          type="TailSpin"
+          color="#b72b2b"
+          height={20}
+          width={20}
+          visible={isLoading}
+        />
+      </div>
     </div>
   );
 }

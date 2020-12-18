@@ -1,17 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import miniBanner from '../../assets/banners/miniBanner.gif';
-// import Colors from './VariantProduct/Colors/ColorsAndSizes';
 import { scrollIntoView } from 'scroll-js';
 import Rating from 'react-rating';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { DataProvider } from '../../contexts/DataContext';
 export default function MiddleSection({
   data,
-  selectedVariation,
-  color,
-  setColor,
-  setSelectedVariant,
   ratingCount,
   averageRating,
   reviewsLoading,
@@ -28,7 +23,7 @@ export default function MiddleSection({
         return formatMessage({ id: 'two-ratings' });
 
       case ratingCount > 10:
-        return formatMessage({ id: 'one-rating' });
+        return formatMessage({ id: 'more-than-10-ratings' });
 
       default:
         return formatMessage({ id: 'ratings' });
@@ -56,11 +51,7 @@ export default function MiddleSection({
           <h1 className="text-gray-600 text-sm">
             {formatMessage({ id: 'model-number' })} :
           </h1>
-          <h1 className="mx-1">
-            {data.type === 'simple'
-              ? data.simple_addons.sku
-              : data.variation_addons[selectedVariation].sku}
-          </h1>
+          <h1 className="mx-1">{data.simple_addons.sku}</h1>
         </div>
         {!reviewsLoading && ratingCount !== 0 && (
           <div
@@ -68,7 +59,7 @@ export default function MiddleSection({
               scrollIntoView(document.getElementById('details'));
               setDetailsTab(1);
             }}
-            className="text-sm mx-2 flex items-center"
+            className="mx-2 flex items-center"
           >
             <div className="rounded p-1 text-xs bg-green-700 text-main-text cursor-pointer">
               {ratingCount}
@@ -84,42 +75,25 @@ export default function MiddleSection({
       </div>
       <hr className="my-2" />
       <div className="flex items-start py-1">
-        <div className=" flex-1 text-sm  font-bold">
-          {data.type === 'simple'
-            ? data.simple_addons.promotion_price && (
-                <div className=" flex items-center ">
-                  <h1>{formatMessage({ id: 'price-before' })} :</h1>
-                  <h1 className=" mx-2 text-base italic  line-through text-gray-700">
-                    {data.simple_addons.promotion_price} KD
-                  </h1>{' '}
-                </div>
-              )
-            : data.variation_addons[selectedVariation].promotion_price && (
-                <div className=" flex items-center ">
-                  <h1>{formatMessage({ id: 'price-before' })} :</h1>
-                  <h1 className=" mx-2 text-base italic  line-through text-gray-700">
-                    {data.variation_addons[selectedVariation].promotion_price}
-                    <span className="mx-1">
-                      {deliveryCountry?.currency.translation[locale].symbol}
-                    </span>
-                  </h1>{' '}
-                </div>
-              )}
+        <div className=" flex-1 font-bold">
+          {data.simple_addons.promotion_price && (
+            <div className=" flex items-center ">
+              <h1>{formatMessage({ id: 'price-before' })} :</h1>
+              <h1 className=" mx-2 italic  line-through text-gray-700">
+                {data.simple_addons.promotion_price}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </h1>{' '}
+            </div>
+          )}
           <div className="">
             <div className="flex items-center flex-1">
               <h1 className="    ">
-                {data.type === 'simple'
-                  ? data.simple_addons.promotion_price
-                    ? formatMessage({ id: 'price-now' })
-                    : formatMessage({ id: 'price' })
-                  : data.variation_addons[selectedVariation].promotion_price
+                {data.simple_addons.promotion_price
                   ? formatMessage({ id: 'price-now' })
                   : formatMessage({ id: 'price' })}
               </h1>
-              <h1 className=" text-xl mx-2  text-red-700">
-                {data.type === 'simple'
-                  ? data.simple_addons.price
-                  : data.variation_addons[selectedVariation].price}
+              <h1 className=" text-xl mx-2 text-main-color">
+                {data.simple_addons.price}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
@@ -128,27 +102,14 @@ export default function MiddleSection({
                 ({formatMessage({ id: 'vat-inclusive' })})
               </h1>
             </div>
-            {data.type === 'simple'
-              ? data.simple_addons.promotion_price && (
-                  <div className="flex items-center   ">
-                    <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                    <h1 className="text-base text-red-700 mx-2">18%</h1>
-                  </div>
-                )
-              : data.variation_addons[selectedVariation].promotion_price && (
-                  <div className="flex items-center   ">
-                    <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                    <h1 className="text-base text-red-700 mx-2">18%</h1>
-                  </div>
-                )}
+            {data.simple_addons.promotion_price && (
+              <div className="flex items-center   ">
+                <h1>{formatMessage({ id: 'you-save' })} :</h1>
+                <h1 className="text-base text-red-700 mx-2">18%</h1>
+              </div>
+            )}
           </div>
         </div>
-      </div>
-      <hr className="my-2" />
-      <div>
-        <hr className="my-2" />
-
-        <hr className="my-2" />
       </div>
       <img src={miniBanner} alt="offer" className="mt-2" />
     </div>

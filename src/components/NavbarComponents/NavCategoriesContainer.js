@@ -26,9 +26,7 @@ export default function NavCategoriesContainer({
   }
   return (
     <div id="menu-trigger" className="w-full  ">
-      <div
-        className={`bg-nav-cat-light text-nav-cat-text-light flex items-center  `}
-      >
+      <div className={`flex items-center`}>
         {!isLoading &&
           data.map(item => (
             <CategoryButton

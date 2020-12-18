@@ -651,7 +651,7 @@ input {
   /* padding: 0.5em; */
   z-index: 30;
   margin-top: 0.25em;
-  width: 100%;
+  /* width: 100%; */
   /* overflow: hidden; */
 }
 .en-deliver-to__mobile {

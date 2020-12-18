@@ -10,7 +10,9 @@ import { getVisitedItems } from '../Queries/Queries';
 
 export default function RecentlyViewedVertical() {
   const { formatMessage, locale } = useIntl();
-  const { data, isLoading } = useQuery('viewedItems', getVisitedItems);
+  const { data, isLoading } = useQuery('viewedItems', getVisitedItems, {
+    retry: true,
+  });
 
   if (isLoading) {
     return (
@@ -70,21 +72,21 @@ export default function RecentlyViewedVertical() {
             <div key={item.id} className="recent-items__container mb-1 ">
               <Link to={`/${locale}/c/${item.id}`}>
                 <LazyImage
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
                   alt={item.translation[locale].title}
                   pb="calc(100% * 286/210)"
                 />
               </Link>
               <div className="text-sm">
                 <Link to={`/${locale}/c/${item.id}`}>
-                  <h1 className=" text-clamp-2 ">
+                  <h1 className="text-clamp-2">
                     {item.translation[locale].title}
                   </h1>
                 </Link>
                 <Rating
                   initialRating={Math.round(Math.random() * 5)}
-                  emptySymbol={<AiOutlineStar className="text-red-700" />}
-                  fullSymbol={<AiFillStar className="text-red-700" />}
+                  emptySymbol={<AiOutlineStar className="text-main-color" />}
+                  fullSymbol={<AiFillStar className="text-main-color" />}
                   className="pt-1"
                   readonly
                 />

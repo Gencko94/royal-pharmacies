@@ -65,8 +65,8 @@ export default function ShipTo() {
             type="ThreeDots"
             color="#fff"
             secondaryColor="black"
-            height={20}
-            width={20}
+            height={22}
+            width={22}
             visible={true}
           />
         </div>

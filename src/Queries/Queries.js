@@ -528,7 +528,17 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry }) => {
     return true;
   };
   parsed = parsed.filter(isAvailable);
-
+  console.log(parsed);
+  if (parsed.length === 0) {
+    localStorage.setItem('localCart', JSON.stringify(parsed));
+    return {
+      cartItems: [],
+      cartTotal: 0,
+      cartSubtotal: 0,
+      shippingCost: 0,
+      coupon_cost: 0,
+    };
+  }
   let items = [];
   parsed.forEach(item => {
     items.push({
@@ -560,8 +570,61 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry }) => {
     };
   }
 };
-export const editGuestCart = ({ sku, deliveryCountry }) => {
+export const editGuestCart = async ({
+  sku,
+  quantity,
+  price,
+  deliveryCountry,
+}) => {
   //TODO
+  const config = {
+    headers: { country: deliveryCountry.code },
+  };
+
+  const localCart = localStorage.getItem('localCart');
+  let parsed = JSON.parse(localCart);
+  const isAvailable = item => {
+    if (item.sku === sku) {
+      return false;
+    }
+    return true;
+  };
+  let foundItemIndex = parsed.findIndex(isAvailable);
+  if (foundItemIndex === -1) {
+    throw new Error('Something went wrong');
+  }
+  parsed[foundItemIndex].quantity = quantity;
+  parsed[foundItemIndex].price = price * quantity;
+  let items = [];
+  parsed.forEach(item => {
+    items.push({
+      id: item.id,
+      qty: item.quantity,
+      price: item.price,
+      options: {
+        addons: {
+          [item.variation?.id]: item.variation?.item_id,
+          [item.option?.id]: item.option?.item_id,
+        },
+        sku: item.sku,
+      },
+    });
+  });
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
+    { cart: JSON.stringify(items) },
+    config
+  );
+  if (res.data.status === true) {
+    localStorage.setItem('localCart', JSON.stringify(parsed));
+    return {
+      cartItems: res.data.data.items,
+      cartTotal: res.data.data.total,
+      cartSubtotal: res.data.data.subtotal,
+      shippingCost: res.data.data.shipping_cost,
+      coupon_cost: res.data.data.coupon_cost,
+    };
+  }
 };
 
 /**

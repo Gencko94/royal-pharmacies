@@ -34,11 +34,19 @@ export default function GuestCartItem({ item }) {
     setQuantity(parseInt(quantity) + 1);
   };
 
-  const handleEditItemFromCart = async sku => {
+  const handleEditItemFromCart = async (sku, price) => {
+    if (
+      quantity > item.options.max_quantity ||
+      quantity === 0 ||
+      item.qty === quantity
+    )
+      return;
     setEditLoading(true);
     try {
-      await editGuestCartMutation({ sku, deliveryCountry });
+      await editGuestCartMutation({ sku, quantity, price, deliveryCountry });
+      setEditLoading(false);
     } catch (error) {
+      setEditLoading(false);
       console.log(error);
     }
   };
@@ -151,7 +159,7 @@ export default function GuestCartItem({ item }) {
         <div className="flex text-sm  items-center ">
           <button
             onClick={() => {
-              handleRemoveItemFromCart(item.id, item.cart_id);
+              handleRemoveItemFromCart(item.options.sku, item.price);
             }}
             className={`${
               removefromCartButtonLoading ? 'bg-gray-300' : 'bg-main-color'

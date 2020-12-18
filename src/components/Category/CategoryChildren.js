@@ -40,7 +40,7 @@ export default function CategoryChildren({ categoryInfo }) {
   };
 
   return (
-    <Swiper navigation id="main" className="my-1" breakpoints={breakpoints}>
+    <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
       {categoryInfo.children.map(child => {
         return (
           <SwiperSlide
@@ -50,13 +50,13 @@ export default function CategoryChildren({ categoryInfo }) {
             rounded`}
           >
             <Link to={`/${locale}/categories/${child.slug}`}>
-              <div className="p-2">
-                <LazyImage
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.image?.link}`}
-                  alt={child.translation[locale].name}
-                  pb="calc(100% * 286/210)"
-                />
-              </div>
+              {/* <div className="p-2"> */}
+              <LazyImage
+                src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.image?.link}`}
+                alt={child.translation[locale].name}
+                pb="calc(100% * 286/210)"
+              />
+              {/* </div> */}
               <h1 className="font-semibold text-center p-1">
                 {child.translation[locale].name}
               </h1>
