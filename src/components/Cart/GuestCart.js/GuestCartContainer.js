@@ -22,7 +22,7 @@ export default function GuestCartContainer() {
         return formatMessage({ id: 'two-items' });
 
       case guestCartItems.length > 10:
-        return formatMessage({ id: 'one-items' });
+        return formatMessage({ id: 'more-than-10-items' });
       default:
         return formatMessage({ id: 'multiple-items' });
     }
@@ -31,7 +31,7 @@ export default function GuestCartContainer() {
     return <CartContainerLoader locale={locale} />;
   }
   return (
-    <div className="">
+    <div>
       <AnimatePresence>
         {guestCartItems.length === 0 && <CartEmpty />}
       </AnimatePresence>
@@ -78,16 +78,6 @@ export default function GuestCartContainer() {
       )}
 
       <hr />
-      {/* {visitedItems.length > 7 ? (
-            <RecentlyVisitedHorizontal visitedItems={visitedItems} />
-          ) : (
-            <ItemsSlider
-              data={phone}
-              miniLogo={false}
-              isLightTheme={isLightTheme}
-              title="Save Big with Phones & Tablets"
-            />
-          )} */}
     </div>
   );
 }

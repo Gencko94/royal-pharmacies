@@ -5,7 +5,7 @@ import LayoutMobile from '../../LayoutMobile';
 import MobileGuestCartContainer from './MobileGuestCartContainer';
 import MobileGuestCheckoutSection from './MobileGuestCheckoutSection';
 
-export default function MobileGuestCart() {
+export default function MobileGuestCart({ setCheckOutPopupOpen }) {
   const { formatMessage } = useIntl();
   const {
     guestCartItems,
@@ -27,11 +27,7 @@ export default function MobileGuestCart() {
   }
   return (
     <>
-      <MobileGuestCheckoutSection
-        cartItemsLoading={guestCartItemsLoading}
-        cartItems={guestCartItems}
-        cartTotal={guestCartTotal}
-      />
+      <MobileGuestCheckoutSection setCheckOutPopupOpen={setCheckOutPopupOpen} />
       <MobileGuestCartContainer
         cartTotal={guestCartTotal}
         cartItems={guestCartItems}

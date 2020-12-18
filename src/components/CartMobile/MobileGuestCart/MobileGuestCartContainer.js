@@ -8,8 +8,6 @@ import GuestCartItemMobile from './GuestCartItemMobile';
 export default function MobileGuestCartContainer({
   cartItemsLoading,
   cartItems,
-  handleRemoveItemFromCart,
-  removefromCartButtonLoading,
 }) {
   const { formatMessage } = useIntl();
   if (cartItemsLoading) {
@@ -27,12 +25,7 @@ export default function MobileGuestCartContainer({
           <motion.div initial={false} layout className="mb-2">
             <AnimatePresence>
               {cartItems.map(item => (
-                <GuestCartItemMobile
-                  key={item.id}
-                  item={item}
-                  handleRemoveItemFromCart={handleRemoveItemFromCart}
-                  removefromCartButtonLoading={removefromCartButtonLoading}
-                />
+                <GuestCartItemMobile key={item.id} item={item} />
               ))}
             </AnimatePresence>
           </motion.div>

@@ -6,12 +6,7 @@ import MainContentLoader from './ContentLoaders/MainContentLoader';
 import { GrFormClose } from 'react-icons/gr';
 export default function MobileCartContainer({
   cartItems,
-  handleRemoveItemFromCart,
-  removefromCartButtonLoading,
   cartItemsLoading,
-  wishlistItems,
-  handleRemoveItemFromWishlist,
-  handleAddItemToWishlist,
   cartMessage,
 }) {
   const [showMessage, setShowMessage] = React.useState(true);
@@ -48,15 +43,7 @@ export default function MobileCartContainer({
         </motion.div>
         <AnimatePresence>
           {cartItems.map(item => (
-            <CartItemMobile
-              key={item.id}
-              item={item}
-              handleRemoveItemFromCart={handleRemoveItemFromCart}
-              removefromCartButtonLoading={removefromCartButtonLoading}
-              wishlistItems={wishlistItems}
-              handleAddItemToWishlist={handleAddItemToWishlist}
-              handleRemoveItemFromWishlist={handleRemoveItemFromWishlist}
-            />
+            <CartItemMobile key={item.id} item={item} />
           ))}
         </AnimatePresence>
       </motion.div>

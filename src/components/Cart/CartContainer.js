@@ -25,7 +25,7 @@ export default function CartContainer() {
         return formatMessage({ id: 'two-items' });
 
       case cartItems.length > 10:
-        return formatMessage({ id: 'one-items' });
+        return formatMessage({ id: 'more-than-10-items' });
       default:
         return formatMessage({ id: 'multiple-items' });
     }
@@ -103,16 +103,6 @@ export default function CartContainer() {
       )}
 
       <hr />
-      {/* {visitedItems.length > 7 ? (
-            <RecentlyVisitedHorizontal visitedItems={visitedItems} />
-          ) : (
-            <ItemsSlider
-              data={phone}
-              miniLogo={false}
-              isLightTheme={isLightTheme}
-              title="Save Big with Phones & Tablets"
-            />
-          )} */}
     </div>
   );
 }

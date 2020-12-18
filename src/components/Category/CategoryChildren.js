@@ -51,12 +51,8 @@ export default function CategoryChildren({ categoryInfo }) {
           >
             <Link to={`/${locale}/categories/${child.slug}`}>
               <div className="p-2">
-                {/* <img
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.image.link}`}
-                  alt="no"
-                /> */}
                 <LazyImage
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.image.link}`}
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.image?.link}`}
                   alt={child.translation[locale].name}
                   pb="calc(100% * 286/210)"
                 />

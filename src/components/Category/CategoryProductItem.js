@@ -9,7 +9,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
   // const { addToCartMutation, removeFromCartMutation } = React.useContext(
   //   CartAndWishlistProvider
   // );
-  const { formatMessage, locale } = useIntl();
+  const { locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const [activeBuyOptions, setActiveBuyOptions] = React.useState(null);
   // const { userId } = React.useContext(AuthProvider);
@@ -47,9 +47,6 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
   // };
   return (
     <div>
-      <span className="sale-mini__banner text-xs font-semibold bg-main-color text-main-text px-1 ">
-        32% {formatMessage({ id: 'off' })}
-      </span>
       <a href={`/${locale}/c/${item.id}`}>
         <LazyImage
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}

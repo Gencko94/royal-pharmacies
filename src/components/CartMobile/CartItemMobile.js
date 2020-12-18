@@ -15,20 +15,23 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 
-export default function CartItemMobile({
-  item,
-  handleRemoveItemFromCart,
-  removefromCartButtonLoading,
-  wishlistItems,
-  handleRemoveItemFromWishlist,
-  handleAddItemToWishlist,
-}) {
-  const { editCartMutation } = React.useContext(CartAndWishlistProvider);
+export default function CartItemMobile({ item }) {
+  const [
+    removefromCartButtonLoading,
+    setRemoveFromCartButtonLoading,
+  ] = React.useState(false);
+  const [itemInWishlist, setItemInWishlist] = React.useState(false);
+  const {
+    editCartMutation,
+    addToWishListMutation,
+    removeFromWishListMutation,
+    removeFromCartMutation,
+  } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
-  const { formatMessage, locale } = useIntl();
   const [quantity, setQuantity] = React.useState(item.qty);
   const [editLoading, setEditLoading] = React.useState(false);
+  const { formatMessage, locale } = useIntl();
   const handleSubstractQuantity = () => {
     if (parseInt(quantity) === 1) {
       return;
@@ -37,6 +40,16 @@ export default function CartItemMobile({
   };
   const handleAddQuantity = () => {
     setQuantity(parseInt(quantity) + 1);
+  };
+  const handleRemoveItemFromCart = async (id, cart_id) => {
+    setRemoveFromCartButtonLoading(id);
+    try {
+      await removeFromCartMutation({ id, userId, cart_id, deliveryCountry });
+      setRemoveFromCartButtonLoading(null);
+    } catch (error) {
+      setRemoveFromCartButtonLoading(null);
+      console.log(error.response);
+    }
   };
   const handleEditItemFromCart = async (cartId, itemId, quantity) => {
     if (
@@ -51,6 +64,23 @@ export default function CartItemMobile({
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
+      console.log(error.response);
+    }
+  };
+  const handleRemoveItemFromWishlist = async id => {
+    try {
+      await removeFromWishListMutation({ id, userId });
+
+      setItemInWishlist(false);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+  const handleAddItemToWishlist = async item => {
+    try {
+      await addToWishListMutation({ id: item.id, userId });
+      setItemInWishlist(true);
+    } catch (error) {
       console.log(error.response);
     }
   };
@@ -188,7 +218,7 @@ export default function CartItemMobile({
         </button>
         <button
           onClick={() => {
-            if (wishlistItems.includes(item.id)) {
+            if (itemInWishlist) {
               handleRemoveItemFromWishlist(item.id);
             } else {
               handleAddItemToWishlist(item);
@@ -198,7 +228,7 @@ export default function CartItemMobile({
               border mx-2
             text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}
         >
-          {wishlistItems.includes(item.id) ? (
+          {itemInWishlist ? (
             <AiFillHeart
               className={`w-25p h-25p hover:scale-125 text-main-color  transition-all duration-150 `}
             />

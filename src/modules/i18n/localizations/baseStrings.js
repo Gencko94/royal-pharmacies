@@ -177,6 +177,7 @@ const baseStrings = {
   'the-items': 'Items',
   'one-item': 'Item',
   'two-items': 'Items',
+  'more-than-10-items': 'Items',
   'multiple-items': 'Items',
 
   'cart-tos':
