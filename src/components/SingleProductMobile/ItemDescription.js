@@ -218,7 +218,7 @@ export default function ItemDescription({
       </div>
 
       <div className="relative flex items-center flex-wrap">
-        <div className=" flex items-center justify-center mx-3">
+        <div className=" flex items-center justify-center">
           <button onClick={handleSubstractQuantity} className="p-1">
             <AiOutlineMinusCircle
               className={`w-6 h-6 ${

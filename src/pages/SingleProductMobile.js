@@ -168,15 +168,15 @@ export default function SingleProductMobile() {
         )}
         <br ref={triggerRef} />
         <AnimatePresence>
-          {inView && !itemInCart && !isLoading && data.type === 'simple' && (
+          {inView && !itemInCart && !isLoading && (
             <FloatingAddToCart
               quantity={quantity}
               setQuantity={setQuantity}
               handleAddToCart={handleAddToCart}
               id={data.id}
-              price={data.simple_addons.price}
               addToCartButtonLoading={addToCartButtonLoading}
               itemInCart={itemInCart}
+              data={data}
             />
           )}
         </AnimatePresence>

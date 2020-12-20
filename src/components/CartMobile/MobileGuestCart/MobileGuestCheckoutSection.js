@@ -72,6 +72,7 @@ export default function MobileGuestCheckoutSection({ setCheckOutPopupOpen }) {
       </div>
     );
   }
+  if (!guestCartItemsLoading && guestCartItems.length === 0) return null;
   return (
     <div className="-mx-2 -mt-1 border font-semibold bg-gray-100 p-2 flex justify-center flex-col ">
       <div className="mb-2 ">

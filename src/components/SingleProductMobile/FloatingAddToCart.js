@@ -72,27 +72,34 @@ export default function FloatingAddToCart({
           <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
         </button>
       </div>
-      <div className="p-1 text-center mx-1">
-        {data.new_variation_addons[selectedVariation].options
-          ? data.new_variation_addons[selectedVariation].options[
-              selectedOption[selectedVariation]
-            ].promotion_price
-            ? quantity *
-              data.new_variation_addons[selectedVariation].options[
+      {data.type === 'simple' && (
+        <div className="p-1 text-center mx-1">
+          {data.simple_addons.price * quantity}
+        </div>
+      )}
+      {data.type === 'variation' && (
+        <div className="p-1 text-center mx-1">
+          {data.new_variation_addons[selectedVariation].options
+            ? data.new_variation_addons[selectedVariation].options[
                 selectedOption[selectedVariation]
               ].promotion_price
-            : quantity *
-              data.new_variation_addons[selectedVariation].options[
-                selectedOption[selectedVariation]
-              ].price
-          : data.new_variation_addons[selectedVariation].promotion_price
-          ? quantity *
-            data.new_variation_addons[selectedVariation].promotion_price
-          : quantity * data.new_variation_addons[selectedVariation].price}
-        <span className="mx-1">
-          {deliveryCountry?.currency.translation[locale].symbol}
-        </span>
-      </div>
+              ? quantity *
+                data.new_variation_addons[selectedVariation].options[
+                  selectedOption[selectedVariation]
+                ].promotion_price
+              : quantity *
+                data.new_variation_addons[selectedVariation].options[
+                  selectedOption[selectedVariation]
+                ].price
+            : data.new_variation_addons[selectedVariation].promotion_price
+            ? quantity *
+              data.new_variation_addons[selectedVariation].promotion_price
+            : quantity * data.new_variation_addons[selectedVariation].price}
+          <span className="mx-1">
+            {deliveryCountry?.currency.translation[locale].symbol}
+          </span>
+        </div>
+      )}
       <button
         onClick={() => {
           if (itemInCart) {
@@ -107,8 +114,8 @@ export default function FloatingAddToCart({
           <Loader
             type="ThreeDots"
             color="#fff"
-            height={22}
-            width={22}
+            height={25}
+            width={25}
             visible={true}
           />
         ) : itemInCart ? (
