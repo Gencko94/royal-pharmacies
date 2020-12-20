@@ -118,7 +118,7 @@ export default function CartItem({ item }) {
       <div className="">
         <Link to={`/${locale}/c/${item.id}`}>
           <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
-            item.options.addons.length !== 0
+            item.options.addons
               ? ` - ${Object.keys(item.options.addons)
                   .map(variation => item.options.addons[variation])
                   .join(' - ')}`
