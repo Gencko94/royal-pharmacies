@@ -1,8 +1,7 @@
 import React, { Suspense } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+
 import CategoryMobile from './pages/CategoryMobile';
 import GuestCheckOut from './pages/GuestCheckOut';
 import GuestCheckOutMobile from './pages/GuestCheckOutMobile';
@@ -17,65 +16,6 @@ import RegisterMobile from './pages/RegisterMobile';
 import LoginMobile from './pages/LoginMobile';
 import PasswordReset from './pages/PasswordReset';
 import { ReactQueryDevtools } from 'react-query-devtools';
-// import Loadable from 'react-loadable';
-
-// const Home = Loadable({
-//   loader: () => import('./pages/Home'),
-//   loading() {
-//     return <div>loading</div>
-//   },
-//   delay:2000
-// })
-// const MyAccount = Loadable({
-//   loader: () => import('./pages/MyAccount'),
-//   loading() {
-//     return <div>loading</div>
-//   },
-//   delay:2000
-// })
-// const MyAccountMobile = Loadable({
-//   loader: () => import('./pages/MyAccountMobile'),
-//   loading() {
-//     return <div>loading</div>
-//   },
-//   delay:2000
-// })
-// const SingleProduct = Loadable({
-//   loader: () => import('./pages/SingleProduct'),
-//   loading() {
-//     return <div>loading</div>
-//   },
-//   delay:2000
-// })
-// const SingleProductMobile = Loadable({
-//   loader: () => import('./pages/SingleProductMobile'),
-//   loading() {
-//     return <div>loading</div>
-//   },
-//   delay:2000
-// })
-// const Cart = Loadable({
-//   loader: () => import('./pages/Cart'),
-//   loading() {
-//     return <div>loading</div>
-//   },
-//   delay:2000
-// })
-// const CartMobile = Loadable({
-//   loader: () => import('./pages/CartMobile'),
-//   loading() {
-//     return <div>loading</div>
-//   },
-//   delay:2000
-// })
-// const Category = Loadable({
-//   loader: () => import('./pages/Category'),
-//   loading() {
-//     return <div>loading</div>
-//   },
-//   delay:2000
-// })
-
 const Home = React.lazy(() => import('./pages/Home'));
 const MyAccount = React.lazy(() => import('./pages/MyAccount'));
 const MyAccountMobile = React.lazy(() => import('./pages/MyAccountMobile'));
