@@ -1,8 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 
-import miniBanner from '../../../assets/banners/miniBanner.gif';
-
 import { scrollIntoView } from 'scroll-js';
 import Variants from './Variants';
 import Options from './Options';
@@ -212,7 +210,6 @@ export default function VariantMiddleSection({
 
         <hr className="my-2" />
       </div>
-      <img src={miniBanner} alt="offer" className="mt-2" />
     </div>
   );
 }

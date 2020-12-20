@@ -24,13 +24,10 @@ export default function SingleProductMobile() {
   const { addViewedItems, deliveryCountry } = React.useContext(DataProvider);
 
   const { userId } = React.useContext(AuthProvider);
-  const {
-    addToCartMutation,
-    removeFromWishListMutation,
-    addToWishListMutation,
-  } = React.useContext(CartAndWishlistProvider);
+  const { addToCartMutation, addToGuestCartMutation } = React.useContext(
+    CartAndWishlistProvider
+  );
   const [itemInCart, setItemInCart] = React.useState(false);
-  const [itemInWishList, setItemInWishList] = React.useState(false);
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
 
@@ -48,6 +45,7 @@ export default function SingleProductMobile() {
    */
   const { data, isLoading } = useQuery(['singleProduct', id], getSingleItem, {
     refetchOnWindowFocus: false,
+    retry: true,
     onSuccess: async () => {
       // add Item to localStorage
       return await addViewedItems(id);
@@ -59,42 +57,38 @@ export default function SingleProductMobile() {
     { retry: true, enabled: data }
   );
 
-  const handleAddToWishList = async () => {
-    try {
-      await addToWishListMutation({ id: data.id, userId });
-      setItemInWishList(true);
-    } catch (error) {
-      console.clear();
-      setItemInWishList(true);
-      console.log(error.response);
-    }
-  };
-  const handleRemoveFromWishList = async id => {
-    try {
-      await removeFromWishListMutation({ id, userId });
-      setItemInWishList(false);
-    } catch (error) {
-      console.clear();
-      console.log(error.response);
-    }
-  };
-
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
-    try {
-      const newItem = { id: data.id, quantity: quantity };
-      await addToCartMutation({ newItem, userId, deliveryCountry });
-      setAddToCartButtonLoading(false);
-      setSideMenuOpen(true);
-      setItemInCart(true);
-    } catch (error) {
-      console.clear();
-
-      if (error.response.data.message === 'Item founded on the Cart') {
+    if (userId) {
+      try {
+        const newItem = { id: data.id, quantity };
+        await addToCartMutation({ newItem, userId, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
         setItemInCart(true);
+      } catch (error) {
+        // console.clear();
+
+        console.log(error.response);
+        if (error.response.data.message === 'Item founded on the Cart') {
+          setItemInCart(true);
+        }
+        setAddToCartButtonLoading(false);
       }
-      console.log(error.response);
-      setAddToCartButtonLoading(false);
+    } else {
+      try {
+        const price = data.simple_addons.promotion_price
+          ? data.simple_addons.promotion_price
+          : data.simple_addons.price;
+        const sku = data.simple_addons.sku;
+        const newItem = { id: data.id, quantity, price, sku };
+        await addToGuestCartMutation({ newItem, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        console.log(error.response);
+      }
     }
   };
 
@@ -134,10 +128,8 @@ export default function SingleProductMobile() {
               <div className="flex flex-col w-full  px-3 py-2 bg-white">
                 <ItemDescription
                   handleAddToCart={handleAddToCart}
-                  handleAddToWishList={handleAddToWishList}
                   data={data}
                   itemInCart={itemInCart}
-                  itemInWishList={itemInWishList}
                   addToCartButtonLoading={addToCartButtonLoading}
                   quantity={quantity}
                   setQuantity={setQuantity}
@@ -146,7 +138,6 @@ export default function SingleProductMobile() {
                   averageRating={reviewsData?.averageRating}
                   setDetailsTab={setDetailsTab}
                   userId={userId}
-                  handleRemoveFromWishList={handleRemoveFromWishList}
                 />
 
                 <hr />

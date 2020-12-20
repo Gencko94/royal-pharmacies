@@ -16,7 +16,7 @@ export default function GuestCartItem({ item }) {
     removeFromGuestCartMutation,
     editGuestCartMutation,
   } = React.useContext(CartAndWishlistProvider);
-
+  console.log(item);
   const [quantity, setQuantity] = React.useState(item.qty);
   const [editLoading, setEditLoading] = React.useState(false);
   const [

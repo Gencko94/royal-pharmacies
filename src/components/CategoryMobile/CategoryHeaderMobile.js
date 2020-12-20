@@ -87,7 +87,7 @@ export default function CategoryHeaderMobile({
       <div
         className="h-64 flex items-center justify-center text-6xl"
         style={{
-          backgroundImage: `url(${process.env.REACT_APP_IMAGES_URL}/original/${categoryInfo.cover_mobiles.link})`,
+          backgroundImage: `url(${process.env.REACT_APP_IMAGES_URL}/original/${categoryInfo.cover_mobile?.link})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
         }}

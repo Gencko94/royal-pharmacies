@@ -1,58 +1,76 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
-import { BiChevronDown } from 'react-icons/bi';
+
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
-import { BeatLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import logo from '../assets/mrg.svg';
-import useClickAway from '../hooks/useClickAway';
+import Select from 'react-select';
 import * as Yup from 'yup';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { AuthProvider } from '../contexts/AuthContext';
 import Language from '../components/NavbarComponents/Language';
 import { useMediaQuery } from 'react-responsive';
-const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
-  const [menuOpen, setMenuOpen] = React.useState(false);
-  const menuRef = React.useRef();
-  useClickAway(menuRef, () => {
-    if (menuRef.current) {
-      setMenuOpen(false);
-    }
-  });
+const options = [
+  { value: '+965', label: '+965' },
+  { value: '+966', label: '+966' },
+];
+const PhoneNumberCustomInput = ({
+  label,
+  value,
+  name,
+  countryCode,
+  setCountryCode,
+  ...props
+}) => {
   const [field, meta] = useField(name);
   return (
     <div className="w-full mb-2 flex flex-col ">
-      <label htmlFor={name} className={`font-semibold text-gray-800 mb-1`}>
+      <label
+        htmlFor={name}
+        className={`text-sm font-semibold text-gray-800 mb-1`}
+      >
         {label}
       </label>
-      <div className="flex rounded-lg border items-center relative  overflow-hidden ">
-        <div
-          ref={menuRef}
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="  cursor-pointer flex items-center p-1 border-r"
-          style={{ width: '74px' }}
-        >
-          <span>+965</span>
-          <BiChevronDown className="mx-1 w-5 h-5" />
-          {menuOpen && (
-            <div
-              className="absolute top-100 left-0 w-full border z-1 bg-body-light"
-              style={{ width: '74px' }}
-            >
-              <div className="hover:bg-main-color px-1 py-2 hover:text-main-text flex justify-start items-center">
-                +965
-              </div>
-            </div>
-          )}
-        </div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '0.5fr 1fr',
+          gap: '0.5rem',
+        }}
+      >
+        <Select
+          options={options}
+          isSearchable={false}
+          value={countryCode}
+          onChange={setCountryCode}
+          styles={{
+            dropdownIndicator: provided => {
+              return {
+                ...provided,
+                padding: '0.25rem',
+              };
+            },
+            valueContainer: provided => {
+              return {
+                ...provided,
+                padding: '0.5rem',
+              };
+            },
+          }}
+        />
+
         <input
           {...field}
           {...props}
           onBlur={e => {
             field.onBlur(e);
           }}
-          className=" w-full  px-1 py-2"
+          className={` border rounded w-full p-2 ${
+            meta.error && 'border-main-color'
+          }`}
         />
       </div>
       {meta.touched && meta.error ? (
@@ -68,6 +86,7 @@ const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
 
 export default function PasswordReset() {
   const { userLogin } = React.useContext(AuthProvider);
+  const [countryCode, setCountryCode] = React.useState(options[0]);
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { formatMessage } = useIntl();
   const [errorOpen, setErrorOpen] = React.useState(false);
@@ -84,11 +103,11 @@ export default function PasswordReset() {
     password: Yup.string().required(formatMessage({ id: 'password-empty' })),
   });
   return (
-    <div className=" text-gray-900 flex justify-center items-center   h-screen relative">
+    <div className=" text-gray-900 px-2 flex justify-center items-center   h-screen relative">
       {errorOpen && (
         <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
       )}
-      <div className=" z-2  max-w-screen-sm w-5/6   overflow-hidden">
+      <div className=" z-2  max-w-screen-sm overflow-hidden">
         <div className="flex items-center flex-col mb-4  rounded-lg text-center ">
           <Link to="/">
             <img
@@ -112,7 +131,9 @@ export default function PasswordReset() {
             onSubmit={async (values, actions) => {
               setErrorOpen(false);
               try {
-                const res = await userLogin(values);
+                const res = await userLogin({
+                  phoneNumber: `${countryCode.value}${values.phoneNumber}`,
+                });
                 if (res === 'ok') {
                 } else {
                   actions.setSubmitting(false);
@@ -130,6 +151,8 @@ export default function PasswordReset() {
                     label={formatMessage({ id: 'phone-label' })}
                     name="phoneNumber"
                     value={values.phoneNumber}
+                    countryCode={countryCode}
+                    setCountryCode={setCountryCode}
                   />
 
                   <div className=" py-1 mt-2">
@@ -142,7 +165,13 @@ export default function PasswordReset() {
                           : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
                       } w-full rounded uppercase  p-2 font-semibold  transition duration-150 `}
                     >
-                      {isSubmitting && <BeatLoader size={10} />}
+                      <Loader
+                        type="ThreeDots"
+                        color="#fff"
+                        height={20}
+                        width={20}
+                        visible={isSubmitting}
+                      />
                       {!isSubmitting &&
                         formatMessage({ id: 'password-reset-send-button' })}
                     </button>

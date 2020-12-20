@@ -215,25 +215,24 @@ const baseStrings = {
   'maps-detailed-address-phone-short': 'Associated Phone No',
   'maps-detailed-address-street_neighborhood_governate':
     'Street/Neighborhood/District',
-  'maps-detailed-address-apartment': 'House or Apartment Number',
-  'maps-detailed-address-building': 'Building or Tower Number',
+  'maps-detailed-address-apartment': 'House/Apartment No.',
+  'maps-detailed-address-building': 'Building/Tower No.',
   'maps-detailed-address-name': 'Address Name',
-  'maps-detailed-address-name-placeholder': 'eg: Home/ Office ...',
+  'maps-detailed-address-name-placeholder': 'eg: Home/Office ...',
   'maps-detailed-address-phone': 'Phone Number',
   'selected-address': 'Selected Delivery address',
   'maps-details-extra-details': 'Additional Details',
-  'maps-detailed-address-apartment-placeholder':
-    'Enter House or Apartment Number..',
-  'maps-detailed-address-building-placeholder':
-    'Enter Building or Tower Number.. ',
+  'maps-detailed-address-apartment-placeholder': 'Enter House/Apartment No..',
+  'maps-detailed-address-building-placeholder': 'Enter Building/Tower No.. ',
   'maps-detailed-address-phone-placeholder': 'Enter a Phone number..',
   'maps-details-extra-details-placeholder': 'Enter Any additional details..',
   'maps-details-optional': 'Optional',
-  'apartment-empty': 'Please enter House or Apartment Number',
-  'building-empty': 'Please enter Building or Tower Number',
+  'apartment-empty': 'Please enter House/Apartment Number',
+  'building-empty': 'Please enter Building/Tower Number',
   'phone-empty': 'Please Enter a phone number',
   'number-only': 'Please enter a valid number',
   'name-empty': 'Please enter an Address name',
+  'required-field': 'Required Field',
 
   // checkout modal
   'not-signed-in': 'You are not signed in',

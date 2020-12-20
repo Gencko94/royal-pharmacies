@@ -24,7 +24,7 @@ export default function VariantImageZoomMobile({
             ]?.image || data.image.link
           }`}
           alt={data.translation[locale].title}
-          pb="calc(100% * 286/210)"
+          pb="calc(100% * 800/800)"
         />
       );
     } else {
@@ -35,7 +35,7 @@ export default function VariantImageZoomMobile({
             data.image.link
           }`}
           alt={data.translation[locale].title}
-          pb="calc(100% * 286/210)"
+          pb="calc(100% * 800/800)"
         />
       );
     }
@@ -50,18 +50,18 @@ export default function VariantImageZoomMobile({
             ]?.image || data.image.link
           }`}
           alt={data.translation[locale].title}
-          pb="calc(100% * 286/210)"
+          pb="calc(100% * 800/800)"
         />
       );
     } else {
       return (
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+          src={`${process.env.REACT_APP_IMAGES_URL}/small/${
             data.new_variation_addons[selectedVariation].image ||
             data.image.link
           }`}
           alt={data.translation[locale].title}
-          pb="calc(100% * 286/210)"
+          pb="calc(100% * 800/800)"
         />
       );
     }

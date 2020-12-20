@@ -3,27 +3,11 @@ module.exports = {
     // removeDeprecatedGapUtilities: true,
     // purgeLayersByDefault: true,
   },
-  purge: [],
+  purge: {
+    enabled: process.env.NODE_ENV === 'production',
+    content: ['src/**/*.js', 'src/**/*.jsx', 'public/**/*.html'],
+  },
   theme: {
-    // customForms: theme => ({
-    //   dark: {
-    //     input: {
-    //       color: theme('colors.gray.100'),
-    //     },
-    //   },
-    //   default: {
-    //     select: {
-    //       borderColor: theme('colors.red.600'),
-    //       backgroundColor: theme('colors.red.600'),
-    //       color: theme('colors.gray.100'),
-
-    //       '&:focus': {
-    //         boxShadow: `0 0 0 1px ${theme('colors.red.600')}`,
-    //         borderColor: theme('colors.red.600'),
-    //       },
-    //     },
-    //   },
-    // }),
     extend: {
       fontSize: {
         xxs: '0.7rem',

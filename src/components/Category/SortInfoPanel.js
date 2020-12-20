@@ -5,10 +5,8 @@ const sortByOptions = [
   { label: 'Price (Low to High)', value: 'price-asc' },
   { label: 'Price (High to Low)', value: 'price-desc' },
 ];
-export default function SortInfoPanel({ handleSortBy }) {
-  const [sortBy, setSortBy] = React.useState(null);
+export default function SortInfoPanel({ sortBy, setSortBy }) {
   const handleSortByChange = selectedValue => {
-    handleSortBy(selectedValue.value);
     setSortBy(selectedValue);
   };
   return (

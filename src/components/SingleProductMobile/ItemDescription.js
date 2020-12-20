@@ -12,28 +12,30 @@ import { useIntl } from 'react-intl';
 import Rating from 'react-rating';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-// import Colors from '../SingleProduct/Colors';
-// import Sizes from '../SingleProduct/Sizes';
+
 import { scrollIntoView } from 'scroll-js';
 import { DataProvider } from '../../contexts/DataContext';
 import { MdLocationOn } from 'react-icons/md';
+import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 export default function ItemDescription({
   data,
   handleAddToCart,
   itemInCart,
-  itemInWishList,
   quantity,
   setQuantity,
   addToCartButtonLoading,
-  handleAddToWishList,
   userId,
 
   setDetailsTab,
   reviewsLoading,
   ratingCount,
   averageRating,
-  handleRemoveFromWishList,
 }) {
+  const {
+    removeFromWishListMutation,
+    addToWishListMutation,
+  } = React.useContext(CartAndWishlistProvider);
+  const [itemInWishList, setItemInWishList] = React.useState(false);
   const { formatMessage, locale } = useIntl();
   // const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -53,32 +55,40 @@ export default function ItemDescription({
     }
   };
   const formatDaysPlural = () => {
-    switch (parseInt(deliveryCountry.delivery_time)) {
+    switch (parseInt(deliveryCountry?.delivery_time)) {
       case 1:
         return formatMessage({ id: 'one-day' });
 
       case 2:
         return formatMessage({ id: 'two-days' });
 
-      case parseInt(deliveryCountry.delivery_time > 10):
+      case parseInt(deliveryCountry?.delivery_time > 10):
         return formatMessage({ id: 'more-than-10-days' });
 
       default:
         return formatMessage({ id: 'days' });
     }
   };
-  const addToWishList = () => {
+  const handleAddToWishlist = async () => {
     if (!userId) {
       return;
-      // setTimeout(() => {
-      //   setSnackBarOpen(false);
-      // }, 5000);
-      // return;
     }
-    if (itemInWishList) {
-      handleRemoveFromWishList(data.id);
-    } else {
-      handleAddToWishList();
+    try {
+      await addToWishListMutation({ id: data.id, userId });
+      setItemInWishList(true);
+    } catch (error) {
+      console.clear();
+      setItemInWishList(true);
+      console.log(error.response);
+    }
+  };
+  const handleRemoveFromWishlist = async () => {
+    try {
+      await removeFromWishListMutation({ id: data.id, userId });
+      setItemInWishList(false);
+    } catch (error) {
+      console.clear();
+      console.log(error.response);
     }
   };
   const handleSubstractQuantity = () => {
@@ -115,7 +125,7 @@ export default function ItemDescription({
             <h1 className="text-gray-600 text-sm">
               {formatMessage({ id: 'model-number' })} :
             </h1>
-            <h1 className="mx-1">{data.new_variation_addons.id}</h1>
+            <h1 className="mx-1">{data.simple_addons.id}</h1>
           </div>
           {!reviewsLoading && ratingCount !== 0 && (
             <div
@@ -147,12 +157,13 @@ export default function ItemDescription({
       </h1>
 
       <hr />
-      <div className=" mb-1 text-sm  font-bold">
+      <div className=" mb-1 font-bold">
         {data.simple_addons.promotion_price && (
           <div className="flex flex-wrap items-center">
             <h1 className=" ">{formatMessage({ id: 'price-before' })} :</h1>
-            <h1 className=" text-base italic mx-2  line-through text-gray-700">
-              {data.simple_addons.promotion_price} KD
+            <h1 className=" italic mx-2  line-through text-gray-700">
+              {data.simple_addons.promotion_price}{' '}
+              {deliveryCountry?.currency.translation[locale].symbol}
             </h1>
           </div>
         )}
@@ -164,7 +175,8 @@ export default function ItemDescription({
             :
           </h1>
           <h1 className=" text-xl mx-2 text-red-700">
-            {data.simple_addons.price} KD
+            {data.simple_addons.price}{' '}
+            {deliveryCountry?.currency.translation[locale].symbol}
           </h1>
           <h1 className=" font-normal  text-gray-700 uppercase">
             ({formatMessage({ id: 'vat-inclusive' })})
@@ -264,7 +276,13 @@ export default function ItemDescription({
           )}
         </button>
         <button
-          onClick={addToWishList}
+          onClick={() => {
+            if (itemInWishList) {
+              handleAddToWishlist();
+            } else {
+              handleRemoveFromWishlist();
+            }
+          }}
           className={`
               border
             text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}

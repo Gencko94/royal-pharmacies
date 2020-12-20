@@ -1,6 +1,5 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import miniBanner from '../../assets/banners/miniBanner.gif';
 import { scrollIntoView } from 'scroll-js';
 import Rating from 'react-rating';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
@@ -111,7 +110,6 @@ export default function MiddleSection({
           </div>
         </div>
       </div>
-      <img src={miniBanner} alt="offer" className="mt-2" />
     </div>
   );
 }

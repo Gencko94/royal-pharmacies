@@ -9,10 +9,14 @@ export default function CategoryRightSide({
   products,
   productsLoading,
   categoryInfoLoading,
-  handleSortBy,
+  sortBy,
+  setSortBy,
+  categoryIdLoading,
 }) {
+  console.log(categoryIdLoading);
+  console.log(productsLoading);
   console.log(products);
-  if (productsLoading || categoryInfoLoading) {
+  if (productsLoading || categoryInfoLoading || categoryIdLoading) {
     return (
       <div className="py-2">
         <ContentLoader
@@ -33,7 +37,7 @@ export default function CategoryRightSide({
   }
   return (
     <div className="py-2">
-      <SortInfoPanel handleSortBy={handleSortBy} />
+      <SortInfoPanel sortBy={sortBy} setSortBy={setSortBy} />
       {products.length !== 0 && (
         <div className="category-page-items__grid py-2 ">
           {products.map(item => {
@@ -43,6 +47,11 @@ export default function CategoryRightSide({
               <VariantCategoryProductItem key={item.id} item={item} />
             );
           })}
+        </div>
+      )}
+      {products.length === 0 && (
+        <div className="p-4 text-2xl h-full flex items-center justify-center">
+          <h1>We Couldn't Find any items that belongs to this category</h1>
         </div>
       )}
     </div>

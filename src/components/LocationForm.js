@@ -4,10 +4,14 @@ import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import * as Yup from 'yup';
-import { BiChevronDown } from 'react-icons/bi';
-import useClickAway from '../hooks/useClickAway';
+import Select from 'react-select';
 import { AuthProvider } from '../contexts/AuthContext';
+const options = [
+  { value: '+965', label: '+965' },
+  { value: '+966', label: '+966' },
+];
 export default function LocationForm({ markerAddress, setShowMap, marker }) {
+  const [countryCode, setCountryCode] = React.useState(options[0]);
   const { addAddressMutation } = React.useContext(AuthProvider);
   const { formatMessage } = useIntl();
   const [defaultLocationChecked, setDefaultLocationChecked] = React.useState(
@@ -15,15 +19,15 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
   );
   const validationSchema = Yup.object({
     apartmentOrHouseNumber: Yup.number().required(
-      formatMessage({ id: 'apartment-empty' })
+      formatMessage({ id: 'required-field' })
     ),
     buildingOrTowerNumber: Yup.number().required(
-      formatMessage({ id: 'building-empty' })
+      formatMessage({ id: 'required-field' })
     ),
-    addressName: Yup.string().required(formatMessage({ id: 'name-empty' })),
+    addressName: Yup.string().required(formatMessage({ id: 'required-field' })),
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
-      .required(formatMessage({ id: 'phone-empty' })),
+      .required(formatMessage({ id: 'required-field' })),
     additionalDetails: Yup.string(),
   });
   return (
@@ -48,6 +52,7 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
                 lng: marker.lng,
                 defaultLocation: defaultLocationChecked,
                 addressDetails: {
+                  phoneNumber: `${countryCode.value}${values.phoneNumber}`,
                   ...values,
                   markerAddress: markerAddress,
                 },
@@ -61,34 +66,27 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
           {({ handleSubmit, values, isSubmitting }) => {
             return (
               <form onSubmit={handleSubmit}>
-                <CustomTextInput
-                  label={formatMessage({
-                    id: 'maps-detailed-address-apartment',
-                  })}
-                  placeholder={formatMessage({
-                    id: 'maps-detailed-address-apartment-placeholder',
-                  })}
-                  name="apartmentOrHouseNumber"
-                  value={values.apartmentOrHouseNumber}
-                  type="text"
-                />
-                <CustomTextInput
-                  label={formatMessage({
-                    id: 'maps-detailed-address-building',
-                  })}
-                  placeholder={formatMessage({
-                    id: 'maps-detailed-address-building-placeholder',
-                  })}
-                  name="buildingOrTowerNumber"
-                  value={values.buildingOrTowerNumber}
-                  type="text"
-                />
+                <div className="grid grid-cols-2 gap-1">
+                  <CustomTextInput
+                    label={formatMessage({
+                      id: 'maps-detailed-address-apartment',
+                    })}
+                    name="apartmentOrHouseNumber"
+                    value={values.apartmentOrHouseNumber}
+                    type="text"
+                  />
+                  <CustomTextInput
+                    label={formatMessage({
+                      id: 'maps-detailed-address-building',
+                    })}
+                    name="buildingOrTowerNumber"
+                    value={values.buildingOrTowerNumber}
+                    type="text"
+                  />
+                </div>
                 <CustomTextInput
                   label={formatMessage({
                     id: 'maps-detailed-address-name',
-                  })}
-                  placeholder={formatMessage({
-                    id: 'maps-detailed-address-name-placeholder',
                   })}
                   name="addressName"
                   value={values.addressName}
@@ -98,20 +96,16 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
                   label={formatMessage({
                     id: 'maps-details-extra-details',
                   })}
-                  placeholder={formatMessage({
-                    id: 'maps-details-extra-details-placeholder',
-                  })}
                   name="additionalDetails"
                   value={values.additionalDetails}
                 />
                 <PhoneNumberCustomInput
                   label={formatMessage({ id: 'maps-detailed-address-phone' })}
-                  placeholder={formatMessage({
-                    id: 'maps-detailed-address-phone-placeholder',
-                  })}
                   name="phoneNumber"
                   value={values.phoneNumber}
                   type="text"
+                  countryCode={countryCode}
+                  setCountryCode={setCountryCode}
                 />
 
                 <div className=" ">
@@ -162,7 +156,7 @@ export default function LocationForm({ markerAddress, setShowMap, marker }) {
 const CustomTextInput = ({ label, value, name, ...props }) => {
   const [field, meta] = useField(name);
   return (
-    <div className="w-full mb-2 relative">
+    <div className="w-full mb-1 relative">
       <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
         {label}
       </label>
@@ -188,7 +182,7 @@ const CustomTextAreaInput = ({ label, value, name, ...props }) => {
   const [field] = useField(name);
   const { formatMessage } = useIntl();
   return (
-    <div className="w-full mb-2 relative">
+    <div className="w-full mb-1 relative">
       <div className="flex items-center">
         <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
           {label}
@@ -209,49 +203,60 @@ const CustomTextAreaInput = ({ label, value, name, ...props }) => {
     </div>
   );
 };
-const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
-  const [menuOpen, setMenuOpen] = React.useState(false);
-  const menuRef = React.useRef();
-
-  useClickAway(menuRef, () => {
-    if (menuRef.current) {
-      setMenuOpen(false);
-    }
-  });
+const PhoneNumberCustomInput = ({
+  label,
+  value,
+  name,
+  countryCode,
+  setCountryCode,
+  ...props
+}) => {
   const [field, meta] = useField(name);
   return (
-    <div className="w-full mb-2 ">
-      <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
+    <div className="w-full mb-1 flex flex-col ">
+      <label
+        htmlFor={name}
+        className={`text-sm font-semibold text-gray-800 mb-1`}
+      >
         {label}
       </label>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '0.4fr 1fr',
+          gap: '0.5rem',
+        }}
+      >
+        <Select
+          options={options}
+          isSearchable={false}
+          value={countryCode}
+          onChange={setCountryCode}
+          styles={{
+            dropdownIndicator: provided => {
+              return {
+                ...provided,
+                padding: '0.25rem',
+              };
+            },
+            valueContainer: provided => {
+              return {
+                ...provided,
+                padding: '0.5rem',
+              };
+            },
+          }}
+        />
 
-      <div className="flex rounded-sm border items-center relative  ">
-        <div
-          ref={menuRef}
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="  cursor-pointer flex items-center p-1 border-r"
-          style={{ width: '74px' }}
-        >
-          <span>+965</span>
-          <BiChevronDown className="mx-1 w-5 h-5" />
-          {menuOpen && (
-            <div
-              className="absolute top-100 left-0 w-full border z-1 bg-body-light"
-              style={{ width: '74px' }}
-            >
-              <div className="hover:bg-main-color p-1 hover:text-main-text flex justify-start items-center">
-                +965
-              </div>
-            </div>
-          )}
-        </div>
         <input
           {...field}
           {...props}
           onBlur={e => {
             field.onBlur(e);
           }}
-          className=" w-full p-1 "
+          className={` border rounded w-full p-2 ${
+            meta.error && 'border-main-color'
+          }`}
         />
       </div>
       {meta.touched && meta.error ? (

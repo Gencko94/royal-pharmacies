@@ -17,7 +17,7 @@ export default function ImageZoomMobile({ data }) {
           return (
             <SwiperSlide key={item.id}>
               <LazyImage
-                pb="calc(100% * 681/500)"
+                pb="calc(100% * 401/500)"
                 src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.link}`}
                 alt={data.translation[locale].title}
               />

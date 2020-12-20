@@ -36,7 +36,7 @@ const PhoneNumberCustomInput = ({
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: '0.3fr 0.7fr',
+          gridTemplateColumns: '0.4fr 1fr',
           gap: '0.5rem',
         }}
       >

@@ -100,7 +100,7 @@ export default function GuestGoogleMapsAddress({
           : 'my-addresses-mobile-maps__grid'
       }`}
     >
-      <div className="relative h-full">
+      <div className="relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
         <PlacesSearch panTo={panTo} markerAddress={markerAddress} />
 
         <GoogleMap

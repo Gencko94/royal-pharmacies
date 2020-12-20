@@ -2,48 +2,37 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 // import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import LeftSideBrands from './LeftSideBrands';
 // import { getCategories } from '../../Queries/Queries';
 
 export default function CategoryLeftSide({
-  loading,
-  category,
   productsLoading,
 
   setLowestPrice,
 
   setHighestPrice,
   handlePriceChange,
-  handleCategoryChange,
   products,
 
-  handleBrandChange,
   categoryInfo,
   categoryInfoLoading,
+  brandFilters,
+  setBrandFilters,
+  handleBrandChange,
+  categoryIdLoading,
 }) {
-  // const { data: categories, isLoading: categoriesLoading } = useQuery(
-  //   ['categoryTree', category],
-  //   async (key, category) => {
-  //     const res = await getCategories(category);
-  //     console.log(res);
-  //     return res;
-  //   }
-  // );
-  // const { data: brands, isLoading: brandsLoading } = useQuery(
-  //   ['brands', category],
-  //   async (key, category) => {
-  //     const res = await getCategories(category);
-  //     console.log(res);
-  //     return res;
-  //   }
-  // );
-  const { locale } = useIntl();
-
+  console.log(products);
+  const { locale, formatMessage } = useIntl();
+  // if (categoryInfoLoading || categoryIdLoading || productsLoading) {
+  //   return 'loading';
+  // }
   return (
     <div className="py-2">
-      {categoryInfoLoading && <div>loading</div>}
-      {!categoryInfoLoading && (
+      {!categoryInfoLoading && !categoryIdLoading && (
         <div className="mb-4">
-          <h1 className="text-xl font-semibold">Category</h1>
+          <h1 className="text-xl font-semibold">
+            {formatMessage({ id: 'categories' })}
+          </h1>
           <hr className="my-2" />
 
           <div className="my-2">
@@ -51,14 +40,12 @@ export default function CategoryLeftSide({
               <h1 className="font-semibold text-sm">
                 {categoryInfo.translation[locale].name}
               </h1>
-              {/* <div>{numberOfItems[category]}</div> */}
             </div>
             {categoryInfo.children.length !== 0 &&
               categoryInfo.children.map((subCategory, i) => (
                 <Link
                   to={`/${locale}/categories/${subCategory.slug}`}
                   key={i}
-                  // onClick={() => handleCategoryChange(subCategory)}
                   className="text-sm block hover:underline hover:text-blue-700"
                 >
                   {subCategory.translation[locale].name}
@@ -68,30 +55,15 @@ export default function CategoryLeftSide({
         </div>
       )}
       {/* Brands */}
-      {!productsLoading && (
+      {products && !categoryIdLoading && (
         <div className="mb-4">
           <h1 className="text-xl font-semibold">Brand</h1>
           <hr className="my-2" />
-          <div className="flex flex-col justify-center">
-            {products.map((product, i) => {
-              return product.brand_id ? (
-                <div key={i} className="flex items-center mb-2 text-sm ">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox border-gray-600 text-red-700 mr-5"
-                    onChange={() => handleBrandChange(product)}
-                    // checked={brandFilters.includes(product)}
-                  />
-                  <label
-                    className="hover:underline hover:text-blue-700 cursor-pointer"
-                    htmlFor={product}
-                  >
-                    {product.brand_id}
-                  </label>
-                </div>
-              ) : null;
-            })}
-          </div>
+          <LeftSideBrands
+            products={products}
+            brandFilters={brandFilters}
+            handleBrandChange={handleBrandChange}
+          />
         </div>
       )}
       <div className="mb-4">

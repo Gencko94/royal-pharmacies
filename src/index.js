@@ -38,10 +38,6 @@ if (!deliveryCountry) {
   );
 }
 
-// const localAuthenticated = localStorage.getItem('localAuthenticated');
-// if (!localAuthenticated) {
-//   localStorage.setItem('localAuthenticated', false);
-// }
 ReactDOM.render(
   <AuthContext>
     <DataContextProvider>

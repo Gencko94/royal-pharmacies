@@ -67,7 +67,7 @@ export default function Categories() {
                 <div className="  overflow-hidden  relative ">
                   <a href={`/${locale}/categories/${item.slug}`}>
                     <img
-                      src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
+                      src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.translation[locale].image?.link}`}
                       alt="something"
                       className=" h-auto w-full "
                     />

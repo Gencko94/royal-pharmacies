@@ -1,25 +1,24 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import Loader from 'react-loader-spinner';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Link } from 'react-router-dom';
 import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
-import LazyImage from '../../helpers/LazyImage';
-export default function SideCartMenuItemMobile({ item }) {
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+export default function SideCartMenuItem({ item }) {
   const {
     removeFromCartMutation,
     removeFromGuestCartMutation,
   } = React.useContext(CartAndWishlistProvider);
+  const { deliveryCountry } = React.useContext(DataProvider);
+  const { formatMessage, locale } = useIntl();
   const [
     removeFromCartButtonLoading,
     setRemoveFromCartButtonLoading,
   ] = React.useState(false);
   const { userId } = React.useContext(AuthProvider);
-  const { deliveryCountry } = React.useContext(DataProvider);
-  const { locale, formatMessage } = useIntl();
   const handleRemoveFromCart = async () => {
     setRemoveFromCartButtonLoading(true);
     try {
@@ -41,10 +40,11 @@ export default function SideCartMenuItemMobile({ item }) {
 
   const cartItemVariant = {
     hidden: {
-      x: `${locale === 'ar' ? '100%' : '-100%'}`,
+      x: `${locale === 'ar' ? '-100%' : '100%'}`,
     },
     visible: {
-      x: 0,
+      x: '0',
+      delay: 3,
     },
     exited: {
       opacity: 0,
@@ -52,11 +52,11 @@ export default function SideCartMenuItemMobile({ item }) {
   };
   return (
     <motion.div
-      variants={cartItemVariant}
       initial="hidden"
       animate="visible"
       exit="exited"
-      className=" side-cart-menu__item-mobile mb-2"
+      variants={cartItemVariant}
+      className=" side-cart-menu__item mb-2"
     >
       <div className="">
         <Link
@@ -64,11 +64,11 @@ export default function SideCartMenuItemMobile({ item }) {
           className="hover:underline"
           to={`/${locale}/c/${item.id}`}
         >
-          <LazyImage
+          <img
             src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
-            pb="100% * 204/150"
             alt={`${item[`name_${locale}`]}`}
-          ></LazyImage>
+            className="max-w-full h-auto"
+          />
         </Link>
       </div>
       <div className="">
@@ -77,14 +77,18 @@ export default function SideCartMenuItemMobile({ item }) {
           className="hover:underline"
           to={`/${locale}/c/${item.id}`}
         >
-          <h1 className="text-clamp-2 text-xs font-semibold">
+          <h1 className="text-clamp-2 text-sm font-semibold">
             {`${item[`name_${locale}`]}`}
           </h1>
         </Link>
-
-        <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-          {item.total} {deliveryCountry?.currency.translation[locale].symbol}
-        </h1>
+        <div className="flex items-center">
+          <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
+            {item.total} {deliveryCountry?.currency.translation[locale].symbol}
+          </h1>
+          <h1 className="mx-1 text-sm">
+            {formatMessage({ id: 'quantity' })} : {item.qty}
+          </h1>
+        </div>
         <div>
           <button
             className={`${
@@ -93,15 +97,15 @@ export default function SideCartMenuItemMobile({ item }) {
                 : 'bg-main-color text-main-text'
             } text-xs rounded p-1 my-1 uppercase`}
             onClick={() => {
-              handleRemoveFromCart(item.id, item.cart_id);
+              handleRemoveFromCart();
             }}
           >
             {removeFromCartButtonLoading === item.id ? (
               <Loader
                 type="ThreeDots"
                 color="#b72b2b"
-                height={20}
-                width={20}
+                height={21}
+                width={21}
                 visible={true}
               />
             ) : (

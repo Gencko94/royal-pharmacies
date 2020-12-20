@@ -5,20 +5,16 @@ import MainCarousel from '../components/Home/MainCarousel';
 
 import Banner from '../components/Home/Banner';
 import Categories from '../components/Home/Categories';
-// import PhotoCategories from '../components/Home/PhotoCategories';
 import { useMediaQuery } from 'react-responsive';
 import Layout from '../components/Layout';
-// import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
 import { getHomeItems } from '../Queries/Queries';
-// import HomeSwiper from '../components/HomeSwiper';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
 import SwiperLoader from '../components/Home/SwiperLoader';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 import { useIntl } from 'react-intl';
-// import AnimatedSlides from '../components/Home/AnimatedSlides';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
@@ -36,23 +32,13 @@ export default function Home() {
     switch (item.type) {
       case 'best_seller':
         return (
-          <LazyLoad
-            key={index}
-            height="calc(100% * 1285/492.92)"
-            offset={200}
-            // placeholder={<Loader height="calc(100% * 1279/383.44)" />}
-          >
+          <LazyLoad key={index} height="calc(100% * 1285/492.92)" offset={200}>
             <StaticSwiper type={item.key} />
           </LazyLoad>
         );
       case 'product_by_category':
         return (
-          <LazyLoad
-            key={index}
-            offset={200}
-            height="calc(100% * 1285/492.92)"
-            // placeholder={<Loader height="377px" />}
-          >
+          <LazyLoad key={index} offset={200} height="calc(100% * 1285/492.92)">
             <StaticSwiper
               type={item.key}
               title={item[`title_${locale}`]}
@@ -129,23 +115,6 @@ export default function Home() {
           {isLoading && <SwiperLoader />}
           {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
           {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
-
-          {/* <AnimatedSlides
-            data={[
-              { title: 'iPhone 11', photo: iphonepng },
-              { title: 'iPhone Red', photo: iphonered },
-              { title: 'iPhone 11', photo: iphonepng },
-              { title: 'iPhone Red', photo: iphonered },
-            ]}
-          /> */}
-
-          {/* <LazyLoad>
-            <PhotoCategories data={[homeapp, kitchen, appliances]} />
-          </LazyLoad> */}
-
-          {/* <LazyLoad>
-            <PhotoCategories data={[men, women, kids]} />
-          </LazyLoad> */}
         </div>
       </div>
     </Layout>

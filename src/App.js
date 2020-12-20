@@ -13,7 +13,6 @@ import { LocalizedSwitch, LocalizedRouter, appStrings } from './modules/i18n/';
 import { appLanguages } from './modules/const';
 import Loading from './helpers/Loading';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
-import Test from './pages/test';
 import RegisterMobile from './pages/RegisterMobile';
 import LoginMobile from './pages/LoginMobile';
 import PasswordReset from './pages/PasswordReset';
@@ -204,7 +203,6 @@ function App() {
             path="/checkout"
             Component={isTabletOrAbove ? Checkout : CheckoutMobile}
           />
-          <Route path="/test" component={Test} />
           <Route
             exact
             path="/:category/:id/:addons?"

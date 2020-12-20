@@ -460,19 +460,12 @@ export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
     localStorage.setItem('localCart', JSON.stringify([]));
   }
   const parsed = JSON.parse(localCart);
-
+  console.log(newItem);
   const isAvailable = item => {
-    if (
-      item.variation?.item_id === newItem.variation?.item_id &&
-      item.option?.item_id === newItem.option?.item_id
-    ) {
-      return true;
-    } else if (
-      item.id === newItem.id &&
-      (!newItem.variation || !newItem.option)
-    ) {
+    if (item.sku === newItem.sku) {
       return true;
     }
+    return false;
   };
   const foundIndex = parsed.findIndex(isAvailable);
   if (foundIndex !== -1) {
@@ -515,6 +508,7 @@ export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
 };
 
 export const removeFromGuestCart = async ({ sku, deliveryCountry }) => {
+  console.log(sku);
   const config = {
     headers: { country: deliveryCountry.code },
   };
@@ -576,7 +570,6 @@ export const editGuestCart = async ({
   price,
   deliveryCountry,
 }) => {
-  //TODO
   const config = {
     headers: { country: deliveryCountry.code },
   };
@@ -585,9 +578,9 @@ export const editGuestCart = async ({
   let parsed = JSON.parse(localCart);
   const isAvailable = item => {
     if (item.sku === sku) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   };
   let foundItemIndex = parsed.findIndex(isAvailable);
   if (foundItemIndex === -1) {
@@ -644,28 +637,53 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
 /**
  * Category Products
  */
-export const getCategoryProducts = async (k, categorySlug) => {
+export const getCategoryId = async (k, categorySlug) => {
   const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/category-products/${categorySlug}`
+    `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
   );
+  console.log(res);
   if (res.data.status === true) {
-    return res.data.data;
+    return res.data.data.id;
+  }
+};
+export const getCategoryProducts = async (
+  k,
+  { categoryId, brandFilters, sortBy, page, resultsPerPage, locale }
+) => {
+  const query = {
+    category: categoryId,
+    brand: brandFilters ? brandFilters : undefined,
+    sort_by: sortBy ? sortBy.value : undefined,
+    page,
+    number: resultsPerPage,
+    sort_language: locale,
+  };
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/filter-products`,
+    query
+  );
+  console.log(res.data);
+  if (res.data.status === true) {
+    return res.data.data.data;
   }
 };
 export const getCategories = async categorySlug => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
   );
+  console.log(res.data);
   if (res.data.status === true) {
     return res.data.data;
   }
 };
-export const sortCategories = async query => {
+export const sortCategories = async ({ query }) => {
+  console.log(query);
   const req = {
     page: query.page,
     category: query.category,
-    sort_by: query.sortBy,
+    sort_by: query?.sortBy,
     sort_language: query.sort_language,
+    brand: query.brand,
   };
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/filter-products`,

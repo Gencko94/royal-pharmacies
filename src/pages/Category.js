@@ -5,62 +5,60 @@ import CategoryRightSide from '../components/Category/CategoryRightSide';
 // import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
 // import { SearchProvider } from '../contexts/SearchContext';
 import Layout from '../components/Layout';
-import { queryCache, useMutation, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import {
   getCategoryProducts,
   getSingleCategoryInfo,
-  sortCategories,
+  getCategoryId,
 } from '../Queries/Queries';
 import CategoryHeader from '../components/Category/CategoryHeader';
 import { useIntl } from 'react-intl';
 export default function Category() {
   const { category } = useParams();
   const { locale } = useIntl();
+  const [brandFilters, setBrandFilters] = React.useState(null);
+  const [sortBy, setSortBy] = React.useState(null);
+  const [page, setPage] = React.useState(1);
+  const [resultsPerPage, setResultsPerPage] = React.useState(10);
 
   /**
    * Main Fetch
    */
 
+  const { data: categoryId, isLoading: categoryIdLoading } = useQuery(
+    ['categoryId', category],
+    getCategoryId,
+    { retry: true, refetchOnWindowFocus: false }
+  );
   const { data: products, isLoading: productsLoading } = useQuery(
-    ['categoryProducts', category],
+    [
+      'categoryProducts',
+      {
+        categoryId,
+        brandFilters,
+        sortBy,
+        page,
+        resultsPerPage,
+        locale,
+      },
+    ],
     getCategoryProducts,
-    { retry: true }
+    { retry: true, refetchOnWindowFocus: false, enabled: categoryId }
   );
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
     getSingleCategoryInfo,
-    { retry: true }
+    { retry: true, refetchOnWindowFocus: false }
   );
-  const [sortByMutation] = useMutation(
-    async query => {
-      return await sortCategories(query);
-    },
-    {
-      throwOnError: true,
-      onSuccess: data => {
-        console.log(data);
-        queryCache.setQueryData(['categoryProducts', category], () => {
-          return data;
-        });
-      },
-    }
-  );
-  const handleSortBy = async sortBy => {
-    try {
-      console.log(categoryInfo.id);
-      const query = {
-        page: 1,
-        category: categoryInfo.id,
-        sortBy,
-        sort_language: locale,
-      };
-      const res = await sortByMutation(query);
-      console.log(res);
-    } catch (error) {
-      console.log(error.response);
+  const handleBrandChange = brand => {
+    if (brandFilters === brand) {
+      setBrandFilters(null);
+    } else {
+      setBrandFilters(brand);
     }
   };
+
   return (
     <Layout>
       <Helmet>
@@ -78,13 +76,21 @@ export default function Category() {
             categoryInfoLoading={categoryInfoLoading}
             products={products}
             productsLoading={productsLoading}
+            brandFilters={brandFilters}
+            setBrandFilters={setBrandFilters}
+            handleBrandChange={handleBrandChange}
+            categoryIdLoading={categoryIdLoading}
           />
 
           <CategoryRightSide
             products={products}
             productsLoading={productsLoading}
             categoryInfoLoading={categoryInfoLoading}
-            handleSortBy={handleSortBy}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            categoryIdLoading={categoryIdLoading}
+            setPage={setPage}
+            setResultsPerPage={setResultsPerPage}
           />
         </div>
       </div>
