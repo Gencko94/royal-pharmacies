@@ -66,7 +66,7 @@ export default function SideCartMenuItemMobile({ item }) {
         >
           <LazyImage
             src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
-            pb="100% * 204/150"
+            pb="calc(100% * 204/150)"
             alt={`${item[`name_${locale}`]}`}
           ></LazyImage>
         </Link>
@@ -87,19 +87,17 @@ export default function SideCartMenuItemMobile({ item }) {
         </h1>
         <div>
           <button
-            className={`${
-              removeFromCartButtonLoading === item.id
-                ? 'bg-gray-300'
-                : 'bg-main-color text-main-text'
-            } text-xs rounded p-1 my-1 uppercase`}
-            onClick={() => {
-              handleRemoveFromCart(item.id, item.cart_id);
-            }}
+            className={`
+             
+                
+              bg-main-color text-main-text
+             text-xs rounded p-1 my-1 uppercase`}
+            onClick={handleRemoveFromCart}
           >
-            {removeFromCartButtonLoading === item.id ? (
+            {removeFromCartButtonLoading ? (
               <Loader
                 type="ThreeDots"
-                color="#b72b2b"
+                color="#fff"
                 height={20}
                 width={20}
                 visible={true}

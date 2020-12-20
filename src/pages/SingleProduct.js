@@ -139,56 +139,59 @@ export default function SingleProduct() {
         )}
       </AnimatePresence>
 
-      <div className=" px-4 ">
-        <div className="mx-auto max-w-default">
-          {!isLoading && <Breadcrumbs data={data.categories} />}
-          {isLoading && <SingleProductLoader />}
-          {!isLoading &&
-            (data.type === 'simple' ? (
-              <div className="single-product__container-desktop">
-                <div className=" ">
-                  <ImageZoom data={data} />
-                </div>
-
-                <MiddleSection
-                  data={data}
-                  reviewsLoading={reviewsLoading}
-                  ratingCount={reviews?.ratingCount}
-                  averageRating={reviews?.averageRating}
-                  setDetailsTab={setDetailsTab}
-                />
-                <RightSection
-                  handleAddToCart={handleAddToCart}
-                  handleAddToWishList={handleAddToWishList}
-                  addToCartButtonLoading={addToCartButtonLoading}
-                  addToWishListButtonLoading={addToWishListButtonLoading}
-                  itemInCart={itemInCart}
-                  itemInWishList={itemInWishList}
-                  userId={userId}
-                />
+      <div
+        className=" px-4 mx-auto max-w-default"
+        style={{ minHeight: 'calc(-150px + 100vh)' }}
+      >
+        {!isLoading && <Breadcrumbs data={data.categories} />}
+        {isLoading && <SingleProductLoader />}
+        {!isLoading &&
+          (data.type === 'simple' ? (
+            <div className="single-product__container-desktop">
+              <div className=" ">
+                <ImageZoom data={data} />
               </div>
-            ) : (
-              <VariantProduct
+
+              <MiddleSection
                 data={data}
                 reviewsLoading={reviewsLoading}
-                reviews={reviews}
-                setSideMenuOpen={setSideMenuOpen}
-                setDetailsTab={setDetailsTab}
-              />
-            ))}
-          <div id="details" className="py-2 mb-2">
-            {!isLoading && (
-              <AdditionalDetails
-                reviews={reviews?.reviews}
-                averageRating={reviews?.averageRating}
-                reviewsLoading={reviewsLoading}
                 ratingCount={reviews?.ratingCount}
-                detailsTab={detailsTab}
+                averageRating={reviews?.averageRating}
                 setDetailsTab={setDetailsTab}
               />
-            )}
-          </div>
-          {/* {related && <RelatedItems relatedData={related} />}
+              <RightSection
+                handleAddToCart={handleAddToCart}
+                handleAddToWishList={handleAddToWishList}
+                addToCartButtonLoading={addToCartButtonLoading}
+                addToWishListButtonLoading={addToWishListButtonLoading}
+                itemInCart={itemInCart}
+                itemInWishList={itemInWishList}
+                userId={userId}
+              />
+            </div>
+          ) : (
+            <VariantProduct
+              data={data}
+              reviewsLoading={reviewsLoading}
+              reviews={reviews}
+              setSideMenuOpen={setSideMenuOpen}
+              setDetailsTab={setDetailsTab}
+            />
+          ))}
+        <div id="details" className="py-2 mb-2">
+          {!isLoading && (
+            <AdditionalDetails
+              reviews={reviews?.reviews}
+              averageRating={reviews?.averageRating}
+              reviewsLoading={reviewsLoading}
+              ratingCount={reviews?.ratingCount}
+              detailsTab={detailsTab}
+              setDetailsTab={setDetailsTab}
+              data={data}
+            />
+          )}
+        </div>
+        {/* {related && <RelatedItems relatedData={related} />}
           {isFetching && <div>Loading ...</div>}
           <InView
             as="div"
@@ -198,7 +201,6 @@ export default function SingleProduct() {
           >
             <div></div>
           </InView> */}
-        </div>
       </div>
     </Layout>
   );

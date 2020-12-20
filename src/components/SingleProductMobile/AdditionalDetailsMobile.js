@@ -10,6 +10,7 @@ export default function AdditionalDetailsMobile({
   reviews,
   ratingCount,
   averageRating,
+  data,
 }) {
   const { formatMessage } = useIntl();
   return (
@@ -21,7 +22,7 @@ export default function AdditionalDetailsMobile({
             detailsTab === 0 && 'bg-main-color  text-main-text'
           }   bg-gray-400`}
         >
-          {formatMessage({ id: 'additional-details__item-description' })}
+          {formatMessage({ id: 'additional-details__item-details' })}
         </button>
 
         <button
@@ -35,7 +36,7 @@ export default function AdditionalDetailsMobile({
         </button>
       </div>
       <div className="px-3 text-sm">
-        {detailsTab === 0 && <ItemDescription />}
+        {detailsTab === 0 && <ItemDescription data={data} />}
         {detailsTab === 1 && (
           <ItemReviews
             reviews={reviews}

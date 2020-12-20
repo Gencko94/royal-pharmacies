@@ -92,15 +92,15 @@ export default function SideCartMenuItem({ item }) {
         <div>
           <button
             className={`${
-              removeFromCartButtonLoading === item.id
+              removeFromCartButtonLoading
                 ? 'bg-gray-300'
                 : 'bg-main-color text-main-text'
-            } text-xs rounded p-1 my-1 uppercase`}
+            } text-xs rounded p-1 my-1 `}
             onClick={() => {
               handleRemoveFromCart();
             }}
           >
-            {removeFromCartButtonLoading === item.id ? (
+            {removeFromCartButtonLoading ? (
               <Loader
                 type="ThreeDots"
                 color="#b72b2b"

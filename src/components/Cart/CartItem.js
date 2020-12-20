@@ -38,6 +38,9 @@ export default function CartItem({ item }) {
     setQuantity(parseInt(quantity) - 1);
   };
   const handleAddQuantity = () => {
+    if (quantity === item.options.max_quantity) {
+      return;
+    }
     setQuantity(parseInt(quantity) + 1);
   };
   const handleRemoveItemFromCart = async (id, cart_id) => {
@@ -48,6 +51,17 @@ export default function CartItem({ item }) {
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
       console.log(error.response);
+    }
+  };
+  const handleChangeQuantity = e => {
+    if (e.target.value < 1) {
+      return;
+    } else {
+      if (e.target.value > item.options.max_quantity) {
+        return;
+      } else {
+        setQuantity(e.target.value);
+      }
     }
   };
   const handleEditItemFromCart = async (cartId, itemId, quantity) => {
@@ -81,6 +95,44 @@ export default function CartItem({ item }) {
       setItemInWishlist(true);
     } catch (error) {
       console.log(error.response);
+    }
+  };
+  const formatItemsPlural = n => {
+    switch (n) {
+      case 0:
+        return (
+          <span className="text-main-color">
+            {formatMessage({ id: 'no-items-left' })}
+          </span>
+        );
+      case 1:
+        return (
+          <span className="text-yellow-700">
+            {formatMessage({ id: 'one-item-left' })}
+          </span>
+        );
+
+      case 2:
+        return (
+          <span className="text-yellow-700">
+            {formatMessage({ id: 'two-items-left' })}
+          </span>
+        );
+
+      case n > 10:
+        return (
+          <span className="  text-yellow-700">
+            {' '}
+            {n} {formatMessage({ id: 'more-than-10-items-left' })}
+          </span>
+        );
+
+      default:
+        return (
+          <span className=" text-yellow-700">
+            {n} {formatMessage({ id: 'items-left' })}
+          </span>
+        );
     }
   };
   const variant = {
@@ -125,8 +177,14 @@ export default function CartItem({ item }) {
               : ''
           }`}</h1>
         </Link>
-        <h1 className=" font-semibold text-sm mb-1 text-green-700">
-          {formatMessage({ id: 'in-stock' })}
+        <h1 className=" font-semibold text-sm mb-1">
+          {item.options.max_quantity < 20 ? (
+            formatItemsPlural(item.options.max_quantity)
+          ) : (
+            <span className="text-green-700">
+              {formatMessage({ id: 'in-stock' })}
+            </span>
+          )}
         </h1>
         <div className="flex items-center mb-2 ">
           <h1 className=" font-semibold">
@@ -141,8 +199,9 @@ export default function CartItem({ item }) {
               />
             </button>
             <input
+              type="number"
               value={quantity}
-              onChange={e => setQuantity(e.target.value)}
+              onChange={handleChangeQuantity}
               className="mx-1 px-2 py-1 border rounded"
               style={{ maxWidth: '50px', textAlign: 'center' }}
             />
@@ -172,8 +231,8 @@ export default function CartItem({ item }) {
               <Loader
                 type="ThreeDots"
                 color="#fff"
-                height={20}
-                width={20}
+                height={18}
+                width={18}
                 visible={true}
               />
             ) : (
@@ -186,16 +245,16 @@ export default function CartItem({ item }) {
             onClick={() => {
               handleRemoveItemFromCart(item.id, item.cart_id);
             }}
-            className={`${
-              removefromCartButtonLoading ? 'bg-gray-300' : 'bg-main-color'
-            }  text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold uppercase `}
+            className={`
+              bg-main-color
+              text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold uppercase `}
             style={{ width: '200px' }}
             disabled={removefromCartButtonLoading}
           >
             {removefromCartButtonLoading ? (
               <Loader
                 type="ThreeDots"
-                color="#b72b2b"
+                color="#fff"
                 height={21}
                 width={21}
                 visible={true}

@@ -10,7 +10,7 @@ import SwiperLoader from '../Home/SwiperLoader';
 import SwiperItem from './SwiperItem';
 import VariantSwiperItem from './VariantSwiperItem';
 SwiperCore.use([Navigation]);
-export default function StaticSwiper({ type, setCartMenuOpen, title }) {
+export default function StaticSwiper({ type, cb, title }) {
   const { formatMessage } = useIntl();
 
   const { data, isLoading } = useQuery(
@@ -71,17 +71,12 @@ export default function StaticSwiper({ type, setCartMenuOpen, title }) {
             return (
               <SwiperSlide
                 key={item.id}
-                className={`overflow-hidden   relative my-1
-             
-            rounded`}
+                className={`overflow-hidden   relative my-1 rounded`}
               >
                 {item.type === 'simple' ? (
-                  <SwiperItem item={item} setCartMenuOpen={setCartMenuOpen} />
+                  <SwiperItem item={item} setCartMenuOpen={cb} />
                 ) : (
-                  <VariantSwiperItem
-                    item={item}
-                    setCartMenuOpen={setCartMenuOpen}
-                  />
+                  <VariantSwiperItem item={item} setCartMenuOpen={cb} />
                 )}
               </SwiperSlide>
             );

@@ -98,7 +98,7 @@ export default function SideCartMenu({ setSideMenuOpen }) {
             <div className=" flex items-center my-2 text-center text-second-nav-text-light ">
               <Link
                 to={`/${locale}/cart`}
-                className={`flex-1 py-2 px-3 border border-main-color text-main-color mx-1    rounded`}
+                className={`flex-1 py-2 px-3 border border-main-color text-main-color mx-1 hover:bg-main-color hover:text-main-text uppercase transition duration-150   rounded`}
               >
                 {formatMessage({ id: 'go-to-cart' })}
               </Link>

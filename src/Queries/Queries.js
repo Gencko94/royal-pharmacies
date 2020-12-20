@@ -491,11 +491,13 @@ export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
       },
     });
   });
+  console.log(items);
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
     { cart: JSON.stringify(items) },
     config
   );
+  console.log(res.data);
   if (res.data.status === true) {
     return {
       cartItems: res.data.data.items,

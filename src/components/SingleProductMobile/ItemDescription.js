@@ -1,18 +1,14 @@
 import React from 'react';
 import {
-  AiFillStar,
   AiFillHeart,
-  AiOutlineStar,
   AiOutlineHeart,
   AiOutlineMinusCircle,
   AiOutlinePlusCircle,
 } from 'react-icons/ai';
 import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
-import Rating from 'react-rating';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-
 import { scrollIntoView } from 'scroll-js';
 import { DataProvider } from '../../contexts/DataContext';
 import { MdLocationOn } from 'react-icons/md';
@@ -25,19 +21,20 @@ export default function ItemDescription({
   setQuantity,
   addToCartButtonLoading,
   userId,
-
   setDetailsTab,
   reviewsLoading,
   ratingCount,
   averageRating,
 }) {
+  const qty = data.simple_addons.quantity;
+  const isSale = data.simple_addons.promotion_price ? true : false;
   const {
     removeFromWishListMutation,
     addToWishListMutation,
   } = React.useContext(CartAndWishlistProvider);
   const [itemInWishList, setItemInWishList] = React.useState(false);
   const { formatMessage, locale } = useIntl();
-  // const [snackBarOpen, setSnackBarOpen] = React.useState(false);
+
   const { deliveryCountry } = React.useContext(DataProvider);
   const resolvePlural = () => {
     switch (ratingCount) {
@@ -67,6 +64,44 @@ export default function ItemDescription({
 
       default:
         return formatMessage({ id: 'days' });
+    }
+  };
+  const formatItemsPlural = n => {
+    switch (n) {
+      case 0:
+        return (
+          <span className="text-main-color">
+            {formatMessage({ id: 'no-items-left' })}
+          </span>
+        );
+      case 1:
+        return (
+          <span className="mx-1 text-yellow-700">
+            {formatMessage({ id: 'one-item-left' })}
+          </span>
+        );
+
+      case 2:
+        return (
+          <span className="mx-1 text-yellow-700">
+            {formatMessage({ id: 'two-items-left' })}
+          </span>
+        );
+
+      case n > 10:
+        return (
+          <span className="mx-1  text-yellow-700">
+            {' '}
+            {n} {formatMessage({ id: 'more-than-10-items-left' })}
+          </span>
+        );
+
+      default:
+        return (
+          <span className="mx-1  text-yellow-700">
+            {n} {formatMessage({ id: 'items-left' })}
+          </span>
+        );
     }
   };
   const handleAddToWishlist = async () => {
@@ -113,19 +148,12 @@ export default function ItemDescription({
         {data.translation[locale].title}
       </h1>
       <div className="flex items-center ">
-        <Rating
-          initialRating={averageRating}
-          emptySymbol={<AiOutlineStar className="text-red-700" />}
-          fullSymbol={<AiFillStar className="text-red-700" />}
-          className="pt-1"
-          readonly
-        />
         <div className="flex items-center mb-1">
           <div className="flex items-center text-gray-600 text-sm">
             <h1 className="text-gray-600 text-sm">
               {formatMessage({ id: 'model-number' })} :
             </h1>
-            <h1 className="mx-1">{data.simple_addons.id}</h1>
+            <h1 className="mx-1">{data.simple_addons.sku}</h1>
           </div>
           {!reviewsLoading && ratingCount !== 0 && (
             <div
@@ -149,33 +177,36 @@ export default function ItemDescription({
         </div>
       </div>
 
-      <h1 className=" font-semibold mb-1 text-green-600">
-        {formatMessage({ id: 'in-stock' })}
-      </h1>
-      <h1 className="text-sm   mb-1 text-gray-700">
-        {formatMessage({ id: 'model-number' })} : {data.simple_addons.sku}
+      <h1 className=" font-semibold mb-1">
+        {qty < 20 ? (
+          formatItemsPlural(qty)
+        ) : (
+          <span className="text-green-700">
+            {formatMessage({ id: 'in-stock' })}
+          </span>
+        )}
       </h1>
 
       <hr />
-      <div className=" mb-1 font-bold">
-        {data.simple_addons.promotion_price && (
+      <div className=" mb-2 font-bold">
+        {isSale && (
           <div className="flex flex-wrap items-center">
             <h1 className=" ">{formatMessage({ id: 'price-before' })} :</h1>
-            <h1 className=" italic mx-2  line-through text-gray-700">
-              {data.simple_addons.promotion_price}{' '}
+            <h1 className=" italic mx-2 text-xl  line-through text-gray-700">
+              {data.simple_addons.price}{' '}
               {deliveryCountry?.currency.translation[locale].symbol}
             </h1>
           </div>
         )}
         <div className="flex flex-wrap items-center">
           <h1 className="">
-            {data.simple_addons.promotion_price
+            {isSale
               ? formatMessage({ id: 'price-now' })
               : formatMessage({ id: 'price' })}{' '}
             :
           </h1>
           <h1 className=" text-xl mx-2 text-red-700">
-            {data.simple_addons.price}{' '}
+            {data.simple_addons.promotion_price}{' '}
             {deliveryCountry?.currency.translation[locale].symbol}
           </h1>
           <h1 className=" font-normal  text-gray-700 uppercase">
@@ -246,13 +277,13 @@ export default function ItemDescription({
             }
           }}
           className={`${
-            addToCartButtonLoading ? 'bg-gray-300' : 'bg-green-700'
-          } text-main-text text-sm p-2 mx-1 rounded uppercase whitespace-no-wrap flex-1 flex items-center justify-center font-semibold`}
+            qty === 0 ? 'bg-main-color ' : 'bg-green-700'
+          } text-main-text text-sm  p-2 mx-1 rounded uppercase whitespace-no-wrap flex-1 flex items-center justify-center font-semibold`}
         >
           {addToCartButtonLoading ? (
             <Loader
               type="ThreeDots"
-              color="#b72b2b"
+              color="#fff"
               height={25}
               width={25}
               visible={addToCartButtonLoading}
@@ -265,6 +296,13 @@ export default function ItemDescription({
               <h1 className="mx-1 whitespace-no-wrap">
                 {formatMessage({ id: 'added-to-cart' })}
               </h1>
+            </>
+          ) : qty === 0 ? (
+            <>
+              <span>
+                <TiShoppingCart className="w-25p h-25p" />
+              </span>
+              <h1 className="mx-2">{formatMessage({ id: 'out-of-stock' })}</h1>
             </>
           ) : (
             <>

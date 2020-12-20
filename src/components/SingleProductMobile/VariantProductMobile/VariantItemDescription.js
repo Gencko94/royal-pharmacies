@@ -1,15 +1,13 @@
 import React from 'react';
 import {
-  AiFillStar,
   AiFillHeart,
-  AiOutlineStar,
   AiOutlineHeart,
   AiOutlineMinusCircle,
   AiOutlinePlusCircle,
 } from 'react-icons/ai';
 import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
-import Rating from 'react-rating';
+
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
@@ -34,12 +32,29 @@ export default function VariantItemDescription({
   selectedOption,
   setSelectedOption,
   setDetailsTab,
-
   reviewsLoading,
   ratingCount,
   averageRating,
   handleRemoveFromWishList,
 }) {
+  const variantOnly = data.new_variation_addons[selectedVariation].options
+    ? false
+    : true;
+  const option = variantOnly
+    ? data.new_variation_addons[selectedVariation]
+    : data.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ];
+  const isSale = data.new_variation_addons[selectedVariation].options
+    ? data.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ].promotion_price
+      ? true
+      : false
+    : data.new_variation_addons[selectedVariation].promotion_price
+    ? true
+    : false;
+  const currentPrice = isSale ? option.promotion_price : option.price;
   const handleSubstractQuantity = () => {
     if (parseInt(quantity) === 1) {
       return;
@@ -57,7 +72,7 @@ export default function VariantItemDescription({
     }
   };
   const { formatMessage, locale } = useIntl();
-  // const [snackBarOpen, setSnackBarOpen] = React.useState(false);
+
   const { deliveryCountry } = React.useContext(DataProvider);
   const resolvePlural = () => {
     switch (ratingCount) {
@@ -75,18 +90,56 @@ export default function VariantItemDescription({
     }
   };
   const formatDaysPlural = () => {
-    switch (parseInt(deliveryCountry.delivery_time)) {
+    switch (parseInt(deliveryCountry?.delivery_time)) {
       case 1:
         return formatMessage({ id: 'one-day' });
 
       case 2:
         return formatMessage({ id: 'two-days' });
 
-      case parseInt(deliveryCountry.delivery_time > 10):
+      case parseInt(deliveryCountry?.delivery_time > 10):
         return formatMessage({ id: 'more-than-10-days' });
 
       default:
         return formatMessage({ id: 'days' });
+    }
+  };
+  const formatItemsPlural = n => {
+    switch (n) {
+      case 0:
+        return (
+          <span className="text-main-color">
+            {formatMessage({ id: 'no-items-left' })}
+          </span>
+        );
+      case 1:
+        return (
+          <span className=" text-yellow-700">
+            {formatMessage({ id: 'one-item-left' })}
+          </span>
+        );
+
+      case 2:
+        return (
+          <span className="text-yellow-700">
+            {formatMessage({ id: 'two-items-left' })}
+          </span>
+        );
+
+      case n > 10:
+        return (
+          <span className=" text-yellow-700">
+            {' '}
+            {n} {formatMessage({ id: 'more-than-10-items-left' })}
+          </span>
+        );
+
+      default:
+        return (
+          <span className="text-yellow-700">
+            {n} {formatMessage({ id: 'items-left' })}
+          </span>
+        );
     }
   };
   const resolveOptions = React.useCallback(() => {
@@ -94,12 +147,14 @@ export default function VariantItemDescription({
     if (data.new_variation_addons[selectedVariation].options) {
       arr.push(
         <Options
+          key="options"
           options={data.new_variation_addons[selectedVariation].options}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
           selectedVariation={selectedVariation}
         />,
         <Variants
+          key="variants"
           variants={data.new_variation_addons}
           setSelectedVariant={setSelectedVariant}
           selectedOption={selectedOption}
@@ -111,6 +166,7 @@ export default function VariantItemDescription({
     } else {
       arr.push(
         <VariantsOnly
+          key="variantsOnly"
           variants={data.new_variation_addons}
           setSelectedVariant={setSelectedVariant}
           selectedVariation={selectedVariation}
@@ -145,13 +201,9 @@ export default function VariantItemDescription({
         {data.translation[locale].title}
       </h1>
       <div className="flex items-center ">
-        <Rating
-          initialRating={averageRating}
-          readonly
-          emptySymbol={<AiOutlineStar className="text-red-700" />}
-          fullSymbol={<AiFillStar className="text-red-700" />}
-          className="pt-1"
-        />
+        <h1 className="text-sm   mb-1 text-gray-700">
+          {formatMessage({ id: 'model-number' })} : {option.sku}
+        </h1>
 
         {!reviewsLoading && ratingCount !== 0 && (
           <div
@@ -174,68 +226,39 @@ export default function VariantItemDescription({
         )}
       </div>
 
-      <h1 className=" font-semibold mb-1 text-green-600">
-        {formatMessage({ id: 'in-stock' })}
-      </h1>
-      <h1 className="text-sm   mb-1 text-gray-700">
-        {formatMessage({ id: 'model-number' })} :{' '}
-        {data.new_variation_addons[selectedVariation].id}
+      <h1 className=" font-semibold mb-1">
+        {option.quantity < 20 ? (
+          formatItemsPlural(option.quantity)
+        ) : (
+          <span className="text-green-700">
+            {formatMessage({ id: 'in-stock' })}
+          </span>
+        )}
       </h1>
 
-      <hr />
+      <hr className="my-2" />
       <div className="py-1">
         <div className="font-bold">
-          {data.new_variation_addons[selectedVariation].options
-            ? data.new_variation_addons[selectedVariation].options[
-                selectedOption[selectedVariation]
-              ].promotion_price && (
-                <div className=" flex items-center ">
-                  <h1>{formatMessage({ id: 'price-before' })} :</h1>
-                  <h1 className=" mx-2 text-base italic  line-through text-gray-700">
-                    {
-                      data.new_variation_addons[selectedVariation].options[
-                        selectedOption[selectedVariation]
-                      ].promotion_price
-                    }
-                    <span className="mx-1">
-                      {deliveryCountry?.currency.translation[locale].symbol}
-                    </span>
-                  </h1>
-                </div>
-              )
-            : data.new_variation_addons[selectedVariation].promotion_price && (
-                <div className=" flex items-center ">
-                  <h1>{formatMessage({ id: 'price-before' })} :</h1>
-                  <h1 className=" mx-2 text-base italic  line-through text-gray-700">
-                    {
-                      data.new_variation_addons[selectedVariation]
-                        .promotion_price
-                    }{' '}
-                    <span className="mx-1">
-                      {deliveryCountry?.currency.translation[locale].symbol}
-                    </span>
-                  </h1>
-                </div>
-              )}
+          {isSale && (
+            <div className=" flex items-center ">
+              <h1>{formatMessage({ id: 'price-before' })} :</h1>
+              <h1 className=" mx-2 text-base italic  line-through text-gray-700">
+                {option.price}
+                <span className="mx-1">
+                  {deliveryCountry?.currency.translation[locale].symbol}
+                </span>
+              </h1>
+            </div>
+          )}
           <div className="">
             <div className="flex items-center flex-1">
               <h1 className="    ">
-                {data.new_variation_addons[selectedVariation].options
-                  ? data.new_variation_addons[selectedVariation].options[
-                      selectedOption[selectedVariation]
-                    ].promotion_price
-                    ? formatMessage({ id: 'price-now' })
-                    : formatMessage({ id: 'price' })
-                  : data.new_variation_addons[selectedVariation].promotion_price
+                {isSale
                   ? formatMessage({ id: 'price-now' })
                   : formatMessage({ id: 'price' })}
               </h1>
               <h1 className=" text-xl mx-2  text-red-700">
-                {data.new_variation_addons[selectedVariation].options
-                  ? data.new_variation_addons[selectedVariation].options[
-                      selectedOption[selectedVariation]
-                    ].price
-                  : data.new_variation_addons[selectedVariation].price}
+                {isSale ? option.promotion_price : option.price}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
@@ -244,26 +267,17 @@ export default function VariantItemDescription({
                 ({formatMessage({ id: 'vat-inclusive' })})
               </h1>
             </div>
-            {data.new_variation_addons[selectedVariation].options
-              ? data.new_variation_addons[selectedVariation].options[
-                  [selectedOption[selectedVariation]]
-                ].promotion_price && (
-                  <div className="flex items-center   ">
-                    <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                    <h1 className="text-base text-red-700 mx-2">18%</h1>
-                  </div>
-                )
-              : data.new_variation_addons[selectedVariation]
-                  .promotion_price && (
-                  <div className="flex items-center   ">
-                    <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                    <h1 className="text-base text-red-700 mx-2">18%</h1>
-                  </div>
-                )}
+            {isSale && (
+              <div className="flex items-center   ">
+                <h1>{formatMessage({ id: 'you-save' })} :</h1>
+                <h1 className="text-base text-red-700 mx-2">18%</h1>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
+      <hr className="my-2" />
       <div className="mb-2">{resolveOptions()}</div>
       <hr className="my-2" />
       <div className="mb-2">
@@ -315,21 +329,22 @@ export default function VariantItemDescription({
           </button>
         </div>
         <button
+          disabled={option.quantity === 0}
           onClick={() => {
             if (itemInCart) {
               return;
             } else {
-              handleAddToCart();
+              handleAddToCart(quantity, option.sku, currentPrice);
             }
           }}
           className={`${
-            addToCartButtonLoading ? 'bg-gray-300' : 'bg-green-700'
+            option.quantity === 0 ? 'bg-main-color' : 'bg-green-700'
           } text-main-text text-sm p-2 mx-1 rounded uppercase whitespace-no-wrap flex-1 flex items-center justify-center font-semibold`}
         >
           {addToCartButtonLoading ? (
             <Loader
               type="ThreeDots"
-              color="#b72b2b"
+              color="#fff"
               height={25}
               width={25}
               visible={addToCartButtonLoading}
@@ -343,6 +358,13 @@ export default function VariantItemDescription({
                 {formatMessage({ id: 'added-to-cart' })}
               </h1>
             </>
+          ) : option.quantity === 0 ? (
+            <>
+              <span>
+                <TiShoppingCart className="w-25p h-25p" />
+              </span>
+              <h1 className="mx-2">{formatMessage({ id: 'out-of-stock' })}</h1>
+            </>
           ) : (
             <>
               <span>
@@ -354,9 +376,7 @@ export default function VariantItemDescription({
         </button>
         <button
           onClick={addToWishList}
-          className={`
-              border
-            text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}
+          className={`border text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}
         >
           {itemInWishList ? (
             <AiFillHeart

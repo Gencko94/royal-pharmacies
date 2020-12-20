@@ -37,6 +37,55 @@ export default function GuestCartItemMobile({ item }) {
       },
     },
   };
+  const formatItemsPlural = n => {
+    switch (n) {
+      case 0:
+        return (
+          <span className="text-main-color">
+            {formatMessage({ id: 'no-items-left' })}
+          </span>
+        );
+      case 1:
+        return (
+          <span className="text-yellow-700">
+            {formatMessage({ id: 'one-item-left' })}
+          </span>
+        );
+
+      case 2:
+        return (
+          <span className=" text-yellow-700">
+            {formatMessage({ id: 'two-items-left' })}
+          </span>
+        );
+
+      case n > 10:
+        return (
+          <span className=" text-yellow-700">
+            {' '}
+            {n} {formatMessage({ id: 'more-than-10-items-left' })}
+          </span>
+        );
+
+      default:
+        return (
+          <span className="  text-yellow-700">
+            {n} {formatMessage({ id: 'items-left' })}
+          </span>
+        );
+    }
+  };
+  const handleChangeQuantity = e => {
+    if (e.target.value < 1) {
+      return;
+    } else {
+      if (e.target.value > item.options.max_quantity) {
+        return;
+      } else {
+        setQuantity(e.target.value);
+      }
+    }
+  };
   const handleSubstractQuantity = () => {
     if (parseInt(quantity) === 1) {
       return;
@@ -100,8 +149,14 @@ export default function GuestCartItemMobile({ item }) {
                 : ''
             }`}</h1>
           </Link>
-          <h1 className=" font-semibold text-green-700">
-            {formatMessage({ id: 'in-stock' })}
+          <h1 className=" font-semibold">
+            {item.options.max_quantity < 20 ? (
+              formatItemsPlural(item.options.max_quantity)
+            ) : (
+              <span className="text-green-700">
+                {formatMessage({ id: 'in-stock' })}
+              </span>
+            )}
           </h1>
           <div className="text-main0color font-bold text-base">
             {item.total} {deliveryCountry?.currency.translation[locale].symbol}
@@ -119,8 +174,9 @@ export default function GuestCartItemMobile({ item }) {
                 />
               </button>
               <input
+                type="number"
                 value={quantity}
-                onChange={e => setQuantity(e.target.value)}
+                onChange={handleChangeQuantity}
                 className="mx-1 px-2 py-1 border rounded"
                 style={{ maxWidth: '40px', textAlign: 'center' }}
               />
@@ -130,9 +186,7 @@ export default function GuestCartItemMobile({ item }) {
             </div>
           </div>
           <button
-            onClick={() =>
-              handleEditItemFromCart(item.cart_id, item.id, quantity)
-            }
+            onClick={() => handleEditItemFromCart(item.options.sku, item.price)}
             style={{ width: '50px' }}
             disabled={
               quantity > item.options.max_quantity ||
@@ -164,7 +218,7 @@ export default function GuestCartItemMobile({ item }) {
       <div className="flex justify-center text-sm  items-center my-2 ">
         <button
           onClick={() => {
-            handleRemoveItemFromCart(item.options.sku, item.price);
+            handleRemoveItemFromCart(item.options.sku);
           }}
           className={`${
             removefromCartButtonLoading === item.id

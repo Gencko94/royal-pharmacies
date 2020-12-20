@@ -10,6 +10,7 @@ export default function AdditionalDetails({
   setDetailsTab,
   averageRating,
   ratingCount,
+  data,
 }) {
   const { formatMessage } = useIntl();
 
@@ -22,7 +23,7 @@ export default function AdditionalDetails({
             detailsTab === 0 ? 'border-b-4  border-main-color' : 'text-gray-600'
           } `}
         >
-          {formatMessage({ id: 'additional-details__item-description' })}
+          {formatMessage({ id: 'additional-details__item-details' })}
         </button>
 
         <button
@@ -35,7 +36,7 @@ export default function AdditionalDetails({
         </button>
       </div>
       <div className="py-2">
-        {detailsTab === 0 && <ItemDescription />}
+        {detailsTab === 0 && <ItemDescription data={data} />}
 
         {detailsTab === 1 && (
           <ItemReviews

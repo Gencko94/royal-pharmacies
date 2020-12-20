@@ -7,15 +7,15 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { DataProvider } from '../../contexts/DataContext';
 
-export default function FloatingAddToCart({
+export default function VariantFloatingAddToCart({
   quantity,
   setQuantity,
   itemInCart,
   handleAddToCart,
-  price,
-  id,
+  data,
   addToCartButtonLoading,
-  qty,
+  selectedOption,
+  selectedVariation,
 }) {
   const { deliveryCountry } = React.useContext(DataProvider);
 
@@ -28,7 +28,24 @@ export default function FloatingAddToCart({
   const handleAddQuantity = () => {
     setQuantity(parseInt(quantity) + 1);
   };
-
+  const variantOnly = data.new_variation_addons[selectedVariation].options
+    ? false
+    : true;
+  const option = variantOnly
+    ? data.new_variation_addons[selectedVariation]
+    : data.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ];
+  const isSale = data.new_variation_addons[selectedVariation].options
+    ? data.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ].promotion_price
+      ? true
+      : false
+    : data.new_variation_addons[selectedVariation].promotion_price
+    ? true
+    : false;
+  const currentPrice = isSale ? option.promotion_price : option.price;
   const { formatMessage, locale } = useIntl();
   const variants = {
     hidden: {
@@ -38,7 +55,6 @@ export default function FloatingAddToCart({
       y: 0,
       transition: {
         type: 'tween',
-        // duration: 200,
       },
     },
     exited: {
@@ -73,21 +89,24 @@ export default function FloatingAddToCart({
       </div>
 
       <div className="p-1 text-center mx-1">
-        {price * quantity}{' '}
+        {isSale ? quantity * option.promotion_price : quantity * option.price}
         <span className="mx-1">
           {deliveryCountry?.currency.translation[locale].symbol}
         </span>
       </div>
 
       <button
+        disabled={option.quantity === 0}
         onClick={() => {
           if (itemInCart) {
             return;
           } else {
-            handleAddToCart({ id, quantity });
+            handleAddToCart(quantity, option.sku, currentPrice);
           }
         }}
-        className={`bg-green-700 whitespace-no-wrap flex-1 text-body-light uppercase text-sm py-2 px-2 rounded flex items-center justify-center font-semibold`}
+        className={` ${
+          option.quantity === 0 ? 'bg-main-color ' : 'bg-green-700'
+        } whitespace-no-wrap flex-1 text-body-light uppercase text-sm py-2 px-2 rounded flex items-center justify-center font-semibold`}
       >
         {addToCartButtonLoading ? (
           <Loader
@@ -106,7 +125,7 @@ export default function FloatingAddToCart({
               {formatMessage({ id: 'added-to-cart' })}
             </h1>
           </>
-        ) : qty === 0 ? (
+        ) : option.quantity === 0 ? (
           <>
             <span>
               <TiShoppingCart className="w-25p h-25p" />

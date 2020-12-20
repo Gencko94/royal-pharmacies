@@ -46,6 +46,23 @@ export default function VariantProduct({
     });
     return keys;
   });
+  const variantOnly = data.new_variation_addons[selectedVariation].options
+    ? false
+    : true;
+  const option = variantOnly
+    ? data.new_variation_addons[selectedVariation]
+    : data.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ];
+  const isSale = data.new_variation_addons[selectedVariation].options
+    ? data.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ].promotion_price
+      ? true
+      : false
+    : data.new_variation_addons[selectedVariation].promotion_price
+    ? true
+    : false;
   const handleAddToCart = async quantity => {
     setAddToCartButtonLoading(true);
     if (userId) {
@@ -85,24 +102,8 @@ export default function VariantProduct({
       }
     } else {
       try {
-        const price = data.new_variation_addons[selectedVariation].options
-          ? data.new_variation_addons[selectedVariation].options[
-              selectedOption[selectedVariation]
-            ].promotion_price
-            ? data.new_variation_addons[selectedVariation].options[
-                selectedOption[selectedVariation]
-              ].promotion_price
-            : data.new_variation_addons[selectedVariation].options[
-                selectedOption[selectedVariation]
-              ].price
-          : data.new_variation_addons[selectedVariation].promotion_price
-          ? data.new_variation_addons[selectedVariation].promotion_price
-          : data.new_variation_addons[selectedVariation].price;
-        const sku = data.new_variation_addons[selectedVariation].options
-          ? data.new_variation_addons[selectedVariation].options[
-              selectedOption[selectedVariation]
-            ].sku
-          : data.new_variation_addons[selectedVariation].sku;
+        const price = isSale ? option.promotion_price : option.price;
+        const sku = option.sku;
         const newItem = {
           id: data.id,
           quantity,

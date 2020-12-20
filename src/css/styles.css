@@ -345,7 +345,7 @@ input {
 }
 .side-cart-menu__item {
   display: grid;
-  grid-template-columns: 0.5fr 1fr;
+  grid-template-columns: 0.3fr 1fr;
   gap: 4px;
 }
 .side-cart-menu__item-mobile {
@@ -828,3 +828,4 @@ input {
     #ff00cc
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
+

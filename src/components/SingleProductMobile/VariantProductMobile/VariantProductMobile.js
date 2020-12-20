@@ -3,7 +3,7 @@ import React from 'react';
 import { AuthProvider } from '../../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../../contexts/DataContext';
-import FloatingAddToCart from '../FloatingAddToCart';
+import VariantFloatingAddToCart from '../VariantFloatingAddToCart';
 import VariantImageZoomMobile from './VariantImageZoomMobile';
 import VariantItemDescription from './VariantItemDescription';
 
@@ -20,6 +20,7 @@ export default function VariantProductMobile({
   const {
     addToCartMutation,
     removeFromWishListMutation,
+    addToGuestCartMutation,
     addToWishListMutation,
   } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
@@ -59,22 +60,74 @@ export default function VariantProductMobile({
     }
   };
 
-  const handleAddToCart = async quantity => {
+  const handleAddToCart = async (quantity, sku, price) => {
     setAddToCartButtonLoading(true);
-    try {
-      const newItem = { id: data.id, quantity: quantity };
-      await addToCartMutation({ newItem, userId, deliveryCountry });
-      setAddToCartButtonLoading(false);
-      setSideMenuOpen(true);
-      setItemInCart(true);
-    } catch (error) {
-      console.clear();
-
-      if (error.response.data.message === 'Item founded on the Cart') {
+    if (userId) {
+      try {
+        const newItem = {
+          id: data.id,
+          quantity,
+          variation: {
+            id: data.new_variation_addons?.[selectedVariation].id,
+            item_id:
+              data.new_variation_addons?.[selectedVariation].addon_item_id,
+          },
+          option: {
+            id:
+              data.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].id,
+            item_id:
+              data.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].addon_item_id,
+          },
+        };
+        await addToCartMutation({ newItem, userId, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
         setItemInCart(true);
+      } catch (error) {
+        // console.clear();
+
+        console.log(error);
+        console.log(error.response);
+        // if (error.response.data.message === 'Item founded on the Cart') {
+        //   setItemInCart(true);
+        // }
+        setAddToCartButtonLoading(false);
       }
-      console.log(error.response);
-      setAddToCartButtonLoading(false);
+    } else {
+      try {
+        const newItem = {
+          id: data.id,
+          quantity,
+          variation: {
+            id: data.new_variation_addons?.[selectedVariation].id,
+            item_id:
+              data.new_variation_addons?.[selectedVariation].addon_item_id,
+          },
+          option: {
+            id:
+              data.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].id,
+            item_id:
+              data.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].addon_item_id,
+          },
+          price,
+          sku,
+        };
+
+        await addToGuestCartMutation({ newItem, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setSideMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        console.log(error.response);
+      }
     }
   };
 
@@ -115,7 +168,7 @@ export default function VariantProductMobile({
       </div>
       <AnimatePresence>
         {inView && !itemInCart && (
-          <FloatingAddToCart
+          <VariantFloatingAddToCart
             quantity={quantity}
             setQuantity={setQuantity}
             handleAddToCart={handleAddToCart}

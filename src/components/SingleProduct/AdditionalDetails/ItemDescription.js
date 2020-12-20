@@ -1,33 +1,59 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 
-export default function ItemDescription() {
+export default function ItemDescription({ data }) {
+  const { locale, formatMessage } = useIntl();
   return (
-    <ul
-      className={`
-     
-     bg-gray-100  p-2 text-sm list-inside list-disc `}
-    >
-      <li>
-        The nephilim Edition contains all the loot from the Collector's Edition
-        as well as the Limited Edition Darksiders: the forbidden land board
-        game!{' '}
-      </li>
-      <li>
-        Blast Angels and demons as the gunslinging Horseman strife, playable for
-        the first time
-      </li>
-      <li>
-        Swap between the powerful swordsman war and strife instantly in
-        frenetic, single-player gameplay
-      </li>
-      <li>
-        Explore the epic world of Darksiders and wreak havoc with a friend in
-        two-player cooperative mode{' '}
-      </li>
-      <li>
-        Experience a brand new story campaign that takes place before the
-        original Darksiders, exploring the origin of the Seven seals{' '}
-      </li>
-    </ul>
+    <div>
+      {data.translation[locale].description && (
+        <div className="my-1">
+          <h1 className="text-center text-xl font-semibold my-1 mb-1 p-1 border-b">
+            {formatMessage({ id: 'additional-details__item-description' })}
+          </h1>
+          <div
+            className="inner_html"
+            dangerouslySetInnerHTML={{
+              __html: data.translation[locale].description,
+            }}
+          ></div>
+        </div>
+      )}
+      {data.translation[locale].features && (
+        <div className="my-1">
+          <h1 className="text-center text-xl font-semibold my-1 mb-1 p-1 border-b">
+            {formatMessage({ id: 'additional-details__item-features' })}
+          </h1>
+          <div
+            className="inner_html"
+            dangerouslySetInnerHTML={{
+              __html: data.translation[locale].features,
+            }}
+          ></div>
+        </div>
+      )}
+      {data.translation[locale].materials && (
+        <div className="my-1">
+          <h1 className="text-center text-xl font-semibold my-1 mb-1 p-1 border-b">
+            {formatMessage({ id: 'additional-details__item-materials' })}
+          </h1>
+          <div
+            className="inner_html"
+            dangerouslySetInnerHTML={{
+              __html: data.translation[locale].materials,
+            }}
+          ></div>
+        </div>
+      )}
+
+      {!data.translation[locale].materials &&
+        !data.translation[locale].description &&
+        !data.translation[locale].features && (
+          <div className="flex p-6 items-center border text-center justify-center text-base flex-col">
+            <h1 className="text-xl mb-2 ">
+              {formatMessage({ id: 'no-item-details-available' })}
+            </h1>
+          </div>
+        )}
+    </div>
   );
 }

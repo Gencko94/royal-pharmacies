@@ -13,13 +13,16 @@ import GuestCart from '../components/Cart/GuestCart.js/GuestCart';
 import CartLoader from '../components/Cart/loaders/CartLoader';
 import { useIntl } from 'react-intl';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
+import { scrollTo } from 'scroll-js';
 export default function Cart() {
   const { cartItemsLoading, isGetCartError } = React.useContext(
     CartAndWishlistProvider
   );
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
-
+  const scrollToTop = () => {
+    scrollTo(window, { top: 0 });
+  };
   const { formatMessage } = useIntl();
 
   if (!cartItemsLoading && isGetCartError) {
@@ -53,7 +56,7 @@ export default function Cart() {
         {!authenticationLoading && !userId && (
           <GuestCart setCheckOutModalOpen={setCheckOutModalOpen} />
         )}
-        <StaticSwiper type="electronics" />
+        <StaticSwiper type="electronics" cb={scrollToTop} />
       </div>
     </Layout>
   );

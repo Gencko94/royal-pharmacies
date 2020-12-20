@@ -27,7 +27,10 @@ export default function Home() {
     refetchOnWindowFocus: false,
   });
   const { locale } = useIntl();
-  const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
+  const [cartMenuOpen, setCartMenu] = React.useState(false);
+  const setCartMenuOpen = () => {
+    setCartMenu(true);
+  };
   const resolveSwiper = (item, index) => {
     switch (item.type) {
       case 'best_seller':
@@ -42,7 +45,7 @@ export default function Home() {
             <StaticSwiper
               type={item.key}
               title={item[`title_${locale}`]}
-              setCartMenuOpen={setCartMenuOpen}
+              cb={setCartMenuOpen}
             />
           </LazyLoad>
         );
@@ -80,9 +83,9 @@ export default function Home() {
         <AnimatePresence>
           {cartMenuOpen &&
             (isTabletOrAbove ? (
-              <SideCartMenu key="side-cart" setSideMenuOpen={setCartMenuOpen} />
+              <SideCartMenu key="side-cart" setSideMenuOpen={setCartMenu} />
             ) : (
-              <SideCartMenuMobile key={998} setSideMenuOpen={setCartMenuOpen} />
+              <SideCartMenuMobile key={998} setSideMenuOpen={setCartMenu} />
             ))}
           {cartMenuOpen && (
             <motion.div
@@ -90,7 +93,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
-              onClick={() => setCartMenuOpen(false)}
+              onClick={() => setCartMenu(false)}
               className="side__addCart-bg"
             ></motion.div>
           )}
@@ -103,12 +106,12 @@ export default function Home() {
           <StaticSwiper
             type="men-clothing"
             title={'Men Clothing'}
-            setCartMenuOpen={setCartMenuOpen}
+            cb={setCartMenuOpen}
           />
           <StaticSwiper
             type="home-kitchen"
             title={'Home & Kitchen'}
-            setCartMenuOpen={setCartMenuOpen}
+            cb={setCartMenuOpen}
           />
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}

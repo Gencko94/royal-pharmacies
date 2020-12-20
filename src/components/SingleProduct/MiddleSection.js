@@ -1,8 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { scrollIntoView } from 'scroll-js';
-import Rating from 'react-rating';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
+
 import { DataProvider } from '../../contexts/DataContext';
 export default function MiddleSection({
   data,
@@ -28,22 +27,58 @@ export default function MiddleSection({
         return formatMessage({ id: 'ratings' });
     }
   };
+  const formatItemsPlural = n => {
+    switch (n) {
+      case 0:
+        return (
+          <span className="text-main-color">
+            {formatMessage({ id: 'no-items-left' })}
+          </span>
+        );
+      case 1:
+        return (
+          <span className="mx-1 text-yellow-700">
+            {formatMessage({ id: 'one-item-left' })}
+          </span>
+        );
+
+      case 2:
+        return (
+          <span className="mx-1 text-yellow-700">
+            {formatMessage({ id: 'two-items-left' })}
+          </span>
+        );
+
+      case n > 10:
+        return (
+          <span className="mx-1  text-yellow-700">
+            {' '}
+            {n} {formatMessage({ id: 'more-than-10-items-left' })}
+          </span>
+        );
+
+      default:
+        return (
+          <span className="mx-1  text-yellow-700">
+            {n} {formatMessage({ id: 'items-left' })}
+          </span>
+        );
+    }
+  };
   return (
     <div className="flex flex-col w-full self-start ">
       <h1 className="font-semibold text-xl">
         {data.translation[locale].title}
       </h1>
-      <div className="flex items-center ">
-        <Rating
-          initialRating={averageRating}
-          readonly
-          emptySymbol={<AiOutlineStar className="text-main-color" />}
-          fullSymbol={<AiFillStar className="text-main-color" />}
-          className=" pt-1"
-        />
-      </div>
-      <h1 className=" font-semibold mb-1 text-green-700">
-        {formatMessage({ id: 'in-stock' })}
+
+      <h1 className=" font-semibold mb-1">
+        {data.simple_addons.quantity < 20 ? (
+          formatItemsPlural(data.simple_addons.quantity)
+        ) : (
+          <span className="mx-1  text-green-700">
+            {formatMessage({ id: 'in-stock' })}
+          </span>
+        )}
       </h1>
       <div className="flex items-center mb-1">
         <div className="flex items-center text-gray-600 text-sm">
@@ -61,7 +96,7 @@ export default function MiddleSection({
             className="mx-2 flex items-center"
           >
             <div className="rounded p-1 text-xs bg-green-700 text-main-text cursor-pointer">
-              {ratingCount}
+              {averageRating}
             </div>
 
             <div className="text-sm text-gray-600 flex items-center mx-1  hover:underline cursor-pointer">

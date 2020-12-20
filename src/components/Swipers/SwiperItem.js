@@ -1,62 +1,112 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
-import { TiShoppingCart } from 'react-icons/ti';
 import { useIntl } from 'react-intl';
-// import { AuthProvider } from '../../contexts/AuthContext';
-// import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
+import { AuthProvider } from '../../contexts/AuthContext';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 export default function SwiperItem({ item, setCartMenuOpen }) {
-  // const { addToCartMutation, removeFromCartMutation } = React.useContext(
-  //   CartAndWishlistProvider
-  // );
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
-  const [activeBuyOptions, setActiveBuyOptions] = React.useState(null);
-  // const { userId } = React.useContext(AuthProvider);
-  // const [itemInCart, setItemInCart] = React.useState(false);
-  // const [loadingButton, setLoadingButton] = React.useState(null);
-  const handleBuyOptionsToggle = id => {
-    if (activeBuyOptions === id) {
-      setActiveBuyOptions(null);
-      return;
+  const [showAddButton, setShowAddButton] = React.useState(false);
+  const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
+    false
+  );
+  const { userId } = React.useContext(AuthProvider);
+  const [itemInCart, setItemInCart] = React.useState(false);
+  const { addToGuestCartMutation, addToCartMutation } = React.useContext(
+    CartAndWishlistProvider
+  );
+  const handleAddToCart = async () => {
+    setAddToCartButtonLoading(true);
+    if (userId) {
+      try {
+        const newItem = { id: item.id, quantity: 1 };
+        await addToCartMutation({ newItem, userId, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setCartMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        // console.clear();
+
+        console.log(error);
+        if (error.response.data.message === 'Item founded on the Cart') {
+          setItemInCart(true);
+        }
+        setAddToCartButtonLoading(false);
+      }
+    } else {
+      try {
+        const price = item.simple_addons.promotion_price
+          ? item.simple_addons.promotion_price
+          : item.simple_addons.price;
+        const sku = item.simple_addons.sku;
+        const newItem = { id: item.id, quantity: 1, price, sku };
+        await addToGuestCartMutation({ newItem, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setCartMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        console.log(error.response);
+      }
     }
-    setActiveBuyOptions(id);
   };
-  // const handleAddToCart = async newItem => {
-  //   setLoadingButton(newItem.id);
-  //   // const newItem = { id:newItem.id, quantity: quantity, size };
-  //   try {
-  //     await addToCartMutation({ newItem, userId, deliveryCountry });
-  //     setCartMenuOpen(true);
-  //     setItemInCart(true);
-  //     setLoadingButton(null);
-  //   } catch (error) {
-  //     setLoadingButton(null);
-  //     console.error(error.response);
-  //   }
-  // };
-  // const handleRemoveFromCart = async id => {
-  //   setLoadingButton(id);
-  //   try {
-  //     await removeFromCartMutation({ id, userId });
-  //     setItemInCart(false);
-  //   } catch (error) {
-  //     setLoadingButton(null);
-  //     console.error(error.response);
-  //   }
-  // };
+
   return (
-    <div>
-      <span className="sale-mini__banner text-xs font-semibold bg-main-color text-main-text px-1 ">
-        32% {formatMessage({ id: 'off' })}
-      </span>
-      <a href={`/${locale}/c/${item.id}`}>
-        <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
-          alt={item.translation[locale].title}
-          pb="calc(100% * 286/210)"
-        />
-      </a>
+    <div
+      onMouseEnter={() => setShowAddButton(true)}
+      onMouseLeave={() => {
+        setShowAddButton(false);
+      }}
+    >
+      <div className="relative">
+        <a href={`/${locale}/c/${item.id}`}>
+          <LazyImage
+            src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
+            alt={item.translation[locale].title}
+            pb="calc(100% * 286/210)"
+          />
+        </a>
+        <AnimatePresence>
+          {showAddButton && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleAddToCart}
+              className="flex items-center justify-center absolute w-full bottom-10"
+            >
+              <button className=" text-center rounded uppercase p-2 bg-main-color text-main-text text-sm">
+                {addToCartButtonLoading ? (
+                  <Loader
+                    type="ThreeDots"
+                    color="#fff"
+                    height={20}
+                    width={20}
+                    visible={true}
+                  />
+                ) : (
+                  formatMessage({ id: 'add-to-cart' })
+                )}
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {itemInCart && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="absolute top-0 w-full h-full flex items-center justify-center text-main-text bg-gray-800 text-2xl"
+            >
+              {formatMessage({ id: 'added-to-cart' })} !
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
@@ -71,26 +121,31 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
           </a>
         </div>
 
-        <div className=" p-2 flex items-center justify-between">
-          <p className="   text-lg  font-semibold text-main-color whitespace-no-wrap">
-            50{' '}
-            <span className="text-xs ">
-              {deliveryCountry?.currency.translation[locale].symbol}
-            </span>
-          </p>
-          <button
-            onClick={() => handleBuyOptionsToggle(item.id)}
-            className=" rounded-full relative text-main-text z-3 "
-          >
-            <TiShoppingCart
-              style={{
-                height: '20px',
-                width: '20px',
-              }}
-            />
-          </button>
+        <div className="p-2 flex items-center justify-between">
+          {item.simple_addons?.promotion_price ? (
+            <div className="flex items-center">
+              <h1 className="font-semibold text-lg text-main-color">
+                {item.simple_addons.promotion_price}
+              </h1>
+              <span className="mx-1 text-sm">
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </span>
+              <h1 className=" text-sm mx-1 italic  line-through text-gray-700">
+                {item.simple_addons?.price}
+                <span className="">
+                  {deliveryCountry?.currency.translation[locale].symbol}
+                </span>
+              </h1>
+            </div>
+          ) : (
+            <h1 className="font-semibold text-lg text-main-color">
+              {item.simple_addons?.price}
+              <span className="mx-1 text-sm">
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </span>
+            </h1>
+          )}
         </div>
-        <div style={{ minHeight: '40px', padding: '0.5rem' }}></div>
       </div>
     </div>
   );

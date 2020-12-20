@@ -81,7 +81,7 @@ export default function VariantRightSection({
           <div className="flex items-center ">
             <div className="flex items-center">
               <h1>{formatMessage({ id: 'deliver-to' })}</h1>
-              <h1 className="uppercase mx-2 text-sm">
+              <h1 className="uppercase mx-1">
                 {deliveryCountry?.translation[locale].name}
               </h1>
               <MdLocationOn className="w-5 h-5 text-main-color " />
@@ -147,14 +147,14 @@ export default function VariantRightSection({
               handleAddToCart(quantity);
             }
           }}
-          className={`${
-            addToCartButtonLoading ? 'bg-gray-300' : 'bg-green-700'
-          } flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
+          className={`
+            bg-green-700
+           flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToCartButtonLoading ? (
             <Loader
               type="ThreeDots"
-              color="#b72b2b"
+              color="#fff"
               height={25}
               width={25}
               visible={addToCartButtonLoading}
@@ -183,8 +183,6 @@ export default function VariantRightSection({
           className={`${
             addToWishListButtonLoading
               ? 'bg-gray-300'
-              : itemInWishList
-              ? 'border-main-color text-main-color border'
               : 'border-main-color text-main-color border'
           } flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >

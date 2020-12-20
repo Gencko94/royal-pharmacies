@@ -42,6 +42,21 @@ export default function RightSection({
   const { formatMessage, locale } = useIntl();
   const [snackBarOpen, setSnackBarOpen] = React.useState(false);
   const { deliveryCountry } = React.useContext(DataProvider);
+  const formatDaysPlural = () => {
+    switch (parseInt(deliveryCountry?.delivery_time)) {
+      case 1:
+        return formatMessage({ id: 'one-day' });
+
+      case 2:
+        return formatMessage({ id: 'two-days' });
+
+      case parseInt(deliveryCountry?.delivery_time > 10):
+        return formatMessage({ id: 'more-than-10-days' });
+
+      default:
+        return formatMessage({ id: 'days' });
+    }
+  };
   const addToWishList = () => {
     if (!userId) {
       setSnackBarOpen(true);
@@ -66,7 +81,7 @@ export default function RightSection({
           <div className="flex items-center ">
             <div className="flex items-center">
               <h1>{formatMessage({ id: 'deliver-to' })}</h1>
-              <h1 className="uppercase mx-2 text-sm">
+              <h1 className="uppercase mx-1">
                 {deliveryCountry?.translation[locale].name}
               </h1>
               <MdLocationOn className="w-5 h-5 text-main-color " />
@@ -86,11 +101,7 @@ export default function RightSection({
             <h1 className="mx-1">
               {deliveryCountry?.delivery_time > 2 &&
                 deliveryCountry.delivery_time}
-              <span className="mx-1">
-                {deliveryCountry?.delivery_time === '1'
-                  ? formatMessage({ id: 'one-day' })
-                  : formatMessage({ id: 'days' })}
-              </span>
+              <span className="mx-1">{formatDaysPlural()}</span>
             </h1>
           </div>
         </div>
