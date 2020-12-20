@@ -51,7 +51,7 @@ export default function GuestCartContainer() {
             >
               <AnimatePresence>
                 {guestCartItems.map(item => {
-                  return <GuestCartItem key={item.id} item={item} />;
+                  return <GuestCartItem key={item.options.sku} item={item} />;
                 })}
               </AnimatePresence>
             </motion.div>

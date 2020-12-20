@@ -75,7 +75,7 @@ export default function CartContainer() {
             >
               <AnimatePresence>
                 {cartItems.map(item => {
-                  return <CartItem key={item.id} item={item} />;
+                  return <CartItem key={item.options.sku} item={item} />;
                 })}
               </AnimatePresence>
             </motion.div>
