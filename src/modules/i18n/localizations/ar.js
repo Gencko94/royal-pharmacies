@@ -300,4 +300,9 @@ export const ar = {
    *
    */
   'your-viewed-items': 'المنتجات التي قمت بزيارتها',
+
+  'filtered-by': 'مفرزة حسب',
+  brand: 'الماركة',
+  Brand: 'الماركة',
+  Sort: 'الفرز',
 };

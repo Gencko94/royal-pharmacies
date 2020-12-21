@@ -307,6 +307,11 @@ const baseStrings = {
   'footer-help': "We're always here to help",
   'footer-reach': 'Reach out to us through any of these support channels',
   'footer-all-rights': 'All Rights Reserved',
+
+  'filtered-by': 'Filtered By',
+  brand: 'Brand',
+  Brand: 'Brand',
+  Sort: 'Sort',
 };
 
 export const en = baseStrings;

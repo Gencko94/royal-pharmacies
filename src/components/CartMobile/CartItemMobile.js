@@ -170,14 +170,14 @@ export default function CartItemMobile({ item }) {
         <div className="text-sm">
           <Link to={`/${locale}/item/${item.id}}`}>
             <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
-              item.options.addons.length !== 0
+              item.options.addons
                 ? ` - ${Object.keys(item.options.addons)
                     .map(variation => item.options.addons[variation])
                     .join(' - ')}`
                 : ''
             }`}</h1>
           </Link>
-          <h1 className=" font-semibold text-green-700">
+          <h1 className=" font-semibold">
             {item.options.max_quantity < 20 ? (
               formatItemsPlural(item.options.max_quantity)
             ) : (
@@ -250,16 +250,13 @@ export default function CartItemMobile({ item }) {
           onClick={() => {
             handleRemoveItemFromCart(item.id, item.cart_id);
           }}
-          className={`${
-            removefromCartButtonLoading === item.id
-              ? 'bg-gray-300'
-              : 'bg-main-color'
-          }  text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
+          className={`bg-main-color
+            text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
         >
-          {removefromCartButtonLoading === item.id ? (
+          {removefromCartButtonLoading ? (
             <Loader
               type="ThreeDots"
-              color="#b72b2b"
+              color="#fff"
               height={22}
               width={22}
               visible={true}

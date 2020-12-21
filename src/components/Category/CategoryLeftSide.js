@@ -3,32 +3,28 @@ import { useIntl } from 'react-intl';
 // import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import LeftSideBrands from './LeftSideBrands';
+import LeftSidePrice from './LeftSidePrice';
 // import { getCategories } from '../../Queries/Queries';
 
 export default function CategoryLeftSide({
   productsLoading,
 
-  setLowestPrice,
-
-  setHighestPrice,
   handlePriceChange,
   products,
 
   categoryInfo,
   categoryInfoLoading,
   brandFilters,
-  setBrandFilters,
+  handleChangePriceInput,
   handleBrandChange,
-  categoryIdLoading,
+  priceFilters,
+  handleSubmitPrice,
 }) {
-  console.log(products);
   const { locale, formatMessage } = useIntl();
-  // if (categoryInfoLoading || categoryIdLoading || productsLoading) {
-  //   return 'loading';
-  // }
+
   return (
     <div className="py-2">
-      {!categoryInfoLoading && !categoryIdLoading && (
+      {!categoryInfoLoading && (
         <div className="mb-4">
           <h1 className="text-xl font-semibold">
             {formatMessage({ id: 'categories' })}
@@ -55,44 +51,23 @@ export default function CategoryLeftSide({
         </div>
       )}
       {/* Brands */}
-      {products && !categoryIdLoading && (
-        <div className="mb-4">
-          <h1 className="text-xl font-semibold">Brand</h1>
-          <hr className="my-2" />
-          <LeftSideBrands
-            products={products}
-            brandFilters={brandFilters}
-            handleBrandChange={handleBrandChange}
-          />
-        </div>
+      {!productsLoading && (
+        <LeftSideBrands
+          products={products}
+          brandFilters={brandFilters}
+          handleBrandChange={handleBrandChange}
+        />
       )}
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold">Price (KW)</h1>
-        <hr className="my-2" />
-        <div className="flex items-center">
-          <input
-            type="number"
-            placeholder="Min"
-            className=" flex-1 border min-w-0 p-1 rounded-sm"
-            value=""
-            onChange={e => setLowestPrice(e.target.value)}
-          />
-          <span className="text-gray-600 text-xs mx-1">To</span>
-          <input
-            type="number"
-            placeholder="Max"
-            className="flex-1 border min-w-0 p-1 rounded-sm mr-1"
-            value=""
-            onChange={e => setHighestPrice(e.target.value)}
-          />
-          <button
-            onClick={handlePriceChange}
-            className="p-1 bg-green-400 rounded"
-          >
-            Go
-          </button>
-        </div>
-      </div>
+      {/* Price */}
+      {!productsLoading && (
+        <LeftSidePrice
+          products={products}
+          priceFilters={priceFilters}
+          handlePriceChange={handlePriceChange}
+          handleChangePriceInput={handleChangePriceInput}
+          handleSubmitPrice={handleSubmitPrice}
+        />
+      )}
     </div>
   );
 }

@@ -10,13 +10,14 @@ export default function CategoryRightSide({
   productsLoading,
   categoryInfoLoading,
   sortBy,
-  setSortBy,
-  categoryIdLoading,
+  filteredProducts,
+  filteredProductsLoading,
+  filtersApplied,
+  handleRemoveFilters,
+  handleSortByChange,
+  filters,
 }) {
-  console.log(categoryIdLoading);
-  console.log(productsLoading);
-  console.log(products);
-  if (productsLoading || categoryInfoLoading || categoryIdLoading) {
+  if (productsLoading || categoryInfoLoading) {
     return (
       <div className="py-2">
         <ContentLoader
@@ -37,16 +38,37 @@ export default function CategoryRightSide({
   }
   return (
     <div className="py-2">
-      <SortInfoPanel sortBy={sortBy} setSortBy={setSortBy} />
+      <SortInfoPanel
+        sortBy={sortBy}
+        filters={filters}
+        handleRemoveFilters={handleRemoveFilters}
+        handleSortByChange={handleSortByChange}
+      />
       {products.length !== 0 && (
         <div className="category-page-items__grid py-2 ">
-          {products.map(item => {
-            return item.type === 'simple' ? (
-              <CategoryProductItem key={item.id} item={item} />
-            ) : (
-              <VariantCategoryProductItem key={item.id} item={item} />
-            );
-          })}
+          {!filtersApplied &&
+            products.map(item => {
+              return item.type === 'simple' ? (
+                <CategoryProductItem key={item.id} item={item} />
+              ) : (
+                <VariantCategoryProductItem key={item.id} item={item} />
+              );
+            })}
+          {filtersApplied &&
+            filteredProductsLoading &&
+            [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
+              return <CategoryItemLoader key={i} />;
+            })}
+          {filtersApplied &&
+            !filteredProductsLoading &&
+            filteredProducts &&
+            filteredProducts.map(item => {
+              return item.type === 'simple' ? (
+                <CategoryProductItem key={item.id} item={item} />
+              ) : (
+                <VariantCategoryProductItem key={item.id} item={item} />
+              );
+            })}
         </div>
       )}
       {products.length === 0 && (

@@ -9878,6 +9878,11 @@ react-query@^2.26.2:
   dependencies:
     "@babel/runtime" "^7.5.5"
 
+react-range@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.8.3.tgz#166303250111919e728db70e572dc09994888aba"
+  integrity sha512-CVSpl/y/PFHqxwktWbHCRvl9Tm2bxqp997lZcqv/CgLOjMtk8mYySNkGYGysPbUEakR96ZiJBssrXxwCdePMSw==
+
 react-rating@^2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/react-rating/-/react-rating-2.0.5.tgz#2c9d7ebe5907db0361ba28b7c19f0394e6e4dd76"

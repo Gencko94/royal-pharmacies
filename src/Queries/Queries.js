@@ -639,26 +639,27 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
 /**
  * Category Products
  */
-export const getCategoryId = async (k, categorySlug) => {
+export const getCategoryProducts = async (k, categorySlug) => {
   const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
+    `${process.env.REACT_APP_MAIN_URL}/category-products/${categorySlug}`
   );
   console.log(res);
   if (res.data.status === true) {
-    return res.data.data.id;
+    return res.data.data;
   }
 };
-export const getCategoryProducts = async (
+export const filterProducts = async (
   k,
-  { categoryId, brandFilters, sortBy, page, resultsPerPage, locale }
+  { category, brandFilters, sortBy, page, resultsPerPage, locale, priceFilters }
 ) => {
   const query = {
-    category: categoryId,
+    category,
     brand: brandFilters ? brandFilters : undefined,
     sort_by: sortBy ? sortBy.value : undefined,
     page,
     number: resultsPerPage,
     sort_language: locale,
+    range_price: priceFilters[0],
   };
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/filter-products`,
