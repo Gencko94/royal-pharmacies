@@ -205,8 +205,8 @@ export default function GuestCartItemMobile({ item }) {
               <Loader
                 type="ThreeDots"
                 color="#fff"
-                height={20}
-                width={20}
+                height={18}
+                width={18}
                 visible={true}
               />
             ) : (

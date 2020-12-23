@@ -7,6 +7,8 @@ export const ar = {
   /** Page content */
   // general
 
+  'shop-on-mrg': 'تسوق على MRG Mall',
+
   home: 'الرئيسية',
   cart: 'عربة التسوق',
   wishlist: 'قائمتي المفضلة',
@@ -76,6 +78,7 @@ export const ar = {
   'estimated-delivery': 'زمن التوصيل التقريبي',
   'fastest-delivery': 'اسرع توصيل',
   change: 'تغيير',
+  'search-for': 'إبحث عن ',
   'deliver-to': 'توصيل إلى',
   'go-to-cart': 'عرض السلة',
   checkout: 'إتمام الشراء',
@@ -124,6 +127,9 @@ export const ar = {
   'see-all-search-results': 'إظهار كافة نتائج البحث ل ',
   'cart-combined':
     'تم دمج المنتجات التي قمت بإضافتها كزائر مع عربتك الحالية , تسوق ممتع !',
+  'Price (Low to High)': 'السعر (الأخفض إلى الأعلى)',
+  'Price (High to Low)': 'السعر (الأعلى إلى الأخفض)',
+  Newest: 'الأجدد',
 
   //
   'nav.cart': 'عربة التسوق',
@@ -302,7 +308,12 @@ export const ar = {
   'your-viewed-items': 'المنتجات التي قمت بزيارتها',
 
   'filtered-by': 'مفرزة حسب',
+  'filter-by': 'فرز حسب',
+  'filter-by-brand': 'فرز حسب الماركة',
+  'filter-by-price': 'اختر مجال السعر',
   brand: 'الماركة',
   Brand: 'الماركة',
   Sort: 'الفرز',
+  sort: 'الفرز',
+  'sort-by': 'تصنيف حسب',
 };

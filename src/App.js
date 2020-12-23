@@ -36,6 +36,9 @@ const CheckoutMobile = React.lazy(() => import('./pages/CheckoutMobile'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 const NotFoundMobile = React.lazy(() => import('./pages/NotFoundMobile'));
 const SearchResults = React.lazy(() => import('./pages/SearchResults'));
+const SearchResultsMobile = React.lazy(() =>
+  import('./pages/SearchResultsMobile')
+);
 
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -123,7 +126,7 @@ function App() {
               if (isTabletOrAbove) {
                 return <SearchResults {...props} />;
               } else {
-                return <CategoryMobile {...props} />;
+                return <SearchResultsMobile {...props} />;
               }
             }}
           />

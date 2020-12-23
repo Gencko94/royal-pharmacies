@@ -51,6 +51,9 @@ export default function DeliverTo() {
       },
     },
   };
+  if (!deliveryCountry || deliveryCountries) {
+    return null;
+  }
   return (
     <div>
       <button

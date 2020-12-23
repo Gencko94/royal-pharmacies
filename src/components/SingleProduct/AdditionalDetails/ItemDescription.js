@@ -48,7 +48,7 @@ export default function ItemDescription({ data }) {
       {!data.translation[locale].materials &&
         !data.translation[locale].description &&
         !data.translation[locale].features && (
-          <div className="flex p-6 items-center border text-center justify-center text-base flex-col">
+          <div className="flex p-6 items-center text-center justify-center text-base flex-col">
             <h1 className="text-xl mb-2 ">
               {formatMessage({ id: 'no-item-details-available' })}
             </h1>

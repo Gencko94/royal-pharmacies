@@ -11,6 +11,9 @@ const baseStrings = {
   //countries
 
   // general
+
+  'shop-on-mrg': 'Shop on MRG Mall',
+
   home: 'Home',
   cart: 'Cart',
   wishlist: 'Wishlist',
@@ -126,6 +129,9 @@ const baseStrings = {
   'see-all-search-results': 'See all Search Results for',
   'cart-combined':
     'Your items that you have added as a guest has been combined with your current Cart, Happy Shopping !',
+  'Price (Low to High)': 'Price (Low to High)',
+  'Price (High to Low)': 'Price (High to Low)',
+  Newest: 'Newest',
 
   //
   'home.title': 'Home',
@@ -205,6 +211,7 @@ const baseStrings = {
   'personal-information': 'Personal Information',
   'edit-personal-information': 'Edit Personal information',
   'order-placed': 'Order Placed',
+  'search-for': 'Search For',
   'btn-back-to-addresses': 'Back to Select Address',
   'select-address-header': 'Select a previously added Address or add new one ',
   'select-btn': 'Select',
@@ -309,9 +316,14 @@ const baseStrings = {
   'footer-all-rights': 'All Rights Reserved',
 
   'filtered-by': 'Filtered By',
+  'filter-by': 'Filter By',
+  'filter-by-price': 'Select a Price Range',
+  'filter-by-brand': 'Filter by Brand',
   brand: 'Brand',
   Brand: 'Brand',
   Sort: 'Sort',
+  sort: 'Sort',
+  'sort-by': 'Sort By',
 };
 
 export const en = baseStrings;

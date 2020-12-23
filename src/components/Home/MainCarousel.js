@@ -53,9 +53,9 @@ const MainCarousel = () => {
           data.map(item => {
             return (
               <SwiperSlide key={item.id}>
-                <a href={`/categories/${item.category.slug}`} className="">
+                <a href={`/categories/${item.category?.slug}`} className="">
                   <LazyImage
-                    src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.translation[locale].image.link}`}
+                    src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.translation[locale].image?.link}`}
                     alt="something"
                     pb={`${
                       isTabletOrAbove

@@ -56,7 +56,11 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
 
   return (
     <div
-      onMouseEnter={() => setShowAddButton(true)}
+      onMouseEnter={() => {
+        if (!itemInCart) {
+          setShowAddButton(true);
+        }
+      }}
       onMouseLeave={() => {
         setShowAddButton(false);
       }}

@@ -1,26 +1,26 @@
-import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Range } from 'react-range';
 import { DataProvider } from '../../contexts/DataContext';
-export default function LeftSidePrice({
+export default function PriceFilterMobile({
   handlePriceChange,
   priceFilters,
   handleChangePriceInput,
   handleSubmitPrice,
+  setFiltersOpen,
 }) {
   const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const min = 0;
   const max = 10000;
   return (
-    <motion.div layout className="mb-4">
-      <h1 className="text-xl font-semibold">
+    <div className="mb-4 px-3">
+      <h1 className="font-semibold">
         {formatMessage({ id: 'filter-by-price' })} (
         {deliveryCountry?.currency.translation[locale].symbol})
       </h1>
       <hr className="my-2" />
-      <div className="p-3">
+      <div className="py-3">
         <Range
           step={0.1}
           min={min}
@@ -73,11 +73,14 @@ export default function LeftSidePrice({
       <div className="flex items-center justify-center">
         <button
           className="px-2 py-1 bg-green-700 text-main-text rounded"
-          onClick={handleSubmitPrice}
+          onClick={() => {
+            handleSubmitPrice();
+            setFiltersOpen(false);
+          }}
         >
           {formatMessage({ id: 'submit' })}
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 }

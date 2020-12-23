@@ -82,7 +82,7 @@ export default function MobileSearchbar({ windowScrolled }) {
               history.push(`/${locale}/search/q=${query}`);
               setData([]);
             }}
-            className="p-2  hover:bg-gray-200 w-full transition duration-75"
+            className="p-2 bg-gray-400 w-full transition duration-75"
           >
             {formatMessage({ id: 'see-all-search-results' })}{' '}
             <strong>{query}</strong>

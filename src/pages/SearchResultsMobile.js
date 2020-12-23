@@ -2,21 +2,16 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import CategoryHeaderMobile from '../components/CategoryMobile/CategoryHeaderMobile';
 import CategoryMobileItemGrid from '../components/CategoryMobile/CategoryMobileItemGrid';
 import SortInfoPanelMobile from '../components/CategoryMobile/SortInfoPanelMobile';
 import Layout from '../components/Layout';
-import {
-  filterProducts,
-  getCategoryProducts,
-  getSingleCategoryInfo,
-} from '../Queries/Queries';
+import { filterProducts, searchProducts } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuItemMobile';
 import { useInView } from 'react-intersection-observer';
 
-export default function CategoryMobile() {
-  const { category } = useParams();
+export default function SearchResultsMobile() {
+  const { query } = useParams();
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState(null);
   const [sortBy, setSortBy] = React.useState({
@@ -32,16 +27,13 @@ export default function CategoryMobile() {
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
   const [triggerRef, inView] = useInView();
+
   const { data: products, isLoading: productsLoading } = useQuery(
-    ['category-products', category],
-    getCategoryProducts,
+    ['searchProducts', query],
+    searchProducts,
     { retry: true, refetchOnWindowFocus: false }
   );
-  const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
-    ['categoryInfo', category],
-    getSingleCategoryInfo,
-    { retry: true, refetchOnWindowFocus: false }
-  );
+
   const {
     data: filteredProducts,
     isLoading: filteredProductsLoading,
@@ -49,7 +41,7 @@ export default function CategoryMobile() {
     [
       'filtered-products',
       {
-        category: categoryInfo?.id,
+        search: query,
         brandFilters,
         sortBy,
         page,
@@ -136,6 +128,20 @@ export default function CategoryMobile() {
       setFiltersApplied(true);
     }
   }, [filters]);
+  const resolvePlural = () => {
+    switch (products.length) {
+      case 1:
+        return formatMessage({ id: 'one-search-results' });
+
+      case 2:
+        return formatMessage({ id: 'two-search-results' });
+
+      case products.length > 10:
+        return formatMessage({ id: 'more-than-10-search-results' });
+      default:
+        return formatMessage({ id: 'search-results' });
+    }
+  };
   return (
     <Layout>
       <div className="min-h-screen relative">
@@ -157,10 +163,14 @@ export default function CategoryMobile() {
             ></motion.div>
           )}
         </AnimatePresence>
-        <CategoryHeaderMobile
-          categoryInfo={categoryInfo}
-          categoryInfoLoading={categoryInfoLoading}
-        />
+        {products && (
+          <div className="p-3 border-b">
+            <h1>
+              {products.length > 2 && products.length} {resolvePlural()}{' '}
+              <strong>{query}</strong>
+            </h1>
+          </div>
+        )}
         <AnimateSharedLayout>
           <motion.div layout className="px-3">
             {filters.length !== 0 && (
@@ -188,6 +198,16 @@ export default function CategoryMobile() {
             )}
           </motion.div>
         </AnimateSharedLayout>
+
+        <CategoryMobileItemGrid
+          products={products}
+          productsLoading={productsLoading}
+          setCartMenuOpen={setCartMenuOpen}
+          filteredProducts={filteredProducts}
+          filteredProductsLoading={filteredProductsLoading}
+          triggerRef={triggerRef}
+          setPage={setPage}
+        />
         <AnimatePresence>
           {inView && (
             <SortInfoPanelMobile
@@ -209,16 +229,6 @@ export default function CategoryMobile() {
             />
           )}
         </AnimatePresence>
-
-        <CategoryMobileItemGrid
-          products={products}
-          productsLoading={productsLoading}
-          setCartMenuOpen={setCartMenuOpen}
-          filteredProducts={filteredProducts}
-          filteredProductsLoading={filteredProductsLoading}
-          triggerRef={triggerRef}
-          setPage={setPage}
-        />
       </div>
     </Layout>
   );

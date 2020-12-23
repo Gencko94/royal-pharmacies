@@ -43,7 +43,7 @@ export default function CategoryHeaderMobile({
       <>
         <ContentLoader
           speed={4}
-          viewBox="0 0 1440 300"
+          viewBox="0 0 800 300"
           backgroundColor="#f3f3f3"
           foregroundColor="#ecebeb"
         >

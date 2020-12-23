@@ -16,8 +16,9 @@ export default function CategoryRightSide({
   handleRemoveFilters,
   handleSortByChange,
   filters,
+  setCartMenuOpen,
 }) {
-  if (productsLoading || categoryInfoLoading) {
+  if (productsLoading) {
     return (
       <div className="py-2">
         <ContentLoader
@@ -28,8 +29,11 @@ export default function CategoryRightSide({
         >
           <rect x="0" y="0" rx="5" ry="5" width="100%" height="38" />
         </ContentLoader>
-        <div className="search-page-items__grid py-2  min-h-screen">
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
+        <div
+          className="category-page-items__grid py-2"
+          style={{ minHeight: 'calc(100vh - 150px)' }}
+        >
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
             return <CategoryItemLoader key={i} />;
           })}
         </div>
@@ -45,13 +49,24 @@ export default function CategoryRightSide({
         handleSortByChange={handleSortByChange}
       />
       {products.length !== 0 && (
-        <div className="category-page-items__grid py-2 ">
+        <div
+          className="category-page-items__grid py-2 "
+          style={{ minHeight: 'calc(100vh - 150px)' }}
+        >
           {!filtersApplied &&
             products.map(item => {
               return item.type === 'simple' ? (
-                <CategoryProductItem key={item.id} item={item} />
+                <CategoryProductItem
+                  key={item.id}
+                  setCartMenuOpen={setCartMenuOpen}
+                  item={item}
+                />
               ) : (
-                <VariantCategoryProductItem key={item.id} item={item} />
+                <VariantCategoryProductItem
+                  key={item.id}
+                  setCartMenuOpen={setCartMenuOpen}
+                  item={item}
+                />
               );
             })}
           {filtersApplied &&
@@ -64,9 +79,17 @@ export default function CategoryRightSide({
             filteredProducts &&
             filteredProducts.map(item => {
               return item.type === 'simple' ? (
-                <CategoryProductItem key={item.id} item={item} />
+                <CategoryProductItem
+                  key={item.id}
+                  setCartMenuOpen={setCartMenuOpen}
+                  item={item}
+                />
               ) : (
-                <VariantCategoryProductItem key={item.id} item={item} />
+                <VariantCategoryProductItem
+                  key={item.id}
+                  setCartMenuOpen={setCartMenuOpen}
+                  item={item}
+                />
               );
             })}
         </div>

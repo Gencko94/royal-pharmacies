@@ -38,7 +38,7 @@ export default function CategoryChildrenMobile({ categoryInfo }) {
             <Link to={`/${locale}/categories/${child.slug}`}>
               <div className="p-2">
                 <LazyImage
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.image.link}`}
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.translation[locale].image?.link}`}
                   alt={child.translation[locale].name}
                   pb="calc(100% * 286/210)"
                 />

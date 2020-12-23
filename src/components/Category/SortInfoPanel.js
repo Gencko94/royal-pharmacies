@@ -2,11 +2,7 @@ import { AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import Select from 'react-select';
-const sortByOptions = [
-  { value: 'newest', label: 'Newest' },
-  { label: 'Price (Low to High)', value: 'price-asc' },
-  { label: 'Price (High to Low)', value: 'price-desc' },
-];
+
 export default function SortInfoPanel({
   sortBy,
   handleRemoveFilters,
@@ -14,7 +10,14 @@ export default function SortInfoPanel({
   handleSortByChange,
 }) {
   const { formatMessage } = useIntl();
-
+  const sortByOptions = React.useMemo(
+    () => [
+      { value: 'newest', label: 'Newest' },
+      { label: 'Price (Low to High)', value: 'price-asc' },
+      { label: 'Price (High to Low)', value: 'price-desc' },
+    ],
+    []
+  );
   return (
     <div
       style={{
@@ -53,7 +56,6 @@ export default function SortInfoPanel({
         options={sortByOptions}
         value={sortBy}
         onChange={handleSortByChange}
-        placeholder="Sort By"
       />
     </div>
   );

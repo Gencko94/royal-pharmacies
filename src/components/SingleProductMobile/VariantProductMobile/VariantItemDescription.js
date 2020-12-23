@@ -17,6 +17,7 @@ import { MdLocationOn } from 'react-icons/md';
 import VariantsOnly from '../../SingleProduct/VariantProduct/VariantsOnly';
 import Variants from '../../SingleProduct/VariantProduct/Variants';
 import Options from '../../SingleProduct/VariantProduct/Options';
+import { calculateDiscountPrice } from '../../../helpers/calculateDiscountPrice';
 export default function VariantItemDescription({
   data,
   handleAddToCart,
@@ -268,10 +269,12 @@ export default function VariantItemDescription({
               </h1>
             </div>
             {isSale && (
-              <div className="flex items-center   ">
-                <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                <h1 className="text-base text-red-700 mx-2">18%</h1>
-              </div>
+              <h1 className="">
+                {formatMessage({ id: 'you-save' })} :
+                <span className=" text-lg mx-1 text-main-color">
+                  {calculateDiscountPrice(option.price, option.promotion_price)}
+                </span>
+              </h1>
             )}
           </div>
         </div>

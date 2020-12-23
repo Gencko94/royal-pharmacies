@@ -36,7 +36,7 @@ export default function FirstSection() {
           <h1 className="text-sm">
             {formatMessage({ id: 'footer-contact-email' })}
           </h1>
-          <h1 className="text-base">help@attiahmall.com</h1>
+          <h1 className="text-base">help@mrg-mall.com</h1>
         </div>
       </div>
     </div>

@@ -524,7 +524,6 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry }) => {
     return true;
   };
   parsed = parsed.filter(isAvailable);
-  console.log(parsed);
   if (parsed.length === 0) {
     localStorage.setItem('localCart', JSON.stringify(parsed));
     return {
@@ -650,7 +649,16 @@ export const getCategoryProducts = async (k, categorySlug) => {
 };
 export const filterProducts = async (
   k,
-  { category, brandFilters, sortBy, page, resultsPerPage, locale, priceFilters }
+  {
+    category,
+    brandFilters,
+    sortBy,
+    search,
+    page,
+    resultsPerPage,
+    locale,
+    priceFilters,
+  }
 ) => {
   const query = {
     category,
@@ -659,6 +667,7 @@ export const filterProducts = async (
     page,
     number: resultsPerPage,
     sort_language: locale,
+    search,
     range_price: priceFilters[0],
   };
   const res = await axios.post(

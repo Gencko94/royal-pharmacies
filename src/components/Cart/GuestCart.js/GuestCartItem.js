@@ -215,16 +215,15 @@ export default function GuestCartItem({ item }) {
             onClick={() => {
               handleRemoveItemFromCart(item.options.sku, item.price);
             }}
-            className={`${
-              removefromCartButtonLoading ? 'bg-gray-300' : 'bg-main-color'
-            }  text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold uppercase `}
+            className={`bg-main-color
+             text-main-text text-sm flex items-center justify-center  p-2 rounded  font-semibold uppercase `}
             style={{ width: '200px' }}
             disabled={removefromCartButtonLoading}
           >
             {removefromCartButtonLoading ? (
               <Loader
                 type="ThreeDots"
-                color="#b72b2b"
+                color="#fff"
                 height={21}
                 width={21}
                 visible={true}

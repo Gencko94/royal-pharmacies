@@ -90,6 +90,8 @@
 
 - [ ] add country code to combine cart api
 
+- [ ] SORTING IN ARABIC LANGUAGE DOESN'T WORK || HOW DO I KNOW WHICH LANGUAGE THE USER TYPES INTO SEARCH BAR ?
+
 # MRG API Structure :
 
 ## 1. Single Product

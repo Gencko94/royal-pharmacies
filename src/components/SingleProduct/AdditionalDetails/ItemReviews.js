@@ -54,11 +54,13 @@ export default function ItemReviews({
 
   if (!reviewsLoading && reviews.length === 0) {
     return (
-      <div className="flex p-6 items-center border text-center justify-center text-base flex-col">
-        <h1 className="text-xl mb-2 ">
+      <div className="flex p-6 items-center  text-center justify-center text-base flex-col">
+        <h1 className="text-xl font-semibold mb-2 ">
           {formatMessage({ id: 'no-ratings' })} !
         </h1>
-        <h1 className="mb-2">{formatMessage({ id: 'how-to-rate' })}</h1>
+        <h1 className="mb-2 text-gray-700">
+          {formatMessage({ id: 'how-to-rate' })}
+        </h1>
         <h1 className="mb-2">
           <FormattedMessage
             id="rating-guide"

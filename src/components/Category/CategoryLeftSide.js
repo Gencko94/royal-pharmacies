@@ -1,10 +1,8 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-// import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import LeftSideBrands from './LeftSideBrands';
 import LeftSidePrice from './LeftSidePrice';
-// import { getCategories } from '../../Queries/Queries';
 
 export default function CategoryLeftSide({
   productsLoading,

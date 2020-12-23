@@ -8,7 +8,9 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 export default function VariantSwiperItem({ item, setCartMenuOpen }) {
-  const { addToCartMutation } = React.useContext(CartAndWishlistProvider);
+  const { addToCartMutation, addToGuestCartMutation } = React.useContext(
+    CartAndWishlistProvider
+  );
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const [showAddButton, setShowAddButton] = React.useState(false);
@@ -25,73 +27,102 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
     return keys;
   });
   const { userId } = React.useContext(AuthProvider);
-  const [showAddedToCart, setShowAddedToCart] = React.useState(false);
-  const [loadingButton, setLoadingButton] = React.useState(null);
+  const [itemInCart, setItemInCart] = React.useState(false);
+  const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
+    null
+  );
+  const variantOnly = item.new_variation_addons[selectedVariation].options
+    ? false
+    : true;
+  const option = variantOnly
+    ? item.new_variation_addons[selectedVariation]
+    : item.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ];
+  const isSale = item.new_variation_addons[selectedVariation].options
+    ? item.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ].promotion_price
+      ? true
+      : false
+    : item.new_variation_addons[selectedVariation].promotion_price
+    ? true
+    : false;
   const handleAddToCart = async () => {
-    const newItem = {
-      quantity: 1,
-      id: item.id,
-      variation: {
-        id: item.new_variation_addons?.[selectedVariation].id,
-        item_id: item.new_variation_addons?.[selectedVariation].addon_item_id,
-      },
-      option: {
-        id:
-          item.new_variation_addons?.[selectedVariation].options?.[
-            selectedOption[selectedVariation]
-          ].id,
-        item_id:
-          item.new_variation_addons?.[selectedVariation].options?.[
-            selectedOption[selectedVariation]
-          ].addon_item_id,
-      },
-    };
-    setLoadingButton(true);
-    try {
-      await addToCartMutation({ newItem, userId, deliveryCountry });
-      setCartMenuOpen(true);
-      setShowAddedToCart(true);
-      setShowOptions(false);
-      setLoadingButton(false);
-    } catch (error) {
-      setLoadingButton(false);
-      console.error(error.response);
-    }
-  };
-  const handleSubmitToCart = async () => {
-    const newItem = {
-      quantity: 1,
-      id: item.id,
-      variation: {
-        id: item.new_variation_addons?.[selectedVariation].id,
-        item_id: item.new_variation_addons?.[selectedVariation].addon_item_id,
-      },
-      option: {
-        id:
-          item.new_variation_addons?.[selectedVariation].options?.[
-            selectedOption[selectedVariation]
-          ].id,
-        item_id:
-          item.new_variation_addons?.[selectedVariation].options?.[
-            selectedOption[selectedVariation]
-          ].addon_item_id,
-      },
-    };
-    setLoadingButton(true);
-    try {
-      await addToCartMutation({ newItem, userId, deliveryCountry });
-      setCartMenuOpen(true);
-      setShowAddedToCart(true);
-      setShowOptions(false);
-      setLoadingButton(false);
-    } catch (error) {
-      setLoadingButton(false);
-      console.error(error.response);
+    setAddToCartButtonLoading(true);
+    if (userId) {
+      try {
+        const newItem = {
+          id: item.id,
+          quantity: 1,
+          variation: {
+            id: item.new_variation_addons?.[selectedVariation].id,
+            item_id:
+              item.new_variation_addons?.[selectedVariation].addon_item_id,
+          },
+          option: {
+            id:
+              item.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].id,
+            item_id:
+              item.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].addon_item_id,
+          },
+        };
+        await addToCartMutation({ newItem, userId, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setCartMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        // console.clear();
+
+        console.log(error);
+        console.log(error.response);
+        // if (error.response.data.message === 'Item founded on the Cart') {
+        //   setItemInCart(true);
+        // }
+        setAddToCartButtonLoading(false);
+      }
+    } else {
+      try {
+        const price = isSale ? option.promotion_price : option.price;
+        const sku = option.sku;
+        const newItem = {
+          id: item.id,
+          quantity: 1,
+          variation: {
+            id: item.new_variation_addons?.[selectedVariation].id,
+            item_id:
+              item.new_variation_addons?.[selectedVariation].addon_item_id,
+          },
+          option: {
+            id:
+              item.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].id,
+            item_id:
+              item.new_variation_addons?.[selectedVariation].options?.[
+                selectedOption[selectedVariation]
+              ].addon_item_id,
+          },
+          price,
+          sku,
+        };
+
+        await addToGuestCartMutation({ newItem, deliveryCountry });
+        setAddToCartButtonLoading(false);
+        setCartMenuOpen(true);
+        setItemInCart(true);
+      } catch (error) {
+        console.log(error.response);
+      }
     }
   };
 
   const resolveAddons = () => {
-    if (item.new_variation_addons[selectedVariation].options) {
+    if (!variantOnly) {
       return Object.keys(item.new_variation_addons).map((variation, i) => {
         return item.new_variation_addons[variation].options[
           selectedOption[variation]
@@ -133,7 +164,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
             className={`cursor-pointer ${
               selectedVariation === variation && 'border'
             }`}
-            alt={item.new_variation_addons[variation].id}
+            alt={option.id}
             src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.new_variation_addons[variation].image}`}
           />
         ) : (
@@ -215,7 +246,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
               className="flex items-center justify-center absolute w-full bottom-10"
             >
               <button className=" text-center rounded uppercase p-2 bg-main-color text-main-text text-sm">
-                {loadingButton ? (
+                {addToCartButtonLoading ? (
                   <Loader
                     type="ThreeDots"
                     color="#fff"
@@ -285,9 +316,9 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
               <div className="w-full flex justify-center items-center ">
                 <button
                   className={`p-2 bg-green-700 rounded text-sm text-main-text `}
-                  onClick={handleSubmitToCart}
+                  onClick={handleAddToCart}
                 >
-                  {loadingButton ? (
+                  {addToCartButtonLoading ? (
                     <Loader
                       type="ThreeDots"
                       color="#fff"
@@ -304,12 +335,12 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {showAddedToCart && (
+          {itemInCart && (
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
-              className="absolute top-0 w-full h-full flex items-center justify-center text-main-text bg-blue-700 text-2xl"
+              className="absolute top-0 w-full h-full flex items-center justify-center text-main-text bg-gray-800 text-2xl"
             >
               {formatMessage({ id: 'added-to-cart' })} !
             </motion.div>
@@ -328,62 +359,24 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
         </div>
 
         <div className="p-2 flex items-center justify-between">
-          {item.new_variation_addons[selectedVariation].options ? (
-            item.new_variation_addons[selectedVariation].options[
-              selectedOption[selectedVariation]
-            ].promotion_price ? (
-              <div className=" flex items-center">
-                <h1 className="font-semibold text-lg text-main-color">
-                  {
-                    item.new_variation_addons[selectedVariation].options[
-                      selectedOption[selectedVariation]
-                    ].promotion_price
-                  }
-                  <span className="mx-1 text-sm">
-                    {deliveryCountry?.currency.translation[locale].symbol}
-                  </span>
-                </h1>
-                <h1 className=" text-sm mx-1 italic  line-through text-gray-700">
-                  {
-                    item.new_variation_addons[selectedVariation].options[
-                      selectedOption[selectedVariation]
-                    ].price
-                  }
-                  <span className="">
-                    {deliveryCountry?.currency.translation[locale].symbol}
-                  </span>
-                </h1>
-              </div>
-            ) : (
+          {isSale ? (
+            <div className=" flex items-center">
               <h1 className="font-semibold text-lg text-main-color">
-                {
-                  item.new_variation_addons[selectedVariation].options[
-                    selectedOption[selectedVariation]
-                  ].price
-                }
+                {option.promotion_price}
                 <span className="mx-1 text-sm">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
               </h1>
-            )
-          ) : item.new_variation_addons[selectedVariation].promotion_price ? (
-            <div className=" flex items-center ">
-              <h1 className="font-semibold text-main-color">
-                {item.new_variation_addons[selectedVariation].promotion_price}
-                <span className="mx-1 text-sm">
-                  {deliveryCountry?.currency.translation[locale].symbol}
-                </span>
-              </h1>
-              <h1 className=" mx-1 text-sm  italic  line-through text-gray-700">
-                {item.new_variation_addons[selectedVariation].price}
+              <h1 className=" text-sm mx-1 italic  line-through text-gray-700">
+                {option.price}
                 <span className="">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
               </h1>
             </div>
           ) : (
-            <h1 className="font-semibold text-main-color">
-              {item.new_variation_addons[selectedVariation].price}
+            <h1 className="font-semibold text-lg text-main-color">
+              {option.price}
               <span className="mx-1 text-sm">
                 {deliveryCountry?.currency.translation[locale].symbol}
               </span>

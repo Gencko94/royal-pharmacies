@@ -13,6 +13,7 @@ import { scrollIntoView } from 'scroll-js';
 import { DataProvider } from '../../contexts/DataContext';
 import { MdLocationOn } from 'react-icons/md';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
+import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
 export default function ItemDescription({
   data,
   handleAddToCart,
@@ -202,22 +203,31 @@ export default function ItemDescription({
           <h1 className="">
             {isSale
               ? formatMessage({ id: 'price-now' })
-              : formatMessage({ id: 'price' })}{' '}
+              : formatMessage({ id: 'price' })}
             :
           </h1>
-          <h1 className=" text-xl mx-2 text-red-700">
-            {data.simple_addons.promotion_price}{' '}
+          <h1 className=" text-xl mx-2 text-main-color">
+            {isSale
+              ? data.simple_addons.promotion_price
+              : data.simple_addons.price}{' '}
             {deliveryCountry?.currency.translation[locale].symbol}
           </h1>
-          <h1 className=" font-normal  text-gray-700 uppercase">
+          <h1 className=" font-normal text-xs  text-gray-700 uppercase">
             ({formatMessage({ id: 'vat-inclusive' })})
           </h1>
         </div>
 
-        <h1 className="">
-          {formatMessage({ id: 'you-save' })} :{' '}
-          <span className=" text-xl  text-main-color">18%</span>{' '}
-        </h1>
+        {isSale && (
+          <h1 className="">
+            {formatMessage({ id: 'you-save' })} :
+            <span className=" text-lg mx-1 text-main-color">
+              {calculateDiscountPrice(
+                data.simple_addons.price,
+                data.simple_addons.promotion_price
+              )}
+            </span>
+          </h1>
+        )}
       </div>
       <div className="mb-2">
         <div className="flex justify-between items-center font-semibold  ">

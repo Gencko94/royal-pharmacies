@@ -1,5 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { scrollIntoView } from 'scroll-js';
 
 import { DataProvider } from '../../contexts/DataContext';
@@ -67,6 +68,12 @@ export default function MiddleSection({
   };
   return (
     <div className="flex flex-col w-full self-start ">
+      <Link
+        to={`/${locale}/brands/${data.brand?.slug}`}
+        className="hover:underline font-semibold text-sm text-gray-700 uppercase"
+      >
+        {data.brand?.translation[locale].name}
+      </Link>
       <h1 className="font-semibold text-xl">
         {data.translation[locale].title}
       </h1>

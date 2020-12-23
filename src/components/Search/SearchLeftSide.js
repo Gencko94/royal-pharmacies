@@ -1,44 +1,39 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import PriceFilterMobile from './PriceFilterMobile';
-import BrandsFilterMobile from './BrandsFilterMobile';
-export default function FiltersMobile({
-  handleClose,
-  brandFilters,
-  handleBrandChange,
-  handlePriceChange,
-  priceFilters,
-  products,
+import LeftSideBrands from '../Category/LeftSideBrands';
+import LeftSidePrice from '../Category/LeftSidePrice';
+
+export default function SearchLeftSide({
   productsLoading,
+
+  handlePriceChange,
+  products,
+
+  brandFilters,
   handleChangePriceInput,
+  handleBrandChange,
+  priceFilters,
   handleSubmitPrice,
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      layout
-    >
+    <div className="py-2">
+      {/* Brands */}
       {!productsLoading && (
-        <BrandsFilterMobile
+        <LeftSideBrands
           products={products}
           brandFilters={brandFilters}
           handleBrandChange={handleBrandChange}
-          handleClose={handleClose}
         />
       )}
       {/* Price */}
       {!productsLoading && (
-        <PriceFilterMobile
+        <LeftSidePrice
           products={products}
           priceFilters={priceFilters}
           handlePriceChange={handlePriceChange}
           handleChangePriceInput={handleChangePriceInput}
           handleSubmitPrice={handleSubmitPrice}
-          handleClose={handleClose}
         />
       )}
-    </motion.div>
+    </div>
   );
 }

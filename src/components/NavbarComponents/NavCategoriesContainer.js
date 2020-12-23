@@ -28,13 +28,15 @@ export default function NavCategoriesContainer({
     <div id="menu-trigger" className="w-full  ">
       <div className={`flex items-center`}>
         {!isLoading &&
-          data.map(item => (
-            <CategoryButton
-              key={item.id}
-              item={item}
-              handleDropDownOpen={handleDropDownOpen}
-            />
-          ))}
+          data
+            .slice(0, 8)
+            .map(item => (
+              <CategoryButton
+                key={item.id}
+                item={item}
+                handleDropDownOpen={handleDropDownOpen}
+              />
+            ))}
       </div>
     </div>
   );

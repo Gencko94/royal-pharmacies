@@ -2,8 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import CategoryLeftSide from '../components/Category/CategoryLeftSide';
 import CategoryRightSide from '../components/Category/CategoryRightSide';
-// import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
-// import { SearchProvider } from '../contexts/SearchContext';
+
 import Layout from '../components/Layout';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -14,17 +13,23 @@ import {
 } from '../Queries/Queries';
 import CategoryHeader from '../components/Category/CategoryHeader';
 import { useIntl } from 'react-intl';
+import { AnimatePresence, motion } from 'framer-motion';
+import SideCartMenu from '../components/SingleProduct/SideCartMenu';
+
 export default function Category() {
   const { category } = useParams();
-  const { locale } = useIntl();
+  const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState(null);
-  const [sortBy, setSortBy] = React.useState(null);
+  const [sortBy, setSortBy] = React.useState({
+    value: 'newest',
+    label: 'Newest',
+  });
   const [page, setPage] = React.useState(1);
   const [resultsPerPage, setResultsPerPage] = React.useState(10);
-
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([10000]);
   const [filters, setFilters] = React.useState([]);
+  const [cartMenuOpen, setCartMenu] = React.useState(false);
 
   /**
    * Main Fetch
@@ -48,7 +53,7 @@ export default function Category() {
       'filtered-products',
       {
         category: categoryInfo?.id,
-        brandFilters,
+        brandFilters: brandFilters?.id,
         sortBy,
         page,
         resultsPerPage,
@@ -59,6 +64,7 @@ export default function Category() {
     filterProducts,
     { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
   );
+
   const handleRemoveFilters = type => {
     setFilters(prev => {
       return prev.filter(i => i.type !== type);
@@ -67,7 +73,10 @@ export default function Category() {
       setBrandFilters(null);
     }
     if (type === 'Sort') {
-      setSortBy(null);
+      setSortBy({
+        value: 'newest',
+        label: 'Newest',
+      });
     }
     if (type === 'Price') {
       setFilters(prev => {
@@ -91,7 +100,15 @@ export default function Category() {
       return newArr;
     });
   };
+
   const handleSortByChange = selectedValue => {
+    if (selectedValue.value === 'newest') {
+      setFilters(prev => {
+        return prev.filter(i => i.type !== 'Sort');
+      });
+      setSortBy(selectedValue);
+      return;
+    }
     setFilters(prev => {
       let newArr = prev.filter(i => i.type !== 'Sort');
       newArr.push({ type: 'Sort', value: selectedValue.label });
@@ -108,7 +125,7 @@ export default function Category() {
     } else {
       setFilters(prev => {
         let newArr = prev.filter(i => i.type !== 'Brand');
-        newArr.push({ type: 'Brand', value: brand });
+        newArr.push({ type: 'Brand', value: brand.label });
 
         return newArr;
       });
@@ -125,8 +142,27 @@ export default function Category() {
   return (
     <Layout>
       <Helmet>
-        <title>Search</title>
+        <title>
+          {categoryInfo
+            ? categoryInfo.translation[locale].name
+            : formatMessage({ id: 'shop-on-mrg' })}
+        </title>
       </Helmet>
+      <AnimatePresence>
+        {cartMenuOpen && (
+          <SideCartMenu key="side-cart" setSideMenuOpen={setCartMenu} />
+        )}
+        {cartMenuOpen && (
+          <motion.div
+            key="sidecart-bg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setCartMenu(false)}
+            className="side__addCart-bg"
+          ></motion.div>
+        )}
+      </AnimatePresence>
       <div
         className="max-w-default mx-auto p-4 overflow-hidden"
         style={{ minHeight: 'calc(100vh - 150px)' }}
@@ -164,6 +200,7 @@ export default function Category() {
             filters={filters}
             handleRemoveFilters={handleRemoveFilters}
             handleSortByChange={handleSortByChange}
+            setCartMenuOpen={setCartMenu}
           />
         </div>
       </div>
