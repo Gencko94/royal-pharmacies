@@ -57,7 +57,7 @@ export default function ShipTo() {
     );
     setDeliveryCountry(country);
   };
-  if (!deliveryCountry || !deliveryCountries) {
+  if (deliveryCountriesLoading) {
     return null;
   }
   return (

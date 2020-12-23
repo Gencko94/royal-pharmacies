@@ -2,7 +2,7 @@ import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
-import { queryCache, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { BeatLoader } from 'react-spinners';
 import Layout from '../components/Layout';
 import ViewedItem from '../components/ViewedItems/ViewedItem';
@@ -19,24 +19,6 @@ export default function ViewedItems() {
     refetchOnWindowFocus: false,
   });
 
-  const handleRemoveItem = id => {
-    let localVisited = localStorage.getItem('visitedItems');
-    let parsed = JSON.parse(localVisited);
-    localVisited = parsed.filter(i => {
-      return i.id !== id.toString();
-    });
-    console.log(
-      parsed.filter(i => {
-        console.log(i.id, 'i', id, 'id');
-        return i.id !== id;
-      })
-    );
-    localStorage.setItem('visitedItems', JSON.stringify(localVisited));
-
-    queryCache.setQueryData('viewedItems', prev => {
-      return prev.filter(i => i.id !== id.toString());
-    });
-  };
   return (
     <Layout>
       <Helmet>
@@ -59,13 +41,7 @@ export default function ViewedItems() {
                 <AnimatePresence>
                   {data.length !== 0 &&
                     data.map(item => {
-                      return (
-                        <ViewedItem
-                          key={item.id}
-                          item={item}
-                          handleRemoveItem={handleRemoveItem}
-                        />
-                      );
+                      return <ViewedItem key={item.id} item={item} />;
                     })}
                   {data.length === 0 && <NoViewedItems key="No Viewed Items" />}
                 </AnimatePresence>
