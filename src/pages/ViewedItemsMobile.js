@@ -2,7 +2,7 @@ import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
-import { queryCache, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import LayoutMobile from '../components/LayoutMobile';
@@ -20,25 +20,6 @@ export default function ViewedItemsMobile() {
     retry: true,
     refetchOnWindowFocus: false,
   });
-
-  const handleRemoveItem = id => {
-    let localVisited = localStorage.getItem('visitedItems');
-    let parsed = JSON.parse(localVisited);
-    localVisited = parsed.filter(i => {
-      return i.id !== id.toString();
-    });
-    console.log(
-      parsed.filter(i => {
-        console.log(i.id, 'i', id, 'id');
-        return i.id !== id;
-      })
-    );
-    localStorage.setItem('visitedItems', JSON.stringify(localVisited));
-
-    queryCache.setQueryData('viewedItems', prev => {
-      return prev.filter(i => i.id !== id.toString());
-    });
-  };
 
   return (
     <LayoutMobile>
@@ -68,13 +49,7 @@ export default function ViewedItemsMobile() {
               <AnimatePresence>
                 {data.length !== 0 &&
                   data.map(item => {
-                    return (
-                      <ViewedItemMobile
-                        key={item.id}
-                        item={item}
-                        handleRemoveItem={handleRemoveItem}
-                      />
-                    );
+                    return <ViewedItemMobile key={item.id} item={item} />;
                   })}
                 {data.length === 0 && <NoViewedItems key="No Viewed Items" />}
               </AnimatePresence>

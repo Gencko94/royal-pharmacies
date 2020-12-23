@@ -2,9 +2,11 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 
-export default function ViewedItem({ item, handleRemoveItem }) {
+export default function ViewedItem({ item }) {
+  const { removeViewedItems } = React.useContext(DataProvider);
   const { locale, formatMessage } = useIntl();
   const variants = {
     hidden: {
@@ -39,15 +41,8 @@ export default function ViewedItem({ item, handleRemoveItem }) {
             {item.translation[locale].title}
           </h1>
         </Link>
-        {/* <Rating
-          initialRating={item.rating}
-          readonly
-          emptySymbol={<AiOutlineStar className="text-main-color" />}
-          fullSymbol={<AiFillStar className="text-main-color" />}
-          className=" pt-1"
-        /> */}
         <button
-          onClick={() => handleRemoveItem(item.id)}
+          onClick={() => removeViewedItems(item.id)}
           className={`
             bg-main-color text-main-text
            flex items-center justify-center p-2 rounded`}

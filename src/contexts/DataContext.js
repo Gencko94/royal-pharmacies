@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { useQuery } from 'react-query';
+import { queryCache, useQuery } from 'react-query';
 import { getAllCategories, getDeliveryCountries } from '../Queries/Queries';
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const localDeliveryCountry = localStorage.getItem('deliveryCountry');
   const [deliveryCountry, setDeliveryCountry] = React.useState(null);
-  const [isLightTheme, setLightTheme] = React.useState(true);
   const [searchBarValue, setSearchBarValue] = React.useState('');
   const prefferedLanguage = localStorage.getItem('prefferedLanguage');
 
@@ -29,24 +28,21 @@ export default function DataContextProvider({ children }) {
     if (!isItemInHistory) {
       visitedItems.unshift({ id });
       localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
-      // setViewedItems(visitedItems);
     }
   };
-  const removeViewedItem = id => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // const updated = viewedItems.filter(i => i !== id);
-        // setViewedItems(updated);
-        // localStorage.setItem('visitedItems', JSON.stringify(updated));
-        resolve({
-          message: 'ok',
-          id,
-        });
-      }, 1000);
+
+  const removeViewedItems = id => {
+    let localVisited = localStorage.getItem('visitedItems');
+    let parsed = JSON.parse(localVisited);
+    localVisited = parsed.filter(i => {
+      return i.id !== id.toString();
+    });
+    localStorage.setItem('visitedItems', JSON.stringify(localVisited));
+
+    queryCache.setQueryData('viewedItems', prev => {
+      return prev.filter(i => i.id !== id.toString());
     });
   };
-
-  const countries = ['usa', 'uk', 'jp', 'korea', 'kuwait', 'qatar', 'uae'];
 
   const { data: categories, isLoading: categoriesLoading } = useQuery(
     'categories',
@@ -80,16 +76,11 @@ export default function DataContextProvider({ children }) {
         deliveryCountry: deliveryCountry,
         deliveryCountries,
         deliveryCountriesLoading,
-
         setDeliveryCountry,
-        countries,
-        isLightTheme,
-        setLightTheme,
         language,
         handleLanguageChange,
-
         addViewedItems,
-        removeViewedItem,
+        removeViewedItems,
         searchBarValue,
         setSearchBarValue,
       }}
