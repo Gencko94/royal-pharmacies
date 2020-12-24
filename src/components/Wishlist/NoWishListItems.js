@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useHistory } from 'react-router-dom';
-import cartBag from '../../assets/illustrations/cartBag.svg';
+import { Link } from 'react-router-dom';
+import cartEmptyimg from '../../assets/illustrations/cartEmpty.png';
 export default function NoWishListItems() {
-  const { formatMessage, locale } = useIntl();
-  const history = useHistory();
+  const { formatMessage } = useIntl();
   const variants = {
     hidden: {
       opacity: 0,
@@ -23,19 +22,20 @@ export default function NoWishListItems() {
       initial="hidden"
       animate="visible"
       exit="exited"
-      className=" flex"
+      className=" flex items-center justify-center h-full"
     >
-      <img src={cartBag} alt="Empty Cart Bag" className=" h-32" />
-      <div className="mx-5 flex flex-col  justify-center">
-        <h1 className="text-2xl font-bold ">
-          {formatMessage({ id: 'wishlist-empty' })}
-        </h1>
-        <button
-          onClick={() => history.push(`/${locale}`)}
-          className="rounded uppercase font-semibold p-2 mt-2 bg-green-700 text-second-nav-text-light"
-        >
-          {formatMessage({ id: 'start-shopping-now' })}
-        </button>
+      <div className="p-2 flex flex-col items-center justify-center ">
+        <div style={{ width: '275px' }}>
+          <img src={cartEmptyimg} alt="Empty Cart Bag" className="" />
+        </div>
+        <div className="text-center">
+          <h1 className="text-2xl font-bold p-2 ">
+            {formatMessage({ id: 'wishlist-empty' })}
+          </h1>
+          <Link to="/" className="text-blue-600 hover:underline">
+            {formatMessage({ id: 'check-today-deals' })}
+          </Link>
+        </div>
       </div>
     </motion.div>
   );

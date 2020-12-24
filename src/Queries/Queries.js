@@ -24,11 +24,29 @@ export const getHomeItems = async () => {
   }
 };
 export const getStaticSwiperData = async (k, type) => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/category-products/${type}`
-  );
-  if (res.data.status === true) {
-    return res.data.data;
+  console.log(type);
+  if (type === 'latest_products') {
+    const res = await axios.get(
+      `${process.env.REACT_APP_MAIN_URL}/new-arrival`
+    );
+    if (res.data.status === true) {
+      return res.data.data;
+    }
+  } else if (type === 'best_seller') {
+    console.log('hey');
+    const res = await axios.get(
+      `${process.env.REACT_APP_MAIN_URL}/best-sellers`
+    );
+    if (res.data.status === true) {
+      return res.data.data;
+    }
+  } else {
+    const res = await axios.get(
+      `${process.env.REACT_APP_MAIN_URL}/category-products/${type}`
+    );
+    if (res.data.status === true) {
+      return res.data.data;
+    }
   }
 };
 export const getMainCarouselItems = async (key, desktop) => {
@@ -838,5 +856,12 @@ export const searchProducts = async (k, query) => {
   });
   if (res.data.status === true) {
     return res.data.data.data;
+  }
+};
+
+export const getBestSellers = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/best-sellers`);
+  if (res.data.status === true) {
+    return res.data.data;
   }
 };

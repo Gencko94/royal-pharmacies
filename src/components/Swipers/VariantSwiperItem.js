@@ -190,7 +190,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${
             item.new_variation_addons[selectedVariation].options[
               selectedOption[selectedVariation]
-            ]?.image || item.image.link
+            ]?.image || item.image?.link
           }`}
           alt={item.translation[locale].title}
           pb="calc(100% * 286/210)"
@@ -201,7 +201,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
         <LazyImage
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${
             item.new_variation_addons[selectedVariation].image ||
-            item.image.link
+            item.image?.link
           }`}
           alt={item.translation[locale].title}
           pb="calc(100% * 286/210)"

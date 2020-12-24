@@ -142,7 +142,7 @@ export default function SortInfoPanelMobile({
                   initial="closeInitial"
                   animate="closeAnimate"
                   exit="closeExited"
-                  className="absolute right-10"
+                  className="absolute right-10 top-10"
                 >
                   <button onClick={handleClose}>
                     <MdClose className="w-6 h-6 text-main-text" />

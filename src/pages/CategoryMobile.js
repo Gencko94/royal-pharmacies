@@ -189,7 +189,7 @@ export default function CategoryMobile() {
           </motion.div>
         </AnimateSharedLayout>
         <AnimatePresence>
-          {inView && (
+          {inView && products.length !== 0 && (
             <SortInfoPanelMobile
               productsLoading={productsLoading}
               products={products}
@@ -218,6 +218,7 @@ export default function CategoryMobile() {
           filteredProductsLoading={filteredProductsLoading}
           triggerRef={triggerRef}
           setPage={setPage}
+          filtersApplied={filtersApplied}
         />
       </div>
     </Layout>

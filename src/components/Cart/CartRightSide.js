@@ -195,7 +195,6 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
           <AcceptedPayments deliveryCountry={deliveryCountry} />
         </div>
       )}
-      {/* <hr className="my-8" /> */}
       {visitedItems.length > 4 ? (
         <RecentlyViewedVertical visitedItems={visitedItems} />
       ) : (

@@ -1,5 +1,4 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import LazyLoad from 'react-lazyload';
 import MainCarousel from '../components/Home/MainCarousel';
 
@@ -15,6 +14,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 import { useIntl } from 'react-intl';
+import { Helmet } from 'react-helmet';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
@@ -36,7 +36,11 @@ export default function Home() {
       case 'best_seller':
         return (
           <LazyLoad key={index} height="calc(100% * 1285/492.92)" offset={200}>
-            <StaticSwiper type={item.key} />
+            <StaticSwiper
+              type={item.type}
+              title={item[`title_${locale}`]}
+              cb={setCartMenuOpen}
+            />
           </LazyLoad>
         );
       case 'product_by_category':
@@ -44,6 +48,26 @@ export default function Home() {
           <LazyLoad key={index} offset={200} height="calc(100% * 1285/492.92)">
             <StaticSwiper
               type={item.key}
+              title={item[`title_${locale}`]}
+              cb={setCartMenuOpen}
+            />
+          </LazyLoad>
+        );
+      case 'categories':
+        return (
+          <LazyLoad key={index} offset={200} height="calc(100% * 1285/492.92)">
+            <StaticSwiper
+              type={item.slug}
+              title={item[`title_${locale}`]}
+              cb={setCartMenuOpen}
+            />
+          </LazyLoad>
+        );
+      case 'latest_products':
+        return (
+          <LazyLoad key={index} offset={200} height="calc(100% * 1285/492.92)">
+            <StaticSwiper
+              type={item.type}
               title={item[`title_${locale}`]}
               cb={setCartMenuOpen}
             />
@@ -69,11 +93,7 @@ export default function Home() {
   return (
     <Layout>
       <Helmet>
-        <title>MRG</title>
-        <meta
-          name="description"
-          content="MRG is the Kuwait homegrown online marketplace. Buy your favourate fashion, beauty, home appliances"
-        />
+        <title>Welcome To MRG | أهلا بكم في MRG</title>
       </Helmet>
       <div
         className={`mb-5 overflow-hidden bg-body-light text-body-text-light
@@ -104,20 +124,25 @@ export default function Home() {
           <MainCarousel />
           <Categories />
           <StaticSwiper
+            type="latest_products"
+            title={'New Arrivals'}
+            cb={setCartMenuOpen}
+          />
+          <StaticSwiper
             type="men-clothing"
             title={'Men Clothing'}
             cb={setCartMenuOpen}
           />
-          <StaticSwiper
+          {/* <StaticSwiper
             type="home-kitchen"
             title={'Home & Kitchen'}
             cb={setCartMenuOpen}
-          />
+          /> */}
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}
           {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
-          {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
+          {/* {!isLoading && data.map((i, index) => resolveSwiper(i, index))} */}
         </div>
       </div>
     </Layout>

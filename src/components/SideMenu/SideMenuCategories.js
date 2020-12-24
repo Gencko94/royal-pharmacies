@@ -84,7 +84,7 @@ export default function SideMenuCategories({
           </h1>
         </div>
         <hr />
-        {categories[subCategory].children.map(subCategory => {
+        {categories[subCategory].children?.map(subCategory => {
           return (
             <Link
               to={`/${locale}/categories/${subCategory.slug}`}
