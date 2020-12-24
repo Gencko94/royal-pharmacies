@@ -840,3 +840,10 @@ export const searchProducts = async (k, query) => {
     return res.data.data.data;
   }
 };
+
+export const getBestSellers = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/best-sellers`);
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};

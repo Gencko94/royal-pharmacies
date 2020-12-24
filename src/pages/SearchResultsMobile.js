@@ -164,7 +164,7 @@ export default function SearchResultsMobile() {
           )}
         </AnimatePresence>
         {products && (
-          <div className="p-3 border-b">
+          <div className="p-3 text-lg border-b">
             <h1>
               {products.length > 2 && products.length} {resolvePlural()}{' '}
               <strong>{query}</strong>

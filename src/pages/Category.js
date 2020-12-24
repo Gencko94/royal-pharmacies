@@ -190,7 +190,6 @@ export default function Category() {
           <CategoryRightSide
             products={products}
             productsLoading={productsLoading}
-            categoryInfoLoading={categoryInfoLoading}
             sortBy={sortBy}
             setPage={setPage}
             setResultsPerPage={setResultsPerPage}

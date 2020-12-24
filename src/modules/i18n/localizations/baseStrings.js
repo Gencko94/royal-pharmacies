@@ -324,6 +324,10 @@ const baseStrings = {
   Sort: 'Sort',
   sort: 'Sort',
   'sort-by': 'Sort By',
+
+  'no-products': 'No Products or Data Available',
+  'no-filter-results': 'No Results for this criteria',
+  'featured-items': 'Featured Items',
 };
 
 export const en = baseStrings;

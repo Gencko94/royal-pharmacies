@@ -2,15 +2,16 @@ import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
-import MultiClamp from 'react-multi-clamp';
 import { useQuery } from 'react-query';
 import Rating from 'react-rating';
-import { DataProvider } from '../../contexts/DataContext';
+import { Link } from 'react-router-dom';
+import LazyImage from '../../helpers/LazyImage';
+import { getBestSellers } from '../../Queries/Queries';
 
 export default function FeaturedItemsVertical() {
-  const { getFeaturedItems } = React.useContext(DataProvider);
+  const { formatMessage } = useIntl();
   const { data, isLoading } = useQuery('featuredItemsVertical', async () => {
-    return await getFeaturedItems();
+    return await getBestSellers();
   });
   const { locale } = useIntl();
 
@@ -52,49 +53,46 @@ export default function FeaturedItemsVertical() {
       </div>
     );
   return (
-    <div className="border rounded p-2 bg-gray-100 grid grid-cols-1 gap-2">
-      <h1 className="mb-1 text-lg text-center font-semibold">Featured Items</h1>
-      {data.slice(0, 5).map(item => {
-        return (
-          <div key={item.id} className="recent-items__container">
-            <a
-              title={item.name}
-              className="hover:underline"
-              href={`/${locale}/${item.category.replace(
-                /\s|%|,/g,
-                '-'
-              )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
-            >
-              <img src={item.photos.small} alt={item.name} />
-            </a>
-            <div className="text-sm">
-              <a
-                title={item.name}
-                className="hover:underline"
-                href={`/${locale}/${item.category.replace(
-                  /\s|%|,/g,
-                  '-'
-                )}/${item.name.replace(/\s|%|,|-/g, '-')}/${item.id}`}
-              >
-                <MultiClamp
-                  className="text-sm  font-semibold"
-                  clamp={2}
-                  ellipsis="..."
-                >
-                  {item.name}
-                </MultiClamp>
-              </a>
-              <Rating
-                initialRating={Math.round(Math.random() * 5)}
-                emptySymbol={<AiOutlineStar className="text-red-700" />}
-                fullSymbol={<AiFillStar className="text-red-700" />}
-                className="mr-2 pt-1"
-              />
-              <h1 className="text-green-700 font-semibold">{item.price} KD</h1>
+    <div className="border rounded p-2 bg-gray-100">
+      <div className="flex items-center justify-between">
+        <h1 className="p-1">{formatMessage({ id: 'featured-items' })}</h1>
+        <Link
+          className="p-1 text-xs rounded bg-main-color text-main-text"
+          to={`/${locale}/vieweditems`}
+        >
+          {formatMessage({ id: 'seeAll' })}
+        </Link>
+      </div>
+      <hr />
+      <div className="pt-2">
+        {data.slice(0, 5).map(item => {
+          return (
+            <div key={item.id} className="recent-items__container mb-1 ">
+              <Link to={`/${locale}/c/${item.id}`}>
+                <LazyImage
+                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
+                  alt={item.translation[locale].title}
+                  pb="calc(100% * 286/210)"
+                />
+              </Link>
+              <div className="text-sm">
+                <Link to={`/${locale}/c/${item.id}`}>
+                  <h1 className="text-clamp-2">
+                    {item.translation[locale].title}
+                  </h1>
+                </Link>
+                <Rating
+                  initialRating={Math.round(Math.random() * 5)}
+                  emptySymbol={<AiOutlineStar className="text-main-color" />}
+                  fullSymbol={<AiFillStar className="text-main-color" />}
+                  className="pt-1"
+                  readonly
+                />
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

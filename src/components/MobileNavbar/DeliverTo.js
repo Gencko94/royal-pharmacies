@@ -10,6 +10,7 @@ export default function DeliverTo() {
     deliveryCountry,
     setDeliveryCountry,
     deliveryCountries,
+    deliveryCountriesLoading,
   } = React.useContext(DataProvider);
   const { locale, formatMessage } = useIntl();
   const [countryListOpen, setCountryListOpen] = React.useState(false);
@@ -51,7 +52,7 @@ export default function DeliverTo() {
       },
     },
   };
-  if (!deliveryCountry || deliveryCountries) {
+  if (deliveryCountriesLoading) {
     return null;
   }
   return (

@@ -1,5 +1,6 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
+import { useIntl } from 'react-intl';
 import CategoryItemLoader from './CategoryItemLoader';
 import CategoryProductItem from './CategoryProductItem';
 import SortInfoPanel from './SortInfoPanel';
@@ -8,7 +9,7 @@ import VariantCategoryProductItem from './VariantCategoryProductItem';
 export default function CategoryRightSide({
   products,
   productsLoading,
-  categoryInfoLoading,
+
   sortBy,
   filteredProducts,
   filteredProductsLoading,
@@ -18,6 +19,7 @@ export default function CategoryRightSide({
   filters,
   setCartMenuOpen,
 }) {
+  const { formatMessage } = useIntl();
   if (productsLoading) {
     return (
       <div className="py-2">
@@ -95,10 +97,17 @@ export default function CategoryRightSide({
         </div>
       )}
       {products.length === 0 && (
-        <div className="p-4 text-2xl h-full flex items-center justify-center">
-          <h1>We Couldn't Find any items that belongs to this category</h1>
+        <div className="p-6 flex items-center justify-center text-xl">
+          {formatMessage({ id: 'no-products' })}
         </div>
       )}
+      {filtersApplied &&
+        !filteredProductsLoading &&
+        filteredProducts.length === 0 && (
+          <div className="p-6 flex items-center justify-center text-xl">
+            {formatMessage({ id: 'no-filter-results' })}
+          </div>
+        )}
     </div>
   );
 }

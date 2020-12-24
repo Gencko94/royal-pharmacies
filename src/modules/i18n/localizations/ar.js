@@ -316,4 +316,8 @@ export const ar = {
   Sort: 'الفرز',
   sort: 'الفرز',
   'sort-by': 'تصنيف حسب',
+
+  'no-products': 'لا يوجد بيانات او منتجات',
+  'no-filter-results': 'لا تتواجد منتجات بالمواصفات المحددة',
+  'featured-items': 'اخترنا لك',
 };
