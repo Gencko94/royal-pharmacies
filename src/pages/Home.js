@@ -1,5 +1,4 @@
 import React from 'react';
-import Helmet from 'react-helmet';
 import LazyLoad from 'react-lazyload';
 import MainCarousel from '../components/Home/MainCarousel';
 
@@ -68,13 +67,6 @@ export default function Home() {
   };
   return (
     <Layout>
-      <Helmet>
-        <title>MRG</title>
-        <meta
-          name="description"
-          content="MRG is the Kuwait homegrown online marketplace. Buy your favourate fashion, beauty, home appliances"
-        />
-      </Helmet>
       <div
         className={`mb-5 overflow-hidden bg-body-light text-body-text-light
         `}
@@ -103,6 +95,11 @@ export default function Home() {
         >
           <MainCarousel />
           <Categories />
+          <StaticSwiper
+            type="latest_products"
+            title={'New Arrivals'}
+            cb={setCartMenuOpen}
+          />
           <StaticSwiper
             type="men-clothing"
             title={'Men Clothing'}

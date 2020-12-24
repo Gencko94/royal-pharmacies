@@ -68,7 +68,7 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
       <div className="relative">
         <a href={`/${locale}/c/${item.id}`}>
           <LazyImage
-            src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
+            src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
             alt={item.translation[locale].title}
             pb="calc(100% * 286/210)"
           />

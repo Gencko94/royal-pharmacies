@@ -53,21 +53,21 @@ export default function FeaturedItemsVertical() {
       </div>
     );
   return (
-    <div className="border rounded p-2 bg-gray-100">
+    <div className="border rounded p-2 bg-gray-100 border-b">
       <div className="flex items-center justify-between">
-        <h1 className="p-1">{formatMessage({ id: 'featured-items' })}</h1>
-        <Link
+        <h1 className="">{formatMessage({ id: 'featured-items' })}</h1>
+        {/* <Link
           className="p-1 text-xs rounded bg-main-color text-main-text"
           to={`/${locale}/vieweditems`}
         >
           {formatMessage({ id: 'seeAll' })}
-        </Link>
+        </Link> */}
       </div>
-      <hr />
+      {/* <hr /> */}
       <div className="pt-2">
         {data.slice(0, 5).map(item => {
           return (
-            <div key={item.id} className="recent-items__container mb-1 ">
+            <div key={item.id} className="recent-items__container mb-1">
               <Link to={`/${locale}/c/${item.id}`}>
                 <LazyImage
                   src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}

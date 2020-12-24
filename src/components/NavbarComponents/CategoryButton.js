@@ -11,7 +11,7 @@ export default function CategoryButton({ item, handleDropDownOpen }) {
       onMouseEnter={() => {
         handleDropDownOpen(item.id);
       }}
-      className={`p-3  font-semibold cursor-pointer  hover:bg-second-nav-text-light
+      className={`p-2  font-semibold cursor-pointer  hover:bg-second-nav-text-light
       `}
     >
       {item.translation[locale].name}
