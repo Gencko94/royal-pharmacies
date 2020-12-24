@@ -24,19 +24,21 @@ export const getHomeItems = async () => {
   }
 };
 export const getStaticSwiperData = async (k, type) => {
+  console.log(type);
   if (type === 'latest_products') {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/new-arrival`
     );
     if (res.data.status === true) {
       return res.data.data;
-    } else if (type === 'best-sellers') {
-      const res = await axios.get(
-        `${process.env.REACT_APP_MAIN_URL}/best-sellers`
-      );
-      if (res.data.status === true) {
-        return res.data.data;
-      }
+    }
+  } else if (type === 'best_seller') {
+    console.log('hey');
+    const res = await axios.get(
+      `${process.env.REACT_APP_MAIN_URL}/best-sellers`
+    );
+    if (res.data.status === true) {
+      return res.data.data;
     }
   } else {
     const res = await axios.get(
