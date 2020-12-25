@@ -21,19 +21,20 @@ export default function CategoryMobile() {
   const [brandFilters, setBrandFilters] = React.useState(null);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
-    label: 'Newest',
+    label: formatMessage({ id: 'Newest' }),
   });
   const [page, setPage] = React.useState(1);
 
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([10000]);
+  const [resultsPerPage, setResultsPerPage] = React.useState(10);
   const [filters, setFilters] = React.useState([]);
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
   const [triggerRef, inView] = useInView();
-  const { data: products, isLoading: productsLoading } = useQuery(
-    ['category-products', category],
+  const { data, isLoading: productsLoading } = useQuery(
+    ['category-products', category, page, resultsPerPage],
     getCategoryProducts,
     { retry: true, refetchOnWindowFocus: false }
   );
@@ -53,7 +54,7 @@ export default function CategoryMobile() {
         brandFilters,
         sortBy,
         page,
-        resultsPerPage: 25,
+        resultsPerPage,
         locale,
         priceFilters,
       },
@@ -62,6 +63,9 @@ export default function CategoryMobile() {
     { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
   );
 
+  const handleResultPerPageChange = selectedValue => {
+    setResultsPerPage(selectedValue);
+  };
   const handleRemoveFilters = type => {
     setFilters(prev => {
       return prev.filter(i => i.type !== type);
@@ -189,10 +193,10 @@ export default function CategoryMobile() {
           </motion.div>
         </AnimateSharedLayout>
         <AnimatePresence>
-          {inView && products.length !== 0 && (
+          {inView && data?.products.length !== 0 && (
             <SortInfoPanelMobile
               productsLoading={productsLoading}
-              products={products}
+              products={data?.products}
               brandFilters={brandFilters}
               handleBrandChange={handleBrandChange}
               filtersApplied={filtersApplied}
@@ -211,7 +215,7 @@ export default function CategoryMobile() {
         </AnimatePresence>
 
         <CategoryMobileItemGrid
-          products={products}
+          products={data?.products}
           productsLoading={productsLoading}
           setCartMenuOpen={setCartMenuOpen}
           filteredProducts={filteredProducts}
@@ -219,6 +223,7 @@ export default function CategoryMobile() {
           triggerRef={triggerRef}
           setPage={setPage}
           filtersApplied={filtersApplied}
+          handleResultPerPageChange={handleResultPerPageChange}
         />
       </div>
     </Layout>

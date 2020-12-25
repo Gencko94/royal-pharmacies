@@ -1,9 +1,11 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
+import { useIntl } from 'react-intl';
 import CategoryItemLoader from '../Category/CategoryItemLoader';
 import CategoryProductItem from '../Category/CategoryProductItem';
-import SortInfoPanel from '../Category/SortInfoPanel';
 import VariantCategoryProductItem from '../Category/VariantCategoryProductItem';
+import SearchSortInfoPanel from './SearchSortInfoPanel';
 
 export default function SearchRightSide({
   products,
@@ -16,17 +18,20 @@ export default function SearchRightSide({
   handleSortByChange,
   filters,
   setCartMenuOpen,
+  resultsPerPage,
+  handleResultPerPageChange,
 }) {
+  const { formatMessage } = useIntl();
   if (productsLoading) {
     return (
       <div className="py-2">
         <ContentLoader
           speed={2}
-          viewBox="0 0 752 38"
+          viewBox="0 0 752 51"
           backgroundColor="#f3f3f3"
           foregroundColor="#ecebeb"
         >
-          <rect x="0" y="0" rx="5" ry="5" width="100%" height="38" />
+          <rect x="0" y="0" rx="5" ry="5" width="100%" height="51" />
         </ContentLoader>
         <div
           className="category-page-items__grid py-2"
@@ -40,13 +45,35 @@ export default function SearchRightSide({
     );
   }
   return (
-    <div className="py-2">
-      <SortInfoPanel
+    <div className="h-full">
+      <SearchSortInfoPanel
         sortBy={sortBy}
-        filters={filters}
-        handleRemoveFilters={handleRemoveFilters}
         handleSortByChange={handleSortByChange}
+        productsCount={products?.length}
+        handleResultPerPageChange={handleResultPerPageChange}
+        resultsPerPage={resultsPerPage}
       />
+      {filters.length !== 0 && (
+        <div className="flex items-center">
+          <motion.h1 layout className="text-lg font-semibold">
+            {formatMessage({ id: 'filtered-by' })}
+          </motion.h1>
+          <motion.div layout className="mx-1 flex items-center">
+            {filters.map(item => {
+              return (
+                <motion.button
+                  layout
+                  className="mx-1 py-1 px-2 bg-main-color text-main-text rounded-full"
+                  key={item.value}
+                  onClick={() => handleRemoveFilters(item.type)}
+                >
+                  {formatMessage({ id: item.type })} : {item.value}
+                </motion.button>
+              );
+            })}
+          </motion.div>
+        </div>
+      )}
       {products.length !== 0 && (
         <div
           className="category-page-items__grid py-2 "
@@ -94,8 +121,8 @@ export default function SearchRightSide({
         </div>
       )}
       {products.length === 0 && (
-        <div className="p-4 text-2xl h-full flex items-center justify-center">
-          <h1>We Couldn't Find any items that belongs to this category</h1>
+        <div className="p-6 flex items-center justify-center text-xl h-full">
+          {formatMessage({ id: 'no-products' })}
         </div>
       )}
     </div>

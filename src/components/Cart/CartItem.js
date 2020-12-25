@@ -293,6 +293,11 @@ export default function CartItem({ item }) {
       </div>
       <div className="text-center font-bold">
         {item.total} {deliveryCountry?.currency.translation[locale].symbol}
+        {item.message && (
+          <h1 className="text-main-color text-xs">
+            ({formatMessage({ id: item.message })})
+          </h1>
+        )}
       </div>
     </motion.div>
   );

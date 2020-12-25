@@ -15,7 +15,7 @@ export default function SearchLeftSide({
   handleSubmitPrice,
 }) {
   return (
-    <div className="py-2">
+    <div className="">
       {/* Brands */}
       {!productsLoading && (
         <LeftSideBrands

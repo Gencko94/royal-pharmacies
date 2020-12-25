@@ -56,7 +56,7 @@ export default function Cart() {
         {!authenticationLoading && !userId && (
           <GuestCart setCheckOutModalOpen={setCheckOutModalOpen} />
         )}
-        <StaticSwiper type="electronics" cb={scrollToTop} />
+        <StaticSwiper type="perfumes" cb={scrollToTop} />
       </div>
     </Layout>
   );

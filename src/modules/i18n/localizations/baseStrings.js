@@ -121,14 +121,16 @@ const baseStrings = {
   'update-btn': 'Update',
   'coupon-expired': 'Expired Coupon',
   'coupon-invalid': 'Invalid Coupon',
-  'one-search-result': 'One Search Result for',
-  'two-search-results': 'Two Search Results for',
-  'more-than-10-search-results': 'Search Results for',
-  'search-results': 'Search Results for',
+  'one-search-result': 'One Search Result',
+  'two-search-results': 'Two Search Results',
+  'more-than-10-search-results': 'Search Results',
+  'search-results': 'Search Results',
   'no-search-results': 'No Search Results for',
   'see-all-search-results': 'See all Search Results for',
   'cart-combined':
     'Your items that you have added as a guest has been combined with your current Cart, Happy Shopping !',
+  price_changed:
+    'This Product Price has been changed since the last time you added it',
   'Price (Low to High)': 'Price (Low to High)',
   'Price (High to Low)': 'Price (High to Low)',
   Newest: 'Newest',
@@ -328,6 +330,8 @@ const baseStrings = {
   'no-products': 'No Products or Data Available',
   'no-filter-results': 'No Results for this criteria',
   'featured-items': 'Featured Items',
+  'double-click-zoom': 'Double Click to Zoom in',
+  'number-per-page': 'Results per Page',
 };
 
 export const en = baseStrings;

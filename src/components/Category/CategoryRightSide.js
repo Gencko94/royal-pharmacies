@@ -1,3 +1,4 @@
+import { AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
@@ -5,11 +6,12 @@ import CategoryItemLoader from './CategoryItemLoader';
 import CategoryProductItem from './CategoryProductItem';
 import SortInfoPanel from './SortInfoPanel';
 import VariantCategoryProductItem from './VariantCategoryProductItem';
-
+import ReactPaginate from 'react-paginate';
+import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 export default function CategoryRightSide({
   products,
   productsLoading,
-
+  resultsPerPage,
   sortBy,
   filteredProducts,
   filteredProductsLoading,
@@ -18,6 +20,10 @@ export default function CategoryRightSide({
   handleSortByChange,
   filters,
   setCartMenuOpen,
+  handleResultPerPageChange,
+  pageCount,
+  handleChangePage,
+  page,
 }) {
   const { formatMessage } = useIntl();
   if (productsLoading) {
@@ -43,16 +49,41 @@ export default function CategoryRightSide({
     );
   }
   return (
-    <div className="py-2">
+    <div className="h-full">
       <SortInfoPanel
         sortBy={sortBy}
-        filters={filters}
-        handleRemoveFilters={handleRemoveFilters}
+        resultsPerPage={resultsPerPage}
         handleSortByChange={handleSortByChange}
+        handleResultPerPageChange={handleResultPerPageChange}
       />
+      <AnimateSharedLayout>
+        <motion.div layout className="flex items-center">
+          {filters.length !== 0 && (
+            <>
+              <motion.h1 layout className="text-lg font-semibold">
+                {formatMessage({ id: 'filtered-by' })}
+              </motion.h1>
+              <motion.div layout className="mx-1 flex items-center">
+                {filters.map(item => {
+                  return (
+                    <motion.button
+                      layout
+                      className="mx-1 py-1 px-2 bg-main-color text-main-text rounded-full"
+                      key={item.value}
+                      onClick={() => handleRemoveFilters(item.type)}
+                    >
+                      {formatMessage({ id: item.type })} : {item.value}
+                    </motion.button>
+                  );
+                })}
+              </motion.div>
+            </>
+          )}
+        </motion.div>
+      </AnimateSharedLayout>
       {products.length !== 0 && (
         <div
-          className="category-page-items__grid py-2 "
+          className="category-page-items__grid py-2 min-h-full"
           style={{ minHeight: 'calc(100vh - 150px)' }}
         >
           {!filtersApplied &&
@@ -96,15 +127,35 @@ export default function CategoryRightSide({
             })}
         </div>
       )}
+      <ReactPaginate
+        previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
+        nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+        breakLabel={'...'}
+        breakClassName={'break-me'}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={2}
+        initialPage={page - 1}
+        disableInitialCallback={true}
+        onPageChange={handleChangePage}
+        containerClassName={'text-center my-2'}
+        subContainerClassName={'p-3 inline'}
+        pageLinkClassName="p-3"
+        activeClassName={'bg-main-color font-bold text-main-text'}
+        pageClassName=" inline-block mx-2 rounded-full text-lg"
+        previousClassName="p-3 inline font-bold"
+        nextClassName="p-3 inline font-bold"
+        disabledClassName="text-gray-500"
+      />
       {products.length === 0 && (
-        <div className="p-6 flex items-center justify-center text-xl">
+        <div className="p-6 flex items-center justify-center text-xl h-full">
           {formatMessage({ id: 'no-products' })}
         </div>
       )}
       {filtersApplied &&
         !filteredProductsLoading &&
         filteredProducts.length === 0 && (
-          <div className="p-6 flex items-center justify-center text-xl">
+          <div className="p-6 flex items-center justify-center text-xl h-full">
             {formatMessage({ id: 'no-filter-results' })}
           </div>
         )}

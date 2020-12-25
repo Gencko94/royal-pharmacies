@@ -1,26 +1,53 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-// import Zoom from 'react-medium-image-zoom';
-import 'react-medium-image-zoom/dist/styles.css';
+
 import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import LazyImage from '../../helpers/LazyImage';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
 export default function ImageZoomMobile({ data }) {
   const { locale } = useIntl();
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
+  const { formatMessage } = useIntl();
+  const [doubleClicked, setDoubleClicked] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!doubleClicked) {
+      document.addEventListener('dblclick', () => {
+        setDoubleClicked(true);
+      });
+    }
+  }, [doubleClicked]);
   return (
     <div className="mb-2">
-      <Swiper id="main" slidesPerView={1} thumbs={{ swiper: thumbsSwiper }}>
+      <Swiper
+        zoom
+        id="main"
+        slidesPerView={1}
+        thumbs={{ swiper: thumbsSwiper }}
+        className="mb-4"
+      >
         {[data.image, ...data.gallery].map(item => {
           return (
-            <SwiperSlide key={item.id}>
-              <LazyImage
+            <SwiperSlide className="relative" zoom key={item.id}>
+              {/* <LazyImage
                 pb="calc(100% * 401/500)"
                 src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.link}`}
                 alt={data.translation[locale].title}
+              /> */}
+              <img
+                src={`${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`}
+                alt={data.translation[locale].title}
+                style={{ maxHeight: '400px', width: 'auto' }}
               />
+              {!doubleClicked && (
+                <div
+                  className="absolute bottom-10 p-2 shadow rounded font-semibold"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.7)' }}
+                >
+                  {formatMessage({ id: 'double-click-zoom' })}
+                </div>
+              )}
             </SwiperSlide>
           );
         })}
@@ -36,7 +63,7 @@ export default function ImageZoomMobile({ data }) {
       >
         {[data.image, ...data.gallery].map(item => {
           return (
-            <SwiperSlide key={item.id}>
+            <SwiperSlide className="px-2" key={item.id}>
               <img
                 src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.link}`}
                 alt={data.translation[locale].title}

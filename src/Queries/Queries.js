@@ -30,22 +30,21 @@ export const getStaticSwiperData = async (k, type) => {
       `${process.env.REACT_APP_MAIN_URL}/new-arrival`
     );
     if (res.data.status === true) {
-      return res.data.data;
+      return res.data.data.data;
     }
   } else if (type === 'best_seller') {
-    console.log('hey');
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/best-sellers`
     );
     if (res.data.status === true) {
-      return res.data.data;
+      return res.data.data.data;
     }
   } else {
     const res = await axios.get(
-      `${process.env.REACT_APP_MAIN_URL}/category-products/${type}`
+      `${process.env.REACT_APP_MAIN_URL}/category-products/${type}?page=${1}`
     );
     if (res.data.status === true) {
-      return res.data.data;
+      return res.data.data.data;
     }
   }
 };
@@ -656,13 +655,22 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
 /**
  * Category Products
  */
-export const getCategoryProducts = async (k, categorySlug) => {
+export const getCategoryProducts = async (
+  k,
+  categorySlug,
+  page,
+  resultsPerPage
+) => {
   const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/category-products/${categorySlug}`
+    `${process.env.REACT_APP_MAIN_URL}/category-products/${categorySlug}?page=${page}&number=${resultsPerPage?.value}`
   );
   console.log(res);
   if (res.data.status === true) {
-    return res.data.data;
+    return {
+      products: res.data.data.data,
+      currentPage: res.data.data.current_page,
+      lastPage: res.data.data.last_page,
+    };
   }
 };
 export const filterProducts = async (
@@ -683,7 +691,7 @@ export const filterProducts = async (
     brand: brandFilters ? brandFilters : undefined,
     sort_by: sortBy ? sortBy.value : undefined,
     page,
-    number: resultsPerPage,
+    number: resultsPerPage?.value,
     sort_language: locale,
     search,
     range_price: priceFilters[0],
@@ -692,16 +700,20 @@ export const filterProducts = async (
     `${process.env.REACT_APP_MAIN_URL}/filter-products`,
     query
   );
-  console.log(res.data);
+
   if (res.data.status === true) {
-    return res.data.data.data;
+    return {
+      filteredProducts: res.data.data.data,
+      currentPage: res.data.data.current_page,
+      lastPage: res.data.data.last_page,
+    };
   }
 };
 export const getCategories = async categorySlug => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
   );
-  console.log(res.data);
+
   if (res.data.status === true) {
     return res.data.data;
   }
@@ -735,6 +747,7 @@ export const getWishlistItems = async (k, userId) => {
     `${process.env.REACT_APP_MAIN_URL}/wishlist/${userId}`
   );
   if (res.data.status === true) {
+    console.log(res.data.data);
     return { wishlistItems: res.data.data };
   }
 };
@@ -848,14 +861,18 @@ export const getVisitedItems = async () => {
  * Search Products
  */
 
-export const searchProducts = async (k, query) => {
+export const searchProducts = async (k, query, page, resultsPerPage) => {
   const res = await axios({
     method: 'GET',
     url: `${process.env.REACT_APP_MAIN_URL}/search-products`,
-    params: { value: query, page: 1 },
+    params: { value: query, page, number: resultsPerPage?.value },
   });
   if (res.data.status === true) {
-    return res.data.data.data;
+    return {
+      products: res.data.data.data,
+      currentPage: res.data.data.current_page,
+      lastPage: res.data.data.last_page,
+    };
   }
 };
 

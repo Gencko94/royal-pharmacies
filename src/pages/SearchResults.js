@@ -16,10 +16,13 @@ export default function SearchResults() {
   const [brandFilters, setBrandFilters] = React.useState(null);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
-    label: 'Newest',
+    label: formatMessage({ id: 'Newest' }),
   });
   const [page, setPage] = React.useState(1);
-  const [resultsPerPage, setResultsPerPage] = React.useState(10);
+  const [resultsPerPage, setResultsPerPage] = React.useState({
+    label: 20,
+    value: 20,
+  });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([10000]);
   const [filters, setFilters] = React.useState([]);
@@ -28,16 +31,13 @@ export default function SearchResults() {
   /**
    * Main Fetch
    */
-  const { data: products, isLoading: productsLoading } = useQuery(
-    ['searchProducts', query],
+  const { data, isLoading: productsLoading } = useQuery(
+    ['searchProducts', query, page, resultsPerPage],
     searchProducts,
     { retry: true, refetchOnWindowFocus: false }
   );
 
-  const {
-    data: filteredProducts,
-    isLoading: filteredProductsLoading,
-  } = useQuery(
+  const { filteredData, isLoading: filteredProductsLoading } = useQuery(
     [
       'search-filtered-products',
       {
@@ -54,6 +54,9 @@ export default function SearchResults() {
     { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
   );
 
+  const handleResultPerPageChange = selectedValue => {
+    setResultsPerPage(selectedValue);
+  };
   const handleRemoveFilters = type => {
     setFilters(prev => {
       return prev.filter(i => i.type !== type);
@@ -157,7 +160,7 @@ export default function SearchResults() {
       >
         <div className="search-page__container">
           <SearchLeftSide
-            products={products}
+            products={data?.products}
             productsLoading={productsLoading}
             brandFilters={brandFilters}
             setBrandFilters={setBrandFilters}
@@ -169,18 +172,20 @@ export default function SearchResults() {
           />
 
           <SearchRightSide
-            products={products}
+            products={data?.products}
             productsLoading={productsLoading}
             sortBy={sortBy}
             setPage={setPage}
             setResultsPerPage={setResultsPerPage}
-            filteredProducts={filteredProducts}
+            filteredProducts={filteredData?.filteredProducts}
             filteredProductsLoading={filteredProductsLoading}
             filtersApplied={filtersApplied}
             filters={filters}
             handleRemoveFilters={handleRemoveFilters}
             handleSortByChange={handleSortByChange}
             setCartMenuOpen={setCartMenu}
+            resultsPerPage={resultsPerPage}
+            handleResultPerPageChange={handleResultPerPageChange}
           />
         </div>
       </div>

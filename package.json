@@ -29,6 +29,7 @@
     "react-loader-spinner": "^3.1.14",
     "react-medium-image-zoom": "^4.3.1",
     "react-multi-clamp": "^2.0.2",
+    "react-paginate": "^7.0.0",
     "react-query": "^2.26.2",
     "react-query-devtools": "^2.6.3",
     "react-range": "^1.8.3",

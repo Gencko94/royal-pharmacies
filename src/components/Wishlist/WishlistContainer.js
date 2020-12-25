@@ -22,7 +22,9 @@ export default function WishlistContainer({
         <AnimateSharedLayout>
           <motion.div layout initial={false} className="grid grid-cols-1 gap-2">
             <motion.div layout className="wishlist-grid-titles mb-2">
-              <h1 className="  ">{formatMessage({ id: 'wishlist' })}</h1>
+              <h1 className="text-lg font-semibold">
+                {formatMessage({ id: 'wishlist' })}
+              </h1>
             </motion.div>
             <motion.hr layout />
             <AnimatePresence>

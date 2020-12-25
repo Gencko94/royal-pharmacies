@@ -71,7 +71,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         <a href={`/${locale}/c/${item.id}`}>
           <LazyImage
             src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
-            alt={item.translation[locale].title}
+            alt={item.small_translation[locale].title}
             pb="calc(100% * 286/210)"
           />
         </a>
@@ -117,12 +117,12 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
           <a
-            title={item.translation[locale].title}
+            title={item.small_translation[locale].title}
             className="hover:underline inline-block"
             href={`/${locale}/c/${item.id}`}
           >
             <h1 className="text-clamp-2 text-sm font-semibold">
-              {item.translation[locale].title}
+              {item.small_translation[locale].title}
             </h1>
           </a>
         </div>

@@ -9864,6 +9864,13 @@ react-multi-clamp@^2.0.2:
     multi-clamp "^2.0.2"
     prop-types "^15.7.2"
 
+react-paginate@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-7.0.0.tgz#af206ef92a2b6ef87646855eb1612157254ad0c0"
+  integrity sha512-mzPwHGJfSs79JBGX2V0v/FfQp3yWdz0XRrB9JvsUbJdsxqCt4osk1O669+K8VPQ0Lh9v0lJsnLLoJwnsgdJFng==
+  dependencies:
+    prop-types "^15.6.1"
+
 react-query-devtools@^2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/react-query-devtools/-/react-query-devtools-2.6.3.tgz#f7c982839d4b0001cee4d5ddfa826493c2f6341f"

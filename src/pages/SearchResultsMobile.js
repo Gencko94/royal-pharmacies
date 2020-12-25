@@ -23,21 +23,19 @@ export default function SearchResultsMobile() {
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([10000]);
   const [filters, setFilters] = React.useState([]);
+  const [resultsPerPage, setResultsPerPage] = React.useState(10);
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
   const [triggerRef, inView] = useInView();
 
-  const { data: products, isLoading: productsLoading } = useQuery(
-    ['searchProducts', query],
+  const { data, isLoading: productsLoading } = useQuery(
+    ['searchProducts', query, page, resultsPerPage],
     searchProducts,
     { retry: true, refetchOnWindowFocus: false }
   );
 
-  const {
-    data: filteredProducts,
-    isLoading: filteredProductsLoading,
-  } = useQuery(
+  const { filteredData, isLoading: filteredProductsLoading } = useQuery(
     [
       'filtered-products',
       {
@@ -45,7 +43,7 @@ export default function SearchResultsMobile() {
         brandFilters,
         sortBy,
         page,
-        resultsPerPage: 25,
+        resultsPerPage,
         locale,
         priceFilters,
       },
@@ -54,6 +52,9 @@ export default function SearchResultsMobile() {
     { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
   );
 
+  const handleResultPerPageChange = selectedValue => {
+    setResultsPerPage(selectedValue);
+  };
   const handleRemoveFilters = type => {
     setFilters(prev => {
       return prev.filter(i => i.type !== type);
@@ -129,14 +130,14 @@ export default function SearchResultsMobile() {
     }
   }, [filters]);
   const resolvePlural = () => {
-    switch (products.length) {
+    switch (data?.products.length) {
       case 1:
         return formatMessage({ id: 'one-search-results' });
 
       case 2:
         return formatMessage({ id: 'two-search-results' });
 
-      case products.length > 10:
+      case data?.products.length > 10:
         return formatMessage({ id: 'more-than-10-search-results' });
       default:
         return formatMessage({ id: 'search-results' });
@@ -163,11 +164,11 @@ export default function SearchResultsMobile() {
             ></motion.div>
           )}
         </AnimatePresence>
-        {products && (
+        {data?.products && (
           <div className="p-3 text-lg border-b">
             <h1>
-              {products.length > 2 && products.length} {resolvePlural()}{' '}
-              <strong>{query}</strong>
+              {data?.products.length > 2 && data?.products.length}{' '}
+              {resolvePlural()} <strong>{query}</strong>
             </h1>
           </div>
         )}
@@ -200,10 +201,10 @@ export default function SearchResultsMobile() {
         </AnimateSharedLayout>
 
         <CategoryMobileItemGrid
-          products={products}
+          products={data?.products}
           productsLoading={productsLoading}
           setCartMenuOpen={setCartMenuOpen}
-          filteredProducts={filteredProducts}
+          filteredProducts={filteredData?.filteredProducts}
           filteredProductsLoading={filteredProductsLoading}
           triggerRef={triggerRef}
           setPage={setPage}
@@ -212,7 +213,7 @@ export default function SearchResultsMobile() {
           {inView && (
             <SortInfoPanelMobile
               productsLoading={productsLoading}
-              products={products}
+              products={data?.products}
               brandFilters={brandFilters}
               handleBrandChange={handleBrandChange}
               filtersApplied={filtersApplied}
@@ -226,6 +227,7 @@ export default function SearchResultsMobile() {
               handlePriceChange={handlePriceChange}
               handleSubmitPrice={handleSubmitPrice}
               priceFilters={priceFilters}
+              handleResultPerPageChange={handleResultPerPageChange}
             />
           )}
         </AnimatePresence>

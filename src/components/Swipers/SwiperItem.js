@@ -8,6 +8,8 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 export default function SwiperItem({ item, setCartMenuOpen }) {
+  console.log(item);
+
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const [showAddButton, setShowAddButton] = React.useState(false);
@@ -69,7 +71,7 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
         <a href={`/${locale}/c/${item.id}`}>
           <LazyImage
             src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
-            alt={item.translation[locale].title}
+            alt={item.small_translation[locale].title}
             pb="calc(100% * 286/210)"
           />
         </a>
@@ -106,7 +108,9 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
               exit={{ opacity: 0 }}
               className="absolute top-0 w-full h-full flex items-center justify-center text-main-text bg-gray-800 text-2xl"
             >
-              {formatMessage({ id: 'added-to-cart' })} !
+              <h1 className="text-center">
+                {formatMessage({ id: 'added-to-cart' })} !
+              </h1>
             </motion.div>
           )}
         </AnimatePresence>
@@ -115,12 +119,12 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
           <a
-            title={item.translation[locale].title}
+            title={item.small_translation[locale].title}
             className="hover:underline inline-block"
             href={`/${locale}/c/${item.id}`}
           >
             <h1 className="text-clamp-2 text-sm font-semibold">
-              {item.translation[locale].title}
+              {item.small_translation[locale].title}
             </h1>
           </a>
         </div>

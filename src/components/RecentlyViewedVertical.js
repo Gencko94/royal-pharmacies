@@ -73,14 +73,14 @@ export default function RecentlyViewedVertical() {
               <Link to={`/${locale}/c/${item.id}`}>
                 <LazyImage
                   src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
-                  alt={item.translation[locale].title}
+                  alt={item.small_translation[locale].title}
                   pb="calc(100% * 286/210)"
                 />
               </Link>
               <div className="text-sm">
                 <Link to={`/${locale}/c/${item.id}`}>
                   <h1 className="text-clamp-2">
-                    {item.translation[locale].title}
+                    {item.small_translation[locale].title}
                   </h1>
                 </Link>
                 <Rating

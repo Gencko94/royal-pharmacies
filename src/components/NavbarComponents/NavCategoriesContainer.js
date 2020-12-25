@@ -21,7 +21,7 @@ export default function NavCategoriesContainer({
   }, [isHovering]);
   if (isLoading) {
     return (
-      <div className="w-full bg-nav-cat-light" style={{ height: '37px' }}></div>
+      <div className="w-full bg-nav-cat-light" style={{ height: '40px' }}></div>
     );
   }
   return (

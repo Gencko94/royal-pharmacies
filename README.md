@@ -61,6 +61,18 @@
 - [ ] single product quantity input number validation
 - [x] look into fixing home loaders
 
+- [ ] show error snackbar
+- [ ] handle no products
+- [ ] make a default product photo
+- [ ] fix checkout
+- [ ] fix footer nav
+- [ ] fix side menu categories
+- [ ] look into changing single product layout
+- [ ] add sale indicators to swipers
+- [ ] fix image zoom
+- [ ] add pagination to search, category,singleproduct
+- [ ] breadcrumbs
+
       **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 
       -- check coupon validity per user

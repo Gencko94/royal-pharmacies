@@ -22,10 +22,13 @@ export default function Category() {
   const [brandFilters, setBrandFilters] = React.useState(null);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
-    label: 'Newest',
+    label: formatMessage({ id: 'Newest' }),
   });
   const [page, setPage] = React.useState(1);
-  const [resultsPerPage, setResultsPerPage] = React.useState(10);
+  const [resultsPerPage, setResultsPerPage] = React.useState({
+    label: 20,
+    value: 20,
+  });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([10000]);
   const [filters, setFilters] = React.useState([]);
@@ -35,8 +38,8 @@ export default function Category() {
    * Main Fetch
    */
 
-  const { data: products, isLoading: productsLoading } = useQuery(
-    ['category-products', category],
+  const { data, isLoading: productsLoading } = useQuery(
+    ['category-products', category, page, resultsPerPage],
     getCategoryProducts,
     { retry: true, refetchOnWindowFocus: false }
   );
@@ -64,7 +67,12 @@ export default function Category() {
     filterProducts,
     { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
   );
-
+  const handleResultPerPageChange = selectedValue => {
+    setResultsPerPage(selectedValue);
+  };
+  const handleChangePage = data => {
+    setPage(data.selected + 1);
+  };
   const handleRemoveFilters = type => {
     setFilters(prev => {
       return prev.filter(i => i.type !== type);
@@ -176,7 +184,7 @@ export default function Category() {
           <CategoryLeftSide
             categoryInfo={categoryInfo}
             categoryInfoLoading={categoryInfoLoading}
-            products={products}
+            products={data?.products}
             productsLoading={productsLoading}
             brandFilters={brandFilters}
             setBrandFilters={setBrandFilters}
@@ -188,10 +196,9 @@ export default function Category() {
           />
 
           <CategoryRightSide
-            products={products}
+            products={data?.products}
             productsLoading={productsLoading}
             sortBy={sortBy}
-            setPage={setPage}
             setResultsPerPage={setResultsPerPage}
             filteredProducts={filteredProducts}
             filteredProductsLoading={filteredProductsLoading}
@@ -200,6 +207,11 @@ export default function Category() {
             handleRemoveFilters={handleRemoveFilters}
             handleSortByChange={handleSortByChange}
             setCartMenuOpen={setCartMenu}
+            resultsPerPage={resultsPerPage}
+            handleResultPerPageChange={handleResultPerPageChange}
+            pageCount={data?.lastPage}
+            handleChangePage={handleChangePage}
+            page={page}
           />
         </div>
       </div>

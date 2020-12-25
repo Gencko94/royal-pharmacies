@@ -22,7 +22,7 @@ export default function NavCategory() {
     <>
       <div
         className={`sticky z-10  bg-nav-cat-light text-nav-cat-text-light`}
-        style={{ top: '62px' }}
+        style={{ top: '56px' }}
       >
         <div className="max-w-default mx-auto  px-4 ">
           <div className="relative flex justify-center">

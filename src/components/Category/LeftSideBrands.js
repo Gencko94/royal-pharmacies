@@ -28,21 +28,25 @@ export default function LeftSideBrands({
   }
   return (
     <div className="mb-4">
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-xl py-3 font-semibold">
         {formatMessage({ id: 'filter-by-brand' })}
       </h1>
-      <hr className="my-2" />
+      <hr />
       <div className="flex flex-col justify-center">
         {brands.map(brand => {
           return (
-            <div key={brand.id} className="flex items-center mb-2 text-sm ">
+            <div key={brand.id} className="flex items-center mb-2 my-1">
               <input
+                id={brand.id}
                 type="checkbox"
-                className="form-checkbox border-gray-600 text-red-700 mr-5"
+                className="form-checkbox border-gray-600 text-red-700"
                 onChange={() => handleBrandChange(brand)}
                 checked={brandFilters?.id === brand.id}
               />
-              <label className="hover:underline hover:text-blue-700 cursor-pointer">
+              <label
+                for={brand.id}
+                className="hover:underline hover:text-blue-700 cursor-pointer  mx-5"
+              >
                 {brand.label}
               </label>
             </div>

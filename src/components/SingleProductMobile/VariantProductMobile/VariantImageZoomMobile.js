@@ -5,7 +5,6 @@ import 'react-medium-image-zoom/dist/styles.css';
 import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import LazyImage from '../../../helpers/LazyImage';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
 export default function VariantImageZoomMobile({
   data,
@@ -17,25 +16,25 @@ export default function VariantImageZoomMobile({
   const resolveImage = () => {
     if (data.new_variation_addons[selectedVariation].options) {
       return (
-        <LazyImage
+        <img
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${
             data.new_variation_addons[selectedVariation].options[
               selectedOption[selectedVariation]
-            ]?.image || data.image.link
+            ]?.image || data.image?.link
           }`}
           alt={data.translation[locale].title}
-          pb="calc(100% * 800/800)"
+          style={{ maxHeight: '400px', width: 'auto' }}
         />
       );
     } else {
       return (
-        <LazyImage
+        <img
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${
             data.new_variation_addons[selectedVariation].image ||
-            data.image.link
+            data.image?.link
           }`}
           alt={data.translation[locale].title}
-          pb="calc(100% * 800/800)"
+          style={{ maxHeight: '400px', width: 'auto' }}
         />
       );
     }
@@ -43,25 +42,25 @@ export default function VariantImageZoomMobile({
   const resolveThumbnail = () => {
     if (data.new_variation_addons[selectedVariation].options) {
       return (
-        <LazyImage
+        <img
           src={`${process.env.REACT_APP_IMAGES_URL}/small/${
             data.new_variation_addons[selectedVariation].options[
               selectedOption[selectedVariation]
-            ]?.image || data.image.link
+            ]?.image || data.image?.link
           }`}
           alt={data.translation[locale].title}
-          pb="calc(100% * 800/800)"
+          style={{ width: '50px', height: '50px' }}
         />
       );
     } else {
       return (
-        <LazyImage
+        <img
           src={`${process.env.REACT_APP_IMAGES_URL}/small/${
             data.new_variation_addons[selectedVariation].image ||
-            data.image.link
+            data.image?.link
           }`}
           alt={data.translation[locale].title}
-          pb="calc(100% * 800/800)"
+          style={{ width: '50px', height: '50px' }}
         />
       );
     }

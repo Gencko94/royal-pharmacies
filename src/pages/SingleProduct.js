@@ -7,7 +7,7 @@ import ImageZoom from '../components/SingleProduct/ImageZoom';
 import MiddleSection from '../components/SingleProduct/MiddleSection';
 import RightSection from '../components/SingleProduct/RightSection';
 import { Helmet } from 'react-helmet';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { useQuery } from 'react-query';
@@ -35,14 +35,18 @@ export default function SingleProduct() {
   /**
    * Main Fetch
    */
-  const { data, isLoading } = useQuery(['singleProduct', id], getSingleItem, {
-    refetchOnWindowFocus: false,
-    onSuccess: () => {
-      // add Item to localStorage
-      addViewedItems(id);
-    },
-    retry: true,
-  });
+  const { data, isLoading, error } = useQuery(
+    ['singleProduct', id],
+    getSingleItem,
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: () => {
+        // add Item to localStorage
+        addViewedItems(id);
+      },
+      retry: 2,
+    }
+  );
   const { data: reviews, isLoading: reviewsLoading } = useQuery(
     ['product-reviews', id],
     getProductReviews,
@@ -111,6 +115,12 @@ export default function SingleProduct() {
       console.log(error.response);
     }
   };
+  if (error) {
+    if (error.response.data.message === 'Product not founded') {
+      return <Redirect to={`/${locale}/notfound`} />;
+    }
+    // return <pre>{JSON.stringify(error.response)}</pre>;
+  }
   return (
     <Layout>
       <Helmet>

@@ -20,12 +20,12 @@ export default function SearchBar() {
   const history = useHistory();
   //with controlling the arrows
   const getSuggestionValue = suggestion => {
-    return suggestion.translation[locale].title;
+    return suggestion.small_translation[locale].title;
   };
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div
-        className={`p-2 flex items-center ${
+        className={`p-2 cursor-pointer flex items-center ${
           isHighlighted && 'bg-gray-300 rounded'
         }`}
       >
@@ -34,7 +34,7 @@ export default function SearchBar() {
           alt=""
           style={{ height: '50px' }}
         />
-        <h1 className="mx-1">{suggestion.translation[locale].title}</h1>
+        <h1 className="mx-1">{suggestion.small_translation[locale].title}</h1>
       </div>
     );
   };
@@ -69,7 +69,7 @@ export default function SearchBar() {
       });
       console.log(res.data.data.data);
       if (res) {
-        setData(res.data.data.data);
+        setData(res.data.data.data.slice(0, 8));
         if (inputThreshold && res.data.data.data.length === 0) {
           setNoSuggestions(true);
         } else {

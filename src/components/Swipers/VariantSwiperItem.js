@@ -31,6 +31,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     null
   );
+
   const variantOnly = item.new_variation_addons[selectedVariation].options
     ? false
     : true;
@@ -192,7 +193,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
               selectedOption[selectedVariation]
             ]?.image || item.image?.link
           }`}
-          alt={item.translation[locale].title}
+          alt={item.small_translation[locale].title}
           pb="calc(100% * 286/210)"
         />
       );
@@ -203,7 +204,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
             item.new_variation_addons[selectedVariation].image ||
             item.image?.link
           }`}
-          alt={item.translation[locale].title}
+          alt={item.small_translation[locale].title}
           pb="calc(100% * 286/210)"
         />
       );
@@ -213,7 +214,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
   const resolveName = () => {
     const variationName =
       item.new_variation_addons[selectedVariation].addon_item_value;
-    return `${item.translation[locale].title} ${variationName}`;
+    return `${item.small_translation[locale].title} ${variationName}`;
   };
   return (
     <div
@@ -350,7 +351,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
           <a
-            title={item.translation[locale].title}
+            title={item.small_translation[locale].title}
             className="hover:underline inline-block"
             href={`/${locale}/c/${item.id}`}
           >

@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 export default function ItemDescription({ data }) {
   const { locale, formatMessage } = useIntl();
   return (
-    <div>
+    <div className="overflow-hidden">
       {data.translation[locale].description && (
         <div className="my-1">
           <h1 className="text-center text-xl font-semibold my-1 mb-1 p-1 border-b">

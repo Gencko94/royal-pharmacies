@@ -1,20 +1,46 @@
-import { AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import Select from 'react-select';
 
 export default function SortInfoPanel({
   sortBy,
-  handleRemoveFilters,
-  filters,
+  resultsPerPage,
   handleSortByChange,
+  handleResultPerPageChange,
 }) {
   const { formatMessage } = useIntl();
   const sortByOptions = React.useMemo(
     () => [
-      { value: 'newest', label: 'Newest' },
-      { label: 'Price (Low to High)', value: 'price-asc' },
-      { label: 'Price (High to Low)', value: 'price-desc' },
+      { value: 'newest', label: formatMessage({ id: 'Newest' }) },
+      {
+        label: formatMessage({ id: 'Price (Low to High)' }),
+        value: 'price-asc',
+      },
+      {
+        label: formatMessage({ id: 'Price (High to Low)' }),
+        value: 'price-desc',
+      },
+    ],
+    [formatMessage]
+  );
+  const resultsPerPageOptions = React.useMemo(
+    () => [
+      {
+        label: 5,
+        value: 5,
+      },
+      {
+        label: 20,
+        value: 20,
+      },
+      {
+        label: 30,
+        value: 30,
+      },
+      {
+        label: 40,
+        value: 40,
+      },
     ],
     []
   );
@@ -22,41 +48,31 @@ export default function SortInfoPanel({
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 0.4fr',
+        gridTemplateColumns: '1fr 0.8fr 0.8fr',
         marginBottom: '0.5rem',
       }}
     >
-      <AnimateSharedLayout>
-        <motion.div layout className="flex items-center">
-          {filters.length !== 0 && (
-            <>
-              <motion.h1 layout className="text-lg font-semibold">
-                {formatMessage({ id: 'filtered-by' })}
-              </motion.h1>
-              <motion.div layout className="mx-1 flex items-center">
-                {filters.map(item => {
-                  return (
-                    <motion.button
-                      layout
-                      className="mx-1 py-1 px-2 bg-main-color text-main-text rounded-full"
-                      key={item.value}
-                      onClick={() => handleRemoveFilters(item.type)}
-                    >
-                      {formatMessage({ id: item.type })} : {item.value}
-                    </motion.button>
-                  );
-                })}
-              </motion.div>
-            </>
-          )}
-        </motion.div>
-      </AnimateSharedLayout>
-      <Select
-        isSearchable={false}
-        options={sortByOptions}
-        value={sortBy}
-        onChange={handleSortByChange}
-      />
+      <div />
+      <div className="flex items-center w-full">
+        <h1>{formatMessage({ id: 'number-per-page' })}</h1>
+        <Select
+          isSearchable={false}
+          options={resultsPerPageOptions}
+          value={resultsPerPage}
+          onChange={handleResultPerPageChange}
+          className="mx-2 flex-1"
+        />
+      </div>
+      <div className="flex items-center w-full">
+        <h1>{formatMessage({ id: 'sort-by' })}</h1>
+        <Select
+          isSearchable={false}
+          options={sortByOptions}
+          value={sortBy}
+          onChange={handleSortByChange}
+          className="mx-2 flex-1"
+        />
+      </div>
     </div>
   );
 }
