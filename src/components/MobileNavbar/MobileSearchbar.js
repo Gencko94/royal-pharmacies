@@ -17,7 +17,7 @@ export default function MobileSearchbar({ windowScrolled }) {
   const [data, setData] = React.useState([]);
   const [isLoading, setLoading] = React.useState(false);
   const getSuggestionValue = suggestion => {
-    return suggestion.translation[locale].title;
+    return suggestion.small_translation[locale].title;
   };
   React.useEffect(() => {
     if (windowScrolled) {
@@ -30,7 +30,7 @@ export default function MobileSearchbar({ windowScrolled }) {
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div className={`p-2 ${isHighlighted && 'bg-gray-300 rounded'}`}>
-        {suggestion.translation[locale].title}
+        {suggestion.small_translation[locale].title}
       </div>
     );
   };
@@ -51,9 +51,8 @@ export default function MobileSearchbar({ windowScrolled }) {
         params: { value: value, page: 1 },
         cancelToken: cancelToken.token,
       });
-      console.log(res.data.data.data);
       if (res) {
-        setData(res.data.data.data);
+        setData(res.data.data.data.slice(0, 7));
         if (inputThreshold && res.data.data.data.length === 0) {
           setNoSuggestions(true);
         } else {

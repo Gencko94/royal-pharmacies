@@ -34,17 +34,19 @@ export default function LeftSideBrands({
       <hr />
       <div className="flex flex-col justify-center">
         {brands.map(brand => {
+          const isAvailable = brandFilters.find(i => i.id === brand.id);
+
           return (
             <div key={brand.id} className="flex items-center mb-2 my-1">
               <input
                 id={brand.id}
                 type="checkbox"
-                className="form-checkbox border-gray-600 text-red-700"
+                className="form-checkbox border-gray-600 text-main-color"
                 onChange={() => handleBrandChange(brand)}
-                checked={brandFilters?.id === brand.id}
+                checked={isAvailable ? true : false}
               />
               <label
-                for={brand.id}
+                htmlFor={brand.id}
                 className="hover:underline hover:text-blue-700 cursor-pointer  mx-5"
               >
                 {brand.label}

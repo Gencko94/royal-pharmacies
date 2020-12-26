@@ -2,7 +2,10 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
-export default function SideMenuLanguages({ handleHideLanguages }) {
+export default function SideMenuLanguages({
+  handleHideLanguages,
+  toggleSideMenu,
+}) {
   const { formatMessage, locale } = useIntl();
   const { pathname } = useLocation();
   const getCurrentPath = pathname => {
@@ -23,6 +26,7 @@ export default function SideMenuLanguages({ handleHideLanguages }) {
           if (locale === 'ar') {
             return;
           }
+          toggleSideMenu();
           window.location.href = `/ar/${getCurrentPath(pathname)}`;
         }}
         className={`${
@@ -36,6 +40,7 @@ export default function SideMenuLanguages({ handleHideLanguages }) {
           if (locale === 'en') {
             return;
           }
+          toggleSideMenu();
           window.location.href = `/en/${getCurrentPath(pathname)}`;
         }}
         className={`${

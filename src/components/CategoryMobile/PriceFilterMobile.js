@@ -15,7 +15,7 @@ export default function PriceFilterMobile({
   const max = 10000;
   return (
     <div className="mb-4 px-3">
-      <h1 className="font-semibold">
+      <h1 className="font-semibold text-center">
         {formatMessage({ id: 'filter-by-price' })} (
         {deliveryCountry?.currency.translation[locale].symbol})
       </h1>

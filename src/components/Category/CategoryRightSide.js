@@ -21,9 +21,12 @@ export default function CategoryRightSide({
   filters,
   setCartMenuOpen,
   handleResultPerPageChange,
-  pageCount,
-  handleChangePage,
-  page,
+  productsPageCount,
+  filteredPageCount,
+  handleFilteredChangePage,
+  handleProductChangePage,
+  filteredPage,
+  productsPage,
 }) {
   const { formatMessage } = useIntl();
   if (productsLoading) {
@@ -68,9 +71,9 @@ export default function CategoryRightSide({
                   return (
                     <motion.button
                       layout
-                      className="mx-1 py-1 px-2 bg-main-color text-main-text rounded-full"
+                      className="mx-1 py-1 px-2 bg-main-color text-main-text rounded-full whitespace-no-wrap"
                       key={item.value}
-                      onClick={() => handleRemoveFilters(item.type)}
+                      onClick={() => handleRemoveFilters(item)}
                     >
                       {formatMessage({ id: item.type })} : {item.value}
                     </motion.button>
@@ -127,26 +130,30 @@ export default function CategoryRightSide({
             })}
         </div>
       )}
-      <ReactPaginate
-        previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-        nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
-        breakLabel={'...'}
-        breakClassName={'break-me'}
-        pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={2}
-        initialPage={page - 1}
-        disableInitialCallback={true}
-        onPageChange={handleChangePage}
-        containerClassName={'text-center my-2'}
-        subContainerClassName={'p-3 inline'}
-        pageLinkClassName="p-3"
-        activeClassName={'bg-main-color font-bold text-main-text'}
-        pageClassName=" inline-block mx-2 rounded-full text-lg"
-        previousClassName="p-3 inline font-bold"
-        nextClassName="p-3 inline font-bold"
-        disabledClassName="text-gray-500"
-      />
+      {!productsLoading && !filteredProductsLoading && (
+        <ReactPaginate
+          previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
+          nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+          breakLabel={'...'}
+          breakClassName={'inline'}
+          pageCount={filtersApplied ? filteredPageCount : productsPageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={2}
+          initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
+          disableInitialCallback={true}
+          onPageChange={
+            filtersApplied ? handleFilteredChangePage : handleProductChangePage
+          }
+          containerClassName={'my-2 w-full text-center'}
+          subContainerClassName={'p-3 inline'}
+          pageLinkClassName="p-3"
+          activeClassName={'bg-main-color font-bold text-main-text'}
+          pageClassName=" inline-block mx-2 rounded-full text-lg"
+          previousClassName="p-3 inline font-bold"
+          nextClassName="p-3 inline font-bold"
+          disabledClassName="text-gray-500"
+        />
+      )}
       {products.length === 0 && (
         <div className="p-6 flex items-center justify-center text-xl h-full">
           {formatMessage({ id: 'no-products' })}
@@ -154,7 +161,7 @@ export default function CategoryRightSide({
       )}
       {filtersApplied &&
         !filteredProductsLoading &&
-        filteredProducts.length === 0 && (
+        filteredProducts?.length === 0 && (
           <div className="p-6 flex items-center justify-center text-xl h-full">
             {formatMessage({ id: 'no-filter-results' })}
           </div>

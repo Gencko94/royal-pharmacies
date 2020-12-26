@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 export default function SearchSortInfoPanel({
   sortBy,
-
+  query,
   handleSortByChange,
   productsCount,
   resultsPerPage,
@@ -70,7 +70,7 @@ export default function SearchSortInfoPanel({
           <div className="py-3 text-xl">
             <h1>
               <strong>{productsCount > 2 && productsCount}</strong>{' '}
-              {resolvePlural()}{' '}
+              {resolvePlural()} {query}
             </h1>
           </div>
         )}

@@ -12,6 +12,7 @@ export default function SideMenuCategories({
   handleClickBackSecond,
   handleClickNextFirst,
   handleClickNextSecond,
+  toggleSideMenu,
 }) {
   const { formatMessage, locale } = useIntl();
   return (
@@ -90,6 +91,7 @@ export default function SideMenuCategories({
               to={`/${locale}/categories/${subCategory.slug}`}
               key={subCategory.id}
               className="p-3"
+              onClick={toggleSideMenu}
             >
               {subCategory.translation[locale].name}
             </Link>

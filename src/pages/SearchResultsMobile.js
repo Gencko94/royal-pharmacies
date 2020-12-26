@@ -9,40 +9,47 @@ import { filterProducts, searchProducts } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuItemMobile';
 import { useInView } from 'react-intersection-observer';
-
+import { scrollIntoView } from 'scroll-js';
+import ReactPaginate from 'react-paginate';
+import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
+import Select from 'react-select';
 export default function SearchResultsMobile() {
   const { query } = useParams();
   const { locale, formatMessage } = useIntl();
-  const [brandFilters, setBrandFilters] = React.useState(null);
+  const [brandFilters, setBrandFilters] = React.useState([]);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: 'Newest',
   });
-  const [page, setPage] = React.useState(1);
+  const [productsPage, setProductsPage] = React.useState(1);
+  const [filteredPage, setFilteredPage] = React.useState(1);
 
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([10000]);
   const [filters, setFilters] = React.useState([]);
-  const [resultsPerPage, setResultsPerPage] = React.useState(10);
+  const [resultsPerPage, setResultsPerPage] = React.useState({
+    label: 20,
+    value: 20,
+  });
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
   const [triggerRef, inView] = useInView();
 
-  const { data, isLoading: productsLoading } = useQuery(
-    ['searchProducts', query, page, resultsPerPage],
+  const { data: products, isLoading: productsLoading } = useQuery(
+    ['searchProducts', { query, page: productsPage, resultsPerPage }],
     searchProducts,
     { retry: true, refetchOnWindowFocus: false }
   );
 
-  const { filteredData, isLoading: filteredProductsLoading } = useQuery(
+  const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
     [
       'filtered-products',
       {
         search: query,
         brandFilters,
         sortBy,
-        page,
+        page: filteredPage,
         resultsPerPage,
         locale,
         priceFilters,
@@ -55,26 +62,35 @@ export default function SearchResultsMobile() {
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
-  const handleRemoveFilters = type => {
+  const handleProductChangePage = data => {
+    scrollIntoView(document.getElementById('main'), document.body);
+    setProductsPage(data.selected + 1);
+  };
+  const handleFilteredChangePage = data => {
+    scrollIntoView(document.getElementById('main'), document.body);
+    setFilteredPage(data.selected + 1);
+  };
+  const handleRemoveFilters = filter => {
     setFilters(prev => {
-      return prev.filter(i => i.type !== type);
+      return prev.filter(i => i.value !== filter.value);
     });
-    if (type === 'Brand') {
-      setBrandFilters(null);
+    if (filter.type === 'Brand') {
+      setBrandFilters(prev => {
+        return prev.filter(i => i.label !== filter.value);
+      });
     }
-    if (type === 'Sort') {
+    if (filter.type === 'Sort') {
       setSortBy({
         value: 'newest',
         label: 'Newest',
       });
     }
-    if (type === 'Price') {
+    if (filter.type === 'Price') {
       setFilters(prev => {
         return prev.filter(i => i.type !== 'Price');
       });
     }
   };
-
   const handlePriceChange = values => {
     setPriceFilters(values);
   };
@@ -107,19 +123,22 @@ export default function SearchResultsMobile() {
     setSortBy(selectedValue);
   };
   const handleBrandChange = brand => {
-    if (brandFilters === brand) {
-      setBrandFilters(null);
+    const isAvailable = brandFilters.find(i => i.id === brand.id);
+    // if available
+    if (isAvailable) {
+      setBrandFilters(prev => {
+        return prev.filter(i => i.id !== brand.id);
+      });
       setFilters(prev => {
-        return prev.filter(i => i.type !== 'Brand');
+        return prev.filter(i => i.value !== brand.label);
       });
     } else {
       setFilters(prev => {
-        let newArr = prev.filter(i => i.type !== 'Brand');
-        newArr.push({ type: 'Brand', value: brand });
-
-        return newArr;
+        return [...prev, { type: 'Brand', value: brand.label }];
       });
-      setBrandFilters(brand);
+      setBrandFilters(prev => {
+        return [...prev, { ...brand }];
+      });
     }
   };
   React.useEffect(() => {
@@ -130,19 +149,36 @@ export default function SearchResultsMobile() {
     }
   }, [filters]);
   const resolvePlural = () => {
-    switch (data?.products.length) {
+    switch (products?.products.length) {
       case 1:
         return formatMessage({ id: 'one-search-results' });
 
       case 2:
         return formatMessage({ id: 'two-search-results' });
 
-      case data?.products.length > 10:
+      case products?.products.length > 10:
         return formatMessage({ id: 'more-than-10-search-results' });
       default:
         return formatMessage({ id: 'search-results' });
     }
   };
+  const resultsPerPageOptions = React.useMemo(
+    () => [
+      {
+        label: 20,
+        value: 20,
+      },
+      {
+        label: 30,
+        value: 30,
+      },
+      {
+        label: 40,
+        value: 40,
+      },
+    ],
+    []
+  );
   return (
     <Layout>
       <div className="min-h-screen relative">
@@ -164,19 +200,37 @@ export default function SearchResultsMobile() {
             ></motion.div>
           )}
         </AnimatePresence>
-        {data?.products && (
-          <div className="p-3 text-lg border-b">
-            <h1>
-              {data?.products.length > 2 && data?.products.length}{' '}
-              {resolvePlural()} <strong>{query}</strong>
-            </h1>
+        {products?.products.length !== 0 && (
+          <div
+            className="grid border-b mb-1"
+            style={{ gridTemplateColumns: '0.5fr 0.5fr' }}
+          >
+            <div className="p-3 ">
+              <h1>
+                {products?.products.length > 2 && products?.products.length}{' '}
+                {resolvePlural()} <strong>{query}</strong>
+              </h1>
+            </div>
+            <div className="flex items-center">
+              <h1 className="font-semibold text-sm">
+                {formatMessage({ id: 'number-per-page' })}
+              </h1>
+              <Select
+                isSearchable={false}
+                options={resultsPerPageOptions}
+                value={resultsPerPage}
+                onChange={handleResultPerPageChange}
+                className="mx-2 flex-1"
+              />
+            </div>
           </div>
         )}
+
         <AnimateSharedLayout>
           <motion.div layout className="px-3">
             {filters.length !== 0 && (
               <>
-                <motion.h1 layout className="text-lg mb-2 font-semibold">
+                <motion.h1 layout className=" mb-1 font-semibold">
                   {formatMessage({ id: 'filtered-by' })} :
                 </motion.h1>
                 <motion.div layout className="flex items-center">
@@ -201,19 +255,46 @@ export default function SearchResultsMobile() {
         </AnimateSharedLayout>
 
         <CategoryMobileItemGrid
-          products={data?.products}
+          products={products?.products}
           productsLoading={productsLoading}
           setCartMenuOpen={setCartMenuOpen}
           filteredProducts={filteredData?.filteredProducts}
           filteredProductsLoading={filteredProductsLoading}
           triggerRef={triggerRef}
-          setPage={setPage}
         />
+        {!productsLoading && !filteredProductsLoading && (
+          <ReactPaginate
+            previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
+            nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+            breakLabel={'...'}
+            breakClassName={'inline'}
+            pageCount={
+              filtersApplied ? filteredData?.lastPage : products?.lastPage
+            }
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={2}
+            initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
+            disableInitialCallback={true}
+            onPageChange={
+              filtersApplied
+                ? handleFilteredChangePage
+                : handleProductChangePage
+            }
+            containerClassName={'text-center my-2'}
+            subContainerClassName={'p-3 inline'}
+            pageLinkClassName="p-3"
+            activeClassName={'bg-main-color font-bold text-main-text'}
+            pageClassName=" inline-block mx-2 rounded-full text-lg"
+            previousClassName="p-3 inline font-bold"
+            nextClassName="p-3 inline font-bold"
+            disabledClassName="text-gray-500"
+          />
+        )}
         <AnimatePresence>
           {inView && (
             <SortInfoPanelMobile
               productsLoading={productsLoading}
-              products={data?.products}
+              products={products?.products}
               brandFilters={brandFilters}
               handleBrandChange={handleBrandChange}
               filtersApplied={filtersApplied}
@@ -227,7 +308,6 @@ export default function SearchResultsMobile() {
               handlePriceChange={handlePriceChange}
               handleSubmitPrice={handleSubmitPrice}
               priceFilters={priceFilters}
-              handleResultPerPageChange={handleResultPerPageChange}
             />
           )}
         </AnimatePresence>

@@ -15,16 +15,18 @@ import CategoryHeader from '../components/Category/CategoryHeader';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
+import { scrollIntoView } from 'scroll-js';
 
 export default function Category() {
   const { category } = useParams();
   const { locale, formatMessage } = useIntl();
-  const [brandFilters, setBrandFilters] = React.useState(null);
+  const [brandFilters, setBrandFilters] = React.useState([]);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
   });
-  const [page, setPage] = React.useState(1);
+  const [productsPage, setProductsPage] = React.useState(1);
+  const [filteredPage, setFilteredPage] = React.useState(1);
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 20,
     value: 20,
@@ -39,7 +41,7 @@ export default function Category() {
    */
 
   const { data, isLoading: productsLoading } = useQuery(
-    ['category-products', category, page, resultsPerPage],
+    ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
     { retry: true, refetchOnWindowFocus: false }
   );
@@ -48,17 +50,14 @@ export default function Category() {
     getSingleCategoryInfo,
     { retry: true, refetchOnWindowFocus: false }
   );
-  const {
-    data: filteredProducts,
-    isLoading: filteredProductsLoading,
-  } = useQuery(
+  const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
     [
       'filtered-products',
       {
         category: categoryInfo?.id,
-        brandFilters: brandFilters?.id,
+        brandFilters,
         sortBy,
-        page,
+        page: filteredPage,
         resultsPerPage,
         locale,
         priceFilters,
@@ -70,23 +69,30 @@ export default function Category() {
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
-  const handleChangePage = data => {
-    setPage(data.selected + 1);
+  const handleProductChangePage = data => {
+    scrollIntoView(document.getElementById('main'), document.body);
+    setProductsPage(data.selected + 1);
   };
-  const handleRemoveFilters = type => {
+  const handleFilteredChangePage = data => {
+    scrollIntoView(document.getElementById('main'), document.body);
+    setFilteredPage(data.selected + 1);
+  };
+  const handleRemoveFilters = filter => {
     setFilters(prev => {
-      return prev.filter(i => i.type !== type);
+      return prev.filter(i => i.value !== filter.value);
     });
-    if (type === 'Brand') {
-      setBrandFilters(null);
+    if (filter.type === 'Brand') {
+      setBrandFilters(prev => {
+        return prev.filter(i => i.label !== filter.value);
+      });
     }
-    if (type === 'Sort') {
+    if (filter.type === 'Sort') {
       setSortBy({
         value: 'newest',
         label: 'Newest',
       });
     }
-    if (type === 'Price') {
+    if (filter.type === 'Price') {
       setFilters(prev => {
         return prev.filter(i => i.type !== 'Price');
       });
@@ -125,19 +131,22 @@ export default function Category() {
     setSortBy(selectedValue);
   };
   const handleBrandChange = brand => {
-    if (brandFilters === brand) {
-      setBrandFilters(null);
+    const isAvailable = brandFilters.find(i => i.id === brand.id);
+    // if available
+    if (isAvailable) {
+      setBrandFilters(prev => {
+        return prev.filter(i => i.id !== brand.id);
+      });
       setFilters(prev => {
-        return prev.filter(i => i.type !== 'Brand');
+        return prev.filter(i => i.value !== brand.label);
       });
     } else {
       setFilters(prev => {
-        let newArr = prev.filter(i => i.type !== 'Brand');
-        newArr.push({ type: 'Brand', value: brand.label });
-
-        return newArr;
+        return [...prev, { type: 'Brand', value: brand.label }];
       });
-      setBrandFilters(brand);
+      setBrandFilters(prev => {
+        return [...prev, { ...brand }];
+      });
     }
   };
   React.useEffect(() => {
@@ -179,6 +188,7 @@ export default function Category() {
           categoryInfo={categoryInfo}
           categoryInfoLoading={categoryInfoLoading}
         />
+
         {/* <Breadcrumbs data={categories} /> */}
         <div className="search-page__container">
           <CategoryLeftSide
@@ -200,7 +210,7 @@ export default function Category() {
             productsLoading={productsLoading}
             sortBy={sortBy}
             setResultsPerPage={setResultsPerPage}
-            filteredProducts={filteredProducts}
+            filteredProducts={filteredData?.filteredProducts}
             filteredProductsLoading={filteredProductsLoading}
             filtersApplied={filtersApplied}
             filters={filters}
@@ -209,9 +219,12 @@ export default function Category() {
             setCartMenuOpen={setCartMenu}
             resultsPerPage={resultsPerPage}
             handleResultPerPageChange={handleResultPerPageChange}
-            pageCount={data?.lastPage}
-            handleChangePage={handleChangePage}
-            page={page}
+            productsPageCount={data?.lastPage}
+            filteredPageCount={filteredData?.lastPage}
+            handleProductChangePage={handleProductChangePage}
+            handleFilteredChangePage={handleFilteredChangePage}
+            filteredPage={filteredPage}
+            productsPage={productsPage}
           />
         </div>
       </div>

@@ -10,15 +10,18 @@ import SearchRightSide from '../components/Search/SearchRightSide';
 import SearchLeftSide from '../components/Search/SearchLeftSide';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
+import { scrollIntoView } from 'scroll-js';
 export default function SearchResults() {
   const { query } = useParams();
   const { locale, formatMessage } = useIntl();
-  const [brandFilters, setBrandFilters] = React.useState(null);
+  const [brandFilters, setBrandFilters] = React.useState([]);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
   });
-  const [page, setPage] = React.useState(1);
+  const [productsPage, setProductsPage] = React.useState(1);
+  const [filteredPage, setFilteredPage] = React.useState(1);
+
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 20,
     value: 20,
@@ -31,20 +34,20 @@ export default function SearchResults() {
   /**
    * Main Fetch
    */
-  const { data, isLoading: productsLoading } = useQuery(
-    ['searchProducts', query, page, resultsPerPage],
+  const { data: products, isLoading: productsLoading } = useQuery(
+    ['searchProducts', { query, page: productsPage, resultsPerPage }],
     searchProducts,
     { retry: true, refetchOnWindowFocus: false }
   );
 
-  const { filteredData, isLoading: filteredProductsLoading } = useQuery(
+  const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
     [
       'search-filtered-products',
       {
         search: query,
-        brandFilters: brandFilters?.id,
+        brandFilters,
         sortBy,
-        page,
+        page: filteredPage,
         resultsPerPage,
         locale,
         priceFilters,
@@ -57,20 +60,30 @@ export default function SearchResults() {
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
-  const handleRemoveFilters = type => {
+  const handleProductChangePage = data => {
+    scrollIntoView(document.getElementById('main'), document.body);
+    setProductsPage(data.selected + 1);
+  };
+  const handleFilteredChangePage = data => {
+    scrollIntoView(document.getElementById('main'), document.body);
+    setFilteredPage(data.selected + 1);
+  };
+  const handleRemoveFilters = filter => {
     setFilters(prev => {
-      return prev.filter(i => i.type !== type);
+      return prev.filter(i => i.value !== filter.value);
     });
-    if (type === 'Brand') {
-      setBrandFilters(null);
+    if (filter.type === 'Brand') {
+      setBrandFilters(prev => {
+        return prev.filter(i => i.label !== filter.value);
+      });
     }
-    if (type === 'Sort') {
+    if (filter.type === 'Sort') {
       setSortBy({
         value: 'newest',
         label: 'Newest',
       });
     }
-    if (type === 'Price') {
+    if (filter.type === 'Price') {
       setFilters(prev => {
         return prev.filter(i => i.type !== 'Price');
       });
@@ -109,19 +122,22 @@ export default function SearchResults() {
     setSortBy(selectedValue);
   };
   const handleBrandChange = brand => {
-    if (brandFilters === brand) {
-      setBrandFilters(null);
+    const isAvailable = brandFilters.find(i => i.id === brand.id);
+    // if available
+    if (isAvailable) {
+      setBrandFilters(prev => {
+        return prev.filter(i => i.id !== brand.id);
+      });
       setFilters(prev => {
-        return prev.filter(i => i.type !== 'Brand');
+        return prev.filter(i => i.value !== brand.label);
       });
     } else {
       setFilters(prev => {
-        let newArr = prev.filter(i => i.type !== 'Brand');
-        newArr.push({ type: 'Brand', value: brand.label });
-
-        return newArr;
+        return [...prev, { type: 'Brand', value: brand.label }];
       });
-      setBrandFilters(brand);
+      setBrandFilters(prev => {
+        return [...prev, { ...brand }];
+      });
     }
   };
   React.useEffect(() => {
@@ -160,7 +176,7 @@ export default function SearchResults() {
       >
         <div className="search-page__container">
           <SearchLeftSide
-            products={data?.products}
+            products={products?.products}
             productsLoading={productsLoading}
             brandFilters={brandFilters}
             setBrandFilters={setBrandFilters}
@@ -172,10 +188,9 @@ export default function SearchResults() {
           />
 
           <SearchRightSide
-            products={data?.products}
+            products={products?.products}
             productsLoading={productsLoading}
             sortBy={sortBy}
-            setPage={setPage}
             setResultsPerPage={setResultsPerPage}
             filteredProducts={filteredData?.filteredProducts}
             filteredProductsLoading={filteredProductsLoading}
@@ -186,6 +201,13 @@ export default function SearchResults() {
             setCartMenuOpen={setCartMenu}
             resultsPerPage={resultsPerPage}
             handleResultPerPageChange={handleResultPerPageChange}
+            handleFilteredChangePage={handleFilteredChangePage}
+            handleProductChangePage={handleProductChangePage}
+            filteredPage={filteredPage}
+            productsPage={productsPage}
+            productsPageCount={products?.lastPage}
+            filteredPageCount={filteredData?.lastPage}
+            query={query}
           />
         </div>
       </div>

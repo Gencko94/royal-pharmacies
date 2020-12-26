@@ -657,12 +657,10 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
  */
 export const getCategoryProducts = async (
   k,
-  categorySlug,
-  page,
-  resultsPerPage
+  { category, page, resultsPerPage }
 ) => {
   const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/category-products/${categorySlug}?page=${page}&number=${resultsPerPage?.value}`
+    `${process.env.REACT_APP_MAIN_URL}/category-products/${category}?page=${page}&number=${resultsPerPage?.value}`
   );
   console.log(res);
   if (res.data.status === true) {
@@ -686,9 +684,10 @@ export const filterProducts = async (
     priceFilters,
   }
 ) => {
+  let brand = brandFilters?.map(i => i.id);
   const query = {
     category,
-    brand: brandFilters ? brandFilters : undefined,
+    brand: brandFilters.length !== 0 ? brand : undefined,
     sort_by: sortBy ? sortBy.value : undefined,
     page,
     number: resultsPerPage?.value,
@@ -702,6 +701,7 @@ export const filterProducts = async (
   );
 
   if (res.data.status === true) {
+    console.log(res.data);
     return {
       filteredProducts: res.data.data.data,
       currentPage: res.data.data.current_page,
@@ -861,7 +861,7 @@ export const getVisitedItems = async () => {
  * Search Products
  */
 
-export const searchProducts = async (k, query, page, resultsPerPage) => {
+export const searchProducts = async (k, { query, page, resultsPerPage }) => {
   const res = await axios({
     method: 'GET',
     url: `${process.env.REACT_APP_MAIN_URL}/search-products`,

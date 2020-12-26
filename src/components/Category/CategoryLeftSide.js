@@ -6,10 +6,8 @@ import LeftSidePrice from './LeftSidePrice';
 
 export default function CategoryLeftSide({
   productsLoading,
-
   handlePriceChange,
   products,
-
   categoryInfo,
   categoryInfoLoading,
   brandFilters,

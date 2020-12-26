@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
+import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
+import ReactPaginate from 'react-paginate';
 import CategoryItemLoader from '../Category/CategoryItemLoader';
 import CategoryProductItem from '../Category/CategoryProductItem';
 import VariantCategoryProductItem from '../Category/VariantCategoryProductItem';
@@ -20,6 +22,13 @@ export default function SearchRightSide({
   setCartMenuOpen,
   resultsPerPage,
   handleResultPerPageChange,
+  query,
+  handleFilteredChangePage,
+  handleProductChangePage,
+  filteredPage,
+  productsPage,
+  productsPageCount,
+  filteredPageCount,
 }) {
   const { formatMessage } = useIntl();
   if (productsLoading) {
@@ -52,6 +61,7 @@ export default function SearchRightSide({
         productsCount={products?.length}
         handleResultPerPageChange={handleResultPerPageChange}
         resultsPerPage={resultsPerPage}
+        query={query}
       />
       {filters.length !== 0 && (
         <div className="flex items-center">
@@ -65,7 +75,7 @@ export default function SearchRightSide({
                   layout
                   className="mx-1 py-1 px-2 bg-main-color text-main-text rounded-full"
                   key={item.value}
-                  onClick={() => handleRemoveFilters(item.type)}
+                  onClick={() => handleRemoveFilters(item)}
                 >
                   {formatMessage({ id: item.type })} : {item.value}
                 </motion.button>
@@ -119,6 +129,30 @@ export default function SearchRightSide({
               );
             })}
         </div>
+      )}
+      {!productsLoading && !filteredProductsLoading && (
+        <ReactPaginate
+          previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
+          nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+          breakLabel={'...'}
+          breakClassName={'inline'}
+          pageCount={filtersApplied ? filteredPageCount : productsPageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={2}
+          initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
+          disableInitialCallback={true}
+          onPageChange={
+            filtersApplied ? handleFilteredChangePage : handleProductChangePage
+          }
+          containerClassName={'my-2 w-full text-center'}
+          subContainerClassName={'p-3 inline'}
+          pageLinkClassName="p-3"
+          activeClassName={'bg-main-color font-bold text-main-text'}
+          pageClassName=" inline-block mx-2 rounded-full text-lg"
+          previousClassName="p-3 inline font-bold"
+          nextClassName="p-3 inline font-bold"
+          disabledClassName="text-gray-500"
+        />
       )}
       {products.length === 0 && (
         <div className="p-6 flex items-center justify-center text-xl h-full">

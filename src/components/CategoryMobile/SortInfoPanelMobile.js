@@ -46,10 +46,12 @@ export default function SortInfoPanelMobile({
     start: {
       backgroundColor: '#f7f7fa',
       color: '#252525',
+      justifyContent: 'center',
     },
     animation: {
       backgroundColor: '#b72b2b',
       color: '#fff',
+      justifyContent: 'start',
     },
   };
   const closeButtonVariant = {
@@ -117,7 +119,7 @@ export default function SortInfoPanelMobile({
                   initial="start"
                   animate={filtersOpen || sortByOpen ? 'animation' : 'start'}
                   onClick={() => handleChangeView(option)}
-                  className={` p-2 flex font-semibold items-center border w-full`}
+                  className={` p-3 flex font-semibold items-center border w-full`}
                 >
                   <motion.span layout>
                     {option === 'filter'
@@ -125,7 +127,7 @@ export default function SortInfoPanelMobile({
                       : formatMessage({ id: 'sort-by' })}
                   </motion.span>
                   <motion.span layout className="mx-3">
-                    {options === 'filter' ? (
+                    {option === 'filter' ? (
                       <BiFilterAlt className="w-5 h-5" />
                     ) : (
                       <BiFilter className="w-6 h-6" />

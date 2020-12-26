@@ -7,6 +7,7 @@ export default function SideMenuDeliveryCountries({
   deliveryCountries,
   deliveryCountry,
   setDeliveryCountry,
+  toggleSideMenu,
 }) {
   const { formatMessage, locale } = useIntl();
   const handleChangeDeliveryCountry = country => {
@@ -19,6 +20,7 @@ export default function SideMenuDeliveryCountries({
         },
       })
     );
+    toggleSideMenu();
     setDeliveryCountry(country);
   };
   return (

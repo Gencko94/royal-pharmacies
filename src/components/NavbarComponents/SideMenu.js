@@ -348,10 +348,14 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               secondSubPage={secondSubPage}
               subCategory={subCategory}
               categories={categories}
+              toggleSideMenu={toggleSideMenu}
             />
           )}
           {showLanguages && (
-            <SideMenuLanguages handleHideLanguages={handleHideLanguages} />
+            <SideMenuLanguages
+              handleHideLanguages={handleHideLanguages}
+              toggleSideMenu={toggleSideMenu}
+            />
           )}
           {showDeliveryCountries && (
             <SideMenuDeliveryCountries
@@ -359,6 +363,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               deliveryCountries={deliveryCountries}
               deliveryCountry={deliveryCountry}
               setDeliveryCountry={setDeliveryCountry}
+              toggleSideMenu={toggleSideMenu}
             />
           )}
           {showCustomerService && (

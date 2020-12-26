@@ -6,7 +6,8 @@ export default function LazyImage({ src, pb, alt }) {
     <div
       style={{
         position: 'relative',
-        backgroundColor: '#f7f7fa',
+        // backgroundColor: '#f7f7fa',
+        backgroundColor: '#fff',
         paddingBottom: pb,
         width: '100%',
       }}

@@ -76,13 +76,15 @@ export default function Home() {
       case 'banner':
         return (
           <LazyLoad offset={200} key={index}>
-            <Banner
-              url={
-                isTabletOrAbove
-                  ? item.data.banner_desktop.link
-                  : item.data.banner_mobile.link
-              }
-            />
+            <div className="my-16">
+              <Banner
+                url={
+                  isTabletOrAbove
+                    ? item.data.banner_desktop.link
+                    : item.data.banner_mobile.link
+                }
+              />
+            </div>
           </LazyLoad>
         );
 

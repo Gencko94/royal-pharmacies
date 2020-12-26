@@ -67,7 +67,6 @@ export default function SearchBar() {
         params: { value: value, page: 1 },
         cancelToken: cancelToken.token,
       });
-      console.log(res.data.data.data);
       if (res) {
         setData(res.data.data.data.slice(0, 8));
         if (inputThreshold && res.data.data.data.length === 0) {
