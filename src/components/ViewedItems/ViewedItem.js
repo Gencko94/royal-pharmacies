@@ -30,8 +30,9 @@ export default function ViewedItem({ item }) {
     >
       <Link to={`/${locale}/c/${item.id}`}>
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
+          src={item.image.link}
           alt={item.small_translation[locale].title}
+          origin="original"
           pb="calc(100% * 286/210)"
         />
       </Link>

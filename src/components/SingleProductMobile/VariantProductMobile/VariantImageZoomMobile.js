@@ -1,6 +1,5 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-// import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -11,6 +10,8 @@ export default function VariantImageZoomMobile({
   selectedVariation,
   selectedOption,
 }) {
+  const { formatMessage } = useIntl();
+  const [doubleClicked, setDoubleClicked] = React.useState(false);
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const { locale } = useIntl();
   const resolveImage = () => {
@@ -67,8 +68,21 @@ export default function VariantImageZoomMobile({
   };
   return (
     <div className="mb-2">
-      <Swiper id="main" slidesPerView={1} thumbs={{ swiper: thumbsSwiper }}>
+      <Swiper
+        onDoubleClick={() => setDoubleClicked(true)}
+        id="main"
+        slidesPerView={1}
+        thumbs={{ swiper: thumbsSwiper }}
+      >
         <SwiperSlide zoom>{resolveImage()}</SwiperSlide>
+        {!doubleClicked && (
+          <div
+            className="absolute bottom-10 p-2 shadow rounded font-semibold"
+            style={{ backgroundColor: 'rgba(255,255,255,0.7)' }}
+          >
+            {formatMessage({ id: 'double-click-zoom' })}
+          </div>
+        )}
       </Swiper>
       <Swiper
         id="thumbs"

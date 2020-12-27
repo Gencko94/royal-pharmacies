@@ -1,7 +1,7 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import ContentLoader from 'react-content-loader';
 import LeftSideBrands from './LeftSideBrands';
+import LeftSideCategories from './LeftSideCategories';
 import LeftSidePrice from './LeftSidePrice';
 
 export default function CategoryLeftSide({
@@ -16,52 +16,49 @@ export default function CategoryLeftSide({
   priceFilters,
   handleSubmitPrice,
 }) {
-  const { locale, formatMessage } = useIntl();
-
   return (
-    <div className="py-2">
-      {!categoryInfoLoading && (
-        <div className="mb-4">
-          <h1 className="text-xl font-semibold">
-            {formatMessage({ id: 'categories' })}
-          </h1>
-          <hr className="my-2" />
-
-          <div className="my-2">
-            <div className="flex justify-between">
-              <h1 className="font-semibold text-sm">
-                {categoryInfo.translation[locale].name}
-              </h1>
-            </div>
-            {categoryInfo.children.length !== 0 &&
-              categoryInfo.children.map((subCategory, i) => (
-                <Link
-                  to={`/${locale}/categories/${subCategory.slug}`}
-                  key={i}
-                  className="text-sm block hover:underline hover:text-blue-700"
-                >
-                  {subCategory.translation[locale].name}
-                </Link>
-              ))}
-          </div>
-        </div>
+    <div>
+      {/* Category tree */}
+      {!productsLoading && products?.length > 0 && (
+        <LeftSideCategories
+          categoryInfo={categoryInfo}
+          categoryInfoLoading={categoryInfoLoading}
+          productsLoading={productsLoading}
+        />
       )}
-      {/* Brands */}
+      {/* Doing this because of the memo in brands */}
+      {productsLoading && (
+        <ContentLoader
+          speed={2}
+          viewBox="0 0 300 150"
+          backgroundColor="#f3f3f3"
+          foregroundColor="#ecebeb"
+        >
+          <rect x="0" y="0" rx="5" ry="5" width="100%" height="30" />
+          <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="65" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="90" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
+        </ContentLoader>
+      )}
       {!productsLoading && (
         <LeftSideBrands
           products={products}
           brandFilters={brandFilters}
           handleBrandChange={handleBrandChange}
+          productsLoading={productsLoading}
         />
       )}
+
       {/* Price */}
-      {!productsLoading && (
+      {!productsLoading && products?.length > 0 && (
         <LeftSidePrice
           products={products}
           priceFilters={priceFilters}
           handlePriceChange={handlePriceChange}
           handleChangePriceInput={handleChangePriceInput}
           handleSubmitPrice={handleSubmitPrice}
+          productsLoading={productsLoading}
         />
       )}
     </div>

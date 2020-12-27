@@ -8,6 +8,7 @@ import SortInfoPanel from './SortInfoPanel';
 import VariantCategoryProductItem from './VariantCategoryProductItem';
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
+import placeholder from '../../assets/illustrationplaceholder.png';
 export default function CategoryRightSide({
   products,
   productsLoading,
@@ -28,6 +29,7 @@ export default function CategoryRightSide({
   filteredPage,
   productsPage,
 }) {
+  console.log(filteredProducts, 'filteredProducts');
   const { formatMessage } = useIntl();
   if (productsLoading) {
     return (
@@ -52,13 +54,15 @@ export default function CategoryRightSide({
     );
   }
   return (
-    <div className="h-full">
-      <SortInfoPanel
-        sortBy={sortBy}
-        resultsPerPage={resultsPerPage}
-        handleSortByChange={handleSortByChange}
-        handleResultPerPageChange={handleResultPerPageChange}
-      />
+    <div id="top" className="h-full">
+      {products?.length > 0 && (
+        <SortInfoPanel
+          sortBy={sortBy}
+          resultsPerPage={resultsPerPage}
+          handleSortByChange={handleSortByChange}
+          handleResultPerPageChange={handleResultPerPageChange}
+        />
+      )}
       <AnimateSharedLayout>
         <motion.div layout className="flex items-center">
           {filters.length !== 0 && (
@@ -84,21 +88,35 @@ export default function CategoryRightSide({
           )}
         </motion.div>
       </AnimateSharedLayout>
-      {products.length !== 0 && (
+      {filtersApplied && filteredProductsLoading && (
+        <div
+          className="category-page-items__grid py-2 min-h-full"
+          style={{ minHeight: 'calc(100vh - 150px)' }}
+        >
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
+            return <CategoryItemLoader key={i} />;
+          })}
+        </div>
+      )}
+      {(!filtersApplied && products?.length > 0 && !productsLoading) ||
+      (filtersApplied &&
+        filteredProducts?.length > 0 &&
+        !filteredProductsLoading) ? (
         <div
           className="category-page-items__grid py-2 min-h-full"
           style={{ minHeight: 'calc(100vh - 150px)' }}
         >
           {!filtersApplied &&
             products.map(item => {
-              return item.type === 'simple' ? (
-                <CategoryProductItem
+              return item.type === 'variation' &&
+                item.new_variation_addons.length > 0 ? (
+                <VariantCategoryProductItem
                   key={item.id}
                   setCartMenuOpen={setCartMenuOpen}
                   item={item}
                 />
               ) : (
-                <VariantCategoryProductItem
+                <CategoryProductItem
                   key={item.id}
                   setCartMenuOpen={setCartMenuOpen}
                   item={item}
@@ -112,16 +130,17 @@ export default function CategoryRightSide({
             })}
           {filtersApplied &&
             !filteredProductsLoading &&
-            filteredProducts &&
+            filteredProducts?.length > 0 &&
             filteredProducts.map(item => {
-              return item.type === 'simple' ? (
-                <CategoryProductItem
+              return item.type === 'variation' &&
+                item.new_variation_addons.length > 0 ? (
+                <VariantCategoryProductItem
                   key={item.id}
                   setCartMenuOpen={setCartMenuOpen}
                   item={item}
                 />
               ) : (
-                <VariantCategoryProductItem
+                <CategoryProductItem
                   key={item.id}
                   setCartMenuOpen={setCartMenuOpen}
                   item={item}
@@ -129,8 +148,11 @@ export default function CategoryRightSide({
               );
             })}
         </div>
-      )}
-      {!productsLoading && !filteredProductsLoading && (
+      ) : null}
+      {(!filtersApplied && products?.length > 0 && !productsLoading) ||
+      (filtersApplied &&
+        filteredProducts?.length > 0 &&
+        !filteredProductsLoading) ? (
         <ReactPaginate
           previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
           nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
@@ -153,16 +175,18 @@ export default function CategoryRightSide({
           nextClassName="p-3 inline font-bold"
           disabledClassName="text-gray-500"
         />
-      )}
+      ) : null}
       {products.length === 0 && (
-        <div className="p-6 flex items-center justify-center text-xl h-full">
+        <div className="p-6 flex flex-col items-center justify-center text-xl h-full">
+          <img src={placeholder} alt="No products" className="mb-4" />
           {formatMessage({ id: 'no-products' })}
         </div>
       )}
       {filtersApplied &&
         !filteredProductsLoading &&
-        filteredProducts?.length === 0 && (
-          <div className="p-6 flex items-center justify-center text-xl h-full">
+        filteredProducts.length === 0 && (
+          <div className="p-6 flex items-center flex-col justify-center text-xl h-full">
+            <img src={placeholder} alt="No products" className="mb-4" />
             {formatMessage({ id: 'no-filter-results' })}
           </div>
         )}

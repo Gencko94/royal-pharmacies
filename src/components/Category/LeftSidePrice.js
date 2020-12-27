@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
 import { Range } from 'react-range';
 import { DataProvider } from '../../contexts/DataContext';
@@ -8,11 +9,30 @@ export default function LeftSidePrice({
   priceFilters,
   handleChangePriceInput,
   handleSubmitPrice,
+  productsLoading,
 }) {
   const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const min = 0;
   const max = 10000;
+  if (productsLoading) {
+    return (
+      <ContentLoader
+        speed={2}
+        viewBox="0 0 300 150"
+        backgroundColor="#f3f3f3"
+        foregroundColor="#ecebeb"
+
+        // rtl={locale === 'ar'}
+      >
+        <rect x="0" y="0" rx="5" ry="5" width="100%" height="30" />
+        <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
+        <rect x="0" y="65" rx="5" ry="5" width="100%" height="15" />
+        <rect x="0" y="90" rx="5" ry="5" width="100%" height="15" />
+        <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
+      </ContentLoader>
+    );
+  }
   return (
     <motion.div layout className="mb-4">
       <h1 className="text-xl font-semibold">

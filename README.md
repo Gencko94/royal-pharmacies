@@ -72,6 +72,9 @@
 - [ ] fix image zoom
 - [ ] add pagination to search, category,singleproduct
 - [ ] breadcrumbs
+- [ ] fix viewed items
+- [ ] send item slug with cart
+- [ ] send category info (slug and name and stuff) with products by category api
 
       **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 

@@ -70,7 +70,7 @@ export default function CartMobile() {
           <MobileGuestCart setCheckOutPopupOpen={setCheckOutPopupOpen} />
         )}
 
-        <StaticSwiper type="electronics" />
+        <StaticSwiper type="perfumes" title="Perfumes" />
       </div>
     </Layout>
   );

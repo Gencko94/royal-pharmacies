@@ -1,6 +1,5 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
-// import { useMediaQuery } from 'react-responsive';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
@@ -9,22 +8,9 @@ import { useIntl } from 'react-intl';
 SwiperCore.use([Navigation]);
 export default function Categories() {
   const { categories, categoriesLoading } = React.useContext(DataProvider);
-  // const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { locale } = useIntl();
-  // const isMobile = useMediaQuery({ query: '(min-width: 360px)' });
 
   const breakpoints = {
-    // when window width is >= 320px
-    320: {
-      slidesPerView: 2,
-      spaceBetween: 20,
-    },
-    // when window width is >= 480px
-    480: {
-      slidesPerView: 3,
-      spaceBetween: 20,
-    },
-    // when window width is >= 640px
     640: {
       slidesPerView: 4,
       spaceBetween: 20,

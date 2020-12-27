@@ -45,32 +45,42 @@ export default function SortInfoPanel({
     []
   );
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 0.8fr 0.8fr',
-        marginBottom: '0.5rem',
-      }}
-    >
-      <div />
-      <div className="flex items-center w-full">
+    <div className="sm:grid sm:grid-cols-2 gap-2 mb-2 md:flex md:justify-end">
+      {/* <div /> */}
+      <div className="flex items-center">
         <h1>{formatMessage({ id: 'number-per-page' })}</h1>
         <Select
           isSearchable={false}
           options={resultsPerPageOptions}
           value={resultsPerPage}
           onChange={handleResultPerPageChange}
-          className="mx-2 flex-1"
+          className="mx-2"
+          styles={{
+            valueContainer: provided => {
+              return {
+                ...provided,
+                paddingRight: '2rem',
+              };
+            },
+          }}
         />
       </div>
-      <div className="flex items-center w-full">
+      <div className="flex items-center">
         <h1>{formatMessage({ id: 'sort-by' })}</h1>
         <Select
           isSearchable={false}
           options={sortByOptions}
           value={sortBy}
           onChange={handleSortByChange}
-          className="mx-2 flex-1"
+          className="mx-2"
+          styles={{
+            valueContainer: provided => {
+              return {
+                ...provided,
+                paddingRight: '7rem',
+              };
+            },
+          }}
         />
       </div>
     </div>

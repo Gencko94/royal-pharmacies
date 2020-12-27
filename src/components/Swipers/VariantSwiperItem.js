@@ -188,11 +188,12 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
     if (item.new_variation_addons[selectedVariation].options) {
       return (
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+          src={
             item.new_variation_addons[selectedVariation].options[
               selectedOption[selectedVariation]
             ]?.image || item.image?.link
-          }`}
+          }
+          origin="original"
           alt={item.small_translation[locale].title}
           pb="calc(100% * 286/210)"
         />
@@ -200,10 +201,11 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
     } else {
       return (
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+          src={
             item.new_variation_addons[selectedVariation].image ||
             item.image?.link
-          }`}
+          }
+          origin="original"
           alt={item.small_translation[locale].title}
           pb="calc(100% * 286/210)"
         />
@@ -227,7 +229,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <a href={`/${locale}/c/${item.id}`}>{resolveImage()}</a>
+        <a href={`/${locale}/${item.slug}/${item.id}`}>{resolveImage()}</a>
 
         <AnimatePresence>
           {showAddButton && (
@@ -353,9 +355,11 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
           <a
             title={item.small_translation[locale].title}
             className="hover:underline inline-block"
-            href={`/${locale}/c/${item.id}`}
+            href={`/${locale}/${item.slug}/${item.id}`}
           >
-            <h1 className="font-semibold text-sm">{resolveName()}</h1>
+            <h1 className="font-semibold text-sm text-clamp-2">
+              {resolveName()}
+            </h1>
           </a>
         </div>
 

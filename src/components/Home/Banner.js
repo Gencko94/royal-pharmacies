@@ -6,11 +6,10 @@ export default function Banner({ url }) {
   return (
     <div className="">
       <LazyImage
-        src={`${process.env.REACT_APP_IMAGES_URL}/original/${url}`}
+        src={url}
+        origin="original"
         alt="banner"
-        pb={`${
-          isTabletOrAbove ? 'calc(100% * 300/1440)' : 'calc(100% * 300/800)'
-        }`}
+        pb={isTabletOrAbove ? 'calc(100% * 300/1440)' : 'calc(100% * 300/800)'}
       />
     </div>
   );

@@ -72,9 +72,10 @@ export default function RecentlyViewedVertical() {
             <div key={item.id} className="recent-items__container mb-1 ">
               <Link to={`/${locale}/c/${item.id}`}>
                 <LazyImage
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
+                  src={item.image?.link}
+                  origin="small"
                   alt={item.small_translation[locale].title}
-                  pb="calc(100% * 286/210)"
+                  pb="calc(100% * 210/210)"
                 />
               </Link>
               <div className="text-sm">

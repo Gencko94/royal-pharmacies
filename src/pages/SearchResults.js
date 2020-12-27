@@ -61,11 +61,11 @@ export default function SearchResults() {
     setResultsPerPage(selectedValue);
   };
   const handleProductChangePage = data => {
-    scrollIntoView(document.getElementById('main'), document.body);
+    scrollIntoView(document.getElementById('top'), document.body);
     setProductsPage(data.selected + 1);
   };
   const handleFilteredChangePage = data => {
-    scrollIntoView(document.getElementById('main'), document.body);
+    scrollIntoView(document.getElementById('top'), document.body);
     setFilteredPage(data.selected + 1);
   };
   const handleRemoveFilters = filter => {
@@ -84,9 +84,7 @@ export default function SearchResults() {
       });
     }
     if (filter.type === 'Price') {
-      setFilters(prev => {
-        return prev.filter(i => i.type !== 'Price');
-      });
+      setPriceFilters([10000]);
     }
   };
 

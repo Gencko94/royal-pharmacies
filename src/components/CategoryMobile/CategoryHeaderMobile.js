@@ -3,7 +3,9 @@ import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
+import LazyImage from '../../helpers/LazyImage';
 import CategoryChildrenMobile from './CategoryChildrenMobile';
+import coverplaceholder from '../../assets/CategoryCoverMobilePlaceholder.png';
 export default function CategoryHeaderMobile({
   categoryInfo,
   categoryInfoLoading,
@@ -83,17 +85,15 @@ export default function CategoryHeaderMobile({
     );
   }
   return (
-    <div>
-      <div
-        className="h-64 flex items-center justify-center text-6xl"
-        style={{
-          backgroundImage: `url(${process.env.REACT_APP_IMAGES_URL}/original/${categoryInfo.cover_mobile?.link})`,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-        }}
-      >
-        {categoryInfo.translation[locale].name}
-      </div>
+    <div className="mb-4">
+      <LazyImage
+        src={categoryInfo.cover_mobile?.link}
+        origin="original"
+        alt={categoryInfo.translation[locale].name}
+        pb="calc(100% * 300/800)"
+        placeholder={coverplaceholder}
+      />
+
       {categoryInfo.children.length !== 0 && (
         <CategoryChildrenMobile categoryInfo={categoryInfo} />
       )}

@@ -11,13 +11,6 @@ export default function ImageZoomMobile({ data }) {
   const { formatMessage } = useIntl();
   const [doubleClicked, setDoubleClicked] = React.useState(false);
 
-  React.useEffect(() => {
-    if (!doubleClicked) {
-      document.addEventListener('dblclick', () => {
-        setDoubleClicked(true);
-      });
-    }
-  }, [doubleClicked]);
   return (
     <div className="mb-2">
       <Swiper
@@ -25,16 +18,12 @@ export default function ImageZoomMobile({ data }) {
         id="main"
         slidesPerView={1}
         thumbs={{ swiper: thumbsSwiper }}
+        onDoubleClick={() => setDoubleClicked(true)}
         className="mb-4"
       >
         {[data.image, ...data.gallery].map(item => {
           return (
-            <SwiperSlide className="relative" zoom key={item.id}>
-              {/* <LazyImage
-                pb="calc(100% * 401/500)"
-                src={`${process.env.REACT_APP_IMAGES_URL}/medium/${item.link}`}
-                alt={data.translation[locale].title}
-              /> */}
+            <SwiperSlide className="relative" zoom key={item?.id}>
               <img
                 src={`${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`}
                 alt={data.translation[locale].title}
@@ -65,7 +54,7 @@ export default function ImageZoomMobile({ data }) {
           return (
             <SwiperSlide className="px-2" key={item.id}>
               <img
-                src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.link}`}
+                src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.link}`}
                 alt={data.translation[locale].title}
                 style={{ width: '50px', height: '50px' }}
               />

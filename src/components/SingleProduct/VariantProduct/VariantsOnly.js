@@ -13,10 +13,13 @@ export default function VariantsOnly({
         {variants[selectedVariation][`name_${locale}`]}
       </h1>
       <div className="single-product-sizes__container">
-        {Object.keys(variants).map((variation, i) => {
+        {Object.keys(variants).map(variation => {
           if (variants[variation].image) {
             return (
               <button
+                className={`${
+                  selectedVariation === variation && 'border shadow'
+                }`}
                 onClick={() => setSelectedVariant(variation)}
                 key={variants[variation].addon_item_id}
               >
@@ -24,6 +27,9 @@ export default function VariantsOnly({
                   alt={variants[variation].id}
                   src={`${process.env.REACT_APP_IMAGES_URL}/original/${variants[variation].image}`}
                 />
+                <h1 className="mt-1 text-sm font-semibold">
+                  {variants[variation].addon_item_value}
+                </h1>
               </button>
             );
           } else {

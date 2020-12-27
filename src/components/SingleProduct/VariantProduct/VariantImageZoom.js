@@ -4,6 +4,7 @@ import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { useIntl } from 'react-intl';
+import LazyImage from '../../../helpers/LazyImage';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
 export default function VariantImageZoom({
   data,
@@ -14,13 +15,6 @@ export default function VariantImageZoom({
   const { formatMessage } = useIntl();
   const [doubleClicked, setDoubleClicked] = React.useState(false);
 
-  React.useEffect(() => {
-    if (!doubleClicked) {
-      document.addEventListener('dblclick', () => {
-        setDoubleClicked(true);
-      });
-    }
-  }, [doubleClicked]);
   const { locale } = useIntl();
   const resolveImage = () => {
     if (data.new_variation_addons[selectedVariation].options) {
@@ -51,25 +45,27 @@ export default function VariantImageZoom({
   const resolveThumbnail = () => {
     if (data.new_variation_addons[selectedVariation].options) {
       return (
-        <img
-          src={`${process.env.REACT_APP_IMAGES_URL}/small/${
+        <LazyImage
+          src={
             data.new_variation_addons[selectedVariation].options[
               selectedOption[selectedVariation]
             ]?.image || data.image?.link
-          }`}
+          }
+          origin="small"
+          pb="calc(100% * 286/210)"
           alt={data.translation[locale].title}
-          style={{ width: '50px', height: '50px' }}
         />
       );
     } else {
       return (
-        <img
-          src={`${process.env.REACT_APP_IMAGES_URL}/small/${
+        <LazyImage
+          src={
             data.new_variation_addons[selectedVariation].image ||
             data.image?.link
-          }`}
+          }
+          origin="small"
+          pb="calc(100% * 286/210)"
           alt={data.translation[locale].title}
-          style={{ width: '50px', height: '50px' }}
         />
       );
     }
@@ -82,6 +78,7 @@ export default function VariantImageZoom({
           zoom
           slidesPerView={1}
           thumbs={{ swiper: thumbsSwiper }}
+          onDoubleClick={() => setDoubleClicked(true)}
         >
           <SwiperSlide zoom>{resolveImage()}</SwiperSlide>
           {!doubleClicked && (

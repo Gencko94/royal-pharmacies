@@ -5,6 +5,7 @@ export default function LeftSideBrands({
   products,
   handleBrandChange,
   brandFilters,
+  productsLoading,
 }) {
   const { formatMessage, locale } = useIntl();
   const brands = React.useMemo(() => {
@@ -23,9 +24,11 @@ export default function LeftSideBrands({
     return brands;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   if (brands.length === 0) {
     return null;
   }
+
   return (
     <div className="mb-4">
       <h1 className="text-xl py-3 font-semibold">

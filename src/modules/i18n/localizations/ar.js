@@ -187,6 +187,7 @@ export const ar = {
   // end of credential forms
   // start of cart  items
   price: 'السعر',
+  Price: 'السعر',
   'the-items': 'القطع',
   'the-item': 'القطعة',
   'one-item': 'قطعة واحدة',
@@ -324,4 +325,6 @@ export const ar = {
   'featured-items': 'اخترنا لك',
   'double-click-zoom': 'انقر نقرة مزدوجة للتكبير',
   'number-per-page': 'عدد النتائج بالصفحة',
+  'related-products': 'المنتجات المشابهة',
+  'more-from': ' المزيد من هذه الفئة ',
 };

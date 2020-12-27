@@ -35,9 +35,9 @@ export default function ViewedItems() {
             {formatMessage({ id: 'your-viewed-items' })}
           </h1>
           <hr className="my-2" />
-          <div className="viewed-items-grid__desktop">
+          <div className="viewed-items-container__desktop">
             <AnimateSharedLayout>
-              <motion.div layout>
+              <motion.div className="viewed-items-grid__desktop" layout>
                 <AnimatePresence>
                   {data.length !== 0 &&
                     data.map(item => {

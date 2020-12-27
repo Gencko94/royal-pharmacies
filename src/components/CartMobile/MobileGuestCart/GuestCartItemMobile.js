@@ -8,6 +8,7 @@ import { DataProvider } from '../../../contexts/DataContext';
 import { CartAndWishlistProvider } from '../../../contexts/CartAndWishlistContext';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import Ink from 'react-ink';
+import LazyImage from '../../../helpers/LazyImage';
 export default function GuestCartItemMobile({ item }) {
   const {
     removeFromGuestCartMutation,
@@ -133,10 +134,11 @@ export default function GuestCartItemMobile({ item }) {
     >
       <div className="py-2 cart__item-mobile">
         <Link to={`/${locale}/item/${item.id}}`}>
-          <img
-            className=""
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
+          <LazyImage
+            src={item.image}
+            origin="small"
             alt={item[`name_${locale}`]}
+            pb="calc(100% * 286/210)"
           />
         </Link>
         <div className="text-sm">

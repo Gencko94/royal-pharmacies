@@ -200,31 +200,33 @@ export default function SearchResultsMobile() {
             ></motion.div>
           )}
         </AnimatePresence>
-        {products?.products.length !== 0 && (
-          <div
-            className="grid border-b mb-1"
-            style={{ gridTemplateColumns: '0.5fr 0.5fr' }}
-          >
-            <div className="p-3 ">
-              <h1>
-                {products?.products.length > 2 && products?.products.length}{' '}
-                {resolvePlural()} <strong>{query}</strong>
-              </h1>
-            </div>
-            <div className="flex items-center">
-              <h1 className="font-semibold text-sm">
-                {formatMessage({ id: 'number-per-page' })}
-              </h1>
-              <Select
-                isSearchable={false}
-                options={resultsPerPageOptions}
-                value={resultsPerPage}
-                onChange={handleResultPerPageChange}
-                className="mx-2 flex-1"
-              />
-            </div>
-          </div>
-        )}
+        {(!filtersApplied &&
+          products?.products?.length > 0 &&
+          !productsLoading) ||
+          (filtersApplied &&
+            filteredData?.filteredProducts?.length > 0 &&
+            !filteredProductsLoading && (
+              <div className="border-b mb-1">
+                <div className="p-3 ">
+                  <h1>
+                    {products?.products.length > 2 && products?.products.length}{' '}
+                    {resolvePlural()} <strong>{query}</strong>
+                  </h1>
+                </div>
+                <div className="flex items-center">
+                  <h1 className="font-semibold text-sm">
+                    {formatMessage({ id: 'number-per-page' })}
+                  </h1>
+                  <Select
+                    isSearchable={false}
+                    options={resultsPerPageOptions}
+                    value={resultsPerPage}
+                    onChange={handleResultPerPageChange}
+                    className="mx-2 flex-1"
+                  />
+                </div>
+              </div>
+            ))}
 
         <AnimateSharedLayout>
           <motion.div layout className="px-3">
@@ -240,10 +242,9 @@ export default function SearchResultsMobile() {
                         layout
                         className="mx-1 py-1 px-3 bg-main-color text-main-text rounded-full"
                         key={item.value}
-                        onClick={() => handleRemoveFilters(item.type)}
+                        onClick={() => handleRemoveFilters(item)}
                       >
-                        {formatMessage({ id: item.type })} :{' '}
-                        {formatMessage({ id: item.value })}
+                        {formatMessage({ id: item.type })} : {item.value}
                       </motion.button>
                     );
                   })}
@@ -261,35 +262,45 @@ export default function SearchResultsMobile() {
           filteredProducts={filteredData?.filteredProducts}
           filteredProductsLoading={filteredProductsLoading}
           triggerRef={triggerRef}
+          setProductsPage={setProductsPage}
+          filtersApplied={filtersApplied}
+          handleResultPerPageChange={handleResultPerPageChange}
         />
-        {!productsLoading && !filteredProductsLoading && (
-          <ReactPaginate
-            previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-            nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
-            breakLabel={'...'}
-            breakClassName={'inline'}
-            pageCount={
-              filtersApplied ? filteredData?.lastPage : products?.lastPage
-            }
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={2}
-            initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
-            disableInitialCallback={true}
-            onPageChange={
-              filtersApplied
-                ? handleFilteredChangePage
-                : handleProductChangePage
-            }
-            containerClassName={'text-center my-2'}
-            subContainerClassName={'p-3 inline'}
-            pageLinkClassName="p-3"
-            activeClassName={'bg-main-color font-bold text-main-text'}
-            pageClassName=" inline-block mx-2 rounded-full text-lg"
-            previousClassName="p-3 inline font-bold"
-            nextClassName="p-3 inline font-bold"
-            disabledClassName="text-gray-500"
-          />
-        )}
+        {(!filtersApplied &&
+          products?.products?.length > 0 &&
+          !productsLoading) ||
+          (filtersApplied &&
+            filteredData?.filteredProducts?.length > 0 &&
+            !filteredProductsLoading && (
+              <ReactPaginate
+                previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
+                nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+                breakLabel={'...'}
+                breakClassName={'inline'}
+                pageCount={
+                  filtersApplied ? filteredData?.lastPage : products?.lastPage
+                }
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={2}
+                initialPage={
+                  filtersApplied ? filteredPage - 1 : productsPage - 1
+                }
+                disableInitialCallback={true}
+                onPageChange={
+                  filtersApplied
+                    ? handleFilteredChangePage
+                    : handleProductChangePage
+                }
+                containerClassName={'text-center my-2'}
+                subContainerClassName={'p-3 inline'}
+                pageLinkClassName="p-3"
+                activeClassName={'bg-main-color font-bold text-main-text'}
+                pageClassName=" inline-block mx-2 rounded-full text-lg"
+                previousClassName="p-3 inline font-bold"
+                nextClassName="p-3 inline font-bold"
+                disabledClassName="text-gray-500"
+              />
+            ))}
         <AnimatePresence>
           {inView && (
             <SortInfoPanelMobile

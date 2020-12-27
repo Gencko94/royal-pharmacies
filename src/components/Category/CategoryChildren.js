@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
 import LazyImage from '../../helpers/LazyImage';
+
 SwiperCore.use([Navigation]);
 export default function CategoryChildren({ categoryInfo }) {
   const { locale } = useIntl();
@@ -30,11 +31,11 @@ export default function CategoryChildren({ categoryInfo }) {
       spaceBetween: 20,
     },
     1100: {
-      slidesPerView: 7,
+      slidesPerView: 6,
       spaceBetween: 20,
     },
     1440: {
-      slidesPerView: 8,
+      slidesPerView: 7,
       spaceBetween: 20,
     },
   };
@@ -50,13 +51,13 @@ export default function CategoryChildren({ categoryInfo }) {
             rounded`}
           >
             <Link to={`/${locale}/categories/${child.slug}`}>
-              {/* <div className="p-2"> */}
               <LazyImage
-                src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.image?.link}`}
+                src={child.image?.link}
                 alt={child.translation[locale].name}
                 pb="calc(100% * 286/210)"
+                origin="original"
               />
-              {/* </div> */}
+
               <h1 className="font-semibold text-center p-1">
                 {child.translation[locale].name}
               </h1>

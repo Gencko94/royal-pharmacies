@@ -5,19 +5,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { useIntl } from 'react-intl';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
+
 export default function ImageZoom({ data }) {
   const { formatMessage } = useIntl();
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const { locale } = useIntl();
   const [doubleClicked, setDoubleClicked] = React.useState(false);
 
-  React.useEffect(() => {
-    if (!doubleClicked) {
-      document.addEventListener('dblclick', () => {
-        setDoubleClicked(true);
-      });
-    }
-  }, [doubleClicked]);
   return (
     <div className="sticky" style={{ alignSelf: 'self-start', top: '130px' }}>
       <div className={`${locale === 'ar' ? 'mr-16' : 'ml-16'}`}>
@@ -25,6 +19,7 @@ export default function ImageZoom({ data }) {
           zoom
           id="main"
           slidesPerView={1}
+          onDoubleClick={() => setDoubleClicked(true)}
           thumbs={{ swiper: thumbsSwiper }}
         >
           {[data.image, ...data.gallery].map(item => {

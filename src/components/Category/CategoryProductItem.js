@@ -7,6 +7,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
+import { Link } from 'react-router-dom';
 export default function CategoryProductItem({ item, setCartMenuOpen }) {
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -68,13 +69,14 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <a href={`/${locale}/c/${item.id}`}>
+        <Link to={`/${locale}/${item.slug}/${item.id}`}>
           <LazyImage
-            src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
+            src={item.image?.link}
+            origin="original"
             alt={item.small_translation[locale].title}
             pb="calc(100% * 286/210)"
           />
-        </a>
+        </Link>
         <AnimatePresence>
           {showAddButton && (
             <motion.div
@@ -116,15 +118,15 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
 
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
-          <a
+          <Link
             title={item.small_translation[locale].title}
             className="hover:underline inline-block"
-            href={`/${locale}/c/${item.id}`}
+            to={`/${locale}/${item.slug}/${item.id}`}
           >
             <h1 className="text-clamp-2 text-sm font-semibold">
               {item.small_translation[locale].title}
             </h1>
-          </a>
+          </Link>
         </div>
 
         <div className="p-2 flex items-center justify-between">

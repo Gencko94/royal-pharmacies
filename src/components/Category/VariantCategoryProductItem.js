@@ -7,6 +7,7 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
+import { Link } from 'react-router-dom';
 export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
   const { addToCartMutation, addToGuestCartMutation } = React.useContext(
     CartAndWishlistProvider
@@ -187,11 +188,12 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
     if (item.new_variation_addons[selectedVariation].options) {
       return (
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+          src={
             item.new_variation_addons[selectedVariation].options[
               selectedOption[selectedVariation]
             ]?.image || item.image.link
-          }`}
+          }
+          origin="original"
           alt={item.small_translation[locale].title}
           pb="calc(100% * 286/210)"
         />
@@ -199,10 +201,11 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
     } else {
       return (
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${
+          src={
             item.new_variation_addons[selectedVariation].image ||
             item.image.link
-          }`}
+          }
+          origin="original"
           alt={item.small_translation[locale].title}
           pb="calc(100% * 286/210)"
         />
@@ -226,7 +229,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <a href={`/${locale}/c/${item.id}`}>{resolveImage()}</a>
+        <Link to={`/${locale}/${item.slug}/${item.id}`}>{resolveImage()}</Link>
 
         <AnimatePresence>
           {showAddButton && (
@@ -349,13 +352,13 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
       </div>
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
-          <a
+          <Link
             title={item.small_translation[locale].title}
             className="hover:underline inline-block"
-            href={`/${locale}/c/${item.id}`}
+            to={`/${locale}/${item.slug}/${item.id}`}
           >
             <h1 className="font-semibold text-sm">{resolveName()}</h1>
-          </a>
+          </Link>
         </div>
 
         <div className="p-2 flex items-center justify-between">

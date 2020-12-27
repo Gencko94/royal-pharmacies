@@ -1,6 +1,4 @@
 import React from 'react';
-
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import { DataProvider } from '../contexts/DataContext';
 import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
 import ImageZoom from '../components/SingleProduct/ImageZoom';
@@ -19,6 +17,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import VariantProduct from '../components/SingleProduct/VariantProduct/VariantProduct';
 import { useIntl } from 'react-intl';
+import MoreFrom from '../components/MoreFrom/MoreFrom';
 
 export default function SingleProduct() {
   const { id } = useParams();
@@ -201,16 +200,13 @@ export default function SingleProduct() {
             />
           )}
         </div>
-        {/* {related && <RelatedItems relatedData={related} />}
-          {isFetching && <div>Loading ...</div>}
-          <InView
-            as="div"
-            onChange={(inView, entry) => {
-              handleLoadMore(inView);
-            }}
-          >
-            <div></div>
-          </InView> */}
+        <hr className="my-8" />
+        {!isLoading && (
+          <MoreFrom
+            categories={data?.categories}
+            setSideMenuOpen={setSideMenuOpen}
+          />
+        )}
       </div>
     </Layout>
   );

@@ -25,7 +25,7 @@ export default function SearchLeftSide({
         />
       )}
       {/* Price */}
-      {!productsLoading && (
+      {!productsLoading && products?.length > 0 && (
         <LeftSidePrice
           products={products}
           priceFilters={priceFilters}

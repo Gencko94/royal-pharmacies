@@ -123,7 +123,7 @@ export default function SearchBar() {
     );
   };
   const handleSelect = (event, { suggestion }) => {
-    history.push(`/${locale}/c/${suggestion.id}`);
+    history.push(`/${locale}/${suggestion.slug}/${suggestion.id}`);
   };
 
   return (

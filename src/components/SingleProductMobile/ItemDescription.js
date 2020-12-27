@@ -14,6 +14,8 @@ import { DataProvider } from '../../contexts/DataContext';
 import { MdLocationOn } from 'react-icons/md';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+import { Link } from 'react-router-dom';
+import RelatedItems from '../SingleProduct/RelatedItems';
 export default function ItemDescription({
   data,
   handleAddToCart,
@@ -77,21 +79,21 @@ export default function ItemDescription({
         );
       case 1:
         return (
-          <span className="mx-1 text-yellow-700">
+          <span className="text-yellow-700">
             {formatMessage({ id: 'one-item-left' })}
           </span>
         );
 
       case 2:
         return (
-          <span className="mx-1 text-yellow-700">
+          <span className="text-yellow-700">
             {formatMessage({ id: 'two-items-left' })}
           </span>
         );
 
       case n > 10:
         return (
-          <span className="mx-1  text-yellow-700">
+          <span className="text-yellow-700">
             {' '}
             {n} {formatMessage({ id: 'more-than-10-items-left' })}
           </span>
@@ -143,8 +145,15 @@ export default function ItemDescription({
       setQuantity(e.target.value);
     }
   };
+
   return (
     <div className="mb-3">
+      <Link
+        to={`/${locale}/brands/${data.brand?.slug}`}
+        className="hover:underline font-semibold text-xs text-gray-700 uppercase"
+      >
+        {data.brand?.translation[locale].name}
+      </Link>
       <h1 className="font-semibold text-xl">
         {data.translation[locale].title}
       </h1>
@@ -188,8 +197,8 @@ export default function ItemDescription({
         )}
       </h1>
 
-      <hr />
-      <div className=" mb-2 font-bold">
+      <hr className="my-2" />
+      <div className=" my-2 font-bold">
         {isSale && (
           <div className="flex flex-wrap items-center">
             <h1 className=" ">{formatMessage({ id: 'price-before' })} :</h1>
@@ -229,6 +238,8 @@ export default function ItemDescription({
           </h1>
         )}
       </div>
+      {data?.related_products && <RelatedItems data={data.related_products} />}
+      <hr className="my-2" />
       <div className="mb-2">
         <div className="flex justify-between items-center font-semibold  ">
           <div className="flex items-center ">

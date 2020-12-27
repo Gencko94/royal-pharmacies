@@ -187,6 +187,7 @@ const baseStrings = {
   //end of credentials forms
   //start of cart items
   price: 'Price',
+  Price: 'Price',
   'the-item': 'Item',
   'the-items': 'Items',
   'one-item': 'Item',
@@ -332,6 +333,8 @@ const baseStrings = {
   'featured-items': 'Featured Items',
   'double-click-zoom': 'Double Click to Zoom in',
   'number-per-page': 'Results per Page',
+  'related-products': 'Related Products',
+  'more-from': 'More from this category',
 };
 
 export const en = baseStrings;

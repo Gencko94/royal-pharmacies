@@ -134,7 +134,8 @@ export default function GuestCartItem({ item }) {
     >
       <Link to={`/${locale}/c/${item.id}`}>
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image}`}
+          src={item.image}
+          origin="original"
           alt={item[`name_${locale}`]}
           pb="calc(100% * 286/210)"
         />

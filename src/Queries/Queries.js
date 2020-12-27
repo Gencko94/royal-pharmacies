@@ -12,7 +12,7 @@ export const getAllCategories = async () => {
 export const getFooterCategories = async () => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/categories`);
   if (res.data.status === true) {
-    return res.data.data;
+    return res.data.data.filter(i => i.children?.length > 5).slice(0, 4);
   }
 };
 export const getHomeItems = async () => {
@@ -659,6 +659,7 @@ export const getCategoryProducts = async (
   k,
   { category, page, resultsPerPage }
 ) => {
+  console.log(category);
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category-products/${category}?page=${page}&number=${resultsPerPage?.value}`
   );
@@ -879,6 +880,6 @@ export const searchProducts = async (k, { query, page, resultsPerPage }) => {
 export const getBestSellers = async () => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/best-sellers`);
   if (res.data.status === true) {
-    return res.data.data;
+    return res.data.data.data;
   }
 };

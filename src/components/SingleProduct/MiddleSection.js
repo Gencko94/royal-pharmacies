@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { scrollIntoView } from 'scroll-js';
 
 import { DataProvider } from '../../contexts/DataContext';
+import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+import offerbanner from '../../assets/offerbanner.png';
+import RelatedItems from './RelatedItems';
 export default function MiddleSection({
   data,
   ratingCount,
@@ -146,12 +149,22 @@ export default function MiddleSection({
             {data.simple_addons.promotion_price && (
               <div className="flex items-center   ">
                 <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                <h1 className="text-base text-red-700 mx-2">18%</h1>
+                <span className=" text-base mx-1 text-main-color">
+                  {calculateDiscountPrice(
+                    data.simple_addons.price,
+                    data.simple_addons.promotion_price
+                  )}
+                </span>
               </div>
             )}
           </div>
         </div>
       </div>
+      <hr className="my-2" />
+      <div className="my-3">
+        <img src={offerbanner} alt="offer" />
+      </div>
+      {data?.related_products && <RelatedItems data={data.related_products} />}
     </div>
   );
 }

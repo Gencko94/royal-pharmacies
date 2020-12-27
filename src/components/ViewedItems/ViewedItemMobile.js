@@ -35,7 +35,8 @@ export default function ViewedItemMobile({ item }) {
     >
       <Link to={`/${locale}/c/${item.id}`}>
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image.link}`}
+          src={item.image.link}
+          origin="original"
           alt={item.small_translation[locale].title}
           pb="calc(100% * 286/210)"
         />

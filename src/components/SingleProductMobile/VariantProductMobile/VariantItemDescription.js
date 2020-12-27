@@ -18,6 +18,7 @@ import VariantsOnly from '../../SingleProduct/VariantProduct/VariantsOnly';
 import Variants from '../../SingleProduct/VariantProduct/Variants';
 import Options from '../../SingleProduct/VariantProduct/Options';
 import { calculateDiscountPrice } from '../../../helpers/calculateDiscountPrice';
+import { Link } from 'react-router-dom';
 export default function VariantItemDescription({
   data,
   handleAddToCart,
@@ -198,6 +199,12 @@ export default function VariantItemDescription({
   };
   return (
     <div className="mb-3">
+      <Link
+        to={`/${locale}/brands/${data.brand?.slug}`}
+        className="hover:underline font-semibold text-xs text-gray-700 uppercase"
+      >
+        {data.brand?.translation[locale].name}
+      </Link>
       <h1 className="font-semibold text-xl">
         {data.translation[locale].title}
       </h1>

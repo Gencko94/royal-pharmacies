@@ -43,7 +43,7 @@ export default function Category() {
   const { data, isLoading: productsLoading } = useQuery(
     ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
-    { retry: true, refetchOnWindowFocus: false }
+    { retry: true, refetchOnWindowFocus: false, keepPreviousData: true }
   );
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
@@ -64,17 +64,22 @@ export default function Category() {
       },
     ],
     filterProducts,
-    { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
+    {
+      retry: true,
+      refetchOnWindowFocus: false,
+      enabled: filtersApplied,
+      keepPreviousData: true,
+    }
   );
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
   const handleProductChangePage = data => {
-    scrollIntoView(document.getElementById('main'), document.body);
+    scrollIntoView(document.getElementById('top'), document.body);
     setProductsPage(data.selected + 1);
   };
   const handleFilteredChangePage = data => {
-    scrollIntoView(document.getElementById('main'), document.body);
+    scrollIntoView(document.getElementById('top'), document.body);
     setFilteredPage(data.selected + 1);
   };
   const handleRemoveFilters = filter => {
@@ -93,9 +98,7 @@ export default function Category() {
       });
     }
     if (filter.type === 'Price') {
-      setFilters(prev => {
-        return prev.filter(i => i.type !== 'Price');
-      });
+      setPriceFilters([10000]);
     }
   };
 

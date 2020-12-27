@@ -65,8 +65,9 @@ export default function SideCartMenuItemMobile({ item }) {
           to={`/${locale}/c/${item.id}`}
         >
           <LazyImage
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
-            pb="calc(100% * 204/150)"
+            src={item?.image}
+            origin="small"
+            pb="calc(100% * 150/150)"
             alt={`${item[`name_${locale}`]}`}
           ></LazyImage>
         </Link>

@@ -45,7 +45,7 @@ export default function ViewedItemsMobile() {
           </h1>
           <hr className="my-2" />
           <AnimateSharedLayout>
-            <motion.div layout className="viewed-items-grid__mobile">
+            <motion.div layout className="viewed-items-container__mobile">
               <AnimatePresence>
                 {data.length !== 0 &&
                   data.map(item => {

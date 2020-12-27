@@ -18,6 +18,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import Layout from '../components/Layout';
 import VariantProductMobile from '../components/SingleProductMobile/VariantProductMobile/VariantProductMobile';
+import MoreFrom from '../components/MoreFrom/MoreFrom';
 
 export default function SingleProductMobile() {
   const { id } = useParams();
@@ -183,6 +184,14 @@ export default function SingleProductMobile() {
         </AnimatePresence>
 
         <hr />
+        {!isLoading && (
+          <div className="px-3">
+            <MoreFrom
+              categories={data?.categories}
+              setSideMenuOpen={setSideMenuOpen}
+            />
+          </div>
+        )}
       </div>
     </Layout>
   );

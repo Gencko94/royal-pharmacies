@@ -175,6 +175,7 @@ export default function CategoryMobile() {
     ],
     []
   );
+
   return (
     <Layout>
       <div className="min-h-screen relative">
@@ -202,21 +203,29 @@ export default function CategoryMobile() {
         />
         <hr className="my-4" />
 
-        <div className="grid" style={{ gridTemplateColumns: '0.5fr 0.6fr' }}>
-          <div></div>
-          <div className="flex items-center">
-            <h1 className="font-semibold">
-              {formatMessage({ id: 'number-per-page' })}
-            </h1>
-            <Select
-              isSearchable={false}
-              options={resultsPerPageOptions}
-              value={resultsPerPage}
-              onChange={handleResultPerPageChange}
-              className="mx-2 flex-1"
-            />
-          </div>
-        </div>
+        {(!filtersApplied && data?.products?.length > 0 && !productsLoading) ||
+          (filtersApplied &&
+            filteredData?.filteredProducts?.length > 0 &&
+            !filteredProductsLoading && (
+              <div
+                className="grid"
+                style={{ gridTemplateColumns: '0.5fr 0.6fr' }}
+              >
+                <div></div>
+                <div className="flex items-center">
+                  <h1 className="font-semibold">
+                    {formatMessage({ id: 'number-per-page' })}
+                  </h1>
+                  <Select
+                    isSearchable={false}
+                    options={resultsPerPageOptions}
+                    value={resultsPerPage}
+                    onChange={handleResultPerPageChange}
+                    className="mx-2 flex-1"
+                  />
+                </div>
+              </div>
+            ))}
         <AnimateSharedLayout>
           <motion.div layout className="px-3">
             {filters.length !== 0 && (
@@ -255,32 +264,39 @@ export default function CategoryMobile() {
           filtersApplied={filtersApplied}
           handleResultPerPageChange={handleResultPerPageChange}
         />
-        {!productsLoading && !filteredProductsLoading && (
-          <ReactPaginate
-            previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-            nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
-            breakLabel={'...'}
-            breakClassName={'inline'}
-            pageCount={filtersApplied ? filteredData?.lastPage : data?.lastPage}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={2}
-            initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
-            disableInitialCallback={true}
-            onPageChange={
-              filtersApplied
-                ? handleFilteredChangePage
-                : handleProductChangePage
-            }
-            containerClassName={'text-center my-2'}
-            subContainerClassName={'p-3 inline'}
-            pageLinkClassName="p-3"
-            activeClassName={'bg-main-color font-bold text-main-text'}
-            pageClassName=" inline-block mx-2 rounded-full text-lg"
-            previousClassName="p-3 inline font-bold"
-            nextClassName="p-3 inline font-bold"
-            disabledClassName="text-gray-500"
-          />
-        )}
+        {(!filtersApplied && data?.products?.length > 0 && !productsLoading) ||
+          (filtersApplied &&
+            filteredData?.filteredProducts?.length > 0 &&
+            !filteredProductsLoading && (
+              <ReactPaginate
+                previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
+                nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+                breakLabel={'...'}
+                breakClassName={'inline'}
+                pageCount={
+                  filtersApplied ? filteredData?.lastPage : data?.lastPage
+                }
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={2}
+                initialPage={
+                  filtersApplied ? filteredPage - 1 : productsPage - 1
+                }
+                disableInitialCallback={true}
+                onPageChange={
+                  filtersApplied
+                    ? handleFilteredChangePage
+                    : handleProductChangePage
+                }
+                containerClassName={'text-center my-2'}
+                subContainerClassName={'p-3 inline'}
+                pageLinkClassName="p-3"
+                activeClassName={'bg-main-color font-bold text-main-text'}
+                pageClassName=" inline-block mx-2 rounded-full text-lg"
+                previousClassName="p-3 inline font-bold"
+                nextClassName="p-3 inline font-bold"
+                disabledClassName="text-gray-500"
+              />
+            ))}
       </div>
       <AnimatePresence>
         {inView && data?.products.length !== 0 && (

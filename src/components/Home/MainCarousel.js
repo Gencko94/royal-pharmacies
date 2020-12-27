@@ -55,8 +55,9 @@ const MainCarousel = () => {
               <SwiperSlide key={item.id}>
                 <a href={`/categories/${item.category?.slug}`} className="">
                   <LazyImage
-                    src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.translation[locale].image?.link}`}
+                    src={item.translation[locale].image?.link}
                     alt="something"
+                    origin="original"
                     pb={`${
                       isTabletOrAbove
                         ? 'calc(100% * 300/1440)'

@@ -6,8 +6,10 @@ import Variants from './Variants';
 import Options from './Options';
 import VariantsOnly from './VariantsOnly';
 import { Link } from 'react-router-dom';
-
+import offerbanner from '../../../assets/offerbanner.png';
 import { DataProvider } from '../../../contexts/DataContext';
+import { calculateDiscountPrice } from '../../../helpers/calculateDiscountPrice';
+import RelatedItems from '../RelatedItems';
 export default function VariantMiddleSection({
   data,
   selectedVariation,
@@ -208,7 +210,9 @@ export default function VariantMiddleSection({
             {isSale && (
               <div className="flex items-center   ">
                 <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                <h1 className="text-base text-red-700 mx-2">18%</h1>
+                <span className=" text-base mx-1 text-main-color">
+                  {calculateDiscountPrice(option.price, option.promotion_price)}
+                </span>
               </div>
             )}
           </div>
@@ -220,6 +224,8 @@ export default function VariantMiddleSection({
 
         <hr className="my-2" />
       </div>
+      <img src={offerbanner} alt="offer" />
+      {data?.related_products && <RelatedItems data={data.related_products} />}
     </div>
   );
 }

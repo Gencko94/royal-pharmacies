@@ -25,7 +25,6 @@ import SideMenuCustomerService from '../SideMenu/SideMenuCustomerService';
 export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   const { userId, userLogoutMutation } = React.useContext(AuthProvider);
   const {
-    categories,
     categoriesLoading,
     deliveryCountry,
     deliveryCountries,
@@ -39,8 +38,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   );
   const [showCustomerService, setShowCustomerService] = React.useState(false);
   const [page, setPage] = React.useState(0);
-  const [subCategory, setSubCategory] = React.useState(0);
-  const [secondSubPage, setSecondSubPage] = React.useState(0);
+
   const innerRef = React.useRef(null);
   const { locale, formatMessage } = useIntl();
 
@@ -50,10 +48,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
       setShowCategories(false);
     }, 400);
   };
-  const handleClickBackSecond = i => {
-    setPage(page - 1);
-    setSecondSubPage(i);
-  };
+
   const handleShowCategories = () => {
     if (categoriesLoading) {
       return;
@@ -93,14 +88,6 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
     setTimeout(() => {
       setShowCustomerService(false);
     }, 400);
-  };
-  const handleClickNextFirst = i => {
-    setPage(page + 1);
-    setSubCategory(i);
-  };
-  const handleClickNextSecond = i => {
-    setPage(page + 1);
-    setSecondSubPage(i);
   };
 
   React.useEffect(() => {
@@ -342,12 +329,8 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
           {showCategories && (
             <SideMenuCategories
               handleHideCategories={handleHideCategories}
-              handleClickBackSecond={handleClickBackSecond}
-              handleClickNextFirst={handleClickNextFirst}
-              handleClickNextSecond={handleClickNextSecond}
-              secondSubPage={secondSubPage}
-              subCategory={subCategory}
-              categories={categories}
+              page={page}
+              setPage={setPage}
               toggleSideMenu={toggleSideMenu}
             />
           )}

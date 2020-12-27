@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Link } from 'react-router-dom';
+import LazyImage from '../../helpers/LazyImage';
 export default function WishlistMobileItem({
   item,
   removeFromWishListButtonLoading,
@@ -37,10 +38,11 @@ export default function WishlistMobileItem({
     >
       <div className="py-2 cart__item-mobile">
         <Link to={`/${locale}/item/${item.id}}`}>
-          <img
-            className=""
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
-            alt={`${item[`name_${locale}`]}`}
+          <LazyImage
+            src={item.image}
+            origin="small"
+            alt={item[`name_${locale}`]}
+            pb="calc(100% * 286/210)"
           />
         </Link>
         <div className="">
