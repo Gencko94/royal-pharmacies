@@ -180,11 +180,9 @@ export default function VariantRightSection({
 
         <button
           onClick={addToWishList}
-          className={`${
-            addToWishListButtonLoading
-              ? 'bg-gray-300'
-              : 'border-main-color text-main-color border'
-          } flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
+          className={`
+              border-main-color text-main-color border
+           flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToWishListButtonLoading ? (
             <Loader

@@ -67,10 +67,10 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <a href={`/${locale}/${item.slug}/${item.id}`}>
+        <a href={`/${locale}/products/${item.slug}/${item.id}`}>
           <LazyImage
             src={item.image?.link}
-            alt={item.small_translation[locale].title}
+            alt={item.translation[locale].title}
             pb="calc(100% * 286/210)"
             origin="original"
           />
@@ -119,12 +119,12 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
           <a
-            title={item.small_translation[locale].title}
+            title={item.translation[locale].title}
             className="hover:underline inline-block"
-            href={`/${locale}/${item.slug}/${item.id}`}
+            href={`/${locale}/products/${item.slug}/${item.id}`}
           >
             <h1 className="text-clamp-2 text-sm font-semibold">
-              {item.small_translation[locale].title}
+              {item.translation[locale].title}
             </h1>
           </a>
         </div>

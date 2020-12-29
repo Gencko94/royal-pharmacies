@@ -194,7 +194,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
             ]?.image || item.image?.link
           }
           origin="original"
-          alt={item.small_translation[locale].title}
+          alt={item.translation[locale].title}
           pb="calc(100% * 286/210)"
         />
       );
@@ -206,7 +206,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
             item.image?.link
           }
           origin="original"
-          alt={item.small_translation[locale].title}
+          alt={item.translation[locale].title}
           pb="calc(100% * 286/210)"
         />
       );
@@ -216,7 +216,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
   const resolveName = () => {
     const variationName =
       item.new_variation_addons[selectedVariation].addon_item_value;
-    return `${item.small_translation[locale].title} ${variationName}`;
+    return `${item.translation[locale].title} ${variationName}`;
   };
   return (
     <div
@@ -229,7 +229,9 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <a href={`/${locale}/${item.slug}/${item.id}`}>{resolveImage()}</a>
+        <a href={`/${locale}/products/${item.slug}/${item.id}`}>
+          {resolveImage()}
+        </a>
 
         <AnimatePresence>
           {showAddButton && (
@@ -353,9 +355,9 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
           <a
-            title={item.small_translation[locale].title}
+            title={item.translation[locale].title}
             className="hover:underline inline-block"
-            href={`/${locale}/${item.slug}/${item.id}`}
+            href={`/${locale}/products/${item.slug}/${item.id}`}
           >
             <h1 className="font-semibold text-sm text-clamp-2">
               {resolveName()}

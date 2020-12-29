@@ -69,11 +69,11 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <Link to={`/${locale}/${item.slug}/${item.id}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
           <LazyImage
             src={item.image?.link}
             origin="original"
-            alt={item.small_translation[locale].title}
+            alt={item.translation[locale].title}
             pb="calc(100% * 286/210)"
           />
         </Link>
@@ -119,12 +119,12 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
           <Link
-            title={item.small_translation[locale].title}
+            title={item.translation[locale].title}
             className="hover:underline inline-block"
-            to={`/${locale}/${item.slug}/${item.id}`}
+            to={`/${locale}/products/${item.slug}/${item.id}`}
           >
             <h1 className="text-clamp-2 text-sm font-semibold">
-              {item.small_translation[locale].title}
+              {item.translation[locale].title}
             </h1>
           </Link>
         </div>

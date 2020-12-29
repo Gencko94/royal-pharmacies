@@ -226,6 +226,7 @@ const baseStrings = {
   // maps
   'find-my-position': 'Find my position',
   'location-details': 'Location Details',
+  'delivery-location': 'Delivery Location',
   'maps-detailed-address-apartment-short': 'House/Apt No',
   'maps-detailed-address-building-short': 'Build/Tower No',
   'maps-detailed-address-phone-short': 'Associated Phone No',
@@ -249,6 +250,9 @@ const baseStrings = {
   'number-only': 'Please enter a valid number',
   'name-empty': 'Please enter an Address name',
   'required-field': 'Required Field',
+  'error-loading-maps': 'Something went Wrong, please try again',
+  'geolocation-not-supported': 'Geolocation is not supported by this browser',
+  'geolocation-permission': 'Permission to get the location was not granted',
 
   // checkout modal
   'not-signed-in': 'You are not signed in',
@@ -335,6 +339,9 @@ const baseStrings = {
   'number-per-page': 'Results per Page',
   'related-products': 'Related Products',
   'more-from': 'More from this category',
+  'back-to-top': 'Back to top',
+  'new-arrivals': 'New Arrivals',
+  'latest-products': 'New Arrivals',
 };
 
 export const en = baseStrings;

@@ -28,7 +28,7 @@ export default function ViewedItem({ item }) {
       exit="exited"
       className="viewed-item"
     >
-      <Link to={`/${locale}/c/${item.id}`}>
+      <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
         <LazyImage
           src={item.image.link}
           alt={item.small_translation[locale].title}
@@ -37,7 +37,7 @@ export default function ViewedItem({ item }) {
         />
       </Link>
       <div className="pt-2">
-        <Link to={`/${locale}/c/${item.id}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
           <h1 className=" text-lg font-semibold text-clamp-2 ">
             {item.small_translation[locale].title}
           </h1>

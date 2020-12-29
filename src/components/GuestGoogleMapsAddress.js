@@ -12,6 +12,7 @@ import {
 import PlacesSearch from './Cart/GuestCheckout/GoogleMaps/PlacesSearch';
 import { useMediaQuery } from 'react-responsive';
 import GuestLocationForm from './GuestLocationForm';
+import { useIntl } from 'react-intl';
 const libraries = ['places'];
 
 const center = {
@@ -23,11 +24,9 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-export default function GuestGoogleMapsAddress({
-  setGuestAddress,
-  handleStepForward,
-}) {
+export default function GuestGoogleMapsAddress({ handleAddAddressAndInfo }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
+  const { formatMessage } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -74,7 +73,7 @@ export default function GuestGoogleMapsAddress({
         className="flex justify-center items-center"
         style={{ height: 'calc(-173px + 100vh)' }}
       >
-        <h1>There was an Error loading maps, Please try again </h1>
+        <h1>{formatMessage({ id: 'error-loading-maps' })}</h1>
       </div>
     );
   if (!isLoaded)
@@ -141,8 +140,7 @@ export default function GuestGoogleMapsAddress({
       <GuestLocationForm
         markerAddress={markerAddress}
         marker={marker}
-        setGuestAddress={setGuestAddress}
-        handleStepForward={handleStepForward}
+        handleAddAddressAndInfo={handleAddAddressAndInfo}
       />
     </div>
   );

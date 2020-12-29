@@ -31,7 +31,7 @@ export default function CategoryMobile() {
   const [filteredPage, setFilteredPage] = React.useState(1);
 
   const [filtersApplied, setFiltersApplied] = React.useState(false);
-  const [priceFilters, setPriceFilters] = React.useState([10000]);
+  const [priceFilters, setPriceFilters] = React.useState([500]);
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 20,
     value: 20,

@@ -78,7 +78,7 @@ export default function MiddleSection({
         {data.brand?.translation[locale].name}
       </Link>
       <h1 className="font-semibold text-xl">
-        {data.translation[locale].title}
+        {data.full_translation[locale].title}
       </h1>
 
       <h1 className=" font-semibold mb-1">
@@ -131,10 +131,11 @@ export default function MiddleSection({
           )}
           <div className="">
             <div className="flex items-center flex-1">
-              <h1 className="    ">
+              <h1 className="text-xl">
                 {data.simple_addons.promotion_price
                   ? formatMessage({ id: 'price-now' })
-                  : formatMessage({ id: 'price' })}
+                  : formatMessage({ id: 'price' })}{' '}
+                :
               </h1>
               <h1 className=" text-xl mx-2 text-main-color">
                 {data.simple_addons.price}

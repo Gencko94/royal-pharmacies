@@ -24,27 +24,51 @@ export const getHomeItems = async () => {
   }
 };
 export const getStaticSwiperData = async (k, type) => {
-  console.log(type);
   if (type === 'latest_products') {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/new-arrival`
     );
     if (res.data.status === true) {
-      return res.data.data.data;
+      return {
+        products: res.data.data.data,
+        title: {
+          en: {
+            name: 'New Arrivals',
+          },
+          ar: {
+            name: 'جديدنا من المنتجات',
+          },
+        },
+      };
     }
   } else if (type === 'best_seller') {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/best-sellers`
     );
     if (res.data.status === true) {
-      return res.data.data.data;
+      return {
+        products: res.data.data.data,
+        title: {
+          en: {
+            name: 'Best Sellers',
+          },
+          ar: {
+            name: 'الأكثر مبيعا',
+          },
+        },
+      };
     }
   } else {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/category-products/${type}?page=${1}`
     );
+    console.log(res.data);
     if (res.data.status === true) {
-      return res.data.data.data;
+      return {
+        products: res.data.data.products.data,
+        title: res.data.data.translation,
+        slug: res.data.data.slug,
+      };
     }
   }
 };
@@ -666,7 +690,9 @@ export const getCategoryProducts = async (
   console.log(res);
   if (res.data.status === true) {
     return {
-      products: res.data.data.data,
+      products: res.data.data.products.data,
+      title: res.data.data.translation,
+      slug: res.data.data.slug,
       currentPage: res.data.data.current_page,
       lastPage: res.data.data.last_page,
     };
@@ -798,6 +824,13 @@ export const getSocialMediaData = async () => {
     return res.data.data;
   }
 };
+export const getSiteSettings = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/settings`);
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
+
 export const getDeliveryCountries = async () => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/countries`);
   if (res.data.status === true) {
@@ -881,5 +914,31 @@ export const getBestSellers = async () => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/best-sellers`);
   if (res.data.status === true) {
     return res.data.data.data;
+  }
+};
+
+/**
+ * Custom Categories
+ */
+
+export const getCustomCategoriesData = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/`);
+  if (res.data.status === true) {
+    return res.data.data.data;
+  }
+};
+export const getSingleBrandProducts = async (k, { slug, page }) => {
+  console.log(page);
+  const res = await axios.get(
+    `${process.env.REACT_APP_MAIN_URL}/brand/${slug}?page=${page}`
+  );
+  if (res.data.status === true) {
+    console.log(res.data.data);
+    return {
+      products: res.data.data.products.data,
+      brandName: res.data.data.translation,
+      brandLogo: res.data.data.logo.link,
+      pageCount: res.data.data.products.last_page,
+    };
   }
 };

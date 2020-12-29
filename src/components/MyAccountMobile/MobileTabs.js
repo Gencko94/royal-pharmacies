@@ -20,11 +20,7 @@ export default function MobileTabs() {
               <NavLink
                 exact
                 className="w-full p-3 rounded inline-block text-center "
-                activeClassName={`
-                
-                    bg-btn-primary-light text-btn-secondary-light font-semibold
-                   
-                `}
+                activeClassName={`font-semibold `}
                 to={`${url}${option.url}`}
               >
                 {formatMessage({ id: option.name })}

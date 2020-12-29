@@ -7,6 +7,7 @@ export default function SortInfoPanel({
   resultsPerPage,
   handleSortByChange,
   handleResultPerPageChange,
+  category,
 }) {
   const { formatMessage } = useIntl();
   const sortByOptions = React.useMemo(
@@ -65,24 +66,26 @@ export default function SortInfoPanel({
           }}
         />
       </div>
-      <div className="flex items-center">
-        <h1>{formatMessage({ id: 'sort-by' })}</h1>
-        <Select
-          isSearchable={false}
-          options={sortByOptions}
-          value={sortBy}
-          onChange={handleSortByChange}
-          className="mx-2"
-          styles={{
-            valueContainer: provided => {
-              return {
-                ...provided,
-                paddingRight: '7rem',
-              };
-            },
-          }}
-        />
-      </div>
+      {!['best-seller', 'latest-products'].includes(category) && (
+        <div className="flex items-center">
+          <h1>{formatMessage({ id: 'sort-by' })}</h1>
+          <Select
+            isSearchable={false}
+            options={sortByOptions}
+            value={sortBy}
+            onChange={handleSortByChange}
+            className="mx-2"
+            styles={{
+              valueContainer: provided => {
+                return {
+                  ...provided,
+                  paddingRight: '7rem',
+                };
+              },
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

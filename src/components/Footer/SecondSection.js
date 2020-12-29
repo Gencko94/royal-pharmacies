@@ -16,7 +16,7 @@ export default function SecondSection() {
           return (
             <div key={item.id} className="grid mt-2  gap-1">
               <Link
-                to={`/${locale}/categories/${item.slug}`}
+                to={`/${locale}/${item.slug}`}
                 className="text-lg font-semibold inline-block"
               >
                 {item.translation[locale].name}
@@ -24,7 +24,7 @@ export default function SecondSection() {
               {item.children.map(sub => {
                 return (
                   <Link
-                    to={`/${locale}/categories/${sub.slug}`}
+                    to={`/${locale}/${sub.slug}`}
                     key={sub.id}
                     className="text-sm inline-block"
                   >

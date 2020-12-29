@@ -1,6 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { Link } from 'react-router-dom';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 
@@ -11,27 +12,27 @@ export default function RelatedItem({ item }) {
   return (
     <div>
       <div className="relative">
-        <a href={`/${locale}/${item.slug}/${item.id}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
           <LazyImage
             src={item.image?.link}
-            alt={item.small_translation[locale].title}
+            alt={item.translation[locale].title}
             pb="calc(100% * 250/210)"
             origin="small"
           />
-        </a>
+        </Link>
       </div>
 
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
-          <a
-            title={item.small_translation[locale].title}
+          <Link
+            title={item.translation[locale].title}
             className="hover:underline inline-block"
-            href={`/${locale}/${item.slug}/${item.id}`}
+            to={`/${locale}/products/${item.slug}/${item.id}`}
           >
             <h1 className="text-clamp-2 text-xs font-semibold">
-              {item.small_translation[locale].title}
+              {item.translation[locale].title}
             </h1>
-          </a>
+          </Link>
         </div>
 
         <div className="p-2 flex items-center justify-between">

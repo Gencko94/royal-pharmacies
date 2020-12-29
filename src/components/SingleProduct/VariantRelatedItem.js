@@ -3,6 +3,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
+import { Link } from 'react-router-dom';
 export default function VariantRelatedItem({ item }) {
   const { locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -108,7 +109,7 @@ export default function VariantRelatedItem({ item }) {
             ]?.image || item.image?.link
           }
           origin="small"
-          alt={item.small_translation[locale].title}
+          alt={item.translation[locale].title}
           pb="calc(100% * 250/210)"
         />
       );
@@ -120,7 +121,7 @@ export default function VariantRelatedItem({ item }) {
             item.image?.link
           }
           origin="small"
-          alt={item.small_translation[locale].title}
+          alt={item.translation[locale].title}
           pb="calc(100% * 250/210)"
         />
       );
@@ -130,24 +131,26 @@ export default function VariantRelatedItem({ item }) {
   const resolveName = () => {
     const variationName =
       item.new_variation_addons[selectedVariation].addon_item_value;
-    return `${item.small_translation[locale].title} ${variationName}`;
+    return `${item.translation[locale].title} ${variationName}`;
   };
   return (
     <div>
       <div className="relative">
-        <a href={`/${locale}/${item.slug}/${item.id}`}>{resolveImage()}</a>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
+          {resolveImage()}
+        </Link>
       </div>
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
-          <a
-            title={item.small_translation[locale].title}
+          <Link
+            title={item.translation[locale].title}
             className="hover:underline inline-block"
-            href={`/${locale}/${item.slug}/${item.id}`}
+            to={`/${locale}/products/${item.slug}/${item.id}`}
           >
             <h1 className="font-semibold text-xs text-clamp-2">
               {resolveName()}
             </h1>
-          </a>
+          </Link>
         </div>
 
         <div className="p-2 flex items-center justify-between">

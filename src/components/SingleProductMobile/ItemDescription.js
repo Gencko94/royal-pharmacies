@@ -155,7 +155,7 @@ export default function ItemDescription({
         {data.brand?.translation[locale].name}
       </Link>
       <h1 className="font-semibold text-xl">
-        {data.translation[locale].title}
+        {data.full_translation[locale].title}
       </h1>
       <div className="flex items-center ">
         <div className="flex items-center mb-1">

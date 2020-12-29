@@ -206,7 +206,7 @@ export default function VariantItemDescription({
         {data.brand?.translation[locale].name}
       </Link>
       <h1 className="font-semibold text-xl">
-        {data.translation[locale].title}
+        {data.full_translation[locale].title}
       </h1>
       <div className="flex items-center ">
         <h1 className="text-sm   mb-1 text-gray-700">

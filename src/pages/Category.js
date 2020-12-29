@@ -21,9 +21,9 @@ export default function Category() {
   const { category } = useParams();
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
-  const [sortBy, setSortBy] = React.useState({
-    value: 'newest',
-    label: formatMessage({ id: 'Newest' }),
+
+  const [sortBy, setSortBy] = React.useState(() => {
+    return {};
   });
   const [productsPage, setProductsPage] = React.useState(1);
   const [filteredPage, setFilteredPage] = React.useState(1);
@@ -32,23 +32,36 @@ export default function Category() {
     value: 20,
   });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
-  const [priceFilters, setPriceFilters] = React.useState([10000]);
-  const [filters, setFilters] = React.useState([]);
+  const [priceFilters, setPriceFilters] = React.useState([500]);
+  const [filters, setFilters] = React.useState(() => {
+    return [];
+  });
   const [cartMenuOpen, setCartMenu] = React.useState(false);
 
   /**
    * Main Fetch
    */
 
-  const { data, isLoading: productsLoading } = useQuery(
+  const {
+    data,
+    isLoading: productsLoading,
+    isFetching: productsFetching,
+  } = useQuery(
     ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
-    { retry: true, refetchOnWindowFocus: false, keepPreviousData: true }
+    {
+      retry: true,
+      refetchOnWindowFocus: false,
+    }
   );
+
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
     getSingleCategoryInfo,
-    { retry: true, refetchOnWindowFocus: false }
+    {
+      retry: true,
+      refetchOnWindowFocus: false,
+    }
   );
   const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
     [
@@ -71,6 +84,7 @@ export default function Category() {
       keepPreviousData: true,
     }
   );
+
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
@@ -92,10 +106,7 @@ export default function Category() {
       });
     }
     if (filter.type === 'Sort') {
-      setSortBy({
-        value: 'newest',
-        label: 'Newest',
-      });
+      setSortBy({});
     }
     if (filter.type === 'Price') {
       setPriceFilters([10000]);
@@ -119,13 +130,6 @@ export default function Category() {
   };
 
   const handleSortByChange = selectedValue => {
-    if (selectedValue.value === 'newest') {
-      setFilters(prev => {
-        return prev.filter(i => i.type !== 'Sort');
-      });
-      setSortBy(selectedValue);
-      return;
-    }
     setFilters(prev => {
       let newArr = prev.filter(i => i.type !== 'Sort');
       newArr.push({ type: 'Sort', value: selectedValue.label });
@@ -152,6 +156,7 @@ export default function Category() {
       });
     }
   };
+
   React.useEffect(() => {
     if (filters.length === 0) {
       setFiltersApplied(false);
@@ -159,6 +164,7 @@ export default function Category() {
       setFiltersApplied(true);
     }
   }, [filters]);
+
   return (
     <Layout>
       <Helmet>
@@ -206,6 +212,10 @@ export default function Category() {
             handlePriceChange={handlePriceChange}
             handleChangePriceInput={handleChangePriceInput}
             handleSubmitPrice={handleSubmitPrice}
+            productsFetching={productsFetching}
+            filteredProducts={filteredData?.filteredProducts}
+            filteredProductsLoading={filteredProductsLoading}
+            filtersApplied={filtersApplied}
           />
 
           <CategoryRightSide
@@ -227,6 +237,7 @@ export default function Category() {
             handleProductChangePage={handleProductChangePage}
             handleFilteredChangePage={handleFilteredChangePage}
             filteredPage={filteredPage}
+            category={category}
             productsPage={productsPage}
           />
         </div>

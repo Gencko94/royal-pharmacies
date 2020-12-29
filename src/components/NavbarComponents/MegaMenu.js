@@ -54,7 +54,7 @@ export default function MegaMenu({ data }) {
             <div className="flex flex-col">
               {data.children.map(subCategory => (
                 <Link
-                  to={`/${locale}/categories/${subCategory.slug}`}
+                  to={`/${locale}/${subCategory.slug}`}
                   key={subCategory.id}
                   className="mb-2 text-sm"
                 >

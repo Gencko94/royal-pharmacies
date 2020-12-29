@@ -39,6 +39,8 @@ const SearchResults = React.lazy(() => import('./pages/SearchResults'));
 const SearchResultsMobile = React.lazy(() =>
   import('./pages/SearchResultsMobile')
 );
+const SingleBrand = React.lazy(() => import('./pages/SingleBrand'));
+const SingleBrandMobile = React.lazy(() => import('./pages/SingleBrandMobile'));
 
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -108,9 +110,21 @@ function App() {
               }
             }}
           />
+          <Route
+            exact
+            path="/brands/:slug"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <SingleBrand {...props} />;
+              } else {
+                return <SingleBrandMobile {...props} />;
+              }
+            }}
+          />
 
           <Route
-            path="/categories/:category"
+            exact
+            path="/:category"
             render={props => {
               if (isTabletOrAbove) {
                 return <Category {...props} />;
@@ -119,6 +133,7 @@ function App() {
               }
             }}
           />
+
           <Route
             exact
             path="/search/q=:query"
@@ -132,6 +147,7 @@ function App() {
           />
 
           <Route
+            exact
             path="/checkout/guest-checkout"
             render={props => {
               if (isTabletOrAbove) {
@@ -143,12 +159,12 @@ function App() {
           />
 
           <ProtectedRoute
-            path="/checkout"
+            path="/checkout/user-checkout"
             Component={isTabletOrAbove ? Checkout : CheckoutMobile}
           />
           <Route
             exact
-            path="/:category/:id/:addons?"
+            path="/products/:slug/:id/:addons?"
             render={props => {
               if (isTabletOrAbove) {
                 return <SingleProduct {...props} />;

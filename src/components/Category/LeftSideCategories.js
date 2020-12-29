@@ -43,7 +43,7 @@ export default function LeftSideCategories({
         {categoryInfo.children.length !== 0 &&
           categoryInfo.children.map((subCategory, i) => (
             <Link
-              to={`/${locale}/categories/${subCategory.slug}`}
+              to={`/${locale}/${subCategory.slug}`}
               key={i}
               className="text-sm block hover:underline hover:text-blue-700"
             >

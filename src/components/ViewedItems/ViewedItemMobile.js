@@ -33,7 +33,7 @@ export default function ViewedItemMobile({ item }) {
       exit="exited"
       className="viewed-item__mobiles"
     >
-      <Link to={`/${locale}/c/${item.id}`}>
+      <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
         <LazyImage
           src={item.image.link}
           origin="original"
@@ -42,7 +42,7 @@ export default function ViewedItemMobile({ item }) {
         />
       </Link>
       <div className="pt-2">
-        <Link to={`/${locale}/c/${item.id}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
           <h1 className=" text-sm font-semibold text-clamp-2 ">
             {item.small_translation[locale].title}
           </h1>

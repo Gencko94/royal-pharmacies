@@ -1,16 +1,12 @@
 import React from 'react';
 import GuestGoogleMapsAddress from '../../GuestGoogleMapsAddress';
 
-export default function SelectGuestAddress({
-  handleStepForward,
-  setGuestAddress,
-}) {
+export default function SelectGuestAddress({ handleAddAddressAndInfo }) {
   return (
     <div className="h-full" style={{ minHeight: 'calc(100vh - 150px)' }}>
       <div className="rounded-sm border">
         <GuestGoogleMapsAddress
-          setGuestAddress={setGuestAddress}
-          handleStepForward={handleStepForward}
+          handleAddAddressAndInfo={handleAddAddressAndInfo}
         />
       </div>
     </div>

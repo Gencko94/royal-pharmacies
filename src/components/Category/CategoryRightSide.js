@@ -28,10 +28,40 @@ export default function CategoryRightSide({
   handleProductChangePage,
   filteredPage,
   productsPage,
+  category,
 }) {
-  console.log(filteredProducts, 'filteredProducts');
+  console.log(filteredProducts, 'filteredPRoducts');
+  console.log(filtersApplied, 'filtersAPplied');
   const { formatMessage } = useIntl();
-  if (productsLoading) {
+  if (
+    !['best-seller', 'latest-products'].includes(category) &&
+    productsLoading
+  ) {
+    return (
+      <div className="py-2">
+        <ContentLoader
+          speed={2}
+          viewBox="0 0 752 38"
+          backgroundColor="#f3f3f3"
+          foregroundColor="#ecebeb"
+        >
+          <rect x="0" y="0" rx="5" ry="5" width="100%" height="38" />
+        </ContentLoader>
+        <div
+          className="category-page-items__grid py-2"
+          style={{ minHeight: 'calc(100vh - 150px)' }}
+        >
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+            return <CategoryItemLoader key={i} />;
+          })}
+        </div>
+      </div>
+    );
+  }
+  if (
+    ['best-seller', 'latest-products'].includes(category) &&
+    filteredProductsLoading
+  ) {
     return (
       <div className="py-2">
         <ContentLoader
@@ -57,6 +87,7 @@ export default function CategoryRightSide({
     <div id="top" className="h-full">
       {products?.length > 0 && (
         <SortInfoPanel
+          category={category}
           sortBy={sortBy}
           resultsPerPage={resultsPerPage}
           handleSortByChange={handleSortByChange}
@@ -107,7 +138,7 @@ export default function CategoryRightSide({
           style={{ minHeight: 'calc(100vh - 150px)' }}
         >
           {!filtersApplied &&
-            products.map(item => {
+            products?.map(item => {
               return item.type === 'variation' &&
                 item.new_variation_addons.length > 0 ? (
                 <VariantCategoryProductItem
@@ -176,7 +207,7 @@ export default function CategoryRightSide({
           disabledClassName="text-gray-500"
         />
       ) : null}
-      {products.length === 0 && (
+      {products?.length === 0 && (
         <div className="p-6 flex flex-col items-center justify-center text-xl h-full">
           <img src={placeholder} alt="No products" className="mb-4" />
           {formatMessage({ id: 'no-products' })}
@@ -184,7 +215,7 @@ export default function CategoryRightSide({
       )}
       {filtersApplied &&
         !filteredProductsLoading &&
-        filteredProducts.length === 0 && (
+        filteredProducts?.length === 0 && (
           <div className="p-6 flex items-center flex-col justify-center text-xl h-full">
             <img src={placeholder} alt="No products" className="mb-4" />
             {formatMessage({ id: 'no-filter-results' })}

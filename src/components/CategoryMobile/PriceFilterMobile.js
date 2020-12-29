@@ -12,7 +12,7 @@ export default function PriceFilterMobile({
   const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const min = 0;
-  const max = 10000;
+  const max = 1000;
   return (
     <div className="mb-4 px-3">
       <h1 className="font-semibold text-center">

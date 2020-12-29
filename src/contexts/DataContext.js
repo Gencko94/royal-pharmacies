@@ -1,7 +1,11 @@
 import React from 'react';
 
 import { queryCache, useQuery } from 'react-query';
-import { getAllCategories, getDeliveryCountries } from '../Queries/Queries';
+import {
+  getAllCategories,
+  getDeliveryCountries,
+  getSiteSettings,
+} from '../Queries/Queries';
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const localDeliveryCountry = localStorage.getItem('deliveryCountry');
@@ -68,6 +72,10 @@ export default function DataContextProvider({ children }) {
       );
     },
   });
+  const { data: settings } = useQuery('settings', getSiteSettings, {
+    retry: true,
+    refetchOnWindowFocus: false,
+  });
   return (
     <DataProvider.Provider
       value={{
@@ -83,6 +91,7 @@ export default function DataContextProvider({ children }) {
         removeViewedItems,
         searchBarValue,
         setSearchBarValue,
+        settings,
       }}
     >
       {children}

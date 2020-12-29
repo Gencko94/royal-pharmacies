@@ -15,11 +15,15 @@ export default function CategoryLeftSide({
   handleBrandChange,
   priceFilters,
   handleSubmitPrice,
+  productsFetching,
+  filtersApplied,
+  filteredProductsLoading,
+  filteredProducts,
 }) {
   return (
     <div>
       {/* Category tree */}
-      {!productsLoading && products?.length > 0 && (
+      {!filtersApplied && !productsLoading && products?.length > 0 && (
         <LeftSideCategories
           categoryInfo={categoryInfo}
           categoryInfoLoading={categoryInfoLoading}
@@ -27,7 +31,7 @@ export default function CategoryLeftSide({
         />
       )}
       {/* Doing this because of the memo in brands */}
-      {productsLoading && (
+      {(productsLoading || productsFetching || filteredProductsLoading) && (
         <ContentLoader
           speed={2}
           viewBox="0 0 300 150"
@@ -41,26 +45,25 @@ export default function CategoryLeftSide({
           <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
         </ContentLoader>
       )}
-      {!productsLoading && (
+      {!productsLoading && !productsFetching && products?.length > 0 && (
         <LeftSideBrands
           products={products}
           brandFilters={brandFilters}
           handleBrandChange={handleBrandChange}
-          productsLoading={productsLoading}
         />
       )}
-
       {/* Price */}
-      {!productsLoading && products?.length > 0 && (
-        <LeftSidePrice
-          products={products}
-          priceFilters={priceFilters}
-          handlePriceChange={handlePriceChange}
-          handleChangePriceInput={handleChangePriceInput}
-          handleSubmitPrice={handleSubmitPrice}
-          productsLoading={productsLoading}
-        />
-      )}
+      <LeftSidePrice
+        priceFilters={priceFilters}
+        handlePriceChange={handlePriceChange}
+        handleChangePriceInput={handleChangePriceInput}
+        handleSubmitPrice={handleSubmitPrice}
+        productsLoading={productsLoading}
+        filtersApplied={filtersApplied}
+        filteredProductsLoading={filteredProductsLoading}
+        filteredProductsLength={filteredProducts?.length}
+        productsLength={products?.length}
+      />
     </div>
   );
 }

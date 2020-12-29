@@ -26,7 +26,7 @@ export default function ImageZoomMobile({ data }) {
             <SwiperSlide className="relative" zoom key={item?.id}>
               <img
                 src={`${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`}
-                alt={data.translation[locale].title}
+                alt={data.full_translation[locale].title}
                 style={{ maxHeight: '400px', width: 'auto' }}
               />
               {!doubleClicked && (
@@ -55,7 +55,7 @@ export default function ImageZoomMobile({ data }) {
             <SwiperSlide className="px-2" key={item.id}>
               <img
                 src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.link}`}
-                alt={data.translation[locale].title}
+                alt={data.full_translation[locale].title}
                 style={{ width: '50px', height: '50px' }}
               />
             </SwiperSlide>

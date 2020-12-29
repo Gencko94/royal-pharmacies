@@ -27,14 +27,18 @@ export default function SearchResults() {
     value: 20,
   });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
-  const [priceFilters, setPriceFilters] = React.useState([10000]);
+  const [priceFilters, setPriceFilters] = React.useState([500]);
   const [filters, setFilters] = React.useState([]);
   const [cartMenuOpen, setCartMenu] = React.useState(false);
 
   /**
    * Main Fetch
    */
-  const { data: products, isLoading: productsLoading } = useQuery(
+  const {
+    data: products,
+    isLoading: productsLoading,
+    isFetching: productsFetching,
+  } = useQuery(
     ['searchProducts', { query, page: productsPage, resultsPerPage }],
     searchProducts,
     { retry: true, refetchOnWindowFocus: false }
@@ -183,6 +187,10 @@ export default function SearchResults() {
             handlePriceChange={handlePriceChange}
             handleChangePriceInput={handleChangePriceInput}
             handleSubmitPrice={handleSubmitPrice}
+            productsFetching={productsFetching}
+            filteredProductsLoading={filteredProductsLoading}
+            filtersApplied={filtersApplied}
+            filteredProducts={filteredData?.filteredProducts}
           />
 
           <SearchRightSide

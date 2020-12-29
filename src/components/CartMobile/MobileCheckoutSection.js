@@ -39,7 +39,7 @@ export default function MobileCheckoutSection() {
     }
   };
   const handleCheckout = () => {
-    history.push(`/${locale}/checkout`);
+    history.push(`/${locale}/checkout/user-checkout`);
   };
   const handleCheckCoupon = async e => {
     e.preventDefault();

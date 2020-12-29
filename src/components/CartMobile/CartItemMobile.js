@@ -161,7 +161,7 @@ export default function CartItemMobile({ item }) {
       className="border-b "
     >
       <div className="py-2 cart__item-mobile">
-        <Link to={`/${locale}/item/${item.id}}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
           <LazyImage
             src={item.image}
             origin="small"
@@ -170,7 +170,7 @@ export default function CartItemMobile({ item }) {
           />
         </Link>
         <div className="text-sm">
-          <Link to={`/${locale}/item/${item.id}}`}>
+          <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
             <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
               item.options.addons
                 ? ` - ${Object.keys(item.options.addons)

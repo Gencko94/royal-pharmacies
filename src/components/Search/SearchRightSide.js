@@ -148,34 +148,32 @@ export default function SearchRightSide({
         </div>
       ) : null}
       {(!filtersApplied && !products?.length > 0 && !productsLoading) ||
-        (filtersApplied &&
-          !filteredProducts?.length > 0 &&
-          !filteredProductsLoading(
-            <ReactPaginate
-              previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-              nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
-              breakLabel={'...'}
-              breakClassName={'inline'}
-              pageCount={filtersApplied ? filteredPageCount : productsPageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={2}
-              initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
-              disableInitialCallback={true}
-              onPageChange={
-                filtersApplied
-                  ? handleFilteredChangePage
-                  : handleProductChangePage
-              }
-              containerClassName={'my-2 w-full text-center'}
-              subContainerClassName={'p-3 inline'}
-              pageLinkClassName="p-3"
-              activeClassName={'bg-main-color font-bold text-main-text'}
-              pageClassName=" inline-block mx-2 rounded-full text-lg"
-              previousClassName="p-3 inline font-bold"
-              nextClassName="p-3 inline font-bold"
-              disabledClassName="text-gray-500"
-            />
-          ))}
+      (filtersApplied &&
+        !filteredProducts?.length > 0 &&
+        !filteredProductsLoading) ? (
+        <ReactPaginate
+          previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
+          nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+          breakLabel={'...'}
+          breakClassName={'inline'}
+          pageCount={filtersApplied ? filteredPageCount : productsPageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={2}
+          initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
+          disableInitialCallback={true}
+          onPageChange={
+            filtersApplied ? handleFilteredChangePage : handleProductChangePage
+          }
+          containerClassName={'my-2 w-full text-center'}
+          subContainerClassName={'p-3 inline'}
+          pageLinkClassName="p-3"
+          activeClassName={'bg-main-color font-bold text-main-text'}
+          pageClassName=" inline-block mx-2 rounded-full text-lg"
+          previousClassName="p-3 inline font-bold"
+          nextClassName="p-3 inline font-bold"
+          disabledClassName="text-gray-500"
+        />
+      ) : null}
       {products.length === 0 && (
         <div className="p-6 flex items-center justify-center text-xl flex-col h-full">
           <img src={placeholder} alt="No products" className="mb-4" />

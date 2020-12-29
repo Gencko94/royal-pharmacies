@@ -8,20 +8,33 @@ import {
 } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
-import logomrg from '../../assets/mrg.png';
+import { Link } from 'react-router-dom';
+
+import { DataProvider } from '../../contexts/DataContext';
 import { getSocialMediaData } from '../../Queries/Queries';
+
 export default function ThirdSection() {
   const { data } = useQuery('socialMedia', getSocialMediaData, {
     retry: true,
     refetchOnWindowFocus: false,
   });
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
+  const { settings } = React.useContext(DataProvider);
   return (
     <div
       className={`pt-4 px-8 pb-2 bg-first-nav-light text-main-text  flex items-center justify-between  `}
     >
       <div className="flex items-center ">
-        <img src={logomrg} alt="logo" className="w-20" />
+        <Link to={`/${locale}/`}>
+          {settings && (
+            <img
+              src={settings?.store_logo}
+              alt="MRG-logo"
+              style={{ height: '40px' }}
+              className=" mb-3"
+            />
+          )}
+        </Link>
 
         <h1 className=" font-semibold text-sm mx-2">
           &copy; 2020 MRG . {formatMessage({ id: 'footer-all-rights' })}
@@ -31,7 +44,7 @@ export default function ThirdSection() {
         <div className="flex justify-evenly">
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_facebook}`}
+            href={`${settings?.sm_facebook}`}
             target="_blank"
             className="mr-4"
           >
@@ -39,7 +52,7 @@ export default function ThirdSection() {
           </a>
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_twitter}`}
+            href={`${settings?.sm_twitter}`}
             target="_blank"
             className="mr-4"
           >
@@ -47,7 +60,7 @@ export default function ThirdSection() {
           </a>
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_instagram}`}
+            href={`${settings?.sm_instagram}`}
             target="_blank"
             className="mr-4"
           >
@@ -55,7 +68,7 @@ export default function ThirdSection() {
           </a>
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_linkedin}`}
+            href={`${settings?.sm_linkedin}`}
             target="_blank"
             className="mr-4"
           >
@@ -63,7 +76,7 @@ export default function ThirdSection() {
           </a>
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_whatsapp}`}
+            href={`${settings?.sm_whatsapp}`}
             target="_blank"
             className="mr-4"
           >

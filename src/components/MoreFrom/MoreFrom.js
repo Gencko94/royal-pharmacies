@@ -28,7 +28,7 @@ export default function MoreFrom({ categories, setSideMenuOpen }) {
 
   return (
     <div className="my-4">
-      <h1 className="text-xl font-semibold mb-4">
+      <h1 className="text-2xl font-semibold mb-4">
         {formatMessage({ id: 'more-from' })}
       </h1>
 

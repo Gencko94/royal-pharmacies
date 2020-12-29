@@ -219,6 +219,7 @@ export const ar = {
   // maps
   'find-my-position': 'حدد مكاني',
   'location-details': 'تفاصيل الموقع',
+  'delivery-location': 'عنوان التوصيل',
   'maps-detailed-address-apartment-short': 'رقم المنزل/الشقة',
   'maps-detailed-address-building-short': 'رقم البناء/البرج',
   'maps-detailed-address-phone-short': 'رقم الهاتف/الجوال',
@@ -241,6 +242,10 @@ export const ar = {
   'number-only': 'الرجاء التأكد من رقم الهاتف/الجوال',
   'name-empty': 'الرجاء ادخال اسم الموقع',
   'required-field': 'حقل مطلوب',
+  'error-loading-maps':
+    'حصل خطا ما خلال تحميل الخرائط , الرجاء المحاولة مرة اخرى',
+  'geolocation-not-supported': 'تحديد المواقع غير مدعوم من قبل هذا المتصفح',
+  'geolocation-permission': 'لم يتم منح الاذن لإستخدام الموقع',
 
   // checkout modal
   'not-signed-in': 'لم تقم بتسجيل الدخول ',
@@ -327,4 +332,7 @@ export const ar = {
   'number-per-page': 'عدد النتائج بالصفحة',
   'related-products': 'المنتجات المشابهة',
   'more-from': ' المزيد من هذه الفئة ',
+  'back-to-top': 'العودة الى الأعلى',
+  'new-arrivals': 'جديدنا من المنتجات',
+  'latest-products': 'جديدنا من المنتجات',
 };

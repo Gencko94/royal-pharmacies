@@ -38,7 +38,7 @@ export default function WishListItem({
       exit="exited"
       className="wishlist-item"
     >
-      <Link to={`/${locale}/item/${item.id}}`}>
+      <Link to={`/${locale}/${item.slug}/${item.id}}`}>
         <LazyImage
           src={item.image}
           origin="original"
@@ -47,18 +47,12 @@ export default function WishListItem({
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/item/${item.id}}`}>
+        <Link to={`/${locale}/${item.slug}/${item.id}}`}>
           <h1 className="font-semibold text-lg uppercase">{`${
             item[`name_${locale}`]
           }`}</h1>
         </Link>
 
-        {/* <div className="flex items-center mb-2">
-          <h1 className=" font-semibold">{formatMessage({ id: 'price' })}</h1>
-          <span className="mx-2 font-semibold text-lg text-green-700 ">
-            {item.price} {deliveryCountry?.currency.translation[locale].symbol}
-          </span>
-        </div> */}
         <div className="flex text-sm  items-center my-2 ">
           <button
             onClick={() => {

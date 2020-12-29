@@ -18,11 +18,12 @@ import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import VariantProduct from '../components/SingleProduct/VariantProduct/VariantProduct';
 import { useIntl } from 'react-intl';
 import MoreFrom from '../components/MoreFrom/MoreFrom';
+import { scrollTo } from 'scroll-js';
 
 export default function SingleProduct() {
   const { id } = useParams();
   const { deliveryCountry, addViewedItems } = React.useContext(DataProvider);
-  const { locale } = useIntl();
+  const { locale, formatMessage } = useIntl();
   const {
     addToCartMutation,
     addToWishListMutation,
@@ -207,6 +208,14 @@ export default function SingleProduct() {
             setSideMenuOpen={setSideMenuOpen}
           />
         )}
+      </div>
+      <div className="flex items-center justify-center mt-8 mb-4">
+        <button
+          onClick={() => scrollTo(window, { top: 0 })}
+          className="p-2 uppercase bg-main-color rounded text-main-text"
+        >
+          {formatMessage({ id: 'back-to-top' })}
+        </button>
       </div>
     </Layout>
   );

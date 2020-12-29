@@ -160,7 +160,7 @@ export default function CartItem({ item }) {
       exit="exited"
       className="cart-item py-2 border-b"
     >
-      <Link to={`/${locale}/c/${item.id}`}>
+      <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
         <LazyImage
           src={item.image}
           origin="original"
@@ -169,7 +169,7 @@ export default function CartItem({ item }) {
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/c/${item.id}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
           <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
             item.options.addons
               ? ` - ${Object.keys(item.options.addons)

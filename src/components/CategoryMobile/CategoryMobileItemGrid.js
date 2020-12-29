@@ -41,24 +41,34 @@ export default function CategoryMobileItemGrid({
         <div className="search-page-items-mobile__grid px-1 my-1">
           {!filtersApplied &&
             products.map(item => {
-              return item.type === 'simple' ? (
-                <CategoryProductItem key={item.id} item={item} />
+              return item.type === 'variation' &&
+                item.new_variation_addons.length > 0 ? (
+                <VariantCategoryProductItem
+                  key={item.id}
+                  setCartMenuOpen={setCartMenuOpen}
+                  item={item}
+                />
               ) : (
-                <VariantCategoryProductItem key={item.id} item={item} />
+                <CategoryProductItem
+                  key={item.id}
+                  setCartMenuOpen={setCartMenuOpen}
+                  item={item}
+                />
               );
             })}
           {filtersApplied &&
             !filteredProductsLoading &&
             filteredProducts &&
             filteredProducts.map(item => {
-              return item.type === 'simple' ? (
-                <CategoryProductItem
+              return item.type === 'variation' &&
+                item.new_variation_addons.length > 0 ? (
+                <VariantCategoryProductItem
                   key={item.id}
                   setCartMenuOpen={setCartMenuOpen}
                   item={item}
                 />
               ) : (
-                <VariantCategoryProductItem
+                <CategoryProductItem
                   key={item.id}
                   setCartMenuOpen={setCartMenuOpen}
                   item={item}

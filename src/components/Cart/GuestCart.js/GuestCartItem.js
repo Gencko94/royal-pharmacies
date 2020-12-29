@@ -132,7 +132,7 @@ export default function GuestCartItem({ item }) {
       exit="exited"
       className="cart-item py-2 border-b"
     >
-      <Link to={`/${locale}/c/${item.id}`}>
+      <Link to={`/${locale}/products/c/${item.id}`}>
         <LazyImage
           src={item.image}
           origin="original"
@@ -141,7 +141,7 @@ export default function GuestCartItem({ item }) {
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/c/${item.id}`}>
+        <Link to={`/${locale}/products/c/${item.id}`}>
           <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
             item.options.addons.length !== 0
               ? ` - ${Object.keys(item.options.addons)

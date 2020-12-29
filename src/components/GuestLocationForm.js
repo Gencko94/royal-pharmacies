@@ -12,11 +12,11 @@ const options = [
 export default function GuestLocationForm({
   markerAddress,
   marker,
-  setGuestAddress,
-  handleStepForward,
+  handleAddAddressAndInfo,
 }) {
   const { formatMessage } = useIntl();
   const [countryCode, setCountryCode] = React.useState(options[0]);
+  const [userTypedLocation, setUserTypedLocation] = React.useState('');
   const validationSchema = Yup.object({
     apartmentOrHouseNumber: Yup.number().required(
       formatMessage({ id: 'required-field' })
@@ -28,6 +28,7 @@ export default function GuestLocationForm({
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
       .required(formatMessage({ id: 'required-field' })),
     additionalDetails: Yup.string(),
+    name: Yup.string().required(formatMessage({ id: 'required-field' })),
   });
   return (
     <div>
@@ -35,26 +36,45 @@ export default function GuestLocationForm({
         <h1>{formatMessage({ id: 'location-details' })}</h1>
       </div>
       <div className="p-2">
+        <label
+          htmlFor={'location'}
+          className={`text-sm font-semibold text-gray-700`}
+        >
+          {formatMessage({ id: 'delivery-location' })}
+        </label>
+        <textarea
+          rows="3"
+          id="location"
+          className=" mt-1 w-full rounded border  p-1  "
+          type="textarea"
+          value={markerAddress || userTypedLocation}
+          readOnly={markerAddress}
+          onChange={e => setUserTypedLocation(e.target.value)}
+        />
         <Formik
           initialValues={{
             apartmentOrHouseNumber: '',
             buildingOrTowerNumber: '',
             phoneNumber: '',
+            name: '',
             additionalDetails: '',
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            setGuestAddress({
-              lat: marker.lat,
-              lng: marker.lng,
+            handleAddAddressAndInfo({
+              guestAddress: {
+                lat: marker.lat,
+                lng: marker.lng,
 
-              addressDetails: {
-                phoneNumber: `${countryCode.value}${values.phoneNumber}`,
-                ...values,
-                markerAddress: markerAddress,
+                addressDetails: {
+                  phoneNumber: `${countryCode.value}${values.phoneNumber}`,
+                  ...values,
+                  markerAddress: markerAddress,
+                },
               },
+              name: values.name,
+              phoneNumber: values.phoneNumber,
             });
-            handleStepForward();
           }}
         >
           {({ handleSubmit, values, isSubmitting }) => {
@@ -78,12 +98,21 @@ export default function GuestLocationForm({
                     type="text"
                   />
                 </div>
+
                 <CustomTextAreaInput
                   label={formatMessage({
                     id: 'maps-details-extra-details',
                   })}
                   name="additionalDetails"
                   value={values.additionalDetails}
+                />
+                <CustomTextInput
+                  label={formatMessage({
+                    id: 'full-name',
+                  })}
+                  name="name"
+                  value={values.name}
+                  type="text"
                 />
                 <PhoneNumberCustomInput
                   label={formatMessage({ id: 'maps-detailed-address-phone' })}
@@ -93,7 +122,6 @@ export default function GuestLocationForm({
                   countryCode={countryCode}
                   setCountryCode={setCountryCode}
                 />
-
                 <div className=" ">
                   <button
                     type="submit"
@@ -143,8 +171,8 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
         }}
         className=" w-full rounded-sm border   p-1"
       />
-      {meta.touched && meta.error ? (
-        <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
+      {meta?.touched && meta?.error ? (
+        <h1 className="text-xs text-main-color mt-1">{meta?.error}</h1>
       ) : (
         <h1 className="text-xs text-main-color mt-1" style={{ height: '18px' }}>
           {' '}

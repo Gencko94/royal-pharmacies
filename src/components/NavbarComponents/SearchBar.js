@@ -20,7 +20,7 @@ export default function SearchBar() {
   const history = useHistory();
   //with controlling the arrows
   const getSuggestionValue = suggestion => {
-    return suggestion.small_translation[locale].title;
+    return suggestion.translation[locale].title;
   };
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
@@ -30,11 +30,11 @@ export default function SearchBar() {
         }`}
       >
         <img
-          src={`${process.env.REACT_APP_IMAGES_URL}/small/${suggestion.image.link}`}
+          src={`${process.env.REACT_APP_IMAGES_URL}/small/${suggestion.image?.link}`}
           alt=""
           style={{ height: '50px' }}
         />
-        <h1 className="mx-1">{suggestion.small_translation[locale].title}</h1>
+        <h1 className="mx-1">{suggestion.translation[locale].title}</h1>
       </div>
     );
   };

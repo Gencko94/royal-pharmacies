@@ -138,7 +138,9 @@ export default function VariantMiddleSection({
       >
         {data.brand?.translation[locale].name}
       </Link>
-      <h1 className="font-bold text-2xl">{data.translation[locale].title}</h1>
+      <h1 className="font-bold text-2xl">
+        {data.full_translation[locale].title}
+      </h1>
       <h1 className=" font-semibold mb-1">
         {option.quantity < 20 ? (
           formatItemsPlural(option.quantity)

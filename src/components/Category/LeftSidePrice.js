@@ -10,20 +10,22 @@ export default function LeftSidePrice({
   handleChangePriceInput,
   handleSubmitPrice,
   productsLoading,
+  filteredProductsLoading,
+  filtersApplied,
+  productsLength,
+  filteredProductsLength,
 }) {
   const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const min = 0;
-  const max = 10000;
-  if (productsLoading) {
+  const max = 1000;
+  if (productsLoading || filteredProductsLoading) {
     return (
       <ContentLoader
         speed={2}
         viewBox="0 0 300 150"
         backgroundColor="#f3f3f3"
         foregroundColor="#ecebeb"
-
-        // rtl={locale === 'ar'}
       >
         <rect x="0" y="0" rx="5" ry="5" width="100%" height="30" />
         <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
@@ -32,6 +34,12 @@ export default function LeftSidePrice({
         <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
       </ContentLoader>
     );
+  }
+  if (
+    (!filtersApplied && !productsLoading && productsLength === 0) ||
+    (filtersApplied && !filteredProductsLoading && filteredProductsLength === 0)
+  ) {
+    return null;
   }
   return (
     <motion.div layout className="mb-4">

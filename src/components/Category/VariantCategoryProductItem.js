@@ -194,7 +194,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
             ]?.image || item.image.link
           }
           origin="original"
-          alt={item.small_translation[locale].title}
+          alt={item.translation[locale].title}
           pb="calc(100% * 286/210)"
         />
       );
@@ -206,7 +206,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
             item.image.link
           }
           origin="original"
-          alt={item.small_translation[locale].title}
+          alt={item.translation[locale].title}
           pb="calc(100% * 286/210)"
         />
       );
@@ -216,7 +216,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
   const resolveName = () => {
     const variationName =
       item.new_variation_addons[selectedVariation].addon_item_value;
-    return `${item.small_translation[locale].title} ${variationName}`;
+    return `${item.translation[locale].title} ${variationName}`;
   };
   return (
     <div
@@ -229,7 +229,9 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <Link to={`/${locale}/${item.slug}/${item.id}`}>{resolveImage()}</Link>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
+          {resolveImage()}
+        </Link>
 
         <AnimatePresence>
           {showAddButton && (
@@ -353,9 +355,9 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
       <div className={`bg-body-light text-body-text-light`}>
         <div className="p-2" style={{ height: '55px' }}>
           <Link
-            title={item.small_translation[locale].title}
+            title={item.translation[locale].title}
             className="hover:underline inline-block"
-            to={`/${locale}/${item.slug}/${item.id}`}
+            to={`/${locale}/products/${item.slug}/${item.id}`}
           >
             <h1 className="font-semibold text-sm">{resolveName()}</h1>
           </Link>

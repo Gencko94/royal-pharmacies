@@ -5,7 +5,6 @@ export default function LeftSideBrands({
   products,
   handleBrandChange,
   brandFilters,
-  productsLoading,
 }) {
   const { formatMessage, locale } = useIntl();
   const brands = React.useMemo(() => {

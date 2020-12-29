@@ -7,6 +7,7 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import LazyImage from '../../helpers/LazyImage';
 export default function SideCartMenuItem({ item }) {
   const {
     removeFromCartMutation,
@@ -62,12 +63,13 @@ export default function SideCartMenuItem({ item }) {
         <Link
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
-          to={`/${locale}/c/${item.id}`}
+          to={`/${locale}/products/c/${item.id}`}
         >
-          <img
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
-            alt={`${item[`name_${locale}`]}`}
-            className="max-w-full h-auto"
+          <LazyImage
+            src={item.image}
+            origin="original"
+            alt={item[`name_${locale}`]}
+            pb="calc(100% * 210/210)"
           />
         </Link>
       </div>
@@ -75,7 +77,7 @@ export default function SideCartMenuItem({ item }) {
         <Link
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
-          to={`/${locale}/c/${item.id}`}
+          to={`/${locale}/products/c/${item.id}`}
         >
           <h1 className="text-clamp-2 text-sm font-semibold">
             {`${item[`name_${locale}`]}`}

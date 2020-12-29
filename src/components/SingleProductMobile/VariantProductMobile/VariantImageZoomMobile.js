@@ -23,7 +23,7 @@ export default function VariantImageZoomMobile({
               selectedOption[selectedVariation]
             ]?.image || data.image?.link
           }`}
-          alt={data.translation[locale].title}
+          alt={data.full_translation[locale].title}
           style={{ maxHeight: '400px', width: 'auto' }}
         />
       );
@@ -34,7 +34,7 @@ export default function VariantImageZoomMobile({
             data.new_variation_addons[selectedVariation].image ||
             data.image?.link
           }`}
-          alt={data.translation[locale].title}
+          alt={data.full_translation[locale].title}
           style={{ maxHeight: '400px', width: 'auto' }}
         />
       );
@@ -49,7 +49,7 @@ export default function VariantImageZoomMobile({
               selectedOption[selectedVariation]
             ]?.image || data.image?.link
           }`}
-          alt={data.translation[locale].title}
+          alt={data.full_translation[locale].title}
           style={{ width: '50px', height: '50px' }}
         />
       );
@@ -60,7 +60,7 @@ export default function VariantImageZoomMobile({
             data.new_variation_addons[selectedVariation].image ||
             data.image?.link
           }`}
-          alt={data.translation[locale].title}
+          alt={data.full_translation[locale].title}
           style={{ width: '50px', height: '50px' }}
         />
       );

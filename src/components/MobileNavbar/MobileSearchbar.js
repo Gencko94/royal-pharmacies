@@ -17,7 +17,7 @@ export default function MobileSearchbar({ windowScrolled }) {
   const [data, setData] = React.useState([]);
   const [isLoading, setLoading] = React.useState(false);
   const getSuggestionValue = suggestion => {
-    return suggestion.small_translation[locale].title;
+    return suggestion.translation[locale].title;
   };
   React.useEffect(() => {
     if (windowScrolled) {
@@ -30,7 +30,7 @@ export default function MobileSearchbar({ windowScrolled }) {
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div className={`p-2 ${isHighlighted && 'bg-gray-300 rounded'}`}>
-        {suggestion.small_translation[locale].title}
+        {suggestion.translation[locale].title}
       </div>
     );
   };

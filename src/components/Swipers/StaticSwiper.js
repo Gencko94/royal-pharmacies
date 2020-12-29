@@ -9,9 +9,10 @@ import { useQuery } from 'react-query';
 import SwiperLoader from '../Home/SwiperLoader';
 import SwiperItem from './SwiperItem';
 import VariantSwiperItem from './VariantSwiperItem';
+import { Link } from 'react-router-dom';
 SwiperCore.use([Navigation]);
 export default function StaticSwiper({ type, cb, title }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
 
   const { data, isLoading } = useQuery(
     ['staticSwiper', type],
@@ -48,16 +49,24 @@ export default function StaticSwiper({ type, cb, title }) {
       spaceBetween: 20,
     },
   };
+  console.log(data, 'DATA');
   return (
     <div className="my-8">
       {isLoading && <div className="mb-4 " style={{ height: '30px' }}></div>}
       {isLoading && <SwiperLoader />}
       {!isLoading && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl font-bold flex-1 ">{title}</h1>
-          <button className="py-1 px-2  bg-main-color text-second-nav-text-light rounded whitespace-no-wrap">
-            {formatMessage({ id: 'seeAll' })}
-          </button>
+          <h1 className="text-xl font-bold flex-1 ">
+            {data?.title[locale]?.name}
+          </h1>
+          {type !== 'latest_products' && type !== 'best_seller' && (
+            <Link
+              to={`/${locale}/${data?.slug}`}
+              className="py-1 px-2  bg-main-color text-second-nav-text-light rounded whitespace-no-wrap"
+            >
+              {formatMessage({ id: 'seeAll' })}
+            </Link>
+          )}
         </div>
       )}
       {!isLoading && (
@@ -67,7 +76,7 @@ export default function StaticSwiper({ type, cb, title }) {
           spaceBetween={10}
           breakpoints={breakpoints}
         >
-          {data.map(item => {
+          {data.products.map(item => {
             return (
               <SwiperSlide
                 key={item.id}

@@ -62,7 +62,7 @@ export default function SideCartMenuItemMobile({ item }) {
         <Link
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
-          to={`/${locale}/c/${item.id}`}
+          to={`/${locale}/products/c/${item.id}`}
         >
           <LazyImage
             src={item?.image}
@@ -76,7 +76,7 @@ export default function SideCartMenuItemMobile({ item }) {
         <Link
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
-          to={`/${locale}/c/${item.id}`}
+          to={`/${locale}/products/c/${item.id}`}
         >
           <h1 className="text-clamp-2 text-xs font-semibold">
             {`${item[`name_${locale}`]}`}

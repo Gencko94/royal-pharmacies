@@ -25,7 +25,7 @@ export default function SearchResultsMobile() {
   const [filteredPage, setFilteredPage] = React.useState(1);
 
   const [filtersApplied, setFiltersApplied] = React.useState(false);
-  const [priceFilters, setPriceFilters] = React.useState([10000]);
+  const [priceFilters, setPriceFilters] = React.useState([500]);
   const [filters, setFilters] = React.useState([]);
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 20,

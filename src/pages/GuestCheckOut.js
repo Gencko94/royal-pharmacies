@@ -8,15 +8,19 @@ import Layout from '../components/Layout';
 export default function GuestCheckOut() {
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [guestAddress, setGuestAddress] = React.useState(null);
-  const [personalInfo, setPersonalInfo] = React.useState({
-    fullName: '',
-    phoneNumber: '',
-  });
+  const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [name, setName] = React.useState('');
   const [stepDone, setStepDone] = React.useState({
     0: false,
     1: false,
     2: false,
   });
+  const handleAddAddressAndInfo = ({ guestAddress, phoneNumber, name }) => {
+    setPhoneNumber(phoneNumber);
+    setName(name);
+    setGuestAddress(guestAddress);
+    handleStepForward();
+  };
   const handleStepBack = () => {
     if (selectedStep === 0) {
       return;
@@ -49,8 +53,9 @@ export default function GuestCheckOut() {
         <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
           {selectedStep === 0 && (
             <SelectGuestAddress
-              handleStepForward={handleStepForward}
-              setGuestAddress={setGuestAddress}
+              name={name}
+              phoneNumber={phoneNumber}
+              handleAddAddressAndInfo={handleAddAddressAndInfo}
             />
           )}
           {selectedStep === 1 && (
@@ -58,8 +63,6 @@ export default function GuestCheckOut() {
               handleStepForward={handleStepForward}
               handleStepBack={handleStepBack}
               guestAddress={guestAddress}
-              personalInfo={personalInfo}
-              setPersonalInfo={setPersonalInfo}
             />
           )}
           {selectedStep === 2 && (

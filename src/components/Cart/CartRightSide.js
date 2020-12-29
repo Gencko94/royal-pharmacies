@@ -46,7 +46,7 @@ export default function CartRightSide({ setCheckOutModalOpen }) {
   const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
   const handleCheckout = () => {
     if (userId) {
-      history.push(`/${locale}/checkout`);
+      history.push(`/${locale}/checkout/user-checkout`);
     } else {
       setCheckOutModalOpen(true);
     }
