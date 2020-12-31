@@ -58,19 +58,15 @@ export default function WishListItem({
             onClick={() => {
               handleRemoveItemFromWishList(item.id);
             }}
-            className={`${
-              removeFromWishListButtonLoading === item.id
-                ? 'bg-gray-300  text-main-text'
-                : 'border-main-color text-main-color border'
-            }  text-sm uppercase flex items-center justify-center  p-2 rounded  font-semibold `}
+            className={`border-main-color text-main-color border text-sm uppercase flex items-center justify-center  p-2 rounded  font-semibold `}
             style={{ width: '200px' }}
           >
             {removeFromWishListButtonLoading === item.id ? (
               <Loader
                 type="ThreeDots"
                 color="#b72b2b"
-                height={20}
-                width={20}
+                height={25}
+                width={25}
                 visible={true}
               />
             ) : (

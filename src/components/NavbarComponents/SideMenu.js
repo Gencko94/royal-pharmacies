@@ -217,19 +217,42 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 </Link>
               </motion.button>
             )}
-            <motion.button
-              key="orderHistory"
-              variants={childVariants}
-              onClick={toggleSideMenu}
-              className="p-3"
-            >
-              <div className=" flex items-center">
-                <AiOutlineHistory className=" w-25p h-25p" />
-                <h1 className="mx-2">
-                  {formatMessage({ id: 'order-history' })}
-                </h1>
-              </div>
-            </motion.button>
+            {userId && (
+              <motion.button
+                key="orderHistory"
+                variants={childVariants}
+                onClick={toggleSideMenu}
+                className="p-3"
+              >
+                <Link
+                  to={`/${locale}/user/account/orders`}
+                  className="flex items-center"
+                >
+                  <AiOutlineHistory className=" w-25p h-25p" />
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'order-history' })}
+                  </h1>
+                </Link>
+              </motion.button>
+            )}
+            {!userId && (
+              <motion.button
+                key="guestorderHistory"
+                variants={childVariants}
+                onClick={toggleSideMenu}
+                className="p-3"
+              >
+                <Link
+                  to={`/${locale}/order/track`}
+                  className="flex items-center"
+                >
+                  <AiOutlineHistory className=" w-25p h-25p" />
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'track-my-order' })}
+                  </h1>
+                </Link>
+              </motion.button>
+            )}
             <hr />
             {userId && (
               <motion.button

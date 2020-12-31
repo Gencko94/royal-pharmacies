@@ -12,6 +12,7 @@ import {
 import PlacesSearch from './Cart/GuestCheckout/GoogleMaps/PlacesSearch';
 import { useMediaQuery } from 'react-responsive';
 import LocationForm from './LocationForm';
+import { useIntl } from 'react-intl';
 const libraries = ['places'];
 
 const center = {
@@ -25,6 +26,7 @@ const options = {
 };
 export default function GoogleMapsAddress({ setShowMap }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
+  const { formatMessage } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -62,6 +64,9 @@ export default function GoogleMapsAddress({ setShowMap }) {
           );
         })
         .catch(err => console.log(err));
+    } else {
+      setMarkerAddress(null);
+      setMarkerInfoWindowDetails(null);
     }
   }, [marker]);
 
@@ -71,7 +76,7 @@ export default function GoogleMapsAddress({ setShowMap }) {
         className="flex justify-center items-center"
         style={{ height: 'calc(-173px + 100vh)' }}
       >
-        <h1>There was an Error loading maps, Please try again </h1>
+        <h1>{formatMessage({ id: 'error-loading-maps' })}</h1>
       </div>
     );
   if (!isLoaded)
@@ -117,11 +122,13 @@ export default function GoogleMapsAddress({ setShowMap }) {
             });
           }}
         >
-          {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
+          {marker && (
+            <Marker position={{ lat: marker?.lat, lng: marker?.lng }} />
+          )}
           {markerInfoWindowDetails && (
             <InfoWindow
               onCloseClick={() => setMarkerInfoWindowDetails(null)}
-              position={{ lat: marker.lat, lng: marker.lng }}
+              position={{ lat: marker?.lat, lng: marker?.lng }}
               options={{
                 pixelOffset: new window.google.maps.Size(0, -50),
               }}
@@ -139,6 +146,7 @@ export default function GoogleMapsAddress({ setShowMap }) {
         markerAddress={markerAddress}
         marker={marker}
         setShowMap={setShowMap}
+        setMarker={setMarker}
       />
     </div>
   );

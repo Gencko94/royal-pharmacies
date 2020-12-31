@@ -8,7 +8,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import ErrorSnackbar from '../components/ErrorSnackbar';
-import login from '../assets/login.jpg';
+
 import Language from '../components/NavbarComponents/Language';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import Select from 'react-select';
@@ -140,7 +140,7 @@ export default function Login() {
       <div
         className="h-full"
         style={{
-          backgroundImage: `url(${login})`,
+          backgroundImage: `url(${settings?.login_background})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
         }}

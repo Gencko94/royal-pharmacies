@@ -40,7 +40,7 @@ export default function Cart() {
         <title>{formatMessage({ id: 'cart' })} | MRG</title>
       </Helmet>
 
-      <div className="px-4 py-2 max-w-default mx-auto">
+      <div className="px-4 py-2 max-w-default mx-auto text-body-text-light">
         <AnimatePresence>
           {checkoutModalOpen && (
             <CheckoutModal setCheckOutModalOpen={setCheckOutModalOpen} />

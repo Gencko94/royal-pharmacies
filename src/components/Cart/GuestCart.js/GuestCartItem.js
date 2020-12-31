@@ -16,7 +16,7 @@ export default function GuestCartItem({ item }) {
     removeFromGuestCartMutation,
     editGuestCartMutation,
   } = React.useContext(CartAndWishlistProvider);
-  console.log(item);
+
   const [quantity, setQuantity] = React.useState(item.qty);
   const [editLoading, setEditLoading] = React.useState(false);
   const [
@@ -46,14 +46,6 @@ export default function GuestCartItem({ item }) {
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className="  text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="  text-yellow-700">
@@ -72,7 +64,6 @@ export default function GuestCartItem({ item }) {
     setQuantity(parseInt(quantity) + 1);
   };
   const handleChangeQuantity = e => {
-    console.log(e.target.value);
     if (e.target.value < 1) {
       return;
     } else {
@@ -151,7 +142,7 @@ export default function GuestCartItem({ item }) {
           }`}</h1>
         </Link>
         <h1 className=" font-semibold text-sm mb-1">
-          {item.options.max_quantity < 20 ? (
+          {item.options.max_quantity < 5 ? (
             formatItemsPlural(item.options.max_quantity)
           ) : (
             <span className="text-green-700">
@@ -239,7 +230,7 @@ export default function GuestCartItem({ item }) {
           </button>
         </div>
       </div>
-      <div className="text-center font-bold">
+      <div className="text-center " style={{ fontWeight: '900' }}>
         {item.total} {deliveryCountry?.currency.translation[locale].symbol}
       </div>
     </motion.div>

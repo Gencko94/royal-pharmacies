@@ -6,13 +6,14 @@ import { useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import logo from '../assets/mrg.svg';
+
 import Select from 'react-select';
 import * as Yup from 'yup';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import { AuthProvider } from '../contexts/AuthContext';
 import Language from '../components/NavbarComponents/Language';
 import { useMediaQuery } from 'react-responsive';
+import { DataProvider } from '../contexts/DataContext';
 const options = [
   { value: '+965', label: '+965' },
   { value: '+966', label: '+966' },
@@ -86,6 +87,7 @@ const PhoneNumberCustomInput = ({
 
 export default function PasswordReset() {
   const { userLogin } = React.useContext(AuthProvider);
+  const { settings } = React.useContext(DataProvider);
   const [countryCode, setCountryCode] = React.useState(options[0]);
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { formatMessage } = useIntl();
@@ -111,7 +113,7 @@ export default function PasswordReset() {
         <div className="flex items-center flex-col mb-4  rounded-lg text-center ">
           <Link to="/">
             <img
-              src={logo}
+              src={settings?.store_logo_color}
               alt="logo"
               className=" mb-3"
               style={{ width: '100px', height: '50px' }}

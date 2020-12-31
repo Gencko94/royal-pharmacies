@@ -1,7 +1,6 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import * as Yup from 'yup';
 import Select from 'react-select';
@@ -13,15 +12,21 @@ export default function GuestLocationForm({
   markerAddress,
   marker,
   handleAddAddressAndInfo,
+  guestAddress,
+  name,
+  phoneNumber,
+  setMarker,
+  email,
 }) {
   const { formatMessage } = useIntl();
   const [countryCode, setCountryCode] = React.useState(options[0]);
   const [userTypedLocation, setUserTypedLocation] = React.useState('');
   const validationSchema = Yup.object({
-    apartmentOrHouseNumber: Yup.number().required(
+    email: Yup.string().email(formatMessage({ id: 'email-validation' })),
+    apartmentOrHouseNumber: Yup.string().required(
       formatMessage({ id: 'required-field' })
     ),
-    buildingOrTowerNumber: Yup.number().required(
+    buildingOrTowerNumber: Yup.string().required(
       formatMessage({ id: 'required-field' })
     ),
     phoneNumber: Yup.string()
@@ -30,18 +35,30 @@ export default function GuestLocationForm({
     additionalDetails: Yup.string(),
     name: Yup.string().required(formatMessage({ id: 'required-field' })),
   });
+  const handleClearLocation = () => {
+    setMarker(null);
+    setUserTypedLocation('');
+  };
   return (
     <div>
-      <div className="font-bold p-2">
+      <div className="font-bold text-center border-b p-2">
         <h1>{formatMessage({ id: 'location-details' })}</h1>
       </div>
       <div className="p-2">
-        <label
-          htmlFor={'location'}
-          className={`text-sm font-semibold text-gray-700`}
-        >
-          {formatMessage({ id: 'delivery-location' })}
-        </label>
+        <div className="flex justify-between">
+          <label
+            htmlFor={'location'}
+            className={`text-sm font-semibold text-gray-700`}
+          >
+            {formatMessage({ id: 'delivery-location' })}
+          </label>
+          <button
+            onClick={handleClearLocation}
+            className="text-main-color hover:underline"
+          >
+            {formatMessage({ id: 'clear' })}
+          </button>
+        </div>
         <textarea
           rows="3"
           id="location"
@@ -53,33 +70,60 @@ export default function GuestLocationForm({
         />
         <Formik
           initialValues={{
-            apartmentOrHouseNumber: '',
-            buildingOrTowerNumber: '',
-            phoneNumber: '',
-            name: '',
-            additionalDetails: '',
+            apartmentOrHouseNumber:
+              guestAddress.addressDetails.apartmentOrHouseNumber,
+            buildingOrTowerNumber:
+              guestAddress.addressDetails.buildingOrTowerNumber,
+            phoneNumber: phoneNumber,
+            name: name,
+            additionalDetails: guestAddress.addressDetails.additionalDetails,
+            email,
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
             handleAddAddressAndInfo({
               guestAddress: {
-                lat: marker.lat,
-                lng: marker.lng,
-
+                lat: marker?.lat,
+                lng: marker?.lng,
                 addressDetails: {
                   phoneNumber: `${countryCode.value}${values.phoneNumber}`,
                   ...values,
-                  markerAddress: markerAddress,
+                  markerAddress,
                 },
               },
               name: values.name,
               phoneNumber: values.phoneNumber,
+              email: values.email,
             });
           }}
         >
-          {({ handleSubmit, values, isSubmitting }) => {
+          {({ handleSubmit, values }) => {
             return (
               <form onSubmit={handleSubmit}>
+                <CustomTextInput
+                  label={formatMessage({
+                    id: 'full-name',
+                  })}
+                  name="name"
+                  value={values.name}
+                  type="text"
+                />
+                <CustomTextInput
+                  label={formatMessage({
+                    id: 'email-address',
+                  })}
+                  name="email"
+                  value={values.email}
+                  type="text"
+                />
+                <PhoneNumberCustomInput
+                  label={formatMessage({ id: 'maps-detailed-address-phone' })}
+                  name="phoneNumber"
+                  value={values.phoneNumber}
+                  type="text"
+                  countryCode={countryCode}
+                  setCountryCode={setCountryCode}
+                />
                 <div className="grid grid-cols-2 gap-1">
                   <CustomTextInput
                     label={formatMessage({
@@ -106,45 +150,15 @@ export default function GuestLocationForm({
                   name="additionalDetails"
                   value={values.additionalDetails}
                 />
-                <CustomTextInput
-                  label={formatMessage({
-                    id: 'full-name',
-                  })}
-                  name="name"
-                  value={values.name}
-                  type="text"
-                />
-                <PhoneNumberCustomInput
-                  label={formatMessage({ id: 'maps-detailed-address-phone' })}
-                  name="phoneNumber"
-                  value={values.phoneNumber}
-                  type="text"
-                  countryCode={countryCode}
-                  setCountryCode={setCountryCode}
-                />
+
                 <div className=" ">
                   <button
                     type="submit"
-                    disabled={!markerAddress}
-                    className={`${
-                      !markerAddress
-                        ? 'btn-disabled'
-                        : isSubmitting
-                        ? 'bg-gray-300 text-main-text'
-                        : 'bg-main-color text-main-text'
-                    }   p-2 rounded  w-full  flex items-center justify-center font-semibold`}
+                    className={`
+                       bg-main-color text-main-text
+                       p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}
                   >
-                    {isSubmitting ? (
-                      <Loader
-                        type="ThreeDots"
-                        color="#b72b2b"
-                        height={20}
-                        width={20}
-                        visible={isSubmitting}
-                      />
-                    ) : (
-                      <h1>{formatMessage({ id: 'confirm-location' })}</h1>
-                    )}
+                    <h1>{formatMessage({ id: 'confirm-location' })}</h1>
                   </button>
                 </div>
               </form>

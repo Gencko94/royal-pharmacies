@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { BeatLoader } from 'react-spinners';
-
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { getUserOrders } from '../../Queries/Queries';
 import NoOrders from './MyOrders/NoOrders';
 import Orders from './MyOrders/Orders';
@@ -23,7 +23,13 @@ export default function MyOrders() {
   if (isLoading)
     return (
       <div className="flex h-full justify-center items-center">
-        <BeatLoader size={10} color={'#b72b2b'} />
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={40}
+          width={40}
+          visible={true}
+        />
       </div>
     );
   const containerVariants = {

@@ -60,14 +60,6 @@ export default function GuestCartItemMobile({ item }) {
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className=" text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="  text-yellow-700">
@@ -152,7 +144,7 @@ export default function GuestCartItemMobile({ item }) {
             }`}</h1>
           </Link>
           <h1 className=" font-semibold">
-            {item.options.max_quantity < 20 ? (
+            {item.options.max_quantity < 5 ? (
               formatItemsPlural(item.options.max_quantity)
             ) : (
               <span className="text-green-700">
@@ -160,7 +152,10 @@ export default function GuestCartItemMobile({ item }) {
               </span>
             )}
           </h1>
-          <div className="text-main0color font-bold text-base">
+          <div
+            className="text-main-color text-base"
+            style={{ fontWeight: '900' }}
+          >
             {item.total} {deliveryCountry?.currency.translation[locale].symbol}
           </div>
           <div className=" flex items-center flex-wrap ">
@@ -222,16 +217,15 @@ export default function GuestCartItemMobile({ item }) {
           onClick={() => {
             handleRemoveItemFromCart(item.options.sku);
           }}
-          className={`${
-            removefromCartButtonLoading === item.id
-              ? 'bg-gray-300'
-              : 'bg-main-color'
-          }  text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
+          className={`
+            
+              bg-main-color
+            text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
         >
           {removefromCartButtonLoading === item.id ? (
             <Loader
               type="ThreeDots"
-              color="#b72b2b"
+              color="#fff"
               height={22}
               width={22}
               visible={true}

@@ -1,7 +1,8 @@
 import React from 'react';
 import mastercard from '../../assets/paymentLogos/mastercard.png';
 import knet from '../../assets/paymentLogos/knet.png';
-import sadad from '../../assets/paymentLogos/sadad.png';
+
+import amex from '../../assets/paymentLogos/amex.png';
 import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
 export default function AcceptedPayments() {
@@ -18,8 +19,9 @@ export default function AcceptedPayments() {
       if (payment.key === 'credit') {
         arr.push(<img key={payment.key} src={mastercard} alt={payment.key} />);
       }
-      if (payment.key === 'bookeey') {
-        arr.push(<img key={payment.key} src={sadad} alt={payment.key} />);
+
+      if (payment.key === 'amex') {
+        arr.push(<img key={payment.key} src={amex} alt={payment.key} />);
       }
     });
     return arr;
@@ -31,10 +33,6 @@ export default function AcceptedPayments() {
       </h1>
       <div className="flex items-center justify-evenly mb-2">
         {resolveFlags()}
-        {/* <img src={knet} alt="knet" />
-        <img src={visa} alt="visa" />
-        <img src={mastercard} alt="mastercard" />
-        <img src={sadad} alt="sadad" /> */}
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ export default function ViewedItemsMobile() {
   return (
     <LayoutMobile>
       <Helmet>
-        <title>Viewed Items | MRG</title>
+        <title>{formatMessage({ id: 'viewed-items' })} | MRG</title>
       </Helmet>
 
       {isLoading && (

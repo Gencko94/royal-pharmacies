@@ -53,14 +53,6 @@ export default function MiddleSection({
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className="mx-1  text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="mx-1  text-yellow-700">
@@ -71,18 +63,27 @@ export default function MiddleSection({
   };
   return (
     <div className="flex flex-col w-full self-start ">
-      <Link
-        to={`/${locale}/brands/${data.brand?.slug}`}
-        className="hover:underline font-semibold text-sm text-gray-700 uppercase"
-      >
-        {data.brand?.translation[locale].name}
-      </Link>
+      <div className="flex items-center">
+        <Link to={`/${locale}/brands/${data.brand?.slug}`}>
+          <img
+            src={`${process.env.REACT_APP_IMAGES_URL}/small/${data.brand?.logo?.link}`}
+            alt={data.brand?.translation[locale].name}
+            style={{ width: '70px', height: '63px' }}
+          />
+        </Link>
+        <Link
+          to={`/${locale}/brands/${data.brand?.slug}`}
+          className="mx-3 hover:opacity-50 underline font-semibold text-sm text-gray-700 uppercase"
+        >
+          {data.brand?.translation[locale].name}
+        </Link>
+      </div>
       <h1 className="font-semibold text-xl">
         {data.full_translation[locale].title}
       </h1>
 
       <h1 className=" font-semibold mb-1">
-        {data.simple_addons.quantity < 20 ? (
+        {data.simple_addons.quantity < 5 ? (
           formatItemsPlural(data.simple_addons.quantity)
         ) : (
           <span className="mx-1  text-green-700">
@@ -119,7 +120,7 @@ export default function MiddleSection({
       </div>
       <hr className="my-2" />
       <div className="flex items-start py-1">
-        <div className=" flex-1 font-bold">
+        <div className=" flex-1 font-bold" style={{ fontWeight: '900' }}>
           {data.simple_addons.promotion_price && (
             <div className=" flex items-center ">
               <h1>{formatMessage({ id: 'price-before' })} :</h1>

@@ -38,7 +38,7 @@ export default function CartMobile() {
   }
   return (
     <Layout>
-      <div className="py-1 px-2 relative">
+      <div className="py-1 px-2 relative text-body-text-light">
         <AnimatePresence>
           {checkoutPopupOpen && (
             <CheckoutPopupMobile setCheckOutPopupOpen={setCheckOutPopupOpen} />

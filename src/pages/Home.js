@@ -35,7 +35,7 @@ export default function Home() {
     switch (item.type) {
       case 'best_seller':
         return (
-          <LazyLoad key={index} height="calc(100% * 1285/492.92)" offset={200}>
+          <LazyLoad key={index} height="calc(100% * 1285/492.92)" offset={400}>
             <StaticSwiper
               type={item.type}
               title={item[`title_${locale}`]}
@@ -45,7 +45,7 @@ export default function Home() {
         );
       case 'product_by_category':
         return (
-          <LazyLoad key={index} offset={200} height="calc(100% * 1285/492.92)">
+          <LazyLoad key={index} offset={400} height="calc(100% * 1285/492.92)">
             <StaticSwiper
               type={item.key}
               title={item[`title_${locale}`]}
@@ -55,7 +55,7 @@ export default function Home() {
         );
       case 'categories':
         return (
-          <LazyLoad key={index} offset={200} height="calc(100% * 1285/492.92)">
+          <LazyLoad key={index} offset={400} height="calc(100% * 1285/492.92)">
             <StaticSwiper
               type={item.slug}
               title={item[`title_${locale}`]}
@@ -65,7 +65,7 @@ export default function Home() {
         );
       case 'latest_products':
         return (
-          <LazyLoad key={index} offset={200} height="calc(100% * 1285/492.92)">
+          <LazyLoad key={index} offset={400} height="calc(100% * 1285/492.92)">
             <StaticSwiper
               type={item.type}
               title={item[`title_${locale}`]}
@@ -75,7 +75,7 @@ export default function Home() {
         );
       case 'banner':
         return (
-          <LazyLoad offset={200} key={index}>
+          <LazyLoad offset={400} key={index}>
             <div className="my-16">
               <Banner
                 url={
@@ -121,7 +121,7 @@ export default function Home() {
           )}
         </AnimatePresence>
         <div
-          className={` bg-body-light text-body-text-light mt-0 px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
+          className={`px-2 py-4 sm:px-2 md:px-4 lg:px-8  mx-auto max-w-default`}
         >
           <MainCarousel />
           <Categories />
@@ -135,16 +135,11 @@ export default function Home() {
             title={'Men Clothing'}
             cb={setCartMenuOpen}
           />
-          {/* <StaticSwiper
-            type="home-kitchen"
-            title={'Home & Kitchen'}
-            cb={setCartMenuOpen}
-          /> */}
+
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}
           {isLoading && <SwiperLoader />}
           {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
-          {/* {!isLoading && data.map((i, index) => resolveSwiper(i, index))} */}
         </div>
       </div>
     </Layout>

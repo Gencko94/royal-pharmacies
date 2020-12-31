@@ -91,14 +91,6 @@ export default function ItemDescription({
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className="text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="mx-1  text-yellow-700">
@@ -188,7 +180,7 @@ export default function ItemDescription({
       </div>
 
       <h1 className=" font-semibold mb-1">
-        {qty < 20 ? (
+        {qty < 5 ? (
           formatItemsPlural(qty)
         ) : (
           <span className="text-green-700">
@@ -198,7 +190,7 @@ export default function ItemDescription({
       </h1>
 
       <hr className="my-2" />
-      <div className=" my-2 font-bold">
+      <div className=" my-2 " style={{ fontWeight: '900' }}>
         {isSale && (
           <div className="flex flex-wrap items-center">
             <h1 className=" ">{formatMessage({ id: 'price-before' })} :</h1>

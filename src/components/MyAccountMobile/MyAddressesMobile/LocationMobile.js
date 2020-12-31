@@ -4,6 +4,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import MapLazyImage from '../../../helpers/MapLazyImage';
 
 export default function LocationMobile({
   address,
@@ -60,9 +61,12 @@ export default function LocationMobile({
       >
         <motion.div layout>
           <div style={{ position: 'relative' }}>
-            <img
-              src={`https://maps.googleapis.com/maps/api/staticmap?center=${address.lat},${address.lng}&zoom=15&size=350x250&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-              alt="thumbnail"
+            <MapLazyImage
+              height={150}
+              width={200}
+              lat={address.lat}
+              lng={address.lng}
+              alt={address.address_name}
             />
             <motion.div
               variants={infoVariants}
@@ -119,8 +123,11 @@ export default function LocationMobile({
             </motion.div>
           </div>
           <div className="p-1">
+            <div className="text-xs text-gray-600 font-semibold">
+              <h1>{address.address_name}</h1>
+            </div>
             <div
-              className="text-xs mb-2 font-semibold"
+              className="text-sm mb-2 font-semibold"
               style={{ height: '50px' }}
             >
               <h1>{address.marked_address}</h1>
@@ -129,7 +136,7 @@ export default function LocationMobile({
               onClick={() => handleRemoveLocation(address.id)}
               className={` 
                   bg-main-color
-               text-main-text rounded   px-2 py-1 text-sm w-full flex justify-center`}
+               text-main-text rounded uppercase   px-2 py-1 text-sm w-full flex justify-center`}
             >
               {deleteButtonLoading === address.id ? (
                 <Loader

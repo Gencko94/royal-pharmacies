@@ -4,6 +4,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import MapLazyImage from '../../../helpers/MapLazyImage';
 export default function Location({
   data,
   handleRemoveLocation,
@@ -54,11 +55,15 @@ export default function Location({
       exit="exited"
       className="rounded border shadow-itemsSlider-shallow bg-body-light"
     >
-      <div style={{ minHeight: '150px', position: 'relative' }}>
-        <img
-          src={`https://maps.googleapis.com/maps/api/staticmap?center=${data.lat},${data.lng}&zoom=15&size=200x150&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-          alt="thumbnail"
+      <div style={{ position: 'relative' }}>
+        <MapLazyImage
+          height={150}
+          width={200}
+          lat={data.lat}
+          lng={data.lng}
+          alt={data.address_name}
         />
+
         <motion.div
           variants={infoVariants}
           initial="partial"
@@ -114,6 +119,9 @@ export default function Location({
         </motion.div>
       </div>
       <div className="p-2">
+        <div className="text-xs text-gray-600 font-semibold">
+          <h1>{data.address_name}</h1>
+        </div>
         <div className="text-sm mb-2 font-semibold" style={{ height: '50px' }}>
           <h1>{data.marked_address}</h1>
         </div>

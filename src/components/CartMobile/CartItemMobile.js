@@ -188,7 +188,10 @@ export default function CartItemMobile({ item }) {
               </span>
             )}
           </h1>
-          <div className="text-main0color font-bold text-base">
+          <div
+            className="text-main-color text-base"
+            style={{ fontWeight: '900' }}
+          >
             {item.total} {deliveryCountry?.currency.translation[locale].symbol}
           </div>
           <div className=" flex items-center flex-wrap ">

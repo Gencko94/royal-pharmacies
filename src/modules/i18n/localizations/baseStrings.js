@@ -105,7 +105,7 @@ const baseStrings = {
   'back-to-home': 'Back to Homepage',
   oops: 'Oops !',
   'press-enter-to-search': 'Press Enter to search ',
-  'something-went-wrong-snackbar': 'Something went wrong, Please try again',
+  'something-went-wrong-snackbar': 'Something went wrong , Please try again',
   'hello-signin': 'Hello,Sign in',
   hello: 'Hello',
   off: 'OFF',
@@ -147,6 +147,8 @@ const baseStrings = {
   categories: 'Categories',
   allCategories: 'All Categories ',
   seeAll: 'See all',
+  sections: 'Sections',
+  'see-all-nav': 'All Sections',
   bestSellers: 'Best Sellers',
   mobilesElectronics: 'Mobiles & Electronics',
   // credential forms
@@ -222,11 +224,14 @@ const baseStrings = {
   submit: 'Submit',
   'selected-btn': 'Selected',
   'btn-proceed': 'Proceed',
+  'proceed-to-payment': 'Proceed to payment',
   'order-placed-msg': 'Congratulations, Your Order has been Placed !',
   // maps
   'find-my-position': 'Find my position',
   'location-details': 'Location Details',
   'delivery-location': 'Delivery Location',
+  'delivery-address': 'Delivery Address',
+  location: 'Location',
   'maps-detailed-address-apartment-short': 'House/Apt No',
   'maps-detailed-address-building-short': 'Build/Tower No',
   'maps-detailed-address-phone-short': 'Associated Phone No',
@@ -261,6 +266,7 @@ const baseStrings = {
   'checkout-modal-tos':
     'Having an account at mrg.com help us make a better user experience for you and other customers.',
   'confirm-location': 'Confirm Location',
+  'confirm-btn': 'Confirm',
   'remove-location': 'Remove',
   'mark-as-default': 'Mark as Default location',
 
@@ -276,7 +282,7 @@ const baseStrings = {
    */
 
   'order-number': 'Order Number',
-  status: 'Status',
+  'order-status': 'Order status',
   'ordered-at': 'Ordered at',
   'delivered-at': 'Delivered at',
   'order-details': 'Order Details',
@@ -342,6 +348,22 @@ const baseStrings = {
   'back-to-top': 'Back to top',
   'new-arrivals': 'New Arrivals',
   'latest-products': 'New Arrivals',
+  'log-in-to-add': 'Please Log in to add',
+  'shop-by-category': 'Shop by Category',
+  none: 'None',
+  'by-category': 'by Category',
+  shop: 'Shop ',
+  clear: 'Clear',
+  'track-my-order': 'Track Order',
+  'track-order-enter-your-phone':
+    'Enter the phone number associated with your Order to track your order ',
+  'order-cancelled': 'Cancelled',
+  'order-pending': 'Pending',
+  'order-completed': 'Completed',
+  'order-waiting-for-payment': 'Waiting for payment',
+  'order-confirmed': 'Confirmed',
+  'order-new': 'New',
+  'cash-on-delivery': 'Cash on Delivery',
 };
 
 export const en = baseStrings;

@@ -119,7 +119,7 @@ input {
 }
 .my-orders-item-desktop {
   display: grid;
-  grid-template-columns: 0.1fr 0.7fr 0.1fr 0.1fr;
+  grid-template-columns: 0.1fr 1.5fr 0.2fr 0.2fr;
   gap: 0.3em;
 }
 .my-orders-item-mobile {
@@ -129,7 +129,7 @@ input {
 }
 .my-orders-items__table-desktop {
   display: grid;
-  grid-template-columns: 0.1fr 0.7fr 0.1fr 0.1fr;
+  grid-template-columns: 0.1fr 1.5fr 0.2fr 0.2fr;
   gap: 0.3em;
 }
 .my-orders-items__table-mobile {
@@ -295,24 +295,6 @@ input {
   }
 }
 
-/* login & register labels */
-/* .form__label-active {
-  position: absolute;
-  top: 0;
-  transform: translateY(-30px);
-  transform-origin: top left;
-  color: #af0404;
-  transition: all 0.1s ease-out;
-}
-
-.form__label {
-  position: absolute;
-  top: 0;
-  transform: translateY(5px);
-  transform-origin: top left;
-  transition: all 0.1s ease-out;
-} */
-
 .side-add-to-cart__container {
   position: fixed;
   z-index: 50;
@@ -388,38 +370,21 @@ input {
 
   gap: 0.5em;
 }
-/* .sortby-box-enter {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-.sortby-box-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: 100ms ease;
-}
-.sortby-box-exit {
-  opacity: 1;
-  transform: translateY(0);
-}
-.sortby-box-exit-active {
-  opacity: 0;
-  transform: translateY(-10px);
-} */
 
 .all-categories__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1em;
+  grid-template-columns: repeat(6, 100px);
+  gap: 1.5em 1em;
 }
 
 .nav-category__grid {
   display: grid;
   grid-template-columns: 0.1fr 0.2fr 0.7fr;
-  gap: 1em;
+  gap: 0.5em;
 }
 .nav-category-brands__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(4, 80px);
   gap: 0.5em;
 }
 
@@ -447,7 +412,7 @@ input {
 }
 .my-orders-grid__desktop {
   display: grid;
-  grid-template-columns: 1fr 0.1fr;
+  grid-template-columns: 1fr 1.2fr 0.5fr;
   gap: 0.5em;
 }
 .my-orders-grid__mobile {
@@ -476,7 +441,8 @@ input {
   top: 100%;
   left: 0;
   z-index: 20;
-  overflow: hidden;
+  max-height: 500px;
+  overflow-y: auto;
 
   width: 100%;
 }
@@ -485,7 +451,9 @@ input {
   top: 100%;
   z-index: 24;
   width: 700px;
+  max-height: 500px;
   height: 500px;
+  overflow-y: auto;
 }
 
 /* slider item */
@@ -550,7 +518,7 @@ input {
   bottom: 50px;
   text-align: center;
   left: 50%;
-  max-width: 300px;
+  max-width: 400px;
   display: flex;
   justify-content: space-between;
   align-items: center;

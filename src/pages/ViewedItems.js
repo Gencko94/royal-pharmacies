@@ -3,7 +3,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
-import { BeatLoader } from 'react-spinners';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Layout from '../components/Layout';
 import ViewedItem from '../components/ViewedItems/ViewedItem';
 import NoViewedItems from '../components/ViewedItems/NoViewedItems';
@@ -22,11 +23,17 @@ export default function ViewedItems() {
   return (
     <Layout>
       <Helmet>
-        <title>Viewed Items | MRG</title>
+        <title>{formatMessage({ id: 'viewed-items' })} | MRG</title>
       </Helmet>
       {isLoading && (
         <div className="min-h-screen px-4 py-2 flex items-center justify-center">
-          <BeatLoader size={15} color={'#b72b2b'} />
+          <Loader
+            type="ThreeDots"
+            color="#b72b2b"
+            height={40}
+            width={40}
+            visible={true}
+          />
         </div>
       )}
       {!isLoading && (

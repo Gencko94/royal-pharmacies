@@ -4,8 +4,8 @@ import { useIntl } from 'react-intl';
 import CategoryChildren from './CategoryChildren';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import LazyImage from '../../helpers/LazyImage';
-import coverplaceholder from '../../assets/CategoryCoverDesktopPlaceholder.png';
+import BannerLazyImage from '../../helpers/BannerLazyImage';
+
 export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
   const { locale } = useIntl();
   const breakpoints = {
@@ -83,15 +83,17 @@ export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
   }
   return (
     <div className="mb-4">
-      <LazyImage
-        src={categoryInfo.cover_desktop?.link}
+      <BannerLazyImage
+        src={categoryInfo.coverDesktop?.link}
         origin="original"
-        alt={categoryInfo.translation[locale].name}
+        alt={categoryInfo.title[locale].name}
         pb="calc(100% * 300/1440)"
-        placeholder={coverplaceholder}
       />
       {categoryInfo.children.length !== 0 && (
-        <CategoryChildren categoryInfo={categoryInfo} />
+        <CategoryChildren
+          children={categoryInfo?.children}
+          title={categoryInfo?.title}
+        />
       )}
     </div>
   );

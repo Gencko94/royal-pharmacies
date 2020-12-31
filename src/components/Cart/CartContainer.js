@@ -81,6 +81,7 @@ export default function CartContainer() {
         <motion.div
           layout
           className="flex justify-end p-2 rounded mt-2 border bg-gray-100"
+          style={{ fontWeight: '900' }}
         >
           <h1>{formatMessage({ id: 'cart-total' })}</h1>
           <h1 className="mx-1 whitespace-no-wrap ">

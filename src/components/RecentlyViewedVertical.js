@@ -70,7 +70,7 @@ export default function RecentlyViewedVertical() {
         {data.slice(0, 5).map(item => {
           return (
             <div key={item.id} className="recent-items__container mb-1 ">
-              <Link to={`/${locale}/c/${item.id}`}>
+              <Link to={`/${locale}/${item.slug}/${item.id}`}>
                 <LazyImage
                   src={item.image?.link}
                   origin="small"

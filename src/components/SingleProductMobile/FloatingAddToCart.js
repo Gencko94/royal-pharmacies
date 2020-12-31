@@ -87,6 +87,7 @@ export default function FloatingAddToCart({
             handleAddToCart({ id, quantity });
           }
         }}
+        disabled={qty === 0}
         className={`bg-green-700 whitespace-no-wrap flex-1 text-body-light uppercase text-sm py-2 px-2 rounded flex items-center justify-center font-semibold`}
       >
         {addToCartButtonLoading ? (

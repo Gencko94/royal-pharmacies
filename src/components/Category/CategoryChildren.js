@@ -8,20 +8,11 @@ import 'swiper/swiper-bundle.css';
 import LazyImage from '../../helpers/LazyImage';
 
 SwiperCore.use([Navigation]);
-export default function CategoryChildren({ categoryInfo }) {
-  const { locale } = useIntl();
+export default function CategoryChildren({ children, title }) {
+  const { locale, formatMessage } = useIntl();
   const breakpoints = {
     // when window width is >= 320px
-    320: {
-      slidesPerView: 2,
-      spaceBetween: 20,
-    },
-    // when window width is >= 480px
-    480: {
-      slidesPerView: 3,
-      spaceBetween: 20,
-    },
-    // when window width is >= 640px
+
     640: {
       slidesPerView: 4,
       spaceBetween: 20,
@@ -41,30 +32,39 @@ export default function CategoryChildren({ categoryInfo }) {
   };
 
   return (
-    <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
-      {categoryInfo.children.map(child => {
-        return (
-          <SwiperSlide
-            key={child.id}
-            className={`overflow-hidden border my-2  relative bg-gray-100
+    <div>
+      <div className="flex items-center mt-2">
+        <h1 className="text-xl font-bold flex-1 ">
+          {formatMessage({ id: 'shop' })} {title?.[locale].name}{' '}
+          {formatMessage({ id: 'by-category' })}
+        </h1>
+      </div>
+
+      <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
+        {children.map(child => {
+          return (
+            <SwiperSlide
+              key={child.id}
+              className={`overflow-hidden border my-2  relative bg-gray-100
              shadow
             rounded`}
-          >
-            <Link to={`/${locale}/categories/${child.slug}`}>
-              <LazyImage
-                src={child.image?.link}
-                alt={child.translation[locale].name}
-                pb="calc(100% * 286/210)"
-                origin="original"
-              />
+            >
+              <Link to={`/${locale}/${child.slug}`}>
+                <LazyImage
+                  src={child.image?.link}
+                  alt={child.translation[locale].name}
+                  pb="calc(100% * 286/210)"
+                  origin="original"
+                />
 
-              <h1 className="font-semibold text-center p-1">
-                {child.translation[locale].name}
-              </h1>
-            </Link>
-          </SwiperSlide>
-        );
-      })}
-    </Swiper>
+                <h1 className="font-semibold text-center p-1">
+                  {child.translation[locale].name}
+                </h1>
+              </Link>
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
+    </div>
   );
 }

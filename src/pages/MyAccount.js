@@ -29,7 +29,7 @@ export default function MyAccount() {
   return (
     <Layout>
       <Helmet>
-        <title>{formatMessage({ id: 'my-account' })}| MRG</title>
+        <title>{formatMessage({ id: 'my-account' })} | MRG</title>
       </Helmet>
       <div
         className={`relative  overflow-hidden myaccount__grid p-4 pb-3 

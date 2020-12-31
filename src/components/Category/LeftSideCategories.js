@@ -7,6 +7,7 @@ export default function LeftSideCategories({
   categoryInfo,
   productsLoading,
   categoryInfoLoading,
+  productsLength,
 }) {
   const { formatMessage, locale } = useIntl();
   if (categoryInfoLoading || productsLoading) {
@@ -27,6 +28,9 @@ export default function LeftSideCategories({
       </ContentLoader>
     );
   }
+  if (!categoryInfoLoading && !productsLoading && productsLength === 0) {
+    return null;
+  }
   return (
     <div className="mb-4">
       <h1 className="text-xl font-semibold">
@@ -37,11 +41,11 @@ export default function LeftSideCategories({
       <div className="my-2">
         <div className="flex justify-between">
           <h1 className="font-semibold text-sm">
-            {categoryInfo.translation[locale].name}
+            {categoryInfo.title[locale].name}
           </h1>
         </div>
-        {categoryInfo.children.length !== 0 &&
-          categoryInfo.children.map((subCategory, i) => (
+        {categoryInfo?.children.length !== 0 &&
+          categoryInfo?.children.map((subCategory, i) => (
             <Link
               to={`/${locale}/${subCategory.slug}`}
               key={i}

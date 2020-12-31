@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
+import LazyImage from '../../helpers/LazyImage';
 
 export default function MegaMenu({ data }) {
   const { formatMessage, locale } = useIntl();
@@ -54,7 +55,7 @@ export default function MegaMenu({ data }) {
             <div className="flex flex-col">
               {data.children.map(subCategory => (
                 <Link
-                  to={`/${locale}/${subCategory.slug}`}
+                  to={`/${locale}/${subCategory.category.slug}`}
                   key={subCategory.id}
                   className="mb-2 text-sm"
                 >
@@ -66,28 +67,25 @@ export default function MegaMenu({ data }) {
           <motion.div
             variants={childVariants}
             className=" pl-4"
-            // style={{ flexBasis: '35%' }}
+            style={{ flexBasis: '35%' }}
           >
-            {/* <h1 className="font-semibold mb-2 ">
+            <h1 className="font-semibold mb-2 ">
               {formatMessage({ id: 'top-brands' })}
-            </h1> */}
-            <img
-              src={`${process.env.REACT_APP_IMAGES_URL}/original/${data.cover_desktop?.link}`}
-              alt={data.translation[locale].name}
-            />
+            </h1>
 
-            {/* <div className="nav-category-brands__grid">
-                {data.brands.map((img, i) => (
-                  <img
-                    src={img}
-                    alt="hi"
-                    key={i}
-                    className="border rounded-sm"
+            <div className="nav-category-brands__grid">
+              {data.category.list_brands.map(brand => (
+                <Link to={`/${locale}/brands/${brand?.slug}`}>
+                  <LazyImage
+                    src={brand.logo?.link}
+                    alt={brand?.translation[locale].name}
+                    pb={'100%'}
                   />
-                ))}
-              </div> */}
+                </Link>
+              ))}
+            </div>
           </motion.div>
-          {/* <motion.div
+          <motion.div
             variants={childVariants}
             className="   pl-4 w-full "
             style={{
@@ -96,12 +94,12 @@ export default function MegaMenu({ data }) {
               flexBasis: '50%',
             }}
           >
-            {data.images.map((img, i) => (
+            {/* {data.category.map((img, i) => (
                 <div key={i} className=" mr-2 ">
                   <img className="" src={img} alt="hi" key={i} />
                 </div>
-              ))}
-          </motion.div> */}
+              ))} */}
+          </motion.div>
         </div>
       </div>
     </motion.div>

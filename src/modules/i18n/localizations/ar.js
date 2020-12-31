@@ -8,6 +8,7 @@ export const ar = {
   // general
 
   'shop-on-mrg': 'تسوق على MRG Mall',
+  shop: 'تسوق',
 
   home: 'الرئيسية',
   cart: 'عربة التسوق',
@@ -19,7 +20,8 @@ export const ar = {
   login: 'سجل الدخول',
   logout: 'تسجيل الخروج',
   'order-history': 'طلباتي السابقة',
-  'viewed-items': 'العناصر التي قمت بزيارتها مسبقا',
+  'viewed-items': 'المنتجات التي قمت بزيارتها ',
+
   'my-orders': 'طلباتي',
   'my-profile': 'ملفي الشخصي',
   'my-addresses': 'عناويني',
@@ -144,6 +146,8 @@ export const ar = {
   categories: 'الفئات',
   allCategories: 'جميع الفئات',
   seeAll: 'الكل',
+  sections: 'الأقسام',
+  'see-all-nav': 'جميع الاقسام',
   bestSellers: 'الأكثر مبيعا',
   mobilesElectronics: 'الموبايلات والإلكترونيات',
   // credential forms
@@ -215,11 +219,13 @@ export const ar = {
   'order-placed': 'وضع الطلب',
   'btn-back-to-addresses': 'العودة الى اختيار العنوان',
   'btn-proceed': 'التالي',
+  'proceed-to-payment': 'الذهاب الى عملية الدفع',
   'order-placed-msg': 'تهانينا , تم وضع الطلب !',
   // maps
   'find-my-position': 'حدد مكاني',
   'location-details': 'تفاصيل الموقع',
   'delivery-location': 'عنوان التوصيل',
+  'delivery-address': 'عنوان التوصيل',
   'maps-detailed-address-apartment-short': 'رقم المنزل/الشقة',
   'maps-detailed-address-building-short': 'رقم البناء/البرج',
   'maps-detailed-address-phone-short': 'رقم الهاتف/الجوال',
@@ -254,7 +260,9 @@ export const ar = {
   'checkout-modal-tos':
     'يساعدنا امتلاكك لحساب على mrg.com على تقديم افضل الخدمات لك ولعملائنا الآخرين .',
   'confirm-location': 'تأكيد الموقع',
+  'confirm-btn': 'تأكيد',
   'remove-location': 'إزالة الموقع',
+  location: 'الموقع',
   'mark-as-default': 'التعيين كموقع افتراضي',
 
   // category nav bar
@@ -267,16 +275,16 @@ export const ar = {
    * orders
    */
 
-  'order-number': 'رقم الطلبية',
-  status: 'الحالة',
+  'order-number': 'رقم الطلب',
+  'order-status': 'حالة الطلب',
   'ordered-at': 'تم الطلب في',
   'delivered-at': 'تم التوصيل في',
-  'order-details': 'تفاصيل الطلبية',
+  'order-details': 'تفاصيل الطلب',
   'delivered-to': 'تم التوصيل إلى',
   'payment-method': 'طريقة الدفع',
   'select-payment-method': 'اختر طريقة الدفع',
 
-  'order-date': 'تاريخ الطلبية',
+  'order-date': 'تاريخ الطلب',
   delivered: 'تم التوصيل',
   pending: 'قيد الإنتظار',
   'expected-delivery': 'وقت التوصيل المتوقع',
@@ -335,4 +343,19 @@ export const ar = {
   'back-to-top': 'العودة الى الأعلى',
   'new-arrivals': 'جديدنا من المنتجات',
   'latest-products': 'جديدنا من المنتجات',
+  'log-in-to-add': 'الرجاء تسجيل الدخول للإضافة',
+  'shop-by-category': 'تسوق حسب الفئة',
+  none: 'لا يوجد',
+  'by-category': 'حسب الفئة',
+  clear: 'مسح',
+  'track-my-order': 'متابعة طلب سابق',
+  'track-order-enter-your-phone':
+    'ادخل رقم الهاتف المرافق للطلب الذي قمت بطلبه للتأكد من حالة الطلب',
+  'order-cancelled': 'ملغى',
+  'order-pending': 'قيد الانتظار',
+  'order-completed': 'تم بنجاح',
+  'order-waiting-for-payment': 'بانتظار الدفع',
+  'order-confirmed': 'مؤكد',
+  'order-new': 'جديد',
+  'cash-on-delivery': 'دفع عند التوصيل',
 };

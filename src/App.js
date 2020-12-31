@@ -41,6 +41,8 @@ const SearchResultsMobile = React.lazy(() =>
 );
 const SingleBrand = React.lazy(() => import('./pages/SingleBrand'));
 const SingleBrandMobile = React.lazy(() => import('./pages/SingleBrandMobile'));
+const StaticPage = React.lazy(() => import('./pages/StaticPage'));
+const TrackOrder = React.lazy(() => import('./pages/TrackOrder'));
 
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -62,6 +64,16 @@ function App() {
               } else {
                 return <RegisterMobile {...props} />;
               }
+            }}
+          />
+          <Route
+            path="/site/:page"
+            render={props => {
+              // if (isTabletOrAbove) {
+              return <StaticPage {...props} />;
+              // } else {
+              // return <LoginMobile {...props} />;
+              // }
             }}
           />
           <Route
@@ -170,6 +182,28 @@ function App() {
                 return <SingleProduct {...props} />;
               } else {
                 return <SingleProductMobile {...props} />;
+              }
+            }}
+          />
+          <Route
+            exact
+            path="/order/track"
+            render={props => {
+              // if (isTabletOrAbove) {
+              return <TrackOrder {...props} />;
+              // } else {
+              // return <NotFoundMobile {...props} />;
+              // }
+            }}
+          />
+          <Route
+            exact
+            path="/page/404"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <NotFound {...props} />;
+              } else {
+                return <NotFoundMobile {...props} />;
               }
             }}
           />

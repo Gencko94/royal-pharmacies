@@ -1,20 +1,22 @@
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
-// import AllCategories from './AllCategories/AllCategories';
+import AllCategories from './AllCategories/AllCategories';
 import { AnimatePresence } from 'framer-motion';
 import ReactHoverObserver from 'react-hover-observer';
 import MegaMenu from './MegaMenu';
 import NavCategoriesContainer from './NavCategoriesContainer';
-// import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from 'react-responsive';
 export default function NavCategory() {
   const dropDownbgRef = React.useRef(null);
-  // const hideAllCategories = useMediaQuery({ query: '(min-width:1290px)' });
-  const { categories, categoriesLoading } = React.useContext(DataProvider);
+  const hideAllCategories = useMediaQuery({ query: '(min-width:1290px)' });
+  const { navCategories, navCategoriesLoading } = React.useContext(
+    DataProvider
+  );
   const [dropDownOpen, setDropDownOpen] = React.useState(false);
   const [catData, setCatData] = React.useState(null);
 
   const handleDropDownOpen = id => {
-    const category = categories.find(item => item.id === id);
+    const category = navCategories.find(item => item.id === id);
     setCatData(category);
   };
 
@@ -26,11 +28,13 @@ export default function NavCategory() {
       >
         <div className="max-w-default mx-auto  px-4 ">
           <div className="relative flex justify-center">
-            {/* {hideAllCategories && <AllCategories />} */}
+            {hideAllCategories && (
+              <AllCategories navCategories={navCategories} />
+            )}
             <ReactHoverObserver hoverDelayInMs={300}>
               <NavCategoriesContainer
-                data={categories}
-                isLoading={categoriesLoading}
+                data={navCategories}
+                isLoading={navCategoriesLoading}
                 handleDropDownOpen={handleDropDownOpen}
                 setCatData={setCatData}
                 setDropDownOpen={setDropDownOpen}

@@ -78,14 +78,6 @@ export default function VariantMiddleSection({
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className="mx-1  text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="mx-1  text-yellow-700">
@@ -142,7 +134,7 @@ export default function VariantMiddleSection({
         {data.full_translation[locale].title}
       </h1>
       <h1 className=" font-semibold mb-1">
-        {option.quantity < 20 ? (
+        {option.quantity < 5 ? (
           formatItemsPlural(option.quantity)
         ) : (
           <span className="text-green-700">
@@ -180,7 +172,7 @@ export default function VariantMiddleSection({
       </div>
       <hr className="my-2" />
       <div className="py-1">
-        <div className="font-bold">
+        <div style={{ fontWeight: '900' }}>
           {isSale && (
             <div className=" flex items-center ">
               <h1>{formatMessage({ id: 'price-before' })} :</h1>

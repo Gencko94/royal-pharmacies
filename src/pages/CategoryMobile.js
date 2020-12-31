@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import CategoryHeaderMobile from '../components/CategoryMobile/CategoryHeaderMobile';
 import CategoryMobileItemGrid from '../components/CategoryMobile/CategoryMobileItemGrid';
 import SortInfoPanelMobile from '../components/CategoryMobile/SortInfoPanelMobile';
@@ -41,10 +41,10 @@ export default function CategoryMobile() {
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
   const [triggerRef, inView] = useInView();
-  const { data, isLoading: productsLoading } = useQuery(
+  const { data, isLoading: productsLoading, error: productsError } = useQuery(
     ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
-    { retry: true, refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false }
   );
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
@@ -175,7 +175,11 @@ export default function CategoryMobile() {
     ],
     []
   );
-
+  if (productsError) {
+    if (productsError.response.data.message === 'Category not founded') {
+      return <Redirect to={`/${locale}/page/404`} />;
+    }
+  }
   return (
     <Layout>
       <div className="min-h-screen relative">

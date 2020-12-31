@@ -105,7 +105,7 @@ export default function MobileSearchbar({ windowScrolled }) {
     );
   };
   const handleSelect = (event, { suggestion }) => {
-    history.push(`/${locale}/c/${suggestion.id}`);
+    history.push(`/${locale}/products/${suggestion.slug}/${suggestion.id}`);
   };
   return (
     <div

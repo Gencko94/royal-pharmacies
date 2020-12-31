@@ -292,7 +292,7 @@ export default function CartItem({ item }) {
           </button>
         </div>
       </div>
-      <div className="text-center font-bold">
+      <div className="text-center" style={{ fontWeight: '900' }}>
         {item.total} {deliveryCountry?.currency.translation[locale].symbol}
         {item.message && (
           <h1 className="text-main-color text-xs">

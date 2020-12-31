@@ -1,10 +1,14 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 export default function NotFoundMobile() {
   const { formatMessage, locale } = useIntl();
   return (
     <div className="not-found-page__container-desktop">
+      <Helmet>
+        <title>404 | MRG</title>
+      </Helmet>
       <div className=" not-found-title-desktop">
         <div className="justify-center items-center flex mb-4">
           <h1

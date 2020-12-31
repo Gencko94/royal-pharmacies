@@ -21,6 +21,7 @@ export default function RightSection({
   itemInWishList,
   itemInCart,
   userId,
+  qty,
 }) {
   const handleSubstractQuantity = () => {
     if (parseInt(quantity) === 1) {
@@ -147,6 +148,7 @@ export default function RightSection({
               handleAddToCart(quantity);
             }
           }}
+          disabled={qty === 0}
           className={`
             bg-green-700
            flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
@@ -154,7 +156,7 @@ export default function RightSection({
           {addToCartButtonLoading ? (
             <Loader
               type="ThreeDots"
-              color="#b72b2b"
+              color="#fff"
               height={25}
               width={25}
               visible={addToCartButtonLoading}
@@ -167,6 +169,13 @@ export default function RightSection({
               <h1 className="mx-2 whitespace-no-wrap">
                 {formatMessage({ id: 'added-to-cart' })}
               </h1>
+            </>
+          ) : qty === 0 ? (
+            <>
+              <span>
+                <TiShoppingCart className="w-25p h-25p" />
+              </span>
+              <h1 className="mx-2">{formatMessage({ id: 'out-of-stock' })}</h1>
             </>
           ) : (
             <>

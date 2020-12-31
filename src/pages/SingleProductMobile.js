@@ -12,18 +12,19 @@ import { AnimatePresence, motion } from 'framer-motion';
 import SingleProductMobileLoader from '../components/SingleProductMobile/SingleProductMobileLoader';
 import AdditionalDetailsMobile from '../components/SingleProductMobile/AdditionalDetailsMobile';
 import { getProductReviews, getSingleItem } from '../Queries/Queries';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
 
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import Layout from '../components/Layout';
 import VariantProductMobile from '../components/SingleProductMobile/VariantProductMobile/VariantProductMobile';
 import MoreFrom from '../components/MoreFrom/MoreFrom';
+import { useIntl } from 'react-intl';
 
 export default function SingleProductMobile() {
   const { id } = useParams();
   const { addViewedItems, deliveryCountry } = React.useContext(DataProvider);
-
+  const { locale } = useIntl();
   const { userId } = React.useContext(AuthProvider);
   const { addToCartMutation, addToGuestCartMutation } = React.useContext(
     CartAndWishlistProvider
@@ -44,14 +45,18 @@ export default function SingleProductMobile() {
   /**
    * Main Fetch
    */
-  const { data, isLoading } = useQuery(['singleProduct', id], getSingleItem, {
-    refetchOnWindowFocus: false,
-    retry: true,
-    onSuccess: async () => {
-      // add Item to localStorage
-      return await addViewedItems(id);
-    },
-  });
+  const { data, isLoading, error } = useQuery(
+    ['singleProduct', id],
+    getSingleItem,
+    {
+      refetchOnWindowFocus: false,
+      retry: true,
+      onSuccess: async () => {
+        // add Item to localStorage
+        return await addViewedItems(id);
+      },
+    }
+  );
   const { data: reviewsData, isLoading: reviewsLoading } = useQuery(
     ['product-reviews', id],
     getProductReviews,
@@ -92,15 +97,21 @@ export default function SingleProductMobile() {
       }
     }
   };
-
+  if (error) {
+    if (error.response.data.message === 'Product not founded') {
+      return <Redirect to={`/${locale}/page/404`} />;
+    }
+  }
   return (
     <Layout>
       <Helmet>
-        {/* <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
+        <title>
+          {` Shop ${data?.full_translation?.[locale].title} on MRG` || 'MRG'}
+        </title>
         <meta
           name="description"
-          content={`${name.split('-').join(' ')} | MRG`}
-        /> */}
+          content={`Shop  ${data?.translation?.[locale].title} | MRG` || 'MRG'}
+        />
       </Helmet>
       <div className="overflow-hidden">
         <AnimatePresence>
@@ -121,7 +132,19 @@ export default function SingleProductMobile() {
 
         {isLoading && <SingleProductMobileLoader />}
         {!isLoading &&
-          (data.type === 'simple' ? (
+          (data.type === 'variation' &&
+          Object.entries(data.new_variation_addons).length > 0 ? (
+            <VariantProductMobile
+              data={data}
+              quantity={quantity}
+              setQuantity={setQuantity}
+              reviews={reviewsData}
+              reviewsLoading={reviewsLoading}
+              setSideMenuOpen={setSideMenuOpen}
+              setDetailsTab={setDetailsTab}
+              inView={inView}
+            />
+          ) : (
             <div className="">
               <ImageZoomMobile data={data} />
 
@@ -144,17 +167,6 @@ export default function SingleProductMobile() {
                 <hr />
               </div>
             </div>
-          ) : (
-            <VariantProductMobile
-              data={data}
-              quantity={quantity}
-              setQuantity={setQuantity}
-              reviews={reviewsData}
-              reviewsLoading={reviewsLoading}
-              setSideMenuOpen={setSideMenuOpen}
-              setDetailsTab={setDetailsTab}
-              inView={inView}
-            />
           ))}
         {!isLoading && (
           <AdditionalDetailsMobile

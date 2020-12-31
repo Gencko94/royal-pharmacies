@@ -5,7 +5,7 @@ import CategoryRightSide from '../components/Category/CategoryRightSide';
 
 import Layout from '../components/Layout';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import {
   getCategoryProducts,
   getSingleCategoryInfo,
@@ -42,15 +42,11 @@ export default function Category() {
    * Main Fetch
    */
 
-  const {
-    data,
-    isLoading: productsLoading,
-    isFetching: productsFetching,
-  } = useQuery(
+  const { data, isLoading: productsLoading, error: productsError } = useQuery(
     ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
     {
-      retry: true,
+      // retry: true,
       refetchOnWindowFocus: false,
     }
   );
@@ -165,12 +161,17 @@ export default function Category() {
     }
   }, [filters]);
 
+  if (productsError) {
+    if (productsError.response.data.message === 'Category not founded') {
+      return <Redirect to={`/${locale}/page/404`} />;
+    }
+  }
   return (
     <Layout>
       <Helmet>
         <title>
           {categoryInfo
-            ? categoryInfo.translation[locale].name
+            ? categoryInfo.title[locale].name
             : formatMessage({ id: 'shop-on-mrg' })}
         </title>
       </Helmet>
@@ -212,10 +213,7 @@ export default function Category() {
             handlePriceChange={handlePriceChange}
             handleChangePriceInput={handleChangePriceInput}
             handleSubmitPrice={handleSubmitPrice}
-            productsFetching={productsFetching}
-            filteredProducts={filteredData?.filteredProducts}
-            filteredProductsLoading={filteredProductsLoading}
-            filtersApplied={filtersApplied}
+            brands={categoryInfo?.brands}
           />
 
           <CategoryRightSide
@@ -223,8 +221,6 @@ export default function Category() {
             productsLoading={productsLoading}
             sortBy={sortBy}
             setResultsPerPage={setResultsPerPage}
-            filteredProducts={filteredData?.filteredProducts}
-            filteredProductsLoading={filteredProductsLoading}
             filtersApplied={filtersApplied}
             filters={filters}
             handleRemoveFilters={handleRemoveFilters}
@@ -239,6 +235,7 @@ export default function Category() {
             filteredPage={filteredPage}
             category={category}
             productsPage={productsPage}
+            filteredProductsLoading={filteredProductsLoading}
           />
         </div>
       </div>

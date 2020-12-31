@@ -70,6 +70,7 @@ export default function PlacesSearch({ panTo, markerAddress }) {
   React.useEffect(() => {
     if (markerAddress) {
       setValue(markerAddress, false);
+    } else {
     }
   }, [markerAddress, setValue]);
 

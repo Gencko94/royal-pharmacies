@@ -24,7 +24,13 @@ const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
-export default function GuestGoogleMapsAddress({ handleAddAddressAndInfo }) {
+export default function GuestGoogleMapsAddress({
+  handleAddAddressAndInfo,
+  guestAddress,
+  name,
+  phoneNumber,
+  email,
+}) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { formatMessage } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
@@ -64,6 +70,9 @@ export default function GuestGoogleMapsAddress({ handleAddAddressAndInfo }) {
           );
         })
         .catch(err => console.log(err));
+    } else {
+      setMarkerAddress(null);
+      setMarkerInfoWindowDetails(null);
     }
   }, [marker]);
 
@@ -119,11 +128,13 @@ export default function GuestGoogleMapsAddress({ handleAddAddressAndInfo }) {
             });
           }}
         >
-          {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
+          {marker && (
+            <Marker position={{ lat: marker?.lat, lng: marker?.lng }} />
+          )}
           {markerInfoWindowDetails && (
             <InfoWindow
               onCloseClick={() => setMarkerInfoWindowDetails(null)}
-              position={{ lat: marker.lat, lng: marker.lng }}
+              position={{ lat: marker?.lat, lng: marker?.lng }}
               options={{
                 pixelOffset: new window.google.maps.Size(0, -50),
               }}
@@ -141,6 +152,11 @@ export default function GuestGoogleMapsAddress({ handleAddAddressAndInfo }) {
         markerAddress={markerAddress}
         marker={marker}
         handleAddAddressAndInfo={handleAddAddressAndInfo}
+        guestAddress={guestAddress}
+        name={name}
+        phoneNumber={phoneNumber}
+        setMarker={setMarker}
+        email={email}
       />
     </div>
   );

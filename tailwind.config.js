@@ -12,6 +12,9 @@ module.exports = {
       fontSize: {
         xxs: '0.7rem',
       },
+      fontWeight: {
+        semibold: 600,
+      },
       boxShadow: {
         navCategory: '0 5px 4px 0 rgba(0,0,0,0.18)',
         'itemsSlider-shallow': '0 5px 10px rgba(0, 0, 0, 0.2)',

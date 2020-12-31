@@ -8,11 +8,9 @@ import { motion } from 'framer-motion';
 
 import { AuthProvider } from '../../contexts/AuthContext';
 export default function MyAddressesMobile() {
-  const {
-    userAddresses,
-
-    userAddressesLoading,
-  } = React.useContext(AuthProvider);
+  const { userAddresses, userAddressesLoading } = React.useContext(
+    AuthProvider
+  );
   const [showMap, setShowMap] = React.useState(false);
 
   if (userAddressesLoading)

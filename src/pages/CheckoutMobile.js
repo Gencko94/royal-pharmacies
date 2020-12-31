@@ -11,12 +11,9 @@ import { useMutation } from 'react-query';
 export default function CheckoutMobile() {
   const { deliveryCountry } = React.useContext(DataProvider);
   const [selectedStep, setSelectedStep] = React.useState(0);
-
   const [selectedAddress, setSelectedAddress] = React.useState(null);
-  const [personalInfo, setPersonalInfo] = React.useState({
-    fullName: '',
-    phoneNumber: '',
-  });
+  const [paymentMethod, setPaymentMethod] = React.useState(null);
+
   const [
     checkoutMutation,
     { isLoading: checkoutLoading },
@@ -51,8 +48,11 @@ export default function CheckoutMobile() {
   const handleCheckout = async () => {
     const order = {
       address: selectedAddress.id,
-      payment_method: 'knet',
-      order_type: 'local',
+      payment_method: paymentMethod,
+      order_type:
+        deliveryCountry?.translation.en === 'Kuwait'
+          ? 'local'
+          : 'international',
     };
     try {
       await checkoutMutation({
@@ -83,8 +83,8 @@ export default function CheckoutMobile() {
             <PersonalInformationMobile
               handleStepBack={handleStepBack}
               selectedAddress={selectedAddress}
-              personalInfo={personalInfo}
-              setPersonalInfo={setPersonalInfo}
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
               handleCheckout={handleCheckout}
               checkoutLoading={checkoutLoading}
             />

@@ -10,16 +10,14 @@ export default function LeftSidePrice({
   handleChangePriceInput,
   handleSubmitPrice,
   productsLoading,
-  filteredProductsLoading,
-  filtersApplied,
+
   productsLength,
-  filteredProductsLength,
 }) {
   const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const min = 0;
   const max = 1000;
-  if (productsLoading || filteredProductsLoading) {
+  if (productsLoading) {
     return (
       <ContentLoader
         speed={2}
@@ -35,10 +33,7 @@ export default function LeftSidePrice({
       </ContentLoader>
     );
   }
-  if (
-    (!filtersApplied && !productsLoading && productsLength === 0) ||
-    (filtersApplied && !filteredProductsLoading && filteredProductsLength === 0)
-  ) {
+  if (!productsLoading && productsLength === 0) {
     return null;
   }
   return (

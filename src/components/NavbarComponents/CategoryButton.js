@@ -6,15 +6,14 @@ export default function CategoryButton({ item, handleDropDownOpen }) {
   const { locale } = useIntl();
   return (
     <Link
-      to={`/${locale}/${item.slug}`}
-      id={`navButton${item.category}`}
+      to={`/${locale}/${item.category.slug}`}
+      id={`navButton${item.id}`}
       onMouseEnter={() => {
         handleDropDownOpen(item.id);
       }}
-      className={`p-2  font-semibold cursor-pointer  hover:bg-second-nav-text-light
-      `}
+      className={`p-2  font-semibold cursor-pointer  hover:bg-second-nav-text-light`}
     >
-      {item.translation[locale].name}
+      {item.category.translation[locale].name}
     </Link>
   );
 }

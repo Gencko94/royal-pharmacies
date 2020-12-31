@@ -3,9 +3,8 @@ import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import LazyImage from '../../helpers/LazyImage';
 import CategoryChildrenMobile from './CategoryChildrenMobile';
-import coverplaceholder from '../../assets/CategoryCoverMobilePlaceholder.png';
+import BannerLazyImage from '../../helpers/BannerLazyImage';
 export default function CategoryHeaderMobile({
   categoryInfo,
   categoryInfoLoading,
@@ -86,16 +85,18 @@ export default function CategoryHeaderMobile({
   }
   return (
     <div className="mb-4">
-      <LazyImage
-        src={categoryInfo.cover_mobile?.link}
+      <BannerLazyImage
+        src={categoryInfo.coverMobile?.link}
         origin="original"
-        alt={categoryInfo.translation[locale].name}
+        alt={categoryInfo.title[locale].name}
         pb="calc(100% * 300/800)"
-        placeholder={coverplaceholder}
       />
 
       {categoryInfo.children.length !== 0 && (
-        <CategoryChildrenMobile categoryInfo={categoryInfo} />
+        <CategoryChildrenMobile
+          children={categoryInfo?.children}
+          title={categoryInfo?.title}
+        />
       )}
     </div>
   );

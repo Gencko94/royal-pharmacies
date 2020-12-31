@@ -12,6 +12,7 @@ export default function LazyImage({ src, pb, alt, origin, placeholder }) {
       }}
     >
       <LazyLoad
+        offset={100}
         placeholder={
           <img src={placeholder ? placeholder : itemplaceholder} alt={alt} />
         }
@@ -35,7 +36,7 @@ export default function LazyImage({ src, pb, alt, origin, placeholder }) {
             left: 0,
             right: 0,
           }}
-          className="mx-auto my-0 absolute"
+          className="mx-auto my-0 absolute "
         />
       </LazyLoad>
     </div>

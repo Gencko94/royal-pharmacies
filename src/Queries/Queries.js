@@ -9,10 +9,13 @@ export const getAllCategories = async () => {
     return res.data.data;
   }
 };
-export const getFooterCategories = async () => {
-  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/categories`);
+export const getFooterData = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/footer-menus`);
   if (res.data.status === true) {
-    return res.data.data.filter(i => i.children?.length > 5).slice(0, 4);
+    return {
+      categories: res.data.data['footer-1'],
+      pages: res.data.data['footer-2'],
+    };
   }
 };
 export const getHomeItems = async () => {
@@ -62,7 +65,6 @@ export const getStaticSwiperData = async (k, type) => {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/category-products/${type}?page=${1}`
     );
-    console.log(res.data);
     if (res.data.status === true) {
       return {
         products: res.data.data.products.data,
@@ -197,20 +199,23 @@ export const getUserAddresses = async () => {
 };
 
 export const addUserAddress = async newAddress => {
+  console.log(newAddress);
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
   const address = {
-    lat: newAddress.lat.toString(),
-    lng: newAddress.lng.toString(),
-    marked_address: newAddress.addressDetails.markerAddress,
+    lat: newAddress.lat?.toString(),
+    lng: newAddress.lng?.toString(),
+    marked_address: newAddress.addressDetails.markerAddress || '',
     address_name: newAddress.addressDetails.addressName,
     apartment_house_number: newAddress.addressDetails.apartmentOrHouseNumber,
     building_tower_number: newAddress.addressDetails.buildingOrTowerNumber,
     phone_number: newAddress.addressDetails.phoneNumber,
     addition_direction: newAddress.addressDetails.additionalDetails,
     as_default: newAddress.defaultLocation ? 1 : 0,
+    userTyped_address: newAddress.addressDetails.userTyped_address || null,
+    type: newAddress.lat ? 'map' : 'text',
   };
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/customer-add-address`,
@@ -473,13 +478,11 @@ export const getGuestCartItems = async (k, deliveryCountry) => {
         },
       });
     });
-    console.log(JSON.stringify(items));
     const res = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
       { cart: JSON.stringify(items) },
       config
     );
-    console.log(res.data);
     if (res.data.status === true) {
       return {
         cartItems: res.data.data.items,
@@ -501,7 +504,6 @@ export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
     localStorage.setItem('localCart', JSON.stringify([]));
   }
   const parsed = JSON.parse(localCart);
-  console.log(newItem);
   const isAvailable = item => {
     if (item.sku === newItem.sku) {
       return true;
@@ -532,13 +534,11 @@ export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
       },
     });
   });
-  console.log(items);
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
     { cart: JSON.stringify(items) },
     config
   );
-  console.log(res.data);
   if (res.data.status === true) {
     return {
       cartItems: res.data.data.items,
@@ -551,7 +551,6 @@ export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
 };
 
 export const removeFromGuestCart = async ({ sku, deliveryCountry }) => {
-  console.log(sku);
   const config = {
     headers: { country: deliveryCountry.code },
   };
@@ -669,8 +668,16 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
   );
+  console.log(res.data.data);
   if (res.data.status === true) {
-    return res.data.data;
+    return {
+      brands: res.data.data.brands,
+      children: res.data.data.children,
+      title: res.data.data.translation,
+      slug: res.data.data.slug,
+      coverDesktop: res.data.data.cover_desktop,
+      coverMobile: res.data.data.cover_mobile,
+    };
   }
 };
 /**
@@ -683,18 +690,14 @@ export const getCategoryProducts = async (
   k,
   { category, page, resultsPerPage }
 ) => {
-  console.log(category);
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category-products/${category}?page=${page}&number=${resultsPerPage?.value}`
   );
-  console.log(res);
   if (res.data.status === true) {
     return {
       products: res.data.data.products.data,
-      title: res.data.data.translation,
-      slug: res.data.data.slug,
-      currentPage: res.data.data.current_page,
-      lastPage: res.data.data.last_page,
+      currentPage: res.data.data.products.current_page,
+      lastPage: res.data.data.products.last_page,
     };
   }
 };
@@ -728,7 +731,6 @@ export const filterProducts = async (
   );
 
   if (res.data.status === true) {
-    console.log(res.data);
     return {
       filteredProducts: res.data.data.data,
       currentPage: res.data.data.current_page,
@@ -736,9 +738,10 @@ export const filterProducts = async (
     };
   }
 };
-export const getCategories = async categorySlug => {
+
+export const getNavCategories = async () => {
   const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
+    `${process.env.REACT_APP_MAIN_URL}/menu/navigation`
   );
 
   if (res.data.status === true) {
@@ -746,7 +749,6 @@ export const getCategories = async categorySlug => {
   }
 };
 export const sortCategories = async ({ query }) => {
-  console.log(query);
   const req = {
     page: query.page,
     category: query.category,
@@ -774,7 +776,6 @@ export const getWishlistItems = async (k, userId) => {
     `${process.env.REACT_APP_MAIN_URL}/wishlist/${userId}`
   );
   if (res.data.status === true) {
-    console.log(res.data.data);
     return { wishlistItems: res.data.data };
   }
 };
@@ -816,14 +817,6 @@ export const removeFromWishlist = async ({ id, userId }) => {
  * Settings
  */
 
-export const getSocialMediaData = async () => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/setting/social-media`
-  );
-  if (res.data.status === true) {
-    return res.data.data;
-  }
-};
 export const getSiteSettings = async () => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/settings`);
   if (res.data.status === true) {
@@ -870,6 +863,24 @@ export const checkout = async ({ deliveryCountry, order }) => {
     { ...order },
     config
   );
+  if (res.data.status === true) {
+    return res.data;
+  }
+};
+export const guestCheckout = async ({ deliveryCountry, order }) => {
+  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const config = {
+    headers: {
+      Authorization: `Bearer ${mrgAuthToken}`,
+      country: deliveryCountry.code,
+    },
+  };
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/new-order-guest`,
+    { ...order },
+    config
+  );
+  console.log(res.data);
   if (res.data.status === true) {
     return res.data;
   }
@@ -927,18 +938,23 @@ export const getCustomCategoriesData = async () => {
     return res.data.data.data;
   }
 };
-export const getSingleBrandProducts = async (k, { slug, page }) => {
-  console.log(page);
+export const getSingleBrandProducts = async (k, { slug, page, number }) => {
   const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/brand/${slug}?page=${page}`
+    `${process.env.REACT_APP_MAIN_URL}/brand/${slug}?page=${page}&number=${number}`
   );
   if (res.data.status === true) {
-    console.log(res.data.data);
     return {
       products: res.data.data.products.data,
       brandName: res.data.data.translation,
       brandLogo: res.data.data.logo.link,
       pageCount: res.data.data.products.last_page,
     };
+  }
+};
+
+export const getStaticPage = async (k, page) => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/page/${page}`);
+  if (res.data.status === true) {
+    return res.data.data.translation;
   }
 };

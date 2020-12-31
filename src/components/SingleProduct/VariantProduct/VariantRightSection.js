@@ -21,6 +21,7 @@ export default function VariantRightSection({
   itemInWishList,
   itemInCart,
   userId,
+  qty,
 }) {
   const formatDaysPlural = () => {
     switch (parseInt(deliveryCountry?.delivery_time)) {
@@ -147,6 +148,7 @@ export default function VariantRightSection({
               handleAddToCart(quantity);
             }
           }}
+          disabled={qty === 0}
           className={`
             bg-green-700
            flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
@@ -167,6 +169,13 @@ export default function VariantRightSection({
               <h1 className="mx-2 whitespace-no-wrap">
                 {formatMessage({ id: 'added-to-cart' })}
               </h1>
+            </>
+          ) : qty === 0 ? (
+            <>
+              <span>
+                <TiShoppingCart className="w-25p h-25p" />
+              </span>
+              <h1 className="mx-2">{formatMessage({ id: 'out-of-stock' })}</h1>
             </>
           ) : (
             <>
@@ -220,7 +229,7 @@ export default function VariantRightSection({
               exit={{ y: 10, opacity: 0 }}
               className="box-arrow text-xs shadow text-center rounded p-2 "
             >
-              Please log in to Add
+              {formatMessage({ id: 'log-in-to-add' })}
             </motion.div>
           )}
         </AnimatePresence>

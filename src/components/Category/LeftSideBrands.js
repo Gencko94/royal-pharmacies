@@ -1,30 +1,48 @@
 import React from 'react';
+import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
 
 export default function LeftSideBrands({
-  products,
+  brands,
   handleBrandChange,
   brandFilters,
+  categoryInfoLoading,
+  productsLoading,
 }) {
   const { formatMessage, locale } = useIntl();
-  const brands = React.useMemo(() => {
-    let brands = [];
-    products.forEach(product => {
-      if (product.brand) {
-        brands.push({
-          label: product.brand.translation[locale].name,
-          id: product.brand.id,
-        });
-      }
-    });
-    brands = [...new Set(brands.map(o => JSON.stringify(o)))].map(s =>
-      JSON.parse(s)
+  // const brands = React.useMemo(() => {
+  //   let brands = [];
+  //   products.forEach(product => {
+  //     if (product.brand) {
+  //       brands.push({
+  //         label: product.brand.translation[locale].name,
+  //         id: product.brand.id,
+  //       });
+  //     }
+  //   });
+  //   brands = [...new Set(brands.map(o => JSON.stringify(o)))].map(s =>
+  //     JSON.parse(s)
+  //   );
+  //   return brands;
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+  if (categoryInfoLoading && !productsLoading) {
+    return (
+      <ContentLoader
+        speed={2}
+        viewBox="0 0 300 150"
+        backgroundColor="#f3f3f3"
+        foregroundColor="#ecebeb"
+      >
+        <rect x="0" y="0" rx="5" ry="5" width="100%" height="30" />
+        <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
+        <rect x="0" y="65" rx="5" ry="5" width="100%" height="15" />
+        <rect x="0" y="90" rx="5" ry="5" width="100%" height="15" />
+        <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
+      </ContentLoader>
     );
-    return brands;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (brands.length === 0) {
+  }
+  if (brands?.length === 0) {
     return null;
   }
 
@@ -35,7 +53,7 @@ export default function LeftSideBrands({
       </h1>
       <hr />
       <div className="flex flex-col justify-center">
-        {brands.map(brand => {
+        {brands?.map(brand => {
           const isAvailable = brandFilters.find(i => i.id === brand.id);
 
           return (
@@ -44,14 +62,19 @@ export default function LeftSideBrands({
                 id={brand.id}
                 type="checkbox"
                 className="form-checkbox border-gray-600 text-main-color"
-                onChange={() => handleBrandChange(brand)}
+                onChange={() =>
+                  handleBrandChange({
+                    id: brand.id,
+                    label: brand.translation[locale].name,
+                  })
+                }
                 checked={isAvailable ? true : false}
               />
               <label
                 htmlFor={brand.id}
                 className="hover:underline hover:text-blue-700 cursor-pointer  mx-5"
               >
-                {brand.label}
+                {brand.translation[locale].name}
               </label>
             </div>
           );

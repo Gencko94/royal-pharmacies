@@ -117,15 +117,14 @@ export default function SingleProduct() {
   };
   if (error) {
     if (error.response.data.message === 'Product not founded') {
-      return <Redirect to={`/${locale}/notfound`} />;
+      return <Redirect to={`/${locale}/page/404`} />;
     }
-    // return <pre>{JSON.stringify(error.response)}</pre>;
   }
   return (
     <Layout>
       <Helmet>
         <title>
-          {` Shop ${data?.translation?.[locale].title} on MRG` || 'MRG'}
+          {` Shop ${data?.full_translation?.[locale].title} on MRG` || 'MRG'}
         </title>
         <meta
           name="description"
@@ -156,7 +155,16 @@ export default function SingleProduct() {
         {!isLoading && <Breadcrumbs data={data.categories} />}
         {isLoading && <SingleProductLoader />}
         {!isLoading &&
-          (data.type === 'simple' ? (
+          (data.type === 'variation' &&
+          Object.entries(data.new_variation_addons).length > 0 ? (
+            <VariantProduct
+              data={data}
+              reviewsLoading={reviewsLoading}
+              reviews={reviews}
+              setSideMenuOpen={setSideMenuOpen}
+              setDetailsTab={setDetailsTab}
+            />
+          ) : (
             <div className="single-product__container-desktop">
               <div className=" ">
                 <ImageZoom data={data} />
@@ -177,16 +185,9 @@ export default function SingleProduct() {
                 itemInCart={itemInCart}
                 itemInWishList={itemInWishList}
                 userId={userId}
+                qty={data.simple_addons.quantity}
               />
             </div>
-          ) : (
-            <VariantProduct
-              data={data}
-              reviewsLoading={reviewsLoading}
-              reviews={reviews}
-              setSideMenuOpen={setSideMenuOpen}
-              setDetailsTab={setDetailsTab}
-            />
           ))}
         <div id="details" className="py-2 mb-2">
           {!isLoading && (

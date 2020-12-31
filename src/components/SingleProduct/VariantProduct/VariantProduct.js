@@ -181,6 +181,7 @@ export default function VariantProduct({
         itemInCart={itemInCart}
         itemInWishList={itemInWishList}
         userId={userId}
+        qty={option.quantity}
       />
     </div>
   );

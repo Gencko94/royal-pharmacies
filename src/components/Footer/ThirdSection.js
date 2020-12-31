@@ -7,17 +7,12 @@ import {
   FaWhatsapp,
 } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
-import { useQuery } from 'react-query';
+
 import { Link } from 'react-router-dom';
 
 import { DataProvider } from '../../contexts/DataContext';
-import { getSocialMediaData } from '../../Queries/Queries';
 
-export default function ThirdSection() {
-  const { data } = useQuery('socialMedia', getSocialMediaData, {
-    retry: true,
-    refetchOnWindowFocus: false,
-  });
+export default function ThirdSection({ pages }) {
   const { formatMessage, locale } = useIntl();
   const { settings } = React.useContext(DataProvider);
   return (
@@ -40,7 +35,24 @@ export default function ThirdSection() {
           &copy; 2020 MRG . {formatMessage({ id: 'footer-all-rights' })}
         </h1>
       </div>
-      {data && (
+
+      {pages && (
+        <div className="flex text-sm justify-evenly">
+          {pages.map(page => {
+            return (
+              page.type === 'page' && (
+                <Link
+                  to={`/${locale}/site/${page.page?.slug}`}
+                  className="mr-4"
+                >
+                  {page.translation[locale].name}
+                </Link>
+              )
+            );
+          })}
+        </div>
+      )}
+      {settings && (
         <div className="flex justify-evenly">
           <a
             rel="noopener noreferrer"

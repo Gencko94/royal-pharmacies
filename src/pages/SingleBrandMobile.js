@@ -24,7 +24,7 @@ export default function SingleBrandMobile() {
     setPage(data.selected + 1);
   };
   const { data, isLoading: productsLoading } = useQuery(
-    ['single-brand', { slug, page }],
+    ['single-brand', { slug, page, number: 24 }],
     getSingleBrandProducts,
     {
       retry: true,

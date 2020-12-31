@@ -17,11 +17,8 @@ export default function Checkout() {
   const { deliveryCountry } = React.useContext(DataProvider);
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [selectedAddress, setSelectedAddress] = React.useState(null);
-  const [paymentMethod, setPaymentMethod] = React.useState('K-net');
-  const [personalInfo, setPersonalInfo] = React.useState({
-    fullName: '',
-    phoneNumber: '',
-  });
+  const [paymentMethod, setPaymentMethod] = React.useState(null);
+
   const [stepDone, setStepDone] = React.useState({
     0: false,
     1: false,
@@ -38,6 +35,11 @@ export default function Checkout() {
       });
     }
   };
+
+  const handleSelectAddress = address => {
+    setSelectedAddress(address);
+    handleStepForward();
+  };
   const handleStepForward = () => {
     if (selectedStep === 2) {
       return;
@@ -52,8 +54,11 @@ export default function Checkout() {
   const handleCheckout = async () => {
     const order = {
       address: selectedAddress.id,
-      payment_method: 'knet',
-      order_type: 'local',
+      payment_method: paymentMethod,
+      order_type:
+        deliveryCountry?.translation.en === 'Kuwait'
+          ? 'local'
+          : 'international',
     };
     try {
       await checkoutMutation({
@@ -75,16 +80,14 @@ export default function Checkout() {
         <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
           {selectedStep === 0 && (
             <SelectAddress
-              handleStepForward={handleStepForward}
               selectedAddress={selectedAddress}
               setSelectedAddress={setSelectedAddress}
+              handleSelectAddress={handleSelectAddress}
             />
           )}
           {selectedStep === 1 && (
             <PersonalInformation
               handleStepBack={handleStepBack}
-              personalInfo={personalInfo}
-              setPersonalInfo={setPersonalInfo}
               selectedAddress={selectedAddress}
               paymentMethod={paymentMethod}
               setPaymentMethod={setPaymentMethod}

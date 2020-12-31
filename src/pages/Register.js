@@ -9,7 +9,6 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import Select from 'react-select';
-import register from '../assets/register.jpg';
 import Language from '../components/NavbarComponents/Language';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { DataProvider } from '../contexts/DataContext';
@@ -144,7 +143,7 @@ export default function Register() {
       <div
         className="h-full"
         style={{
-          backgroundImage: `url(${register})`,
+          backgroundImage: `url(${settings?.sign_up_background})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
         }}

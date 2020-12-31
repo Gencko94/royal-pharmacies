@@ -6,9 +6,9 @@ import GoogleMapsAddress from '../GoogleMapsAddress';
 import AvailableAddresses from './AvailableAddresses';
 
 export default function SelectAddress({
-  handleStepForward,
   selectedAddress,
   setSelectedAddress,
+  handleSelectAddress,
 }) {
   const [showMap, setShowMap] = React.useState(false);
   const { userAddresses, userAddressesLoading } = React.useContext(
@@ -38,7 +38,7 @@ export default function SelectAddress({
           setShowMap={setShowMap}
           selectedAddress={selectedAddress}
           setSelectedAddress={setSelectedAddress}
-          handleStepForward={handleStepForward}
+          handleSelectAddress={handleSelectAddress}
         />
       )}
 

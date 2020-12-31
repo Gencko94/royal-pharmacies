@@ -49,20 +49,21 @@ export default function StaticSwiper({ type, cb, title }) {
       spaceBetween: 20,
     },
   };
-  console.log(data, 'DATA');
+
   return (
     <div className="my-8">
       {isLoading && <div className="mb-4 " style={{ height: '30px' }}></div>}
       {isLoading && <SwiperLoader />}
       {!isLoading && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl font-bold flex-1 ">
+          <h1 className="text-xl flex-1 " style={{ fontWeight: '900' }}>
             {data?.title[locale]?.name}
           </h1>
           {type !== 'latest_products' && type !== 'best_seller' && (
             <Link
               to={`/${locale}/${data?.slug}`}
               className="py-1 px-2  bg-main-color text-second-nav-text-light rounded whitespace-no-wrap"
+              style={{ fontWeight: '900' }}
             >
               {formatMessage({ id: 'seeAll' })}
             </Link>
@@ -80,7 +81,7 @@ export default function StaticSwiper({ type, cb, title }) {
             return (
               <SwiperSlide
                 key={item.id}
-                className={`overflow-hidden   relative my-1 rounded`}
+                className={`overflow-hidden   relative my-2 rounded`}
               >
                 {item.type === 'variation' &&
                 Object.entries(item.new_variation_addons).length > 0 ? (

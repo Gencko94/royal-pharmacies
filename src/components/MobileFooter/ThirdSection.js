@@ -7,11 +7,24 @@ import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { DataProvider } from '../../contexts/DataContext';
 
-export default function ThirdSection() {
+export default function ThirdSection({ pages }) {
   const { formatMessage, locale } = useIntl();
   const { settings } = React.useContext(DataProvider);
   return (
     <div className="p-4 pb-2 text-gray-100 bg-gray-900 ">
+      {pages && (
+        <div className="flex text-sm mb-4 justify-around">
+          {pages.map(page => {
+            return (
+              page.type === 'page' && (
+                <Link to={`/${locale}/site/${page.page?.slug}`}>
+                  {page.translation[locale].name}
+                </Link>
+              )
+            );
+          })}
+        </div>
+      )}
       <div className="flex justify-evenly mb-2">
         <a
           rel="noopener noreferrer"
@@ -60,8 +73,7 @@ export default function ThirdSection() {
             <img
               src={settings?.store_logo}
               alt="MRG-logo"
-              style={{ height: '30px' }}
-              className=" mb-3"
+              style={{ maxHeight: '40px' }}
             />
           )}
         </Link>

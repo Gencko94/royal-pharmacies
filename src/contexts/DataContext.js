@@ -4,6 +4,7 @@ import { queryCache, useQuery } from 'react-query';
 import {
   getAllCategories,
   getDeliveryCountries,
+  getNavCategories,
   getSiteSettings,
 } from '../Queries/Queries';
 export const DataProvider = React.createContext();
@@ -56,6 +57,14 @@ export default function DataContextProvider({ children }) {
       refetchOnWindowFocus: false,
     }
   );
+  const { data: navCategories, isLoading: navCategoriesLoading } = useQuery(
+    'nav-categories',
+    getNavCategories,
+    {
+      retry: true,
+      refetchOnWindowFocus: false,
+    }
+  );
   const {
     data: deliveryCountries,
     isLoading: deliveryCountriesLoading,
@@ -79,9 +88,12 @@ export default function DataContextProvider({ children }) {
   return (
     <DataProvider.Provider
       value={{
-        categories: categories,
-        categoriesLoading: categoriesLoading,
-        deliveryCountry: deliveryCountry,
+        categories,
+        navCategories,
+
+        categoriesLoading,
+        navCategoriesLoading,
+        deliveryCountry,
         deliveryCountries,
         deliveryCountriesLoading,
         setDeliveryCountry,

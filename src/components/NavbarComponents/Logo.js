@@ -5,7 +5,7 @@ import { DataProvider } from '../../contexts/DataContext';
 export default function Logo() {
   const { locale } = useIntl();
   const { settings } = React.useContext(DataProvider);
-  console.log(settings);
+
   return (
     <div
       className=" flex items-center justify-center"
