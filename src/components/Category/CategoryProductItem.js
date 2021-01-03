@@ -17,15 +17,17 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
   );
   const { userId } = React.useContext(AuthProvider);
   const [itemInCart, setItemInCart] = React.useState(false);
-  const { addToGuestCartMutation, addToCartMutation } = React.useContext(
-    CartAndWishlistProvider
-  );
+  const {
+    addToGuestCartMutation,
+    addToCartMutation,
+    coupon,
+  } = React.useContext(CartAndWishlistProvider);
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
     if (userId) {
       try {
         const newItem = { id: item.id, quantity: 1 };
-        await addToCartMutation({ newItem, userId, deliveryCountry });
+        await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
         setItemInCart(true);
@@ -46,7 +48,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         const sku = item.simple_addons.sku;
         const newItem = { id: item.id, quantity: 1, price, sku };
         console.log('trying');
-        await addToGuestCartMutation({ newItem, deliveryCountry });
+        await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         console.log('success');
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
@@ -69,7 +71,12 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
+        <Link
+          to={{
+            pathname: `/${locale}/products/${item.slug}/${item.id}`,
+          }}
+          // to={`/${locale}/products/${item.slug}/${item.id}`}
+        >
           <LazyImage
             src={item.image?.link}
             origin="original"
@@ -86,13 +93,16 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
               onClick={handleAddToCart}
               className="flex items-center justify-center absolute w-full bottom-10"
             >
-              <button className=" text-center rounded uppercase p-2 bg-main-color text-main-text text-sm">
+              <button
+                className="  flex items-center justify-center rounded uppercase p-2 bg-main-color text-main-text text-sm"
+                style={{ width: '110px' }}
+              >
                 {addToCartButtonLoading ? (
                   <Loader
                     type="ThreeDots"
                     color="#fff"
-                    height={20}
-                    width={20}
+                    height={21}
+                    width={21}
                     visible={true}
                   />
                 ) : (

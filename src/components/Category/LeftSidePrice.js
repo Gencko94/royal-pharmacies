@@ -10,14 +10,14 @@ export default function LeftSidePrice({
   handleChangePriceInput,
   handleSubmitPrice,
   productsLoading,
-
+  categoryInfoLoading,
   productsLength,
 }) {
   const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const min = 0;
   const max = 1000;
-  if (productsLoading) {
+  if (productsLoading || categoryInfoLoading) {
     return (
       <ContentLoader
         speed={2}
@@ -38,7 +38,7 @@ export default function LeftSidePrice({
   }
   return (
     <motion.div layout className="mb-4">
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-lg font-semibold">
         {formatMessage({ id: 'filter-by-price' })} (
         {deliveryCountry?.currency.translation[locale].symbol})
       </h1>

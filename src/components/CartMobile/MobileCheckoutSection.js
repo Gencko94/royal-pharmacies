@@ -7,22 +7,26 @@ import MobileCheckoutSectionLoader from './ContentLoaders/MobileCheckoutSectionL
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { useHistory } from 'react-router-dom';
+import { motion } from 'framer-motion';
 export default function MobileCheckoutSection() {
   const {
     cartItems,
     cartItemsLoading,
     cartTotal,
     couponCost,
-
+    shippingCost,
+    cartItemsFetching,
     cartSubtotal,
     checkCouponMutation,
     isCheckingCoupon,
+    setCoupon,
   } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const [couponCode, setCouponCode] = React.useState('');
   const [validCoupon, setValidCoupon] = React.useState(false);
   const [couponError, setCouponError] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
+  const { formatMessage, locale } = useIntl();
   const history = useHistory();
   const resolvePlural = () => {
     switch (cartItems.length) {
@@ -41,31 +45,46 @@ export default function MobileCheckoutSection() {
   const handleCheckout = () => {
     history.push(`/${locale}/checkout/user-checkout`);
   };
-  const handleCheckCoupon = async e => {
+  const handleSubmitCoupon = async e => {
     e.preventDefault();
-    if (!couponCode) {
-      return;
-    }
-    try {
-      await checkCouponMutation({
-        code: couponCode,
-        subtotal: cartSubtotal.toString(),
-      });
-      setValidCoupon(true);
-    } catch (error) {
+    if (validCoupon) {
       setValidCoupon(false);
-      setCouponError(true);
-      console.log(error.response);
-      if (error.response.data.message === 'Coupon expired') {
-        setErrorMessage(formatMessage({ id: 'coupon-expired' }));
-      } else if (
-        error.response.data.message?.code[0] === 'The selected code is invalid.'
-      ) {
-        setErrorMessage(formatMessage({ id: 'coupon-invalid' }));
+      setCoupon(null);
+      setCouponCode('');
+    } else {
+      setCouponError(false);
+
+      if (!couponCode) {
+        return;
+      }
+      try {
+        await checkCouponMutation({
+          code: couponCode,
+          subtotal: cartSubtotal.toString(),
+        });
+        setValidCoupon(true);
+        setCoupon(couponCode);
+      } catch (error) {
+        setValidCoupon(false);
+
+        setCouponError(true);
+        console.log(error.response);
+        if (error.response.data.message === 'Coupon expired') {
+          setErrorMessage(formatMessage({ id: 'coupon-expired' }));
+        } else if (
+          error.response.data.message?.code?.[0] ===
+          'The selected code is invalid.'
+        ) {
+          setErrorMessage(formatMessage({ id: 'coupon-invalid' }));
+        } else if (
+          error.response.data.message === 'The amount is less then the minimum'
+        ) {
+          setErrorMessage(formatMessage({ id: 'coupon-conditions-not-met' }));
+        }
       }
     }
   };
-  const { formatMessage, locale } = useIntl();
+
   if (cartItemsLoading) {
     return (
       <div className="-mx-2 -mt-1">
@@ -74,23 +93,31 @@ export default function MobileCheckoutSection() {
     );
   }
   return (
-    <div className="-mx-2 -mt-1 border font-semibold bg-gray-100 p-2 flex justify-center flex-col ">
+    <motion.div
+      layout
+      className="-mx-2 -mt-1 border font-semibold bg-gray-100 p-2 flex justify-center flex-col "
+    >
       <div className="mb-2 ">
         <form
-          onSubmit={handleCheckCoupon}
-          className="rounded border w-full flex mb-1  overflow-hidden"
+          onSubmit={handleSubmitCoupon}
+          className={`rounded border w-full flex mb-1  overflow-hidden ${
+            couponError && 'border-main-color'
+          }`}
         >
           <input
             type="text"
             value={couponCode}
             onChange={e => setCouponCode(e.target.value)}
             placeholder={formatMessage({ id: 'cart-enter-code-or-coupon' })}
-            className="flex-1 placeholder-gray-700  p-2"
+            readOnly={validCoupon}
+            className={`${
+              validCoupon && 'bg-gray-400 text-gray-200'
+            } flex-1 placeholder-gray-700  p-2`}
           />
           <button
             type="submit"
-            className="bg-main-color flex items-center justify-center p-2 text-main-text uppercase "
-            style={{ width: '60px' }}
+            className="bg-main-color flex items-center text-sm justify-center p-2 text-main-text uppercase "
+            style={{ width: '70px' }}
           >
             {isCheckingCoupon ? (
               <Loader
@@ -100,6 +127,8 @@ export default function MobileCheckoutSection() {
                 width={22}
                 visible={true}
               />
+            ) : validCoupon ? (
+              formatMessage({ id: 'remove' })
             ) : (
               formatMessage({ id: 'cart-code-button' })
             )}
@@ -109,7 +138,7 @@ export default function MobileCheckoutSection() {
           <h1 className="text-main-color text-xs">{errorMessage}</h1>
         )}
       </div>
-      <div className="  flex mb-2  ">
+      <div className=" flex mb-2  ">
         <h1 className="text-gray-900">{formatMessage({ id: 'cart-total' })}</h1>
         <h1 className="mx-1 whitespace-no-wrap flex-1">
           (
@@ -118,53 +147,177 @@ export default function MobileCheckoutSection() {
             : `${cartItems.length} `}
           {resolvePlural()})
         </h1>
-        <h1>{cartSubtotal}</h1>{' '}
-        {deliveryCountry?.currency.translation[locale].symbol}
-      </div>
-      <div className="flex items-center mb-2">
-        <h1 className=" flex-1">{formatMessage({ id: 'delivery-cost' })}</h1>
-        <h1 className="mx-1">
-          {deliveryCountry?.delivery_cost === 0 ? (
-            <span className="text-green-700 uppercase font-semibold">
-              {formatMessage({ id: 'cart-free' })}
-            </span>
-          ) : (
-            deliveryCountry?.delivery_cost
-          )}
-        </h1>
-      </div>
-      {validCoupon && (
-        <div className="flex items-center mb-2">
-          <h1 className="text-gray-900 flex-1">
-            {formatMessage({ id: 'coupon-sale' })}
-          </h1>
-          <h1 className="mx-1">
-            {couponCost === 0 ? (
-              <span className="text-green-700 uppercase font-semibold">
-                {formatMessage({ id: 'coupon-sale' })}
-              </span>
-            ) : (
-              couponCost
-            )}
-          </h1>
-        </div>
-      )}
-      <div className="  flex mb-2 ">
-        <h1 className="flex-1 text-gray-900">
-          {formatMessage({ id: 'subtotal' })}
-        </h1>
-        <h1>{cartTotal}</h1>{' '}
+        <h1>{cartSubtotal}</h1>
         <span className="mx-1">
           {deliveryCountry?.currency.translation[locale].symbol}
         </span>
       </div>
+      <div className="flex items-center mb-2">
+        <h1 className="flex-1">{formatMessage({ id: 'delivery-cost' })}</h1>
+        <h1>
+          {shippingCost === 0 ? (
+            <span className="text-green-700 uppercase font-semibold">
+              {formatMessage({ id: 'cart-free' })}
+            </span>
+          ) : (
+            <span>
+              {shippingCost}
+              <span className="mx-1">
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </span>
+            </span>
+          )}
+        </h1>
+      </div>
+      {validCoupon && (
+        <div className="flex text-green-700 items-center mb-2">
+          <h1 className=" flex-1">{formatMessage({ id: 'coupon-sale' })}</h1>
+          {cartItemsFetching ? (
+            <Loader
+              type="ThreeDots"
+              color="#b72b2b"
+              height={22}
+              width={22}
+              visible={true}
+            />
+          ) : (
+            <h1>
+              {couponCost}
+              <span className="mx-1">
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </span>
+            </h1>
+          )}
+        </div>
+      )}
+
+      <hr className="mb-3" />
+      <div className="  flex mb-2 text-lg " style={{ fontWeight: 900 }}>
+        <h1 className="flex-1 text-gray-900">
+          {formatMessage({ id: 'subtotal' })}
+        </h1>
+        {cartItemsFetching ? (
+          <Loader
+            type="ThreeDots"
+            color="#b72b2b"
+            height={22}
+            width={22}
+            visible={true}
+          />
+        ) : (
+          <h1 className="text-green-700">
+            {cartTotal}{' '}
+            <span className="mx-1 text-green-700">
+              {deliveryCountry?.currency.translation[locale].symbol}
+            </span>
+          </h1>
+        )}
+      </div>
+      <hr className="mb-3" />
       <button
         onClick={handleCheckout}
-        className="p-2 rounded mb-2 font-semibold block text-center uppercase text-sm  w-full text-gray-100 bg-green-600"
+        className={`${
+          cartItems.length === 0
+            ? 'cursor-not-allowed  bg-gray-600'
+            : 'bg-green-600'
+        } p-2 rounded text-body-light uppercase mb-3  `}
+        disabled={cartItems.length === 0}
       >
         {formatMessage({ id: 'checkout' })}
       </button>
-      <AcceptedPayments />
-    </div>
+      <AcceptedPayments deliveryCountry={deliveryCountry} />
+    </motion.div>
+    // <div className="-mx-2 -mt-1 border font-semibold bg-gray-100 p-2 flex justify-center flex-col ">
+    //   <div className="mb-2 ">
+    //     <form
+    //       onSubmit={handleCheckCoupon}
+    //       className="rounded border w-full flex mb-1  overflow-hidden"
+    //     >
+    //       <input
+    //         type="text"
+    //         value={couponCode}
+    //         onChange={e => setCouponCode(e.target.value)}
+    //         placeholder={formatMessage({ id: 'cart-enter-code-or-coupon' })}
+    //         className="flex-1 placeholder-gray-700  p-2"
+    //       />
+    //       <button
+    //         type="submit"
+    //         className="bg-main-color flex items-center justify-center p-2 text-main-text uppercase "
+    //         style={{ width: '60px' }}
+    //       >
+    //         {isCheckingCoupon ? (
+    //           <Loader
+    //             type="ThreeDots"
+    //             color="#fff"
+    //             height={22}
+    //             width={22}
+    //             visible={true}
+    //           />
+    //         ) : (
+    //           formatMessage({ id: 'cart-code-button' })
+    //         )}
+    //       </button>
+    //     </form>
+    //     {couponError && (
+    //       <h1 className="text-main-color text-xs">{errorMessage}</h1>
+    //     )}
+    //   </div>
+    //   <div className="  flex mb-2  ">
+    //     <h1 className="text-gray-900">{formatMessage({ id: 'cart-total' })}</h1>
+    //     <h1 className="mx-1 whitespace-no-wrap flex-1">
+    //       (
+    //       {locale === 'ar'
+    //         ? cartItems.length > 2 && cartItems.length
+    //         : `${cartItems.length} `}
+    //       {resolvePlural()})
+    //     </h1>
+    //     <h1>{cartSubtotal}</h1>{' '}
+    //     {deliveryCountry?.currency.translation[locale].symbol}
+    //   </div>
+    //   <div className="flex items-center mb-2">
+    //     <h1 className=" flex-1">{formatMessage({ id: 'delivery-cost' })}</h1>
+    //     <h1 className="mx-1">
+    //       {deliveryCountry?.delivery_cost === 0 ? (
+    //         <span className="text-green-700 uppercase font-semibold">
+    //           {formatMessage({ id: 'cart-free' })}
+    //         </span>
+    //       ) : (
+    //         deliveryCountry?.delivery_cost
+    //       )}
+    //     </h1>
+    //   </div>
+    //   {validCoupon && (
+    //     <div className="flex items-center mb-2">
+    //       <h1 className="text-gray-900 flex-1">
+    //         {formatMessage({ id: 'coupon-sale' })}
+    //       </h1>
+    //       <h1 className="mx-1">
+    //         {couponCost === 0 ? (
+    //           <span className="text-green-700 uppercase font-semibold">
+    //             {formatMessage({ id: 'coupon-sale' })}
+    //           </span>
+    //         ) : (
+    //           couponCost
+    //         )}
+    //       </h1>
+    //     </div>
+    //   )}
+    //   <div className="  flex mb-2 ">
+    //     <h1 className="flex-1 text-gray-900">
+    //       {formatMessage({ id: 'subtotal' })}
+    //     </h1>
+    //     <h1>{cartTotal}</h1>{' '}
+    //     <span className="mx-1">
+    //       {deliveryCountry?.currency.translation[locale].symbol}
+    //     </span>
+    //   </div>
+    //   <button
+    //     onClick={handleCheckout}
+    //     className="p-2 rounded mb-2 font-semibold block text-center uppercase text-sm  w-full text-gray-100 bg-green-600"
+    //   >
+    //     {formatMessage({ id: 'checkout' })}
+    //   </button>
+    //   <AcceptedPayments />
+    // </div>
   );
 }

@@ -347,7 +347,12 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
   }
 };
 
-export const addToCart = async ({ newItem, userId, deliveryCountry }) => {
+export const addToCart = async ({
+  newItem,
+  userId,
+  deliveryCountry,
+  coupon,
+}) => {
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
     headers: {
@@ -364,6 +369,7 @@ export const addToCart = async ({ newItem, userId, deliveryCountry }) => {
         [newItem.variation?.id]: newItem.variation?.item_id,
         [newItem.option?.id]: newItem.option?.item_id,
       },
+      coupon,
     },
     config
   );
@@ -382,6 +388,7 @@ export const removeFromCart = async ({
   cart_id,
   userId,
   deliveryCountry,
+  coupon,
 }) => {
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
@@ -396,6 +403,7 @@ export const removeFromCart = async ({
     {
       product: id,
       cart_id,
+      coupon,
     },
     config
   );
@@ -413,17 +421,30 @@ export const removeFromCart = async ({
   }
 };
 
-export const editCart = async ({ cartId, itemId, quantity, userId }) => {
+export const editCart = async ({
+  cartId,
+  itemId,
+  quantity,
+  userId,
+  coupon,
+}) => {
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/cart/update/${userId}`,
     {
       cart_id: cartId,
       product: itemId,
       qty: quantity,
+      coupon,
     }
   );
   if (res.data.status === true) {
-    return true;
+    return {
+      cartItems: res.data.data.items,
+      cartTotal: res.data.data.total,
+      shippingCost: res.data.data.shipping_cost,
+      cartSubtotal: res.data.data.subtotal,
+      couponCost: res.data.data.coupon_cost,
+    };
   }
 };
 export const checkCoupon = async ({ code, subtotal }) => {
@@ -435,7 +456,9 @@ export const checkCoupon = async ({ code, subtotal }) => {
     }
   );
   if (res.data.status === true) {
-    return res.data.data;
+    return {
+      code: res.data.data.code,
+    };
   }
 };
 /**
@@ -446,7 +469,7 @@ export const checkCoupon = async ({ code, subtotal }) => {
  * Guest Cart Methods
  */
 
-export const getGuestCartItems = async (k, deliveryCountry) => {
+export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
   const config = {
     headers: { country: deliveryCountry.code },
   };
@@ -480,7 +503,7 @@ export const getGuestCartItems = async (k, deliveryCountry) => {
     });
     const res = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
-      { cart: JSON.stringify(items) },
+      { cart: JSON.stringify(items), coupon },
       config
     );
     if (res.data.status === true) {
@@ -494,7 +517,7 @@ export const getGuestCartItems = async (k, deliveryCountry) => {
     }
   }
 };
-export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
+export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
   const config = {
     headers: { country: deliveryCountry.code },
   };
@@ -536,7 +559,7 @@ export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
   });
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
-    { cart: JSON.stringify(items) },
+    { cart: JSON.stringify(items), coupon },
     config
   );
   if (res.data.status === true) {
@@ -550,7 +573,7 @@ export const addToGuestCart = async ({ newItem, deliveryCountry }) => {
   }
 };
 
-export const removeFromGuestCart = async ({ sku, deliveryCountry }) => {
+export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
   const config = {
     headers: { country: deliveryCountry.code },
   };
@@ -591,7 +614,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry }) => {
   });
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
-    { cart: JSON.stringify(items) },
+    { cart: JSON.stringify(items), coupon },
     config
   );
   if (res.data.status === true) {
@@ -610,6 +633,7 @@ export const editGuestCart = async ({
   quantity,
   price,
   deliveryCountry,
+  coupon,
 }) => {
   const config = {
     headers: { country: deliveryCountry.code },
@@ -646,7 +670,7 @@ export const editGuestCart = async ({
   });
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
-    { cart: JSON.stringify(items) },
+    { cart: JSON.stringify(items), coupon },
     config
   );
   if (res.data.status === true) {
@@ -671,6 +695,7 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
   console.log(res.data.data);
   if (res.data.status === true) {
     return {
+      id: res.data.data.id,
       brands: res.data.data.brands,
       children: res.data.data.children,
       title: res.data.data.translation,
@@ -721,7 +746,6 @@ export const filterProducts = async (
     sort_by: sortBy ? sortBy.value : undefined,
     page,
     number: resultsPerPage?.value,
-    sort_language: locale,
     search,
     range_price: priceFilters[0],
   };
@@ -732,9 +756,9 @@ export const filterProducts = async (
 
   if (res.data.status === true) {
     return {
-      filteredProducts: res.data.data.data,
-      currentPage: res.data.data.current_page,
-      lastPage: res.data.data.last_page,
+      filteredProducts: res.data.data.products.data,
+      currentPage: res.data.data.products.current_page,
+      lastPage: res.data.data.products.last_page,
     };
   }
 };

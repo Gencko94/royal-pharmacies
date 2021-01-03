@@ -7,8 +7,8 @@ export default function NavLogoMobile() {
   const { locale } = useIntl();
   const { settings } = React.useContext(DataProvider);
   return (
-    <div className=" flex-1">
-      <Link to={`/${locale}/`} className="block -my-2">
+    <div className=" flex-1 mx-2">
+      <Link to={`/${locale}/`} className="-my-2">
         {settings && (
           <img
             src={settings?.store_logo}

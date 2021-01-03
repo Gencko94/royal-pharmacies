@@ -25,6 +25,7 @@ export default function CartItem({ item }) {
     addToWishListMutation,
     removeFromWishListMutation,
     removeFromCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -46,7 +47,13 @@ export default function CartItem({ item }) {
   const handleRemoveItemFromCart = async (id, cart_id) => {
     setRemoveFromCartButtonLoading(id);
     try {
-      await removeFromCartMutation({ id, userId, cart_id, deliveryCountry });
+      await removeFromCartMutation({
+        id,
+        userId,
+        cart_id,
+        deliveryCountry,
+        coupon,
+      });
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
@@ -73,7 +80,7 @@ export default function CartItem({ item }) {
       return;
     setEditLoading(true);
     try {
-      await editCartMutation({ cartId, itemId, userId, quantity });
+      await editCartMutation({ cartId, itemId, userId, quantity, coupon });
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
@@ -116,14 +123,6 @@ export default function CartItem({ item }) {
         return (
           <span className="text-yellow-700">
             {formatMessage({ id: 'two-items-left' })}
-          </span>
-        );
-
-      case n > 10:
-        return (
-          <span className="  text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
           </span>
         );
 
@@ -179,7 +178,7 @@ export default function CartItem({ item }) {
           }`}</h1>
         </Link>
         <h1 className=" font-semibold text-sm mb-1">
-          {item.options.max_quantity < 20 ? (
+          {item.options.max_quantity < 5 ? (
             formatItemsPlural(item.options.max_quantity)
           ) : (
             <span className="text-green-700">
@@ -293,12 +292,15 @@ export default function CartItem({ item }) {
         </div>
       </div>
       <div className="text-center" style={{ fontWeight: '900' }}>
-        {item.total} {deliveryCountry?.currency.translation[locale].symbol}
+        {item.price} {deliveryCountry?.currency.translation[locale].symbol}
         {item.message && (
           <h1 className="text-main-color text-xs">
             ({formatMessage({ id: item.message })})
           </h1>
         )}
+      </div>
+      <div className="text-center text-green-700" style={{ fontWeight: '900' }}>
+        {item.total} {deliveryCountry?.currency.translation[locale].symbol}
       </div>
     </motion.div>
   );

@@ -22,6 +22,7 @@ export default function VariantProductMobile({
     removeFromWishListMutation,
     addToGuestCartMutation,
     addToWishListMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -83,18 +84,15 @@ export default function VariantProductMobile({
               ].addon_item_id,
           },
         };
-        await addToCartMutation({ newItem, userId, deliveryCountry });
+        await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
         // console.clear();
 
-        console.log(error);
         console.log(error.response);
-        // if (error.response.data.message === 'Item founded on the Cart') {
-        //   setItemInCart(true);
-        // }
+
         setAddToCartButtonLoading(false);
       }
     } else {
@@ -121,7 +119,7 @@ export default function VariantProductMobile({
           sku,
         };
 
-        await addToGuestCartMutation({ newItem, deliveryCountry });
+        await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);

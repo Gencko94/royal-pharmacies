@@ -35,7 +35,7 @@ export default function Home() {
     switch (item.type) {
       case 'best_seller':
         return (
-          <LazyLoad key={index} height="calc(100% * 1285/492.92)" offset={400}>
+          <LazyLoad key={index} height="calc(100% * 1285/492.92)" offset={600}>
             <StaticSwiper
               type={item.type}
               title={item[`title_${locale}`]}
@@ -45,7 +45,7 @@ export default function Home() {
         );
       case 'product_by_category':
         return (
-          <LazyLoad key={index} offset={400} height="calc(100% * 1285/492.92)">
+          <LazyLoad key={index} offset={600} height="calc(100% * 1285/492.92)">
             <StaticSwiper
               type={item.key}
               title={item[`title_${locale}`]}
@@ -55,7 +55,7 @@ export default function Home() {
         );
       case 'categories':
         return (
-          <LazyLoad key={index} offset={400} height="calc(100% * 1285/492.92)">
+          <LazyLoad key={index} offset={600} height="calc(100% * 1285/492.92)">
             <StaticSwiper
               type={item.slug}
               title={item[`title_${locale}`]}
@@ -65,7 +65,7 @@ export default function Home() {
         );
       case 'latest_products':
         return (
-          <LazyLoad key={index} offset={400} height="calc(100% * 1285/492.92)">
+          <LazyLoad key={index} offset={600} height="calc(100% * 1285/492.92)">
             <StaticSwiper
               type={item.type}
               title={item[`title_${locale}`]}
@@ -75,7 +75,7 @@ export default function Home() {
         );
       case 'banner':
         return (
-          <LazyLoad offset={400} key={index}>
+          <LazyLoad offset={600} key={index}>
             <div className="my-16">
               <Banner
                 url={
@@ -128,11 +128,6 @@ export default function Home() {
           <StaticSwiper
             type="latest_products"
             title={'New Arrivals'}
-            cb={setCartMenuOpen}
-          />
-          <StaticSwiper
-            type="men-clothing"
-            title={'Men Clothing'}
             cb={setCartMenuOpen}
           />
 

@@ -13,6 +13,7 @@ export default function GuestCartItemMobile({ item }) {
   const {
     removeFromGuestCartMutation,
     editGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const [quantity, setQuantity] = React.useState(item.qty);
@@ -92,7 +93,7 @@ export default function GuestCartItemMobile({ item }) {
   const handleRemoveItemFromCart = async sku => {
     setRemoveFromCartButtonLoading(true);
     try {
-      await removeFromGuestCartMutation({ sku, deliveryCountry });
+      await removeFromGuestCartMutation({ sku, deliveryCountry, coupon });
       setRemoveFromCartButtonLoading(false);
     } catch (error) {
       setRemoveFromCartButtonLoading(false);
@@ -108,7 +109,13 @@ export default function GuestCartItemMobile({ item }) {
       return;
     setEditLoading(true);
     try {
-      await editGuestCartMutation({ sku, quantity, price, deliveryCountry });
+      await editGuestCartMutation({
+        sku,
+        quantity,
+        price,
+        deliveryCountry,
+        coupon,
+      });
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);

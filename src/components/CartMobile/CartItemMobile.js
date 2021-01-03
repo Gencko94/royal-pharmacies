@@ -55,14 +55,6 @@ export default function CartItemMobile({ item }) {
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className=" text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="text-yellow-700">
@@ -180,7 +172,7 @@ export default function CartItemMobile({ item }) {
             }`}</h1>
           </Link>
           <h1 className=" font-semibold">
-            {item.options.max_quantity < 20 ? (
+            {item.options.max_quantity < 5 ? (
               formatItemsPlural(item.options.max_quantity)
             ) : (
               <span className="text-green-700">
@@ -188,13 +180,28 @@ export default function CartItemMobile({ item }) {
               </span>
             )}
           </h1>
+          <div className="" style={{ fontWeight: '900' }}>
+            <div className="flex items-center">
+              <h1>{formatMessage({ id: 'price' })} </h1>
+              <span className="mx-1">
+                {item.price}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </span>
+            </div>
+          </div>
           <div
-            className="text-main-color text-base"
+            className="text-green-700 text-base"
             style={{ fontWeight: '900' }}
           >
-            {item.total} {deliveryCountry?.currency.translation[locale].symbol}
+            <div className="flex items-center">
+              <h1>{formatMessage({ id: 'total' })} </h1>
+              <span className="mx-1">
+                {item.total}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </span>
+            </div>
           </div>
-          <div className=" flex items-center flex-wrap ">
+          <div className=" flex items-center flex-wrap text-base ">
             <h1 className=" font-semibold">
               {formatMessage({ id: 'quantity' })} :{' '}
             </h1>

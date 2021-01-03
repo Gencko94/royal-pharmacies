@@ -214,7 +214,7 @@ export default function SideMenuCategories({
         ]?.children?.map(subCategory => {
           return (
             <Link
-              to={`/${locale}/categories/${subCategory.slug}`}
+              to={`/${locale}/${subCategory.slug}`}
               key={subCategory.id}
               className="p-3"
               onClick={toggleSideMenu}

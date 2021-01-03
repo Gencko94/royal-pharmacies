@@ -28,16 +28,12 @@ export default function SearchSortInfoPanel({
   const resultsPerPageOptions = React.useMemo(
     () => [
       {
-        label: 20,
-        value: 20,
-      },
-      {
         label: 30,
         value: 30,
       },
       {
-        label: 40,
-        value: 40,
+        label: 60,
+        value: 60,
       },
     ],
     []
@@ -67,10 +63,10 @@ export default function SearchSortInfoPanel({
     >
       <div layout className="flex items-center">
         {productsCount && (
-          <div className="py-3 text-xl">
+          <div className="py-3 text-lg">
             <h1>
               <strong>{productsCount > 2 && productsCount}</strong>{' '}
-              {resolvePlural()} {query}
+              {resolvePlural()} <strong>{query}</strong>
             </h1>
           </div>
         )}

@@ -5,7 +5,7 @@ import CategoryRightSide from '../components/Category/CategoryRightSide';
 
 import Layout from '../components/Layout';
 import { useQuery } from 'react-query';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useParams, useHistory } from 'react-router-dom';
 import {
   getCategoryProducts,
   getSingleCategoryInfo,
@@ -18,18 +18,25 @@ import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { scrollIntoView } from 'scroll-js';
 
 export default function Category() {
+  const history = useHistory();
+  console.log(history, 'history');
   const { category } = useParams();
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
 
-  const [sortBy, setSortBy] = React.useState(() => {
-    return {};
+  const [sortBy, setSortBy] = React.useState({
+    value: 'newest',
+    label: formatMessage({ id: 'Newest' }),
   });
-  const [productsPage, setProductsPage] = React.useState(1);
+  console.log(history.location.state, 'state');
+  const [productsPage, setProductsPage] = React.useState(() => {
+    return history.location.state?.page || 1;
+    // return 1;
+  });
   const [filteredPage, setFilteredPage] = React.useState(1);
   const [resultsPerPage, setResultsPerPage] = React.useState({
-    label: 20,
-    value: 20,
+    label: 30,
+    value: 30,
   });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([500]);
@@ -48,6 +55,7 @@ export default function Category() {
     {
       // retry: true,
       refetchOnWindowFocus: false,
+      // keepPreviousData: true,
     }
   );
 
@@ -68,7 +76,6 @@ export default function Category() {
         sortBy,
         page: filteredPage,
         resultsPerPage,
-        locale,
         priceFilters,
       },
     ],
@@ -77,15 +84,26 @@ export default function Category() {
       retry: true,
       refetchOnWindowFocus: false,
       enabled: filtersApplied,
-      keepPreviousData: true,
+      // keepPreviousData: true,
     }
   );
 
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
+  React.useEffect(() => {
+    return () => {
+      setProductsPage(1);
+    };
+  }, [history.location.pathname]);
   const handleProductChangePage = data => {
     scrollIntoView(document.getElementById('top'), document.body);
+    history.replace = history.location.pathname + data.selected + 1;
+    history.push({
+      state: {
+        page: data.selected + 1,
+      },
+    });
     setProductsPage(data.selected + 1);
   };
   const handleFilteredChangePage = data => {
@@ -102,10 +120,10 @@ export default function Category() {
       });
     }
     if (filter.type === 'Sort') {
-      setSortBy({});
+      setSortBy({ value: 'newest', label: formatMessage({ id: 'Newest' }) });
     }
     if (filter.type === 'Price') {
-      setPriceFilters([10000]);
+      setPriceFilters([1000]);
     }
   };
 
@@ -114,7 +132,7 @@ export default function Category() {
   };
   const handleChangePriceInput = e => {
     if (e.target.value < 0) return;
-    if (e.target.value > 10000) return;
+    if (e.target.value > 1000) return;
     setPriceFilters([e.target.value]);
   };
   const handleSubmitPrice = () => {
@@ -126,6 +144,13 @@ export default function Category() {
   };
 
   const handleSortByChange = selectedValue => {
+    if (selectedValue.value === 'newest') {
+      setFilters(prev => {
+        return prev.filter(i => i.type !== 'Sort');
+      });
+      setSortBy(selectedValue);
+      return;
+    }
     setFilters(prev => {
       let newArr = prev.filter(i => i.type !== 'Sort');
       newArr.push({ type: 'Sort', value: selectedValue.label });
@@ -235,6 +260,7 @@ export default function Category() {
             filteredPage={filteredPage}
             category={category}
             productsPage={productsPage}
+            filteredProducts={filteredData?.filteredProducts}
             filteredProductsLoading={filteredProductsLoading}
           />
         </div>

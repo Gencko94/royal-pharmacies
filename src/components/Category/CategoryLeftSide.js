@@ -13,7 +13,6 @@ export default function CategoryLeftSide({
   handleBrandChange,
   priceFilters,
   handleSubmitPrice,
-
   productsLoading,
   products,
   brands,
@@ -47,6 +46,7 @@ export default function CategoryLeftSide({
         handleSubmitPrice={handleSubmitPrice}
         productsLoading={productsLoading}
         productsLength={products?.length}
+        categoryInfoLoading={categoryInfoLoading}
       />
     </div>
   );

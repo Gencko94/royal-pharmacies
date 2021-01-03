@@ -53,9 +53,9 @@ export default function RecentlyViewedVertical() {
     );
   }
   return (
-    <div className="border rounded p-2 bg-gray-100">
-      <div className="flex items-center justify-between">
-        <h1 className="p-1">
+    <div className="border rounded  bg-gray-100">
+      <div className="p-2 flex items-center justify-between">
+        <h1 className="">
           {formatMessage({ id: 'your-recently-visited-items' })}
         </h1>
         <Link
@@ -66,11 +66,11 @@ export default function RecentlyViewedVertical() {
         </Link>
       </div>
       <hr />
-      <div className="pt-2">
+      <div className="p-2">
         {data.slice(0, 5).map(item => {
           return (
             <div key={item.id} className="recent-items__container mb-1 ">
-              <Link to={`/${locale}/${item.slug}/${item.id}`}>
+              <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
                 <LazyImage
                   src={item.image?.link}
                   origin="small"
@@ -79,13 +79,13 @@ export default function RecentlyViewedVertical() {
                 />
               </Link>
               <div className="text-sm">
-                <Link to={`/${locale}/c/${item.id}`}>
+                <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
                   <h1 className="text-clamp-2">
                     {item.translation[locale].title}
                   </h1>
                 </Link>
                 <Rating
-                  initialRating={Math.round(Math.random() * 5)}
+                  initialRating={item.rating_avg}
                   emptySymbol={<AiOutlineStar className="text-main-color" />}
                   fullSymbol={<AiFillStar className="text-main-color" />}
                   className="pt-1"

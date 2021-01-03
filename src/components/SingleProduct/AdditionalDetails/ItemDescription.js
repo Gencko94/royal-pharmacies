@@ -11,7 +11,7 @@ export default function ItemDescription({ data }) {
             {formatMessage({ id: 'additional-details__item-description' })}
           </h1>
           <div
-            className="inner_html"
+            className={`inner_html ${locale}`}
             dangerouslySetInnerHTML={{
               __html: data.full_translation[locale].description,
             }}
@@ -24,7 +24,7 @@ export default function ItemDescription({ data }) {
             {formatMessage({ id: 'additional-details__item-features' })}
           </h1>
           <div
-            className="inner_html"
+            className={`inner_html ${locale}`}
             dangerouslySetInnerHTML={{
               __html: data.full_translation[locale].features,
             }}
@@ -37,7 +37,7 @@ export default function ItemDescription({ data }) {
             {formatMessage({ id: 'additional-details__item-materials' })}
           </h1>
           <div
-            className="inner_html"
+            className={`inner_html ${locale}`}
             dangerouslySetInnerHTML={{
               __html: data.full_translation[locale].materials,
             }}

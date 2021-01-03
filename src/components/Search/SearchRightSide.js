@@ -54,7 +54,7 @@ export default function SearchRightSide({
     );
   }
   return (
-    <div id="top" className="h-full">
+    <div id="top" style={{ minHeight: 'calc(100vh - 150px)' }}>
       {products?.length > 0 && (
         <SearchSortInfoPanel
           sortBy={sortBy}
@@ -87,10 +87,7 @@ export default function SearchRightSide({
         </div>
       )}
       {filtersApplied && filteredProductsLoading && (
-        <div
-          className="category-page-items__grid py-2 min-h-full"
-          style={{ minHeight: 'calc(100vh - 150px)' }}
-        >
+        <div className="category-page-items__grid py-2 min-h-full">
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
             return <CategoryItemLoader key={i} />;
           })}
@@ -100,10 +97,7 @@ export default function SearchRightSide({
       (filtersApplied &&
         filteredProducts?.length > 0 &&
         !filteredProductsLoading) ? (
-        <div
-          className="category-page-items__grid py-2 "
-          style={{ minHeight: 'calc(100vh - 150px)' }}
-        >
+        <div className="category-page-items__grid py-2 ">
           {!filtersApplied &&
             products.map(item => {
               return item.type === 'variation' &&
@@ -147,9 +141,9 @@ export default function SearchRightSide({
             })}
         </div>
       ) : null}
-      {(!filtersApplied && !products?.length > 0 && !productsLoading) ||
+      {(!filtersApplied && products?.length > 0 && !productsLoading) ||
       (filtersApplied &&
-        !filteredProducts?.length > 0 &&
+        filteredProducts?.length > 0 &&
         !filteredProductsLoading) ? (
         <ReactPaginate
           previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
@@ -164,7 +158,7 @@ export default function SearchRightSide({
           onPageChange={
             filtersApplied ? handleFilteredChangePage : handleProductChangePage
           }
-          containerClassName={'my-2 w-full text-center'}
+          containerClassName={'my-4 w-full text-center'}
           subContainerClassName={'p-3 inline'}
           pageLinkClassName="p-3"
           activeClassName={'bg-main-color font-bold text-main-text'}

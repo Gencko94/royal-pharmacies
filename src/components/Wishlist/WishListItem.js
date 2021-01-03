@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import LazyImage from '../../helpers/LazyImage';
+import Rating from 'react-rating';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 
 export default function WishListItem({
   item,
@@ -52,21 +54,28 @@ export default function WishListItem({
             item[`name_${locale}`]
           }`}</h1>
         </Link>
+        <Rating
+          initialRating={item.rating_avg}
+          emptySymbol={<AiOutlineStar className="text-main-color" />}
+          fullSymbol={<AiFillStar className="text-main-color" />}
+          className="pt-1"
+          readonly
+        />
 
         <div className="flex text-sm  items-center my-2 ">
           <button
             onClick={() => {
               handleRemoveItemFromWishList(item.id);
             }}
-            className={`border-main-color text-main-color border text-sm uppercase flex items-center justify-center  p-2 rounded  font-semibold `}
+            className={`border-main-color hover:bg-main-color hover:text-main-text transition duration-100 text-main-color border text-sm uppercase flex items-center justify-center  p-2 rounded  font-semibold `}
             style={{ width: '200px' }}
           >
             {removeFromWishListButtonLoading === item.id ? (
               <Loader
                 type="ThreeDots"
-                color="#b72b2b"
-                height={25}
-                width={25}
+                color="#fff"
+                height={21}
+                width={21}
                 visible={true}
               />
             ) : (

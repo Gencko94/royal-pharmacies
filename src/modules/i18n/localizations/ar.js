@@ -122,6 +122,7 @@ export const ar = {
   'update-btn': 'تحديث',
   'coupon-expired': 'الكوبون منتهي الصلاحية',
   'coupon-invalid': 'الرجاء التأكد من الكوبون',
+  'coupon-conditions-not-met': 'شروط الكوبون لم تحقق',
   'one-search-result': 'نتيجة بحث واحدة ل',
   'two-search-results': 'نتيجتا بحث ل',
   'more-than-10-search-results': 'نتيجة بحث  ل',
@@ -201,6 +202,7 @@ export const ar = {
   'cart-tos':
     'إن سعر وتوافر العناصر على mrg.com عرضة للتغيير. تعتبر عربة التسوق مكانًا مؤقتًا لتخزين قائمة بالعناصر الخاصة بك وتعكس أحدث سعر لكل عنصر.',
   subtotal: 'المبلغ الإجمالي',
+  total: 'المجموع',
   'cart-total': 'إجمالي العربة',
   'cart-enter-code-or-coupon': 'أدخل الكود او رقم الكوبون',
   'cart-code-button': 'إدخال',
@@ -216,11 +218,18 @@ export const ar = {
   address: 'العنوان',
   'personal-information': 'المعلومات الشخصية',
   'edit-personal-information': 'تعديل المعلومات الشخصية',
-  'order-placed': 'وضع الطلب',
+  'order-placement': 'وضع الطلب',
   'btn-back-to-addresses': 'العودة الى اختيار العنوان',
   'btn-proceed': 'التالي',
   'proceed-to-payment': 'الذهاب الى عملية الدفع',
-  'order-placed-msg': 'تهانينا , تم وضع الطلب !',
+  'payment-page': 'صفحة الدفع',
+  'go-to-payment':
+    'قم بالضغط على الرابط ادناه لتحويلك الى بوابة الدفع, سنقوم بوضع الطلب فور نجاح عملية الدفع !',
+  'order-placed-msg': 'قم بالضغط على الرابط ادناه لتحويلك الى بوابة الدفع ',
+  'expected-delivery-msg': 'نتوقع وصول طلبك خلال',
+  'checkout-help-center-msg':
+    'اذا كان لديك اي استفسار الرجاء الاتصال بنا عبر قنوات التواصل التالية',
+  'thank-you-for-shopping-msg': 'شكرا لتسوقك من موقعنا !',
   // maps
   'find-my-position': 'حدد مكاني',
   'location-details': 'تفاصيل الموقع',
@@ -358,4 +367,7 @@ export const ar = {
   'order-confirmed': 'مؤكد',
   'order-new': 'جديد',
   'cash-on-delivery': 'دفع عند التوصيل',
+  'checkout-cart-empty':
+    'عذرا , لا يمكنك اتمام الشراء عندما تكون عربة التسوق فارغة , الرجاء وضع منتج واحد على الاقل',
+  no_quantity: 'الكمية منتهية',
 };

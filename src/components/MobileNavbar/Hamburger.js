@@ -4,7 +4,7 @@ export default function Hamburger({ color = '#fff', toggleSideMenu }) {
   return (
     <button
       onClick={toggleSideMenu}
-      className="flex items-center justify-center p-2"
+      className="flex items-center justify-center p-"
     >
       <GiHamburgerMenu className="w-20p h-20p" style={{ color: color }} />
     </button>

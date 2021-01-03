@@ -8,9 +8,11 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 export default function VariantSwiperItem({ item, setCartMenuOpen }) {
-  const { addToCartMutation, addToGuestCartMutation } = React.useContext(
-    CartAndWishlistProvider
-  );
+  const {
+    addToCartMutation,
+    addToGuestCartMutation,
+    coupon,
+  } = React.useContext(CartAndWishlistProvider);
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const [showAddButton, setShowAddButton] = React.useState(false);
@@ -72,7 +74,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
               ].addon_item_id,
           },
         };
-        await addToCartMutation({ newItem, userId, deliveryCountry });
+        await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
         setItemInCart(true);
@@ -112,7 +114,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
           sku,
         };
 
-        await addToGuestCartMutation({ newItem, deliveryCountry });
+        await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
         setItemInCart(true);
@@ -227,7 +229,6 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
           setShowOptions(false);
         }
       }}
-      className="border"
     >
       <div className="relative">
         <a href={`/${locale}/products/${item.slug}/${item.id}`}>
@@ -251,13 +252,16 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
               }}
               className="flex items-center justify-center absolute w-full bottom-10"
             >
-              <button className=" text-center rounded uppercase p-2 bg-main-color text-main-text text-sm">
+              <button
+                className="flex items-center justify-center rounded uppercase p-2 bg-main-color text-main-text text-sm"
+                style={{ width: '110px' }}
+              >
                 {addToCartButtonLoading ? (
                   <Loader
                     type="ThreeDots"
                     color="#fff"
-                    height={20}
-                    width={20}
+                    height={21}
+                    width={21}
                     visible={true}
                   />
                 ) : (

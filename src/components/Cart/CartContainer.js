@@ -67,6 +67,7 @@ export default function CartContainer() {
         <div></div>
         <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1>
         <h1 className="text-center">{formatMessage({ id: 'price' })}</h1>
+        <h1 className="text-center">{formatMessage({ id: 'total' })}</h1>
       </div>
       <hr />
       <AnimateSharedLayout>
@@ -91,10 +92,12 @@ export default function CartContainer() {
               : `${cartItems.length} `}
             {resolvePlural()})
           </h1>
-          <h1>{cartSubtotal}</h1>{' '}
-          {deliveryCountry?.currency.translation[locale].symbol}
+          <h1 className="text-green-700">{cartSubtotal}</h1>
+          <span className="mx-1 text-green-700">
+            {deliveryCountry?.currency.translation[locale].symbol}
+          </span>
         </motion.div>
-        <motion.div layout className="text-sm my-4">
+        <motion.div layout className="text-sm my-4 font-semibold ">
           <h1>{formatMessage({ id: 'cart-tos' })}</h1>
         </motion.div>
       </AnimateSharedLayout>

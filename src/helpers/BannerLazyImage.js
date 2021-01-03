@@ -15,7 +15,7 @@ export default function BannerLazyImage({ src, pb, alt, origin }) {
       }}
     >
       <LazyLoad
-        offset={100}
+        offset={400}
         placeholder={
           <img
             src={isTabletOrAbove ? desktopplaceholder : mobileplaceholder}

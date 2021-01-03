@@ -19,6 +19,7 @@ export default function VariantProduct({
     addToCartMutation,
     addToWishListMutation,
     addToGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const { userId } = React.useContext(AuthProvider);
@@ -86,7 +87,7 @@ export default function VariantProduct({
               ].addon_item_id,
           },
         };
-        await addToCartMutation({ newItem, userId, deliveryCountry });
+        await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
@@ -126,7 +127,7 @@ export default function VariantProduct({
           sku,
         };
 
-        await addToGuestCartMutation({ newItem, deliveryCountry });
+        await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);

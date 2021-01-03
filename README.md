@@ -78,6 +78,8 @@
 - [ ] make brands page
 - [ ] set up settings api
 
+- [ ] attention to out of stock products in checkout
+
       **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 
       -- check coupon validity per user

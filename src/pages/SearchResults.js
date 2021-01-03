@@ -13,7 +13,7 @@ import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { scrollIntoView } from 'scroll-js';
 export default function SearchResults() {
   const { query } = useParams();
-  const { locale, formatMessage } = useIntl();
+  const { formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
@@ -23,8 +23,8 @@ export default function SearchResults() {
   const [filteredPage, setFilteredPage] = React.useState(1);
 
   const [resultsPerPage, setResultsPerPage] = React.useState({
-    label: 20,
-    value: 20,
+    label: 30,
+    value: 60,
   });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([500]);
@@ -53,7 +53,6 @@ export default function SearchResults() {
         sortBy,
         page: filteredPage,
         resultsPerPage,
-        locale,
         priceFilters,
       },
     ],
@@ -88,7 +87,7 @@ export default function SearchResults() {
       });
     }
     if (filter.type === 'Price') {
-      setPriceFilters([10000]);
+      setPriceFilters([1000]);
     }
   };
 
@@ -97,7 +96,7 @@ export default function SearchResults() {
   };
   const handleChangePriceInput = e => {
     if (e.target.value < 0) return;
-    if (e.target.value > 10000) return;
+    if (e.target.value > 1000) return;
     setPriceFilters([e.target.value]);
   };
   const handleSubmitPrice = () => {

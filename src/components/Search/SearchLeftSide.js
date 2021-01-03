@@ -5,7 +5,6 @@ import LeftSidePrice from '../Category/LeftSidePrice';
 
 export default function SearchLeftSide({
   productsLoading,
-
   filteredProducts,
   filtersApplied,
   filteredProductsLoading,
@@ -55,6 +54,7 @@ export default function SearchLeftSide({
         productsLength={products?.length}
         filtersApplied={filtersApplied}
         filteredProductsLoading={filteredProductsLoading}
+        productsLoading={productsLoading}
       />
     </div>
   );

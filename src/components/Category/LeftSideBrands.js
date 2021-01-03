@@ -10,23 +10,8 @@ export default function LeftSideBrands({
   productsLoading,
 }) {
   const { formatMessage, locale } = useIntl();
-  // const brands = React.useMemo(() => {
-  //   let brands = [];
-  //   products.forEach(product => {
-  //     if (product.brand) {
-  //       brands.push({
-  //         label: product.brand.translation[locale].name,
-  //         id: product.brand.id,
-  //       });
-  //     }
-  //   });
-  //   brands = [...new Set(brands.map(o => JSON.stringify(o)))].map(s =>
-  //     JSON.parse(s)
-  //   );
-  //   return brands;
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-  if (categoryInfoLoading && !productsLoading) {
+
+  if (categoryInfoLoading || productsLoading) {
     return (
       <ContentLoader
         speed={2}
@@ -42,13 +27,13 @@ export default function LeftSideBrands({
       </ContentLoader>
     );
   }
-  if (brands?.length === 0) {
+  if (brands?.length === 0 || !brands) {
     return null;
   }
 
   return (
     <div className="mb-4">
-      <h1 className="text-xl py-3 font-semibold">
+      <h1 className="text-lg py-3 font-semibold">
         {formatMessage({ id: 'filter-by-brand' })}
       </h1>
       <hr />

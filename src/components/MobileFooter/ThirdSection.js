@@ -13,11 +13,14 @@ export default function ThirdSection({ pages }) {
   return (
     <div className="p-4 pb-2 text-gray-100 bg-gray-900 ">
       {pages && (
-        <div className="flex text-sm mb-4 justify-around">
+        <div className="flex flex-wrap text-sm mb-4 justify-around">
           {pages.map(page => {
             return (
               page.type === 'page' && (
-                <Link to={`/${locale}/site/${page.page?.slug}`}>
+                <Link
+                  className="flex-1 text-center"
+                  to={`/${locale}/site/${page.page?.slug}`}
+                >
                   {page.translation[locale].name}
                 </Link>
               )

@@ -83,8 +83,9 @@ export default function CategoryRightSide({
       </div>
     );
   }
+
   return (
-    <div id="top" className="h-full">
+    <div id="top" className="h-full relative">
       {products?.length > 0 && (
         <SortInfoPanel
           category={category}
@@ -134,13 +135,13 @@ export default function CategoryRightSide({
         filteredProducts?.length > 0 &&
         !filteredProductsLoading) ? (
         <div
-          className="category-page-items__grid py-2 min-h-full"
+          className="category-page-items__grid py-2 min-h-full relative"
           style={{ minHeight: 'calc(100vh - 150px)' }}
         >
           {!filtersApplied &&
             products?.map(item => {
               return item.type === 'variation' &&
-                item.new_variation_addons.length > 0 ? (
+                Object.keys(item.new_variation_addons).length > 0 ? (
                 <VariantCategoryProductItem
                   key={item.id}
                   setCartMenuOpen={setCartMenuOpen}
@@ -164,7 +165,7 @@ export default function CategoryRightSide({
             filteredProducts?.length > 0 &&
             filteredProducts.map(item => {
               return item.type === 'variation' &&
-                item.new_variation_addons.length > 0 ? (
+                Object.keys(item.new_variation_addons).length > 0 ? (
                 <VariantCategoryProductItem
                   key={item.id}
                   setCartMenuOpen={setCartMenuOpen}

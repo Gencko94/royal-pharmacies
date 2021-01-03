@@ -12,7 +12,7 @@ export default function LazyImage({ src, pb, alt, origin, placeholder }) {
       }}
     >
       <LazyLoad
-        offset={100}
+        offset={300}
         placeholder={
           <img src={placeholder ? placeholder : itemplaceholder} alt={alt} />
         }

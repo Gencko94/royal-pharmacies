@@ -22,12 +22,14 @@ import { scrollTo } from 'scroll-js';
 
 export default function SingleProduct() {
   const { id } = useParams();
+
   const { deliveryCountry, addViewedItems } = React.useContext(DataProvider);
   const { locale, formatMessage } = useIntl();
   const {
     addToCartMutation,
     addToWishListMutation,
     addToGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
 
   const { userId } = React.useContext(AuthProvider);
@@ -70,7 +72,7 @@ export default function SingleProduct() {
     if (userId) {
       try {
         const newItem = { id: data.id, quantity };
-        await addToCartMutation({ newItem, userId, deliveryCountry });
+        await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
@@ -90,7 +92,7 @@ export default function SingleProduct() {
           : data.simple_addons.price;
         const sku = data.simple_addons.sku;
         const newItem = { id: data.id, quantity, price, sku };
-        await addToGuestCartMutation({ newItem, deliveryCountry });
+        await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
@@ -124,11 +126,17 @@ export default function SingleProduct() {
     <Layout>
       <Helmet>
         <title>
-          {` Shop ${data?.full_translation?.[locale].title} on MRG` || 'MRG'}
+          {data
+            ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
+            : 'MRG'}
         </title>
         <meta
           name="description"
-          content={`Shop  ${data?.translation?.[locale].title} | MRG` || 'MRG'}
+          content={
+            data
+              ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
+              : 'MRG'
+          }
         />
       </Helmet>
 

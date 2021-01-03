@@ -54,7 +54,7 @@ const MainCarousel = () => {
           data.map(item => {
             return (
               <SwiperSlide key={item.id}>
-                <a href={`/${item.category?.slug}`} className="">
+                <a href={`/${locale}/${item.category?.slug}`} className="">
                   <BannerLazyImage
                     src={item.translation[locale].image?.link}
                     alt="something"

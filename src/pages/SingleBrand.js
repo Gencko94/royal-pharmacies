@@ -68,19 +68,13 @@ export default function SingleBrand() {
         />
 
         {productsLoading && (
-          <div
-            className="brand-grid__desktop py-2 min-h-full"
-            style={{ minHeight: 'calc(100vh - 150px)' }}
-          >
+          <div className="brand-grid__desktop py-2 ">
             {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
               return <CategoryItemLoader key={i} />;
             })}
           </div>
         )}
-        <div
-          className="brand-grid__desktop py-2 min-h-full"
-          style={{ minHeight: 'calc(100vh - 150px)' }}
-        >
+        <div className="brand-grid__desktop py-2 ">
           {data?.products?.map(item => {
             return item.type === 'variation' &&
               item.new_variation_addons.length > 0 ? (

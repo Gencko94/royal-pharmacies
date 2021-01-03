@@ -15,6 +15,7 @@ export default function GuestCartItem({ item }) {
   const {
     removeFromGuestCartMutation,
     editGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
 
   const [quantity, setQuantity] = React.useState(item.qty);
@@ -83,7 +84,13 @@ export default function GuestCartItem({ item }) {
       return;
     setEditLoading(true);
     try {
-      await editGuestCartMutation({ sku, quantity, price, deliveryCountry });
+      await editGuestCartMutation({
+        sku,
+        quantity,
+        price,
+        deliveryCountry,
+        coupon,
+      });
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
@@ -93,7 +100,7 @@ export default function GuestCartItem({ item }) {
   const handleRemoveItemFromCart = async sku => {
     setRemoveFromCartButtonLoading(true);
     try {
-      await removeFromGuestCartMutation({ sku, deliveryCountry });
+      await removeFromGuestCartMutation({ sku, deliveryCountry, coupon });
     } catch (error) {
       console.log(error);
     }

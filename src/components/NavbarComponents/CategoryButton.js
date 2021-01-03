@@ -6,7 +6,7 @@ export default function CategoryButton({ item, handleDropDownOpen }) {
   const { locale } = useIntl();
   return (
     <Link
-      to={`/${locale}/${item.category.slug}`}
+      to={{ pathname: `/${locale}/${item.category.slug}`, state: { page: 1 } }}
       id={`navButton${item.id}`}
       onMouseEnter={() => {
         handleDropDownOpen(item.id);

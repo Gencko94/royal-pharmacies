@@ -26,9 +26,11 @@ export default function SingleProductMobile() {
   const { addViewedItems, deliveryCountry } = React.useContext(DataProvider);
   const { locale } = useIntl();
   const { userId } = React.useContext(AuthProvider);
-  const { addToCartMutation, addToGuestCartMutation } = React.useContext(
-    CartAndWishlistProvider
-  );
+  const {
+    addToCartMutation,
+    addToGuestCartMutation,
+    coupon,
+  } = React.useContext(CartAndWishlistProvider);
   const [itemInCart, setItemInCart] = React.useState(false);
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
@@ -68,7 +70,7 @@ export default function SingleProductMobile() {
     if (userId) {
       try {
         const newItem = { id: data.id, quantity };
-        await addToCartMutation({ newItem, userId, deliveryCountry });
+        await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
@@ -88,7 +90,7 @@ export default function SingleProductMobile() {
           : data.simple_addons.price;
         const sku = data.simple_addons.sku;
         const newItem = { id: data.id, quantity, price, sku };
-        await addToGuestCartMutation({ newItem, deliveryCountry });
+        await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);

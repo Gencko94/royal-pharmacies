@@ -121,6 +121,7 @@ const baseStrings = {
   'update-btn': 'Update',
   'coupon-expired': 'Expired Coupon',
   'coupon-invalid': 'Invalid Coupon',
+  'coupon-conditions-not-met': 'Coupon Conditions were not met',
   'one-search-result': 'One Search Result for',
   'two-search-results': 'Two Search Results for',
   'more-than-10-search-results': 'Search Results for',
@@ -200,6 +201,7 @@ const baseStrings = {
   'cart-tos':
     'The price and availability of items at mrg.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
   subtotal: 'Subtotal',
+  total: 'Total',
   'cart-total': 'Cart Total',
   'cart-enter-code-or-coupon': 'Enter Code or Coupon',
   'cart-code-button': 'Enter',
@@ -215,7 +217,7 @@ const baseStrings = {
   address: 'Address',
   'personal-information': 'Personal Information',
   'edit-personal-information': 'Edit Personal information',
-  'order-placed': 'Order Placed',
+  'order-placement': 'Order Placement',
   'search-for': 'Search For',
   'btn-back-to-addresses': 'Back to Select Address',
   'select-address-header': 'Select a previously added Address or add new one ',
@@ -225,7 +227,14 @@ const baseStrings = {
   'selected-btn': 'Selected',
   'btn-proceed': 'Proceed',
   'proceed-to-payment': 'Proceed to payment',
+  'payment-page': 'Payment Page',
+  'go-to-payment':
+    'Please click on link below to transfer you to the payment gateway. We will place your order as soon as the payment is successful',
+  'thank-you-for-shopping-msg': 'Thank you for shopping at our Website',
+  'expected-delivery-msg': 'We expect that your order will be delivered in',
   'order-placed-msg': 'Congratulations, Your Order has been Placed !',
+  'checkout-help-center-msg':
+    'If you have any question please do not hesitate to contact us',
   // maps
   'find-my-position': 'Find my position',
   'location-details': 'Location Details',
@@ -364,6 +373,9 @@ const baseStrings = {
   'order-confirmed': 'Confirmed',
   'order-new': 'New',
   'cash-on-delivery': 'Cash on Delivery',
+  'checkout-cart-empty':
+    'You Cannot Checkout with an Empty Cart, Please put at least one product before checking out',
+  no_quantity: 'Out of Stock',
 };
 
 export const en = baseStrings;

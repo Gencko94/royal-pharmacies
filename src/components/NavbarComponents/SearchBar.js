@@ -25,7 +25,7 @@ export default function SearchBar() {
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div
-        className={`p-2 cursor-pointer flex items-center ${
+        className={`px-2 py-1 cursor-pointer flex items-center ${
           isHighlighted && 'bg-gray-300 rounded'
         }`}
       >
@@ -34,7 +34,7 @@ export default function SearchBar() {
           alt=""
           style={{ height: '50px' }}
         />
-        <h1 className="mx-1">{suggestion.translation[locale].title}</h1>
+        <h1 className="mx-1 text-sm">{suggestion.translation[locale].title}</h1>
       </div>
     );
   };
@@ -97,7 +97,7 @@ export default function SearchBar() {
               history.push(`/${locale}/search/q=${query}`);
               setData([]);
             }}
-            className="p-2  hover:bg-gray-200 w-full transition duration-75"
+            className="p-2 bg-gray-200 w-full transition duration-75"
           >
             {formatMessage({ id: 'see-all-search-results' })}{' '}
             <strong>{query}</strong>

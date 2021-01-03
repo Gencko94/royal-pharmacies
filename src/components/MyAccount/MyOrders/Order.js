@@ -151,15 +151,19 @@ export default function Order({ order }) {
       >
         <motion.div layout>
           <div className="flex items-center">
-            <h1 className="">{formatMessage({ id: 'order-date' })} :</h1>
-            <h1 className="text-gray-600 mx-1">
+            <h1 className="text-gray-600">
+              {formatMessage({ id: 'order-date' })} :
+            </h1>
+            <h1 className="mx-1">
               {' '}
-              {moment(order.created_at).format('DD/MM/YYYY-HH:MM')}
+              {moment(order.created_at).format('DD/MM/YYYY - HH:MM')}
             </h1>
           </div>
 
           <div className="flex items-center">
-            <h1>{formatMessage({ id: 'payment-method' })}:</h1>
+            <h1 className="text-gray-600">
+              {formatMessage({ id: 'payment-method' })}:
+            </h1>
             {resolvePayment()}
           </div>
         </motion.div>
@@ -236,6 +240,8 @@ export default function Order({ order }) {
             orderSubtotal={order.subtotal}
             orderTotal={order.total}
             shippingCost={order.shipping_cost}
+            coupon={order.coupon}
+            couponCost={order.coupon_cost}
           />
         )}
       </AnimatePresence>
@@ -243,7 +249,14 @@ export default function Order({ order }) {
   );
 }
 
-const Content = ({ orderItems, orderTotal, orderSubtotal, shippingCost }) => {
+const Content = ({
+  orderItems,
+  orderTotal,
+  orderSubtotal,
+  shippingCost,
+  coupon,
+  couponCost,
+}) => {
   const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const containerVariants = {
@@ -270,6 +283,7 @@ const Content = ({ orderItems, orderTotal, orderSubtotal, shippingCost }) => {
         <h1>{formatMessage({ id: 'the-item' })}</h1>
         <h1>{formatMessage({ id: 'quantity' })}</h1>
         <h1>{formatMessage({ id: 'price' })}</h1>
+        <h1>{formatMessage({ id: 'total' })}</h1>
       </div>
 
       {orderItems.map((orderItem, i) => {
@@ -298,26 +312,48 @@ const Content = ({ orderItems, orderTotal, orderSubtotal, shippingCost }) => {
                 {deliveryCountry?.currency.translation[locale].symbol}
               </h1>
             </div>
+            <div style={{ fontWeight: 900 }} className="text-green-700">
+              <h1 className="">
+                {(orderItem.price * orderItem.qty).toFixed(3)}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </h1>
+            </div>
           </div>
         );
       })}
       <hr className="my-1" />
       <div className="my-orders-receipt-summary font-bold text-sm">
         <h1>{formatMessage({ id: 'cart-total' })}</h1>
-        <h1>
-          {orderSubtotal} {deliveryCountry?.currency.translation[locale].symbol}
+        <h1 className="text-center">
+          {orderSubtotal}{' '}
+          <span className="mx-1">
+            {deliveryCountry?.currency.translation[locale].symbol}
+          </span>
         </h1>
         <h1>{formatMessage({ id: 'cart-delivery-cost' })}</h1>
-        <h1 className="mb-2">
+        <h1 className="mb-2 text-center">
           {shippingCost === '0'
             ? formatMessage({ id: 'cart-free' })
             : shippingCost}{' '}
-          {deliveryCountry?.currency.translation[locale].symbol}
+          <span className="mx-1">
+            {deliveryCountry?.currency.translation[locale].symbol}
+          </span>
         </h1>
+        {coupon && (
+          <h1 className="mb-2 text-center">
+            {couponCost}
+            <span className="mx-1">
+              {deliveryCountry?.currency.translation[locale].symbol}
+            </span>
+          </h1>
+        )}
         <h1 className="text-green-700 text-base" style={{ fontWeight: 900 }}>
           {formatMessage({ id: 'subtotal' })}
         </h1>
-        <h1 className="text-green-700 text-base" style={{ fontWeight: 900 }}>
+        <h1
+          className="text-green-700 text-base text-center"
+          style={{ fontWeight: 900 }}
+        >
           {orderTotal} {deliveryCountry?.currency.translation[locale].symbol}
         </h1>
       </div>

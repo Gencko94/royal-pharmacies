@@ -20,11 +20,17 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
     guestCartSubtotal: cartSubtotal,
     checkCouponMutation,
     isCheckingCoupon,
+    setCoupon,
+    coupon,
+    guestCartItemsFetching,
   } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const [couponCode, setCouponCode] = React.useState('');
-  const [validCoupon, setValidCoupon] = React.useState(false);
+  const [validCoupon, setValidCoupon] = React.useState(() => {
+    if (coupon) return true;
+    return false;
+  });
   const [couponError, setCouponError] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const history = useHistory();
@@ -51,28 +57,42 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
       setCheckOutModalOpen(true);
     }
   };
-  const handleCheckCoupon = async e => {
-    setCouponError(false);
+  const handleSubmitCoupon = async e => {
     e.preventDefault();
-    if (!couponCode) {
-      return;
-    }
-    try {
-      await checkCouponMutation({
-        code: couponCode,
-        subtotal: cartSubtotal.toString(),
-      });
-      setValidCoupon(true);
-    } catch (error) {
+    if (validCoupon) {
       setValidCoupon(false);
-      setCouponError(true);
-      console.log(error.response);
-      if (error.response.data.message === 'Coupon expired') {
-        setErrorMessage(formatMessage({ id: 'coupon-expired' }));
-      } else if (
-        error.response.data.message?.code[0] === 'The selected code is invalid.'
-      ) {
-        setErrorMessage(formatMessage({ id: 'coupon-invalid' }));
+      setCoupon(null);
+      setCouponCode('');
+    } else {
+      setCouponError(false);
+
+      if (!couponCode) {
+        return;
+      }
+      try {
+        await checkCouponMutation({
+          code: couponCode,
+          subtotal: cartSubtotal.toString(),
+        });
+        setValidCoupon(true);
+        setCoupon(couponCode);
+      } catch (error) {
+        setValidCoupon(false);
+
+        setCouponError(true);
+        console.log(error.response);
+        if (error.response.data.message === 'Coupon expired') {
+          setErrorMessage(formatMessage({ id: 'coupon-expired' }));
+        } else if (
+          error.response.data.message?.code?.[0] ===
+          'The selected code is invalid.'
+        ) {
+          setErrorMessage(formatMessage({ id: 'coupon-invalid' }));
+        } else if (
+          error.response.data.message === 'The amount is less then the minimum'
+        ) {
+          setErrorMessage(formatMessage({ id: 'coupon-conditions-not-met' }));
+        }
       }
     }
   };
@@ -86,7 +106,7 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
         <div className=" rounded border bg-gray-100 p-2 flex justify-center flex-col mb-2 ">
           <div className="mb-2 ">
             <form
-              onSubmit={handleCheckCoupon}
+              onSubmit={handleSubmitCoupon}
               className={`rounded border w-full flex mb-1  overflow-hidden ${
                 couponError && 'border-main-color'
               }`}
@@ -96,12 +116,15 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
                 value={couponCode}
                 onChange={e => setCouponCode(e.target.value)}
                 placeholder={formatMessage({ id: 'cart-enter-code-or-coupon' })}
-                className="flex-1 placeholder-gray-700  p-2"
+                readOnly={validCoupon}
+                className={`${
+                  validCoupon && 'bg-gray-400 text-gray-200'
+                } flex-1 placeholder-gray-700  p-2`}
               />
               <button
                 type="submit"
-                className="bg-main-color flex items-center justify-center p-2 text-main-text uppercase "
-                style={{ width: '60px' }}
+                className="bg-main-color flex items-center text-sm justify-center p-2 text-main-text uppercase "
+                style={{ width: '70px' }}
               >
                 {isCheckingCoupon ? (
                   <Loader
@@ -111,6 +134,8 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
                     width={22}
                     visible={true}
                   />
+                ) : validCoupon ? (
+                  formatMessage({ id: 'remove' })
                 ) : (
                   formatMessage({ id: 'cart-code-button' })
                 )}
@@ -154,31 +179,50 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
             </h1>
           </div>
           {validCoupon && (
-            <div className="flex items-center mb-2">
-              <h1 className="text-gray-900 flex-1">
+            <div className="flex text-green-700 items-center mb-2">
+              <h1 className=" flex-1">
                 {formatMessage({ id: 'coupon-sale' })}
               </h1>
-              <h1 className="mx-1">
-                {couponCost === 0 ? (
-                  <span className="text-green-700 uppercase font-semibold">
-                    {formatMessage({ id: 'coupon-sale' })}
+              {guestCartItemsFetching ? (
+                <Loader
+                  type="ThreeDots"
+                  color="#b72b2b"
+                  height={22}
+                  width={22}
+                  visible={true}
+                />
+              ) : (
+                <h1>
+                  {couponCost}
+                  <span className="mx-1">
+                    {deliveryCountry?.currency.translation[locale].symbol}
                   </span>
-                ) : (
-                  couponCost
-                )}
-              </h1>
+                </h1>
+              )}
             </div>
           )}
 
           <hr className="mb-3" />
-          <div className="  flex mb-2 text-lg ">
+          <div className="  flex mb-2 text-lg " style={{ fontWeight: 900 }}>
             <h1 className="flex-1 text-gray-900">
               {formatMessage({ id: 'subtotal' })}
             </h1>
-            <h1>{cartTotal}</h1>{' '}
-            <span className="mx-1">
-              {deliveryCountry?.currency.translation[locale].symbol}
-            </span>
+            {guestCartItemsFetching ? (
+              <Loader
+                type="ThreeDots"
+                color="#b72b2b"
+                height={22}
+                width={22}
+                visible={true}
+              />
+            ) : (
+              <h1 className="text-green-700">
+                {cartTotal}{' '}
+                <span className="mx-1 text-green-700">
+                  {deliveryCountry?.currency.translation[locale].symbol}
+                </span>
+              </h1>
+            )}
           </div>
           <hr className="mb-3" />
           <button
@@ -195,12 +239,136 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
           <AcceptedPayments deliveryCountry={deliveryCountry} />
         </div>
       )}
-      {/* <hr className="my-8" /> */}
       {visitedItems.length > 4 ? (
-        <RecentlyViewedVertical visitedItems={visitedItems} />
+        <RecentlyViewedVertical />
       ) : (
         <FeaturedItemsVertical />
       )}
     </div>
+    // <div
+    //   className="font-semibold overflow-hidden  sticky top-0 self-start"
+    //   style={{ top: '110px' }}
+    // >
+    //   {cartItemsLoading && <CartRightSideLoader locale={locale} />}
+    //   {!cartItemsLoading && cartItems.length !== 0 && (
+    //     <div className=" rounded border bg-gray-100 p-2 flex justify-center flex-col mb-2 ">
+    //       <div className="mb-2 ">
+    //         <form
+    //           onSubmit={handleCheckCoupon}
+    //           className={`rounded border w-full flex mb-1  overflow-hidden ${
+    //             couponError && 'border-main-color'
+    //           }`}
+    //         >
+    //           <input
+    //             type="text"
+    //             value={couponCode}
+    //             onChange={e => setCouponCode(e.target.value)}
+    //             placeholder={formatMessage({ id: 'cart-enter-code-or-coupon' })}
+    //             className="flex-1 placeholder-gray-700  p-2"
+    //           />
+    //           <button
+    //             type="submit"
+    //             className="bg-main-color flex items-center justify-center p-2 text-main-text uppercase "
+    //             style={{ width: '60px' }}
+    //           >
+    //             {isCheckingCoupon ? (
+    //               <Loader
+    //                 type="ThreeDots"
+    //                 color="#fff"
+    //                 height={22}
+    //                 width={22}
+    //                 visible={true}
+    //               />
+    //             ) : (
+    //               formatMessage({ id: 'cart-code-button' })
+    //             )}
+    //           </button>
+    //         </form>
+    //         {couponError && (
+    //           <h1 className="text-main-color text-xs">{errorMessage}</h1>
+    //         )}
+    //       </div>
+    //       <div className=" flex mb-2  ">
+    //         <h1 className="text-gray-900">
+    //           {formatMessage({ id: 'cart-total' })}
+    //         </h1>
+    //         <h1 className="mx-1 whitespace-no-wrap flex-1">
+    //           (
+    //           {locale === 'ar'
+    //             ? cartItems.length > 2 && cartItems.length
+    //             : `${cartItems.length} `}
+    //           {resolvePlural()})
+    //         </h1>
+    //         <h1>{cartSubtotal}</h1>
+    //         <span className="mx-1">
+    //           {deliveryCountry?.currency.translation[locale].symbol}
+    //         </span>
+    //       </div>
+    //       <div className="flex items-center mb-2">
+    //         <h1 className="flex-1">{formatMessage({ id: 'delivery-cost' })}</h1>
+    //         <h1>
+    //           {shippingCost === 0 ? (
+    //             <span className="text-green-700 uppercase font-semibold">
+    //               {formatMessage({ id: 'cart-free' })}
+    //             </span>
+    //           ) : (
+    //             <span>
+    //               {shippingCost}
+    //               <span className="mx-1">
+    //                 {deliveryCountry?.currency.translation[locale].symbol}
+    //               </span>
+    //             </span>
+    //           )}
+    //         </h1>
+    //       </div>
+    //       {validCoupon && (
+    //         <div className="flex items-center mb-2">
+    //           <h1 className="text-gray-900 flex-1">
+    //             {formatMessage({ id: 'coupon-sale' })}
+    //           </h1>
+    //           <h1 className="mx-1">
+    //             {couponCost === 0 ? (
+    //               <span className="text-green-700 uppercase font-semibold">
+    //                 {formatMessage({ id: 'coupon-sale' })}
+    //               </span>
+    //             ) : (
+    //               couponCost
+    //             )}
+    //           </h1>
+    //         </div>
+    //       )}
+
+    //       <hr className="mb-3" />
+    //       <div className="  flex mb-2 text-lg ">
+    //         <h1 className="flex-1 text-gray-900">
+    //           {formatMessage({ id: 'subtotal' })}
+    //         </h1>
+    //         <h1>{cartTotal}</h1>{' '}
+    //         <span className="mx-1">
+    //           {deliveryCountry?.currency.translation[locale].symbol}
+    //         </span>
+    //       </div>
+    //       <hr className="mb-3" />
+    //       <button
+    //         onClick={handleCheckout}
+    //         className={`${
+    //           cartItems.length === 0
+    //             ? 'cursor-not-allowed  bg-gray-600'
+    //             : 'bg-green-600'
+    //         } p-2 rounded text-body-light uppercase mb-3  `}
+    //         disabled={cartItems.length === 0}
+    //       >
+    //         {formatMessage({ id: 'checkout' })}
+    //       </button>
+    //       <AcceptedPayments deliveryCountry={deliveryCountry} />
+    //     </div>
+    //   )}
+    //   {/* <hr className="my-8" /> */}
+    //   {visitedItems.length > 4 ? (
+    //     <RecentlyViewedVertical visitedItems={visitedItems} />
+    //   ) : (
+    //     <FeaturedItemsVertical />
+    //   )}
+    // </div>
   );
 }

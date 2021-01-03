@@ -72,10 +72,7 @@ export default function Wishlist({ userId }) {
               handleRemoveItemFromWishList={handleRemoveItemFromWishList}
               removeFromWishListButtonLoading={removeFromWishListButtonLoading}
             />
-            <WishlistRightSide
-              wishlistItems={wishlistItems}
-              wishlistItemsLoading={wishlistItemsLoading}
-            />
+            <WishlistRightSide />
           </div>
         )}
         <hr className="my-4" />
