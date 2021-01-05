@@ -8,11 +8,11 @@ import Layout from '../components/Layout';
 import { filterProducts, searchProducts } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuItemMobile';
-import { useInView } from 'react-intersection-observer';
+
 import { scrollIntoView } from 'scroll-js';
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
-import Select from 'react-select';
+
 export default function SearchResultsMobile() {
   const { query } = useParams();
   const { locale, formatMessage } = useIntl();
@@ -34,8 +34,25 @@ export default function SearchResultsMobile() {
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
-  const [triggerRef, inView] = useInView();
-
+  const [inView, setInView] = React.useState(false);
+  React.useEffect(() => {
+    const checkScrolling = () => {
+      if (window.scrollY >= 200) {
+        setInView(true);
+      } else {
+        setInView(false);
+      }
+    };
+    window.addEventListener('scroll', checkScrolling);
+    return () => {
+      window.removeEventListener('scroll', checkScrolling);
+    };
+  });
+  React.useEffect(() => {
+    if (sortByOpen) setTimeout(() => setSortByOpen(false), 100);
+    if (filtersOpen) setTimeout(() => setFiltersOpen(false), 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
   const { data: products, isLoading: productsLoading } = useQuery(
     ['searchProducts', { query, page: productsPage, resultsPerPage }],
     searchProducts,
@@ -162,23 +179,7 @@ export default function SearchResultsMobile() {
         return formatMessage({ id: 'search-results' });
     }
   };
-  const resultsPerPageOptions = React.useMemo(
-    () => [
-      {
-        label: 20,
-        value: 20,
-      },
-      {
-        label: 30,
-        value: 30,
-      },
-      {
-        label: 40,
-        value: 40,
-      },
-    ],
-    []
-  );
+
   return (
     <Layout>
       <div className="min-h-screen relative">
@@ -201,32 +202,20 @@ export default function SearchResultsMobile() {
           )}
         </AnimatePresence>
         {(!filtersApplied &&
-          products?.products?.length > 0 &&
+          products?.products.length > 0 &&
           !productsLoading) ||
-          (filtersApplied &&
-            filteredData?.filteredProducts?.length > 0 &&
-            !filteredProductsLoading && (
-              <div className="border-b mb-1">
-                <div className="p-3 ">
-                  <h1>
-                    {products?.products.length > 2 && products?.products.length}{' '}
-                    {resolvePlural()} <strong>{query}</strong>
-                  </h1>
-                </div>
-                <div className="flex items-center">
-                  <h1 className="font-semibold text-sm">
-                    {formatMessage({ id: 'number-per-page' })}
-                  </h1>
-                  <Select
-                    isSearchable={false}
-                    options={resultsPerPageOptions}
-                    value={resultsPerPage}
-                    onChange={handleResultPerPageChange}
-                    className="mx-2 flex-1"
-                  />
-                </div>
-              </div>
-            ))}
+        (filtersApplied &&
+          filteredData?.filteredProducts.length > 0 &&
+          !filteredProductsLoading) ? (
+          <div className="mb-1">
+            <div className="px-3 pt-3">
+              <h1 className="font-semibold text-lg">
+                {products?.products.length > 2 && products?.products.length}{' '}
+                {resolvePlural()} <strong>{query}</strong>
+              </h1>
+            </div>
+          </div>
+        ) : null}
 
         <AnimateSharedLayout>
           <motion.div layout className="px-3">
@@ -249,19 +238,17 @@ export default function SearchResultsMobile() {
                     );
                   })}
                 </motion.div>
-                <hr className="my-3" />
               </>
             )}
           </motion.div>
         </AnimateSharedLayout>
-
+        <hr className="my-3" />
         <CategoryMobileItemGrid
           products={products?.products}
           productsLoading={productsLoading}
           setCartMenuOpen={setCartMenuOpen}
           filteredProducts={filteredData?.filteredProducts}
           filteredProductsLoading={filteredProductsLoading}
-          triggerRef={triggerRef}
           setProductsPage={setProductsPage}
           filtersApplied={filtersApplied}
           handleResultPerPageChange={handleResultPerPageChange}
@@ -269,38 +256,48 @@ export default function SearchResultsMobile() {
         {(!filtersApplied &&
           products?.products?.length > 0 &&
           !productsLoading) ||
-          (filtersApplied &&
-            filteredData?.filteredProducts?.length > 0 &&
-            !filteredProductsLoading && (
-              <ReactPaginate
-                previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-                nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
-                breakLabel={'...'}
-                breakClassName={'inline'}
-                pageCount={
-                  filtersApplied ? filteredData?.lastPage : products?.lastPage
-                }
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={2}
-                initialPage={
-                  filtersApplied ? filteredPage - 1 : productsPage - 1
-                }
-                disableInitialCallback={true}
-                onPageChange={
-                  filtersApplied
-                    ? handleFilteredChangePage
-                    : handleProductChangePage
-                }
-                containerClassName={'text-center my-2'}
-                subContainerClassName={'p-3 inline'}
-                pageLinkClassName="p-3"
-                activeClassName={'bg-main-color font-bold text-main-text'}
-                pageClassName=" inline-block mx-2 rounded-full text-lg"
-                previousClassName="p-3 inline font-bold"
-                nextClassName="p-3 inline font-bold"
-                disabledClassName="text-gray-500"
-              />
-            ))}
+        (filtersApplied &&
+          filteredData?.filteredProducts?.length > 0 &&
+          !filteredProductsLoading) ? (
+          <ReactPaginate
+            previousLabel={
+              locale === 'ar' ? (
+                <GoChevronRight className="w-6 h-6 inline" />
+              ) : (
+                <GoChevronLeft className="w-6 h-6 inline" />
+              )
+            }
+            nextLabel={
+              locale === 'ar' ? (
+                <GoChevronLeft className="w-6 h-6 inline" />
+              ) : (
+                <GoChevronRight className="w-6 h-6 inline" />
+              )
+            }
+            breakLabel={'...'}
+            breakClassName={'inline'}
+            pageCount={
+              filtersApplied ? filteredData?.lastPage : products?.lastPage
+            }
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={2}
+            initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
+            disableInitialCallback={true}
+            onPageChange={
+              filtersApplied
+                ? handleFilteredChangePage
+                : handleProductChangePage
+            }
+            containerClassName={'text-center my-2'}
+            subContainerClassName={'p-3 inline'}
+            pageLinkClassName="p-3"
+            activeClassName={'bg-main-color font-bold text-main-text'}
+            pageClassName=" inline-block mx-2 rounded-full text-lg"
+            previousClassName="p-3 inline font-bold"
+            nextClassName="p-3 inline font-bold"
+            disabledClassName="text-gray-500"
+          />
+        ) : null}
         <AnimatePresence>
           {inView && (
             <SortInfoPanelMobile

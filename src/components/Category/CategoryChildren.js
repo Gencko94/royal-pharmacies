@@ -18,11 +18,11 @@ export default function CategoryChildren({ children, title }) {
       spaceBetween: 20,
     },
     860: {
-      slidesPerView: 5,
+      slidesPerView: 4,
       spaceBetween: 20,
     },
     1100: {
-      slidesPerView: 6,
+      slidesPerView: children?.length < 6 ? 5 : 6,
       spaceBetween: 20,
     },
     1440: {
@@ -33,9 +33,9 @@ export default function CategoryChildren({ children, title }) {
 
   return (
     <div>
-      <div className="flex items-center mt-2">
-        <h1 className="text-xl font-bold flex-1 ">
-          {formatMessage({ id: 'shop' })} {title?.[locale].name}{' '}
+      <div className="mt-2">
+        <h1 className="text-4xl font-bold text-center ">
+          {`${formatMessage({ id: 'shop' })}  ${title?.[locale].name} `}
           {formatMessage({ id: 'by-category' })}
         </h1>
       </div>
@@ -45,19 +45,19 @@ export default function CategoryChildren({ children, title }) {
           return (
             <SwiperSlide
               key={child.id}
-              className={`overflow-hidden border my-2  relative bg-gray-100
-             shadow
-            rounded`}
+              className={`overflow-hidden  rounded-lg my-2  relative 
+             
+            `}
             >
               <Link to={`/${locale}/${child.slug}`}>
                 <LazyImage
-                  src={child.image?.link}
+                  src={child.translation[locale].image?.link}
                   alt={child.translation[locale].name}
-                  pb="calc(100% * 286/210)"
+                  pb="calc(100% * 210/210)"
                   origin="original"
                 />
 
-                <h1 className="font-semibold text-center p-1">
+                <h1 className="text-center mt-4 text-lg font-bold">
                   {child.translation[locale].name}
                 </h1>
               </Link>

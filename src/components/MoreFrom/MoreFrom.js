@@ -19,7 +19,7 @@ export default function MoreFrom({ categories, setSideMenuOpen }) {
       {
         category,
         page: 1,
-        resultsPerPage: { value: 30 },
+        resultsPerPage: { value: 42 },
       },
     ],
     getCategoryProducts,

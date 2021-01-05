@@ -20,7 +20,7 @@ export default function Checkout() {
     }
   );
 
-  const { cartItems, cartItemsLoading } = React.useContext(
+  const { cartItems, cartItemsLoading, coupon } = React.useContext(
     CartAndWishlistProvider
   );
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -72,7 +72,7 @@ export default function Checkout() {
       address: selectedAddress.id,
       payment_method: paymentMethod,
       order_type:
-        deliveryCountry?.translation.en === 'Kuwait'
+        deliveryCountry?.translation.en.name === 'Kuwait'
           ? 'local'
           : 'international',
     };
@@ -80,11 +80,13 @@ export default function Checkout() {
       const res = await checkoutMutation({
         deliveryCountry,
         order,
+        coupon,
       });
       console.log(res);
       setPaymentUrl(res.payment);
       setSelectedStep(2);
     } catch (error) {
+      setErrorOpen(true);
       setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
       console.log(error.response);
     }
@@ -128,11 +130,7 @@ export default function Checkout() {
         <Stepper selectedStep={selectedStep} stepDone={stepDone} />
         <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
           {selectedStep === 0 && (
-            <SelectAddress
-              selectedAddress={selectedAddress}
-              setSelectedAddress={setSelectedAddress}
-              handleSelectAddress={handleSelectAddress}
-            />
+            <SelectAddress handleSelectAddress={handleSelectAddress} />
           )}
           {selectedStep === 1 && (
             <PersonalInformation

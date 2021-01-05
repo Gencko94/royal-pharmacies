@@ -64,13 +64,15 @@ export default function MiddleSection({
   return (
     <div className="flex flex-col w-full self-start ">
       <div className="flex items-center">
-        <Link to={`/${locale}/brands/${data.brand?.slug}`}>
-          <img
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${data.brand?.logo?.link}`}
-            alt={data.brand?.translation[locale].name}
-            style={{ width: '70px', height: '63px' }}
-          />
-        </Link>
+        {data.brand && (
+          <Link to={`/${locale}/brands/${data.brand?.slug}`}>
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${data.brand?.logo?.link}`}
+              alt={data.brand?.translation[locale].name}
+              style={{ width: '70px', height: '63px' }}
+            />
+          </Link>
+        )}
         <Link
           to={`/${locale}/brands/${data.brand?.slug}`}
           className="mx-3 hover:opacity-50 underline font-semibold text-sm text-gray-700 uppercase"

@@ -225,7 +225,8 @@ export const ar = {
   'payment-page': 'صفحة الدفع',
   'go-to-payment':
     'قم بالضغط على الرابط ادناه لتحويلك الى بوابة الدفع, سنقوم بوضع الطلب فور نجاح عملية الدفع !',
-  'order-placed-msg': 'قم بالضغط على الرابط ادناه لتحويلك الى بوابة الدفع ',
+  'order-placed-msg': 'تهانينا ! , تم وضع طلبك. ',
+  'order-failed-msg': 'عذرا , لم يتم استكمال الطلب , الرجاء اعادة المحاولة ',
   'expected-delivery-msg': 'نتوقع وصول طلبك خلال',
   'checkout-help-center-msg':
     'اذا كان لديك اي استفسار الرجاء الاتصال بنا عبر قنوات التواصل التالية',
@@ -235,6 +236,7 @@ export const ar = {
   'location-details': 'تفاصيل الموقع',
   'delivery-location': 'عنوان التوصيل',
   'delivery-address': 'عنوان التوصيل',
+  'delivery-details': 'تفاصيل التوصيل',
   'maps-detailed-address-apartment-short': 'رقم المنزل/الشقة',
   'maps-detailed-address-building-short': 'رقم البناء/البرج',
   'maps-detailed-address-phone-short': 'رقم الهاتف/الجوال',
@@ -370,4 +372,6 @@ export const ar = {
   'checkout-cart-empty':
     'عذرا , لا يمكنك اتمام الشراء عندما تكون عربة التسوق فارغة , الرجاء وضع منتج واحد على الاقل',
   no_quantity: 'الكمية منتهية',
+  'guest-checkout-login':
+    'إن هذا الرقم مسجل بحساب مسبق , الرجاء تسجيل الدخول اولا',
 };

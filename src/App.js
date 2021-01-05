@@ -43,6 +43,8 @@ const SingleBrand = React.lazy(() => import('./pages/SingleBrand'));
 const SingleBrandMobile = React.lazy(() => import('./pages/SingleBrandMobile'));
 const StaticPage = React.lazy(() => import('./pages/StaticPage'));
 const TrackOrder = React.lazy(() => import('./pages/TrackOrder'));
+const OrderSuccess = React.lazy(() => import('./pages/OrderSuccess'));
+const OrderFailed = React.lazy(() => import('./pages/OrderFailed'));
 
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -89,6 +91,8 @@ function App() {
 
           <Route exact path="/app/password-reset" component={PasswordReset} />
           <Route exact path="/" component={Home} />
+          <Route exact path="/order-failed" component={OrderFailed} />
+          <Route exact path="/order-success" component={OrderSuccess} />
 
           <ProtectedRoute
             path="/user/account"

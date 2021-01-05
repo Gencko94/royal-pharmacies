@@ -140,12 +140,29 @@ export default function ItemDescription({
 
   return (
     <div className="mb-3">
-      <Link
+      <div className="flex items-center">
+        {data.brand && (
+          <Link to={`/${locale}/brands/${data.brand?.slug}`}>
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${data.brand?.logo?.link}`}
+              alt={data.brand?.translation[locale].name}
+              style={{ width: '70px', height: '63px' }}
+            />
+          </Link>
+        )}
+        <Link
+          to={`/${locale}/brands/${data.brand?.slug}`}
+          className="mx-3 hover:opacity-50 underline font-semibold text-sm text-gray-700 uppercase"
+        >
+          {data.brand?.translation[locale].name}
+        </Link>
+      </div>
+      {/* <Link
         to={`/${locale}/brands/${data.brand?.slug}`}
         className="hover:underline font-semibold text-xs text-gray-700 uppercase"
       >
         {data.brand?.translation[locale].name}
-      </Link>
+      </Link> */}
       <h1 className="font-semibold text-xl">
         {data.full_translation[locale].title}
       </h1>

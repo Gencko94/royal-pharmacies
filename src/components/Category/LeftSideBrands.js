@@ -33,7 +33,7 @@ export default function LeftSideBrands({
 
   return (
     <div className="mb-4">
-      <h1 className="text-lg py-3 font-semibold">
+      <h1 className="text-lg py-3 font-bold">
         {formatMessage({ id: 'filter-by-brand' })}
       </h1>
       <hr />
@@ -42,7 +42,7 @@ export default function LeftSideBrands({
           const isAvailable = brandFilters.find(i => i.id === brand.id);
 
           return (
-            <div key={brand.id} className="flex items-center mb-2 my-1">
+            <div key={brand.id} className="flex items-center my-2">
               <input
                 id={brand.id}
                 type="checkbox"
@@ -57,7 +57,7 @@ export default function LeftSideBrands({
               />
               <label
                 htmlFor={brand.id}
-                className="hover:underline hover:text-blue-700 cursor-pointer  mx-5"
+                className="hover:underline text-sm hover:text-blue-700 cursor-pointer font-semibold  mx-5"
               >
                 {brand.translation[locale].name}
               </label>

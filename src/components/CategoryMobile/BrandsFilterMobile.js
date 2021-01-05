@@ -3,28 +3,13 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 
 export default function BrandsFilterMobile({
-  products,
   handleBrandChange,
   brandFilters,
   handleClose,
+  brands,
 }) {
   const { formatMessage, locale } = useIntl();
-  const brands = React.useMemo(() => {
-    let brands = [];
-    products.forEach(product => {
-      if (product.brand) {
-        brands.push({
-          label: product.brand.translation[locale].name,
-          id: product.brand.id,
-        });
-      }
-    });
-    brands = [...new Set(brands.map(o => JSON.stringify(o)))].map(s =>
-      JSON.parse(s)
-    );
-    return brands;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
   if (brands.length === 0) {
     return null;
   }
@@ -45,13 +30,16 @@ export default function BrandsFilterMobile({
                 type="checkbox"
                 className="form-checkbox border-gray-600 text-main-color"
                 onChange={() => {
-                  handleBrandChange(brand);
+                  handleBrandChange({
+                    id: brand.id,
+                    label: brand.translation[locale].name,
+                  });
                   handleClose();
                 }}
                 checked={isAvailable ? true : false}
               />
               <label htmlFor={brand.id} className=" mx-5">
-                {brand.label}
+                {brand.translation[locale].name}
               </label>
             </div>
           );

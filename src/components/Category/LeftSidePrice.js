@@ -38,7 +38,7 @@ export default function LeftSidePrice({
   }
   return (
     <motion.div layout className="mb-4">
-      <h1 className="text-lg font-semibold">
+      <h1 className="text-lg font-bold">
         {formatMessage({ id: 'filter-by-price' })} (
         {deliveryCountry?.currency.translation[locale].symbol})
       </h1>

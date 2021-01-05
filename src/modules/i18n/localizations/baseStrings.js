@@ -233,6 +233,8 @@ const baseStrings = {
   'thank-you-for-shopping-msg': 'Thank you for shopping at our Website',
   'expected-delivery-msg': 'We expect that your order will be delivered in',
   'order-placed-msg': 'Congratulations, Your Order has been Placed !',
+
+  'order-failed-msg': 'Sorry, Your Order was not completed , Please try again',
   'checkout-help-center-msg':
     'If you have any question please do not hesitate to contact us',
   // maps
@@ -240,6 +242,7 @@ const baseStrings = {
   'location-details': 'Location Details',
   'delivery-location': 'Delivery Location',
   'delivery-address': 'Delivery Address',
+  'delivery-details': 'Delivery Details',
   location: 'Location',
   'maps-detailed-address-apartment-short': 'House/Apt No',
   'maps-detailed-address-building-short': 'Build/Tower No',
@@ -376,6 +379,8 @@ const baseStrings = {
   'checkout-cart-empty':
     'You Cannot Checkout with an Empty Cart, Please put at least one product before checking out',
   no_quantity: 'Out of Stock',
+  'guest-checkout-login':
+    'This phone number is already linked to an account , Please Sign in first ',
 };
 
 export const en = baseStrings;

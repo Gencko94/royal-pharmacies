@@ -18,6 +18,7 @@ export default function ThirdSection({ pages }) {
             return (
               page.type === 'page' && (
                 <Link
+                  key={page.id}
                   className="flex-1 text-center"
                   to={`/${locale}/site/${page.page?.slug}`}
                 >
@@ -82,7 +83,7 @@ export default function ThirdSection({ pages }) {
         </Link>
 
         <h1 className=" font-semibold text-xs text-right mx-4">
-          &copy; 2020 MRG . {formatMessage({ id: 'footer-all-rights' })}
+          &copy; 2021 MRG . {formatMessage({ id: 'footer-all-rights' })}
         </h1>
       </div>
     </div>

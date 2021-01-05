@@ -8,11 +8,18 @@ import { useMutation } from 'react-query';
 import { DataProvider } from '../contexts/DataContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import { guestCheckout } from '../Queries/Queries';
-
+import ErrorSnackbar from '../components/ErrorSnackbar';
+import { useIntl } from 'react-intl';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { AuthProvider } from '../contexts/AuthContext';
 export default function GuestCheckOut() {
   const [selectedStep, setSelectedStep] = React.useState(0);
   const { deliveryCountry } = React.useContext(DataProvider);
-  const { guestCartItems } = React.useContext(CartAndWishlistProvider);
+  const { guestCartItems, coupon, guestCartItemsLoading } = React.useContext(
+    CartAndWishlistProvider
+  );
+  const { authenticationLoading } = React.useContext(AuthProvider);
   const [
     guestCheckoutMutation,
     { isLoading: checkoutLoading },
@@ -26,9 +33,10 @@ export default function GuestCheckOut() {
       buildingOrTowerNumber: '',
       additionalDetails: '',
       markerAddress: '',
+      userTyped_address: '',
     },
   });
-
+  const [paymentUrl, setPaymentUrl] = React.useState(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [name, setName] = React.useState('');
   const [paymentMethod, setPaymentMethod] = React.useState(null);
@@ -38,6 +46,12 @@ export default function GuestCheckOut() {
     1: false,
     2: false,
   });
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const closeError = () => {
+    setErrorOpen(false);
+  };
+  const { formatMessage } = useIntl();
   const handleAddAddressAndInfo = ({
     guestAddress,
     phoneNumber,
@@ -94,31 +108,69 @@ export default function GuestCheckOut() {
         addition_direction: guestAddress.addressDetails.additionalDetails,
 
         userTyped_address:
-          guestAddress.addressDetails.userTyped_address || null,
+          guestAddress.addressDetails.userTyped_location || null,
         type: guestAddress.lat ? 'map' : 'text',
       },
+      coupon,
       payment_method: paymentMethod,
       order_type:
-        deliveryCountry?.translation.en === 'Kuwait'
+        deliveryCountry?.translation.en.name === 'Kuwait'
           ? 'local'
           : 'international',
     };
     try {
-      await guestCheckoutMutation({
+      const res = await guestCheckoutMutation({
         deliveryCountry,
         order,
       });
-      // setSelectedStep(2);
+      setPaymentUrl(res.payment);
+      setSelectedStep(2);
     } catch (error) {
-      console.log(error.response);
+      setErrorOpen(true);
+      if (
+        error.response.data.message === 'Please login to your account first'
+      ) {
+        return setErrorMessage(formatMessage({ id: 'guest-checkout-login' }));
+      }
+      setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
     }
   };
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedStep]);
+  if (guestCartItemsLoading || authenticationLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={50}
+          width={50}
+          visible={true}
+        />
+      </div>
+    );
+  }
+  if (!guestCartItemsLoading && guestCartItems?.length === 0) {
+    return (
+      <Layout>
+        <div
+          className="flex items-center justify-center mx-auto text-center"
+          style={{ height: 'calc(100vh - 56px)', maxWidth: '600px' }}
+        >
+          <h1 className="text-2xl font-semibold">
+            {formatMessage({ id: 'checkout-cart-empty' })}
+          </h1>
+        </div>
+      </Layout>
+    );
+  }
   return (
     <Layout>
+      {errorOpen && (
+        <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
+      )}
       <div className="xxl:max-w-default md:max-w-screen-xl mx-auto">
         <Stepper selectedStep={selectedStep} stepDone={stepDone} />
         <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
@@ -147,6 +199,8 @@ export default function GuestCheckOut() {
             <OrderPlaced
               handleStepForward={handleStepForward}
               handleStepBack={handleStepBack}
+              paymentMethod={paymentMethod}
+              paymentUrl={paymentUrl}
             />
           )}
         </div>

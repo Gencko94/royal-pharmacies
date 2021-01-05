@@ -4,7 +4,7 @@ module.exports = {
     // purgeLayersByDefault: true,
   },
   purge: {
-    enabled: false,
+    enabled: true,
     content: ['src/**/*.js', 'src/**/*.jsx', 'public/**/*.html'],
   },
   theme: {
@@ -14,6 +14,7 @@ module.exports = {
       },
       fontWeight: {
         semibold: 600,
+        bold: 900,
       },
       boxShadow: {
         navCategory: '0 5px 4px 0 rgba(0,0,0,0.18)',
@@ -102,7 +103,7 @@ module.exports = {
         '75p': '75%',
       },
       maxWidth: {
-        default: '1560px',
+        default: '1440px',
       },
       minHeight: {
         243: '243px',

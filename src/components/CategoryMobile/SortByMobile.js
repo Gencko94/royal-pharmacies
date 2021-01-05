@@ -45,9 +45,9 @@ export default function SortByMobile({
           >
             <span>{formatMessage({ id: option.label })}</span>
             {sortBy.label === option.label ? (
-              <CgRadioChecked />
+              <CgRadioChecked className="text-main-color" />
             ) : (
-              <CgRadioCheck />
+              <CgRadioCheck className="text-main-color" />
             )}
           </button>
         );

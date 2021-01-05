@@ -1,12 +1,12 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
-import { Redirect, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
 import CategoryHeaderMobile from '../components/CategoryMobile/CategoryHeaderMobile';
 import CategoryMobileItemGrid from '../components/CategoryMobile/CategoryMobileItemGrid';
 import SortInfoPanelMobile from '../components/CategoryMobile/SortInfoPanelMobile';
 import Layout from '../components/Layout';
-import Select from 'react-select';
+
 import {
   filterProducts,
   getCategoryProducts,
@@ -14,7 +14,7 @@ import {
 } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuItemMobile';
-import { useInView } from 'react-intersection-observer';
+
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { scrollIntoView } from 'scroll-js';
@@ -33,14 +33,32 @@ export default function CategoryMobile() {
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState([500]);
   const [resultsPerPage, setResultsPerPage] = React.useState({
-    label: 20,
-    value: 20,
+    label: 30,
+    value: 30,
   });
   const [filters, setFilters] = React.useState([]);
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
-  const [triggerRef, inView] = useInView();
+  const [inView, setInView] = React.useState(false);
+  React.useEffect(() => {
+    const checkScrolling = () => {
+      if (window.scrollY >= 200) {
+        setInView(true);
+      } else {
+        setInView(false);
+      }
+    };
+    window.addEventListener('scroll', checkScrolling);
+    return () => {
+      window.removeEventListener('scroll', checkScrolling);
+    };
+  });
+  React.useEffect(() => {
+    if (sortByOpen) setTimeout(() => setSortByOpen(false), 100);
+    if (filtersOpen) setTimeout(() => setFiltersOpen(false), 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
   const { data, isLoading: productsLoading, error: productsError } = useQuery(
     ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
@@ -92,13 +110,35 @@ export default function CategoryMobile() {
       });
     }
   };
-
+  const history = useHistory();
+  React.useEffect(() => {
+    return () => {
+      setProductsPage(1);
+      setFilteredPage(1);
+    };
+  }, [history.location.pathname]);
   const handleProductChangePage = data => {
-    scrollIntoView(document.getElementById('main'), document.body);
+    scrollIntoView(
+      document.getElementById('products_grid-mobile'),
+      document.body
+    );
+    history.push({
+      state: {
+        page: data.selected + 1,
+      },
+    });
     setProductsPage(data.selected + 1);
   };
   const handleFilteredChangePage = data => {
-    scrollIntoView(document.getElementById('main'), document.body);
+    scrollIntoView(
+      document.getElementById('products_grid-mobile'),
+      document.body
+    );
+    history.push({
+      state: {
+        page: data.selected + 1,
+      },
+    });
     setFilteredPage(data.selected + 1);
   };
   const handlePriceChange = values => {
@@ -106,7 +146,7 @@ export default function CategoryMobile() {
   };
   const handleChangePriceInput = e => {
     if (e.target.value < 0) return;
-    if (e.target.value > 10000) return;
+    if (e.target.value > 1000) return;
     setPriceFilters([e.target.value]);
   };
   const handleSubmitPrice = () => {
@@ -158,23 +198,7 @@ export default function CategoryMobile() {
       setFiltersApplied(true);
     }
   }, [filters]);
-  const resultsPerPageOptions = React.useMemo(
-    () => [
-      {
-        label: 20,
-        value: 20,
-      },
-      {
-        label: 30,
-        value: 30,
-      },
-      {
-        label: 40,
-        value: 40,
-      },
-    ],
-    []
-  );
+
   if (productsError) {
     if (productsError.response.data.message === 'Category not founded') {
       return <Redirect to={`/${locale}/page/404`} />;
@@ -207,29 +231,6 @@ export default function CategoryMobile() {
         />
         <hr className="my-4" />
 
-        {(!filtersApplied && data?.products?.length > 0 && !productsLoading) ||
-          (filtersApplied &&
-            filteredData?.filteredProducts?.length > 0 &&
-            !filteredProductsLoading && (
-              <div
-                className="grid"
-                style={{ gridTemplateColumns: '0.5fr 0.6fr' }}
-              >
-                <div></div>
-                <div className="flex items-center">
-                  <h1 className="font-semibold">
-                    {formatMessage({ id: 'number-per-page' })}
-                  </h1>
-                  <Select
-                    isSearchable={false}
-                    options={resultsPerPageOptions}
-                    value={resultsPerPage}
-                    onChange={handleResultPerPageChange}
-                    className="mx-2 flex-1"
-                  />
-                </div>
-              </div>
-            ))}
         <AnimateSharedLayout>
           <motion.div layout className="px-3">
             {filters.length !== 0 && (
@@ -263,44 +264,51 @@ export default function CategoryMobile() {
           setCartMenuOpen={setCartMenuOpen}
           filteredProducts={filteredData?.filteredProducts}
           filteredProductsLoading={filteredProductsLoading}
-          triggerRef={triggerRef}
           setProductsPage={setProductsPage}
           filtersApplied={filtersApplied}
           handleResultPerPageChange={handleResultPerPageChange}
         />
         {(!filtersApplied && data?.products?.length > 0 && !productsLoading) ||
-          (filtersApplied &&
-            filteredData?.filteredProducts?.length > 0 &&
-            !filteredProductsLoading && (
-              <ReactPaginate
-                previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-                nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
-                breakLabel={'...'}
-                breakClassName={'inline'}
-                pageCount={
-                  filtersApplied ? filteredData?.lastPage : data?.lastPage
-                }
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={2}
-                initialPage={
-                  filtersApplied ? filteredPage - 1 : productsPage - 1
-                }
-                disableInitialCallback={true}
-                onPageChange={
-                  filtersApplied
-                    ? handleFilteredChangePage
-                    : handleProductChangePage
-                }
-                containerClassName={'text-center my-2'}
-                subContainerClassName={'p-3 inline'}
-                pageLinkClassName="p-3"
-                activeClassName={'bg-main-color font-bold text-main-text'}
-                pageClassName=" inline-block mx-2 rounded-full text-lg"
-                previousClassName="p-3 inline font-bold"
-                nextClassName="p-3 inline font-bold"
-                disabledClassName="text-gray-500"
-              />
-            ))}
+        (filtersApplied &&
+          filteredData?.filteredProducts?.length > 0 &&
+          !filteredProductsLoading) ? (
+          <ReactPaginate
+            previousLabel={
+              locale === 'ar' ? (
+                <GoChevronRight className="w-6 h-6 inline" />
+              ) : (
+                <GoChevronLeft className="w-6 h-6 inline" />
+              )
+            }
+            nextLabel={
+              locale === 'ar' ? (
+                <GoChevronLeft className="w-6 h-6 inline" />
+              ) : (
+                <GoChevronRight className="w-6 h-6 inline" />
+              )
+            }
+            breakLabel={'...'}
+            breakClassName={'inline'}
+            pageCount={filtersApplied ? filteredData?.lastPage : data?.lastPage}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={2}
+            initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
+            disableInitialCallback={true}
+            onPageChange={
+              filtersApplied
+                ? handleFilteredChangePage
+                : handleProductChangePage
+            }
+            containerClassName={'text-center my-2'}
+            subContainerClassName={'p-3 inline'}
+            pageLinkClassName="p-3"
+            activeClassName={'bg-main-color font-bold text-main-text'}
+            pageClassName=" inline-block mx-2 rounded-full text-lg"
+            previousClassName="p-3 inline font-bold"
+            nextClassName="p-3 inline font-bold"
+            disabledClassName="text-gray-500"
+          />
+        ) : null}
       </div>
       <AnimatePresence>
         {inView && data?.products.length !== 0 && (
@@ -320,6 +328,7 @@ export default function CategoryMobile() {
             handlePriceChange={handlePriceChange}
             handleSubmitPrice={handleSubmitPrice}
             priceFilters={priceFilters}
+            brands={categoryInfo?.brands}
           />
         )}
       </AnimatePresence>

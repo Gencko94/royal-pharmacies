@@ -94,11 +94,12 @@ export default function Category() {
   React.useEffect(() => {
     return () => {
       setProductsPage(1);
+      setFilteredPage(1);
     };
   }, [history.location.pathname]);
   const handleProductChangePage = data => {
-    scrollIntoView(document.getElementById('top'), document.body);
-    history.replace = history.location.pathname + data.selected + 1;
+    scrollIntoView(document.getElementById('products_grid'), document.body);
+
     history.push({
       state: {
         page: data.selected + 1,
@@ -107,7 +108,12 @@ export default function Category() {
     setProductsPage(data.selected + 1);
   };
   const handleFilteredChangePage = data => {
-    scrollIntoView(document.getElementById('top'), document.body);
+    scrollIntoView(document.getElementById('products_grid'), document.body);
+    history.push({
+      state: {
+        page: data.selected + 1,
+      },
+    });
     setFilteredPage(data.selected + 1);
   };
   const handleRemoveFilters = filter => {
@@ -227,7 +233,6 @@ export default function Category() {
         {/* <Breadcrumbs data={categories} /> */}
         <div className="search-page__container">
           <CategoryLeftSide
-            categoryInfo={categoryInfo}
             categoryInfoLoading={categoryInfoLoading}
             products={data?.products}
             productsLoading={productsLoading}

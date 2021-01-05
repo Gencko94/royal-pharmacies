@@ -11,12 +11,12 @@ export default function CategoryChildrenMobile({ children, title }) {
   const breakpoints = {
     // when window width is >= 320px
     320: {
-      slidesPerView: 2,
+      slidesPerView: 3,
       spaceBetween: 20,
     },
     // when window width is >= 480px
     480: {
-      slidesPerView: 3,
+      slidesPerView: 4,
       spaceBetween: 20,
     },
     // when window width is >= 640px
@@ -27,31 +27,31 @@ export default function CategoryChildrenMobile({ children, title }) {
   };
   return (
     <div>
-      <div className="flex items-center mb-4">
-        <h1 className="text-xl font-bold flex-1 ">
-          {formatMessage({ id: 'shop' })} {title?.[locale].name}{' '}
+      <div className="mt-8 px-2">
+        <h1 className="text-2xl font-bold text-center ">
+          {`${formatMessage({ id: 'shop' })}  ${title?.[locale].name} `}
           {formatMessage({ id: 'by-category' })}
         </h1>
       </div>
 
-      <Swiper navigation id="main" className="my-1" breakpoints={breakpoints}>
+      <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
         {children.map(child => {
           return (
             <SwiperSlide
               key={child.id}
-              className={`overflow-hidden border my-2  relative bg-gray-100
-             shadow
-            rounded`}
+              className={`overflow-hidden  rounded-lg my-2  relative 
+             
+            `}
             >
               <Link to={`/${locale}/${child.slug}`}>
-                <div className="p-2">
-                  <LazyImage
-                    src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.translation[locale].image?.link}`}
-                    alt={child.translation[locale].name}
-                    pb="calc(100% * 286/210)"
-                  />
-                </div>
-                <h1 className="font-semibold text-center p-1">
+                <LazyImage
+                  src={child.translation[locale].image?.link}
+                  alt={child.translation[locale].name}
+                  pb="calc(100% * 210/210)"
+                  origin="original"
+                />
+
+                <h1 className="text-center mt-4 text-lg font-bold">
                   {child.translation[locale].name}
                 </h1>
               </Link>

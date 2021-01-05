@@ -89,6 +89,7 @@ export default function GuestLocationForm({
                   phoneNumber: `${countryCode.value}${values.phoneNumber}`,
                   ...values,
                   markerAddress,
+                  userTyped_location: userTypedLocation,
                 },
               },
               name: values.name,
@@ -115,6 +116,7 @@ export default function GuestLocationForm({
                   name="email"
                   value={values.email}
                   type="text"
+                  optional
                 />
                 <PhoneNumberCustomInput
                   label={formatMessage({ id: 'maps-detailed-address-phone' })}
@@ -153,9 +155,14 @@ export default function GuestLocationForm({
 
                 <div className=" ">
                   <button
+                    disabled={!markerAddress || userTypedLocation}
                     type="submit"
                     className={`
-                       bg-main-color text-main-text
+                       ${
+                         !markerAddress || userTypedLocation
+                           ? 'bg-gray-500 text-gray-300'
+                           : 'bg-main-color text-main-text'
+                       }
                        p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}
                   >
                     <h1>{formatMessage({ id: 'confirm-location' })}</h1>
@@ -170,13 +177,21 @@ export default function GuestLocationForm({
   );
 }
 
-const CustomTextInput = ({ label, value, name, ...props }) => {
+const CustomTextInput = ({ label, value, name, optional, ...props }) => {
   const [field, meta] = useField(name);
+  const { formatMessage } = useIntl();
   return (
     <div className="w-full mb-2 relative">
-      <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
-        {label}
-      </label>
+      <div className="flex items-center">
+        <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
+          {label}
+        </label>
+        {optional && (
+          <h1 className="text-xs italic mx-3">
+            ({formatMessage({ id: 'maps-details-optional' })})
+          </h1>
+        )}
+      </div>
       <input
         {...field}
         {...props}

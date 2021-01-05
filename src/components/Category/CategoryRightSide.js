@@ -30,9 +30,7 @@ export default function CategoryRightSide({
   productsPage,
   category,
 }) {
-  console.log(filteredProducts, 'filteredPRoducts');
-  console.log(filtersApplied, 'filtersAPplied');
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   if (
     !['best-seller', 'latest-products'].includes(category) &&
     productsLoading
@@ -85,7 +83,7 @@ export default function CategoryRightSide({
   }
 
   return (
-    <div id="top" className="h-full relative">
+    <div id="products_grid" className="h-full relative">
       {products?.length > 0 && (
         <SortInfoPanel
           category={category}
@@ -186,8 +184,20 @@ export default function CategoryRightSide({
         filteredProducts?.length > 0 &&
         !filteredProductsLoading) ? (
         <ReactPaginate
-          previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-          nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+          previousLabel={
+            locale === 'ar' ? (
+              <GoChevronRight className="w-6 h-6 inline" />
+            ) : (
+              <GoChevronLeft className="w-6 h-6 inline" />
+            )
+          }
+          nextLabel={
+            locale === 'ar' ? (
+              <GoChevronLeft className="w-6 h-6 inline" />
+            ) : (
+              <GoChevronRight className="w-6 h-6 inline" />
+            )
+          }
           breakLabel={'...'}
           breakClassName={'inline'}
           pageCount={filtersApplied ? filteredPageCount : productsPageCount}

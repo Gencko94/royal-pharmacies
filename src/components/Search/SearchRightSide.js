@@ -30,7 +30,7 @@ export default function SearchRightSide({
   productsPageCount,
   filteredPageCount,
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   if (productsLoading) {
     return (
       <div className="py-2">
@@ -146,8 +146,20 @@ export default function SearchRightSide({
         filteredProducts?.length > 0 &&
         !filteredProductsLoading) ? (
         <ReactPaginate
-          previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-          nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
+          previousLabel={
+            locale === 'ar' ? (
+              <GoChevronRight className="w-6 h-6 inline" />
+            ) : (
+              <GoChevronLeft className="w-6 h-6 inline" />
+            )
+          }
+          nextLabel={
+            locale === 'ar' ? (
+              <GoChevronLeft className="w-6 h-6 inline" />
+            ) : (
+              <GoChevronRight className="w-6 h-6 inline" />
+            )
+          }
           breakLabel={'...'}
           breakClassName={'inline'}
           pageCount={filtersApplied ? filteredPageCount : productsPageCount}

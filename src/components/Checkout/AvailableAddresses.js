@@ -8,7 +8,7 @@ import MapLazyImage from '../../helpers/MapLazyImage';
 export default function AvailableAddresses({
   setShowMap,
   userAddresses,
-  selectedAddress,
+
   handleSelectAddress,
 }) {
   const { formatMessage } = useIntl();
@@ -51,10 +51,7 @@ export default function AvailableAddresses({
               <motion.div
                 layout
                 key={address.id}
-                className={`${
-                  selectedAddress?.id === address.id &&
-                  'shadow-itemsSlider-shallow'
-                } rounded border relative  bg-body-light`}
+                className={`rounded border relative  bg-body-light`}
               >
                 <motion.div layout>
                   <div style={{ minHeight: '150px', position: 'relative' }}>

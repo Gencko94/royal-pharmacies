@@ -1,12 +1,10 @@
 import React from 'react';
 import LeftSideBrands from './LeftSideBrands';
-import LeftSideCategories from './LeftSideCategories';
 import LeftSidePrice from './LeftSidePrice';
 
 export default function CategoryLeftSide({
   handlePriceChange,
 
-  categoryInfo,
   categoryInfoLoading,
   brandFilters,
   handleChangePriceInput,
@@ -20,15 +18,6 @@ export default function CategoryLeftSide({
   return (
     <div>
       {/* Category tree */}
-
-      <LeftSideCategories
-        categoryInfo={categoryInfo}
-        categoryInfoLoading={categoryInfoLoading}
-        productsLoading={productsLoading}
-        productsLength={products?.length}
-      />
-
-      {/* Doing this because of the memo in brands */}
 
       <LeftSideBrands
         brands={brands}

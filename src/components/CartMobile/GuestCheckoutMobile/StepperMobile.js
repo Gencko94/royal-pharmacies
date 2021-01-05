@@ -14,10 +14,9 @@ export default function StepperMobile({ selectedStep, stepDone }) {
             <div
               className={`rounded-full ${
                 selectedStep === 0 &&
-                'bg-second-nav-light text-second-nav-text-light border-second-nav-light '
+                'bg-main-color text-main-text border-main-color '
               } ${
-                stepDone[0] &&
-                'bg-green-700 border-green-700 text-second-nav-text-light'
+                stepDone[0] && 'bg-green-700 border-green-700 text-main-text'
               } transition duration-500 ease-in-out h-10 w-10 py-2 border-2 `}
             >
               {stepDone[0] ? (
@@ -29,10 +28,8 @@ export default function StepperMobile({ selectedStep, stepDone }) {
             <div
               className={` absolute my-2 ${
                 locale === 'ar' && 'rtl-stepper-icon_1'
-              } ${
-                selectedStep === 0 && 'font-bold'
-              }  text-center text-xs  uppercase `}
-              style={{ left: '-7px' }}
+              } ${selectedStep === 0 && 'font-bold'}  text-center text-xs   `}
+              style={{ left: '-2px' }}
             >
               {formatMessage({ id: 'address' })}
             </div>
@@ -41,11 +38,10 @@ export default function StepperMobile({ selectedStep, stepDone }) {
           <div className=" relative">
             <div
               className={`${
-                stepDone[1] &&
-                'bg-green-700 border-green-700 text-second-nav-text-light'
+                stepDone[1] && 'bg-green-700 border-green-700 text-main-text'
               } ${
                 selectedStep === 1 &&
-                'bg-second-nav-light text-second-nav-text-light border-second-nav-light font-bold'
+                'bg-main-color text-main-text border-main-color font-bold'
               } rounded-full transition duration-500 ease-in-out h-10 w-10 py-2 border-2  `}
             >
               {stepDone[1] ? (
@@ -57,12 +53,12 @@ export default function StepperMobile({ selectedStep, stepDone }) {
             <div
               className={`${
                 locale === 'ar' && 'rtl-stepper-icon_2'
-              } absolute text-center my-2 text-xs uppercase ${
+              } absolute text-center my-2 text-xs  ${
                 selectedStep === 1 && 'font-bold '
               } `}
-              style={{ left: '-21px' }}
+              style={{ left: '-2px' }}
             >
-              {formatMessage({ id: 'personal-information' })}
+              {formatMessage({ id: 'order-details' })}
             </div>
           </div>
           <div
@@ -71,11 +67,10 @@ export default function StepperMobile({ selectedStep, stepDone }) {
           <div className={` relative`}>
             <div
               className={`${
-                stepDone[2] &&
-                'bg-green-700 border-green-700 text-second-nav-text-light'
+                stepDone[2] && 'bg-green-700 border-green-700 text-main-text'
               } ${
                 selectedStep === 2 &&
-                'bg-second-nav-light text-second-nav-text-light border-second-nav-light font-bold'
+                'bg-main-color text-main-text border-main-color font-bold'
               } rounded-full transition duration-500 ease-in-out h-10 w-10 py-2 border-2`}
             >
               {stepDone[2] ? (
@@ -87,10 +82,10 @@ export default function StepperMobile({ selectedStep, stepDone }) {
             <div
               className={`${locale === 'ar' && 'rtl-stepper-icon_3'} absolute ${
                 selectedStep === 2 && 'font-bold'
-              } text-center my-2 text-xs uppercase `}
-              style={{ left: '-3px' }}
+              } text-center my-2 text-xs  `}
+              style={{ left: '-9px' }}
             >
-              {formatMessage({ id: 'order-placed' })}
+              {formatMessage({ id: 'order-placement' })}
             </div>
           </div>
         </div>

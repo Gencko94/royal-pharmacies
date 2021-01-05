@@ -7,12 +7,27 @@ import SelectAddressMobile from '../components/MobileCheckout/SelectAddressMobil
 import { DataProvider } from '../contexts/DataContext';
 import { checkout } from '../Queries/Queries';
 import { useMutation } from 'react-query';
-
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
+import { useIntl } from 'react-intl';
+import ErrorSnackbar from '../components/ErrorSnackbar';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function CheckoutMobile() {
   const { deliveryCountry } = React.useContext(DataProvider);
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [selectedAddress, setSelectedAddress] = React.useState(null);
   const [paymentMethod, setPaymentMethod] = React.useState(null);
+  const [paymentUrl, setPaymentUrl] = React.useState(null);
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const { cartItems, cartItemsLoading, coupon } = React.useContext(
+    CartAndWishlistProvider
+  );
+  const { authenticationLoading } = React.useContext(DataProvider);
+  const { formatMessage } = useIntl();
+  const closeError = () => {
+    setErrorOpen(false);
+  };
 
   const [
     checkoutMutation,
@@ -45,39 +60,74 @@ export default function CheckoutMobile() {
       });
     }
   };
+  const handleSelectAddress = address => {
+    setSelectedAddress(address);
+    handleStepForward();
+  };
   const handleCheckout = async () => {
     const order = {
       address: selectedAddress.id,
       payment_method: paymentMethod,
       order_type:
-        deliveryCountry?.translation.en === 'Kuwait'
+        deliveryCountry?.translation.en.name === 'Kuwait'
           ? 'local'
           : 'international',
     };
     try {
-      await checkoutMutation({
+      const res = await checkoutMutation({
         deliveryCountry,
         order,
+        coupon,
       });
+      console.log(res);
+      setPaymentUrl(res.payment);
       setSelectedStep(2);
     } catch (error) {
+      setErrorOpen(true);
+      setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
       console.log(error.response);
     }
   };
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedStep]);
+  if (cartItemsLoading || authenticationLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={50}
+          width={50}
+          visible={true}
+        />
+      </div>
+    );
+  }
+  if (!cartItemsLoading && cartItems.length === 0) {
+    return (
+      <Layout>
+        <div
+          className="flex items-center justify-center mx-auto text-center"
+          style={{ height: 'calc(100vh - 110px)', maxWidth: '360px' }}
+        >
+          <h1 className="text-lg font-semibold">
+            {formatMessage({ id: 'checkout-cart-empty' })}
+          </h1>
+        </div>
+      </Layout>
+    );
+  }
   return (
     <Layout>
+      {errorOpen && (
+        <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
+      )}
       <div className="xxl:max-w-default md:max-w-screen-xl mx-auto">
         <StepperMobile selectedStep={selectedStep} stepDone={stepDone} />
         <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
           {selectedStep === 0 && (
-            <SelectAddressMobile
-              handleStepForward={handleStepForward}
-              selectedAddress={selectedAddress}
-              setSelectedAddress={setSelectedAddress}
-            />
+            <SelectAddressMobile handleSelectAddress={handleSelectAddress} />
           )}
           {selectedStep === 1 && (
             <PersonalInformationMobile
@@ -89,7 +139,12 @@ export default function CheckoutMobile() {
               checkoutLoading={checkoutLoading}
             />
           )}
-          {selectedStep === 2 && <OrderPlacedMobile />}
+          {selectedStep === 2 && (
+            <OrderPlacedMobile
+              paymentUrl={paymentUrl}
+              paymentMethod={paymentMethod}
+            />
+          )}
         </div>
       </div>
     </Layout>

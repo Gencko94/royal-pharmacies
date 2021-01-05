@@ -35,8 +35,10 @@ export default function LazyImage({ src, pb, alt, origin, placeholder }) {
             display: 'block',
             left: 0,
             right: 0,
+            bottom: 0,
+            top: 0,
           }}
-          className="mx-auto my-0 absolute "
+          className="m-auto absolute "
         />
       </LazyLoad>
     </div>

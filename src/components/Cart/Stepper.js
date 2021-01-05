@@ -40,7 +40,7 @@ export default function Stepper({ selectedStep, stepDone }) {
                 stepDone[1] && 'bg-green-700 border-green-700 text-main-text'
               } ${
                 selectedStep === 1 &&
-                'bg-main-colortext-main-text border-main-color font-bold'
+                'bg-main-color text-main-text border-main-color font-bold'
               } rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2  `}
             >
               {stepDone[1] ? (
@@ -54,7 +54,7 @@ export default function Stepper({ selectedStep, stepDone }) {
                 selectedStep === 1 && 'font-bold '
               } `}
             >
-              {formatMessage({ id: 'personal-information' })}
+              {formatMessage({ id: 'order-details' })}
             </div>
           </div>
           <div

@@ -73,7 +73,7 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
           <LazyImage
             src={item.image?.link}
             alt={item.translation[locale].title}
-            pb="calc(100% * 286/210)"
+            pb="calc(100% * 266/210)"
             origin="original"
           />
         </a>
@@ -128,7 +128,7 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
             className="hover:underline inline-block"
             href={`/${locale}/products/${item.slug}/${item.id}`}
           >
-            <h1 className="text-clamp-2 text-sm font-semibold">
+            <h1 className="text-clamp-2 text-xs uppercase font-semibold">
               {item.translation[locale].title}
             </h1>
           </a>

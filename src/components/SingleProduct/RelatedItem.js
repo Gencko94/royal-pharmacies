@@ -52,7 +52,7 @@ export default function RelatedItem({ item }) {
               </h1>
             </div>
           ) : (
-            <h1 className="font-semibold text-lg text-main-color">
+            <h1 className="font-semibold text-main-color">
               {item.simple_addons?.price}
               <span className="mx-1 text-sm">
                 {deliveryCountry?.currency.translation[locale].symbol}

@@ -8,10 +8,11 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { useHistory } from 'react-router-dom';
 import { AiOutlineClose } from 'react-icons/ai';
+import { DataProvider } from '../../contexts/DataContext';
 
 let cancelToken;
 export default function MobileSearchbar({ windowScrolled }) {
-  const [searchBarValue, setSearchBarValue] = React.useState('');
+  const { searchBarValue, setSearchBarValue } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
   const [noSuggestions, setNoSuggestions] = React.useState(false);
   const [data, setData] = React.useState([]);
@@ -22,14 +23,14 @@ export default function MobileSearchbar({ windowScrolled }) {
   React.useEffect(() => {
     if (windowScrolled) {
       setData([]);
-      setSearchBarValue('');
+
       setNoSuggestions(false);
     }
   }, [windowScrolled]);
   const history = useHistory();
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
-      <div className={`p-2 ${isHighlighted && 'bg-gray-300 rounded'}`}>
+      <div className={`p-2 text-sm ${isHighlighted && 'bg-gray-300 rounded'}`}>
         {suggestion.translation[locale].title}
       </div>
     );
@@ -72,7 +73,7 @@ export default function MobileSearchbar({ windowScrolled }) {
       <div
         {...containerProps}
         className="absolute left-0 bg-body-light w-full rounded"
-        style={{ top: '110%' }}
+        style={{ top: '100%' }}
       >
         {children}
         {data?.length !== 0 && (
@@ -81,7 +82,7 @@ export default function MobileSearchbar({ windowScrolled }) {
               history.push(`/${locale}/search/q=${query}`);
               setData([]);
             }}
-            className="p-2 bg-gray-400 w-full transition duration-75"
+            className="p-2 bg-gray-400 text-sm w-full"
           >
             {formatMessage({ id: 'see-all-search-results' })}{' '}
             <strong>{query}</strong>

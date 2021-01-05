@@ -20,11 +20,12 @@ export default function SortInfoPanelMobile({
   brandFilters,
   handleBrandChange,
   handlePriceChange,
+  brands,
 }) {
   const { formatMessage } = useIntl();
   const variant = {
     initial: {
-      y: 42,
+      y: 58,
     },
     firstAnimation: {
       y: 0,
@@ -39,19 +40,21 @@ export default function SortInfoPanelMobile({
       },
     },
     containerExited: {
-      y: 42,
+      y: 58,
     },
   };
   const buttonVariants = {
     start: {
-      backgroundColor: '#f7f7fa',
+      backgroundColor: '#edf2f7',
       color: '#252525',
       justifyContent: 'center',
+      padding: '1rem',
     },
     animation: {
       backgroundColor: '#b72b2b',
       color: '#fff',
       justifyContent: 'start',
+      padding: '0.5rem',
     },
   };
   const closeButtonVariant = {
@@ -61,7 +64,7 @@ export default function SortInfoPanelMobile({
     },
     closeAnimate: {
       opacity: 1,
-      y: 0,
+      y: '-50%',
       transition: {
         delay: 0.5,
       },
@@ -119,7 +122,7 @@ export default function SortInfoPanelMobile({
                   initial="start"
                   animate={filtersOpen || sortByOpen ? 'animation' : 'start'}
                   onClick={() => handleChangeView(option)}
-                  className={` p-3 flex font-semibold items-center border w-full`}
+                  className={`flex font-semibold items-center border w-full`}
                 >
                   <motion.span layout>
                     {option === 'filter'
@@ -139,17 +142,17 @@ export default function SortInfoPanelMobile({
 
             <AnimatePresence>
               {showCloseButton && (
-                <motion.div
+                <motion.button
                   variants={closeButtonVariant}
                   initial="closeInitial"
                   animate="closeAnimate"
                   exit="closeExited"
-                  className="absolute right-10 top-10"
+                  className="absolute right-10"
+                  style={{ top: '50%' }}
+                  onClick={handleClose}
                 >
-                  <button onClick={handleClose}>
-                    <MdClose className="w-6 h-6 text-main-text" />
-                  </button>
-                </motion.div>
+                  <MdClose className="w-6 h-6 text-main-text" />
+                </motion.button>
               )}
             </AnimatePresence>
           </motion.div>
@@ -172,6 +175,7 @@ export default function SortInfoPanelMobile({
             handleBrandChange={handleBrandChange}
             handlePriceChange={handlePriceChange}
             handleClose={handleClose}
+            brands={brands}
           />
         )}
       </motion.div>

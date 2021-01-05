@@ -173,7 +173,12 @@ export default function LocationForm({
                   </div>
                   <button
                     type="submit"
-                    className={`bg-main-color text-main-text p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}
+                    disabled={!markerAddress || userTypedLocation}
+                    className={`  ${
+                      !markerAddress || userTypedLocation
+                        ? 'bg-gray-500 text-gray-300'
+                        : 'bg-main-color text-main-text'
+                    } p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}
                   >
                     {isSubmitting ? (
                       <Loader

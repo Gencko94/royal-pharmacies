@@ -239,8 +239,8 @@ export default function PersonalInformation({
               </h1>
             </div>
             <div className="flex p-2">
-              <div className="flex-1">
-                <div className="mb-2">
+              <div className="flex-1 flex flex-col justify-center items-center">
+                <div className="mb-2 text-center">
                   <h1 className=" text-gray-700">
                     {formatMessage({
                       id: 'delivery-location',
@@ -248,7 +248,7 @@ export default function PersonalInformation({
                   </h1>
                   <h1>{selectedAddress?.marked_address}</h1>
                 </div>
-                <div className=" mb-2">
+                <div className=" mb-2 text-center">
                   <div>
                     <h1 className=" text-gray-700">
                       {formatMessage({
@@ -267,7 +267,7 @@ export default function PersonalInformation({
                     <h1>{selectedAddress?.building_tower_number}</h1>
                   </div>
                 </div>
-                <div className="">
+                <div className="text-center">
                   <div>
                     <h1 className="font-semibold text-gray-700">
                       {formatMessage({
@@ -291,7 +291,7 @@ export default function PersonalInformation({
             </div>
           </div>
         </div>
-        <div className="font-semibold self-start border-l">
+        <div className="font-semibold border-l">
           <div className=" mb-4 relative  ">
             <div className="p-2 border-b">
               <h1 className="text-center">

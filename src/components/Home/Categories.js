@@ -14,28 +14,28 @@ export default function Categories() {
   const breakpoints = {
     // when window width is >= 320px
     320: {
-      slidesPerView: 2,
+      slidesPerView: 3,
       spaceBetween: 20,
     },
     // when window width is >= 480px
     480: {
-      slidesPerView: 3,
-      spaceBetween: 20,
-    },
-    640: {
       slidesPerView: 4,
       spaceBetween: 20,
     },
-    860: {
+    640: {
       slidesPerView: 5,
       spaceBetween: 20,
     },
-    1100: {
+    860: {
       slidesPerView: 7,
       spaceBetween: 20,
     },
-    1440: {
+    1100: {
       slidesPerView: 8,
+      spaceBetween: 20,
+    },
+    1440: {
+      slidesPerView: 10,
       spaceBetween: 20,
     },
   };
@@ -74,10 +74,7 @@ export default function Categories() {
                       origin="small"
                       pb="calc(100% * 260/260)"
                     />
-                    <h1
-                      className="text-xl mt-4 text-center"
-                      style={{ fontWeight: '900' }}
-                    >
+                    <h1 className="text-lg md:text-xl mt-4 text-center font-bold">
                       {item.translation[locale].name}
                     </h1>
                   </a>

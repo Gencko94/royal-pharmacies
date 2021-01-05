@@ -197,7 +197,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
           }
           origin="original"
           alt={item.translation[locale].title}
-          pb="calc(100% * 286/210)"
+          pb="calc(100% * 266/210)"
         />
       );
     } else {
@@ -209,7 +209,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
           }
           origin="original"
           alt={item.translation[locale].title}
-          pb="calc(100% * 286/210)"
+          pb="calc(100% * 266/210)"
         />
       );
     }
@@ -364,7 +364,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
             className="hover:underline inline-block"
             href={`/${locale}/products/${item.slug}/${item.id}`}
           >
-            <h1 className="font-semibold text-sm text-clamp-2">
+            <h1 className="font-semibold text-xs text-clamp-2">
               {resolveName()}
             </h1>
           </a>

@@ -9,7 +9,7 @@ export default function SortInfoPanel({
   handleResultPerPageChange,
   category,
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const sortByOptions = React.useMemo(
     () => [
       { value: 'newest', label: formatMessage({ id: 'Newest' }) },
@@ -52,7 +52,8 @@ export default function SortInfoPanel({
             valueContainer: provided => {
               return {
                 ...provided,
-                paddingRight: '2rem',
+                paddingRight: locale === 'ar' ? provided.paddingRight : '2rem',
+                paddingLeft: locale === 'ar' ? '2rem' : provided.paddingLeft,
               };
             },
           }}
@@ -71,7 +72,9 @@ export default function SortInfoPanel({
               valueContainer: provided => {
                 return {
                   ...provided,
-                  paddingRight: '7rem',
+                  paddingRight:
+                    locale === 'ar' ? provided.paddingRight : '7rem',
+                  paddingLeft: locale === 'ar' ? '7rem' : provided.paddingLeft,
                 };
               },
             }}

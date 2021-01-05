@@ -236,7 +236,7 @@ export default function GuestPersonalInformation({
             <div className="p-2 border-b">
               <h1 style={{ fontWeight: 900 }} className="text-center">
                 {formatMessage({
-                  id: 'delivery-address',
+                  id: 'delivery-details',
                 })}
               </h1>
             </div>
@@ -245,10 +245,29 @@ export default function GuestPersonalInformation({
                 <div className="mb-2">
                   <h1 className=" text-gray-700">
                     {formatMessage({
+                      id: 'full-name',
+                    })}{' '}
+                  </h1>
+                  <h1>{name}</h1>
+                </div>
+                <div className="mb-2">
+                  <h1 className=" text-gray-700">
+                    {formatMessage({
+                      id: 'phone-number',
+                    })}{' '}
+                  </h1>
+                  <h1>{phoneNumber}</h1>
+                </div>
+                <div className="mb-2">
+                  <h1 className=" text-gray-700">
+                    {formatMessage({
                       id: 'delivery-location',
                     })}{' '}
                   </h1>
-                  <h1>{guestAddress?.markedAddress}</h1>
+                  <h1>
+                    {guestAddress?.addressDetails.markerAddress ||
+                      guestAddress.addressDetails.userTyped_location}
+                  </h1>
                 </div>
                 <div className=" mb-2">
                   <div>
@@ -258,7 +277,9 @@ export default function GuestPersonalInformation({
                       })}{' '}
                     </h1>
 
-                    <h1>{guestAddress?.apartment_house_number}</h1>
+                    <h1>
+                      {guestAddress?.addressDetails.apartmentOrHouseNumber}
+                    </h1>
                   </div>
                   <div>
                     <h1 className="font-semibold text-gray-700">
@@ -266,7 +287,9 @@ export default function GuestPersonalInformation({
                         id: 'maps-detailed-address-building',
                       })}{' '}
                     </h1>
-                    <h1>{guestAddress?.building_tower_number}</h1>
+                    <h1>
+                      {guestAddress?.addressDetails.buildingOrTowerNumber}
+                    </h1>
                   </div>
                 </div>
                 <div className="">
@@ -278,7 +301,7 @@ export default function GuestPersonalInformation({
                       :{' '}
                     </h1>
                     <h1 className="">
-                      {guestAddress?.addition_direction ||
+                      {guestAddress?.addressDetails.additionalDetails ||
                         formatMessage({ id: 'none' })}
                     </h1>
                   </div>
@@ -293,7 +316,7 @@ export default function GuestPersonalInformation({
             </div>
           </div>
         </div>
-        <div className="font-semibold self-start border-l">
+        <div className="font-semibold  border-l">
           <div className=" mb-4 relative  ">
             <div className="p-2 border-b">
               <h1 className="text-center">
@@ -339,131 +362,5 @@ export default function GuestPersonalInformation({
         </button>
       </div>
     </>
-    // <div className="h-full  ">
-    //   <div className=" mb-2 border rounded-lg h-full  ">
-    //     <div className="quick-checkout-personal-info__container p-2">
-    //       <div className="flex flex-col justify-center">
-    //         <div className="font-semibold mb-2 ">
-    //           <h1 className=" text-lg text-gray-700">
-    //             {formatMessage({ id: 'fullname-label' })}:
-    //           </h1>
-    //           <h1 className=" mt-1 w-full ">{name}</h1>
-    //         </div>
-
-    //         <div className="font-semibold mb-2">
-    //           <h1 className=" text-lg text-gray-700">
-    //             {formatMessage({ id: 'phone-label' })}:
-    //           </h1>
-    //           <h1 className=" mt-1 w-full ">{phoneNumber}</h1>
-    //         </div>
-    //         <div className="mb-2 ">
-    //           <h1 className="font-semibold text-center text-lg">
-    //             {formatMessage({ id: 'address' })}
-    //           </h1>
-    //           <hr className="my-2" />
-    //           <div className="mt-1 flex">
-    //             <div className="flex-1">
-    //               <div className="mb-2">
-    //                 <h1 className="font-semibold text-gray-700">
-    //                   {formatMessage({
-    //                     id: 'delivery-location',
-    //                   })}{' '}
-    //                   :{' '}
-    //                 </h1>
-    //                 <h1>{guestAddress.addressDetails.markerAddress}</h1>
-    //               </div>
-    //               <div className="flex items-center mb-2">
-    //                 <div className="flex-1">
-    //                   <h1 className="font-semibold text-gray-700">
-    //                     {formatMessage({
-    //                       id: 'maps-detailed-address-apartment',
-    //                     })}{' '}
-    //                   </h1>
-
-    //                   <h1>
-    //                     {guestAddress.addressDetails.apartmentOrHouseNumber}
-    //                   </h1>
-    //                 </div>
-    //                 <div className="flex-1">
-    //                   <h1 className="font-semibold text-gray-700">
-    //                     {formatMessage({
-    //                       id: 'maps-detailed-address-building',
-    //                     })}{' '}
-    //                   </h1>
-    //                   <h1>
-    //                     {guestAddress.addressDetails.buildingOrTowerNumber}
-    //                   </h1>
-    //                 </div>
-    //               </div>
-    //               <div className="flex items-center justify-center">
-    //                 <div>
-    //                   <h1 className="font-semibold text-gray-700">
-    //                     {formatMessage({
-    //                       id: 'maps-details-extra-details',
-    //                     })}{' '}
-    //                     :{' '}
-    //                   </h1>
-    //                   <h1 className="text-center">
-    //                     {guestAddress.addressDetails.additionalDetails ||
-    //                       formatMessage({ id: 'none' })}
-    //                   </h1>
-    //                 </div>
-    //               </div>
-    //             </div>
-    //             {guestAddress?.lat && (
-    //               <img
-    //                 src={`https://maps.googleapis.com/maps/api/staticmap?center=${guestAddress.lat},${guestAddress.lng}&zoom=15&size=200x200&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-    //                 alt="map"
-    //               />
-    //             )}
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className="font-semibold self-start">
-    //         <div className=" mb-4 relative  ">
-    //           <h1 className="">
-    //             {formatMessage({ id: 'select-payment-method' })}
-    //           </h1>
-    //           <div className="mt-1">
-    //             <div className="flex flex-col ">{resolveFlags()}</div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //     <hr className="my-2" />
-
-    //     <div className="flex justify-end items-center p-2">
-    //       <button
-    //         className="px-3 py-1 bg-main-color uppercase text-main-text rounded font-semibold"
-    //         onClick={handleStepBack}
-    //       >
-    //         {formatMessage({ id: 'btn-back-to-addresses' })}
-    //       </button>
-    //       <button
-    //         disabled={!paymentMethod}
-    //         className={`
-    //         ${
-    //           paymentMethod
-    //             ? 'bg-main-color text-main-text'
-    //             : 'bg-gray-600 text-gray-100'
-    //         }
-    //          flex items-center justify-center uppercase px-3 py-1 mx-3  rounded font-semibold`}
-    //         onClick={handleGuestCheckout}
-    //       >
-    //         {checkoutLoading ? (
-    //           <Loader
-    //             type="ThreeDots"
-    //             color="#fff"
-    //             height={24}
-    //             width={24}
-    //             visible={true}
-    //           />
-    //         ) : (
-    //           formatMessage({ id: 'proceed-to-payment' })
-    //         )}
-    //       </button>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }

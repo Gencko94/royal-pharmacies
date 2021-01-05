@@ -5,11 +5,7 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import GoogleMapsAddress from '../GoogleMapsAddress';
 import AvailableAddresses from './AvailableAddresses';
 
-export default function SelectAddress({
-  selectedAddress,
-  setSelectedAddress,
-  handleSelectAddress,
-}) {
+export default function SelectAddress({ handleSelectAddress }) {
   const [showMap, setShowMap] = React.useState(false);
   const { userAddresses, userAddressesLoading } = React.useContext(
     AuthProvider
@@ -36,8 +32,6 @@ export default function SelectAddress({
         <AvailableAddresses
           userAddresses={userAddresses}
           setShowMap={setShowMap}
-          selectedAddress={selectedAddress}
-          setSelectedAddress={setSelectedAddress}
           handleSelectAddress={handleSelectAddress}
         />
       )}

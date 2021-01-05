@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 import { useMutation } from 'react-query';
 import GuestPersonalInformationMobile from '../components/CartMobile/GuestCheckoutMobile/GuestPersonalInformationMobile';
 import GuestSelectAddressMobile from '../components/CartMobile/GuestCheckoutMobile/GuestSelectAddressMobile';
@@ -8,7 +9,9 @@ import Layout from '../components/Layout';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import { DataProvider } from '../contexts/DataContext';
 import { guestCheckout } from '../Queries/Queries';
-
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import ErrorSnackbar from '../components/ErrorSnackbar';
 export default function GuestCheckOutMobile() {
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [stepDone, setStepDone] = React.useState({
@@ -17,7 +20,9 @@ export default function GuestCheckOutMobile() {
     2: false,
   });
   const { deliveryCountry } = React.useContext(DataProvider);
-  const { guestCartItems } = React.useContext(CartAndWishlistProvider);
+  const { guestCartItems, coupon, guestCartItemsLoading } = React.useContext(
+    CartAndWishlistProvider
+  );
   const [
     guestCheckoutMutation,
     { isLoading: checkoutLoading },
@@ -35,9 +40,16 @@ export default function GuestCheckOutMobile() {
   });
 
   const [phoneNumber, setPhoneNumber] = React.useState('');
+  const [paymentUrl, setPaymentUrl] = React.useState(null);
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [paymentMethod, setPaymentMethod] = React.useState(null);
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const closeError = () => {
+    setErrorOpen(false);
+  };
+  const { formatMessage } = useIntl();
   const handleAddAddressAndInfo = ({
     guestAddress,
     phoneNumber,
@@ -93,30 +105,68 @@ export default function GuestCheckOutMobile() {
         addition_direction: guestAddress.addressDetails.additionalDetails,
 
         userTyped_address:
-          guestAddress.addressDetails.userTyped_address || null,
+          guestAddress.addressDetails.userTyped_location || null,
         type: guestAddress.lat ? 'map' : 'text',
       },
+      coupon,
       payment_method: paymentMethod,
       order_type:
-        deliveryCountry?.translation.en === 'Kuwait'
+        deliveryCountry?.translation.en.name === 'Kuwait'
           ? 'local'
           : 'international',
     };
     try {
-      await guestCheckoutMutation({
+      const res = await guestCheckoutMutation({
         deliveryCountry,
         order,
       });
-      // setSelectedStep(2);
+      setPaymentUrl(res.payment);
+      setSelectedStep(2);
     } catch (error) {
-      console.log(error.response);
+      setErrorOpen(true);
+      if (
+        error.response.data.message === 'Please login to your account first'
+      ) {
+        return setErrorMessage(formatMessage({ id: 'guest-checkout-login' }));
+      }
+      setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
     }
   };
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedStep]);
+  if (guestCartItemsLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={50}
+          width={50}
+          visible={true}
+        />
+      </div>
+    );
+  }
+  if (!guestCartItemsLoading && guestCartItems?.length === 0) {
+    return (
+      <Layout>
+        <div
+          className="flex items-center justify-center mx-auto text-center"
+          style={{ height: 'calc(100vh - 110px)', maxWidth: '360px' }}
+        >
+          <h1 className="text-lg font-semibold">
+            {formatMessage({ id: 'checkout-cart-empty' })}
+          </h1>
+        </div>
+      </Layout>
+    );
+  }
   return (
     <Layout>
+      {errorOpen && (
+        <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
+      )}
       <StepperMobile selectedStep={selectedStep} stepDone={stepDone} />
       <div className="mb-3" style={{ minHeight: 'calc(100vh - 180px)' }}>
         {selectedStep === 0 && (
@@ -144,6 +194,8 @@ export default function GuestCheckOutMobile() {
           <OrderPlacedMobile
             handleStepForward={handleStepForward}
             handleStepBack={handleStepBack}
+            paymentMethod={paymentMethod}
+            paymentUrl={paymentUrl}
           />
         )}
       </div>

@@ -75,13 +75,12 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
           to={{
             pathname: `/${locale}/products/${item.slug}/${item.id}`,
           }}
-          // to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           <LazyImage
             src={item.image?.link}
             origin="original"
             alt={item.translation[locale].title}
-            pb="calc(100% * 286/210)"
+            pb="calc(100% * 266/210)"
           />
         </Link>
         <AnimatePresence>
@@ -133,7 +132,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
             className="hover:underline inline-block"
             to={`/${locale}/products/${item.slug}/${item.id}`}
           >
-            <h1 className="text-clamp-2 text-sm font-semibold">
+            <h1 className="text-clamp-2 text-xs uppercase font-semibold">
               {item.translation[locale].title}
             </h1>
           </Link>
