@@ -10,7 +10,7 @@ import SearchRightSide from '../components/Search/SearchRightSide';
 import SearchLeftSide from '../components/Search/SearchLeftSide';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
-import { scrollIntoView } from 'scroll-js';
+import { scrollTo } from 'scroll-js';
 export default function SearchResults() {
   const { query } = useParams();
   const { formatMessage } = useIntl();
@@ -64,11 +64,11 @@ export default function SearchResults() {
     setResultsPerPage(selectedValue);
   };
   const handleProductChangePage = data => {
-    scrollIntoView(document.getElementById('top'), document.body);
+    scrollTo(window, { top: 50, behavior: 'smooth' });
     setProductsPage(data.selected + 1);
   };
   const handleFilteredChangePage = data => {
-    scrollIntoView(document.getElementById('top'), document.body);
+    scrollTo(window, { top: 50, behavior: 'smooth' });
     setFilteredPage(data.selected + 1);
   };
   const handleRemoveFilters = filter => {

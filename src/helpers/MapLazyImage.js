@@ -1,6 +1,6 @@
 import React from 'react';
 import LazyLoad from 'react-lazyload';
-import itemplaceholder from '../assets/imgplaceholder.png';
+import itemplaceholder from '../assets/smallitemplaceholder.png';
 export default function MapLazyImage({ alt, lat, width, height, lng }) {
   return (
     <div

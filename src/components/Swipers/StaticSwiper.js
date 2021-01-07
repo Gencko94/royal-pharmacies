@@ -36,7 +36,7 @@ export default function StaticSwiper({ type, cb, title }) {
       slidesPerView: 4,
       spaceBetween: 20,
     },
-    860: {
+    768: {
       slidesPerView: 5,
       spaceBetween: 20,
     },

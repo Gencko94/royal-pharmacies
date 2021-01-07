@@ -92,13 +92,6 @@ export default function VariantProduct({
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error);
-        console.log(error.response);
-        // if (error.response.data.message === 'Item founded on the Cart') {
-        //   setItemInCart(true);
-        // }
         setAddToCartButtonLoading(false);
       }
     } else {
@@ -131,9 +124,7 @@ export default function VariantProduct({
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {
-        console.log(error.response);
-      }
+      } catch (error) {}
     }
   };
   const handleAddToWishList = async () => {
@@ -143,12 +134,10 @@ export default function VariantProduct({
       setAddToWishListButtonLoading(false);
       setItemInWishList(true);
     } catch (error) {
-      console.clear();
       if (error.response.data.message === 'Item founded on the Wishlist') {
         setItemInWishList(true);
       }
       setAddToWishListButtonLoading(false);
-      console.log(error.response);
     }
   };
 

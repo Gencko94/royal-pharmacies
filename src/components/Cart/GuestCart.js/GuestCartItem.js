@@ -20,6 +20,7 @@ export default function GuestCartItem({ item }) {
 
   const [quantity, setQuantity] = React.useState(item.qty);
   const [editLoading, setEditLoading] = React.useState(false);
+
   const [
     removefromCartButtonLoading,
     setRemoveFromCartButtonLoading,
@@ -94,7 +95,6 @@ export default function GuestCartItem({ item }) {
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
-      console.log(error);
     }
   };
   const handleRemoveItemFromCart = async sku => {
@@ -102,7 +102,7 @@ export default function GuestCartItem({ item }) {
     try {
       await removeFromGuestCartMutation({ sku, deliveryCountry, coupon });
     } catch (error) {
-      console.log(error);
+      setRemoveFromCartButtonLoading(false);
     }
   };
   const variant = {
@@ -236,6 +236,14 @@ export default function GuestCartItem({ item }) {
             )}
           </button>
         </div>
+      </div>
+      <div className="text-center" style={{ fontWeight: '900' }}>
+        {item.price} {deliveryCountry?.currency.translation[locale].symbol}
+        {item.message && (
+          <h1 className="text-main-color text-xs">
+            ({formatMessage({ id: item.message })})
+          </h1>
+        )}
       </div>
       <div className="text-center " style={{ fontWeight: '900' }}>
         {item.total} {deliveryCountry?.currency.translation[locale].symbol}

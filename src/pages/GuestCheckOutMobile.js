@@ -12,6 +12,8 @@ import { guestCheckout } from '../Queries/Queries';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import ErrorSnackbar from '../components/ErrorSnackbar';
+import { Redirect } from 'react-router-dom';
+import { AuthProvider } from '../contexts/AuthContext';
 export default function GuestCheckOutMobile() {
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [stepDone, setStepDone] = React.useState({
@@ -27,6 +29,7 @@ export default function GuestCheckOutMobile() {
     guestCheckoutMutation,
     { isLoading: checkoutLoading },
   ] = useMutation(guestCheckout, { throwOnError: true });
+  const { authenticationLoading, userId } = React.useContext(AuthProvider);
   const [guestAddress, setGuestAddress] = React.useState({
     lat: '',
     lng: '',
@@ -38,7 +41,11 @@ export default function GuestCheckOutMobile() {
       markerAddress: '',
     },
   });
-
+  const options = [
+    { value: '00965', label: '+965' },
+    { value: '00966', label: '+966' },
+  ];
+  const [countryCode, setCountryCode] = React.useState(options[0]);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [paymentUrl, setPaymentUrl] = React.useState(null);
   const [name, setName] = React.useState('');
@@ -49,7 +56,7 @@ export default function GuestCheckOutMobile() {
   const closeError = () => {
     setErrorOpen(false);
   };
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const handleAddAddressAndInfo = ({
     guestAddress,
     phoneNumber,
@@ -74,21 +81,17 @@ export default function GuestCheckOutMobile() {
     }
   };
   const handleStepForward = () => {
-    if (selectedStep === 2) {
-      return;
-    } else {
-      setSelectedStep(selectedStep + 1);
-      setStepDone({
-        ...stepDone,
-        [selectedStep]: true,
-      });
-    }
+    setSelectedStep(selectedStep + 1);
+    setStepDone({
+      ...stepDone,
+      [selectedStep]: true,
+    });
   };
   const handleGuestCheckout = async () => {
     const order = {
       customer: {
         name,
-        mobile: phoneNumber,
+        mobile: `${countryCode.value}${phoneNumber}`,
         email,
       },
       cart: JSON.stringify(guestCartItems),
@@ -96,12 +99,11 @@ export default function GuestCheckOutMobile() {
         lat: guestAddress.lat?.toString(),
         lng: guestAddress.lng?.toString(),
         marked_address: guestAddress.addressDetails.markerAddress || '',
-        address_name: guestAddress.addressDetails.addressName,
         apartment_house_number:
           guestAddress.addressDetails.apartmentOrHouseNumber,
         building_tower_number:
           guestAddress.addressDetails.buildingOrTowerNumber,
-        phone_number: guestAddress.addressDetails.phoneNumber,
+        phone_number: `${countryCode.value}${guestAddress.addressDetails.phoneNumber}`,
         addition_direction: guestAddress.addressDetails.additionalDetails,
 
         userTyped_address:
@@ -120,22 +122,32 @@ export default function GuestCheckOutMobile() {
         deliveryCountry,
         order,
       });
+      setStepDone({
+        ...stepDone,
+        1: true,
+      });
       setPaymentUrl(res.payment);
       setSelectedStep(2);
     } catch (error) {
       setErrorOpen(true);
       if (
-        error.response.data.message === 'Please login to your account first'
+        error.response?.data?.message === 'Please login to your account first'
       ) {
         return setErrorMessage(formatMessage({ id: 'guest-checkout-login' }));
+      } else if (
+        error.response?.data?.message ===
+        'Coupon already used by this customer.'
+      ) {
+        return setErrorMessage(formatMessage({ id: 'coupon-limit-reached' }));
       }
       setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
     }
   };
+
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedStep]);
-  if (guestCartItemsLoading) {
+  if (guestCartItemsLoading || authenticationLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader
@@ -147,6 +159,9 @@ export default function GuestCheckOutMobile() {
         />
       </div>
     );
+  }
+  if (!authenticationLoading && userId) {
+    return <Redirect to={`/${locale}/checkout/user-checkout`} />;
   }
   if (!guestCartItemsLoading && guestCartItems?.length === 0) {
     return (
@@ -168,7 +183,7 @@ export default function GuestCheckOutMobile() {
         <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
       )}
       <StepperMobile selectedStep={selectedStep} stepDone={stepDone} />
-      <div className="mb-3" style={{ minHeight: 'calc(100vh - 180px)' }}>
+      <div className="mb-3" style={{ minHeight: 'calc(100vh - 231px)' }}>
         {selectedStep === 0 && (
           <GuestSelectAddressMobile
             name={name}
@@ -176,6 +191,8 @@ export default function GuestCheckOutMobile() {
             handleAddAddressAndInfo={handleAddAddressAndInfo}
             guestAddress={guestAddress}
             email={email}
+            countryCode={countryCode}
+            setCountryCode={setCountryCode}
           />
         )}
         {selectedStep === 1 && (

@@ -7,6 +7,8 @@ export default function SelectGuestAddress({
   name,
   phoneNumber,
   email,
+  countryCode,
+  setCountryCode,
 }) {
   return (
     <div className="h-full" style={{ minHeight: 'calc(100vh - 150px)' }}>
@@ -17,6 +19,8 @@ export default function SelectGuestAddress({
           name={name}
           phoneNumber={phoneNumber}
           email={email}
+          countryCode={countryCode}
+          setCountryCode={setCountryCode}
         />
       </div>
     </div>

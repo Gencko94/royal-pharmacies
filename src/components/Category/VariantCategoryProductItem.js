@@ -42,7 +42,6 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
     : item.new_variation_addons[selectedVariation].options[
         selectedOption[selectedVariation]
       ];
-  console.log(option, 'variation option');
   const isSale = item.new_variation_addons[selectedVariation].options
     ? item.new_variation_addons[selectedVariation].options[
         selectedOption[selectedVariation]
@@ -80,10 +79,6 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
         setCartMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error);
-        console.log(error.response);
         if (error.response.data.message === 'Item founded on the Cart') {
           setItemInCart(true);
         }
@@ -119,9 +114,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {
-        console.log(error.response);
-      }
+      } catch (error) {}
     }
   };
 

@@ -107,19 +107,14 @@ export default function ItemDescription({
       await addToWishListMutation({ id: data.id, userId });
       setItemInWishList(true);
     } catch (error) {
-      console.clear();
       setItemInWishList(true);
-      console.log(error.response);
     }
   };
   const handleRemoveFromWishlist = async () => {
     try {
       await removeFromWishListMutation({ id: data.id, userId });
       setItemInWishList(false);
-    } catch (error) {
-      console.clear();
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   const handleSubstractQuantity = () => {
     if (parseInt(quantity) === 1) {
@@ -247,7 +242,7 @@ export default function ItemDescription({
           </h1>
         )}
       </div>
-      {data?.related_products && <RelatedItems data={data.related_products} />}
+
       <hr className="my-2" />
       <div className="mb-2">
         <div className="flex justify-between items-center font-semibold  ">
@@ -346,13 +341,12 @@ export default function ItemDescription({
         <button
           onClick={() => {
             if (itemInWishList) {
-              handleAddToWishlist();
-            } else {
               handleRemoveFromWishlist();
+            } else {
+              handleAddToWishlist();
             }
           }}
-          className={`
-              border
+          className={`border
             text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}
         >
           {itemInWishList ? (
@@ -366,6 +360,9 @@ export default function ItemDescription({
           )}
         </button>
       </div>
+      {data?.related_products.length > 0 && (
+        <RelatedItems data={data.related_products} />
+      )}
     </div>
   );
 }

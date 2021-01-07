@@ -119,15 +119,6 @@ module.exports = {
         8: 8,
         9: 9,
       },
-      animation: {
-        fadeIn: 'fadeIn 200ms ease-in forwards ',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0%' },
-          '100%': { opacity: '100%' },
-        },
-      },
     },
   },
   variants: {},

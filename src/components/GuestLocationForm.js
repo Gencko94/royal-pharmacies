@@ -17,9 +17,11 @@ export default function GuestLocationForm({
   phoneNumber,
   setMarker,
   email,
+  countryCode,
+  setCountryCode,
 }) {
   const { formatMessage } = useIntl();
-  const [countryCode, setCountryCode] = React.useState(options[0]);
+
   const [userTypedLocation, setUserTypedLocation] = React.useState('');
   const validationSchema = Yup.object({
     email: Yup.string().email(formatMessage({ id: 'email-validation' })),
@@ -31,6 +33,7 @@ export default function GuestLocationForm({
     ),
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
+      .min(10, formatMessage({ id: 'invalid-phone' }))
       .required(formatMessage({ id: 'required-field' })),
     additionalDetails: Yup.string(),
     name: Yup.string().required(formatMessage({ id: 'required-field' })),
@@ -45,16 +48,16 @@ export default function GuestLocationForm({
         <h1>{formatMessage({ id: 'location-details' })}</h1>
       </div>
       <div className="p-2">
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <label
             htmlFor={'location'}
-            className={`text-sm font-semibold text-gray-700`}
+            className={`text-sm font-bold text-gray-700`}
           >
             {formatMessage({ id: 'delivery-location' })}
           </label>
           <button
             onClick={handleClearLocation}
-            className="text-main-color hover:underline"
+            className="text-main-color text-sm hover:underline"
           >
             {formatMessage({ id: 'clear' })}
           </button>
@@ -86,7 +89,7 @@ export default function GuestLocationForm({
                 lat: marker?.lat,
                 lng: marker?.lng,
                 addressDetails: {
-                  phoneNumber: `${countryCode.value}${values.phoneNumber}`,
+                  phoneNumber: values.phoneNumber,
                   ...values,
                   markerAddress,
                   userTyped_location: userTypedLocation,
@@ -155,15 +158,14 @@ export default function GuestLocationForm({
 
                 <div className=" ">
                   <button
-                    disabled={!markerAddress || userTypedLocation}
+                    disabled={!markerAddress && !userTypedLocation}
                     type="submit"
                     className={`
                        ${
-                         !markerAddress || userTypedLocation
+                         !markerAddress && !userTypedLocation
                            ? 'bg-gray-500 text-gray-300'
                            : 'bg-main-color text-main-text'
-                       }
-                       p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}
+                       } p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}
                   >
                     <h1>{formatMessage({ id: 'confirm-location' })}</h1>
                   </button>
@@ -182,8 +184,8 @@ const CustomTextInput = ({ label, value, name, optional, ...props }) => {
   const { formatMessage } = useIntl();
   return (
     <div className="w-full mb-2 relative">
-      <div className="flex items-center">
-        <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
+      <div className="flex items-center mb-1">
+        <label htmlFor={name} className={`text-sm font-bold text-gray-700`}>
           {label}
         </label>
         {optional && (
@@ -215,8 +217,8 @@ const CustomTextAreaInput = ({ label, value, name, ...props }) => {
   const { formatMessage } = useIntl();
   return (
     <div className="w-full mb-1 relative">
-      <div className="flex items-center">
-        <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
+      <div className="flex items-center mb-1">
+        <label htmlFor={name} className={`text-sm font-bold text-gray-700`}>
           {label}
         </label>
         <h1 className="text-xs italic mx-3">
@@ -246,10 +248,7 @@ const PhoneNumberCustomInput = ({
   const [field, meta] = useField(name);
   return (
     <div className="w-full mb-1 flex flex-col ">
-      <label
-        htmlFor={name}
-        className={`text-sm font-semibold text-gray-800 mb-1`}
-      >
+      <label htmlFor={name} className={`text-sm font-bold text-gray-800 mb-1`}>
         {label}
       </label>
       <div

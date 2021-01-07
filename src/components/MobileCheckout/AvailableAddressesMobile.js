@@ -116,13 +116,14 @@ export default function AvailableAddressesMobile({
                       className="text-xs mb-2 font-semibold"
                       style={{ height: '50px' }}
                     >
-                      <h1>{address.marked_address}</h1>
+                      <h1>
+                        {address.marked_address || address.userTyped_addres}
+                      </h1>
+                      <h1>{address.addition_direction}</h1>
                     </div>
                     <button
                       onClick={() => handleSelectAddress(address)}
                       className={`w-full text-sm p-1 rounded uppercase 
-                        
-                         
                           bg-main-color
                       } text-main-text`}
                     >

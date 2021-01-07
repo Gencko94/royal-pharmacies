@@ -23,7 +23,9 @@ export default function ViewedItems() {
   return (
     <Layout>
       <Helmet>
-        <title>{formatMessage({ id: 'viewed-items' })} | MRG</title>
+        <title>
+          {formatMessage({ id: 'viewed-items' })} | MRG Mall Online Shop
+        </title>
       </Helmet>
       {isLoading && (
         <div className="min-h-screen px-4 py-2 flex items-center justify-center">
@@ -54,7 +56,7 @@ export default function ViewedItems() {
                 </AnimatePresence>
               </motion.div>
             </AnimateSharedLayout>
-            <div>
+            <div className="self-start sticky top-0">
               <FeaturedItemsVertical />
             </div>
           </div>

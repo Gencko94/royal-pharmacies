@@ -147,73 +147,78 @@ export default function Order({ order }) {
 
       <motion.div
         layout
-        className="my-orders-grid__desktop text-sm p-3 bg-gray-900 text-main-text"
+        className="my-orders-grid__desktop p-3 bg-gray-900 text-main-text"
       >
         <motion.div layout>
-          <div className="flex items-center">
-            <h1 className="text-gray-600">
+          <div className="font-semibold">
+            <h1 className="text-gray-500">
               {formatMessage({ id: 'order-date' })} :
             </h1>
-            <h1 className="mx-1">
-              {' '}
-              {moment(order.created_at).format('DD/MM/YYYY - HH:MM')}
-            </h1>
+            <h1> {moment(order.created_at).format('DD/MM/YYYY - HH:MM')}</h1>
           </div>
 
-          <div className="flex items-center">
-            <h1 className="text-gray-600">
+          <div>
+            <h1 className="text-gray-500 font-semibold">
               {formatMessage({ id: 'payment-method' })}:
             </h1>
             {resolvePayment()}
           </div>
         </motion.div>
-        <motion.div layout>
-          <h1 className="font-semibold">
-            {formatMessage({ id: 'delivery-address' })}
-          </h1>
-          <div className="flex">
-            <h1 className="text-gray-600">
-              {formatMessage({
-                id: 'location',
-              })}
+        <motion.div className="flex justify-between" layout>
+          <div className="mx-1">
+            <h1 className="font-bold text-lg">
+              {formatMessage({ id: 'delivery-address' })}
             </h1>
-            <h1 className="mx-2">{`${order.address.marked_address}`}</h1>
-          </div>
-          <div className="flex items-center">
-            <h1 className="text-gray-600">
-              {formatMessage({
-                id: 'maps-detailed-address-apartment',
-              })}
-            </h1>
-            <h1 className=" mx-2">{order.address.apartment_house_number}</h1>
-          </div>
-          <div className="flex items-center">
-            <h1 className="text-gray-600">
-              {formatMessage({
-                id: 'maps-detailed-address-building',
-              })}
-            </h1>
-            <h1 className=" mx-2">{order.address.building_tower_number}</h1>
-          </div>
-          {order.address.addition_direction && (
-            <div className="flex items-center">
-              <h1 className="text-gray-600">
+            <div className=" font-semibold">
+              <h1 className="text-gray-500 ">
                 {formatMessage({
-                  id: 'maps-details-extra-details',
+                  id: 'location',
                 })}
               </h1>
-              <h1 className=" mx-2">{order.address.addition_direction}</h1>
+              <h1>{`${
+                order.address.type === 'map'
+                  ? order.address.marked_address
+                  : order.address.userTyped_address
+              }`}</h1>
             </div>
-          )}
-        </motion.div>
-        <motion.div layout>
-          {order.address.type === 'map' && order.address.lat && (
-            <img
-              src={`https://maps.googleapis.com/maps/api/staticmap?center=${order.address.lat},${order.address.lng}&zoom=15&size=200x200&
+            <div className="font-semibold">
+              <h1 className="text-gray-500 ">
+                {formatMessage({
+                  id: 'maps-detailed-address-apartment',
+                })}
+              </h1>
+              <h1>{order.address.apartment_house_number}</h1>
+            </div>
+            {order.address.building_tower_number && (
+              <div className="font-semibold">
+                <h1 className="text-gray-500 ">
+                  {formatMessage({
+                    id: 'maps-detailed-address-building',
+                  })}
+                </h1>
+                <h1>{order.address.building_tower_number}</h1>
+              </div>
+            )}
+            {order.address.addition_direction && (
+              <div className="font-semibold">
+                <h1 className="text-gray-500 ">
+                  {formatMessage({
+                    id: 'maps-details-extra-details',
+                  })}
+                </h1>
+                <h1>{order.address.addition_direction}</h1>
+              </div>
+            )}
+          </div>
+          <motion.div layout>
+            {order.address.type === 'map' && order.address.lat && (
+              <img
+                src={`https://maps.googleapis.com/maps/api/staticmap?center=${order.address.lat},${order.address.lng}&zoom=15&size=150x150&
               markers=color:blue%7C${order.address.lat}-${order.address.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-              alt="map"
-            />
-          )}
+                alt="map"
+              />
+            )}
+          </motion.div>
         </motion.div>
       </motion.div>
       <motion.div
@@ -297,20 +302,15 @@ const Content = ({
             </div>
             <Link
               to={`/${locale}/products/${orderItem.product.slug}/${orderItem.id}`}
-              className="hover:underline"
+              className="hover:underline truncate uppercase font-semibold block"
             >
-              <h1 className="truncate  font-semibold">
-                {orderItem.product.translation[locale].title}
-              </h1>
+              {orderItem.product.translation[locale].title}
             </Link>
             <div className="">
               <h1 className="">{orderItem.qty}</h1>
             </div>
             <div style={{ fontWeight: 900 }}>
-              <h1 className="">
-                {orderItem.price}{' '}
-                {deliveryCountry?.currency.translation[locale].symbol}
-              </h1>
+              <h1 className="">{orderItem.price} </h1>
             </div>
             <div style={{ fontWeight: 900 }} className="text-green-700">
               <h1 className="">
@@ -322,7 +322,7 @@ const Content = ({
         );
       })}
       <hr className="my-1" />
-      <div className="my-orders-receipt-summary font-bold text-sm">
+      <div className="my-orders-receipt-summary font-bold">
         <h1>{formatMessage({ id: 'cart-total' })}</h1>
         <h1 className="text-center">
           {orderSubtotal}{' '}
@@ -331,7 +331,7 @@ const Content = ({
           </span>
         </h1>
         <h1>{formatMessage({ id: 'cart-delivery-cost' })}</h1>
-        <h1 className="mb-2 text-center">
+        <h1 className="text-center">
           {shippingCost === '0'
             ? formatMessage({ id: 'cart-free' })
             : shippingCost}{' '}
@@ -341,17 +341,25 @@ const Content = ({
         </h1>
         {coupon && (
           <h1 className="mb-2 text-center">
+            {formatMessage({ id: 'coupon-sale' })}
+          </h1>
+        )}
+        {coupon && (
+          <h1 className="mb-2 text-center">
             {couponCost}
             <span className="mx-1">
               {deliveryCountry?.currency.translation[locale].symbol}
             </span>
           </h1>
         )}
-        <h1 className="text-green-700 text-base" style={{ fontWeight: 900 }}>
+        <h1
+          className="text-green-700 text-lg font-bold"
+          style={{ fontWeight: 900 }}
+        >
           {formatMessage({ id: 'subtotal' })}
         </h1>
         <h1
-          className="text-green-700 text-base text-center"
+          className="text-green-700 text-lg font-bold text-center"
           style={{ fontWeight: 900 }}
         >
           {orderTotal} {deliveryCountry?.currency.translation[locale].symbol}

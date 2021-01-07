@@ -6,7 +6,6 @@ import LazyImage from '../../helpers/LazyImage';
 
 export default function MegaMenu({ data }) {
   const { formatMessage, locale } = useIntl();
-  console.log(data, 'mega menu data');
   const containerVariants = {
     hidden: {
       opacity: 0,

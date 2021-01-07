@@ -80,7 +80,7 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
         setValidCoupon(false);
 
         setCouponError(true);
-        console.log(error.response);
+
         if (error.response.data.message === 'Coupon expired') {
           setErrorMessage(formatMessage({ id: 'coupon-expired' }));
         } else if (
@@ -92,6 +92,8 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
           error.response.data.message === 'The amount is less then the minimum'
         ) {
           setErrorMessage(formatMessage({ id: 'coupon-conditions-not-met' }));
+        } else if (error.response.data.message === 'Coupon limited') {
+          setErrorMessage(formatMessage({ id: 'coupon-limit-reached' }));
         }
       }
     }
@@ -113,7 +115,7 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
             >
               <input
                 type="text"
-                value={couponCode}
+                value={coupon || couponCode}
                 onChange={e => setCouponCode(e.target.value)}
                 placeholder={formatMessage({ id: 'cart-enter-code-or-coupon' })}
                 readOnly={validCoupon}

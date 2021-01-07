@@ -38,7 +38,6 @@ export default function Wishlist({ userId }) {
       setRemoveFromWishListButtonLoading(null);
     } catch (error) {
       setRemoveFromWishListButtonLoading(null);
-      console.log(error.response);
     }
   };
 

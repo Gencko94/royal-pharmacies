@@ -32,9 +32,6 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         setCartMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error);
         if (error.response.data.message === 'Item founded on the Cart') {
           setItemInCart(true);
         }
@@ -47,15 +44,11 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
           : item.simple_addons.price;
         const sku = item.simple_addons.sku;
         const newItem = { id: item.id, quantity: 1, price, sku };
-        console.log('trying');
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
-        console.log('success');
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
   };
 

@@ -117,13 +117,9 @@ export default function CartAndWishlistContext({ children }) {
     retry: true,
   });
 
-  // const [combineCartsMutation] = useMutation(combineCarts, {
-  //   throwOnError:true
-  // })
   const [addToWishListMutation] = useMutation(addToWishlist, {
     onSuccess: data => {
       queryCache.setQueryData(['wishlistItems', userId], data);
-      // queryCache.invalidateQueries(['wishlistItems', userId]);
     },
     throwOnError: true,
   });
@@ -131,7 +127,6 @@ export default function CartAndWishlistContext({ children }) {
   const [removeFromWishListMutation] = useMutation(removeFromWishlist, {
     onSuccess: data => {
       queryCache.setQueryData(['wishlistItems', userId], prev => {
-        console.log(prev);
         const updated = prev.wishlistItems.filter(i => i.id !== data);
         return {
           wishlistItems: [...updated],
@@ -192,6 +187,9 @@ export default function CartAndWishlistContext({ children }) {
         sideCartSubTotal: userId
           ? cartData?.cartSubtotal
           : guestCartData?.cartSubtotal,
+        sideCartCouponCost: userId
+          ? cartData?.couponCost
+          : guestCartData?.coupon_cost,
         coupon,
         setCoupon,
       }}

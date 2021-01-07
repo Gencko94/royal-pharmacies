@@ -15,11 +15,10 @@ import CategoryHeader from '../components/Category/CategoryHeader';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
-import { scrollIntoView } from 'scroll-js';
+import { scrollTo } from 'scroll-js';
 
 export default function Category() {
   const history = useHistory();
-  console.log(history, 'history');
   const { category } = useParams();
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
@@ -28,10 +27,8 @@ export default function Category() {
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
   });
-  console.log(history.location.state, 'state');
   const [productsPage, setProductsPage] = React.useState(() => {
     return history.location.state?.page || 1;
-    // return 1;
   });
   const [filteredPage, setFilteredPage] = React.useState(1);
   const [resultsPerPage, setResultsPerPage] = React.useState({
@@ -53,9 +50,7 @@ export default function Category() {
     ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
     {
-      // retry: true,
       refetchOnWindowFocus: false,
-      // keepPreviousData: true,
     }
   );
 
@@ -84,7 +79,6 @@ export default function Category() {
       retry: true,
       refetchOnWindowFocus: false,
       enabled: filtersApplied,
-      // keepPreviousData: true,
     }
   );
 
@@ -98,7 +92,7 @@ export default function Category() {
     };
   }, [history.location.pathname]);
   const handleProductChangePage = data => {
-    scrollIntoView(document.getElementById('products_grid'), document.body);
+    scrollTo(window, { top: 660, behavior: 'smooth' });
 
     history.push({
       state: {
@@ -108,7 +102,7 @@ export default function Category() {
     setProductsPage(data.selected + 1);
   };
   const handleFilteredChangePage = data => {
-    scrollIntoView(document.getElementById('products_grid'), document.body);
+    scrollTo(window, { top: 660, behavior: 'smooth' });
     history.push({
       state: {
         page: data.selected + 1,
@@ -200,11 +194,7 @@ export default function Category() {
   return (
     <Layout>
       <Helmet>
-        <title>
-          {categoryInfo
-            ? categoryInfo.title[locale].name
-            : formatMessage({ id: 'shop-on-mrg' })}
-        </title>
+        <title>{`${categoryInfo?.title[locale].name} | MRG Online Shop`}</title>
       </Helmet>
       <AnimatePresence>
         {cartMenuOpen && (
@@ -230,7 +220,6 @@ export default function Category() {
           categoryInfoLoading={categoryInfoLoading}
         />
 
-        {/* <Breadcrumbs data={categories} /> */}
         <div className="search-page__container">
           <CategoryLeftSide
             categoryInfoLoading={categoryInfoLoading}

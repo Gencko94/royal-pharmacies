@@ -77,9 +77,6 @@ export default function SingleProduct() {
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error.response);
         if (error.response.data.message === 'Item founded on the Cart') {
           setItemInCart(true);
         }
@@ -96,9 +93,7 @@ export default function SingleProduct() {
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {
-        console.log(error.response);
-      }
+      } catch (error) {}
     }
   };
 
@@ -109,12 +104,10 @@ export default function SingleProduct() {
       setAddToWishListButtonLoading(false);
       setItemInWishList(true);
     } catch (error) {
-      console.clear();
       if (error.response.data.message === 'Item founded on the Wishlist') {
         setItemInWishList(true);
       }
       setAddToWishListButtonLoading(false);
-      console.log(error.response);
     }
   };
   if (error) {
@@ -211,16 +204,17 @@ export default function SingleProduct() {
           )}
         </div>
         <hr className="my-8" />
-        {!isLoading && (
-          <MoreFrom
-            categories={data?.categories}
-            setSideMenuOpen={setSideMenuOpen}
-          />
-        )}
+        {!isLoading &&
+          (data?.categories[0]?.parent_slug || data?.categories[0]?.slug) && (
+            <MoreFrom
+              categories={data?.categories}
+              setSideMenuOpen={setSideMenuOpen}
+            />
+          )}
       </div>
       <div className="flex items-center justify-center mt-8 mb-4">
         <button
-          onClick={() => scrollTo(window, { top: 0 })}
+          onClick={() => scrollTo(window, { top: 0, behavior: 'smooth' })}
           className="p-2 uppercase bg-main-color rounded text-main-text"
         >
           {formatMessage({ id: 'back-to-top' })}

@@ -50,15 +50,11 @@ export default function CheckoutMobile() {
     }
   };
   const handleStepForward = () => {
-    if (selectedStep === 2) {
-      return;
-    } else {
-      setSelectedStep(selectedStep + 1);
-      setStepDone({
-        ...stepDone,
-        [selectedStep]: true,
-      });
-    }
+    setSelectedStep(selectedStep + 1);
+    setStepDone({
+      ...stepDone,
+      [selectedStep]: true,
+    });
   };
   const handleSelectAddress = address => {
     setSelectedAddress(address);
@@ -79,13 +75,22 @@ export default function CheckoutMobile() {
         order,
         coupon,
       });
-      console.log(res);
+      setStepDone({
+        ...stepDone,
+        1: true,
+      });
+
       setPaymentUrl(res.payment);
       setSelectedStep(2);
     } catch (error) {
       setErrorOpen(true);
+      if (
+        error.response?.data?.message ===
+        'Coupon already used by this customer.'
+      ) {
+        return setErrorMessage(formatMessage({ id: 'coupon-limit-reached' }));
+      }
       setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
-      console.log(error.response);
     }
   };
   React.useEffect(() => {
@@ -125,7 +130,7 @@ export default function CheckoutMobile() {
       )}
       <div className="xxl:max-w-default md:max-w-screen-xl mx-auto">
         <StepperMobile selectedStep={selectedStep} stepDone={stepDone} />
-        <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
+        <div className="mb-3" style={{ minHeight: 'calc(100vh - 231px)' }}>
           {selectedStep === 0 && (
             <SelectAddressMobile handleSelectAddress={handleSelectAddress} />
           )}

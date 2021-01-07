@@ -48,7 +48,6 @@ export default function HomeSwiper({ data, title }) {
       });
     } catch (error) {
       setLoadingButton(null);
-      console.error(error.response);
     }
   };
   const handleRemoveFromCart = async id => {
@@ -60,7 +59,6 @@ export default function HomeSwiper({ data, title }) {
       });
     } catch (error) {
       setLoadingButton(null);
-      console.error(error.response);
     }
   };
   const breakpoints = {

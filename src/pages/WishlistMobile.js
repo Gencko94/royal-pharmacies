@@ -34,7 +34,6 @@ export default function WishlistMobile({ userId }) {
       setRemoveFromWishListButtonLoading(null);
     } catch (error) {
       setRemoveFromWishListButtonLoading(null);
-      console.log(error.response);
     }
   };
 

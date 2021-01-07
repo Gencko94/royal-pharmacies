@@ -64,7 +64,7 @@ export default function SideMenuCategories({
                 if (hasChildren) {
                   handleClickNextFirst(i);
                 } else {
-                  history.push(`/${locale}/categories/${category.slug}`);
+                  history.push(`/${locale}/${category.slug}`);
                   toggleSideMenu();
                 }
               }}
@@ -112,7 +112,7 @@ export default function SideMenuCategories({
                 if (hasChildren) {
                   handleClickNextSecond(i);
                 } else {
-                  history.push(`/${locale}/categories/${subCategory.slug}`);
+                  history.push(`/${locale}/${subCategory.slug}`);
                   toggleSideMenu();
                 }
               }}
@@ -165,9 +165,7 @@ export default function SideMenuCategories({
                     handleClickNextThird(i);
                   } else {
                     toggleSideMenu();
-                    history.push(
-                      `/${locale}/categories/${secondsubCategory.slug}`
-                    );
+                    history.push(`/${locale}/${secondsubCategory.slug}`);
                   }
                 }}
                 className="p-3 flex items-center   justify-between"

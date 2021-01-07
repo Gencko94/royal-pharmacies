@@ -16,7 +16,9 @@ export default function OrderPlaced({ paymentUrl, paymentMethod }) {
       case 2:
         return formatMessage({ id: 'two-days' });
 
-      case parseInt(deliveryCountry?.delivery_time > 10):
+      case parseInt(
+        deliveryCountry?.delivery_time > 10 && deliveryCountry?.delivery_time
+      ):
         return formatMessage({ id: 'more-than-10-days' });
 
       default:
@@ -69,14 +71,13 @@ export default function OrderPlaced({ paymentUrl, paymentMethod }) {
             <h1 className="font-semibold text-xl text-center mb-2">
               {formatMessage({ id: 'go-to-payment' })}
             </h1>
-            <a className="text-blue-500 underline" href={paymentUrl}>
+            <a
+              className="text-blue-500 underline text-lg font-semibold"
+              href={paymentUrl}
+            >
               {formatMessage({ id: 'payment-page' })}
             </a>
 
-            <h1 className="font-semibold text-lg mb-2">
-              {formatMessage({ id: 'expected-delivery-msg' })}{' '}
-              <strong>{formatDaysPlural()}</strong>
-            </h1>
             <h1 className="font-semibold mb-2">
               {formatMessage({ id: 'checkout-help-center-msg' })}
             </h1>
@@ -101,9 +102,6 @@ export default function OrderPlaced({ paymentUrl, paymentMethod }) {
                 <h1>{settings?.store_email}</h1>
               </div>
             </div>
-            <h1 className="font-semibold text-lg mb-2">
-              {formatMessage({ id: 'thank-you-for-shopping-msg' })}
-            </h1>
           </div>
         )}
       </div>

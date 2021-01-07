@@ -49,7 +49,28 @@ export default function CategoryRightSide({
           className="category-page-items__grid py-2"
           style={{ minHeight: 'calc(100vh - 150px)' }}
         >
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+          {[
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+          ].map(i => {
             return <CategoryItemLoader key={i} />;
           })}
         </div>
@@ -83,7 +104,7 @@ export default function CategoryRightSide({
   }
 
   return (
-    <div id="products_grid" className="h-full relative">
+    <div className="h-full relative">
       {products?.length > 0 && (
         <SortInfoPanel
           category={category}
@@ -123,7 +144,7 @@ export default function CategoryRightSide({
           className="category-page-items__grid py-2 min-h-full"
           style={{ minHeight: 'calc(100vh - 150px)' }}
         >
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
             return <CategoryItemLoader key={i} />;
           })}
         </div>

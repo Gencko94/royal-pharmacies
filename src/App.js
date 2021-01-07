@@ -43,6 +43,7 @@ const SingleBrand = React.lazy(() => import('./pages/SingleBrand'));
 const SingleBrandMobile = React.lazy(() => import('./pages/SingleBrandMobile'));
 const StaticPage = React.lazy(() => import('./pages/StaticPage'));
 const TrackOrder = React.lazy(() => import('./pages/TrackOrder'));
+const TrackOrderMobile = React.lazy(() => import('./pages/TrackOrderMobile'));
 const OrderSuccess = React.lazy(() => import('./pages/OrderSuccess'));
 const OrderFailed = React.lazy(() => import('./pages/OrderFailed'));
 
@@ -193,11 +194,11 @@ function App() {
             exact
             path="/order/track"
             render={props => {
-              // if (isTabletOrAbove) {
-              return <TrackOrder {...props} />;
-              // } else {
-              // return <NotFoundMobile {...props} />;
-              // }
+              if (isTabletOrAbove) {
+                return <TrackOrder {...props} />;
+              } else {
+                return <TrackOrderMobile {...props} />;
+              }
             }}
           />
           <Route

@@ -28,7 +28,7 @@ export default function CartEmpty() {
     >
       <div className="flex items-center justify-center flex-col">
         <div>
-          <img src={placeholder} alt="Empty Cart Bag" className="" />
+          <img src={placeholder} alt="No Cart Items" className="" />
         </div>
         <div className="text-center">
           <h1 className="text-2xl font-bold p-2">

@@ -199,7 +199,6 @@ export const getUserAddresses = async () => {
 };
 
 export const addUserAddress = async newAddress => {
-  console.log(newAddress);
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
@@ -330,7 +329,7 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
     });
     const res = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/cart/combine/${userId}`,
-      { products: JSON.stringify(items) },
+      { products: JSON.stringify(items), coupon },
       config
     );
     if (res.data.status === true) {
@@ -692,7 +691,6 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
   );
-  console.log(res.data.data);
   if (res.data.status === true) {
     return {
       id: res.data.data.id,
@@ -904,7 +902,6 @@ export const guestCheckout = async ({ deliveryCountry, order }) => {
     { ...order },
     config
   );
-  console.log(res.data);
   if (res.data.status === true) {
     return res.data;
   }
@@ -916,7 +913,7 @@ export const getVisitedItems = async () => {
   if (parsed.length === 0) {
     return [];
   }
-  localVisited = parsed.map(i => i.id);
+  localVisited = parsed.map(i => i.id).slice(0, 25);
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/multiple-product`,
     { products: localVisited }
@@ -980,5 +977,27 @@ export const getStaticPage = async (k, page) => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/page/${page}`);
   if (res.data.status === true) {
     return res.data.data.translation;
+  }
+};
+export const trackGuestOrder = async ({ phoneNumber }) => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/guest-orders`,
+    { mobile: phoneNumber, number: 10, page: 1 }
+  );
+  if (res.data.status === true) {
+    return {
+      orders: res.data.data.data,
+      currentPage: res.data.data.current_page,
+      lastPage: res.data.data.last_page,
+    };
+  }
+};
+export const getSingleGuestOrder = async (k, id) => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/guest-single-order`,
+    { id }
+  );
+  if (res.data.status === true) {
+    return res.data.data;
   }
 };

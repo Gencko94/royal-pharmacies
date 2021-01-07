@@ -91,12 +91,14 @@ export default function VariantMiddleSection({
     if (data.new_variation_addons[selectedVariation].options) {
       arr.push(
         <Options
+          key="options"
           options={data.new_variation_addons[selectedVariation].options}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
           selectedVariation={selectedVariation}
         />,
         <Variants
+          key="variants"
           variants={data.new_variation_addons}
           setSelectedVariant={setSelectedVariant}
           selectedOption={selectedOption}
@@ -108,6 +110,7 @@ export default function VariantMiddleSection({
     } else {
       arr.push(
         <VariantsOnly
+          key="variants only"
           variants={data.new_variation_addons}
           setSelectedVariant={setSelectedVariant}
           selectedVariation={selectedVariation}
@@ -219,7 +222,9 @@ export default function VariantMiddleSection({
         <hr className="my-2" />
       </div>
       <img src={offerbanner} alt="offer" />
-      {data?.related_products && <RelatedItems data={data.related_products} />}
+      {data?.related_products?.length > 0 && (
+        <RelatedItems data={data.related_products} />
+      )}
     </div>
   );
 }

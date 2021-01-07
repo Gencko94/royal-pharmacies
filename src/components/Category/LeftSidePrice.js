@@ -19,18 +19,20 @@ export default function LeftSidePrice({
   const max = 1000;
   if (productsLoading || categoryInfoLoading) {
     return (
-      <ContentLoader
-        speed={2}
-        viewBox="0 0 300 150"
-        backgroundColor="#f3f3f3"
-        foregroundColor="#ecebeb"
-      >
-        <rect x="0" y="0" rx="5" ry="5" width="100%" height="30" />
-        <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
-        <rect x="0" y="65" rx="5" ry="5" width="100%" height="15" />
-        <rect x="0" y="90" rx="5" ry="5" width="100%" height="15" />
-        <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
-      </ContentLoader>
+      <div className="py-2">
+        <ContentLoader
+          speed={2}
+          viewBox="0 0 300 150"
+          backgroundColor="#f3f3f3"
+          foregroundColor="#ecebeb"
+        >
+          <rect x="0" y="0" rx="5" ry="5" width="100%" height="35" />
+          <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="65" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="90" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
+        </ContentLoader>
+      </div>
     );
   }
   if (!productsLoading && productsLength === 0) {
@@ -38,11 +40,11 @@ export default function LeftSidePrice({
   }
   return (
     <motion.div layout className="mb-4">
-      <h1 className="text-lg font-bold">
+      <h1 className="text-lg font-bold py-2">
         {formatMessage({ id: 'filter-by-price' })} (
         {deliveryCountry?.currency.translation[locale].symbol})
       </h1>
-      <hr className="my-2" />
+      <hr />
       <div className="p-3">
         <Range
           step={0.1}

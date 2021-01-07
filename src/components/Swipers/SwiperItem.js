@@ -32,9 +32,6 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
         setCartMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error);
         if (error.response.data.message === 'Item founded on the Cart') {
           setItemInCart(true);
         }
@@ -52,7 +49,7 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
         setCartMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        console.log(error.response);
+        setAddToCartButtonLoading(false);
       }
     }
   };

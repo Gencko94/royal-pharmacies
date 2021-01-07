@@ -53,83 +53,122 @@ export default function Location({
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="rounded border shadow-itemsSlider-shallow bg-body-light"
+      className="rounded border shadow-itemsSlider-shallow flex flex-col bg-body-light"
     >
-      <div style={{ position: 'relative' }}>
-        <MapLazyImage
-          height={150}
-          width={200}
-          lat={data.lat}
-          lng={data.lng}
-          alt={data.address_name}
-        />
-
-        <motion.div
-          variants={infoVariants}
-          initial="partial"
-          animate={infoTabOpen === data.id ? 'full' : 'partial'}
-          layout
-          exit="partial"
-          onClick={() => handleInfoTabOpen(data.id)}
-          className="absolute overflow-hidden p-2 text-main-text  transition cursor-pointer duration-150 opacity-50 bg-gray-800 hover:opacity-75"
-        >
-          <AiOutlineInfoCircle
-            style={{ left: '10px' }}
-            className="absolute  top-1/2 transform  -translate-y-1/2  w-5 h-5"
+      <motion.div layout style={{ position: 'relative' }}>
+        {data.type === 'map' ? (
+          <MapLazyImage
+            height={150}
+            width={200}
+            lat={data.lat}
+            lng={data.lng}
+            alt={data.address_name}
           />
-          <AnimatePresence>
-            {infoTabOpen === data.id && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, marginLeft: '35px' }}
-                exit={{ opacity: 0 }}
-                layout
-                className="text-sm"
-              >
-                <div>
-                  <h1>
-                    {formatMessage({
-                      id: 'maps-detailed-address-apartment-short',
-                    })}
-                    :
-                  </h1>
-                  <h1>{data.apartment_house_number}</h1>
-                </div>
-                <div>
-                  <h1>
-                    {formatMessage({
-                      id: 'maps-detailed-address-building-short',
-                    })}
-                    :
-                  </h1>
-                  <h1>{data.building_tower_number}</h1>
-                </div>
-                <div>
-                  <h1>
-                    {formatMessage({
-                      id: 'maps-detailed-address-phone-short',
-                    })}
-                    :
-                  </h1>
-                  <h1>{data.phone_number}</h1>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-      </div>
-      <div className="p-2">
+        ) : (
+          <div className="p-2 text-sm border-b" style={{ height: '150px' }}>
+            <div>
+              <h1>
+                {formatMessage({
+                  id: 'maps-detailed-address-apartment-short',
+                })}
+                :
+              </h1>
+              <h1>{data.apartment_house_number}</h1>
+            </div>
+            <div>
+              <h1>
+                {formatMessage({
+                  id: 'maps-detailed-address-building-short',
+                })}
+                :
+              </h1>
+              <h1>{data.building_tower_number}</h1>
+            </div>
+            <div>
+              <h1>
+                {formatMessage({
+                  id: 'maps-detailed-address-phone-short',
+                })}
+                :
+              </h1>
+              <h1>{data.phone_number}</h1>
+            </div>
+          </div>
+        )}
+
+        {data.type === 'map' && (
+          <motion.div
+            variants={infoVariants}
+            initial="partial"
+            animate={infoTabOpen === data.id ? 'full' : 'partial'}
+            layout
+            exit="partial"
+            onClick={() => handleInfoTabOpen(data.id)}
+            className="absolute overflow-hidden p-2 text-main-text  transition cursor-pointer duration-150 opacity-50 bg-gray-800 hover:opacity-75"
+          >
+            <AiOutlineInfoCircle
+              style={{ left: '10px' }}
+              className="absolute  top-1/2 transform  -translate-y-1/2  w-5 h-5"
+            />
+            <AnimatePresence>
+              {infoTabOpen === data.id && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1, marginLeft: '35px' }}
+                  exit={{ opacity: 0 }}
+                  layout
+                  className="text-sm"
+                >
+                  <div>
+                    <h1>
+                      {formatMessage({
+                        id: 'maps-detailed-address-apartment-short',
+                      })}
+                      :
+                    </h1>
+                    <h1>{data.apartment_house_number}</h1>
+                  </div>
+                  <div>
+                    <h1>
+                      {formatMessage({
+                        id: 'maps-detailed-address-building-short',
+                      })}
+                      :
+                    </h1>
+                    <h1>{data.building_tower_number}</h1>
+                  </div>
+                  <div>
+                    <h1>
+                      {formatMessage({
+                        id: 'maps-detailed-address-phone-short',
+                      })}
+                      :
+                    </h1>
+                    <h1>{data.phone_number}</h1>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </motion.div>
+      <motion.div layout className="p-2 flex flex-1 flex-col">
         <div className="text-xs text-gray-600 font-semibold">
           <h1>{data.address_name}</h1>
         </div>
-        <div className="text-sm mb-2 font-semibold" style={{ height: '50px' }}>
-          <h1>{data.marked_address}</h1>
+        <div className="text-sm mb-2 font-semibold flex-1">
+          <h1>
+            {data.type === 'text'
+              ? data.userTyped_address
+              : data.marked_address}
+          </h1>
+          {data.addition_direction && <h1>{data.addition_direction}</h1>}
         </div>
         <button
           onClick={() => handleRemoveLocation(data.id)}
           className={` ${
             deleteButtonLoading === data.id ? 'bg-gray-300' : 'bg-main-color'
-          } text-main-text rounded   p-2 uppercase   text-sm w-full flex justify-center`}
+          } text-main-text rounded  p-2 uppercase   text-sm w-full flex justify-center mt-auto`}
         >
           {deleteButtonLoading === data.id ? (
             <Loader
@@ -143,7 +182,7 @@ export default function Location({
             <h1>{formatMessage({ id: 'remove-location' })}</h1>
           )}
         </button>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }

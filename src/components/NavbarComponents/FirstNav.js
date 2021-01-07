@@ -6,12 +6,14 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import Language from './Language';
 import ShipTo from './ShipTo';
 import HelloUser from './HelloUser';
+
 export default function FirstNav() {
   const {
     authenticationLoading,
     userId,
     authenticationFetching,
   } = React.useContext(AuthProvider);
+
   return (
     <div
       className={` font-semibold py-1 z-30 bg-first-nav-light text-main-text text-sm `}
@@ -22,6 +24,7 @@ export default function FirstNav() {
           <span className="border-r mx-1  border-gray-300 opacity-50"></span>
           <ShipTo />
         </div>
+
         <div className="flex justify-center items-center">
           {authenticationLoading || authenticationFetching ? (
             <Loader

@@ -42,7 +42,6 @@ export default function MyAddressesMobile() {
       opacity: 0,
     },
   };
-  console.log(userAddresses);
   return (
     <motion.div
       variants={containerVariants}

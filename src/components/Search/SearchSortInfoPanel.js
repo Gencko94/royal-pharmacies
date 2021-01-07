@@ -63,7 +63,7 @@ export default function SearchSortInfoPanel({
     >
       <div layout className="flex items-center">
         {productsCount && (
-          <div className="py-3 text-lg">
+          <div className="py-3 text-lg font-semibold">
             <h1>
               <strong>{productsCount > 2 && productsCount}</strong>{' '}
               {resolvePlural()} <strong>{query}</strong>
@@ -72,7 +72,9 @@ export default function SearchSortInfoPanel({
         )}
       </div>
       <div className="flex items-center w-full">
-        <h1>{formatMessage({ id: 'number-per-page' })}</h1>
+        <h1 className="font-semibold">
+          {formatMessage({ id: 'number-per-page' })}
+        </h1>
         <Select
           isSearchable={false}
           options={resultsPerPageOptions}

@@ -79,13 +79,9 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
         setCartMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error);
-        console.log(error.response);
-        // if (error.response.data.message === 'Item founded on the Cart') {
-        //   setItemInCart(true);
-        // }
+        if (error.response.data.message === 'Item founded on the Cart') {
+          setItemInCart(true);
+        }
         setAddToCartButtonLoading(false);
       }
     } else {
@@ -118,9 +114,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {
-        console.log(error.response);
-      }
+      } catch (error) {}
     }
   };
 
@@ -373,7 +367,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
         <div className="p-2 flex items-center justify-between">
           {isSale ? (
             <div className=" flex items-center">
-              <h1 className="font-semibold text-lg text-main-color">
+              <h1 className="font-bold text-lg text-main-color">
                 {(
                   option.promotion_price * deliveryCountry?.currency.value
                 ).toFixed(3)}
@@ -389,7 +383,7 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
               </h1>
             </div>
           ) : (
-            <h1 className="font-semibold text-lg text-main-color">
+            <h1 className="font-bold text-lg text-main-color">
               {(option.price * deliveryCountry?.currency.value).toFixed(3)}
               <span className="mx-1 text-sm">
                 {deliveryCountry?.currency.translation[locale].symbol}

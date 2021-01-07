@@ -168,7 +168,9 @@ export default function MiddleSection({
       <div className="my-3">
         <img src={offerbanner} alt="offer" />
       </div>
-      {data?.related_products && <RelatedItems data={data.related_products} />}
+      {data?.related_products?.length > 0 && (
+        <RelatedItems data={data.related_products} />
+      )}
     </div>
   );
 }

@@ -35,7 +35,6 @@ export default function SideCartMenuItemMobile({ item }) {
       }
     } catch (error) {
       setRemoveFromCartButtonLoading(false);
-      console.log(error.response);
     }
   };
 
@@ -62,7 +61,7 @@ export default function SideCartMenuItemMobile({ item }) {
         <Link
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
-          to={`/${locale}/products/c/${item.id}`}
+          to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           <LazyImage
             src={item?.image}
@@ -76,31 +75,42 @@ export default function SideCartMenuItemMobile({ item }) {
         <Link
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
-          to={`/${locale}/products/c/${item.id}`}
+          to={`/${locale}/products/${item.slug}/${item.id}`}
         >
-          <h1 className="text-clamp-2 text-xs font-semibold">
+          <h1 className="text-clamp-2 text-sm font-bold">
             {`${item[`name_${locale}`]}`}
           </h1>
         </Link>
 
-        <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-          {item.total} {deliveryCountry?.currency.translation[locale].symbol}
-        </h1>
+        <div className="flex items-center text-gray-700">
+          <div className="flex items-center">
+            <h1 className="text-xs font-semibold">
+              {formatMessage({ id: 'price' })}
+            </h1>
+            <h1 className="text-xs font-bold mx-1">
+              {item.total}{' '}
+              {deliveryCountry?.currency.translation[locale].symbol}
+            </h1>
+          </div>
+          <div className="flex items-center text-xs mx-2">
+            <h1 className="font-semibold">{formatMessage({ id: 'qty' })} :</h1>
+            <h1 className="mx-1 font-bold">{item.qty}</h1>
+          </div>
+        </div>
         <div>
           <button
             className={`
-             
-                
               bg-main-color text-main-text
-             text-xs rounded p-1 my-1 uppercase`}
+             text-xs rounded p-1 my-1 flex items-center justify-center font-semibold uppercase`}
             onClick={handleRemoveFromCart}
+            style={{ width: '140px' }}
           >
             {removeFromCartButtonLoading ? (
               <Loader
                 type="ThreeDots"
                 color="#fff"
-                height={20}
-                width={20}
+                height={18}
+                width={18}
                 visible={true}
               />
             ) : (

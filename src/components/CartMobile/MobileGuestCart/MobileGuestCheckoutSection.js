@@ -67,7 +67,6 @@ export default function MobileGuestCheckoutSection({ setCheckOutPopupOpen }) {
         setValidCoupon(false);
 
         setCouponError(true);
-        console.log(error.response);
         if (error.response.data.message === 'Coupon expired') {
           setErrorMessage(formatMessage({ id: 'coupon-expired' }));
         } else if (

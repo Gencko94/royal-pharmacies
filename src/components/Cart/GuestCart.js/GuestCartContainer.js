@@ -43,6 +43,7 @@ export default function GuestCartContainer() {
             <div></div>
             <h1 className="  ">{formatMessage({ id: 'the-item' })}</h1>
             <h1 className="text-center">{formatMessage({ id: 'price' })}</h1>
+            <h1 className="text-center">{formatMessage({ id: 'total' })}</h1>
           </div>
           <hr />
           <AnimateSharedLayout>

@@ -98,14 +98,14 @@
 - [ ] need a desktop and mobile category cover photo for category section.
 - [ ] increase quantity when item added in cart twice instead of rejecting.
 - [ ] make guest cart api behave same as regular cart, with the same parameters.
-- [ ] Product api , send variation symbol (S for Small, L for Large), also need a is_size or is_color confirmation.
-- [ ] Remove check cart api , the cart should be checked automatically while sending the data, if there is a change send a message along with the cart.
-- [ ] i need a way to show the best brands on navbar categories, we make a new api or just find another way.
-- [ ] need api for about us (if there is any).
-- [ ] need api for FAQ (if there is any).
-- [ ] need api for return policy page (if there is any).
-- [ ] refresh token explanation, as i know they should live much longer than regular tokens.
-- [ ] Please Explain how many item types we do have ? what is a simple product with addons vs variant product with addons ?
+- [x] Product api , send variation symbol (S for Small, L for Large), also need a is_size or is_color confirmation.
+- [x] Remove check cart api , the cart should be checked automatically while sending the data, if there is a change send a message along with the cart.
+- [x] i need a way to show the best brands on navbar categories, we make a new api or just find another way.
+- [x] need api for about us (if there is any).
+- [x] need api for FAQ (if there is any).
+- [x] need api for return policy page (if there is any).
+- [x] refresh token explanation, as i know they should live much longer than regular tokens.
+- [x] Please Explain how many item types we do have ? what is a simple product with addons vs variant product with addons ?
 
 - [ ] add country code to combine cart api
 

@@ -19,6 +19,7 @@ import Variants from '../../SingleProduct/VariantProduct/Variants';
 import Options from '../../SingleProduct/VariantProduct/Options';
 import { calculateDiscountPrice } from '../../../helpers/calculateDiscountPrice';
 import { Link } from 'react-router-dom';
+import RelatedItems from '../../SingleProduct/RelatedItems';
 export default function VariantItemDescription({
   data,
   handleAddToCart,
@@ -391,6 +392,9 @@ export default function VariantItemDescription({
           )}
         </button>
       </div>
+      {data?.related_products.length > 0 && (
+        <RelatedItems data={data.related_products} />
+      )}
     </div>
   );
 }

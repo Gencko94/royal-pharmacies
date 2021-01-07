@@ -7,6 +7,8 @@ export default function GuestSelectAddressMobile({
   name,
   phoneNumber,
   email,
+  countryCode,
+  setCountryCode,
 }) {
   return (
     <div className="h-full">
@@ -17,6 +19,8 @@ export default function GuestSelectAddressMobile({
           name={name}
           phoneNumber={phoneNumber}
           email={email}
+          setCountryCode={setCountryCode}
+          countryCode={countryCode}
         />
       </div>
     </div>

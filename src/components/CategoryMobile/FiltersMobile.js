@@ -21,7 +21,7 @@ export default function FiltersMobile({
       exit={{ opacity: 0 }}
       layout
     >
-      {!productsLoading && (
+      {!productsLoading && brands && (
         <BrandsFilterMobile
           brands={brands}
           brandFilters={brandFilters}

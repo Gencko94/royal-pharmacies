@@ -299,7 +299,7 @@ export default function SearchResultsMobile() {
           />
         ) : null}
         <AnimatePresence>
-          {inView && (
+          {inView && products?.products.length !== 0 && (
             <SortInfoPanelMobile
               productsLoading={productsLoading}
               products={products?.products}

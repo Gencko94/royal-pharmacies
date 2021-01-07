@@ -174,7 +174,6 @@ export default function Login() {
               validationSchema={validationSchema}
               onSubmit={async (values, actions) => {
                 setErrorOpen(false);
-                console.log(values);
                 try {
                   await userLoginMutation({
                     phoneNumber: `${countryCode.value}${values.phoneNumber}`,
@@ -182,7 +181,6 @@ export default function Login() {
                   });
                   history.replace(from);
                 } catch (error) {
-                  console.log(error.response);
                   if (error.response?.data.message) {
                     actions.setErrors({
                       phoneNumber: formatMessage({

@@ -133,7 +133,7 @@ export default function GuestPersonalInformation({
     });
     return arr;
   };
-  console.log(guestAddress);
+
   return (
     <>
       <div className="user-checkout-personal-info__container h-full rounded border">
@@ -166,11 +166,9 @@ export default function GuestPersonalInformation({
                   </div>
                   <Link
                     to={`/${locale}/products/${orderItem.slug}/${orderItem.id}`}
-                    className="hover:underline"
+                    className="hover:underline truncate font-semibold"
                   >
-                    <h1 className="truncate  font-semibold">
-                      {orderItem[`name_${locale}`]}
-                    </h1>
+                    {orderItem[`name_${locale}`]}
                   </Link>
                   <div className="">
                     <h1 className="">{orderItem.qty}</h1>
@@ -210,7 +208,9 @@ export default function GuestPersonalInformation({
               </h1>
               {coupon && (
                 <>
-                  <h1 className="">{formatMessage({ id: 'coupon-sale' })}</h1>
+                  <h1 className="text-green-700">
+                    {formatMessage({ id: 'coupon-sale' })}
+                  </h1>
                   <h1 className="text-center text-green-700">
                     {guestCouponCost}
                     <span className="mx-1">
@@ -219,13 +219,10 @@ export default function GuestPersonalInformation({
                   </h1>
                 </>
               )}
-              <h1 className="text-green-700 mt-3" style={{ fontWeight: 900 }}>
+              <h1 className="text-green-700 font-bold text-xl mt-3">
                 {formatMessage({ id: 'subtotal' })}
               </h1>
-              <h1
-                className="text-green-700 text-center mt-3"
-                style={{ fontWeight: 900 }}
-              >
+              <h1 className="text-green-700 font-bold text-center text-xl mt-3">
                 {guestCartTotal}{' '}
                 {deliveryCountry?.currency.translation[locale].symbol}
               </h1>

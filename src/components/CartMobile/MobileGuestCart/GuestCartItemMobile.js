@@ -97,7 +97,6 @@ export default function GuestCartItemMobile({ item }) {
       setRemoveFromCartButtonLoading(false);
     } catch (error) {
       setRemoveFromCartButtonLoading(false);
-      console.log(error.response);
     }
   };
   const handleEditItemFromCart = async (sku, price) => {
@@ -119,7 +118,6 @@ export default function GuestCartItemMobile({ item }) {
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
-      console.log(error.response);
     }
   };
   return (
@@ -188,35 +186,38 @@ export default function GuestCartItemMobile({ item }) {
                 <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
               </button>
             </div>
+
+            <button
+              onClick={() =>
+                handleEditItemFromCart(item.options.sku, item.price)
+              }
+              style={{ width: '50px' }}
+              disabled={
+                quantity > item.options.max_quantity ||
+                quantity === 0 ||
+                item.qty === quantity
+              }
+              className={`p-1 flex items-center justify-center text-xs rounded mt-1 ${
+                quantity > item.options.max_quantity ||
+                quantity === 0 ||
+                item.qty === quantity
+                  ? 'bg-gray-600 text-gray-400'
+                  : 'bg-main-color text-main-text'
+              }`}
+            >
+              {editLoading ? (
+                <Loader
+                  type="ThreeDots"
+                  color="#fff"
+                  height={18}
+                  width={18}
+                  visible={true}
+                />
+              ) : (
+                formatMessage({ id: 'update-btn' })
+              )}
+            </button>
           </div>
-          <button
-            onClick={() => handleEditItemFromCart(item.options.sku, item.price)}
-            style={{ width: '50px' }}
-            disabled={
-              quantity > item.options.max_quantity ||
-              quantity === 0 ||
-              item.qty === quantity
-            }
-            className={`p-1 flex items-center justify-center text-xs rounded mt-1 ${
-              quantity > item.options.max_quantity ||
-              quantity === 0 ||
-              item.qty === quantity
-                ? 'bg-gray-600 text-gray-400'
-                : 'bg-main-color text-main-text'
-            }`}
-          >
-            {editLoading ? (
-              <Loader
-                type="ThreeDots"
-                color="#fff"
-                height={18}
-                width={18}
-                visible={true}
-              />
-            ) : (
-              formatMessage({ id: 'update-btn' })
-            )}
-          </button>
         </div>
       </div>
       <div className="flex justify-center text-sm  items-center my-2 ">
@@ -225,7 +226,6 @@ export default function GuestCartItemMobile({ item }) {
             handleRemoveItemFromCart(item.options.sku);
           }}
           className={`
-            
               bg-main-color
             text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
         >

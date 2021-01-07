@@ -36,11 +36,11 @@ export default function SearchRightSide({
       <div className="py-2">
         <ContentLoader
           speed={2}
-          viewBox="0 0 752 51"
+          viewBox="0 0 752 40"
           backgroundColor="#f3f3f3"
           foregroundColor="#ecebeb"
         >
-          <rect x="0" y="0" rx="5" ry="5" width="100%" height="51" />
+          <rect x="0" y="0" rx="5" ry="5" width="100%" height="40" />
         </ContentLoader>
         <div
           className="category-page-items__grid py-2"

@@ -30,9 +30,8 @@ export default function GuestPersonalInformationMobile({
     coupon,
   } = React.useContext(CartAndWishlistProvider);
 
-  const { formatMessage } = useIntl();
-  const { deliveryCountry, locale } = React.useContext(DataProvider);
-
+  const { formatMessage, locale } = useIntl();
+  const { deliveryCountry } = React.useContext(DataProvider);
   const handlePaymentChange = method => {
     setPaymentMethod(method);
   };
@@ -52,7 +51,7 @@ export default function GuestPersonalInformationMobile({
             } mb-3 flex border items-center justify-start rounded p-2 font-semibold`}
           >
             <img src={knet} alt={payment.key} />
-            <div className="flex-1 mx-3 text-left">{payment.key}</div>
+            <div className="flex-1 mx-3 text-left">K-net</div>
             <div>
               {paymentMethod === payment.key ? (
                 <BiRadioCircleMarked className="w-6 h-6 text-btn-secondary-light" />
@@ -74,7 +73,7 @@ export default function GuestPersonalInformationMobile({
             } mb-3 flex border items-center justify-start rounded p-2 font-semibold`}
           >
             <img src={mastercard} alt={payment.key} />
-            <div className="flex-1 mx-3 text-left">{payment.key}</div>
+            <div className="flex-1 mx-3 text-left">Credit Card</div>
             <div>
               {paymentMethod === payment.key ? (
                 <BiRadioCircleMarked className="w-6 h-6 text-btn-secondary-light" />
@@ -97,7 +96,7 @@ export default function GuestPersonalInformationMobile({
             } mb-3 flex border items-center justify-start rounded p-2 font-semibold`}
           >
             <img src={amex} alt={payment.key} />
-            <div className="flex-1 mx-3 text-left">{payment.key}</div>
+            <div className="flex-1 mx-3 text-left">American Express</div>
             <div>
               {paymentMethod === payment.key ? (
                 <BiRadioCircleMarked className="w-6 h-6 text-btn-secondary-light" />
@@ -119,7 +118,7 @@ export default function GuestPersonalInformationMobile({
             } mb-3 flex border items-center justify-start rounded p-2 font-semibold`}
           >
             <img src={cod} alt={payment.key} />
-            <div className="flex-1 mx-3 text-left">{payment.key}</div>
+            <div className="flex-1 mx-3 text-left">Cash on Delivery</div>
             <div>
               {paymentMethod === payment.key ? (
                 <BiRadioCircleMarked className="w-6 h-6 text-btn-secondary-light" />
@@ -165,11 +164,9 @@ export default function GuestPersonalInformationMobile({
                   </div>
                   <Link
                     to={`/${locale}/products/${orderItem.slug}/${orderItem.id}`}
-                    className="hover:underline block truncate"
+                    className="hover:underline block truncate font-semibold"
                   >
-                    <h1 className="truncate  font-semibold">
-                      {orderItem[`name_${locale}`]}
-                    </h1>
+                    {orderItem[`name_${locale}`]}
                   </Link>
                   <div className="">
                     <h1 className="">{orderItem.qty}</h1>
@@ -345,13 +342,14 @@ export default function GuestPersonalInformationMobile({
                   : 'bg-gray-600 text-gray-100'
               } flex items-center text-sm justify-center uppercase px-3 py-1 mx-2  rounded font-semibold`}
           onClick={handleGuestCheckout}
+          style={{ width: '90px' }}
         >
           {checkoutLoading ? (
             <Loader
               type="ThreeDots"
               color="#fff"
-              height={24}
-              width={24}
+              height={20}
+              width={20}
               visible={true}
             />
           ) : (
@@ -360,131 +358,5 @@ export default function GuestPersonalInformationMobile({
         </button>
       </div>
     </>
-    // <div className="h-full  ">
-    //   <div className=" mb-2 border h-full  ">
-    //     <div className="quick-checkout-personal-info-mobile__container p-2">
-    //       <div className="flex flex-col justify-center font-semibold text-sm  ">
-    //         <div className="font-semibold mb-2 ">
-    //           <h1 className=" text-lg text-gray-700">
-    //             {formatMessage({ id: 'fullname-label' })}:
-    //           </h1>
-    //           <h1 className=" mt-1 w-full ">{name}</h1>
-    //         </div>
-
-    //         <div className="font-semibold mb-2">
-    //           <h1 className=" text-lg text-gray-700">
-    //             {formatMessage({ id: 'phone-label' })}:
-    //           </h1>
-    //           <h1 className=" mt-1 w-full ">{phoneNumber}</h1>
-    //         </div>
-    //         <div className="mb-2 ">
-    //           <h1 className="font-semibold text-center text-lg">
-    //             {formatMessage({ id: 'address' })}
-    //           </h1>
-    //           <hr className="my-2" />
-    //           <div className="mt-1 flex">
-    //             <div className="flex-1">
-    //               <div className="mb-2">
-    //                 <h1 className="font-semibold text-gray-700">
-    //                   {formatMessage({
-    //                     id: 'delivery-location',
-    //                   })}{' '}
-    //                   :{' '}
-    //                 </h1>
-    //                 <h1>{guestAddress.addressDetails.markerAddress}</h1>
-    //               </div>
-    //               <div className="flex items-center mb-2">
-    //                 <div className="flex-1">
-    //                   <h1 className="font-semibold text-gray-700">
-    //                     {formatMessage({
-    //                       id: 'maps-detailed-address-apartment',
-    //                     })}{' '}
-    //                   </h1>
-
-    //                   <h1>
-    //                     {guestAddress.addressDetails.apartmentOrHouseNumber}
-    //                   </h1>
-    //                 </div>
-    //                 <div className="flex-1">
-    //                   <h1 className="font-semibold text-gray-700">
-    //                     {formatMessage({
-    //                       id: 'maps-detailed-address-building',
-    //                     })}{' '}
-    //                   </h1>
-    //                   <h1>
-    //                     {guestAddress.addressDetails.buildingOrTowerNumber}
-    //                   </h1>
-    //                 </div>
-    //               </div>
-    //               <div className="flex items-center justify-center">
-    //                 <div>
-    //                   <h1 className="font-semibold text-gray-700">
-    //                     {formatMessage({
-    //                       id: 'maps-details-extra-details',
-    //                     })}{' '}
-    //                     :{' '}
-    //                   </h1>
-    //                   <h1 className="text-center">
-    //                     {guestAddress.addressDetails.additionalDetails ||
-    //                       formatMessage({ id: 'none' })}
-    //                   </h1>
-    //                 </div>
-    //               </div>
-    //             </div>
-    //             <div>
-    //               <img
-    //                 src={`https://maps.googleapis.com/maps/api/staticmap?center=${guestAddress.lat},${guestAddress.lng}&zoom=15&size=200x200&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-    //                 alt="thumbnail"
-    //               />
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className="font-semibold self-start">
-    //         <div className=" mb-4 relative  ">
-    //           <h1 className="">
-    //             {' '}
-    //             {formatMessage({ id: 'select-payment-method' })}
-    //           </h1>
-    //           <div className="mt-1">
-    //             <div className="flex flex-col ">{resolveFlags()}</div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-
-    //     <div className="flex justify-end items-center p-2">
-    //       <button
-    //         className="px-3 py-1 bg-btn-primary-light text-btn-secondary-light rounded font-semibold mr-3"
-    //         onClick={handleStepBack}
-    //       >
-    //         {formatMessage({ id: 'btn-back-to-addresses' })}
-    //       </button>
-    //       <button
-    //         disabled={!paymentMethod}
-    //         className={`
-    //           ${
-    //             paymentMethod
-    //               ? 'bg-main-color text-main-text'
-    //               : 'bg-gray-600 text-gray-100'
-    //           }
-    //          flex items-center justify-center uppercase px-3 py-1 mx-3  rounded font-semibold`}
-    //         onClick={handleGuestCheckout}
-    //       >
-    //         {checkoutLoading ? (
-    //           <Loader
-    //             type="ThreeDots"
-    //             color="#fff"
-    //             height={24}
-    //             width={24}
-    //             visible={true}
-    //           />
-    //         ) : (
-    //           formatMessage({ id: 'proceed-to-payment' })
-    //         )}
-    //       </button>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }

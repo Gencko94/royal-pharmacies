@@ -40,7 +40,7 @@ export default function WishListItem({
       exit="exited"
       className="wishlist-item"
     >
-      <Link to={`/${locale}/${item.slug}/${item.id}}`}>
+      <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
         <LazyImage
           src={item.image}
           origin="original"
@@ -49,8 +49,8 @@ export default function WishListItem({
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/${item.slug}/${item.id}}`}>
-          <h1 className="font-semibold text-lg uppercase">{`${
+        <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
+          <h1 className="font-semibold uppercase">{`${
             item[`name_${locale}`]
           }`}</h1>
         </Link>

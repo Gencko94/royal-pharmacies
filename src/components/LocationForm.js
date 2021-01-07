@@ -61,16 +61,16 @@ export default function LocationForm({
         <h1>{formatMessage({ id: 'location-details' })}</h1>
       </div>
       <div className="p-2">
-        <div className="flex justify-between">
+        <div className="flex items-center justify-between">
           <label
             htmlFor={'location'}
-            className={`text-sm font-semibold text-gray-700`}
+            className={`text-sm font-bold text-gray-700`}
           >
             {formatMessage({ id: 'delivery-location' })}
           </label>
           <button
             onClick={handleClearLocation}
-            className="text-main-color hover:underline"
+            className="text-main-color text-sm hover:underline"
           >
             {formatMessage({ id: 'clear' })}
           </button>
@@ -109,7 +109,6 @@ export default function LocationForm({
               setShowMap(false);
             } catch (error) {
               setErrorSnackbarOpen(true);
-              console.log(error.response);
             }
           }}
         >
@@ -173,9 +172,9 @@ export default function LocationForm({
                   </div>
                   <button
                     type="submit"
-                    disabled={!markerAddress || userTypedLocation}
+                    disabled={!markerAddress && !userTypedLocation}
                     className={`  ${
-                      !markerAddress || userTypedLocation
+                      !markerAddress && !userTypedLocation
                         ? 'bg-gray-500 text-gray-300'
                         : 'bg-main-color text-main-text'
                     } p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}
@@ -206,7 +205,7 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
   const [field, meta] = useField(name);
   return (
     <div className="w-full mb-1 relative">
-      <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
+      <label htmlFor={name} className={`text-sm font-bold text-gray-700 mb-1`}>
         {label}
       </label>
       <input
@@ -232,8 +231,8 @@ const CustomTextAreaInput = ({ label, value, name, ...props }) => {
   const { formatMessage } = useIntl();
   return (
     <div className="w-full mb-1 relative">
-      <div className="flex items-center">
-        <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
+      <div className="flex items-center mb-1">
+        <label htmlFor={name} className={`text-sm font-bold text-gray-700`}>
           {label}
         </label>
         <h1 className="text-xs italic mx-3">
@@ -263,10 +262,7 @@ const PhoneNumberCustomInput = ({
   const [field, meta] = useField(name);
   return (
     <div className="w-full mb-1 flex flex-col ">
-      <label
-        htmlFor={name}
-        className={`text-sm font-semibold text-gray-800 mb-1`}
-      >
+      <label htmlFor={name} className={`text-sm font-bold text-gray-800 mb-1`}>
         {label}
       </label>
       <div

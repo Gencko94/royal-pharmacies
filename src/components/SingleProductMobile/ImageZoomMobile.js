@@ -23,7 +23,7 @@ export default function ImageZoomMobile({ data }) {
       >
         {[data.image, ...data.gallery].map(item => {
           return (
-            <SwiperSlide className="relative" zoom key={item?.id}>
+            <SwiperSlide className="relative" zoom key={item?.link}>
               <img
                 src={`${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`}
                 alt={data.full_translation[locale].title}
@@ -52,7 +52,7 @@ export default function ImageZoomMobile({ data }) {
       >
         {[data.image, ...data.gallery].map(item => {
           return (
-            <SwiperSlide className="px-2" key={item.id}>
+            <SwiperSlide className="px-2" key={item.link}>
               <img
                 src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.link}`}
                 alt={data.full_translation[locale].title}

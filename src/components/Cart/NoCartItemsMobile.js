@@ -3,8 +3,10 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import cartBag from '../../assets/illustrations/cartBag.svg';
+import { AuthProvider } from '../../contexts/AuthContext';
 export default function NoCartItems() {
   const { formatMessage, locale } = useIntl();
+  const { userId } = React.useContext(AuthProvider);
   const variants = {
     hidden: {
       opacity: 0,
@@ -35,20 +37,22 @@ export default function NoCartItems() {
         >
           {formatMessage({ id: 'check-today-deals' })}
         </Link>
-        <div className="flex items-center flex-wrap">
-          <Link
-            to={`/${locale}/app/login`}
-            className={` rounded p-2 mt-2 bg-green-700 text-second-nav-text-light  `}
-          >
-            {formatMessage({ id: 'login-button' })}
-          </Link>
-          <Link
-            to={`/${locale}/app/register`}
-            className={` rounded p-2 mt-2 bg-blue-700 text-second-nav-text-light mx-2  `}
-          >
-            {formatMessage({ id: 'register-button' })}
-          </Link>
-        </div>
+        {!userId && (
+          <div className="flex items-center flex-wrap">
+            <Link
+              to={`/${locale}/app/login`}
+              className={` rounded p-2 mt-2 bg-green-700 text-second-nav-text-light  `}
+            >
+              {formatMessage({ id: 'login-button' })}
+            </Link>
+            <Link
+              to={`/${locale}/app/register`}
+              className={` rounded p-2 mt-2 bg-blue-700 text-second-nav-text-light mx-2  `}
+            >
+              {formatMessage({ id: 'register-button' })}
+            </Link>
+          </div>
+        )}
       </div>
     </motion.div>
   );

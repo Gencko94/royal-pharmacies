@@ -46,19 +46,14 @@ export default function VariantProductMobile({
       await addToWishListMutation({ id: data.id, userId });
       setItemInWishList(true);
     } catch (error) {
-      console.clear();
       setItemInWishList(true);
-      console.log(error.response);
     }
   };
   const handleRemoveFromWishList = async id => {
     try {
       await removeFromWishListMutation({ id, userId });
       setItemInWishList(false);
-    } catch (error) {
-      console.clear();
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
 
   const handleAddToCart = async (quantity, sku, price) => {
@@ -89,10 +84,6 @@ export default function VariantProductMobile({
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error.response);
-
         setAddToCartButtonLoading(false);
       }
     } else {
@@ -123,9 +114,7 @@ export default function VariantProductMobile({
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {
-        console.log(error.response);
-      }
+      } catch (error) {}
     }
   };
 

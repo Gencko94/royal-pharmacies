@@ -84,14 +84,16 @@ export default function MyProfile() {
         <div className=" ">
           <div>
             <div className={` py-4 px-3 flex    `}>
-              <h1 className="  w-2/4">{formatMessage({ id: 'full-name' })}</h1>
+              <h1 className=" font-bold w-2/4">
+                {formatMessage({ id: 'full-name' })}
+              </h1>
               <h1 className="">{userData.name}</h1>
             </div>
             <hr />
           </div>
           <div>
             <div className={` py-4 px-3 flex    `}>
-              <h1 className="  w-2/4">
+              <h1 className=" font-bold w-2/4">
                 {formatMessage({ id: 'phone-number' })}
               </h1>
               <h1 className="">{userData.mobile}</h1>
@@ -100,7 +102,7 @@ export default function MyProfile() {
           </div>
           <div>
             <div className={` py-4 px-3 flex    `}>
-              <h1 className="  w-2/4">
+              <h1 className=" font-bold w-2/4">
                 {formatMessage({ id: 'email-address' })}
               </h1>
               <h1 className="">{userData.email}</h1>
@@ -109,7 +111,7 @@ export default function MyProfile() {
           </div>
           <div>
             <div className={` py-4 px-3 flex    `}>
-              <h1 className="  w-2/4">
+              <h1 className=" font-bold w-2/4">
                 {formatMessage({ id: 'date-joined' })}
               </h1>
               <h1 className="">
@@ -124,7 +126,7 @@ export default function MyProfile() {
       <div className="flex items-center justify-end  py-4 px-3">
         <button
           onClick={() => setPasswordChangeModalOpen(true)}
-          className={`px-4 py-1 bg-main-color text-main-text rounded uppercase`}
+          className={`px-4 py-1 bg-main-color text-main-text font-semibold rounded uppercase`}
         >
           {formatMessage({ id: 'change-password' })}
         </button>

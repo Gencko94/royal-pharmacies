@@ -23,7 +23,7 @@ input {
 }
 .myaccount__grid {
   display: grid;
-  grid-template-columns: minmax(150px, 250px) minmax(400px, 1fr);
+  grid-template-columns: minmax(150px, 0.4fr) 1fr;
   gap: 1em;
 }
 
@@ -119,33 +119,33 @@ input {
 }
 .my-orders-item-desktop {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.2fr 0.2fr 0.2fr;
+  grid-template-columns: 0.1fr 1fr 0.3fr 0.4fr 0.4fr;
   gap: 0.3em;
 }
 .my-orders-item-mobile {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.2fr 0.3fr 0.3fr;
+  grid-template-columns: 0.1fr 1fr 0.3fr 0.3fr 0.3fr;
   gap: 0.3em;
 }
 .my-orders-items__table-desktop {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.2fr 0.2fr 0.2fr;
+  grid-template-columns: 0.1fr 1fr 0.3fr 0.4fr 0.4fr;
   gap: 0.3em;
 }
 .my-orders-items__table-mobile {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.2fr 0.3fr 0.3fr;
+  grid-template-columns: 0.1fr 1fr 0.3fr 0.3fr 0.3fr;
   gap: 0.3em;
   text-align: center;
 }
 .my-orders-receipt-summary {
   display: grid;
-  grid-template-columns: 1fr 0.1fr;
-  gap: 0.5em;
+  grid-template-columns: 1fr 0.3fr;
+  gap: 0.2em;
 }
 .my-orders-receipt-summary-mobile {
   display: grid;
-  grid-template-columns: 1fr 0.2fr;
+  grid-template-columns: 1fr 0.3fr;
 }
 .wishlist-main-grid {
   display: grid;
@@ -332,11 +332,13 @@ input {
   display: grid;
   grid-template-columns: 0.3fr 1fr;
   gap: 4px;
+  height: 94px;
 }
 .side-cart-menu__item-mobile {
   display: grid;
-  grid-template-columns: 0.5fr 1fr;
+  grid-template-columns: 0.3fr 1fr;
   gap: 4px;
+  height: 94px;
 }
 /* related Items */
 
@@ -400,18 +402,18 @@ input {
 
 .locations-grid__desktop {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 199px);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 0.5em;
 }
 
 .locations-grid__mobile {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 0.5em;
 }
 .my-orders-grid__desktop {
   display: grid;
-  grid-template-columns: 1fr 1.2fr 0.5fr;
+  grid-template-columns: 0.3fr 1fr;
   gap: 0.5em;
 }
 .my-orders-grid__mobile {
@@ -419,6 +421,19 @@ input {
   grid-template-columns: 0.7fr 0.3fr;
   gap: 0.5em;
 }
+.guest-orders-grid__desktop {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  gap: 0.5em;
+  /* min-height: calc(-100vh + 140px); */
+  height: calc(100vh - 140px);
+  /* overflow: hidden; */
+}
+/* .guest-orders-grid__mobile {
+  display: grid;
+  grid-template-columns: 0.3fr 0.fr;
+  gap: 0.5em;
+} */
 .btn-disabled {
   background-color: gray;
   color: gainsboro;
@@ -517,7 +532,6 @@ input {
   bottom: 50px;
   text-align: center;
   left: 50%;
-  max-width: 400px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -553,10 +567,11 @@ input {
 
 .my-addresses-desktop-maps__grid {
   display: grid;
-  grid-template-columns: 0.7fr 0.3fr;
+  grid-template-columns: 1fr 0.7fr;
   gap: 0.5em;
   height: 100%;
 }
+
 .my-addresses-mobile-maps__grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -624,11 +639,11 @@ input {
   grid-template-columns: minmax(300px, 2.2fr) minmax(250px, 0.8fr);
   gap: 0.5em;
 }
-.viewed-items-grid__desktop {
+/* .viewed-items-grid__desktop {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 190px));
   gap: 0.5em;
-}
+} */
 .viewed-items-container__mobile {
   display: grid;
   grid-template-columns: 1fr;

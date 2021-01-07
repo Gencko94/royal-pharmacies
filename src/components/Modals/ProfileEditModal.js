@@ -81,7 +81,6 @@ export default function ProfileEditModal({
             await editMutation(values);
             setProfileEditModalOpen(false);
           } catch (error) {
-            console.log(error.response);
             setErrorOpen(true);
             setErrorMessage(
               formatMessage({ id: 'something-went-wrong-snackbar' })
@@ -109,16 +108,15 @@ export default function ProfileEditModal({
               <div className="mt-1">
                 <button
                   type="submit"
-                  className={`${
-                    isSubmitting
-                      ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
-                  } w-full rounded flex items-center justify-center text-sm  p-2 font-semibold  transition duration-150 uppercase `}
+                  className={`
+                 
+                      bg-main-color text-second-nav-text-light hover:bg-red-800
+                   w-full rounded flex items-center justify-center text-sm  p-2 font-semibold  transition duration-150 uppercase `}
                 >
                   {isSubmitting && (
                     <Loader
                       type="ThreeDots"
-                      color="#b72b2b"
+                      color="#fff"
                       height={20}
                       width={20}
                       visible={isSubmitting}

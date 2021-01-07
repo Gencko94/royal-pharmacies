@@ -1,19 +1,19 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
 
-import { AiOutlineArrowLeft } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-
+import Layout from '../components/Layout';
 import Select from 'react-select';
 import * as Yup from 'yup';
 import ErrorSnackbar from '../components/ErrorSnackbar';
-import { AuthProvider } from '../contexts/AuthContext';
-import Language from '../components/NavbarComponents/Language';
-import { useMediaQuery } from 'react-responsive';
+
 import { DataProvider } from '../contexts/DataContext';
+import { trackGuestOrder } from '../Queries/Queries';
+import GuestOrders from '../components/TrackOrder/GuestOrders';
+import { AnimatePresence, motion } from 'framer-motion';
 const options = [
   { value: '+965', label: '+965' },
   { value: '+966', label: '+966' },
@@ -86,123 +86,142 @@ const PhoneNumberCustomInput = ({
 };
 
 export default function TrackOrder() {
-  const { userLogin } = React.useContext(AuthProvider);
   const { settings } = React.useContext(DataProvider);
   const [countryCode, setCountryCode] = React.useState(options[0]);
-  const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
-  const { formatMessage } = useIntl();
+
+  const { formatMessage, locale } = useIntl();
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
-  const history = useHistory();
+  const [showGuestOrders, setShowGuestOrders] = React.useState(false);
+  const [orders, setOrders] = React.useState([]);
   const closeError = () => {
     setErrorOpen(false);
   };
   const validationSchema = Yup.object({
-    email: Yup.string().email(formatMessage({ id: 'email-validation' })),
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
       .required(formatMessage({ id: 'phone-empty' })),
-    password: Yup.string().required(formatMessage({ id: 'password-empty' })),
   });
+
   return (
-    <div className=" text-gray-900 px-2 flex justify-center items-center   h-screen relative">
-      {errorOpen && (
-        <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
-      )}
-      <div className=" z-2  max-w-screen-sm overflow-hidden">
-        <div className="flex items-center flex-col mb-4  rounded-lg text-center ">
-          <Link to="/">
-            <img
-              src={settings?.store_logo_color}
-              alt="logo"
-              className=" mb-3"
-              style={{ width: '100px', height: '50px' }}
-            />
-          </Link>
-          <h2 className="text-xl mb-2 text-center font-semibold">
-            {formatMessage({ id: 'track-my-order' })}
-          </h2>
-          <h1>{formatMessage({ id: 'track-order-enter-your-phone' })}</h1>
-        </div>
-        <div className="rounded-lg border bg-gray-100 mb-2">
-          <Formik
-            initialValues={{
-              phoneNumber: '',
-            }}
-            validationSchema={validationSchema}
-            onSubmit={async (values, actions) => {
-              setErrorOpen(false);
-              try {
-                const res = await userLogin({
-                  phoneNumber: `${countryCode.value}${values.phoneNumber}`,
-                });
-                if (res === 'ok') {
-                } else {
-                  actions.setSubmitting(false);
-                }
-              } catch (error) {
-                setErrorOpen(true);
-                setErrorMessage('Something went wrong, Please try again');
-              }
+    <Layout>
+      <AnimatePresence>
+        {!showGuestOrders && (
+          <motion.div
+            initial={false}
+            exit={{ opacity: 0 }}
+            className=" text-gray-900 relative max-w-screen-sm mx-auto flex items-center justify-center"
+            style={{
+              height: 'calc(100vh - 140px)',
             }}
           >
-            {({ handleSubmit, values, isSubmitting }) => {
-              return (
-                <form className="px-3 py-2" onSubmit={handleSubmit}>
-                  <PhoneNumberCustomInput
-                    label={formatMessage({ id: 'phone-label' })}
-                    name="phoneNumber"
-                    value={values.phoneNumber}
-                    countryCode={countryCode}
-                    setCountryCode={setCountryCode}
+            {errorOpen && (
+              <ErrorSnackbar
+                message={errorMessage}
+                closeFunction={closeError}
+              />
+            )}
+            <motion.div className=" z-2  overflow-hidden">
+              <div className="flex items-center flex-col mb-4  rounded-lg text-center ">
+                <Link to={`/${locale}/`}>
+                  <img
+                    src={settings?.store_logo_color}
+                    alt="logo"
+                    className=" mb-3"
+                    style={{ width: '100px', height: '50px' }}
                   />
+                </Link>
+                <h2 className="text-xl mb-2 text-center font-bold">
+                  {formatMessage({ id: 'track-my-order' })}
+                </h2>
+                <h1 className="font-semibold">
+                  {formatMessage({ id: 'track-order-enter-your-phone' })}
+                </h1>
+              </div>
+              <div className="rounded-lg border bg-gray-100 mb-2">
+                <Formik
+                  initialValues={{
+                    phoneNumber: '',
+                  }}
+                  validationSchema={validationSchema}
+                  onSubmit={async (values, actions) => {
+                    setErrorOpen(false);
+                    try {
+                      const res = await trackGuestOrder({
+                        phoneNumber: `${countryCode.value}${values.phoneNumber}`,
+                      });
+                      setOrders(res.orders);
+                      setShowGuestOrders(true);
+                      actions.setSubmitting(false);
+                    } catch (error) {
+                      if (error.response?.data?.message === 'user not exists') {
+                        setErrorOpen(true);
+                        setErrorMessage(
+                          formatMessage({ id: 'track-order-no-orders' })
+                        );
+                      } else if (
+                        error.response?.data?.message?.mobile[0] ===
+                        'The selected mobile is invalid.'
+                      ) {
+                        actions.setErrors({
+                          phoneNumber: formatMessage({ id: 'invalid-phone' }),
+                        });
+                      } else {
+                        setErrorOpen(true);
+                        setErrorMessage(
+                          formatMessage({
+                            id: 'something-went-wrong-snackbar',
+                          })
+                        );
+                      }
+                    }
+                  }}
+                >
+                  {({ handleSubmit, values, isSubmitting }) => {
+                    return (
+                      <form className="px-3 py-2" onSubmit={handleSubmit}>
+                        <PhoneNumberCustomInput
+                          label={formatMessage({ id: 'phone-label' })}
+                          name="phoneNumber"
+                          value={values.phoneNumber}
+                          countryCode={countryCode}
+                          setCountryCode={setCountryCode}
+                        />
 
-                  <div className=" py-1 mt-2">
-                    <button
-                      disabled={isSubmitting}
-                      type="submit"
-                      className={`${
-                        isSubmitting
-                          ? 'bg-main-color cursor-not-allowed'
-                          : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
-                      } w-full rounded uppercase  p-2 font-semibold  transition duration-150 `}
-                    >
-                      <Loader
-                        type="ThreeDots"
-                        color="#fff"
-                        height={20}
-                        width={20}
-                        visible={isSubmitting}
-                      />
-                      {!isSubmitting && formatMessage({ id: 'submit' })}
-                    </button>
-                  </div>
-                </form>
-              );
-            }}
-          </Formik>
-        </div>
-      </div>
-      <div
-        className={`${
-          isTabletOrAbove
-            ? 'credentials-language__container'
-            : 'credentials-language__container-mobile'
-        }`}
-      >
-        <Language />
-      </div>
-      <div
-        className={`${
-          isTabletOrAbove
-            ? 'credentials-back-button__container'
-            : 'credentials-back-button__container-mobile'
-        }`}
-      >
-        <button onClick={() => history.goBack()}>
-          <AiOutlineArrowLeft className="w-6 h-6" />
-        </button>
-      </div>
-    </div>
+                        <div className=" py-1 mt-2">
+                          <button
+                            disabled={isSubmitting}
+                            type="submit"
+                            className={`${
+                              isSubmitting
+                                ? 'bg-main-color cursor-not-allowed'
+                                : 'bg-main-color text-main-text hover:bg-main-color'
+                            } w-full rounded uppercase flex items-center justify-center  p-2 font-semibold  transition duration-150 `}
+                          >
+                            <Loader
+                              type="ThreeDots"
+                              color="#fff"
+                              height={24}
+                              width={24}
+                              visible={isSubmitting}
+                            />
+                            {!isSubmitting &&
+                              formatMessage({ id: 'btn-track' })}
+                          </button>
+                        </div>
+                      </form>
+                    );
+                  }}
+                </Formik>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showGuestOrders && <GuestOrders orders={orders} />}
+      </AnimatePresence>
+    </Layout>
   );
 }

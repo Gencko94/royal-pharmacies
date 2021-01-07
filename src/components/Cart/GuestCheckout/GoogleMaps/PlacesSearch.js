@@ -63,9 +63,7 @@ export default function PlacesSearch({ panTo, markerAddress }) {
       const results = await getGeocode({ address: suggestion.description });
       const { lat, lng } = await getLatLng(results[0]);
       panTo({ lat, lng });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   React.useEffect(() => {
     if (markerAddress) {

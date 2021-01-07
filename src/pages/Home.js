@@ -131,9 +131,21 @@ export default function Home() {
             cb={setCartMenuOpen}
           />
 
-          {isLoading && <SwiperLoader />}
-          {isLoading && <SwiperLoader />}
-          {isLoading && <SwiperLoader />}
+          {isLoading && (
+            <div className="my-8">
+              <SwiperLoader />
+            </div>
+          )}
+          {isLoading && (
+            <div className="my-8">
+              <SwiperLoader />
+            </div>
+          )}
+          {isLoading && (
+            <div className="my-8">
+              <SwiperLoader />
+            </div>
+          )}
           {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
         </div>
       </div>

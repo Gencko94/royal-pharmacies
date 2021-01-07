@@ -55,7 +55,6 @@ export default function GoogleMapsAddress({ setShowMap }) {
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
         )
         .then(res => {
-          console.log(res.data);
           setMarkerAddress(`${res.data.results[0].formatted_address}`);
           setMarkerInfoWindowDetails(
             `${res.data.results[0].address_components
@@ -63,7 +62,7 @@ export default function GoogleMapsAddress({ setShowMap }) {
               .join(', ')}`
           );
         })
-        .catch(err => console.log(err));
+        .catch(err => {});
     } else {
       setMarkerAddress(null);
       setMarkerInfoWindowDetails(null);
@@ -72,19 +71,13 @@ export default function GoogleMapsAddress({ setShowMap }) {
 
   if (loadError)
     return (
-      <div
-        className="flex justify-center items-center"
-        style={{ height: 'calc(-173px + 100vh)' }}
-      >
+      <div className="flex justify-center items-center h-full">
         <h1>{formatMessage({ id: 'error-loading-maps' })}</h1>
       </div>
     );
   if (!isLoaded)
     return (
-      <div
-        className="flex justify-center items-center"
-        style={{ height: 'calc(-176px + 100vh)' }}
-      >
+      <div className="flex justify-center items-center h-full">
         <Loader
           type="ThreeDots"
           color="#b72b2b"
@@ -108,7 +101,7 @@ export default function GoogleMapsAddress({ setShowMap }) {
         <GoogleMap
           mapContainerStyle={{
             width: '100%',
-            height: isTabletOrAbove ? '100%' : '500px',
+            height: isTabletOrAbove ? '100%' : '400px',
           }}
           zoom={15}
           center={center}

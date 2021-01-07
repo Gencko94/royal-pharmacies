@@ -81,6 +81,7 @@ const baseStrings = {
   'two-reviews': 'Two Reviews',
   'secure-transaction': 'Secure transaction',
   quantity: 'Quantity',
+  qty: 'Qty',
   'one-item-left': 'One Item Left',
   'two-items-left': 'Two Items Left',
   'more-than-10-items-left': 'Items Left',
@@ -99,7 +100,7 @@ const baseStrings = {
   'we-have-found': 'We have found',
   addresses: 'addresses ',
   'one-address': 'address',
-  'show-order-receipt': 'Show order receipt',
+  'show-order-receipt': 'Order Receipt',
   'order-receipt': 'Order Receipt',
   'not-found-title': "We can't seem to find the page you're looking for. ",
   'back-to-home': 'Back to Homepage',
@@ -111,9 +112,11 @@ const baseStrings = {
   off: 'OFF',
   'loading-reviews': 'Loading Reviews...',
   'welcome-user': 'Welcome',
+  'delivery-status': 'Delivery Status',
   'one-day': 'One Day',
   'two-days': 'Two Days',
   days: 'Days',
+  soon: 'Soon',
   'more-than-10-days': 'Days',
   'delivery-cost': 'Delivery Cost',
   'accepted-payments': 'Accepted Payment Methods',
@@ -122,6 +125,7 @@ const baseStrings = {
   'coupon-expired': 'Expired Coupon',
   'coupon-invalid': 'Invalid Coupon',
   'coupon-conditions-not-met': 'Coupon Conditions were not met',
+  'coupon-limit-reached': 'Coupon Limit Reached',
   'one-search-result': 'One Search Result for',
   'two-search-results': 'Two Search Results for',
   'more-than-10-search-results': 'Search Results for',
@@ -145,6 +149,8 @@ const baseStrings = {
   'nav.shipTo': 'Deliver To',
   'nav.search.placeholder': 'What are you looking for ?',
   'nav.account': 'My Account',
+  'nav.track': 'Track Order',
+  'nav.history': 'Browse History',
   categories: 'Categories',
   allCategories: 'All Categories ',
   seeAll: 'See all',
@@ -168,6 +174,9 @@ const baseStrings = {
   'login-welcome-back': 'Welcome Back !',
   'register-on-mrg': 'Register on MRG ',
   'invalid-credentials': 'Phone number or password are not correct',
+  'invalid-phone': 'Invalid Phone Number ',
+  'track-order-no-orders':
+    'No Orders were Linked to this Phone number, Please check the Phone number and try again',
   'new-to-family': 'Are you new to the family ? ',
   'join-us-here': 'Join us here',
   'forgot-password': 'Forgot password ?',
@@ -324,12 +333,14 @@ const baseStrings = {
     'There are no Ratings for this Product yet, Be the first to Rate ',
   'how-to-rate': 'How do i rate this Product ?',
   'rating-guide':
-    'If you have Purchased this item, you can Rate and Leave a Feedback at <link>My Orders</link>',
+    'If you are a MRG user and have Purchased this item, you can Rate and Leave a Feedback at <link>My Orders</link>',
   /**
    * Viewed Items Page
    *
    */
   'your-viewed-items': 'Your Browsing history',
+  'no-viewed-items':
+    'Your Viewed Items list is Empty, Viewed Products will be shown here',
   /**
    * Footer
    */
@@ -367,6 +378,7 @@ const baseStrings = {
   shop: 'Shop ',
   clear: 'Clear',
   'track-my-order': 'Track Order',
+  'btn-track': 'Track',
   'track-order-enter-your-phone':
     'Enter the phone number associated with your Order to track your order ',
   'order-cancelled': 'Cancelled',
@@ -381,6 +393,8 @@ const baseStrings = {
   no_quantity: 'Out of Stock',
   'guest-checkout-login':
     'This phone number is already linked to an account , Please Sign in first ',
+  'select-order-to-display': 'ٍSelect an Order to display details',
+  delivery: 'Delivery',
 };
 
 export const en = baseStrings;

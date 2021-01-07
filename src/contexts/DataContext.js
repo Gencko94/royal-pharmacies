@@ -37,11 +37,13 @@ export default function DataContextProvider({ children }) {
   };
 
   const removeViewedItems = id => {
+    console.log(id);
     let localVisited = localStorage.getItem('visitedItems');
     let parsed = JSON.parse(localVisited);
     localVisited = parsed.filter(i => {
       return i.id !== id.toString();
     });
+
     localStorage.setItem('visitedItems', JSON.stringify(localVisited));
 
     queryCache.setQueryData('viewedItems', prev => {

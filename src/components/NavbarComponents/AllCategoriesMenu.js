@@ -43,9 +43,8 @@ export default function AllCategoriesMenu({
       <div className=" ">
         {categories.map(item => {
           return (
-            <ReactHoverObserver hoverDelayInMs={300}>
+            <ReactHoverObserver key={item.id} hoverDelayInMs={300}>
               <AllCategoriesButton
-                key={item.id}
                 item={item}
                 handleMegaMenuOpen={handleMegaMenuOpen}
                 handleMenuClose={handleMenuClose}

@@ -57,15 +57,11 @@ export default function Checkout() {
     handleStepForward();
   };
   const handleStepForward = () => {
-    if (selectedStep === 2) {
-      return;
-    } else {
-      setSelectedStep(selectedStep + 1);
-      setStepDone({
-        ...stepDone,
-        [selectedStep]: true,
-      });
-    }
+    setSelectedStep(selectedStep + 1);
+    setStepDone({
+      ...stepDone,
+      [selectedStep]: true,
+    });
   };
   const handleCheckout = async () => {
     const order = {
@@ -82,13 +78,21 @@ export default function Checkout() {
         order,
         coupon,
       });
-      console.log(res);
       setPaymentUrl(res.payment);
+      setStepDone({
+        ...stepDone,
+        1: true,
+      });
       setSelectedStep(2);
     } catch (error) {
       setErrorOpen(true);
+      if (
+        error.response?.data?.message ===
+        'Coupon already used by this customer.'
+      ) {
+        return setErrorMessage(formatMessage({ id: 'coupon-limit-reached' }));
+      }
       setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
-      console.log(error.response);
     }
   };
   React.useEffect(() => {

@@ -1,12 +1,4 @@
 export const ar = {
-  // 'routes.home': '/',
-  // 'routes.cart': '/cart',
-  // 'routes.register': '/app/register',
-  // 'routes.login': '/app/login',
-  // 'routes.singleProduct': '/products/:category/:name/:id',
-  /** Page content */
-  // general
-
   'shop-on-mrg': 'تسوق على MRG Mall',
   shop: 'تسوق',
 
@@ -52,6 +44,8 @@ export const ar = {
   'in-stock': 'متوفرة',
   'price-before': 'السعر قبل',
   'price-now': 'السعر الآن',
+  'delivery-status': 'وضع التوصيل',
+  delivery: 'التوصيل',
 
   'free-delivery': 'توصيل مجاني',
   'free-delivery-to': 'توصيل مجاني إلى',
@@ -72,6 +66,7 @@ export const ar = {
   'two-reviews': 'مراجعتان',
   'secure-transaction': 'دفع آمن',
   quantity: 'الكمية',
+  qty: 'الكمية',
   'one-item-left': 'قطعة واحدة متبقية',
   'two-items-left': 'قطعان متبقيتان',
   'more-than-10-items-left': 'قطعة متبقية',
@@ -100,7 +95,7 @@ export const ar = {
   'no-orders-placed': 'لم تقم بطلب اي منتج حتى الآن',
   'start-shopping-now': 'ابدأ التسوق الآن',
   'search-for-an-area': 'ابحث عن منطقة ...',
-  'show-order-receipt': 'إظهار فاتورة الطلبية',
+  'show-order-receipt': 'فاتورة الطلبية',
   'order-receipt': 'فاتورة الطلبية',
   'not-found-title': 'يبدو اننا لم نجد ما تبحث عنه.',
   'back-to-home': 'العودة إلى الرئيسية',
@@ -123,6 +118,7 @@ export const ar = {
   'coupon-expired': 'الكوبون منتهي الصلاحية',
   'coupon-invalid': 'الرجاء التأكد من الكوبون',
   'coupon-conditions-not-met': 'شروط الكوبون لم تحقق',
+  'coupon-limit-reached': 'تجاوز الحد المسموح لاستخدام الكوبون',
   'one-search-result': 'نتيجة بحث واحدة ل',
   'two-search-results': 'نتيجتا بحث ل',
   'more-than-10-search-results': 'نتيجة بحث  ل',
@@ -144,6 +140,8 @@ export const ar = {
   'nav.shipTo': 'توصيل الى',
   'nav.search.placeholder': 'ما الذي تبحث عنه ؟',
   'nav.account': 'حسابي',
+  'nav.track': 'متابعة الطلب',
+  'nav.history': 'المنتجات المزارة',
   categories: 'الفئات',
   allCategories: 'جميع الفئات',
   seeAll: 'الكل',
@@ -168,6 +166,9 @@ export const ar = {
   'login-welcome-back': 'اهلا بك مجددا !',
   'register-on-mrg': 'اشترك في MRG',
   'invalid-credentials': 'رقم الهاتف او كلمة المرور غير صحيحين',
+  'invalid-phone': 'تأكد من رقم الهاتف ',
+  'track-order-no-orders':
+    'ليس هناك طلبات مربوطة بهذا الرقم , الرجاء التاكد والمحاولة مرة اخرى',
   'new-to-family': 'هل انت مستخدم جديد ؟',
   'join-us-here': ' اشترك معنا الآن',
   'forgot-password': 'هل نسيت كلمة المرور ؟',
@@ -290,6 +291,8 @@ export const ar = {
   'order-status': 'حالة الطلب',
   'ordered-at': 'تم الطلب في',
   'delivered-at': 'تم التوصيل في',
+
+  soon: 'قريبا',
   'order-details': 'تفاصيل الطلب',
   'delivered-to': 'تم التوصيل إلى',
   'payment-method': 'طريقة الدفع',
@@ -318,7 +321,7 @@ export const ar = {
   'no-ratings': 'لا يوجد تقييمات بعد , كن اول من يقيم هذا المنتج ',
   'how-to-rate': 'كيف يمكنني ان اقيم منتج ؟',
   'rating-guide':
-    'إن قمت بشراء هذا المنتج يمكنك التقييم والتعليق من خلال صفحة <link>طلباتي</link>',
+    'إن كان لديك حساب وقمت بشراء هذا المنتج يمكنك التقييم والتعليق من خلال صفحة <link>طلباتي</link>',
   /**
    * Footer
    */
@@ -333,6 +336,8 @@ export const ar = {
    *
    */
   'your-viewed-items': 'المنتجات التي قمت بزيارتها',
+  'no-viewed-items':
+    'إن قائمة المنتجات المزارة فارغة , ستظهر المنتجات التي تقوم بزيارتها هنا',
 
   'filtered-by': 'مفرزة حسب',
   'filter-by': 'فرز حسب',
@@ -360,6 +365,7 @@ export const ar = {
   'by-category': 'حسب الفئة',
   clear: 'مسح',
   'track-my-order': 'متابعة طلب سابق',
+  'btn-track': 'متابعة',
   'track-order-enter-your-phone':
     'ادخل رقم الهاتف المرافق للطلب الذي قمت بطلبه للتأكد من حالة الطلب',
   'order-cancelled': 'ملغى',
@@ -374,4 +380,5 @@ export const ar = {
   no_quantity: 'الكمية منتهية',
   'guest-checkout-login':
     'إن هذا الرقم مسجل بحساب مسبق , الرجاء تسجيل الدخول اولا',
+  'select-order-to-display': 'اختر طلبا لمشاهدة التفاصيل',
 };

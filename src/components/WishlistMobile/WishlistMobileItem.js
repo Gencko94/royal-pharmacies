@@ -37,7 +37,7 @@ export default function WishlistMobileItem({
       className="border-b "
     >
       <div className="py-2 cart__item-mobile">
-        <Link to={`/${locale}/item/${item.id}}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
           <LazyImage
             src={item.image}
             origin="small"
@@ -46,14 +46,9 @@ export default function WishlistMobileItem({
           />
         </Link>
         <div className="">
-          <Link to={`/${locale}/item/${item.id}}`}>
+          <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
             <h1 className="font-semibold ">{`${item[`name_${locale}`]}`}</h1>
           </Link>
-
-          {/* <div className="flex items-center mb-2">
-            <h1 className=" font-semibold">{formatMessage({ id: 'price' })}</h1>
-            <span className="mx-2">{item.price}</span>
-          </div> */}
         </div>
       </div>
       <div className="flex justify-center text-sm  items-center my-2 ">
@@ -61,11 +56,9 @@ export default function WishlistMobileItem({
           onClick={() => {
             handleRemoveItemFromWishList(item.id);
           }}
-          className={`${
-            removeFromWishListButtonLoading === item.id
-              ? 'bg-gray-300'
-              : 'bg-main-color'
-          }  text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded  font-semibold uppercase`}
+          className={`
+              bg-main-color
+          } text-main-text text-sm flex items-center justify-center flex-1 p-2 rounded  font-semibold uppercase`}
         >
           {removeFromWishListButtonLoading === item.id ? (
             <Loader

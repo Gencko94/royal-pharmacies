@@ -24,8 +24,8 @@ export default function SideTabs() {
           <div key={option.name}>
             <NavLink
               exact
-              className="w-full px-6 py-4 inline-block text-center"
-              activeClassName={`font-semibold`}
+              className="w-full text-lg font-semibold px-6 py-4 inline-block text-center "
+              activeClassName={`font-bold bg-main-color text-main-text transition duration-100 `}
               to={`${url}${option.url}`}
             >
               {formatMessage({ id: option.name })}

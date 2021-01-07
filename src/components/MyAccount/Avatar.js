@@ -21,25 +21,24 @@ export default function Avatar() {
         className="flex items-center justify-center"
         style={{ flexBasis: '20%' }}
       >
-        <div className="p-2 text-xl text-body-light rounded-full bg-gray-500">
+        <div className="p-2 text-xl font-bold text-body-light rounded-full bg-gray-500">
           {userData?.name.split(' ')[0].charAt(0).toUpperCase()}
         </div>
       </div>
-      <div className=" flex flex-col items-center text-sm flex-1 justify-center font-semibold mx-2 ">
-        <div className="flex mb-1 items-center ">
+      <div className=" flex flex-col items-center flex-1 justify-center font-semibold mx-2 ">
+        <div className="flex mb-1 font-bold items-center justify-center flex-wrap">
           <h1>{formatMessage({ id: 'welcome-user' })} </h1>
           <h1 className="mx-1">{userData?.name}</h1>
         </div>
         <h1 className="mb-1">{userData?.mobile}</h1>
-        <div className="flex items-center">
-          <IoMdPower className=" w-5 h-5 text-main-color" />
-          <button
-            onClick={userLogoutMutation}
-            className="hover:underline mx-1 font-semibold  text-main-color"
-          >
-            {formatMessage({ id: 'logout' })}
-          </button>
-        </div>
+
+        <button
+          onClick={userLogoutMutation}
+          className="text-xs md:text-sm transition duration-100 flex items-center justify-center px-2 py-1 rounded-full bg-main-color text-main-text hover:text-main-color hover:bg-body-light font-semibold"
+        >
+          <IoMdPower className=" w-5 h-5" />
+          <span className="mx-1">{formatMessage({ id: 'logout' })}</span>
+        </button>
       </div>
     </motion.div>
   );

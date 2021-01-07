@@ -81,7 +81,7 @@ export default function PasswordChangeModal({
             <AiOutlineArrowRight className="w-6 h-6 " />
           )}
         </button>
-        <h1 className=" text-lg mx-4">
+        <h1 className=" text-lg font-semibold mx-4">
           {formatMessage({ id: 'change-password' })}
         </h1>
       </div>
@@ -99,8 +99,6 @@ export default function PasswordChangeModal({
             setSuccessMessage(formatMessage({ id: 'password-change-success' }));
             setSuccessOpen(true);
           } catch (error) {
-            console.clear();
-            console.log(error.response);
             setErrorOpen(true);
             setErrorMessage(
               formatMessage({ id: 'something-went-wrong-snackbar' })
@@ -134,18 +132,16 @@ export default function PasswordChangeModal({
               <div className="mt-1">
                 <button
                   type="submit"
-                  className={`${
-                    isSubmitting
-                      ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
-                  } w-full rounded flex items-center justify-center p-2 font-semibold  transition duration-150 uppercase `}
+                  className={`
+                      bg-main-color text-main-text hover:bg-red-800
+                   w-full rounded flex items-center justify-center p-2 font-semibold  transition duration-150 uppercase `}
                 >
                   {isSubmitting && (
                     <Loader
                       type="ThreeDots"
-                      color="#b72b2b"
-                      height={20}
-                      width={20}
+                      color="#fff"
+                      height={25}
+                      width={25}
                       visible={isSubmitting}
                     />
                   )}

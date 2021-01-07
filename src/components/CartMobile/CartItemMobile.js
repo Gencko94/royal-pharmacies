@@ -73,7 +73,6 @@ export default function CartItemMobile({ item }) {
     setQuantity(parseInt(quantity) + 1);
   };
   const handleChangeQuantity = e => {
-    console.log(e.target.value);
     if (e.target.value < 1) {
       return;
     } else {
@@ -91,7 +90,6 @@ export default function CartItemMobile({ item }) {
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
-      console.log(error.response);
     }
   };
   const handleEditItemFromCart = async (cartId, itemId, quantity) => {
@@ -107,7 +105,6 @@ export default function CartItemMobile({ item }) {
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
-      console.log(error.response);
     }
   };
   const handleRemoveItemFromWishlist = async id => {
@@ -115,17 +112,13 @@ export default function CartItemMobile({ item }) {
       await removeFromWishListMutation({ id, userId });
 
       setItemInWishlist(false);
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   const handleAddItemToWishlist = async item => {
     try {
       await addToWishListMutation({ id: item.id, userId });
       setItemInWishlist(true);
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   const variant = {
     hidden: {

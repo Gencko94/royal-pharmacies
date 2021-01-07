@@ -30,6 +30,8 @@ export default function GuestGoogleMapsAddress({
   name,
   phoneNumber,
   email,
+  countryCode,
+  setCountryCode,
 }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { formatMessage } = useIntl();
@@ -61,7 +63,6 @@ export default function GuestGoogleMapsAddress({
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
         )
         .then(res => {
-          console.log(res.data);
           setMarkerAddress(`${res.data.results[0].formatted_address}`);
           setMarkerInfoWindowDetails(
             `${res.data.results[0].address_components
@@ -69,7 +70,7 @@ export default function GuestGoogleMapsAddress({
               .join(', ')}`
           );
         })
-        .catch(err => console.log(err));
+        .catch(err => {});
     } else {
       setMarkerAddress(null);
       setMarkerInfoWindowDetails(null);
@@ -157,6 +158,8 @@ export default function GuestGoogleMapsAddress({
         phoneNumber={phoneNumber}
         setMarker={setMarker}
         email={email}
+        countryCode={countryCode}
+        setCountryCode={setCountryCode}
       />
     </div>
   );

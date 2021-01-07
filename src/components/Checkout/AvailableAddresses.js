@@ -46,7 +46,6 @@ export default function AvailableAddresses({
       <AnimateSharedLayout>
         <motion.div layout className="p-3 locations-grid__desktop">
           {userAddresses.map(address => {
-            console.log(address);
             return (
               <motion.div
                 layout
@@ -124,7 +123,10 @@ export default function AvailableAddresses({
                       className="text-sm mb-2 font-semibold"
                       style={{ height: '65px' }}
                     >
-                      <h1>{address.marked_address}</h1>
+                      <h1>
+                        {address.marked_address || address.userTyped_addres}
+                      </h1>
+                      <h1>{address.addition_direction}</h1>
                     </div>
                     <button
                       onClick={() => handleSelectAddress(address)}
