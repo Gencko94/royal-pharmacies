@@ -1544,10 +1544,6 @@ video {
   min-width: 0;
 }
 
-.min-w-75p{
-  min-width: 75%;
-}
-
 .object-cover{
   object-fit: cover;
 }
@@ -1582,6 +1578,10 @@ video {
 
 .overflow-x-hidden{
   overflow-x: hidden;
+}
+
+.overflow-y-hidden{
+  overflow-y: hidden;
 }
 
 .overflow-x-scroll{

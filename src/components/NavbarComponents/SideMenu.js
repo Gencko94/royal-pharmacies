@@ -149,8 +149,8 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
          bg-side-light text-side-light-text
         z-30  fixed top-0 ${
           locale === 'ar' ? 'right-0' : 'left-0'
-        } min-w-75p h-screen sm:text-lg overflow-y-auto`}
-      style={{ maxWidth: '75%' }}
+        }  h-screen sm:text-lg overflow-y-hidden`}
+      style={{ maxWidth: '80%', minWidth: '80%' }}
     >
       <TopSection toggleSideMenu={toggleSideMenu} />
 
