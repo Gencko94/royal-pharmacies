@@ -19,13 +19,17 @@ export default function OrderSuccess() {
       case 2:
         return formatMessage({ id: 'two-days' });
 
-      case parseInt(deliveryCountry?.delivery_time > 10):
+      case parseInt(deliveryCountry?.delivery_time > 10) &&
+        deliveryCountry?.delivery_time:
         return formatMessage({ id: 'more-than-10-days' });
 
       default:
         return formatMessage({ id: 'days' });
     }
   };
+  React.useEffect(() => {
+    localStorage.setItem('localCart', JSON.stringify([]));
+  }, []);
   return (
     <div className=" text-gray-900 px-2 flex justify-center items-center   h-screen relative">
       <div className="max-w-screen-sm flex items-center justify-center flex-col">

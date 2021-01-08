@@ -22,8 +22,8 @@ export default function GuestCheckOut() {
   );
   const { authenticationLoading, userId } = React.useContext(AuthProvider);
   const options = [
-    { value: '00965', label: '+965' },
-    { value: '00966', label: '+966' },
+    { value: '+965', label: '+965' },
+    { value: '+966', label: '+966' },
   ];
   const [countryCode, setCountryCode] = React.useState(options[0]);
   const [

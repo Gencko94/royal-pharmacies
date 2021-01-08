@@ -12,7 +12,6 @@ import CategoryProductItem from '../components/Category/CategoryProductItem';
 import VariantCategoryProductItem from '../components/Category/VariantCategoryProductItem';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
-import LazyImage from '../helpers/LazyImage';
 import { getSingleBrandProducts } from '../Queries/Queries';
 
 export default function SingleBrand() {
@@ -25,7 +24,7 @@ export default function SingleBrand() {
     setPage(data.selected + 1);
   };
   const { data, isLoading: productsLoading } = useQuery(
-    ['single-brand', { slug, page, number: 24 }],
+    ['single-brand', { slug, page, number: 42 }],
     getSingleBrandProducts,
     {
       retry: true,
@@ -60,12 +59,19 @@ export default function SingleBrand() {
         className="max-w-default mx-auto p-4 overflow-hidden"
         style={{ minHeight: 'calc(100vh - 150px)' }}
       >
-        <LazyImage
-          pb="calc(100% * 210/500)"
-          origin="original"
-          src={data?.brandLogo}
-          alt={data?.brandName?.[locale].name}
-        />
+        {!productsLoading && (
+          <div className="flex justify-center flex-col items-center">
+            <h1 className="font-bold text-2xl mb-3">
+              {formatMessage({ id: 'shop-brands' })}{' '}
+              {data?.brandName?.[locale].name} {formatMessage({ id: 'at-mrg' })}
+            </h1>
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/original/${data?.brandLogo}`}
+              alt={data?.brandName?.[locale].name}
+              style={{ maxHeight: '200px', width: 'auto' }}
+            />
+          </div>
+        )}
 
         {productsLoading && (
           <div className="brand-grid__desktop py-2 ">

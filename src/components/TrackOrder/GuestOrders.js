@@ -12,7 +12,7 @@ import amex from '../../assets/paymentLogos/amex.png';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { getSingleGuestOrder } from '../../Queries/Queries';
-
+import moment from 'moment';
 export default function GuestOrders({ orders }) {
   const { formatMessage } = useIntl();
   const [isOpen, setIsOpen] = React.useState(false);
@@ -189,6 +189,12 @@ export default function GuestOrders({ orders }) {
                   <div className="flex items-center font-bold">
                     <h1>{formatMessage({ id: 'order-number' })}</h1>
                     <h1 className="mx-1">{order.id}</h1>
+                  </div>
+                  <div className="flex items-center font-bold">
+                    <h1>{formatMessage({ id: 'order-date' })}</h1>
+                    <h1 className="mx-1">
+                      {moment(order.created_at).format('DD/MM/YYYY - HH:MM')}
+                    </h1>
                   </div>
 
                   <div className="flex items-center text-sm">

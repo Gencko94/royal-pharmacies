@@ -6,7 +6,6 @@ import Variants from './Variants';
 import Options from './Options';
 import VariantsOnly from './VariantsOnly';
 import { Link } from 'react-router-dom';
-import offerbanner from '../../../assets/offerbanner.png';
 import { DataProvider } from '../../../contexts/DataContext';
 import { calculateDiscountPrice } from '../../../helpers/calculateDiscountPrice';
 import RelatedItems from '../RelatedItems';
@@ -188,7 +187,7 @@ export default function VariantMiddleSection({
             </div>
           )}
           <div className="">
-            <div className="flex items-center flex-1">
+            <div className="flex items-center flex-1 flex-wrap">
               <h1 className="    ">
                 {isSale
                   ? formatMessage({ id: 'price-now' })
@@ -200,14 +199,14 @@ export default function VariantMiddleSection({
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
               </h1>
-              <h1 className=" font-normal uppercase  text-gray-700">
+              <h1 className=" font-normal uppercase text-sm  text-gray-700">
                 ({formatMessage({ id: 'vat-inclusive' })})
               </h1>
             </div>
             {isSale && (
               <div className="flex items-center   ">
                 <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                <span className=" text-base mx-1 text-main-color">
+                <span className=" font-bold mx-1 text-main-color">
                   {calculateDiscountPrice(option.price, option.promotion_price)}
                 </span>
               </div>
@@ -221,7 +220,7 @@ export default function VariantMiddleSection({
 
         <hr className="my-2" />
       </div>
-      <img src={offerbanner} alt="offer" />
+
       {data?.related_products?.length > 0 && (
         <RelatedItems data={data.related_products} />
       )}

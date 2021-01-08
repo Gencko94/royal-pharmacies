@@ -13,7 +13,8 @@ const baseStrings = {
   // general
 
   'shop-on-mrg': 'Shop on MRG Mall',
-
+  'shop-brands': 'Shop',
+  'at-mrg': 'at MRG Mall',
   home: 'Home',
   cart: 'Cart',
   wishlist: 'Wishlist',
@@ -395,6 +396,12 @@ const baseStrings = {
     'This phone number is already linked to an account , Please Sign in first ',
   'select-order-to-display': 'ٍSelect an Order to display details',
   delivery: 'Delivery',
+  'add-reviews': 'Add Reviews',
+  'add-review': 'Add Review for ',
+  'select-product-to-review': 'Select a Product that you want to review',
+  'what-is-your-rating': 'How did you like this Product ?',
+  'add-feedback': 'Express your feedback to other customers',
+  'review-added': 'Review Added Successfully',
 };
 
 export const en = baseStrings;

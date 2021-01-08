@@ -24,7 +24,12 @@ export default function ImageZoom({ data }) {
         >
           {[data.image, ...data.gallery].map(item => {
             return (
-              <SwiperSlide className="relative" id="slide" zoom key={item?.id}>
+              <SwiperSlide
+                className="relative"
+                id="slide"
+                zoom
+                key={item?.link}
+              >
                 <img
                   src={`${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`}
                   alt={data.full_translation[locale].title}
@@ -56,9 +61,9 @@ export default function ImageZoom({ data }) {
           watchSlidesVisibility
           watchSlidesProgress
         >
-          {[data.image, ...data.gallery].map((item, i) => {
+          {[data.image, ...data.gallery].map(item => {
             return (
-              <SwiperSlide key={item?.id}>
+              <SwiperSlide key={item?.link}>
                 <img
                   src={`${process.env.REACT_APP_IMAGES_URL}/small/${item?.link}`}
                   alt={data.full_translation[locale].title}

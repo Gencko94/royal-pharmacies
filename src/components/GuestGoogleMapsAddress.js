@@ -109,13 +109,13 @@ export default function GuestGoogleMapsAddress({
           : 'my-addresses-mobile-maps__grid'
       }`}
     >
-      <div className="relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
+      <div className="relative h-full">
         <PlacesSearch panTo={panTo} markerAddress={markerAddress} />
 
         <GoogleMap
           mapContainerStyle={{
             width: '100%',
-            height: isTabletOrAbove ? '100%' : '500px',
+            height: isTabletOrAbove ? '100%' : '400px',
           }}
           zoom={15}
           center={center}

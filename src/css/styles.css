@@ -31,8 +31,8 @@ input {
   position: relative;
   display: grid;
   gap: 15px;
-  grid-template-columns: minmax(250px, 1.2fr) minmax(250px, 1.3fr) minmax(
-      250px,
+  grid-template-columns: minmax(250px, 1.2fr) minmax(220px, 1.3fr) minmax(
+      238px,
       0.7fr
     );
   grid-template-rows: auto;
@@ -416,11 +416,7 @@ input {
   grid-template-columns: 0.3fr 1fr;
   gap: 0.5em;
 }
-.my-orders-grid__mobile {
-  display: grid;
-  grid-template-columns: 0.7fr 0.3fr;
-  gap: 0.5em;
-}
+
 .guest-orders-grid__desktop {
   display: grid;
   grid-template-columns: 0.5fr 1fr;
@@ -509,6 +505,7 @@ input {
 
   z-index: 30;
   margin-top: 0.25em;
+  overflow: hidden;
 }
 .en-deliver-to__mobile {
   position: absolute;
@@ -532,6 +529,7 @@ input {
   bottom: 50px;
   text-align: center;
   left: 50%;
+  right: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;

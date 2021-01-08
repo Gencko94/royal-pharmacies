@@ -73,7 +73,7 @@ export default function SideCartMenu({ setSideMenuOpen }) {
         )}
 
         {sideCartItems.length > 0 && (
-          <div className="flex-1 overflow-y-auto overflow-x-hidden grid grid-cols-1 gap-1">
+          <div className=" flex-1 overflow-y-auto overflow-x-hidden">
             <AnimatePresence>
               {sideCartItems.map(item => {
                 return <SideCartMenuItem key={item.options.sku} item={item} />;

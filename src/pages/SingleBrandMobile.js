@@ -34,7 +34,7 @@ export default function SingleBrandMobile() {
   );
   return (
     <Layout>
-      <div className="min-h-screen-px-3">
+      <div className="min-h-screen p-3">
         <Helmet>
           <title>
             {data?.brandName?.[locale].name ||
@@ -66,6 +66,20 @@ export default function SingleBrandMobile() {
               {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
                 return <CategoryItemLoader key={i} />;
               })}
+            </div>
+          )}
+          {!productsLoading && (
+            <div className="flex justify-center flex-col items-center">
+              <h1 className="font-bold text-xl mb-3">
+                {formatMessage({ id: 'shop-brands' })}{' '}
+                {data?.brandName?.[locale].name}{' '}
+                {formatMessage({ id: 'at-mrg' })}
+              </h1>
+              <img
+                src={`${process.env.REACT_APP_IMAGES_URL}/original/${data?.brandLogo}`}
+                alt={data?.brandName?.[locale].name}
+                style={{ maxHeight: '150px', width: 'auto' }}
+              />
             </div>
           )}
           <div

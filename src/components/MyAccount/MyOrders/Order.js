@@ -10,7 +10,7 @@ import mastercard from '../../../assets/paymentLogos/mastercard.png';
 import cod from '../../../assets/paymentLogos/cod.png';
 import amex from '../../../assets/paymentLogos/amex.png';
 import { DataProvider } from '../../../contexts/DataContext';
-export default function Order({ order }) {
+export default function Order({ order, handleShowAddReviews, index }) {
   const { formatMessage } = useIntl();
   const [isOpen, setOpen] = React.useState(false);
   const toggleOpen = () => {
@@ -163,6 +163,12 @@ export default function Order({ order }) {
             </h1>
             {resolvePayment()}
           </div>
+          <button
+            onClick={() => handleShowAddReviews(index)}
+            className="rounded text-main-text p-2 font-semibold bg-green-700"
+          >
+            {formatMessage({ id: 'add-reviews' })}
+          </button>
         </motion.div>
         <motion.div className="flex justify-between" layout>
           <div className="mx-1">

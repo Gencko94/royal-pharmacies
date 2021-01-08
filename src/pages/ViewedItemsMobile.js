@@ -5,10 +5,10 @@ import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import LayoutMobile from '../components/LayoutMobile';
 import NoViewedItems from '../components/ViewedItems/NoViewedItems';
 import ViewedItemMobile from '../components/ViewedItems/ViewedItemMobile';
 import { getVisitedItems } from '../Queries/Queries';
+import Layout from '../components/Layout';
 
 export default function ViewedItemsMobile() {
   const { formatMessage } = useIntl();
@@ -22,7 +22,7 @@ export default function ViewedItemsMobile() {
   });
 
   return (
-    <LayoutMobile>
+    <Layout>
       <Helmet>
         <title>{formatMessage({ id: 'viewed-items' })} | MRG</title>
       </Helmet>
@@ -57,6 +57,6 @@ export default function ViewedItemsMobile() {
           </AnimateSharedLayout>
         </div>
       )}
-    </LayoutMobile>
+    </Layout>
   );
 }

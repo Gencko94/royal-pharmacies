@@ -63,7 +63,7 @@ export default function SideCartMenuItem({ item }) {
       animate="visible"
       exit="exited"
       variants={cartItemVariant}
-      className=" side-cart-menu__item mb-2"
+      className=" side-cart-menu__item mb-2 "
     >
       <div className="">
         <Link

@@ -3,9 +3,9 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
+import { useIntl } from 'react-intl';
 import RelatedItem from './RelatedItem';
 import VariantRelatedItem from './VariantRelatedItem';
-import { useIntl } from 'react-intl';
 SwiperCore.use([Navigation]);
 export default function RelatedItems({ data }) {
   const { formatMessage } = useIntl();
@@ -35,8 +35,8 @@ export default function RelatedItems({ data }) {
     },
   };
   return (
-    <div className=" p-1">
-      <h1 className="font-semibold mb-2">
+    <div>
+      <h1 className="font-bold py-2 border-b">
         {formatMessage({ id: 'related-products' })} :
       </h1>
       <Swiper navigation id="main" spaceBetween={3} breakpoints={breakpoints}>

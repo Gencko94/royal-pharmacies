@@ -8,6 +8,7 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { Link } from 'react-router-dom';
+import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
 export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
   const {
     addToCartMutation,
@@ -225,8 +226,27 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
+        <Link
+          className="block relative"
+          to={`/${locale}/products/${item.slug}/${item.id}`}
+        >
           {resolveImage()}
+          {isSale && (
+            <div
+              className={`absolute bg-main-color px-1 text-main-text font-bold top-0   uppercase text-xs ${
+                locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
+              }`}
+              style={{
+                clipPath:
+                  locale === 'ar'
+                    ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 14% 50%)'
+                    : 'polygon(0% 0%, 100% 0, 86% 50%, 100% 100%, 0% 100%)',
+              }}
+            >
+              {calculateDiscountPrice(option.price, option.promotion_price)}{' '}
+              {formatMessage({ id: 'off' })}
+            </div>
+          )}
         </Link>
 
         <AnimatePresence>

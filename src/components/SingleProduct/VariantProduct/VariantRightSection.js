@@ -78,22 +78,16 @@ export default function VariantRightSection({
       style={{ top: '108px' }}
     >
       <div className={`rounded`}>
-        <div className="flex justify-between items-center font-semibold  ">
-          <div className="flex items-center ">
-            <div className="flex items-center">
-              <h1>{formatMessage({ id: 'deliver-to' })}</h1>
-              <h1 className="uppercase mx-1">
-                {deliveryCountry?.translation[locale].name}
-              </h1>
-              <MdLocationOn className="w-5 h-5 text-main-color " />
-            </div>
+        <div className="flex items-center font-semibold ">
+          <div className="flex items-center">
+            <h1>{formatMessage({ id: 'deliver-to' })}</h1>
+            <h1 className="uppercase mx-1">
+              {deliveryCountry?.translation[locale].name}
+            </h1>
+            <MdLocationOn className="w-5 h-5 text-main-color " />
           </div>
-          <button
-            className={`px-2 text-xs uppercase bg-main-color text-main-text rounded`}
-          >
-            {formatMessage({ id: 'change' })}
-          </button>
         </div>
+
         <div className="mb-2">
           <div className="flex items-center">
             <h1 className="text-gray-700">

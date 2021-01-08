@@ -6,17 +6,6 @@ export default function SingleProductLoader() {
   const { locale } = useIntl();
   return (
     <div>
-      <div className="mb-2">
-        <ContentLoader
-          speed={2}
-          viewBox="0 0 1440 61"
-          backgroundColor="#f3f3f3"
-          foregroundColor="#ecebeb"
-          rtl={locale === 'ar'}
-        >
-          <rect x="0" y="0" rx="5" ry="5" width="100%" height="100%" />
-        </ContentLoader>
-      </div>
       <div className="single-product__container-desktop">
         <div>
           <ContentLoader

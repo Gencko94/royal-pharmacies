@@ -2,7 +2,12 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import moment from 'moment';
 
-export default function OrderMobile({ order, setSelectedOrder }) {
+export default function OrderMobile({
+  order,
+  handleShowOrderDetails,
+  handleShowAddReviews,
+  index,
+}) {
   const { formatMessage } = useIntl();
   const resolveStatus = () => {
     switch (order.status) {
@@ -81,7 +86,7 @@ export default function OrderMobile({ order, setSelectedOrder }) {
     <div className=" bg-body-light border overflow-hidden rounded-lg ">
       {resolveStatus()}
 
-      <div className=" text-sm mr-2 p-2 my-orders-grid__mobile">
+      <div className=" text-sm mr-2 p-2 ">
         <div>
           <div className="font-semibold flex items-center">
             <h1 className="text-gray-700">
@@ -99,12 +104,18 @@ export default function OrderMobile({ order, setSelectedOrder }) {
             </h1>
           </div>
 
-          <div className=" mt-8">
+          <div className=" mt-8 flex items-center">
             <button
-              onClick={() => setSelectedOrder(order)}
+              onClick={() => handleShowOrderDetails(order)}
               className="px-3 py-1 text-body-text-dark bg-blue-700 uppercase  rounded font-semibold"
             >
               {formatMessage({ id: 'order-details' })}
+            </button>
+            <button
+              onClick={() => handleShowAddReviews(index)}
+              className="px-3 py-1 mx-3 text-body-text-dark bg-green-700 uppercase  rounded font-semibold"
+            >
+              {formatMessage({ id: 'add-reviews' })}
             </button>
           </div>
         </div>

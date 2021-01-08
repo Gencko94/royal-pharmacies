@@ -22,7 +22,7 @@ export default function SortInfoPanelMobile({
   handlePriceChange,
   brands,
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const variant = {
     initial: {
       y: 58,
@@ -49,12 +49,18 @@ export default function SortInfoPanelMobile({
       color: '#252525',
       justifyContent: 'center',
       padding: '1rem',
+      transition: {
+        type: 'tween',
+      },
     },
     animation: {
       backgroundColor: '#b72b2b',
       color: '#fff',
       justifyContent: 'start',
       padding: '0.5rem',
+      transition: {
+        type: 'tween',
+      },
     },
   };
   const closeButtonVariant = {
@@ -65,13 +71,16 @@ export default function SortInfoPanelMobile({
     closeAnimate: {
       opacity: 1,
       y: '-50%',
+      type: 'tween',
       transition: {
         delay: 0.5,
+        type: 'tween',
       },
     },
     closeExited: {
       opacity: 0,
       y: '-100%',
+      type: 'tween',
     },
   };
   const [options, setOptions] = React.useState(['filter', 'sort']);
@@ -147,7 +156,9 @@ export default function SortInfoPanelMobile({
                   initial="closeInitial"
                   animate="closeAnimate"
                   exit="closeExited"
-                  className="absolute right-10"
+                  className={`absolute ${
+                    locale === 'ar' ? 'left-10' : 'right-10'
+                  }`}
                   style={{ top: '50%' }}
                   onClick={handleClose}
                 >

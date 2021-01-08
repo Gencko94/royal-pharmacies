@@ -158,7 +158,7 @@ export default function OrderDetailsMobile({
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="fixed top-0 left-0 right-0 bottom-0 overflow-y-scroll bg-body-light z-30 h-screen"
+      className="fixed top-0 left-0 right-0 bottom-0 overflow-y-auto bg-body-light z-30 h-screen"
     >
       <div className=" sticky top-0 p-3 flex items-center bg-main-color text-main-text z-1">
         <button

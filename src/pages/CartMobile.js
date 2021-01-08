@@ -12,6 +12,7 @@ import MobileGuestCart from '../components/CartMobile/MobileGuestCart/MobileGues
 import StaticSwiper from '../components/Swipers/StaticSwiper';
 import Layout from '../components/Layout';
 import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
+import { scrollTo } from 'scroll-js';
 
 export default function CartMobile() {
   const { formatMessage } = useIntl();
@@ -23,7 +24,9 @@ export default function CartMobile() {
     cartItemsLoading,
     isGetCartError,
   } = React.useContext(CartAndWishlistProvider);
-
+  const scrollToTop = () => {
+    scrollTo(window, { top: 0 });
+  };
   if (isGetCartError) {
     return (
       <Layout>
@@ -70,7 +73,7 @@ export default function CartMobile() {
           <MobileGuestCart setCheckOutPopupOpen={setCheckOutPopupOpen} />
         )}
 
-        <StaticSwiper type="perfumes" title="Perfumes" />
+        <StaticSwiper type="perfumes" title="Perfumes" cb={scrollToTop} />
       </div>
     </Layout>
   );

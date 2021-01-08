@@ -10,10 +10,15 @@ import SwiperLoader from '../Home/SwiperLoader';
 import SwiperItem from './SwiperItem';
 import VariantSwiperItem from './VariantSwiperItem';
 import { Link } from 'react-router-dom';
+import ErrorSnackbar from '../ErrorSnackbar';
 SwiperCore.use([Navigation]);
 export default function StaticSwiper({ type, cb, title }) {
   const { formatMessage, locale } = useIntl();
-
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const closeError = () => {
+    setErrorOpen(false);
+  };
   const { data, isLoading } = useQuery(
     ['staticSwiper', type],
     getStaticSwiperData,
@@ -52,11 +57,14 @@ export default function StaticSwiper({ type, cb, title }) {
 
   return (
     <div className="my-8">
+      {errorOpen && (
+        <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
+      )}
       {isLoading && <div className="mb-4 " style={{ height: '30px' }}></div>}
       {isLoading && <SwiperLoader />}
       {!isLoading && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl flex-1 " style={{ fontWeight: '900' }}>
+          <h1 className="text-xl md:text-2xl flex-1 font-bold ">
             {data?.title[locale]?.name}
           </h1>
           {type !== 'latest_products' && type !== 'best_seller' && (
@@ -85,9 +93,19 @@ export default function StaticSwiper({ type, cb, title }) {
               >
                 {item.type === 'variation' &&
                 Object.entries(item.new_variation_addons).length > 0 ? (
-                  <VariantSwiperItem item={item} setCartMenuOpen={cb} />
+                  <VariantSwiperItem
+                    item={item}
+                    setCartMenuOpen={cb}
+                    setErrorMessage={setErrorMessage}
+                    setErrorOpen={setErrorOpen}
+                  />
                 ) : (
-                  <SwiperItem item={item} setCartMenuOpen={cb} />
+                  <SwiperItem
+                    item={item}
+                    setCartMenuOpen={cb}
+                    setErrorMessage={setErrorMessage}
+                    setErrorOpen={setErrorOpen}
+                  />
                 )}
               </SwiperSlide>
             );

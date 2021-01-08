@@ -64,7 +64,9 @@ export default function SingleProductMobile() {
     getProductReviews,
     { retry: true, enabled: data }
   );
-
+  React.useEffect(() => {
+    return () => setItemInCart(false);
+  }, [id]);
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
     if (userId) {
@@ -91,7 +93,9 @@ export default function SingleProductMobile() {
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {}
+      } catch (error) {
+        setAddToCartButtonLoading(false);
+      }
     }
   };
   if (error) {

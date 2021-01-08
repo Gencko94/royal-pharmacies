@@ -57,7 +57,7 @@ export default function TrackOrderMobile() {
                 <Link to={`/${locale}/`}>
                   <img
                     src={settings?.store_logo_color}
-                    alt="logo"
+                    alt=""
                     className=" mb-3"
                     style={{ width: '100px', height: '50px' }}
                   />

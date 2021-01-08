@@ -8,6 +8,7 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { Link } from 'react-router-dom';
+import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
 export default function CategoryProductItem({ item, setCartMenuOpen }) {
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -32,7 +33,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         setCartMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        if (error.response.data.message === 'Item founded on the Cart') {
+        if (error.response.data?.message === 'Item founded on the Cart') {
           setItemInCart(true);
         }
         setAddToCartButtonLoading(false);
@@ -68,6 +69,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
           to={{
             pathname: `/${locale}/products/${item.slug}/${item.id}`,
           }}
+          className="block relative"
         >
           <LazyImage
             src={item.image?.link}
@@ -75,6 +77,25 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
             alt={item.translation[locale].title}
             pb="calc(100% * 266/210)"
           />
+          {item.simple_addons?.promotion_price && (
+            <div
+              className={`absolute bg-main-color px-1 text-main-text font-bold top-0   uppercase text-xs ${
+                locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
+              }`}
+              style={{
+                clipPath:
+                  locale === 'ar'
+                    ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 14% 50%)'
+                    : 'polygon(0% 0%, 100% 0, 86% 50%, 100% 100%, 0% 100%)',
+              }}
+            >
+              {calculateDiscountPrice(
+                item.simple_addons?.price,
+                item.simple_addons?.promotion_price
+              )}{' '}
+              {formatMessage({ id: 'off' })}
+            </div>
+          )}
         </Link>
         <AnimatePresence>
           {showAddButton && (

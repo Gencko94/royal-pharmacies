@@ -7,9 +7,11 @@ import { useQuery } from 'react-query';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { getUserOrders } from '../../Queries/Queries';
+import AddReviewMobile from '../Reviews/AddReviewMobile';
 export default function MyOrdersMobile() {
   const [orderDetailsOpen, setOrderDetailsOpen] = React.useState(false);
   const [selectedOrder, setSelectedOrder] = React.useState(null);
+  const [selectedOrderIndex, setSelectedOrderIndex] = React.useState(null);
 
   /**
    * Main Fetch
@@ -19,16 +21,22 @@ export default function MyOrdersMobile() {
 
     return res;
   });
+  const handleShowOrderDetails = order => {
+    setSelectedOrder(order);
+    setOrderDetailsOpen(true);
+  };
   const handleOrderDetailsClose = React.useCallback(() => {
     setSelectedOrder(null);
   }, []);
-  React.useEffect(() => {
-    if (selectedOrder) {
-      setOrderDetailsOpen(true);
-    } else {
-      setOrderDetailsOpen(false);
-    }
-  }, [selectedOrder]);
+  const [showAddReview, setShowAddReview] = React.useState(false);
+
+  const handleAddReviewClose = () => {
+    setShowAddReview(false);
+  };
+  const handleShowAddReviews = index => {
+    setShowAddReview(true);
+    setSelectedOrderIndex(index);
+  };
   const containerVariants = {
     hidden: {
       x: '100%',
@@ -73,12 +81,14 @@ export default function MyOrdersMobile() {
           <NoOrdersMobile />
         ) : (
           <div className="p-3 my-orders-items__grid-mobile">
-            {data.map(order => {
+            {data.map((order, i) => {
               return (
                 <div key={order.id}>
                   <OrderMobile
                     order={order}
-                    setSelectedOrder={setSelectedOrder}
+                    handleShowOrderDetails={handleShowOrderDetails}
+                    handleShowAddReviews={handleShowAddReviews}
+                    index={i}
                   />
                 </div>
               );
@@ -92,6 +102,16 @@ export default function MyOrdersMobile() {
             selectedOrder={selectedOrder}
             handleOrderDetailsClose={handleOrderDetailsClose}
             orderDetailsOpen={orderDetailsOpen}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showAddReview && (
+          <AddReviewMobile
+            handleAddReviewClose={handleAddReviewClose}
+            data={data}
+            selectedOrder={selectedOrderIndex}
+            showAddReview={showAddReview}
           />
         )}
       </AnimatePresence>

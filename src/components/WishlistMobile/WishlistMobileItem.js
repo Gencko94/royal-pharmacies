@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Rating from 'react-rating';
 import { Link } from 'react-router-dom';
 import LazyImage from '../../helpers/LazyImage';
 export default function WishlistMobileItem({
@@ -49,6 +51,13 @@ export default function WishlistMobileItem({
           <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
             <h1 className="font-semibold ">{`${item[`name_${locale}`]}`}</h1>
           </Link>
+          <Rating
+            initialRating={item.rating_avg}
+            emptySymbol={<AiOutlineStar className="text-main-color" />}
+            fullSymbol={<AiFillStar className="text-main-color" />}
+            className="pt-1"
+            readonly
+          />
         </div>
       </div>
       <div className="flex justify-center text-sm  items-center my-2 ">

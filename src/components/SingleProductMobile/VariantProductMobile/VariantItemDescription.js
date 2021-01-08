@@ -284,23 +284,16 @@ export default function VariantItemDescription({
       <div className="mb-2">{resolveOptions()}</div>
       <hr className="my-2" />
       <div className="mb-2">
-        <div className="flex justify-between items-center font-semibold  ">
-          <div className="flex items-center ">
-            <div className="flex items-center">
-              <h1>{formatMessage({ id: 'deliver-to' })}</h1>
-              <h1 className="uppercase mx-2 text-sm">
-                {deliveryCountry?.translation[locale].name}
-              </h1>
-              <MdLocationOn className="w-5 h-5 text-main-color " />
-            </div>
+        <div className="flex items-center font-semibold  ">
+          <div className="flex items-center">
+            <h1>{formatMessage({ id: 'deliver-to' })}</h1>
+            <h1 className="uppercase mx-1">
+              {deliveryCountry?.translation[locale].name}
+            </h1>
+            <MdLocationOn className="w-6 h-6 text-main-color " />
           </div>
-          <button
-            className={`px-2 text-xs uppercase bg-main-color text-main-text rounded`}
-          >
-            {formatMessage({ id: 'change' })}
-          </button>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center mb-2">
           <h1 className="text-gray-700">
             {formatMessage({ id: 'estimated-delivery' })} :
           </h1>
@@ -392,6 +385,7 @@ export default function VariantItemDescription({
           )}
         </button>
       </div>
+      <hr className="my-4" />
       {data?.related_products.length > 0 && (
         <RelatedItems data={data.related_products} />
       )}

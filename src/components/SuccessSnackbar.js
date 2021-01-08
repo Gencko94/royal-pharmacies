@@ -23,7 +23,7 @@ export default function SuccessSnackbar({ message, closeFunction }) {
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="snackbar bg-green-800 text-main-text rounded font-semibold flex text-sm"
+      className="snackbar bg-green-800 whitespace-no-wrap text-main-text rounded font-semibold flex text-sm"
     >
       <h1 className="mx-3">{message}</h1>
       <button onClick={closeFunction} className="mx-3">

@@ -7,8 +7,14 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
+import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
 
-export default function SwiperItem({ item, setCartMenuOpen }) {
+export default function SwiperItem({
+  item,
+  setCartMenuOpen,
+  setErrorOpen,
+  setErrorMessage,
+}) {
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const [showAddButton, setShowAddButton] = React.useState(false);
@@ -34,8 +40,14 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
       } catch (error) {
         if (error.response.data.message === 'Item founded on the Cart') {
           setItemInCart(true);
+          setAddToCartButtonLoading(false);
+        } else {
+          setAddToCartButtonLoading(false);
+          setErrorOpen(true);
+          setErrorMessage(
+            formatMessage({ id: 'something-went-wrong-snckbar' })
+          );
         }
-        setAddToCartButtonLoading(false);
       }
     } else {
       try {
@@ -49,6 +61,8 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
         setCartMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
+        setErrorOpen(true);
+        setErrorMessage(formatMessage({ id: 'something-went-wrong-snckbar' }));
         setAddToCartButtonLoading(false);
       }
     }
@@ -66,13 +80,35 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <a href={`/${locale}/products/${item.slug}/${item.id}`}>
+        <a
+          className="block relative"
+          href={`/${locale}/products/${item.slug}/${item.id}`}
+        >
           <LazyImage
             src={item.image?.link}
             alt={item.translation[locale].title}
             pb="calc(100% * 266/210)"
             origin="original"
           />
+          {item.simple_addons?.promotion_price && (
+            <div
+              className={`absolute bg-main-color px-1 text-main-text font-bold top-0   uppercase text-xs ${
+                locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
+              }`}
+              style={{
+                clipPath:
+                  locale === 'ar'
+                    ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 14% 50%)'
+                    : 'polygon(0% 0%, 100% 0, 86% 50%, 100% 100%, 0% 100%)',
+              }}
+            >
+              {calculateDiscountPrice(
+                item.simple_addons?.price,
+                item.simple_addons?.promotion_price
+              )}{' '}
+              {formatMessage({ id: 'off' })}
+            </div>
+          )}
         </a>
         <AnimatePresence>
           {showAddButton && (
@@ -131,25 +167,19 @@ export default function SwiperItem({ item, setCartMenuOpen }) {
           </a>
         </div>
 
-        <div
-          className="p-2 flex items-center justify-between"
-          style={{ fontWeight: '900' }}
-        >
+        <div className="p-2 flex items-center font-bold justify-between">
           {item.simple_addons?.promotion_price ? (
             <div className="flex items-center">
-              <h1 className="font-semibold text-lg text-main-color">
+              <h1 className=" text-lg text-main-color">
                 {(
                   item.simple_addons.promotion_price *
                   deliveryCountry?.currency.value
                 ).toFixed(3)}
               </h1>
-              <span className="mx-1 text-sm">
+              <span className="mx-1 text-sm  text-main-color">
                 {deliveryCountry?.currency.translation[locale].symbol}
               </span>
-              <h1
-                className=" text-sm mx-1 italic  line-through text-gray-700"
-                style={{ fontWeight: '900' }}
-              >
+              <h1 className=" text-xs mx-1 italic line-through text-gray-700">
                 {(
                   item.simple_addons?.price * deliveryCountry?.currency.value
                 ).toFixed(3)}

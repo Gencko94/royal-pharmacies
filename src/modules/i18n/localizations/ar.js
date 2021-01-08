@@ -1,7 +1,8 @@
 export const ar = {
   'shop-on-mrg': 'تسوق على MRG Mall',
   shop: 'تسوق',
-
+  'shop-brands': 'تسوق منتجات',
+  'at-mrg': 'على موقعنا',
   home: 'الرئيسية',
   cart: 'عربة التسوق',
   wishlist: 'قائمتي المفضلة',
@@ -381,4 +382,10 @@ export const ar = {
   'guest-checkout-login':
     'إن هذا الرقم مسجل بحساب مسبق , الرجاء تسجيل الدخول اولا',
   'select-order-to-display': 'اختر طلبا لمشاهدة التفاصيل',
+  'add-reviews': 'إضافة مراجعات',
+  'add-review': 'إضافة مراجعة إلى',
+  'select-product-to-review': 'اختر المنتج الذي تود بإضافة مراجعة له',
+  'what-is-your-rating': 'ما هو تقييمك لهذا المنتج ؟',
+  'add-feedback': 'عبر عن رأيك بهذا المنتج واخبر الاخرين عنه ',
+  'review-added': 'تم إضافة المراجعة بنجاح',
 };

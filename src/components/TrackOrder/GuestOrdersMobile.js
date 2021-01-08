@@ -5,6 +5,7 @@ import mastercard from '../../assets/paymentLogos/mastercard.png';
 import cod from '../../assets/paymentLogos/cod.png';
 import amex from '../../assets/paymentLogos/amex.png';
 import { useIntl } from 'react-intl';
+import moment from 'moment';
 import { AnimatePresence, motion } from 'framer-motion';
 import GuestOrderDetailsMobile from './GuestOrderDetailsMobile';
 export default function GuestOrdersMobile({ orders }) {
@@ -189,6 +190,12 @@ export default function GuestOrdersMobile({ orders }) {
                   <div className="flex items-center font-bold">
                     <h1>{formatMessage({ id: 'order-number' })}</h1>
                     <h1 className="mx-1">{order.id}</h1>
+                  </div>
+                  <div className="flex items-center font-bold">
+                    <h1>{formatMessage({ id: 'order-date' })}</h1>
+                    <h1 className="mx-1">
+                      {moment(order.created_at).format('DD/MM/YYYY - HH:MM')}
+                    </h1>
                   </div>
 
                   <div className="flex items-center text-sm">

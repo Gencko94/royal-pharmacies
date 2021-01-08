@@ -7,7 +7,13 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
-export default function VariantSwiperItem({ item, setCartMenuOpen }) {
+import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+export default function VariantSwiperItem({
+  item,
+  setCartMenuOpen,
+  setErrorMessage,
+  setErrorOpen,
+}) {
   const {
     addToCartMutation,
     addToGuestCartMutation,
@@ -81,8 +87,14 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
       } catch (error) {
         if (error.response.data.message === 'Item founded on the Cart') {
           setItemInCart(true);
+          setAddToCartButtonLoading(false);
+        } else {
+          setErrorOpen(true);
+          setErrorMessage(
+            formatMessage({ id: 'something-went-wrong-snckbar' })
+          );
+          setAddToCartButtonLoading(false);
         }
-        setAddToCartButtonLoading(false);
       }
     } else {
       try {
@@ -114,7 +126,10 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {}
+      } catch (error) {
+        setErrorOpen(true);
+        setErrorMessage(formatMessage({ id: 'something-went-wrong-snckbar' }));
+      }
     }
   };
 
@@ -225,8 +240,27 @@ export default function VariantSwiperItem({ item, setCartMenuOpen }) {
       }}
     >
       <div className="relative">
-        <a href={`/${locale}/products/${item.slug}/${item.id}`}>
+        <a
+          className="block relative"
+          href={`/${locale}/products/${item.slug}/${item.id}`}
+        >
           {resolveImage()}
+          {isSale && (
+            <div
+              className={`absolute bg-main-color px-1 text-main-text font-bold top-0   uppercase text-xs ${
+                locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
+              }`}
+              style={{
+                clipPath:
+                  locale === 'ar'
+                    ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 14% 50%)'
+                    : 'polygon(0% 0%, 100% 0, 86% 50%, 100% 100%, 0% 100%)',
+              }}
+            >
+              {calculateDiscountPrice(option.price, option.promotion_price)}{' '}
+              {formatMessage({ id: 'off' })}
+            </div>
+          )}
         </a>
 
         <AnimatePresence>

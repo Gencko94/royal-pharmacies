@@ -5,7 +5,6 @@ import { scrollIntoView } from 'scroll-js';
 
 import { DataProvider } from '../../contexts/DataContext';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
-import offerbanner from '../../assets/offerbanner.png';
 import RelatedItems from './RelatedItems';
 export default function MiddleSection({
   data,
@@ -63,7 +62,7 @@ export default function MiddleSection({
   };
   return (
     <div className="flex flex-col w-full self-start ">
-      <div className="flex items-center">
+      <div className="flex items-center mb-1">
         {data.brand && (
           <Link to={`/${locale}/brands/${data.brand?.slug}`}>
             <img
@@ -80,7 +79,7 @@ export default function MiddleSection({
           {data.brand?.translation[locale].name}
         </Link>
       </div>
-      <h1 className="font-semibold text-xl">
+      <h1 className="font-semibold text-xl uppercase">
         {data.full_translation[locale].title}
       </h1>
 
@@ -127,13 +126,13 @@ export default function MiddleSection({
             <div className=" flex items-center ">
               <h1>{formatMessage({ id: 'price-before' })} :</h1>
               <h1 className=" mx-2 italic  line-through text-gray-700">
-                {data.simple_addons.promotion_price}{' '}
+                {data.simple_addons.price}{' '}
                 {deliveryCountry?.currency.translation[locale].symbol}
               </h1>{' '}
             </div>
           )}
           <div className="">
-            <div className="flex items-center flex-1">
+            <div className="flex items-center flex-1 flex-wrap">
               <h1 className="text-xl">
                 {data.simple_addons.promotion_price
                   ? formatMessage({ id: 'price-now' })
@@ -141,19 +140,21 @@ export default function MiddleSection({
                 :
               </h1>
               <h1 className=" text-xl mx-2 text-main-color">
-                {data.simple_addons.price}
+                {data.simple_addons.promotion_price
+                  ? data.simple_addons.promotion_price
+                  : data.simple_addons.price}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
               </h1>
-              <h1 className=" font-normal uppercase  text-gray-700">
+              <h1 className=" font-normal uppercase text-sm  text-gray-700">
                 ({formatMessage({ id: 'vat-inclusive' })})
               </h1>
             </div>
             {data.simple_addons.promotion_price && (
               <div className="flex items-center   ">
                 <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                <span className=" text-base mx-1 text-main-color">
+                <span className="mx-1 font-bold text-main-color">
                   {calculateDiscountPrice(
                     data.simple_addons.price,
                     data.simple_addons.promotion_price
@@ -165,9 +166,7 @@ export default function MiddleSection({
         </div>
       </div>
       <hr className="my-2" />
-      <div className="my-3">
-        <img src={offerbanner} alt="offer" />
-      </div>
+
       {data?.related_products?.length > 0 && (
         <RelatedItems data={data.related_products} />
       )}

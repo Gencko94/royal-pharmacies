@@ -10,6 +10,7 @@ export default function NoViewedItems() {
       animate={{ opacity: 1 }}
       exit={{ opaciy: 0 }}
       layout
+      className="flex items-center justify-center h-full"
     >
       <h1 className="font-bold text-lg">
         {formatMessage({ id: 'no-viewed-items' })}

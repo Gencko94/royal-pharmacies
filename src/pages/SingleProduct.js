@@ -1,6 +1,5 @@
 import React from 'react';
 import { DataProvider } from '../contexts/DataContext';
-import Breadcrumbs from '../components/SingleProduct/Breadcrumbs';
 import ImageZoom from '../components/SingleProduct/ImageZoom';
 import MiddleSection from '../components/SingleProduct/MiddleSection';
 import RightSection from '../components/SingleProduct/RightSection';
@@ -66,7 +65,9 @@ export default function SingleProduct() {
     addToWishListButtonLoading,
     setAddToWishListButtonLoading,
   ] = React.useState(false);
-
+  React.useEffect(() => {
+    return () => setItemInCart(false);
+  }, [id]);
   const handleAddToCart = async quantity => {
     setAddToCartButtonLoading(true);
     if (userId) {
@@ -93,7 +94,9 @@ export default function SingleProduct() {
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {}
+      } catch (error) {
+        setAddToCartButtonLoading(false);
+      }
     }
   };
 
@@ -150,10 +153,9 @@ export default function SingleProduct() {
       </AnimatePresence>
 
       <div
-        className=" px-4 mx-auto max-w-default"
+        className=" p-4 mx-auto max-w-default"
         style={{ minHeight: 'calc(-150px + 100vh)' }}
       >
-        {!isLoading && <Breadcrumbs data={data.categories} />}
         {isLoading && <SingleProductLoader />}
         {!isLoading &&
           (data.type === 'variation' &&

@@ -1330,6 +1330,10 @@ video {
   font-size: 2.25rem;
 }
 
+.m-1{
+  margin: 0.25rem;
+}
+
 .m-auto{
   margin: auto;
 }
@@ -1704,6 +1708,14 @@ video {
   padding-top: 1rem;
 }
 
+.pr-4{
+  padding-right: 1rem;
+}
+
+.pl-4{
+  padding-left: 1rem;
+}
+
 .pb-6{
   padding-bottom: 1.5rem;
 }
@@ -1820,6 +1832,10 @@ video {
 
 .hover\:shadow-sm:hover{
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.hover\:shadow:hover{
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .text-left{
@@ -2164,6 +2180,10 @@ video {
   z-index: 30;
 }
 
+.z-40{
+  z-index: 40;
+}
+
 .z-50{
   z-index: 50;
 }
@@ -2496,6 +2516,10 @@ div::-webkit-scrollbar-thumb:hover {
 
   .md\:text-xl{
     font-size: 1.25rem;
+  }
+
+  .md\:text-2xl{
+    font-size: 1.5rem;
   }
 
   .md\:max-w-xl{

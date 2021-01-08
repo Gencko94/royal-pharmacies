@@ -9,6 +9,7 @@ import {
   userRegister,
   addUserAddress,
   removeUserAddress,
+  addProductReview,
 } from '../Queries/Queries';
 export const AuthProvider = React.createContext();
 export default function AuthContext({ children }) {
@@ -58,12 +59,6 @@ export default function AuthContext({ children }) {
     },
     {
       onSuccess: () => {
-        // queryCache.setQueryData('authentication', prev => {
-        //   return {
-        //     ...prev,
-        //     isAuthenticated: true,
-        //   };
-        // });
         queryCache.invalidateQueries('authentication');
       },
       throwOnError: true,
@@ -88,12 +83,6 @@ export default function AuthContext({ children }) {
     },
     {
       onSuccess: () => {
-        // queryCache.setQueryData('authentication', prev => {
-        //   return {
-        //     ...prev,
-        //     isAuthenticated: true,
-        //   };
-        // });
         queryCache.invalidateQueries('authentication');
       },
       throwOnError: true,
@@ -144,6 +133,10 @@ export default function AuthContext({ children }) {
     throwOnError: true,
   });
 
+  const [addReviewMutation] = useMutation(addProductReview, {
+    throwOnError: true,
+  });
+
   return (
     <AuthProvider.Provider
       value={{
@@ -160,6 +153,7 @@ export default function AuthContext({ children }) {
         deleteAddressMutation,
         editMutation,
         changePasswordMutation,
+        addReviewMutation,
       }}
     >
       {children}

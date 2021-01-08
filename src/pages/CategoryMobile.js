@@ -17,7 +17,7 @@ import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuIt
 
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
-import { scrollIntoView } from 'scroll-js';
+import { scrollIntoView, scrollTo } from 'scroll-js';
 
 export default function CategoryMobile() {
   const { category } = useParams();
@@ -171,6 +171,7 @@ export default function CategoryMobile() {
       return newArr;
     });
     setSortBy(selectedValue);
+    scrollTo(window, { top: 500, behavior: 'smooth' });
   };
   const handleBrandChange = brand => {
     const isAvailable = brandFilters.find(i => i.id === brand.id);
@@ -190,6 +191,7 @@ export default function CategoryMobile() {
         return [...prev, { ...brand }];
       });
     }
+    scrollTo(window, { top: 500, behavior: 'smooth' });
   };
   React.useEffect(() => {
     if (filters.length === 0) {
@@ -235,15 +237,15 @@ export default function CategoryMobile() {
           <motion.div layout className="px-3">
             {filters.length !== 0 && (
               <>
-                <motion.h1 layout className="text-lg mb-2 font-semibold">
+                <motion.h1 layout className="text-lg  font-semibold">
                   {formatMessage({ id: 'filtered-by' })} :
                 </motion.h1>
-                <motion.div layout className="flex items-center">
+                <motion.div layout className="flex items-center flex-wrap">
                   {filters.map(item => {
                     return (
                       <motion.button
                         layout
-                        className="mx-1 py-1 px-3 bg-main-color text-main-text rounded-full"
+                        className="m-1 text-sm py-1 font-semibold px-3 bg-main-color text-main-text rounded-full"
                         key={item.value}
                         onClick={() => handleRemoveFilters(item)}
                       >
