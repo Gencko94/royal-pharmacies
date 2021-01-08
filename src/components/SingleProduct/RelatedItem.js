@@ -39,13 +39,18 @@ export default function RelatedItem({ item }) {
           {item.simple_addons?.promotion_price ? (
             <div className="flex items-center">
               <h1 className="font-semibold text-lg text-main-color">
-                {item.simple_addons.promotion_price}
+                {(
+                  item.simple_addons.promotion_price *
+                  deliveryCountry?.currency.value
+                ).toFixed(3)}
               </h1>
               <span className="mx-1 text-sm">
                 {deliveryCountry?.currency.translation[locale].symbol}
               </span>
               <h1 className=" text-sm mx-1 italic  line-through text-gray-700">
-                {item.simple_addons?.price}
+                {(
+                  item.simple_addons.price * deliveryCountry?.currency.value
+                ).toFixed(3)}
                 <span className="">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
@@ -53,7 +58,9 @@ export default function RelatedItem({ item }) {
             </div>
           ) : (
             <h1 className="font-semibold text-main-color">
-              {item.simple_addons?.price}
+              {(
+                item.simple_addons.price * deliveryCountry?.currency.value
+              ).toFixed(3)}
               <span className="mx-1 text-sm">
                 {deliveryCountry?.currency.translation[locale].symbol}
               </span>

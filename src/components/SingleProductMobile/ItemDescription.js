@@ -202,7 +202,9 @@ export default function ItemDescription({
           <div className="flex flex-wrap items-center">
             <h1 className=" ">{formatMessage({ id: 'price-before' })} :</h1>
             <h1 className=" italic mx-2 text-xl  line-through text-gray-700">
-              {data.simple_addons.price}{' '}
+              {(
+                data.simple_addons.price * deliveryCountry?.currency.value
+              ).toFixed(3)}{' '}
               {deliveryCountry?.currency.translation[locale].symbol}
             </h1>
           </div>
@@ -216,8 +218,13 @@ export default function ItemDescription({
           </h1>
           <h1 className=" text-xl mx-2 text-main-color">
             {isSale
-              ? data.simple_addons.promotion_price
-              : data.simple_addons.price}{' '}
+              ? (
+                  data.simple_addons.promotion_price *
+                  deliveryCountry?.currency.value
+                ).toFixed(3)
+              : (
+                  data.simple_addons.price * deliveryCountry?.currency.value
+                ).toFixed(3)}{' '}
             {deliveryCountry?.currency.translation[locale].symbol}
           </h1>
           <h1 className=" font-normal text-xs  text-gray-700 uppercase">

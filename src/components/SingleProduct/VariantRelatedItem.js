@@ -157,13 +157,15 @@ export default function VariantRelatedItem({ item }) {
           {isSale ? (
             <div className=" flex items-center">
               <h1 className="font-semibold text-lg text-main-color">
-                {option.promotion_price}
+                {(
+                  option.promotion_price * deliveryCountry?.currency.value
+                ).toFixed(3)}
                 <span className="mx-1 text-sm">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
               </h1>
               <h1 className=" text-sm mx-1 italic  line-through text-gray-700">
-                {option.price}
+                {(option.price * deliveryCountry?.currency.value).toFixed(3)}
                 <span className="">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
@@ -171,7 +173,7 @@ export default function VariantRelatedItem({ item }) {
             </div>
           ) : (
             <h1 className="font-semibold text-lg text-main-color">
-              {option.price}
+              {(option.price * deliveryCountry?.currency.value).toFixed(3)}
               <span className="mx-1 text-sm">
                 {deliveryCountry?.currency.translation[locale].symbol}
               </span>

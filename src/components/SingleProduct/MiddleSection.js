@@ -141,8 +141,13 @@ export default function MiddleSection({
               </h1>
               <h1 className=" text-xl mx-2 text-main-color">
                 {data.simple_addons.promotion_price
-                  ? data.simple_addons.promotion_price
-                  : data.simple_addons.price}
+                  ? (
+                      data.simple_addons.promotion_price *
+                      deliveryCountry?.currency.value
+                    ).toFixed(3)
+                  : (
+                      data.simple_addons.price * deliveryCountry?.currency.value
+                    ).toFixed(3)}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>

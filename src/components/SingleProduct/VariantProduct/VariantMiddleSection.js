@@ -179,7 +179,7 @@ export default function VariantMiddleSection({
             <div className=" flex items-center ">
               <h1>{formatMessage({ id: 'price-before' })} :</h1>
               <h1 className=" mx-2 text-base italic  line-through text-gray-700">
-                {option.price}
+                {(option.price * deliveryCountry?.currency.value).toFixed(3)}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
@@ -194,7 +194,11 @@ export default function VariantMiddleSection({
                   : formatMessage({ id: 'price' })}
               </h1>
               <h1 className=" text-xl mx-2  text-red-700">
-                {isSale ? option.promotion_price : option.price}
+                {isSale
+                  ? (
+                      option.promition_price * deliveryCountry?.currency.value
+                    ).toFixed(3)
+                  : (option.price * deliveryCountry?.currency.value).toFixed(3)}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>

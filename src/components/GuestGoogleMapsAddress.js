@@ -34,7 +34,7 @@ export default function GuestGoogleMapsAddress({
   setCountryCode,
 }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -60,7 +60,7 @@ export default function GuestGoogleMapsAddress({
     if (marker) {
       axios
         .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&language=${locale}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
         )
         .then(res => {
           setMarkerAddress(`${res.data.results[0].formatted_address}`);
@@ -75,7 +75,7 @@ export default function GuestGoogleMapsAddress({
       setMarkerAddress(null);
       setMarkerInfoWindowDetails(null);
     }
-  }, [marker]);
+  }, [locale, marker]);
 
   if (loadError)
     return (

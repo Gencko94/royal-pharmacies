@@ -60,6 +60,7 @@ export default function SingleBrandMobile() {
           )}
           {productsLoading && (
             <div
+              key="loader"
               className="brand-grid__mobile py-2 min-h-full"
               style={{ minHeight: 'calc(100vh - 150px)' }}
             >
@@ -69,7 +70,10 @@ export default function SingleBrandMobile() {
             </div>
           )}
           {!productsLoading && (
-            <div className="flex justify-center flex-col items-center">
+            <div
+              key="header"
+              className="flex justify-center flex-col items-center"
+            >
               <h1 className="font-bold text-xl mb-3">
                 {formatMessage({ id: 'shop-brands' })}{' '}
                 {data?.brandName?.[locale].name}{' '}
@@ -83,6 +87,7 @@ export default function SingleBrandMobile() {
             </div>
           )}
           <div
+            key="items"
             className="brand-grid__mobile py-2 min-h-full"
             style={{ minHeight: 'calc(100vh - 150px)' }}
           >

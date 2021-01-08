@@ -107,9 +107,6 @@
 - [x] refresh token explanation, as i know they should live much longer than regular tokens.
 - [x] Please Explain how many item types we do have ? what is a simple product with addons vs variant product with addons ?
 
-- [ ] add country code to combine cart api
-- [ ] add country code to clean cart api
-
 - [x] SORTING IN ARABIC LANGUAGE DOESN'T WORK || HOW DO I KNOW WHICH LANGUAGE THE USER TYPES INTO SEARCH BAR ?
 
 - [x] Clean Cart
@@ -129,3 +126,5 @@
 - [x] fix snackbar width
 - [x] Remove Viewed Items fix
 - [x] fix side menu height
+- [ ] add country code to combine cart api
+- [ ] add country code to clean cart api
