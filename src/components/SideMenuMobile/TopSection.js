@@ -82,41 +82,38 @@ export default function TopSection({ toggleSideMenu }) {
           <button className="  ">
             <Link
               to={`/${locale}`}
-              style={{ width: '60px' }}
               className="flex flex-col justify-center items-center"
             >
               <div className="rounded shadow p-2 mb-1">
                 <AiFillHome className="w-5 h-5 " />
               </div>
-              <h1 className="text-xs  font-semibold whitespace-no-wrap">
+              <h1 className="text-xs  font-bold whitespace-no-wrap">
                 {formatMessage({ id: 'home' })}
               </h1>
             </Link>
           </button>
           <button className="">
             <Link
-              style={{ width: '60px' }}
               to={`/${locale}/cart`}
               className="flex flex-col justify-center items-center"
             >
               <div className="mb-1 p-2 rounded shadow">
                 <BsBagFill className="w-5 h-5" />
               </div>
-              <h1 className="text-xs  font-semibold whitespace-no-wrap">
+              <h1 className="text-xs  font-bold whitespace-no-wrap">
                 {formatMessage({ id: 'cart' })}
               </h1>
             </Link>
           </button>
           <button className="">
             <Link
-              style={{ width: '60px' }}
               to={`/${locale}/wishlist/`}
               className="flex flex-col justify-center items-center"
             >
               <div className=" rounded  shadow p-2 mb-1">
                 <FaHeart className="w-5 h-5 " />
               </div>
-              <h1 className="text-xs  font-semibold whitespace-no-wrap">
+              <h1 className="text-xs  font-bold whitespace-no-wrap">
                 {formatMessage({ id: 'wishlist-short' })}
               </h1>
             </Link>

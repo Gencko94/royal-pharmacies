@@ -107,11 +107,17 @@ export default function SingleProductMobile() {
     <Layout>
       <Helmet>
         <title>
-          {` Shop ${data?.full_translation?.[locale].title} on MRG` || 'MRG'}
+          {data
+            ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
+            : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
         </title>
         <meta
           name="description"
-          content={`Shop  ${data?.translation?.[locale].title} | MRG` || 'MRG'}
+          content={
+            data
+              ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
+              : 'MRG'
+          }
         />
       </Helmet>
       <div className="overflow-hidden">

@@ -24,6 +24,12 @@ export default function OrderPlacedMobile({ paymentMethod, paymentUrl }) {
         return formatMessage({ id: 'days' });
     }
   };
+  React.useEffect(() => {
+    if (paymentMethod === 'cod') {
+      localStorage.setItem('localCart', JSON.stringify([]));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div
       className="flex flex-col justify-center items-center px-10 "
@@ -31,7 +37,7 @@ export default function OrderPlacedMobile({ paymentMethod, paymentUrl }) {
     >
       {paymentMethod === 'cod' ? (
         <div className="flex flex-col h-full justify-center items-center ">
-          <h1 className="font-bold text-3xl mb-2 text-center">
+          <h1 className="font-bold text-2xl mb-2 text-center">
             {formatMessage({ id: 'order-placed-msg' })}
           </h1>
 
@@ -62,7 +68,7 @@ export default function OrderPlacedMobile({ paymentMethod, paymentUrl }) {
               <h1>{settings?.store_email}</h1>
             </div>
           </div>
-          <h1 className="font-bold text-lg">
+          <h1 className="font-bold text-lg text-center">
             {formatMessage({ id: 'thank-you-for-shopping-msg' })}
           </h1>
         </div>

@@ -124,14 +124,14 @@ export default function SingleProduct() {
         <title>
           {data
             ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
-            : 'MRG'}
+            : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
         </title>
         <meta
           name="description"
           content={
             data
               ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
-              : 'MRG'
+              : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'
           }
         />
       </Helmet>

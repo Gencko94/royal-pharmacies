@@ -171,10 +171,7 @@ export default function PersonalInformationMobile({
                     <h1 className="">{orderItem.qty}</h1>
                   </div>
                   <div style={{ fontWeight: 900 }}>
-                    <h1 className="">
-                      {orderItem.price}{' '}
-                      {deliveryCountry?.currency.translation[locale].symbol}
-                    </h1>
+                    <h1 className="">{orderItem.price}</h1>
                   </div>
                   <div style={{ fontWeight: 900 }} className="text-green-700">
                     <h1 className="">
@@ -234,8 +231,11 @@ export default function PersonalInformationMobile({
                 })}
               </h1>
             </div>
-            <div className="flex p-2">
-              <div className="flex-1">
+            <div
+              className=" p-2"
+              style={{ display: 'grid', gridTemplateColumns: '1fr 0.7fr' }}
+            >
+              <div>
                 <div className="mb-2">
                   <h1 className=" text-gray-700">
                     {formatMessage({
@@ -286,6 +286,7 @@ export default function PersonalInformationMobile({
                 <img
                   src={`https://maps.googleapis.com/maps/api/staticmap?center=${selectedAddress.lat},${selectedAddress.lng}&zoom=15&size=200x200&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
                   alt="map"
+                  className="self-start"
                 />
               )}
             </div>

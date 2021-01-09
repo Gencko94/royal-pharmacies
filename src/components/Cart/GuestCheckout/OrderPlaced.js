@@ -25,6 +25,12 @@ export default function OrderPlaced({ paymentUrl, paymentMethod }) {
         return formatMessage({ id: 'days' });
     }
   };
+  React.useEffect(() => {
+    if (paymentMethod === 'cod') {
+      localStorage.setItem('localCart', JSON.stringify([]));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="" style={{ height: 'calc(100vh - 149px)' }}>
       <div className="rounded-lg border mb-2 h-full">

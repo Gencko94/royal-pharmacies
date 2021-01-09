@@ -27,7 +27,7 @@ export default function AcceptedPayments() {
     return arr;
   };
   return (
-    <div className="mb-2">
+    <div className="mb-2 bg-gray-100">
       <h1 className="mb-2 text-center font-semibold">
         {formatMessage({ id: 'accepted-payments' })}
       </h1>

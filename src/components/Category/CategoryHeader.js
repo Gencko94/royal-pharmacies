@@ -7,7 +7,7 @@ import 'swiper/swiper-bundle.css';
 import BannerLazyImage from '../../helpers/BannerLazyImage';
 
 export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
-  const { locale } = useIntl();
+  const { locale, formatMessage } = useIntl();
   const breakpoints = {
     // when window width is >= 320px
     320: {
@@ -89,11 +89,14 @@ export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
         alt={categoryInfo.title[locale].name}
         pb="calc(100% * 300/1440)"
       />
+      <div className="mt-2">
+        <h1 className="text-4xl font-bold text-center ">
+          {`${formatMessage({ id: 'shop' })}  ${categoryInfo?.[locale].name} `}
+          {formatMessage({ id: 'by-category' })}
+        </h1>
+      </div>
       {categoryInfo.children.length !== 0 && (
-        <CategoryChildren
-          children={categoryInfo?.children}
-          title={categoryInfo?.title}
-        />
+        <CategoryChildren children={categoryInfo?.children} />
       )}
     </div>
   );

@@ -8,8 +8,8 @@ import 'swiper/swiper-bundle.css';
 import LazyImage from '../../helpers/LazyImage';
 
 SwiperCore.use([Navigation]);
-export default function CategoryChildren({ children, title }) {
-  const { locale, formatMessage } = useIntl();
+export default function CategoryChildren({ children }) {
+  const { locale } = useIntl();
   const breakpoints = {
     // when window width is >= 320px
 
@@ -33,13 +33,6 @@ export default function CategoryChildren({ children, title }) {
 
   return (
     <div>
-      <div className="mt-2">
-        <h1 className="text-4xl font-bold text-center ">
-          {`${formatMessage({ id: 'shop' })}  ${title?.[locale].name} `}
-          {formatMessage({ id: 'by-category' })}
-        </h1>
-      </div>
-
       <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
         {children.map(child => {
           return (

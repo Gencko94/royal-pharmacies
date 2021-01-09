@@ -33,7 +33,7 @@ export default function GuestLocationForm({
     ),
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
-      .min(10, formatMessage({ id: 'invalid-phone' }))
+      .min(8, formatMessage({ id: 'invalid-phone' }))
       .required(formatMessage({ id: 'required-field' })),
     additionalDetails: Yup.string(),
     name: Yup.string().required(formatMessage({ id: 'required-field' })),

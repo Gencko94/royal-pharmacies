@@ -14,7 +14,8 @@ export default function MobileNavbar({ toggleSideMenu }) {
     pathname.includes('/checkout/guest-checkout') ||
     pathname.includes('/checkout/user-checkout') ||
     pathname.includes('/checkout') ||
-    pathname.includes('/order/track');
+    pathname.includes('/order/track') ||
+    pathname.includes('/cart');
 
   React.useEffect(() => {
     const checkScrolling = () => {

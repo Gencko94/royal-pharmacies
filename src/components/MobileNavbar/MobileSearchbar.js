@@ -72,7 +72,7 @@ export default function MobileSearchbar({ windowScrolled }) {
     return (
       <div
         {...containerProps}
-        className="absolute left-0 bg-body-light w-full rounded"
+        className="absolute left-0 z-10 bg-body-light w-full rounded"
         style={{ top: '100%' }}
       >
         {children}

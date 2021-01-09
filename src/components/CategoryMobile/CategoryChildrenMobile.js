@@ -5,8 +5,8 @@ import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
 import { Link } from 'react-router-dom';
 import LazyImage from '../../helpers/LazyImage';
-export default function CategoryChildrenMobile({ children, title }) {
-  const { locale, formatMessage } = useIntl();
+export default function CategoryChildrenMobile({ children }) {
+  const { locale } = useIntl();
   SwiperCore.use([Navigation]);
   const breakpoints = {
     // when window width is >= 320px
@@ -26,39 +26,30 @@ export default function CategoryChildrenMobile({ children, title }) {
     },
   };
   return (
-    <div>
-      <div className="mt-8 px-2">
-        <h1 className="text-2xl font-bold text-center ">
-          {`${formatMessage({ id: 'shop' })}  ${title?.[locale].name} `}
-          {formatMessage({ id: 'by-category' })}
-        </h1>
-      </div>
-
-      <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
-        {children.map(child => {
-          return (
-            <SwiperSlide
-              key={child.id}
-              className={`overflow-hidden  rounded-lg my-2  relative 
+    <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
+      {children.map(child => {
+        return (
+          <SwiperSlide
+            key={child.id}
+            className={`overflow-hidden  rounded-lg my-2  relative 
              
             `}
-            >
-              <Link to={`/${locale}/${child.slug}`}>
-                <LazyImage
-                  src={child.translation[locale].image?.link}
-                  alt={child.translation[locale].name}
-                  pb="calc(100% * 210/210)"
-                  origin="original"
-                />
+          >
+            <Link to={`/${locale}/${child.slug}`}>
+              <LazyImage
+                src={child.translation[locale].image?.link}
+                alt={child.translation[locale].name}
+                pb="calc(100% * 210/210)"
+                origin="original"
+              />
 
-                <h1 className="text-center mt-4 text-lg font-bold">
-                  {child.translation[locale].name}
-                </h1>
-              </Link>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-    </div>
+              <h1 className="text-center mt-4 text-lg font-bold">
+                {child.translation[locale].name}
+              </h1>
+            </Link>
+          </SwiperSlide>
+        );
+      })}
+    </Swiper>
   );
 }

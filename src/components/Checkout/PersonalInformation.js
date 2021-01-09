@@ -233,8 +233,11 @@ export default function PersonalInformation({
                 })}
               </h1>
             </div>
-            <div className="flex p-2">
-              <div className="flex-1 flex flex-col justify-center items-center">
+            <div
+              className=" p-2"
+              style={{ display: 'grid', gridTemplateColumns: '1fr 0.4fr' }}
+            >
+              <div>
                 <div className="mb-2 text-center">
                   <h1 className=" text-gray-700">
                     {formatMessage({
@@ -281,6 +284,7 @@ export default function PersonalInformation({
                 <img
                   src={`https://maps.googleapis.com/maps/api/staticmap?center=${selectedAddress.lat},${selectedAddress.lng}&zoom=15&size=200x200&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
                   alt="map"
+                  className="self-start"
                 />
               )}
             </div>

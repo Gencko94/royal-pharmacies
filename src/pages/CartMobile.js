@@ -61,12 +61,12 @@ export default function CartMobile() {
           !isGetCartError &&
           cartItems?.length !== 0 && (
             <>
+              <MobileCheckoutSection />
               <MobileCartContainer
                 cartItems={cartItems}
                 cartItemsLoading={cartItemsLoading}
                 cartMessage={cartMessage}
               />
-              <MobileCheckoutSection />
             </>
           )}
         {!authenticationLoading && !userId && (

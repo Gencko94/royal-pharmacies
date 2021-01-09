@@ -112,6 +112,9 @@ export default function AvailableAddressesMobile({
                     </motion.div>
                   </div>
                   <div className="p-1">
+                    <div className="text-xs text-gray-600 font-semibold">
+                      <h1>{address.address_name}</h1>
+                    </div>
                     <div
                       className="text-xs mb-2 font-semibold"
                       style={{ height: '50px' }}

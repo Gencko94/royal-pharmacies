@@ -36,6 +36,7 @@ export default function LocationForm({
     addressName: Yup.string().required(formatMessage({ id: 'required-field' })),
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
+      .min(8, formatMessage({ id: 'invalid-phone' }))
       .required(formatMessage({ id: 'required-field' })),
     additionalDetails: Yup.string(),
   });

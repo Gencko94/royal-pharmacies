@@ -38,7 +38,7 @@ export default function CategoryHeaderMobile({
       spaceBetween: 20,
     },
   };
-  const { locale } = useIntl();
+  const { locale, formatMessage } = useIntl();
   if (categoryInfoLoading) {
     return (
       <>
@@ -91,12 +91,16 @@ export default function CategoryHeaderMobile({
         alt={categoryInfo.title[locale].name}
         pb="calc(100% * 300/800)"
       />
-
+      <div className="mt-8 px-2">
+        <h1 className="text-2xl font-bold text-center ">
+          {`${formatMessage({ id: 'shop' })}  ${
+            categoryInfo?.title?.[locale].name
+          } `}
+          {formatMessage({ id: 'by-category' })}
+        </h1>
+      </div>
       {categoryInfo.children.length !== 0 && (
-        <CategoryChildrenMobile
-          children={categoryInfo?.children}
-          title={categoryInfo?.title}
-        />
+        <CategoryChildrenMobile children={categoryInfo?.children} />
       )}
     </div>
   );
