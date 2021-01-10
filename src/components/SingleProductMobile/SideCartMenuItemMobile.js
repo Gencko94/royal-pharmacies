@@ -8,7 +8,7 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
-export default function SideCartMenuItemMobile({ item }) {
+export default function SideCartMenuItemMobile({ item, setSideMenuOpen }) {
   const {
     removeFromCartMutation,
     removeFromGuestCartMutation,
@@ -62,6 +62,7 @@ export default function SideCartMenuItemMobile({ item }) {
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
           to={`/${locale}/products/${item.slug}/${item.id}`}
+          onClick={() => setSideMenuOpen(false)}
         >
           <LazyImage
             src={item?.image}
@@ -76,6 +77,7 @@ export default function SideCartMenuItemMobile({ item }) {
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
           to={`/${locale}/products/${item.slug}/${item.id}`}
+          onClick={() => setSideMenuOpen(false)}
         >
           <h1 className="text-clamp-2 text-sm font-bold">
             {`${item[`name_${locale}`]}`}

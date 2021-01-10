@@ -8,7 +8,7 @@ import { DataProvider } from '../../contexts/DataContext';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import LazyImage from '../../helpers/LazyImage';
-export default function SideCartMenuItem({ item }) {
+export default function SideCartMenuItem({ item, setSideMenuOpen }) {
   const {
     removeFromCartMutation,
     removeFromGuestCartMutation,
@@ -69,6 +69,7 @@ export default function SideCartMenuItem({ item }) {
         <Link
           title={`${item[`name_${locale}`]}`}
           to={`/${locale}/products/${item.slug}/${item.id}`}
+          onClick={() => setSideMenuOpen(false)}
         >
           <LazyImage
             src={item.image}
@@ -83,6 +84,7 @@ export default function SideCartMenuItem({ item }) {
           title={`${item[`name_${locale}`]}`}
           className="hover:underline"
           to={`/${locale}/products/${item.slug}/${item.id}`}
+          onClick={() => setSideMenuOpen(false)}
         >
           <h1 className="text-clamp-2 text-sm uppercase font-semibold">
             {`${item[`name_${locale}`]}`}

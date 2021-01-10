@@ -96,7 +96,8 @@ export default function CategoryHeaderMobile({
           {`${formatMessage({ id: 'shop' })}  ${
             categoryInfo?.title?.[locale].name
           } `}
-          {formatMessage({ id: 'by-category' })}
+          {categoryInfo?.children.length > 0 &&
+            formatMessage({ id: 'by-category' })}
         </h1>
       </div>
       {categoryInfo.children.length !== 0 && (

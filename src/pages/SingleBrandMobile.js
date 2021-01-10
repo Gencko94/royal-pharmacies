@@ -24,7 +24,7 @@ export default function SingleBrandMobile() {
     setPage(data.selected + 1);
   };
   const { data, isLoading: productsLoading } = useQuery(
-    ['single-brand', { slug, page, number: 24 }],
+    ['single-brand', { slug, page, number: 42 }],
     getSingleBrandProducts,
     {
       retry: true,
@@ -32,6 +32,19 @@ export default function SingleBrandMobile() {
       keepPreviousData: true,
     }
   );
+  if (productsLoading) {
+    return (
+      <div
+        key="loader"
+        className="brand-grid__mobile py-2"
+        style={{ minHeight: 'calc(100vh - 150px)' }}
+      >
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
+          return <CategoryItemLoader key={i} />;
+        })}
+      </div>
+    );
+  }
   return (
     <Layout>
       <div className="min-h-screen p-3">
@@ -58,17 +71,7 @@ export default function SingleBrandMobile() {
               className="side__addCart-bg"
             ></motion.div>
           )}
-          {productsLoading && (
-            <div
-              key="loader"
-              className="brand-grid__mobile py-2 min-h-full"
-              style={{ minHeight: 'calc(100vh - 150px)' }}
-            >
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
-                return <CategoryItemLoader key={i} />;
-              })}
-            </div>
-          )}
+
           {!productsLoading && (
             <div
               key="header"

@@ -85,7 +85,11 @@ export default function SideCartMenuMobile({ setSideMenuOpen }) {
             <AnimatePresence>
               {sideCartItems.map(item => {
                 return (
-                  <SideCartMenuItemMobile key={item.options.sku} item={item} />
+                  <SideCartMenuItemMobile
+                    key={item.options.sku}
+                    item={item}
+                    setSideMenuOpen={setSideMenuOpen}
+                  />
                 );
               })}
             </AnimatePresence>

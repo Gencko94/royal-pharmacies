@@ -194,7 +194,13 @@ export default function Category() {
   return (
     <Layout>
       <Helmet>
-        <title>{`${categoryInfo?.title[locale].name} | MRG Online Shop`}</title>
+        <title>
+          {categoryInfo
+            ? `${formatMessage({ id: 'shop' })} ${
+                categoryInfo?.title[locale].name
+              } on MRG`
+            : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
+        </title>
       </Helmet>
       <AnimatePresence>
         {cartMenuOpen && (

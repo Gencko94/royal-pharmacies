@@ -16,7 +16,6 @@ export default function SideCartMenu({ setSideMenuOpen }) {
   } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
-
   const sideMenuVariants = {
     hidden: {
       x: `${locale === 'ar' ? '-100%' : '100%'}`,
@@ -76,7 +75,13 @@ export default function SideCartMenu({ setSideMenuOpen }) {
           <div className=" flex-1 overflow-y-auto overflow-x-hidden">
             <AnimatePresence>
               {sideCartItems.map(item => {
-                return <SideCartMenuItem key={item.options.sku} item={item} />;
+                return (
+                  <SideCartMenuItem
+                    key={item.options.sku}
+                    item={item}
+                    setSideMenuOpen={setSideMenuOpen}
+                  />
+                );
               })}
             </AnimatePresence>
           </div>

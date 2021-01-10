@@ -123,7 +123,9 @@ export default function SingleProduct() {
       <Helmet>
         <title>
           {data
-            ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
+            ? `${formatMessage({ id: 'shop' })} ${
+                data?.full_translation?.[locale].title
+              } on MRG`
             : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
         </title>
         <meta
