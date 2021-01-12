@@ -160,7 +160,7 @@ export default function SingleProduct() {
       >
         {isLoading && <SingleProductLoader />}
         {!isLoading &&
-          (data.type === 'variation' &&
+          (data?.type === 'variation' &&
           Object.entries(data.new_variation_addons).length > 0 ? (
             <VariantProduct
               data={data}

@@ -30,12 +30,12 @@ export default function ThirdSection({ pages }) {
           )}
         </Link>
         <div className="flex items-center flex-col mx-2 text-sm justify-center">
-          <h1 className=" font-semibold mb-1 ">
+          <h1 className=" font-semibold mb-1 text-center">
             &copy; 2021 MRG . {formatMessage({ id: 'footer-all-rights' })}
           </h1>
-          <div>
-            Developed By
-            <a className="font-bold mx-1" href="https://mamacgroup.com">
+          <div className="text-center">
+            {formatMessage({ id: 'developed-by' })}
+            <a className="font-bold mx-1 " href="https://mamacgroup.com">
               MAMAC GROUP
             </a>
           </div>

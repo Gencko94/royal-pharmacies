@@ -26,7 +26,7 @@ export default function OrderFailed() {
           {formatMessage({ id: 'order-failed-msg' })}
         </h1>
 
-        <h1 className="font-semibold text-xl mb-2">
+        <h1 className="font-semibold text-xl text-center mb-2">
           {formatMessage({ id: 'checkout-help-center-msg' })}
         </h1>
         <div className="flex  items-center justify-center mt-2 mb-4 ">
@@ -53,6 +53,12 @@ export default function OrderFailed() {
             <h1>{settings?.store_email}</h1>
           </div>
         </div>
+        <Link
+          to={`/${locale}/`}
+          className="font-semibold rounded uppercase p-2 text-sm bg-main-color text-main-text"
+        >
+          {formatMessage({ id: 'back-to-home' })}
+        </Link>
       </div>
       <div
         className={`${

@@ -45,7 +45,7 @@ export default function OrderSuccess() {
           {formatMessage({ id: 'order-placed-msg' })}
         </h1>
 
-        <h1 className="font-semibold text-xl mb-2">
+        <h1 className="font-semibold text-xl text-center mb-2">
           {formatMessage({ id: 'expected-delivery-msg' })}{' '}
           <strong>{formatDaysPlural()}</strong>
         </h1>
@@ -73,9 +73,15 @@ export default function OrderSuccess() {
             <h1>{settings?.store_email}</h1>
           </div>
         </div>
-        <h1 className="font-bold text-2xl">
+        <h1 className="font-bold text-2xl text-center mb-4">
           {formatMessage({ id: 'thank-you-for-shopping-msg' })}
         </h1>
+        <Link
+          to={`/${locale}/`}
+          className="font-semibold rounded uppercase p-2 text-sm bg-main-color text-main-text"
+        >
+          {formatMessage({ id: 'back-to-home' })}
+        </Link>
       </div>
       <div
         className={`${

@@ -47,7 +47,7 @@ export default function VariantProduct({
     });
     return keys;
   });
-  const variantOnly = data.new_variation_addons[selectedVariation].options
+  const variantOnly = data?.new_variation_addons?.[selectedVariation]?.options
     ? false
     : true;
   const option = variantOnly

@@ -17,13 +17,17 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
     false
   );
   const { userId } = React.useContext(AuthProvider);
-  const [itemInCart, setItemInCart] = React.useState(false);
+  const [message, setMessage] = React.useState('');
   const {
     addToGuestCartMutation,
     addToCartMutation,
     coupon,
   } = React.useContext(CartAndWishlistProvider);
   const handleAddToCart = async () => {
+    if (item.simple_addons.quantity < 1) {
+      setMessage(formatMessage({ id: 'out-of-stock' }));
+      return;
+    }
     setAddToCartButtonLoading(true);
     if (userId) {
       try {
@@ -31,10 +35,10 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
-        setItemInCart(true);
+        setMessage(formatMessage({ id: 'added-to-cart' }));
       } catch (error) {
         if (error.response.data?.message === 'Item founded on the Cart') {
-          setItemInCart(true);
+          setMessage(formatMessage({ id: 'added-to-cart' }));
         }
         setAddToCartButtonLoading(false);
       }
@@ -48,15 +52,17 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
-        setItemInCart(true);
-      } catch (error) {}
+        setMessage(formatMessage({ id: 'added-to-cart' }));
+      } catch (error) {
+        setAddToCartButtonLoading(false);
+      }
     }
   };
 
   return (
     <div
       onMouseEnter={() => {
-        if (!itemInCart) {
+        if (!message) {
           setShowAddButton(true);
         }
       }}
@@ -126,14 +132,14 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {itemInCart && (
+          {message && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
               className="absolute top-0 w-full h-full flex items-center justify-center text-main-text bg-gray-800 text-2xl"
             >
-              {formatMessage({ id: 'added-to-cart' })} !
+              {message}
             </motion.div>
           )}
         </AnimatePresence>

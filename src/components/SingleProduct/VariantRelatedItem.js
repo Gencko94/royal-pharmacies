@@ -3,11 +3,12 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { BiListPlus } from 'react-icons/bi';
 export default function VariantRelatedItem({ item }) {
-  const { locale } = useIntl();
+  const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
-
+  const history = useHistory();
   const [selectedVariation, setSelectedVariant] = React.useState(() => {
     return Object.keys(item.new_variation_addons)[0];
   });
@@ -39,64 +40,74 @@ export default function VariantRelatedItem({ item }) {
 
   const resolveAddons = () => {
     if (!variantOnly) {
-      return Object.keys(item.new_variation_addons).map((variation, i) => {
-        return item.new_variation_addons[variation].options[
-          selectedOption[variation]
-        ].image ? (
-          <img
-            key={i}
-            onClick={() => setSelectedVariant(variation)}
-            className={`cursor-pointer ${
-              selectedVariation === variation && 'border'
-            }`}
-            alt={item.new_variation_addons[variation].id}
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${
-              item.new_variation_addons[variation].options[
-                selectedOption[variation]
-              ]?.image
-            }`}
-          />
-        ) : (
-          <button
-            onClick={() => setSelectedVariant(variation)}
-            className={`p-1 ${
-              selectedVariation === variation
-                ? 'bg-main-color text-main-text'
-                : ''
-            } rounded flex items-center justify-center`}
-          >
-            {item.new_variation_addons[variation].addon_item_value.substr(0, 1)}
-          </button>
-        );
-      });
+      return Object.keys(item.new_variation_addons)
+        .slice(0, 3)
+        .map((variation, i) => {
+          return item.new_variation_addons[variation].options[
+            selectedOption[variation]
+          ].image ? (
+            <img
+              key={i}
+              onClick={() => setSelectedVariant(variation)}
+              className={`cursor-pointer ${
+                selectedVariation === variation && 'border'
+              }`}
+              alt={item.new_variation_addons[variation].id}
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${
+                item.new_variation_addons[variation].options[
+                  selectedOption[variation]
+                ]?.image
+              }`}
+            />
+          ) : (
+            <button
+              onClick={() => setSelectedVariant(variation)}
+              className={`p-1 ${
+                selectedVariation === variation
+                  ? 'bg-main-color text-main-text'
+                  : ''
+              } rounded flex items-center justify-center`}
+            >
+              {item.new_variation_addons[variation].addon_item_value.substr(
+                0,
+                1
+              )}
+            </button>
+          );
+        });
     } else {
-      return Object.keys(item.new_variation_addons).map((variation, i) => {
-        return item.new_variation_addons[variation].image ? (
-          <img
-            onClick={() => {
-              setSelectedVariant(variation);
-            }}
-            key={i}
-            className={`cursor-pointer ${
-              selectedVariation === variation && 'border'
-            }`}
-            alt={option.id}
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.new_variation_addons[variation].image}`}
-          />
-        ) : (
-          <button
-            key={i}
-            onClick={() => setSelectedVariant(variation)}
-            className={`p-1 ${
-              selectedVariation === variation
-                ? 'bg-main-color text-main-text'
-                : ''
-            } rounded flex items-center justify-center`}
-          >
-            {item.new_variation_addons[variation].addon_item_value.substr(0, 1)}
-          </button>
-        );
-      });
+      return Object.keys(item.new_variation_addons)
+        .slice(0, 3)
+        .map((variation, i) => {
+          return item.new_variation_addons[variation].image ? (
+            <img
+              onClick={() => {
+                setSelectedVariant(variation);
+              }}
+              key={i}
+              className={`cursor-pointer ${
+                selectedVariation === variation && 'border'
+              }`}
+              alt={option.id}
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.new_variation_addons[variation].image}`}
+            />
+          ) : (
+            <button
+              key={i}
+              onClick={() => setSelectedVariant(variation)}
+              className={`p-1 ${
+                selectedVariation === variation
+                  ? 'bg-main-color text-main-text'
+                  : ''
+              } rounded flex items-center justify-center`}
+            >
+              {item.new_variation_addons[variation].addon_item_value.substr(
+                0,
+                1
+              )}
+            </button>
+          );
+        });
     }
   };
   const resolveImage = () => {
@@ -189,6 +200,18 @@ export default function VariantRelatedItem({ item }) {
           }}
         >
           {resolveAddons()}
+          {Object.keys(item.new_variation_addons).length > 3 && (
+            <button
+              onClick={() =>
+                history.push(`/${locale}/products/${item.slug}/${item.id}`)
+              }
+              title={formatMessage({ id: 'show-more' })}
+              className={`p-1  border
+               rounded flex items-center justify-center`}
+            >
+              <BiListPlus className="text-main-color w-6 h-6" />
+            </button>
+          )}
         </div>
       </div>
     </div>

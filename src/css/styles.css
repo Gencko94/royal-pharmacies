@@ -174,7 +174,7 @@ input {
 
 .cart-grid-titles {
   display: grid;
-  grid-template-columns: 0.1fr 0.7fr 0.2fr 0.2fr;
+  grid-template-columns: 0.2fr 1fr 0.2fr 0.2fr;
   gap: 0.5em;
   margin-bottom: 0.2em;
 }
@@ -182,7 +182,7 @@ input {
   display: grid;
 
   align-items: flex-start;
-  grid-template-columns: 0.1fr 0.7fr 0.2fr 0.2fr;
+  grid-template-columns: 0.2fr 1fr 0.2fr 0.2fr;
   gap: 1em;
 }
 .cart__item-mobile {
@@ -536,7 +536,7 @@ input {
 }
 
 /* single product sizes */
-.single-product-sizes__container {
+.single-product-variants__container {
   display: grid;
   grid-template-columns: repeat(auto-fill, 80px);
   gap: 0.5em;

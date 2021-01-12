@@ -163,12 +163,14 @@ export default function Order({ order, handleShowAddReviews, index }) {
             </h1>
             {resolvePayment()}
           </div>
-          <button
-            onClick={() => handleShowAddReviews(index)}
-            className="rounded text-main-text p-2 font-semibold bg-green-700"
-          >
-            {formatMessage({ id: 'add-reviews' })}
-          </button>
+          {status !== 'canceled' && (
+            <button
+              onClick={() => handleShowAddReviews(index)}
+              className="rounded text-main-text p-2 font-semibold bg-green-700"
+            >
+              {formatMessage({ id: 'add-reviews' })}
+            </button>
+          )}
         </motion.div>
         <motion.div className="flex justify-between" layout>
           <div className="mx-1">
@@ -346,9 +348,7 @@ const Content = ({
           </span>
         </h1>
         {coupon && (
-          <h1 className="mb-2 text-center">
-            {formatMessage({ id: 'coupon-sale' })}
-          </h1>
+          <h1 className="mb-2">{formatMessage({ id: 'coupon-sale' })}</h1>
         )}
         {coupon && (
           <h1 className="mb-2 text-center">

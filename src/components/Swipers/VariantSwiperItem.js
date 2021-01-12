@@ -8,6 +8,8 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+import { BiListPlus } from 'react-icons/bi';
+import { useHistory } from 'react-router-dom';
 export default function VariantSwiperItem({
   item,
   setCartMenuOpen,
@@ -23,7 +25,7 @@ export default function VariantSwiperItem({
   const { deliveryCountry } = React.useContext(DataProvider);
   const [showAddButton, setShowAddButton] = React.useState(false);
   const [showOptions, setShowOptions] = React.useState(false);
-
+  const history = useHistory();
   const [selectedVariation, setSelectedVariant] = React.useState(() => {
     return Object.keys(item.new_variation_addons)[0];
   });
@@ -35,7 +37,7 @@ export default function VariantSwiperItem({
     return keys;
   });
   const { userId } = React.useContext(AuthProvider);
-  const [itemInCart, setItemInCart] = React.useState(false);
+  const [message, setMessage] = React.useState('');
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     null
   );
@@ -58,6 +60,11 @@ export default function VariantSwiperItem({
     ? true
     : false;
   const handleAddToCart = async () => {
+    if (option.quantity < 1) {
+      setMessage(formatMessage({ id: 'out-of-stock' }));
+      return;
+    }
+
     setAddToCartButtonLoading(true);
     if (userId) {
       try {
@@ -83,10 +90,10 @@ export default function VariantSwiperItem({
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
-        setItemInCart(true);
+        setMessage(formatMessage({ id: 'added-to-cart' }));
       } catch (error) {
         if (error.response.data.message === 'Item founded on the Cart') {
-          setItemInCart(true);
+          setMessage(formatMessage({ id: 'added-to-cart' }));
           setAddToCartButtonLoading(false);
         } else {
           setErrorOpen(true);
@@ -125,7 +132,7 @@ export default function VariantSwiperItem({
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
-        setItemInCart(true);
+        setMessage(formatMessage({ id: 'added-to-cart' }));
       } catch (error) {
         setErrorOpen(true);
         setErrorMessage(formatMessage({ id: 'something-went-wrong-snckbar' }));
@@ -135,64 +142,74 @@ export default function VariantSwiperItem({
 
   const resolveAddons = () => {
     if (!variantOnly) {
-      return Object.keys(item.new_variation_addons).map((variation, i) => {
-        return item.new_variation_addons[variation].options[
-          selectedOption[variation]
-        ].image ? (
-          <img
-            key={i}
-            onClick={() => setSelectedVariant(variation)}
-            className={`cursor-pointer ${
-              selectedVariation === variation && 'border'
-            }`}
-            alt={item.new_variation_addons[variation].id}
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${
-              item.new_variation_addons[variation].options[
-                selectedOption[variation]
-              ]?.image
-            }`}
-          />
-        ) : (
-          <button
-            onClick={() => setSelectedVariant(variation)}
-            className={`p-1 ${
-              selectedVariation === variation
-                ? 'bg-main-color text-main-text'
-                : ''
-            } rounded flex items-center justify-center`}
-          >
-            {item.new_variation_addons[variation].addon_item_value.substr(0, 1)}
-          </button>
-        );
-      });
+      return Object.keys(item.new_variation_addons)
+        .slice(0, 3)
+        .map((variation, i) => {
+          return item.new_variation_addons[variation].options[
+            selectedOption[variation]
+          ].image ? (
+            <img
+              key={i}
+              onClick={() => setSelectedVariant(variation)}
+              className={`cursor-pointer ${
+                selectedVariation === variation && 'border'
+              }`}
+              alt={item.new_variation_addons[variation].id}
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${
+                item.new_variation_addons[variation].options[
+                  selectedOption[variation]
+                ]?.image
+              }`}
+            />
+          ) : (
+            <button
+              onClick={() => setSelectedVariant(variation)}
+              className={`p-1 ${
+                selectedVariation === variation
+                  ? 'bg-main-color text-main-text'
+                  : ''
+              } rounded flex items-center justify-center`}
+            >
+              {item.new_variation_addons[variation].addon_item_value.substr(
+                0,
+                1
+              )}
+            </button>
+          );
+        });
     } else {
-      return Object.keys(item.new_variation_addons).map((variation, i) => {
-        return item.new_variation_addons[variation].image ? (
-          <img
-            onClick={() => {
-              setSelectedVariant(variation);
-            }}
-            key={i}
-            className={`cursor-pointer ${
-              selectedVariation === variation && 'border'
-            }`}
-            alt={option.id}
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.new_variation_addons[variation].image}`}
-          />
-        ) : (
-          <button
-            key={i}
-            onClick={() => setSelectedVariant(variation)}
-            className={`p-1 ${
-              selectedVariation === variation
-                ? 'bg-main-color text-main-text'
-                : ''
-            } rounded flex items-center justify-center`}
-          >
-            {item.new_variation_addons[variation].addon_item_value.substr(0, 1)}
-          </button>
-        );
-      });
+      return Object.keys(item.new_variation_addons)
+        .slice(0, 3)
+        .map((variation, i) => {
+          return item.new_variation_addons[variation].image ? (
+            <img
+              onClick={() => {
+                setSelectedVariant(variation);
+              }}
+              key={i}
+              className={`cursor-pointer ${
+                selectedVariation === variation && 'border'
+              }`}
+              alt={option.id}
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.new_variation_addons[variation].image}`}
+            />
+          ) : (
+            <button
+              key={i}
+              onClick={() => setSelectedVariant(variation)}
+              className={`p-1 ${
+                selectedVariation === variation
+                  ? 'bg-main-color text-main-text'
+                  : ''
+              } rounded flex items-center justify-center`}
+            >
+              {item.new_variation_addons[variation].addon_item_value.substr(
+                0,
+                1
+              )}
+            </button>
+          );
+        });
     }
   };
   const resolveImage = () => {
@@ -373,14 +390,14 @@ export default function VariantSwiperItem({
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {itemInCart && (
+          {message && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
               className="absolute top-0 w-full h-full flex items-center justify-center text-main-text bg-gray-800 text-2xl"
             >
-              {formatMessage({ id: 'added-to-cart' })} !
+              {message}
             </motion.div>
           )}
         </AnimatePresence>
@@ -434,6 +451,18 @@ export default function VariantSwiperItem({
           }}
         >
           {resolveAddons()}
+          {Object.keys(item.new_variation_addons).length > 3 && (
+            <button
+              onClick={() =>
+                history.push(`/${locale}/products/${item.slug}/${item.id}`)
+              }
+              title={formatMessage({ id: 'show-more' })}
+              className={`p-1  border
+               rounded flex items-center justify-center`}
+            >
+              <BiListPlus className="text-main-color w-6 h-6" />
+            </button>
+          )}
         </div>
       </div>
     </div>

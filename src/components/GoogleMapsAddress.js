@@ -26,10 +26,11 @@ const options = {
 };
 export default function GoogleMapsAddress({ setShowMap }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
+    language: locale,
   });
 
   const [marker, setMarker] = React.useState(null);
@@ -52,7 +53,7 @@ export default function GoogleMapsAddress({ setShowMap }) {
     if (marker) {
       axios
         .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&language=${locale}`
         )
         .then(res => {
           setMarkerAddress(`${res.data.results[0].formatted_address}`);
@@ -67,7 +68,7 @@ export default function GoogleMapsAddress({ setShowMap }) {
       setMarkerAddress(null);
       setMarkerInfoWindowDetails(null);
     }
-  }, [marker]);
+  }, [marker, locale]);
 
   if (loadError)
     return (

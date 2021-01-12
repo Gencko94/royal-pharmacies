@@ -315,6 +315,7 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
         shippingCost: res.data.data.shipping_cost,
         cartSubtotal: res.data.data.subtotal,
         couponCost: res.data.data.coupon_cost,
+        note: res.data.data.note,
       };
     } else if (res.data.status === true && res.data.data) {
       return { cartItems: [], cartTotal: 0 };
@@ -357,6 +358,7 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
         cartSubtotal: res.data.data.subtotal,
         couponCost: res.data.data.coupon_cost,
         message: 'cart-combined',
+        note: res.data.data.note,
       };
     }
   }

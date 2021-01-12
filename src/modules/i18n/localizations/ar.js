@@ -375,7 +375,7 @@ export const ar = {
   'order-waiting-for-payment': 'بانتظار الدفع',
   'order-confirmed': 'مؤكد',
   'order-new': 'جديد',
-  'cash-on-delivery': 'دفع عند التوصيل',
+  'cash-on-delivery': 'الدفع عند التوصيل',
   'checkout-cart-empty':
     'عذرا , لا يمكنك اتمام الشراء عندما تكون عربة التسوق فارغة , الرجاء وضع منتج واحد على الاقل',
   no_quantity: 'الكمية منتهية',
@@ -388,4 +388,6 @@ export const ar = {
   'what-is-your-rating': 'ما هو تقييمك لهذا المنتج ؟',
   'add-feedback': 'عبر عن رأيك بهذا المنتج واخبر الاخرين عنه ',
   'review-added': 'تم إضافة المراجعة بنجاح',
+  'show-more': 'إظهار المزيد',
+  'developed-by': 'طور من قبل',
 };

@@ -402,6 +402,8 @@ const baseStrings = {
   'what-is-your-rating': 'How did you like this Product ?',
   'add-feedback': 'Express your feedback to other customers',
   'review-added': 'Review Added Successfully',
+  'show-more': 'Show More',
+  'developed-by': 'Developed by',
 };
 
 export const en = baseStrings;

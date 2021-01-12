@@ -192,6 +192,7 @@ export default function CartAndWishlistContext({ children }) {
           : guestCartData?.coupon_cost,
         coupon,
         setCoupon,
+        note: cartData?.note,
       }}
     >
       {children}

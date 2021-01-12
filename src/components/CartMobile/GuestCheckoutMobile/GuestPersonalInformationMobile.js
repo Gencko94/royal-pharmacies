@@ -118,7 +118,9 @@ export default function GuestPersonalInformationMobile({
             } mb-3 flex border items-center justify-start rounded p-2 font-semibold`}
           >
             <img src={cod} alt={payment.key} />
-            <div className="flex-1 mx-3 text-left">Cash on Delivery</div>
+            <div className="flex-1 mx-3 text-left">
+              {formatMessage({ id: 'cash-on-delivery' })}
+            </div>
             <div>
               {paymentMethod === payment.key ? (
                 <BiRadioCircleMarked className="w-6 h-6 text-btn-secondary-light" />

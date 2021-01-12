@@ -7,8 +7,9 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+import { BiListPlus } from 'react-icons/bi';
 export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
   const {
     addToCartMutation,
@@ -19,7 +20,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
   const { deliveryCountry } = React.useContext(DataProvider);
   const [showAddButton, setShowAddButton] = React.useState(false);
   const [showOptions, setShowOptions] = React.useState(false);
-
+  const history = useHistory();
   const [selectedVariation, setSelectedVariant] = React.useState(() => {
     return Object.keys(item.new_variation_addons)[0];
   });
@@ -31,10 +32,11 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
     return keys;
   });
   const { userId } = React.useContext(AuthProvider);
-  const [itemInCart, setItemInCart] = React.useState(false);
+
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     null
   );
+  const [message, setMessage] = React.useState('');
   const variantOnly = item.new_variation_addons[selectedVariation].options
     ? false
     : true;
@@ -53,6 +55,10 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
     ? true
     : false;
   const handleAddToCart = async () => {
+    if (option.quantity < 1) {
+      setMessage(formatMessage({ id: 'out-of-stock' }));
+      return;
+    }
     setAddToCartButtonLoading(true);
     if (userId) {
       try {
@@ -78,10 +84,10 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
-        setItemInCart(true);
+        setMessage(formatMessage({ id: 'added-to-cart' }));
       } catch (error) {
         if (error.response.data.message === 'Item founded on the Cart') {
-          setItemInCart(true);
+          setMessage(formatMessage({ id: 'added-to-cart' }));
         }
         setAddToCartButtonLoading(false);
       }
@@ -114,71 +120,83 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
-        setItemInCart(true);
-      } catch (error) {}
+        setMessage(formatMessage({ id: 'added-to-cart' }));
+      } catch (error) {
+        setAddToCartButtonLoading(false);
+      }
     }
   };
 
   const resolveAddons = () => {
     if (!variantOnly) {
-      return Object.keys(item.new_variation_addons).map((variation, i) => {
-        return item.new_variation_addons[variation].options[
-          selectedOption[variation]
-        ].image ? (
-          <img
-            key={i}
-            onClick={() => setSelectedVariant(variation)}
-            className={`cursor-pointer ${
-              selectedVariation === variation && 'border'
-            }`}
-            alt={item.new_variation_addons[variation].id}
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${
-              item.new_variation_addons[variation].options[
-                selectedOption[variation]
-              ]?.image
-            }`}
-          />
-        ) : (
-          <button
-            onClick={() => setSelectedVariant(variation)}
-            className={`p-1 ${
-              selectedVariation === variation
-                ? 'bg-main-color text-main-text'
-                : ''
-            } rounded flex items-center justify-center`}
-          >
-            {item.new_variation_addons[variation].addon_item_value.substr(0, 1)}
-          </button>
-        );
-      });
+      return Object.keys(item.new_variation_addons)
+        .slice(0, 3)
+        .map((variation, i) => {
+          return item.new_variation_addons[variation].options[
+            selectedOption[variation]
+          ].image ? (
+            <img
+              key={i}
+              onClick={() => setSelectedVariant(variation)}
+              className={`cursor-pointer ${
+                selectedVariation === variation && 'border'
+              }`}
+              alt={item.new_variation_addons[variation].id}
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${
+                item.new_variation_addons[variation].options[
+                  selectedOption[variation]
+                ]?.image
+              }`}
+            />
+          ) : (
+            <button
+              onClick={() => setSelectedVariant(variation)}
+              className={`p-1 ${
+                selectedVariation === variation
+                  ? 'bg-main-color text-main-text'
+                  : ''
+              } rounded flex items-center justify-center`}
+            >
+              {item.new_variation_addons[variation].addon_item_value.substr(
+                0,
+                1
+              )}
+            </button>
+          );
+        });
     } else {
-      return Object.keys(item.new_variation_addons).map((variation, i) => {
-        return item.new_variation_addons[variation].image ? (
-          <img
-            onClick={() => {
-              setSelectedVariant(variation);
-            }}
-            key={i}
-            className={`cursor-pointer ${
-              selectedVariation === variation && 'border'
-            }`}
-            alt={option.id}
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.new_variation_addons[variation].image}`}
-          />
-        ) : (
-          <button
-            key={i}
-            onClick={() => setSelectedVariant(variation)}
-            className={`p-1 ${
-              selectedVariation === variation
-                ? 'bg-main-color text-main-text'
-                : ''
-            } rounded flex items-center justify-center`}
-          >
-            {item.new_variation_addons[variation].addon_item_value.substr(0, 1)}
-          </button>
-        );
-      });
+      return Object.keys(item.new_variation_addons)
+        .slice(0, 3)
+        .map((variation, i) => {
+          return item.new_variation_addons[variation].image ? (
+            <img
+              onClick={() => {
+                setSelectedVariant(variation);
+              }}
+              key={i}
+              className={`cursor-pointer ${
+                selectedVariation === variation && 'border'
+              }`}
+              alt={option.id}
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.new_variation_addons[variation].image}`}
+            />
+          ) : (
+            <button
+              key={i}
+              onClick={() => setSelectedVariant(variation)}
+              className={`p-1 ${
+                selectedVariation === variation
+                  ? 'bg-main-color text-main-text'
+                  : ''
+              } rounded flex items-center justify-center`}
+            >
+              {item.new_variation_addons[variation].addon_item_value.substr(
+                0,
+                1
+              )}
+            </button>
+          );
+        });
     }
   };
   const resolveImage = () => {
@@ -256,7 +274,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => {
-                if (item.new_variation_addons[selectedVariation].options) {
+                if (!variantOnly) {
                   setShowOptions(true);
                   setShowAddButton(false);
                   return;
@@ -360,14 +378,14 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {itemInCart && (
+          {message && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
               className="absolute top-0 w-full h-full flex items-center justify-center text-main-text bg-gray-800 text-2xl"
             >
-              {formatMessage({ id: 'added-to-cart' })} !
+              {message}
             </motion.div>
           )}
         </AnimatePresence>
@@ -421,6 +439,18 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
           }}
         >
           {resolveAddons()}
+          {Object.keys(item.new_variation_addons).length > 3 && (
+            <button
+              onClick={() =>
+                history.push(`/${locale}/products/${item.slug}/${item.id}`)
+              }
+              title={formatMessage({ id: 'show-more' })}
+              className={`p-1  border
+               rounded flex items-center justify-center`}
+            >
+              <BiListPlus className="text-main-color w-6 h-6" />
+            </button>
+          )}
         </div>
       </div>
     </div>

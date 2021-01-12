@@ -111,12 +111,14 @@ export default function OrderMobile({
             >
               {formatMessage({ id: 'order-details' })}
             </button>
-            <button
-              onClick={() => handleShowAddReviews(index)}
-              className="px-3 py-1 mx-3 text-body-text-dark bg-green-700 uppercase  rounded font-semibold"
-            >
-              {formatMessage({ id: 'add-reviews' })}
-            </button>
+            {order?.status !== 'canceled' && (
+              <button
+                onClick={() => handleShowAddReviews(index)}
+                className="px-3 py-1 mx-3 text-body-text-dark bg-green-700 uppercase  rounded font-semibold"
+              >
+                {formatMessage({ id: 'add-reviews' })}
+              </button>
+            )}
           </div>
         </div>
       </div>

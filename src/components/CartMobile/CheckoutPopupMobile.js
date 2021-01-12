@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
-
+import { GrFormClose } from 'react-icons/gr';
 export default function CheckoutPopupMobile({ setCheckOutPopupOpen }) {
   const { formatMessage, locale } = useIntl();
   const history = useHistory();
@@ -28,10 +28,15 @@ export default function CheckoutPopupMobile({ setCheckOutPopupOpen }) {
       exit="exited"
       className="cart-checkout-popup-mobile p-2 pb-6 bg-nav-cat-light shadow-lg border-t"
     >
-      <h1 className="font-semibold mb-2">
-        {formatMessage({ id: 'not-signed-in' })} ,
-        {formatMessage({ id: 'you-can' })} :
-      </h1>
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="font-semibold">
+          {formatMessage({ id: 'not-signed-in' })} ,
+          {formatMessage({ id: 'you-can' })} :
+        </h1>
+        <button onClick={() => setCheckOutPopupOpen(false)}>
+          <GrFormClose className="w-5 h-5" />
+        </button>
+      </div>
       <div
         className="text-white"
         style={{

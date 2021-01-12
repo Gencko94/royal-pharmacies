@@ -19,6 +19,7 @@ export default function MobileCheckoutSection() {
     checkCouponMutation,
     isCheckingCoupon,
     setCoupon,
+    note,
   } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const [couponCode, setCouponCode] = React.useState('');
@@ -96,7 +97,7 @@ export default function MobileCheckoutSection() {
         <form
           onSubmit={handleSubmitCoupon}
           className={`rounded border w-full flex mb-1  overflow-hidden ${
-            couponError && 'border-main-color'
+            (couponError || note) && 'border-main-color'
           }`}
         >
           <input
@@ -107,12 +108,12 @@ export default function MobileCheckoutSection() {
             readOnly={validCoupon}
             className={`${
               validCoupon && 'bg-gray-400 text-gray-200'
-            } flex-1 placeholder-gray-700  p-2`}
+            } flex-1 placeholder-gray-700 min-w-0  p-2`}
           />
           <button
             type="submit"
             className="bg-main-color flex items-center text-sm justify-center p-2 text-main-text uppercase "
-            style={{ width: '70px' }}
+            style={{ width: '80px' }}
           >
             {isCheckingCoupon ? (
               <Loader
@@ -131,6 +132,11 @@ export default function MobileCheckoutSection() {
         </form>
         {couponError && (
           <h1 className="text-main-color text-xs">{errorMessage}</h1>
+        )}
+        {note && (
+          <h1 className="text-main-color text-xs">
+            {formatMessage({ id: 'coupon-limit-reached' })}
+          </h1>
         )}
       </div>
       <div
@@ -170,7 +176,7 @@ export default function MobileCheckoutSection() {
             )}
           </h1>
         </div>
-        {validCoupon && (
+        {validCoupon && !note && (
           <div className="flex text-green-700 items-center mb-2">
             <h1 className=" flex-1">{formatMessage({ id: 'coupon-sale' })}</h1>
             {cartItemsFetching ? (
@@ -218,11 +224,11 @@ export default function MobileCheckoutSection() {
         <button
           onClick={handleCheckout}
           className={`${
-            cartItems.length === 0
+            cartItems.length === 0 || note
               ? 'cursor-not-allowed  bg-gray-600'
               : 'bg-green-600'
           } p-2 rounded text-body-light uppercase w-full flex items-center justify-center  `}
-          disabled={cartItems.length === 0}
+          disabled={cartItems.length === 0 || note}
         >
           {formatMessage({ id: 'checkout' })}
         </button>
