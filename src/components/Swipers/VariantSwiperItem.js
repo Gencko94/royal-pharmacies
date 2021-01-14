@@ -98,7 +98,7 @@ export default function VariantSwiperItem({
         } else {
           setErrorOpen(true);
           setErrorMessage(
-            formatMessage({ id: 'something-went-wrong-snckbar' })
+            formatMessage({ id: 'something-went-wrong-snackbar' })
           );
           setAddToCartButtonLoading(false);
         }
@@ -262,7 +262,7 @@ export default function VariantSwiperItem({
           href={`/${locale}/products/${item.slug}/${item.id}`}
         >
           {resolveImage()}
-          {isSale && (
+          {isSale && option.quantity > 0 && (
             <div
               className={`absolute bg-main-color px-1 text-main-text font-bold top-0   uppercase text-xs ${
                 locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
@@ -278,10 +278,17 @@ export default function VariantSwiperItem({
               {formatMessage({ id: 'off' })}
             </div>
           )}
+          {option.quantity < 1 && (
+            <div
+              className={`absolute bg-main-color  text-main-text font-bold top-0   uppercase text-xs right-0 left-0 text-center`}
+            >
+              {formatMessage({ id: 'out-of-stock' })}
+            </div>
+          )}
         </a>
 
         <AnimatePresence>
-          {showAddButton && (
+          {showAddButton && option.quantity > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

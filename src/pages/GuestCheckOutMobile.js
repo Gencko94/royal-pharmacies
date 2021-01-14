@@ -47,7 +47,6 @@ export default function GuestCheckOutMobile() {
   ];
   const [countryCode, setCountryCode] = React.useState(options[0]);
   const [phoneNumber, setPhoneNumber] = React.useState('');
-  const [paymentUrl, setPaymentUrl] = React.useState(null);
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [paymentMethod, setPaymentMethod] = React.useState(null);
@@ -126,8 +125,11 @@ export default function GuestCheckOutMobile() {
         ...stepDone,
         1: true,
       });
-      setPaymentUrl(res.payment);
-      setSelectedStep(2);
+      if (paymentMethod === 'cod') {
+        setSelectedStep(2);
+      } else {
+        window.location.href = res.payment;
+      }
     } catch (error) {
       setErrorOpen(true);
       if (
@@ -207,14 +209,7 @@ export default function GuestCheckOutMobile() {
             checkoutLoading={checkoutLoading}
           />
         )}
-        {selectedStep === 2 && (
-          <OrderPlacedMobile
-            handleStepForward={handleStepForward}
-            handleStepBack={handleStepBack}
-            paymentMethod={paymentMethod}
-            paymentUrl={paymentUrl}
-          />
-        )}
+        {selectedStep === 2 && <OrderPlacedMobile />}
       </div>
     </Layout>
   );

@@ -35,7 +35,12 @@ export default function Home() {
     switch (item.type) {
       case 'best_seller':
         return (
-          <LazyLoad key={index} height="calc(100% * 1285/492.92)" offset={600}>
+          <LazyLoad
+            once={true}
+            key={index}
+            height="calc(100% * 1285/492.92)"
+            offset={600}
+          >
             <StaticSwiper
               type={item.type}
               title={item[`title_${locale}`]}
@@ -45,7 +50,12 @@ export default function Home() {
         );
       case 'product_by_category':
         return (
-          <LazyLoad key={index} offset={600} height="calc(100% * 1285/492.92)">
+          <LazyLoad
+            once={true}
+            key={index}
+            offset={600}
+            height="calc(100% * 1285/492.92)"
+          >
             <StaticSwiper
               type={item.key}
               title={item[`title_${locale}`]}
@@ -55,7 +65,12 @@ export default function Home() {
         );
       case 'categories':
         return (
-          <LazyLoad key={index} offset={600} height="calc(100% * 1285/492.92)">
+          <LazyLoad
+            once={true}
+            key={index}
+            offset={600}
+            height="calc(100% * 1285/492.92)"
+          >
             <StaticSwiper
               type={item.slug}
               title={item[`title_${locale}`]}
@@ -65,7 +80,12 @@ export default function Home() {
         );
       case 'latest_products':
         return (
-          <LazyLoad key={index} offset={600} height="calc(100% * 1285/492.92)">
+          <LazyLoad
+            once={true}
+            key={index}
+            offset={600}
+            height="calc(100% * 1285/492.92)"
+          >
             <StaticSwiper
               type={item.type}
               title={item[`title_${locale}`]}
@@ -98,8 +118,7 @@ export default function Home() {
         <title>MRG Mall Online Shop | متجر إم آر جي الإلكتروني</title>
       </Helmet>
       <div
-        className={`mb-5 overflow-hidden bg-body-light text-body-text-light
-        `}
+        className={`mb-5 overflow-hidden bg-body-light text-body-text-light`}
         style={{ minHeight: 'calc(100vh - 140px)' }}
       >
         <AnimatePresence>

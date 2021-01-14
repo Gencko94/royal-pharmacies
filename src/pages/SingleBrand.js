@@ -36,9 +36,42 @@ export default function SingleBrand() {
     <Layout>
       <Helmet>
         <title>
-          {data?.brandName?.[locale].name ||
-            formatMessage({ id: 'shop-on-mrg' })}
+          {data
+            ? `${data.brandName[locale].name} | ${formatMessage({
+                id: 'mrg-mall-kuwait',
+              })}`
+            : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'}
         </title>
+        <meta
+          name="description"
+          content={
+            data
+              ? `${formatMessage({ id: 'shop' })} ${
+                  data?.brandName?.[locale].name
+                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+          }
+        />
+        <meta
+          property="og:title"
+          content={
+            data
+              ? `${data.brandName[locale].name} | ${formatMessage({
+                  id: 'mrg-mall-kuwait',
+                })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+          }
+        />
+        <meta
+          property="og:description"
+          content={
+            data
+              ? `${formatMessage({ id: 'shop' })} ${
+                  data?.full_translation?.[locale].title
+                }  ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+          }
+        />
       </Helmet>
       <AnimatePresence>
         {cartMenuOpen && (
@@ -75,7 +108,36 @@ export default function SingleBrand() {
 
         {productsLoading && (
           <div className="brand-grid__desktop py-2 ">
-            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
+            {[
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+            ].map(i => {
               return <CategoryItemLoader key={i} />;
             })}
           </div>

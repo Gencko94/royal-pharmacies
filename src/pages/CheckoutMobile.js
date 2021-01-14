@@ -17,7 +17,6 @@ export default function CheckoutMobile() {
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [selectedAddress, setSelectedAddress] = React.useState(null);
   const [paymentMethod, setPaymentMethod] = React.useState(null);
-  const [paymentUrl, setPaymentUrl] = React.useState(null);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const { cartItems, cartItemsLoading, coupon } = React.useContext(
@@ -80,8 +79,11 @@ export default function CheckoutMobile() {
         1: true,
       });
 
-      setPaymentUrl(res.payment);
-      setSelectedStep(2);
+      if (paymentMethod === 'cod') {
+        setSelectedStep(2);
+      } else {
+        window.location.href = res.payment;
+      }
     } catch (error) {
       setErrorOpen(true);
       if (
@@ -144,12 +146,7 @@ export default function CheckoutMobile() {
               checkoutLoading={checkoutLoading}
             />
           )}
-          {selectedStep === 2 && (
-            <OrderPlacedMobile
-              paymentUrl={paymentUrl}
-              paymentMethod={paymentMethod}
-            />
-          )}
+          {selectedStep === 2 && <OrderPlacedMobile />}
         </div>
       </div>
     </Layout>

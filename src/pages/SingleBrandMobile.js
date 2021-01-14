@@ -50,9 +50,42 @@ export default function SingleBrandMobile() {
       <div className="min-h-screen p-3">
         <Helmet>
           <title>
-            {data?.brandName?.[locale].name ||
-              formatMessage({ id: 'shop-on-mrg' })}
+            {data
+              ? `${data.brandName[locale].name} | ${formatMessage({
+                  id: 'mrg-mall-kuwait',
+                })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'}
           </title>
+          <meta
+            name="description"
+            content={
+              data
+                ? `${formatMessage({ id: 'shop' })} ${
+                    data?.brandName?.[locale].name
+                  } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+                : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+            }
+          />
+          <meta
+            property="og:title"
+            content={
+              data
+                ? `${data.brandName[locale].name} | ${formatMessage({
+                    id: 'mrg-mall-kuwait',
+                  })}`
+                : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+            }
+          />
+          <meta
+            property="og:description"
+            content={
+              data
+                ? `${formatMessage({ id: 'shop' })} ${
+                    data?.full_translation?.[locale].title
+                  }  ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+                : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+            }
+          />
         </Helmet>
         <AnimatePresence>
           {cartMenuOpen && (

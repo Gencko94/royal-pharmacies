@@ -42,7 +42,6 @@ export default function GuestCheckOut() {
       userTyped_address: '',
     },
   });
-  const [paymentUrl, setPaymentUrl] = React.useState(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');
   const [name, setName] = React.useState('');
   const [paymentMethod, setPaymentMethod] = React.useState(null);
@@ -128,8 +127,11 @@ export default function GuestCheckOut() {
         ...stepDone,
         1: true,
       });
-      setPaymentUrl(res.payment);
-      setSelectedStep(2);
+      if (paymentMethod === 'cod') {
+        setSelectedStep(2);
+      } else {
+        window.location.href = res.payment;
+      }
     } catch (error) {
       setErrorOpen(true);
       if (
@@ -210,14 +212,7 @@ export default function GuestCheckOut() {
               setPaymentMethod={setPaymentMethod}
             />
           )}
-          {selectedStep === 2 && (
-            <OrderPlaced
-              handleStepForward={handleStepForward}
-              handleStepBack={handleStepBack}
-              paymentMethod={paymentMethod}
-              paymentUrl={paymentUrl}
-            />
-          )}
+          {selectedStep === 2 && <OrderPlaced />}
         </div>
       </div>
     </Layout>

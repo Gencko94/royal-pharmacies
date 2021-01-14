@@ -144,8 +144,12 @@ export default function VariantRightSection({
           }}
           disabled={qty === 0}
           className={`
-            bg-green-700
-           flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
+          ${
+            qty > 0
+              ? 'bg-green-700 text-main-text'
+              : 'bg-gray-500 text-gray-200 cursor-not-allowed'
+          }
+           flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToCartButtonLoading ? (
             <Loader

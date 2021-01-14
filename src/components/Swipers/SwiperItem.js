@@ -50,7 +50,7 @@ export default function SwiperItem({
           setAddToCartButtonLoading(false);
           setErrorOpen(true);
           setErrorMessage(
-            formatMessage({ id: 'something-went-wrong-snckbar' })
+            formatMessage({ id: 'something-went-wrong-snackbar' })
           );
         }
       }
@@ -95,28 +95,36 @@ export default function SwiperItem({
             pb="calc(100% * 266/210)"
             origin="original"
           />
-          {item.simple_addons?.promotion_price && (
+          {item.simple_addons?.promotion_price &&
+            item.simple_addons.quantity > 0 && (
+              <div
+                className={`absolute bg-green-800 px-1 text-main-text font-bold top-0   uppercase text-xs ${
+                  locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
+                }`}
+                style={{
+                  clipPath:
+                    locale === 'ar'
+                      ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 14% 50%)'
+                      : 'polygon(0% 0%, 100% 0, 86% 50%, 100% 100%, 0% 100%)',
+                }}
+              >
+                {calculateDiscountPrice(
+                  item.simple_addons?.price,
+                  item.simple_addons?.promotion_price
+                )}{' '}
+                {formatMessage({ id: 'off' })}
+              </div>
+            )}
+          {item.simple_addons.quantity < 1 && (
             <div
-              className={`absolute bg-main-color px-1 text-main-text font-bold top-0   uppercase text-xs ${
-                locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
-              }`}
-              style={{
-                clipPath:
-                  locale === 'ar'
-                    ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 14% 50%)'
-                    : 'polygon(0% 0%, 100% 0, 86% 50%, 100% 100%, 0% 100%)',
-              }}
+              className={`absolute bg-main-color  text-main-text font-bold top-0   uppercase text-xs right-0 left-0 text-center`}
             >
-              {calculateDiscountPrice(
-                item.simple_addons?.price,
-                item.simple_addons?.promotion_price
-              )}{' '}
-              {formatMessage({ id: 'off' })}
+              {formatMessage({ id: 'out-of-stock' })}
             </div>
           )}
         </a>
         <AnimatePresence>
-          {showAddButton && (
+          {showAddButton && item.simple_addons.quantity > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

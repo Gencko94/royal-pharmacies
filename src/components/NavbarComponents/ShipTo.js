@@ -124,7 +124,7 @@ export default function ShipTo() {
                     handleChangeDeliveryCountry(country);
                     toggleCountryList();
                   }}
-                  className={`p-4 text-sm flex w-full uppercase items-center font-semibold  text-nav-primary hover:bg-main-color hover:text-main-text`}
+                  className={`p-4 text-xs flex w-full uppercase items-center font-semibold  text-nav-primary hover:bg-main-color hover:text-main-text`}
                 >
                   <input
                     type="checkbox"

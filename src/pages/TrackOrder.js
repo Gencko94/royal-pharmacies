@@ -112,7 +112,7 @@ export default function TrackOrder() {
             exit={{ opacity: 0 }}
             className=" text-gray-900 relative max-w-screen-sm mx-auto flex items-center justify-center"
             style={{
-              height: 'calc(100vh - 140px)',
+              height: 'calc(100vh - 56px)',
             }}
           >
             {errorOpen && (

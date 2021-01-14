@@ -121,6 +121,7 @@ export default function GuestCartItem({ item }) {
       },
     },
   };
+
   return (
     <motion.div
       layout
@@ -130,7 +131,7 @@ export default function GuestCartItem({ item }) {
       exit="exited"
       className="cart-item py-2 border-b"
     >
-      <Link to={`/${locale}/products/c/${item.id}`}>
+      <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
         <LazyImage
           src={item.image}
           origin="original"
@@ -139,7 +140,7 @@ export default function GuestCartItem({ item }) {
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/products/c/${item.id}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
           <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
             item.options.addons.length !== 0
               ? ` - ${Object.keys(item.options.addons)

@@ -27,7 +27,6 @@ export default function Checkout() {
   const [selectedStep, setSelectedStep] = React.useState(0);
   const [selectedAddress, setSelectedAddress] = React.useState(null);
   const [paymentMethod, setPaymentMethod] = React.useState(null);
-  const [paymentUrl, setPaymentUrl] = React.useState(null);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const closeError = () => {
@@ -78,12 +77,15 @@ export default function Checkout() {
         order,
         coupon,
       });
-      setPaymentUrl(res.payment);
       setStepDone({
         ...stepDone,
         1: true,
       });
-      setSelectedStep(2);
+      if (paymentMethod === 'cod') {
+        setSelectedStep(2);
+      } else {
+        window.location.href = res.payment;
+      }
     } catch (error) {
       setErrorOpen(true);
       if (
@@ -146,12 +148,7 @@ export default function Checkout() {
               checkoutLoading={checkoutLoading}
             />
           )}
-          {selectedStep === 2 && (
-            <OrderPlaced
-              paymentUrl={paymentUrl}
-              paymentMethod={paymentMethod}
-            />
-          )}
+          {selectedStep === 2 && <OrderPlaced />}
         </div>
       </div>
     </Layout>

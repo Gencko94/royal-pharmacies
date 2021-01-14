@@ -27,6 +27,7 @@ export default function MyOrdersMobile() {
   };
   const handleOrderDetailsClose = React.useCallback(() => {
     setSelectedOrder(null);
+    setOrderDetailsOpen(false);
   }, []);
   const [showAddReview, setShowAddReview] = React.useState(false);
 
@@ -99,6 +100,7 @@ export default function MyOrdersMobile() {
       <AnimatePresence>
         {orderDetailsOpen && (
           <OrderDetailsMobile
+            key="order-details"
             selectedOrder={selectedOrder}
             handleOrderDetailsClose={handleOrderDetailsClose}
             orderDetailsOpen={orderDetailsOpen}
@@ -108,6 +110,7 @@ export default function MyOrdersMobile() {
       <AnimatePresence>
         {showAddReview && (
           <AddReviewMobile
+            key="order-review"
             handleAddReviewClose={handleAddReviewClose}
             data={data}
             selectedOrder={selectedOrderIndex}

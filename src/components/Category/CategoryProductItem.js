@@ -70,12 +70,12 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         setShowAddButton(false);
       }}
     >
-      <div className="relative">
+      <div className="relative ">
         <Link
           to={{
             pathname: `/${locale}/products/${item.slug}/${item.id}`,
           }}
-          className="block relative"
+          className="block relative rounded overflow-hidden"
         >
           <LazyImage
             src={item.image?.link}
@@ -83,28 +83,36 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
             alt={item.translation[locale].title}
             pb="calc(100% * 266/210)"
           />
-          {item.simple_addons?.promotion_price && (
+          {item.simple_addons?.promotion_price &&
+            item.simple_addons.quantity > 0 && (
+              <div
+                className={`absolute bg-green-800 px-1 text-main-text font-bold top-0   uppercase text-xs ${
+                  locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
+                }`}
+                style={{
+                  clipPath:
+                    locale === 'ar'
+                      ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 14% 50%)'
+                      : 'polygon(0% 0%, 100% 0, 86% 50%, 100% 100%, 0% 100%)',
+                }}
+              >
+                {calculateDiscountPrice(
+                  item.simple_addons?.price,
+                  item.simple_addons?.promotion_price
+                )}{' '}
+                {formatMessage({ id: 'off' })}
+              </div>
+            )}
+          {item.simple_addons.quantity < 1 && (
             <div
-              className={`absolute bg-main-color px-1 text-main-text font-bold top-0   uppercase text-xs ${
-                locale === 'ar' ? 'pl-4 right-0' : 'pr-4 left-0'
-              }`}
-              style={{
-                clipPath:
-                  locale === 'ar'
-                    ? 'polygon(0 0, 100% 0, 100% 100%, 0 100%, 14% 50%)'
-                    : 'polygon(0% 0%, 100% 0, 86% 50%, 100% 100%, 0% 100%)',
-              }}
+              className={`absolute bg-main-color  text-main-text font-bold top-0   uppercase text-xs right-0 left-0 text-center`}
             >
-              {calculateDiscountPrice(
-                item.simple_addons?.price,
-                item.simple_addons?.promotion_price
-              )}{' '}
-              {formatMessage({ id: 'off' })}
+              {formatMessage({ id: 'out-of-stock' })}
             </div>
           )}
         </Link>
         <AnimatePresence>
-          {showAddButton && (
+          {showAddButton && item.simple_addons.quantity > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

@@ -46,7 +46,9 @@ export default function PersonalInformation({
             } mb-3 flex border items-center justify-start rounded p-2 font-semibold`}
           >
             <img src={knet} alt={payment.key} />
-            <div className="flex-1 mx-3 text-left">K-net</div>
+            <div className="flex-1 mx-3 text-left">
+              {formatMessage({ id: payment.key })}
+            </div>
             <div>
               {paymentMethod === payment.key ? (
                 <BiRadioCircleMarked className="w-6 h-6 text-btn-secondary-light" />
@@ -68,7 +70,9 @@ export default function PersonalInformation({
             } mb-3 flex border items-center justify-start rounded p-2 font-semibold`}
           >
             <img src={mastercard} alt={payment.key} />
-            <div className="flex-1 mx-3 text-left">Credit Card</div>
+            <div className="flex-1 mx-3 text-left">
+              {formatMessage({ id: payment.key })}
+            </div>
             <div>
               {paymentMethod === payment.key ? (
                 <BiRadioCircleMarked className="w-6 h-6 text-btn-secondary-light" />
@@ -91,7 +95,9 @@ export default function PersonalInformation({
             } mb-3 flex border items-center justify-start rounded p-2 font-semibold`}
           >
             <img src={amex} alt={payment.key} />
-            <div className="flex-1 mx-3 text-left">American Express</div>
+            <div className="flex-1 mx-3 text-left">
+              {formatMessage({ id: payment.key })}
+            </div>
             <div>
               {paymentMethod === payment.key ? (
                 <BiRadioCircleMarked className="w-6 h-6 text-btn-secondary-light" />

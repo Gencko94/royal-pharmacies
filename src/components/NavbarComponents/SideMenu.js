@@ -116,7 +116,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
       transition: {
         duration: 0.2,
         when: 'beforeChildren',
-        staggerChildren: 0.1,
+        staggerChildren: 0.05,
         delayChildren: -0.1,
       },
     },

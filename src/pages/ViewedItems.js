@@ -56,7 +56,7 @@ export default function ViewedItems() {
                 </AnimatePresence>
               </motion.div>
             </AnimateSharedLayout>
-            <div className="self-start sticky top-0">
+            <div className="self-start sticky" style={{ top: '100px' }}>
               <FeaturedItemsVertical />
             </div>
           </div>

@@ -389,6 +389,9 @@ const baseStrings = {
   'order-confirmed': 'Confirmed',
   'order-new': 'New',
   'cash-on-delivery': 'Cash on Delivery',
+  knet: 'K-net',
+  credit: 'Credit Card (Visa, Mastercard)',
+  amex: 'American Express',
   'checkout-cart-empty':
     'You Cannot Checkout with an Empty Cart, Please put at least one product before checking out',
   no_quantity: 'Out of Stock',
@@ -404,6 +407,8 @@ const baseStrings = {
   'review-added': 'Review Added Successfully',
   'show-more': 'Show More',
   'developed-by': 'Developed by',
+  'mrg-mall-kuwait': 'MRG Mall Kuwait',
+  'on-mrg-mall-kuwait': 'On MRG Mall Kuwait',
 };
 
 export const en = baseStrings;

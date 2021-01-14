@@ -24,7 +24,7 @@ import { useIntl } from 'react-intl';
 export default function SingleProductMobile() {
   const { id } = useParams();
   const { addViewedItems, deliveryCountry } = React.useContext(DataProvider);
-  const { locale } = useIntl();
+  const { locale, formatMessage } = useIntl();
   const { userId } = React.useContext(AuthProvider);
   const {
     addToCartMutation,
@@ -108,15 +108,39 @@ export default function SingleProductMobile() {
       <Helmet>
         <title>
           {data
-            ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
-            : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
+            ? `${formatMessage({ id: 'shop' })} ${
+                data?.full_translation?.[locale].title
+              } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+            : 'MRG Mall Kuwait Online Shop |  متجر إم آر جي الإلكتروني الكويت'}
         </title>
         <meta
           name="description"
           content={
             data
-              ? ` Shop ${data?.full_translation?.[locale].title} on MRG`
-              : 'MRG'
+              ? `${formatMessage({ id: 'shop' })} ${
+                  data?.full_translation?.[locale].title
+                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+          }
+        />
+        <meta
+          property="og:title"
+          content={
+            data
+              ? `${formatMessage({ id: 'shop' })} ${
+                  data?.full_translation?.[locale].title
+                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+          }
+        />
+        <meta
+          property="og:description"
+          content={
+            data
+              ? `${formatMessage({ id: 'shop' })} ${
+                  data?.full_translation?.[locale].title
+                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
           }
         />
       </Helmet>

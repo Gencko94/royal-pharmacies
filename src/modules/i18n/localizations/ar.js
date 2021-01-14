@@ -376,6 +376,9 @@ export const ar = {
   'order-confirmed': 'مؤكد',
   'order-new': 'جديد',
   'cash-on-delivery': 'الدفع عند التوصيل',
+  knet: 'كي نت',
+  credit: 'بطاقة الإئتمان (فيزا - ماستر كارد)',
+  amex: 'أميركان اكسبريس',
   'checkout-cart-empty':
     'عذرا , لا يمكنك اتمام الشراء عندما تكون عربة التسوق فارغة , الرجاء وضع منتج واحد على الاقل',
   no_quantity: 'الكمية منتهية',
@@ -390,4 +393,6 @@ export const ar = {
   'review-added': 'تم إضافة المراجعة بنجاح',
   'show-more': 'إظهار المزيد',
   'developed-by': 'طور من قبل',
+  'mrg-mall-kuwait': 'متجر إم آر جي الكويت',
+  'on-mrg-mall-kuwait': ' على متجر إم آر جي الكويت',
 };
