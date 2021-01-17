@@ -64,7 +64,7 @@ export default function OrderPlaced() {
               <h1>{settings?.store_email}</h1>
             </div>
           </div>
-          <h1 className="font-semibold text-lg">
+          <h1 className="font-semibold text-lg mb-6">
             {formatMessage({ id: 'thank-you-for-shopping-msg' })}
           </h1>
           <Link

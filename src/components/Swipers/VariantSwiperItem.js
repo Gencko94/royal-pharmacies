@@ -135,7 +135,7 @@ export default function VariantSwiperItem({
         setMessage(formatMessage({ id: 'added-to-cart' }));
       } catch (error) {
         setErrorOpen(true);
-        setErrorMessage(formatMessage({ id: 'something-went-wrong-snckbar' }));
+        setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
       }
     }
   };

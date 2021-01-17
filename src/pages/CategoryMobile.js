@@ -18,6 +18,7 @@ import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuIt
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { scrollIntoView, scrollTo } from 'scroll-js';
+import { Helmet } from 'react-helmet';
 
 export default function CategoryMobile() {
   const { category } = useParams();
@@ -208,6 +209,15 @@ export default function CategoryMobile() {
   }
   return (
     <Layout>
+      <Helmet>
+        <title>
+          {categoryInfo
+            ? `${formatMessage({ id: 'shop' })} ${
+                categoryInfo?.title[locale].name
+              } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+            : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
+        </title>
+      </Helmet>
       <div className="min-h-screen relative">
         <AnimatePresence>
           {cartMenuOpen && (

@@ -18,7 +18,8 @@ export default function SearchBar() {
   const [noSuggestions, setNoSuggestions] = React.useState(false);
   const { formatMessage, locale } = useIntl();
   const history = useHistory();
-  //with controlling the arrows
+
+  // with controlling the arrows
   const getSuggestionValue = suggestion => {
     return suggestion.translation[locale].title;
   };

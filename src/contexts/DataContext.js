@@ -7,6 +7,7 @@ import {
   getNavCategories,
   getSiteSettings,
 } from '../Queries/Queries';
+
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const localDeliveryCountry = localStorage.getItem('deliveryCountry');

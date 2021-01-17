@@ -55,8 +55,7 @@ export default function MegaMenu({ data }) {
               {data.children.map(item => {
                 return (
                   <Link
-                    to={`/${locale}/${item.slug}`}
-                    // onClick={() => handleMenuClose()}
+                    to={`/${locale}/${item.category.slug}`}
                     key={item.id}
                     className="px-2 py-1 flex flex-col justify-center items-center text-sm hover:text-main-color"
                   >

@@ -198,7 +198,7 @@ export default function Category() {
           {categoryInfo
             ? `${formatMessage({ id: 'shop' })} ${
                 categoryInfo?.title[locale].name
-              } on MRG`
+              } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
             : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
         </title>
       </Helmet>

@@ -25,7 +25,7 @@ export default function ItemReviews({
       case 2:
         return formatMessage({ id: 'two-ratings' });
 
-      case reviews.length > 10:
+      case reviews.length > 10 && reviews.length:
         return formatMessage({ id: 'more-than-10-ratings' });
 
       default:

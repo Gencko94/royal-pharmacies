@@ -297,6 +297,7 @@ export default function ItemDescription({
               handleAddToCart();
             }
           }}
+          disabled={qty === 0}
           className={`${
             qty === 0 ? 'bg-main-color ' : 'bg-green-700'
           } text-main-text text-sm  p-2 mx-1 rounded uppercase whitespace-no-wrap flex-1 flex items-center justify-center font-semibold`}
