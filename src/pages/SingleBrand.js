@@ -145,7 +145,7 @@ export default function SingleBrand() {
         <div className="brand-grid__desktop py-2 ">
           {data?.products?.map(item => {
             return item.type === 'variation' &&
-              item.new_variation_addons.length > 0 ? (
+              Object.entries(item.new_variation_addons).length > 0 ? (
               <VariantCategoryProductItem
                 key={item.id}
                 setCartMenuOpen={setCartMenuOpen}

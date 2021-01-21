@@ -75,6 +75,8 @@ export default function MobileCheckoutSection() {
           'The selected code is invalid.'
         ) {
           setErrorMessage(formatMessage({ id: 'coupon-invalid' }));
+        } else if (error.response.data.message === 'Coupon not exist') {
+          setErrorMessage(formatMessage({ id: 'coupon-invalid' }));
         } else if (
           error.response.data.message === 'The amount is less then the minimum'
         ) {

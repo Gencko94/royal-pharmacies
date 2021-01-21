@@ -31,7 +31,9 @@ export default function VariantRightSection({
       case 2:
         return formatMessage({ id: 'two-days' });
 
-      case parseInt(deliveryCountry?.delivery_time > 10):
+      case parseInt(
+        deliveryCountry?.delivery_time > 10 && deliveryCountry?.delivery_time
+      ):
         return formatMessage({ id: 'more-than-10-days' });
 
       default:

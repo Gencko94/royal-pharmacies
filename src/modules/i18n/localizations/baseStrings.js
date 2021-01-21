@@ -209,7 +209,7 @@ const baseStrings = {
   'multiple-items': 'Items',
 
   'cart-tos':
-    'The price and availability of items at mrg.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
+    'The price and availability of items at mrg-mall.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
   subtotal: 'Subtotal',
   total: 'Total',
   'cart-total': 'Cart Total',
@@ -286,7 +286,7 @@ const baseStrings = {
   'you-can': 'you can',
   'guest-checkout': 'Checkout as guest',
   'checkout-modal-tos':
-    'Having an account at mrg.com help us make a better user experience for you and other customers.',
+    'Having an account at mrg-mall.com help us make a better user experience for you and other customers.',
   'confirm-location': 'Confirm Location',
   'confirm-btn': 'Confirm',
   'remove-location': 'Remove',
@@ -397,7 +397,7 @@ const baseStrings = {
   no_quantity: 'Out of Stock',
   'guest-checkout-login':
     'This phone number is already linked to an account , Please Sign in first ',
-  'select-order-to-display': 'ٍSelect an Order to display details',
+  'select-order-to-display': 'Select an Order to display details',
   delivery: 'Delivery',
   'add-reviews': 'Add Reviews',
   'add-review': 'Add Review for ',

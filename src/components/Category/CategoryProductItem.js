@@ -24,7 +24,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
     coupon,
   } = React.useContext(CartAndWishlistProvider);
   const handleAddToCart = async () => {
-    if (item.simple_addons.quantity < 1) {
+    if (item.simple_addons?.quantity < 1) {
       setMessage(formatMessage({ id: 'out-of-stock' }));
       return;
     }
@@ -44,10 +44,10 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
       }
     } else {
       try {
-        const price = item.simple_addons.promotion_price
-          ? item.simple_addons.promotion_price
-          : item.simple_addons.price;
-        const sku = item.simple_addons.sku;
+        const price = item.simple_addons?.promotion_price
+          ? item.simple_addons?.promotion_price
+          : item.simple_addons?.price;
+        const sku = item.simple_addons?.sku;
         const newItem = { id: item.id, quantity: 1, price, sku };
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
@@ -103,7 +103,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
                 {formatMessage({ id: 'off' })}
               </div>
             )}
-          {item.simple_addons.quantity < 1 && (
+          {item.simple_addons?.quantity < 1 && (
             <div
               className={`absolute bg-main-color  text-main-text font-bold top-0   uppercase text-xs right-0 left-0 text-center`}
             >
@@ -112,7 +112,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
           )}
         </Link>
         <AnimatePresence>
-          {showAddButton && item.simple_addons.quantity > 0 && (
+          {showAddButton && item.simple_addons?.quantity > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
