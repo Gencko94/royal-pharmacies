@@ -8,10 +8,12 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
+
 export default function SideCartMenuItemMobile({ item, setSideMenuOpen }) {
   const {
     removeFromCartMutation,
     removeFromGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const [
     removeFromCartButtonLoading,
@@ -26,11 +28,17 @@ export default function SideCartMenuItemMobile({ item, setSideMenuOpen }) {
       if (userId) {
         const id = item.id;
         const cart_id = item.cart_id;
-        await removeFromCartMutation({ id, cart_id, userId, deliveryCountry });
+        await removeFromCartMutation({
+          id,
+          cart_id,
+          userId,
+          deliveryCountry,
+          coupon,
+        });
         setRemoveFromCartButtonLoading(false);
       } else {
         const sku = item.options.sku;
-        await removeFromGuestCartMutation({ sku, deliveryCountry });
+        await removeFromGuestCartMutation({ sku, deliveryCountry, coupon });
         setRemoveFromCartButtonLoading(false);
       }
     } catch (error) {

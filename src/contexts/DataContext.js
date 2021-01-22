@@ -29,23 +29,23 @@ export default function DataContextProvider({ children }) {
   };
 
   const addViewedItems = id => {
-    const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+    const visitedItems = JSON.parse(localStorage.getItem('browse-history'));
     const isItemInHistory = visitedItems.find(item => item.id === id);
     if (!isItemInHistory) {
       visitedItems.unshift({ id });
-      localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
+      localStorage.setItem('browse-history', JSON.stringify(visitedItems));
     }
   };
 
   const removeViewedItems = id => {
-    let localVisited = localStorage.getItem('visitedItems');
+    let localVisited = localStorage.getItem('browse-history');
     let parsed = JSON.parse(localVisited);
 
     localVisited = parsed.filter(i => {
       return i.id !== id.toString();
     });
 
-    localStorage.setItem('visitedItems', JSON.stringify(localVisited));
+    localStorage.setItem('browse-history', JSON.stringify(localVisited));
 
     queryCache.setQueryData('viewedItems', prev => {
       return prev.filter(i => i.id !== id);

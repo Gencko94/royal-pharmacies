@@ -85,6 +85,7 @@ export default function VariantsOnly({
           {Object.keys(variants).map(variation =>
             variants[variation].image ? (
               <button
+                key={variation}
                 className={`${
                   selectedVariation === variation &&
                   'border shadow border-main-color'

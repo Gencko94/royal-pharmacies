@@ -961,7 +961,7 @@ export const guestCheckout = async ({ deliveryCountry, order, coupon }) => {
 };
 
 export const getVisitedItems = async () => {
-  let localVisited = localStorage.getItem('visitedItems');
+  let localVisited = localStorage.getItem('browse-history');
   let parsed = JSON.parse(localVisited);
   if (parsed.length === 0) {
     return [];

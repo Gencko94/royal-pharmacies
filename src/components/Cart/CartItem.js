@@ -227,7 +227,7 @@ export default function CartItem({ item }) {
                 color="#fff"
                 height={18}
                 width={18}
-                visible={true}
+                visible
               />
             ) : (
               formatMessage({ id: 'update-btn' })
@@ -251,7 +251,7 @@ export default function CartItem({ item }) {
                 color="#fff"
                 height={21}
                 width={21}
-                visible={true}
+                visible
               />
             ) : (
               <>

@@ -43,7 +43,7 @@ export default function SwiperItem({
         setCartMenuOpen(true);
         setMessage(formatMessage({ id: 'added-to-cart' }));
       } catch (error) {
-        if (error.response.data.message === 'Item founded on the Cart') {
+        if (error.response?.data?.message === 'Item founded on the Cart') {
           setMessage(formatMessage({ id: 'added-to-cart' }));
           setAddToCartButtonLoading(false);
         } else {

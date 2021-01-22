@@ -10,6 +10,7 @@ import FeaturedItemsVertical from '../FeaturedItemsVertical';
 import CartRightSideLoader from '../loaders/CartRightSideLoader';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { useMediaQuery } from 'react-responsive';
 export default function GuestCartRightSide({ setCheckOutModalOpen }) {
   const {
     guestCartItems: cartItems,
@@ -27,6 +28,7 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
   const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const [couponCode, setCouponCode] = React.useState('');
+  const checkpoint = useMediaQuery({ query: '(min-width:1040px)' });
   const [validCoupon, setValidCoupon] = React.useState(() => {
     if (coupon) return true;
     return false;
@@ -49,7 +51,7 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
     }
   };
   const { formatMessage, locale } = useIntl();
-  const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+  const visitedItems = JSON.parse(localStorage.getItem('browse-history'));
   const handleCheckout = () => {
     if (userId) {
       history.push(`/${locale}/user-checkout`);
@@ -103,7 +105,7 @@ export default function GuestCartRightSide({ setCheckOutModalOpen }) {
   return (
     <div
       className="font-semibold overflow-hidden  sticky top-0 self-start"
-      style={{ top: '110px' }}
+      style={{ top: checkpoint ? '110px' : '61px' }}
     >
       {cartItemsLoading && <CartRightSideLoader locale={locale} />}
       {!cartItemsLoading && cartItems.length !== 0 && (

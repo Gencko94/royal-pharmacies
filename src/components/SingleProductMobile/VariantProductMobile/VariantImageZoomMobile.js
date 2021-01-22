@@ -70,18 +70,21 @@ export default function VariantImageZoomMobile({
       <Swiper
         onDoubleClick={() => setDoubleClicked(true)}
         id="main"
+        zoom
         slidesPerView={1}
         thumbs={{ swiper: thumbsSwiper }}
       >
-        <SwiperSlide zoom>{resolveImage()}</SwiperSlide>
-        {!doubleClicked && (
-          <div
-            className="absolute bottom-10 p-2 shadow rounded font-semibold"
-            style={{ backgroundColor: 'rgba(255,255,255,0.7)' }}
-          >
-            {formatMessage({ id: 'double-click-zoom' })}
-          </div>
-        )}
+        <SwiperSlide zoom>
+          {resolveImage()}
+          {!doubleClicked && (
+            <div
+              className="absolute right-0 left-0 mx-auto  bottom-10 p-2 shadow rounded font-semibold"
+              style={{ backgroundColor: 'rgba(255,255,255,0.7)', width: '80%' }}
+            >
+              {formatMessage({ id: 'double-click-zoom' })}
+            </div>
+          )}
+        </SwiperSlide>
       </Swiper>
       <Swiper
         id="thumbs"
