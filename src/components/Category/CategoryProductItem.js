@@ -37,7 +37,8 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         setCartMenuOpen(true);
         setMessage(formatMessage({ id: 'added-to-cart' }));
       } catch (error) {
-        if (error.response.data?.message === 'Item founded on the Cart') {
+        console.log(error);
+        if (error.response?.data?.message === 'Item founded on the Cart') {
           setMessage(formatMessage({ id: 'added-to-cart' }));
         }
         setAddToCartButtonLoading(false);

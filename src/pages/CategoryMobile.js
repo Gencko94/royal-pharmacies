@@ -13,7 +13,7 @@ import {
   getSingleCategoryInfo,
 } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
-import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuItemMobile';
+import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
@@ -222,7 +222,7 @@ export default function CategoryMobile() {
         <AnimatePresence>
           {cartMenuOpen && (
             <SideCartMenuMobile
-              key="side-cart"
+              key="side-cart-mobile"
               setSideMenuOpen={setCartMenuOpen}
             />
           )}
@@ -323,7 +323,7 @@ export default function CategoryMobile() {
         ) : null}
       </div>
       <AnimatePresence>
-        {inView && data?.products.length !== 0 && (
+        {inView && !cartMenuOpen && data?.products.length !== 0 && (
           <SortInfoPanelMobile
             productsLoading={productsLoading}
             products={data?.products}

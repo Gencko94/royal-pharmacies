@@ -8,7 +8,6 @@ import { useIntl } from 'react-intl';
 export default function CategoryMobileItemGrid({
   productsLoading,
   products,
-
   setCartMenuOpen,
   filteredProducts,
   filteredProductsLoading,

@@ -67,7 +67,7 @@ export default function SideCartMenuItemMobile({ item, setSideMenuOpen }) {
     >
       <div className="">
         <Link
-          title={`${item[`name_${locale}`]}`}
+          title={item[`name_${locale}`]}
           className="hover:underline"
           to={`/${locale}/products/${item.slug}/${item.id}`}
           onClick={() => setSideMenuOpen(false)}
@@ -76,19 +76,19 @@ export default function SideCartMenuItemMobile({ item, setSideMenuOpen }) {
             src={item?.image}
             origin="small"
             pb="calc(100% * 150/150)"
-            alt={`${item[`name_${locale}`]}`}
+            alt={item[`name_${locale}`]}
           ></LazyImage>
         </Link>
       </div>
       <div className="">
         <Link
-          title={`${item[`name_${locale}`]}`}
+          title={item[`name_${locale}`]}
           className="hover:underline"
           to={`/${locale}/products/${item.slug}/${item.id}`}
           onClick={() => setSideMenuOpen(false)}
         >
           <h1 className="text-clamp-2 text-sm font-bold">
-            {`${item[`name_${locale}`]}`}
+            {item[`name_${locale}`]}
           </h1>
         </Link>
 
