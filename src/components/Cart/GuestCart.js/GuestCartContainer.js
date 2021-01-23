@@ -23,7 +23,7 @@ export default function GuestCartContainer() {
       case 2:
         return formatMessage({ id: 'two-items' });
 
-      case guestCartItems.length > 10:
+      case guestCartItems.length > 10 && guestCartItems:
         return formatMessage({ id: 'more-than-10-items' });
       default:
         return formatMessage({ id: 'multiple-items' });

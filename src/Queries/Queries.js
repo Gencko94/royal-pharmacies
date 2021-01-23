@@ -293,14 +293,7 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
       { coupon },
       config
     );
-    // const res = await axios({
-    //   method: 'POST',
-    //   url: `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
-    //   headers: { Authorization: `Bearer ${mrgAuthToken}` },
-    //   params: {
-    //     coupon,
-    //   },
-    // });
+
     if (res.data.status === true && res.data.data.items) {
       return {
         cartItems: res.data.data.items,
@@ -334,14 +327,11 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
       { products: JSON.stringify(items), coupon },
       config
     );
-    const res = await axios({
-      method: 'GET',
-      url: `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
-      headers: { Authorization: `Bearer ${mrgAuthToken}` },
-      params: {
-        coupon,
-      },
-    });
+    const res = await axios.post(
+      `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
+      { coupon },
+      config
+    );
     if (res.data.status === true) {
       localStorage.setItem('localCart', JSON.stringify([]));
       return {

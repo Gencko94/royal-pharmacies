@@ -141,7 +141,7 @@ export default function GuestCartItemMobile({ item }) {
         <div className="text-sm">
           <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
             <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
-              item.options.addons.length !== 0
+              item.options.addons
                 ? ` - ${Object.keys(item.options.addons)
                     .map(variation => item.options.addons[variation])
                     .join(' - ')}`

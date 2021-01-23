@@ -223,13 +223,10 @@ export default function GuestPersonalInformationMobile({
                   </h1>
                 </>
               )}
-              <h1 className="text-green-700 mt-3" style={{ fontWeight: 900 }}>
+              <h1 className="text-green-700 mt-3 font-bold text-lg">
                 {formatMessage({ id: 'subtotal' })}
               </h1>
-              <h1
-                className="text-green-700 text-center mt-3"
-                style={{ fontWeight: 900 }}
-              >
+              <h1 className="text-green-700 text-center mt-3 font-bold text-lg">
                 {guestCartTotal}{' '}
                 {deliveryCountry?.currency.translation[locale].symbol}
               </h1>
