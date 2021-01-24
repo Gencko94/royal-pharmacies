@@ -141,6 +141,10 @@ export default function GuestCheckOutMobile() {
         'Coupon already used by this customer.'
       ) {
         return setErrorMessage(formatMessage({ id: 'coupon-limit-reached' }));
+      } else if (
+        error.response?.data?.message === 'You email belongs to another account'
+      ) {
+        return setErrorMessage(formatMessage({ id: 'guest-checkout-login' }));
       }
       setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
     }
