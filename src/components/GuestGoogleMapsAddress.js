@@ -12,6 +12,7 @@ import {
 import PlacesSearch from './Cart/GuestCheckout/GoogleMaps/PlacesSearch';
 import { useMediaQuery } from 'react-responsive';
 import GuestLocationForm from './GuestLocationForm';
+import { useIntl } from 'react-intl';
 const libraries = ['places'];
 
 const center = {
@@ -24,13 +25,20 @@ const options = {
   zoomControl: true,
 };
 export default function GuestGoogleMapsAddress({
-  setGuestAddress,
-  handleStepForward,
+  handleAddAddressAndInfo,
+  guestAddress,
+  name,
+  phoneNumber,
+  email,
+  countryCode,
+  setCountryCode,
 }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
+  const { formatMessage, locale } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
+    language: locale,
   });
 
   const [marker, setMarker] = React.useState(null);
@@ -53,10 +61,9 @@ export default function GuestGoogleMapsAddress({
     if (marker) {
       axios
         .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&language=${locale}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
         )
         .then(res => {
-          console.log(res.data);
           setMarkerAddress(`${res.data.results[0].formatted_address}`);
           setMarkerInfoWindowDetails(
             `${res.data.results[0].address_components
@@ -64,9 +71,12 @@ export default function GuestGoogleMapsAddress({
               .join(', ')}`
           );
         })
-        .catch(err => console.log(err));
+        .catch(err => {});
+    } else {
+      setMarkerAddress(null);
+      setMarkerInfoWindowDetails(null);
     }
-  }, [marker]);
+  }, [locale, marker]);
 
   if (loadError)
     return (
@@ -74,7 +84,7 @@ export default function GuestGoogleMapsAddress({
         className="flex justify-center items-center"
         style={{ height: 'calc(-173px + 100vh)' }}
       >
-        <h1>There was an Error loading maps, Please try again </h1>
+        <h1>{formatMessage({ id: 'error-loading-maps' })}</h1>
       </div>
     );
   if (!isLoaded)
@@ -100,13 +110,13 @@ export default function GuestGoogleMapsAddress({
           : 'my-addresses-mobile-maps__grid'
       }`}
     >
-      <div className="relative" style={{ minHeight: 'calc(100vh - 150px)' }}>
+      <div className="relative h-full">
         <PlacesSearch panTo={panTo} markerAddress={markerAddress} />
 
         <GoogleMap
           mapContainerStyle={{
             width: '100%',
-            height: isTabletOrAbove ? '100%' : '500px',
+            height: isTabletOrAbove ? '100%' : '400px',
           }}
           zoom={15}
           center={center}
@@ -120,11 +130,13 @@ export default function GuestGoogleMapsAddress({
             });
           }}
         >
-          {marker && <Marker position={{ lat: marker.lat, lng: marker.lng }} />}
+          {marker && (
+            <Marker position={{ lat: marker?.lat, lng: marker?.lng }} />
+          )}
           {markerInfoWindowDetails && (
             <InfoWindow
               onCloseClick={() => setMarkerInfoWindowDetails(null)}
-              position={{ lat: marker.lat, lng: marker.lng }}
+              position={{ lat: marker?.lat, lng: marker?.lng }}
               options={{
                 pixelOffset: new window.google.maps.Size(0, -50),
               }}
@@ -141,8 +153,14 @@ export default function GuestGoogleMapsAddress({
       <GuestLocationForm
         markerAddress={markerAddress}
         marker={marker}
-        setGuestAddress={setGuestAddress}
-        handleStepForward={handleStepForward}
+        handleAddAddressAndInfo={handleAddAddressAndInfo}
+        guestAddress={guestAddress}
+        name={name}
+        phoneNumber={phoneNumber}
+        setMarker={setMarker}
+        email={email}
+        countryCode={countryCode}
+        setCountryCode={setCountryCode}
       />
     </div>
   );

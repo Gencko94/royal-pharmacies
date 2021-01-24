@@ -1,11 +1,12 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { BeatLoader } from 'react-spinners';
-
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { getUserOrders } from '../../Queries/Queries';
 import NoOrders from './MyOrders/NoOrders';
 import Orders from './MyOrders/Orders';
+import AddReview from '../Reviews/AddReview';
 
 export default function MyOrders() {
   /**
@@ -20,10 +21,25 @@ export default function MyOrders() {
     },
     { retry: true }
   );
+  const [showAddReview, setShowAddReview] = React.useState(false);
+  const [selectedOrder, setSelectedOrder] = React.useState(null);
+  const handleAddReviewClose = () => {
+    setShowAddReview(false);
+  };
+  const handleShowAddReviews = index => {
+    setShowAddReview(true);
+    setSelectedOrder(index);
+  };
   if (isLoading)
     return (
       <div className="flex h-full justify-center items-center">
-        <BeatLoader size={10} color={'#b72b2b'} />
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={40}
+          width={40}
+          visible={true}
+        />
       </div>
     );
   const containerVariants = {
@@ -46,10 +62,22 @@ export default function MyOrders() {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="h-full"
+      className="relative overflow-y-auto"
+      style={{ height: 'calc(100vh - 62px)' }}
     >
       {data.length === 0 && <NoOrders />}
-      {data.length !== 0 && <Orders data={data} />}
+      {!showAddReview && data.length !== 0 && (
+        <Orders handleShowAddReviews={handleShowAddReviews} data={data} />
+      )}
+      <AnimatePresence>
+        {showAddReview && (
+          <AddReview
+            handleAddReviewClose={handleAddReviewClose}
+            data={data}
+            selectedOrder={selectedOrder}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

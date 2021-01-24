@@ -11,8 +11,10 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const specialPages =
     pathname.includes('/user/account') ||
-    pathname.includes('/guest-checkout') ||
-    pathname.includes('/checkout');
+    pathname.includes('/checkout/guest-checkout') ||
+    pathname.includes('/checkout/user-checkout') ||
+    pathname.includes('/checkout') ||
+    pathname.includes('/order/track');
 
   return (
     <>

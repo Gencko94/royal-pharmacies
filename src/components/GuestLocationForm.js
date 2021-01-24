@@ -1,7 +1,6 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import * as Yup from 'yup';
 import Select from 'react-select';
@@ -12,54 +11,124 @@ const options = [
 export default function GuestLocationForm({
   markerAddress,
   marker,
-  setGuestAddress,
-  handleStepForward,
+  handleAddAddressAndInfo,
+  guestAddress,
+  name,
+  phoneNumber,
+  setMarker,
+  email,
+  countryCode,
+  setCountryCode,
 }) {
   const { formatMessage } = useIntl();
-  const [countryCode, setCountryCode] = React.useState(options[0]);
+
+  const [userTypedLocation, setUserTypedLocation] = React.useState('');
   const validationSchema = Yup.object({
-    apartmentOrHouseNumber: Yup.number().required(
+    email: Yup.string().email(formatMessage({ id: 'email-validation' })),
+    apartmentOrHouseNumber: Yup.string().required(
       formatMessage({ id: 'required-field' })
     ),
-    buildingOrTowerNumber: Yup.number().required(
+    buildingOrTowerNumber: Yup.string().required(
       formatMessage({ id: 'required-field' })
     ),
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
+      .min(8, formatMessage({ id: 'invalid-phone' }))
       .required(formatMessage({ id: 'required-field' })),
     additionalDetails: Yup.string(),
+    name: Yup.string().required(formatMessage({ id: 'required-field' })),
   });
+  const handleClearLocation = () => {
+    setMarker(null);
+    setUserTypedLocation('');
+  };
   return (
     <div>
-      <div className="font-bold p-2">
+      <div className="font-bold text-center border-b p-2">
         <h1>{formatMessage({ id: 'location-details' })}</h1>
       </div>
       <div className="p-2">
+        <div className="flex items-center justify-between">
+          <label
+            htmlFor={'location'}
+            className={`text-sm font-bold text-gray-700`}
+          >
+            {formatMessage({ id: 'delivery-location' })}
+          </label>
+          <button
+            onClick={handleClearLocation}
+            className="text-main-color text-sm hover:underline"
+          >
+            {formatMessage({ id: 'clear' })}
+          </button>
+        </div>
+        <textarea
+          rows="3"
+          id="location"
+          className=" mt-1 w-full rounded border  p-1  "
+          type="textarea"
+          value={markerAddress || userTypedLocation}
+          readOnly={markerAddress}
+          onChange={e => setUserTypedLocation(e.target.value)}
+        />
         <Formik
           initialValues={{
-            apartmentOrHouseNumber: '',
-            buildingOrTowerNumber: '',
-            phoneNumber: '',
-            additionalDetails: '',
+            apartmentOrHouseNumber:
+              guestAddress.addressDetails.apartmentOrHouseNumber,
+            buildingOrTowerNumber:
+              guestAddress.addressDetails.buildingOrTowerNumber,
+            phoneNumber: phoneNumber,
+            name: name,
+            additionalDetails: guestAddress.addressDetails.additionalDetails,
+            email,
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            setGuestAddress({
-              lat: marker.lat,
-              lng: marker.lng,
-
-              addressDetails: {
-                phoneNumber: `${countryCode.value}${values.phoneNumber}`,
-                ...values,
-                markerAddress: markerAddress,
+            handleAddAddressAndInfo({
+              guestAddress: {
+                lat: marker?.lat,
+                lng: marker?.lng,
+                addressDetails: {
+                  phoneNumber: values.phoneNumber,
+                  ...values,
+                  markerAddress,
+                  userTyped_location: userTypedLocation,
+                },
               },
+              name: values.name,
+              phoneNumber: values.phoneNumber,
+              email: values.email,
             });
-            handleStepForward();
           }}
         >
-          {({ handleSubmit, values, isSubmitting }) => {
+          {({ handleSubmit, values }) => {
             return (
               <form onSubmit={handleSubmit}>
+                <CustomTextInput
+                  label={formatMessage({
+                    id: 'full-name',
+                  })}
+                  name="name"
+                  value={values.name}
+                  type="text"
+                />
+                <CustomTextInput
+                  label={formatMessage({
+                    id: 'email-address',
+                  })}
+                  name="email"
+                  value={values.email}
+                  type="text"
+                  optional
+                />
+                <PhoneNumberCustomInput
+                  label={formatMessage({ id: 'maps-detailed-address-phone' })}
+                  name="phoneNumber"
+                  value={values.phoneNumber}
+                  type="text"
+                  countryCode={countryCode}
+                  setCountryCode={setCountryCode}
+                />
                 <div className="grid grid-cols-2 gap-1">
                   <CustomTextInput
                     label={formatMessage({
@@ -78,6 +147,7 @@ export default function GuestLocationForm({
                     type="text"
                   />
                 </div>
+
                 <CustomTextAreaInput
                   label={formatMessage({
                     id: 'maps-details-extra-details',
@@ -85,38 +155,19 @@ export default function GuestLocationForm({
                   name="additionalDetails"
                   value={values.additionalDetails}
                 />
-                <PhoneNumberCustomInput
-                  label={formatMessage({ id: 'maps-detailed-address-phone' })}
-                  name="phoneNumber"
-                  value={values.phoneNumber}
-                  type="text"
-                  countryCode={countryCode}
-                  setCountryCode={setCountryCode}
-                />
 
                 <div className=" ">
                   <button
+                    disabled={!markerAddress && !userTypedLocation}
                     type="submit"
-                    disabled={!markerAddress}
-                    className={`${
-                      !markerAddress
-                        ? 'btn-disabled'
-                        : isSubmitting
-                        ? 'bg-gray-300 text-main-text'
-                        : 'bg-main-color text-main-text'
-                    }   p-2 rounded  w-full  flex items-center justify-center font-semibold`}
+                    className={`
+                       ${
+                         !markerAddress && !userTypedLocation
+                           ? 'bg-gray-500 text-gray-300'
+                           : 'bg-main-color text-main-text'
+                       } p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}
                   >
-                    {isSubmitting ? (
-                      <Loader
-                        type="ThreeDots"
-                        color="#b72b2b"
-                        height={20}
-                        width={20}
-                        visible={isSubmitting}
-                      />
-                    ) : (
-                      <h1>{formatMessage({ id: 'confirm-location' })}</h1>
-                    )}
+                    <h1>{formatMessage({ id: 'confirm-location' })}</h1>
                   </button>
                 </div>
               </form>
@@ -128,13 +179,21 @@ export default function GuestLocationForm({
   );
 }
 
-const CustomTextInput = ({ label, value, name, ...props }) => {
+const CustomTextInput = ({ label, value, name, optional, ...props }) => {
   const [field, meta] = useField(name);
+  const { formatMessage } = useIntl();
   return (
     <div className="w-full mb-2 relative">
-      <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
-        {label}
-      </label>
+      <div className="flex items-center mb-1">
+        <label htmlFor={name} className={`text-sm font-bold text-gray-700`}>
+          {label}
+        </label>
+        {optional && (
+          <h1 className="text-xs italic mx-3">
+            ({formatMessage({ id: 'maps-details-optional' })})
+          </h1>
+        )}
+      </div>
       <input
         {...field}
         {...props}
@@ -143,8 +202,8 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
         }}
         className=" w-full rounded-sm border   p-1"
       />
-      {meta.touched && meta.error ? (
-        <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
+      {meta?.touched && meta?.error ? (
+        <h1 className="text-xs text-main-color mt-1">{meta?.error}</h1>
       ) : (
         <h1 className="text-xs text-main-color mt-1" style={{ height: '18px' }}>
           {' '}
@@ -158,8 +217,8 @@ const CustomTextAreaInput = ({ label, value, name, ...props }) => {
   const { formatMessage } = useIntl();
   return (
     <div className="w-full mb-1 relative">
-      <div className="flex items-center">
-        <label htmlFor={name} className={`text-sm font-semibold text-gray-700`}>
+      <div className="flex items-center mb-1">
+        <label htmlFor={name} className={`text-sm font-bold text-gray-700`}>
           {label}
         </label>
         <h1 className="text-xs italic mx-3">
@@ -189,10 +248,7 @@ const PhoneNumberCustomInput = ({
   const [field, meta] = useField(name);
   return (
     <div className="w-full mb-1 flex flex-col ">
-      <label
-        htmlFor={name}
-        className={`text-sm font-semibold text-gray-800 mb-1`}
-      >
+      <label htmlFor={name} className={`text-sm font-bold text-gray-800 mb-1`}>
         {label}
       </label>
       <div

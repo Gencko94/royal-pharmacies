@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import React from 'react';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
-import Rating from 'react-rating';
 import { Link } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import LazyImage from '../../helpers/LazyImage';
+import Rating from 'react-rating';
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai';
 
 export default function WishListItem({
   item,
@@ -40,48 +40,42 @@ export default function WishListItem({
       exit="exited"
       className="wishlist-item"
     >
-      <Link to={`/${locale}/item/${item.id}}`}>
+      <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image}`}
-          alt={`${item[`name_${locale}`]}`}
+          src={item.image}
+          origin="original"
+          alt={item[`name_${locale}`]}
           pb="calc(100% * 286/210)"
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/item/${item.id}}`}>
-          <h1 className="font-semibold ">{`${item[`name_${locale}`]}`}</h1>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
+          <h1 className="font-semibold uppercase">{`${
+            item[`name_${locale}`]
+          }`}</h1>
         </Link>
-
         <Rating
-          initialRating={4.5}
-          readonly
+          initialRating={item.rating_avg}
           emptySymbol={<AiOutlineStar className="text-main-color" />}
           fullSymbol={<AiFillStar className="text-main-color" />}
-          className=" pt-0"
+          className="pt-1"
+          readonly
         />
 
-        <div className="flex items-center mb-2">
-          <h1 className=" font-semibold">{formatMessage({ id: 'price' })}</h1>
-          <span className="mx-2">{item.price}</span>
-        </div>
-        <div className="flex text-sm  items-center mb-2 ">
+        <div className="flex text-sm  items-center my-2 ">
           <button
             onClick={() => {
               handleRemoveItemFromWishList(item.id);
             }}
-            className={`${
-              removeFromWishListButtonLoading === item.id
-                ? 'bg-gray-300  text-main-text'
-                : 'border-main-color text-main-color border'
-            }  text-sm uppercase flex items-center justify-center  p-2 rounded  font-semibold `}
+            className={`border-main-color hover:bg-main-color hover:text-main-text transition duration-100 text-main-color border text-sm uppercase flex items-center justify-center  p-2 rounded  font-semibold `}
             style={{ width: '200px' }}
           >
             {removeFromWishListButtonLoading === item.id ? (
               <Loader
                 type="ThreeDots"
-                color="#b72b2b"
-                height={20}
-                width={20}
+                color="#fff"
+                height={21}
+                width={21}
                 visible={true}
               />
             ) : (
@@ -92,44 +86,6 @@ export default function WishListItem({
               </>
             )}
           </button>
-
-          {/* <button
-            onClick={() => {
-              if (cartItems.includes(item.id)) {
-                handleRemoveFromCart(item.id);
-              } else {
-                handleAddToCart(item);
-              }
-            }}
-            className={`${
-              addToCartButtonLoading === item.id
-                ? 'bg-gray-300'
-                : cartItems.includes(item.id)
-                ? 'bg-main-color'
-                : 'bg-green-700'
-            }  text-main-text   p-2 rounded flex items-center justify-center mx-2 font-semibold uppercase`}
-            style={{ width: '200px' }}
-          >
-            {addToCartButtonLoading === item.id ? (
-              <Loader
-                type="ThreeDots"
-                color="#b72b2b"
-                height={20}
-                width={20}
-                visible={true}
-              />
-            ) : cartItems.includes(item.id) ? (
-              <>
-                <h1 className="mx-2 whitespace-no-wrap">
-                  {formatMessage({ id: 'remove-from-cart' })}
-                </h1>
-              </>
-            ) : (
-              <>
-                <h1 className="mx-2">{formatMessage({ id: 'add-to-cart' })}</h1>
-              </>
-            )}
-          </button> */}
         </div>
       </div>
     </motion.div>

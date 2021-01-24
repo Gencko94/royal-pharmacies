@@ -1,10 +1,20 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import { useIntl } from 'react-intl';
 
 export default function NoViewedItems() {
+  const { formatMessage } = useIntl();
   return (
-    <motion.div layout>
-      There is Currently no Viewed Items, Start Browsing now !
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opaciy: 0 }}
+      layout
+      className="flex items-center justify-center h-full"
+    >
+      <h1 className="font-bold text-lg">
+        {formatMessage({ id: 'no-viewed-items' })}
+      </h1>
     </motion.div>
   );
 }

@@ -2,8 +2,6 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
-// import Loader from 'react-loader-spinner';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { Link } from 'react-router-dom';
 import { CartAndWishlistProvider } from '../../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../../contexts/DataContext';
@@ -15,10 +13,12 @@ export default function GuestCartItem({ item }) {
   const {
     removeFromGuestCartMutation,
     editGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
-  console.log(item);
+
   const [quantity, setQuantity] = React.useState(item.qty);
   const [editLoading, setEditLoading] = React.useState(false);
+
   const [
     removefromCartButtonLoading,
     setRemoveFromCartButtonLoading,
@@ -46,14 +46,6 @@ export default function GuestCartItem({ item }) {
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className="  text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="  text-yellow-700">
@@ -72,7 +64,6 @@ export default function GuestCartItem({ item }) {
     setQuantity(parseInt(quantity) + 1);
   };
   const handleChangeQuantity = e => {
-    console.log(e.target.value);
     if (e.target.value < 1) {
       return;
     } else {
@@ -92,19 +83,24 @@ export default function GuestCartItem({ item }) {
       return;
     setEditLoading(true);
     try {
-      await editGuestCartMutation({ sku, quantity, price, deliveryCountry });
+      await editGuestCartMutation({
+        sku,
+        quantity,
+        price,
+        deliveryCountry,
+        coupon,
+      });
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
-      console.log(error);
     }
   };
   const handleRemoveItemFromCart = async sku => {
     setRemoveFromCartButtonLoading(true);
     try {
-      await removeFromGuestCartMutation({ sku, deliveryCountry });
+      await removeFromGuestCartMutation({ sku, deliveryCountry, coupon });
     } catch (error) {
-      console.log(error);
+      setRemoveFromCartButtonLoading(false);
     }
   };
   const variant = {
@@ -123,6 +119,7 @@ export default function GuestCartItem({ item }) {
       },
     },
   };
+
   return (
     <motion.div
       layout
@@ -132,17 +129,18 @@ export default function GuestCartItem({ item }) {
       exit="exited"
       className="cart-item py-2 border-b"
     >
-      <Link to={`/${locale}/c/${item.id}`}>
+      <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image}`}
+          src={item.image}
+          origin="original"
           alt={item[`name_${locale}`]}
           pb="calc(100% * 286/210)"
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/c/${item.id}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
           <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
-            item.options.addons.length !== 0
+            item.options.addons
               ? ` - ${Object.keys(item.options.addons)
                   .map(variation => item.options.addons[variation])
                   .join(' - ')}`
@@ -150,7 +148,7 @@ export default function GuestCartItem({ item }) {
           }`}</h1>
         </Link>
         <h1 className=" font-semibold text-sm mb-1">
-          {item.options.max_quantity < 20 ? (
+          {item.options.max_quantity < 5 ? (
             formatItemsPlural(item.options.max_quantity)
           ) : (
             <span className="text-green-700">
@@ -238,7 +236,15 @@ export default function GuestCartItem({ item }) {
           </button>
         </div>
       </div>
-      <div className="text-center font-bold">
+      <div className="text-center" style={{ fontWeight: '900' }}>
+        {item.price} {deliveryCountry?.currency.translation[locale].symbol}
+        {item.message && (
+          <h1 className="text-main-color text-xs">
+            ({formatMessage({ id: item.message })})
+          </h1>
+        )}
+      </div>
+      <div className="text-center " style={{ fontWeight: '900' }}>
         {item.total} {deliveryCountry?.currency.translation[locale].symbol}
       </div>
     </motion.div>

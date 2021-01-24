@@ -18,9 +18,9 @@ const localWish = localStorage.getItem('localWish');
 if (!localWish) {
   localStorage.setItem('localWish', JSON.stringify([]));
 }
-const visitedItems = localStorage.getItem('visitedItems');
+const visitedItems = localStorage.getItem('browse-history');
 if (!visitedItems) {
-  localStorage.setItem('visitedItems', JSON.stringify([]));
+  localStorage.setItem('browse-history', JSON.stringify([]));
 }
 const prefferedLanguage = localStorage.getItem('prefferedLanguage');
 if (!prefferedLanguage) {

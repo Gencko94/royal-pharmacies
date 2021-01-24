@@ -1,49 +1,67 @@
 import React from 'react';
+import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
 
 export default function LeftSideBrands({
-  products,
+  brands,
   handleBrandChange,
   brandFilters,
+  categoryInfoLoading,
+  productsLoading,
 }) {
   const { formatMessage, locale } = useIntl();
-  const brands = React.useMemo(() => {
-    let brands = [];
-    products.forEach(product => {
-      if (product.brand) {
-        brands.push({
-          label: product.brand.translation[locale].name,
-          id: product.brand.id,
-        });
-      }
-    });
-    brands = [...new Set(brands.map(o => JSON.stringify(o)))].map(s =>
-      JSON.parse(s)
+
+  if (categoryInfoLoading || productsLoading) {
+    return (
+      <div className="py-2">
+        <ContentLoader
+          speed={2}
+          viewBox="0 0 300 150"
+          backgroundColor="#f3f3f3"
+          foregroundColor="#ecebeb"
+        >
+          <rect x="0" y="0" rx="5" ry="5" width="100%" height="30" />
+          <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="65" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="90" rx="5" ry="5" width="100%" height="15" />
+          <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
+        </ContentLoader>
+      </div>
     );
-    return brands;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  if (brands.length === 0) {
+  }
+  if (brands?.length === 0 || !brands) {
     return null;
   }
+
   return (
     <div className="mb-4">
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-lg py-2 font-bold">
         {formatMessage({ id: 'filter-by-brand' })}
       </h1>
-      <hr className="my-2" />
+      <hr />
       <div className="flex flex-col justify-center">
-        {brands.map(brand => {
+        {brands?.map(brand => {
+          const isAvailable = brandFilters.find(i => i.id === brand.id);
+
           return (
-            <div key={brand.id} className="flex items-center mb-2 text-sm ">
+            <div key={brand.id} className="flex items-center my-2">
               <input
+                id={brand.id}
                 type="checkbox"
-                className="form-checkbox border-gray-600 text-red-700 mr-5"
-                onChange={() => handleBrandChange(brand)}
-                checked={brandFilters?.id === brand.id}
+                className="form-checkbox border-gray-600 text-main-color"
+                onChange={() =>
+                  handleBrandChange({
+                    id: brand.id,
+                    label: brand.translation[locale].name,
+                  })
+                }
+                checked={isAvailable ? true : false}
               />
-              <label className="hover:underline hover:text-blue-700 cursor-pointer">
-                {brand.label}
+              <label
+                htmlFor={brand.id}
+                className="hover:underline text-sm hover:text-blue-700 cursor-pointer font-semibold  mx-5"
+              >
+                {brand.translation[locale].name}
               </label>
             </div>
           );

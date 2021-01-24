@@ -1,10 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
@@ -12,35 +7,44 @@
 button::-moz-focus-inner {
   border: 0;
 }
-
+.inner_html > * span {
+  color: #252525 !important;
+  background-color: #fff !important;
+}
+.inner_html.en span {
+  font-family: 'Lato', sans-serif !important;
+}
+.inner_html.ar span {
+  font-family: 'Cairo', sans-serif !important;
+}
 .inner_html h1 {
-  font-size: 2em;
+  font-size: 2em !important;
 
-  font-weight: bold;
+  font-weight: bold !important;
 }
 .inner_html h2 {
-  font-size: 1.5em;
+  font-size: 1.5em !important;
 
-  font-weight: bold;
+  font-weight: bold !important;
 }
 .inner_html h3 {
-  font-size: 1.17em;
+  font-size: 1.17em !important;
 
-  font-weight: bold;
+  font-weight: bold !important;
 }
 .inner_html h4 {
-  font-size: 1em;
+  font-size: 1em !important;
 
-  font-weight: bold;
+  font-weight: bold !important;
 }
 .inner_html h5 {
-  font-size: 0.83em;
+  font-size: 0.83em !important;
 
-  font-weight: bold;
+  font-weight: bold !important;
 }
 .inner_html h6 {
-  font-size: 0.67em;
-  font-weight: bold;
+  font-size: 0.67em !important;
+  font-weight: bold !important;
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -51,4 +55,35 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type='number'] {
   -moz-appearance: textfield;
+}
+/* width */
+div::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+div::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+div::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+div::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.swiper-button-next {
+  color: #b72b2b !important;
+}
+.swiper-button-next::after {
+  padding: 8px !important;
+}
+.swiper-button-prev {
+  color: #b72b2b !important;
+}
+.swiper-button-prev::after {
+  padding: 8px !important;
 }

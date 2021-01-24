@@ -18,23 +18,24 @@ export default function SearchBar() {
   const [noSuggestions, setNoSuggestions] = React.useState(false);
   const { formatMessage, locale } = useIntl();
   const history = useHistory();
-  //with controlling the arrows
+
+  // with controlling the arrows
   const getSuggestionValue = suggestion => {
     return suggestion.translation[locale].title;
   };
   const renderSuggestion = (suggestion, { isHighlighted }) => {
     return (
       <div
-        className={`p-2 flex items-center ${
+        className={`px-2 py-1 cursor-pointer flex items-center ${
           isHighlighted && 'bg-gray-300 rounded'
         }`}
       >
         <img
-          src={`${process.env.REACT_APP_IMAGES_URL}/small/${suggestion.image.link}`}
+          src={`${process.env.REACT_APP_IMAGES_URL}/small/${suggestion.image?.link}`}
           alt=""
           style={{ height: '50px' }}
         />
-        <h1 className="mx-1">{suggestion.translation[locale].title}</h1>
+        <h1 className="mx-1 text-sm">{suggestion.translation[locale].title}</h1>
       </div>
     );
   };
@@ -67,9 +68,8 @@ export default function SearchBar() {
         params: { value: value, page: 1 },
         cancelToken: cancelToken.token,
       });
-      console.log(res.data.data.data);
       if (res) {
-        setData(res.data.data.data);
+        setData(res.data.data.data.slice(0, 8));
         if (inputThreshold && res.data.data.data.length === 0) {
           setNoSuggestions(true);
         } else {
@@ -98,7 +98,7 @@ export default function SearchBar() {
               history.push(`/${locale}/search/q=${query}`);
               setData([]);
             }}
-            className="p-2  hover:bg-gray-200 w-full transition duration-75"
+            className="p-2 bg-gray-200 w-full transition duration-75"
           >
             {formatMessage({ id: 'see-all-search-results' })}{' '}
             <strong>{query}</strong>
@@ -124,7 +124,7 @@ export default function SearchBar() {
     );
   };
   const handleSelect = (event, { suggestion }) => {
-    history.push(`/${locale}/c/${suggestion.id}`);
+    history.push(`/${locale}/products/${suggestion.slug}/${suggestion.id}`);
   };
 
   return (

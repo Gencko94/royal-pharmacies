@@ -38,7 +38,7 @@ export default function PlacesSearch({ panTo, markerAddress }) {
       navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
     } else {
       setErrorOpen(true);
-      setErrorMessage('Geolocation is not supported by this browser.');
+      setErrorMessage(formatMessage({ id: 'geolocation-not-supported' }));
     }
   };
   const locationSuccess = position => {
@@ -47,27 +47,15 @@ export default function PlacesSearch({ panTo, markerAddress }) {
   };
 
   const locationError = error => {
-    switch (error.code) {
-      case error.PERMISSION_DENIED:
-        setErrorOpen(true);
-        setErrorMessage('User Denied the request for Geolocation. ');
-        break;
-      case error.POSITION.UNAVAILABLE:
-        setErrorOpen(true);
-        setErrorMessage('Location information is Unavailable ');
-        break;
-      case error.TIMEOUT:
-        setErrorOpen(true);
-        setErrorMessage('The Request to get user location was timed out. ');
-        break;
-      case error.UNKNOWN_ERROR:
-        setErrorOpen(true);
-        setErrorMessage('An Unknown Error has Occured.');
-        break;
-
-      default:
-        setErrorOpen(true);
-        setErrorMessage('An Unknown Error has Occured.');
+    if (error.PERMISSION_DENIED) {
+      setErrorOpen(true);
+      setErrorMessage(formatMessage({ id: 'geolocation-permission' }));
+    } else if (error.TIMEOUT) {
+      setErrorOpen(true);
+      setErrorMessage('The Request to get user location was timed out. ');
+    } else {
+      setErrorOpen(true);
+      setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
     }
   };
   const handleClick = async (e, { suggestion }) => {
@@ -75,13 +63,12 @@ export default function PlacesSearch({ panTo, markerAddress }) {
       const results = await getGeocode({ address: suggestion.description });
       const { lat, lng } = await getLatLng(results[0]);
       panTo({ lat, lng });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   React.useEffect(() => {
     if (markerAddress) {
       setValue(markerAddress, false);
+    } else {
     }
   }, [markerAddress, setValue]);
 

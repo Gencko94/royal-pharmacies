@@ -14,10 +14,9 @@ export default function Stepper({ selectedStep, stepDone }) {
             <div
               className={`rounded-full ${
                 selectedStep === 0 &&
-                'bg-second-nav-light text-second-nav-text-light border-second-nav-light '
+                'bg-main-color text-main-text border-main-color '
               } ${
-                stepDone[0] &&
-                'bg-green-700 border-green-700 text-second-nav-text-light'
+                stepDone[0] && 'bg-green-700 border-green-700 text-main-text'
               } transition duration-500 ease-in-out h-12 w-12 py-3 border-2 `}
             >
               {stepDone[0] ? (
@@ -29,7 +28,7 @@ export default function Stepper({ selectedStep, stepDone }) {
             <div
               className={`mx-1 ${
                 selectedStep === 0 && 'font-bold'
-              }  text-center text-xs  uppercase `}
+              }  text-center text-sm  `}
             >
               {formatMessage({ id: 'address' })}
             </div>
@@ -38,11 +37,10 @@ export default function Stepper({ selectedStep, stepDone }) {
           <div className="flex items-center relative">
             <div
               className={`${
-                stepDone[1] &&
-                'bg-green-700 border-green-700 text-second-nav-text-light'
+                stepDone[1] && 'bg-green-700 border-green-700 text-main-text'
               } ${
                 selectedStep === 1 &&
-                'bg-second-nav-light text-second-nav-text-light border-second-nav-light font-bold'
+                'bg-main-color text-main-text border-main-color font-bold'
               } rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2  `}
             >
               {stepDone[1] ? (
@@ -52,11 +50,11 @@ export default function Stepper({ selectedStep, stepDone }) {
               )}
             </div>
             <div
-              className={`text-center mx-1 text-xs uppercase  ${
+              className={`text-center mx-1 text-sm   ${
                 selectedStep === 1 && 'font-bold '
               } `}
             >
-              {formatMessage({ id: 'personal-information' })}
+              {formatMessage({ id: 'order-details' })}
             </div>
           </div>
           <div
@@ -65,11 +63,10 @@ export default function Stepper({ selectedStep, stepDone }) {
           <div className={`flex items-center relative`}>
             <div
               className={`${
-                stepDone[2] &&
-                'bg-green-700 border-green-700 text-second-nav-text-light'
+                stepDone[2] && 'bg-green-700 border-green-700 text-main-text'
               } ${
                 selectedStep === 2 &&
-                'bg-second-nav-light text-second-nav-text-light border-second-nav-light font-bold'
+                'bg-main-color text-main-text border-main-color font-bold'
               } rounded-full transition duration-500 ease-in-out h-12 w-12 py-3 border-2`}
             >
               {stepDone[2] ? (
@@ -81,9 +78,9 @@ export default function Stepper({ selectedStep, stepDone }) {
             <div
               className={`${
                 selectedStep === 2 && 'font-bold'
-              } text-center mx-1 text-xs uppercase `}
+              } text-center mx-1  text-sm `}
             >
-              {formatMessage({ id: 'order-placed' })}
+              {formatMessage({ id: 'order-placement' })}
             </div>
           </div>
         </div>

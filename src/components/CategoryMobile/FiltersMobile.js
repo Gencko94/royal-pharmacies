@@ -12,6 +12,7 @@ export default function FiltersMobile({
   productsLoading,
   handleChangePriceInput,
   handleSubmitPrice,
+  brands,
 }) {
   return (
     <motion.div
@@ -20,9 +21,9 @@ export default function FiltersMobile({
       exit={{ opacity: 0 }}
       layout
     >
-      {!productsLoading && (
+      {!productsLoading && brands && (
         <BrandsFilterMobile
-          products={products}
+          brands={brands}
           brandFilters={brandFilters}
           handleBrandChange={handleBrandChange}
           handleClose={handleClose}

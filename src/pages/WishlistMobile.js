@@ -7,25 +7,26 @@ import { AuthProvider } from '../contexts/AuthContext';
 import WishlistMobileContainer from '../components/WishlistMobile/WishlistMobileContainer';
 import Layout from '../components/Layout';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
+import { AnimatePresence, motion } from 'framer-motion';
+import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 export default function WishlistMobile({ userId }) {
   const { formatMessage } = useIntl();
   const [
     removeFromWishListButtonLoading,
     setRemoveFromWishListButtonLoading,
   ] = React.useState(null);
-  // const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
-  //   null
-  // );
-  // const [itemInCart, setItemInCart] = React.useState([]);
+
   const {
     wishlistItems,
     wishlistItemsLoading,
     isGetWishlistError,
     removeFromWishListMutation,
-    // addToCartMutation,
-    // removeFromCartMutation,
   } = React.useContext(CartAndWishlistProvider);
   const { authenticationLoading } = React.useContext(AuthProvider);
+  const [cartMenuOpen, setCartMenu] = React.useState(false);
+  const setCartMenuOpen = () => {
+    setCartMenu(true);
+  };
   const handleRemoveItemFromWishList = async id => {
     setRemoveFromWishListButtonLoading(id);
     try {
@@ -33,39 +34,9 @@ export default function WishlistMobile({ userId }) {
       setRemoveFromWishListButtonLoading(null);
     } catch (error) {
       setRemoveFromWishListButtonLoading(null);
-      console.log(error.response);
     }
   };
-  // const handleAddToCart = async item => {
-  //   setAddToCartButtonLoading(item.id);
-  //   const addedItem = {
-  //     id: item.id,
-  //     quantity: 1,
-  //   };
-  //   try {
-  //     await addToCartMutation({ addedItem, userId });
-  //     setAddToCartButtonLoading(null);
-  //     setItemInCart(prev => {
-  //       return [...prev, item.id];
-  //     });
-  //   } catch (error) {
-  //     setAddToCartButtonLoading(null);
-  //     console.log(error.response);
-  //   }
-  // };
-  // const handleRemoveItemFromCart = async id => {
-  //   setAddToCartButtonLoading(id);
-  //   try {
-  //     await removeFromCartMutation({ id, userId });
-  //     setAddToCartButtonLoading(null);
-  //     setItemInCart(prev => {
-  //       return prev.filter(i => i !== id);
-  //     });
-  //   } catch (error) {
-  //     setAddToCartButtonLoading(null);
-  //     console.log(error.response);
-  //   }
-  // };
+
   if (isGetWishlistError) {
     return (
       <Layout>
@@ -80,17 +51,28 @@ export default function WishlistMobile({ userId }) {
   }
   return (
     <Layout>
+      <AnimatePresence>
+        {cartMenuOpen && (
+          <SideCartMenuMobile key="side-cart" setSideMenuOpen={setCartMenu} />
+        )}
+        {cartMenuOpen && (
+          <motion.div
+            key="sidecart-bg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setCartMenu(false)}
+            className="side__addCart-bg"
+          ></motion.div>
+        )}
+      </AnimatePresence>
       <div className=" py-1 px-2">
         {authenticationLoading && <MobileCartLoader />}
         {wishlistItemsLoading && <MainContentLoader />}
 
         {!wishlistItemsLoading && !isGetWishlistError && (
           <WishlistMobileContainer
-            // itemInCart={itemInCart}
-            // handleAddToCart={handleAddToCart}
-            // handleRemoveItemFromCart={handleRemoveItemFromCart}
             handleRemoveItemFromWishList={handleRemoveItemFromWishList}
-            // addToCartButtonLoading={addToCartButtonLoading}
             removeFromWishListButtonLoading={removeFromWishListButtonLoading}
             wishlistItems={wishlistItems}
             wishlistItemsLoading={wishlistItemsLoading}
@@ -98,7 +80,11 @@ export default function WishlistMobile({ userId }) {
         )}
 
         <hr />
-        <StaticSwiper type="electronics" />
+        <StaticSwiper
+          type="latest_products"
+          title={'New Arrivals'}
+          cb={setCartMenuOpen}
+        />
       </div>
     </Layout>
   );

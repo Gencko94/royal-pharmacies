@@ -1,8 +1,12 @@
 import React from 'react';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
-export default function SideMenuLanguages({ handleHideLanguages }) {
+export default function SideMenuLanguages({
+  handleHideLanguages,
+  toggleSideMenu,
+}) {
   const { formatMessage, locale } = useIntl();
   const { pathname } = useLocation();
   const getCurrentPath = pathname => {
@@ -10,12 +14,21 @@ export default function SideMenuLanguages({ handleHideLanguages }) {
   };
   return (
     <div className="sidebar-page">
-      <button
-        onClick={handleHideLanguages}
-        className="py-2 px-2 mb-2 font-semibold uppercase  "
-      >
-        {formatMessage({ id: 'go-back' })}
-      </button>
+      <div className="p-3 font-semibold justify-between flex items-center">
+        <button
+          className="relative rounded-full p-1"
+          onClick={handleHideLanguages}
+        >
+          {locale === 'ar' ? (
+            <BsChevronRight className="w-5 h-5" />
+          ) : (
+            <BsChevronLeft className="w-5 h-5" />
+          )}
+        </button>
+        <h1 className="flex-1 text-center">
+          {formatMessage({ id: 'language' })}
+        </h1>
+      </div>
       <hr />
 
       <button
@@ -23,6 +36,7 @@ export default function SideMenuLanguages({ handleHideLanguages }) {
           if (locale === 'ar') {
             return;
           }
+          toggleSideMenu();
           window.location.href = `/ar/${getCurrentPath(pathname)}`;
         }}
         className={`${
@@ -36,6 +50,7 @@ export default function SideMenuLanguages({ handleHideLanguages }) {
           if (locale === 'en') {
             return;
           }
+          toggleSideMenu();
           window.location.href = `/en/${getCurrentPath(pathname)}`;
         }}
         className={`${

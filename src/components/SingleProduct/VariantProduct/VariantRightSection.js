@@ -21,6 +21,7 @@ export default function VariantRightSection({
   itemInWishList,
   itemInCart,
   userId,
+  qty,
 }) {
   const formatDaysPlural = () => {
     switch (parseInt(deliveryCountry?.delivery_time)) {
@@ -30,7 +31,9 @@ export default function VariantRightSection({
       case 2:
         return formatMessage({ id: 'two-days' });
 
-      case parseInt(deliveryCountry?.delivery_time > 10):
+      case parseInt(
+        deliveryCountry?.delivery_time > 10 && deliveryCountry?.delivery_time
+      ):
         return formatMessage({ id: 'more-than-10-days' });
 
       default:
@@ -77,22 +80,16 @@ export default function VariantRightSection({
       style={{ top: '108px' }}
     >
       <div className={`rounded`}>
-        <div className="flex justify-between items-center font-semibold  ">
-          <div className="flex items-center ">
-            <div className="flex items-center">
-              <h1>{formatMessage({ id: 'deliver-to' })}</h1>
-              <h1 className="uppercase mx-1">
-                {deliveryCountry?.translation[locale].name}
-              </h1>
-              <MdLocationOn className="w-5 h-5 text-main-color " />
-            </div>
+        <div className="flex items-center font-semibold ">
+          <div className="flex items-center">
+            <h1>{formatMessage({ id: 'deliver-to' })}</h1>
+            <h1 className="uppercase mx-1">
+              {deliveryCountry?.translation[locale].name}
+            </h1>
+            <MdLocationOn className="w-5 h-5 text-main-color " />
           </div>
-          <button
-            className={`px-2 text-xs uppercase bg-main-color text-main-text rounded`}
-          >
-            {formatMessage({ id: 'change' })}
-          </button>
         </div>
+
         <div className="mb-2">
           <div className="flex items-center">
             <h1 className="text-gray-700">
@@ -147,9 +144,14 @@ export default function VariantRightSection({
               handleAddToCart(quantity);
             }
           }}
+          disabled={qty === 0}
           className={`
-            bg-green-700
-           flex-1 text-main-text  py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
+          ${
+            qty > 0
+              ? 'bg-green-700 text-main-text'
+              : 'bg-gray-500 text-gray-200 cursor-not-allowed'
+          }
+           flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToCartButtonLoading ? (
             <Loader
@@ -168,6 +170,13 @@ export default function VariantRightSection({
                 {formatMessage({ id: 'added-to-cart' })}
               </h1>
             </>
+          ) : qty === 0 ? (
+            <>
+              <span>
+                <TiShoppingCart className="w-25p h-25p" />
+              </span>
+              <h1 className="mx-2">{formatMessage({ id: 'out-of-stock' })}</h1>
+            </>
           ) : (
             <>
               <span>
@@ -180,11 +189,9 @@ export default function VariantRightSection({
 
         <button
           onClick={addToWishList}
-          className={`${
-            addToWishListButtonLoading
-              ? 'bg-gray-300'
-              : 'border-main-color text-main-color border'
-          } flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
+          className={`
+              border-main-color text-main-color border
+           flex-1   py-2 px-2 rounded mb-2   flex items-center justify-center font-semibold uppercase`}
         >
           {addToWishListButtonLoading ? (
             <Loader
@@ -222,7 +229,7 @@ export default function VariantRightSection({
               exit={{ y: 10, opacity: 0 }}
               className="box-arrow text-xs shadow text-center rounded p-2 "
             >
-              Please log in to Add
+              {formatMessage({ id: 'log-in-to-add' })}
             </motion.div>
           )}
         </AnimatePresence>

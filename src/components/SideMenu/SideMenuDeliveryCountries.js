@@ -1,4 +1,5 @@
 import React from 'react';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { useIntl } from 'react-intl';
 import LazyLoad from 'react-lazyload';
 
@@ -7,6 +8,7 @@ export default function SideMenuDeliveryCountries({
   deliveryCountries,
   deliveryCountry,
   setDeliveryCountry,
+  toggleSideMenu,
 }) {
   const { formatMessage, locale } = useIntl();
   const handleChangeDeliveryCountry = country => {
@@ -19,16 +21,26 @@ export default function SideMenuDeliveryCountries({
         },
       })
     );
+    toggleSideMenu();
     setDeliveryCountry(country);
   };
   return (
     <div className="sidebar-page">
-      <button
-        onClick={handleHideDeliveryCountries}
-        className="py-2 px-2 mb-2 font-semibold uppercase  "
-      >
-        {formatMessage({ id: 'go-back' })}
-      </button>
+      <div className="p-3 font-semibold justify-between flex items-center">
+        <button
+          className="relative rounded-full p-1"
+          onClick={handleHideDeliveryCountries}
+        >
+          {locale === 'ar' ? (
+            <BsChevronRight className="w-5 h-5" />
+          ) : (
+            <BsChevronLeft className="w-5 h-5" />
+          )}
+        </button>
+        <h1 className="flex-1 text-center">
+          {formatMessage({ id: 'deliver-to' })}
+        </h1>
+      </div>
       <hr />
       <div>
         {deliveryCountries.map(country => {

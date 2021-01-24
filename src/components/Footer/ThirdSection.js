@@ -7,31 +7,63 @@ import {
   FaWhatsapp,
 } from 'react-icons/fa';
 import { useIntl } from 'react-intl';
-import { useQuery } from 'react-query';
-import logomrg from '../../assets/mrg.png';
-import { getSocialMediaData } from '../../Queries/Queries';
-export default function ThirdSection() {
-  const { data } = useQuery('socialMedia', getSocialMediaData, {
-    retry: true,
-    refetchOnWindowFocus: false,
-  });
-  const { formatMessage } = useIntl();
+
+import { Link } from 'react-router-dom';
+
+import { DataProvider } from '../../contexts/DataContext';
+
+export default function ThirdSection({ pages }) {
+  const { formatMessage, locale } = useIntl();
+  const { settings } = React.useContext(DataProvider);
   return (
     <div
       className={`pt-4 px-8 pb-2 bg-first-nav-light text-main-text  flex items-center justify-between  `}
     >
       <div className="flex items-center ">
-        <img src={logomrg} alt="logo" className="w-20" />
-
-        <h1 className=" font-semibold text-sm mx-2">
-          &copy; 2020 MRG . {formatMessage({ id: 'footer-all-rights' })}
-        </h1>
+        <Link to={`/${locale}/`}>
+          {settings && (
+            <img
+              src={settings?.store_logo}
+              alt="MRG-logo"
+              style={{ height: '44px' }}
+            />
+          )}
+        </Link>
+        <div className="flex items-center flex-col mx-2 text-sm justify-center">
+          <h1 className=" font-semibold mb-1 text-center">
+            &copy; 2021 MRG . {formatMessage({ id: 'footer-all-rights' })}
+          </h1>
+          <div className="text-center">
+            {formatMessage({ id: 'developed-by' })}
+            <a className="font-bold mx-1 " href="https://mamacgroup.com">
+              MAMAC GROUP
+            </a>
+          </div>
+        </div>
       </div>
-      {data && (
+
+      {pages && (
+        <div className="flex text-sm justify-evenly">
+          {pages.map(page => {
+            return (
+              page.type === 'page' && (
+                <Link
+                  key={page.id}
+                  to={`/${locale}/site/${page.page?.slug}`}
+                  className="mr-4"
+                >
+                  {page.translation[locale].name}
+                </Link>
+              )
+            );
+          })}
+        </div>
+      )}
+      {settings && (
         <div className="flex justify-evenly">
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_facebook}`}
+            href={`${settings?.sm_facebook}`}
             target="_blank"
             className="mr-4"
           >
@@ -39,7 +71,7 @@ export default function ThirdSection() {
           </a>
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_twitter}`}
+            href={`${settings?.sm_twitter}`}
             target="_blank"
             className="mr-4"
           >
@@ -47,7 +79,7 @@ export default function ThirdSection() {
           </a>
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_instagram}`}
+            href={`${settings?.sm_instagram}`}
             target="_blank"
             className="mr-4"
           >
@@ -55,7 +87,7 @@ export default function ThirdSection() {
           </a>
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_linkedin}`}
+            href={`${settings?.sm_linkedin}`}
             target="_blank"
             className="mr-4"
           >
@@ -63,7 +95,7 @@ export default function ThirdSection() {
           </a>
           <a
             rel="noopener noreferrer"
-            href={`${data.sm_whatsapp}`}
+            href={`${settings?.sm_whatsapp}`}
             target="_blank"
             className="mr-4"
           >

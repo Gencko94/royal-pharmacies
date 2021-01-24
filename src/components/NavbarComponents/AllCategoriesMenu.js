@@ -1,10 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import ReactHoverObserver from 'react-hover-observer';
+import AllCategoriesButton from './AllCategoriesButton';
 export default function AllCategoriesMenu({
   categories,
   selectedCategory,
   handleMegaMenuOpen,
+  handleMenuClose,
 }) {
   const containerVariants = {
     hidden: {
@@ -39,18 +41,16 @@ export default function AllCategoriesMenu({
       className={` all-categories__menu bg-nav-cat-light text-nav-cat-text-light text-sm`}
     >
       <div className=" ">
-        {categories.map((item, i) => {
+        {categories.map(item => {
           return (
-            <Link
-              to="/"
-              key={i}
-              onMouseEnter={() => handleMegaMenuOpen(item.category)}
-              className={`px-4 py-2 font-semibold block ${
-                selectedCategory.category === item.category && 'bg-white'
-              }`}
-            >
-              {item.category}
-            </Link>
+            <ReactHoverObserver key={item.id} hoverDelayInMs={300}>
+              <AllCategoriesButton
+                item={item}
+                handleMegaMenuOpen={handleMegaMenuOpen}
+                handleMenuClose={handleMenuClose}
+                selectedCategory={selectedCategory}
+              />
+            </ReactHoverObserver>
           );
         })}
       </div>

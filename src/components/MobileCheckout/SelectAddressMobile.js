@@ -4,11 +4,7 @@ import GoogleMapsAddress from '../GoogleMapsAddress';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import AvailableAddressesMobile from './AvailableAddressesMobile';
-export default function SelectAddressMobile({
-  handleStepForward,
-  selectedAddress,
-  setSelectedAddress,
-}) {
+export default function SelectAddressMobile({ handleSelectAddress }) {
   const [showMap, setShowMap] = React.useState(false);
   const { userAddresses, userAddressesLoading } = React.useContext(
     AuthProvider
@@ -34,17 +30,12 @@ export default function SelectAddressMobile({
         <AvailableAddressesMobile
           userAddresses={userAddresses}
           setShowMap={setShowMap}
-          selectedAddress={selectedAddress}
-          setSelectedAddress={setSelectedAddress}
-          handleStepForward={handleStepForward}
+          handleSelectAddress={handleSelectAddress}
         />
       )}
       {(userAddresses.length === 0 || showMap) && (
         <div className=" border mb-2 h-full">
-          <GoogleMapsAddress
-            setShowMap={setShowMap}
-            handleStepForward={handleStepForward}
-          />
+          <GoogleMapsAddress setShowMap={setShowMap} />
         </div>
       )}
     </div>

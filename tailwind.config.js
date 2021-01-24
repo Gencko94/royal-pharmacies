@@ -12,6 +12,10 @@ module.exports = {
       fontSize: {
         xxs: '0.7rem',
       },
+      fontWeight: {
+        semibold: 600,
+        bold: 900,
+      },
       boxShadow: {
         navCategory: '0 5px 4px 0 rgba(0,0,0,0.18)',
         'itemsSlider-shallow': '0 5px 10px rgba(0, 0, 0, 0.2)',
@@ -99,7 +103,7 @@ module.exports = {
         '75p': '75%',
       },
       maxWidth: {
-        default: '1560px',
+        default: '1440px',
       },
       minHeight: {
         243: '243px',
@@ -114,15 +118,6 @@ module.exports = {
         7: 7,
         8: 8,
         9: 9,
-      },
-      animation: {
-        fadeIn: 'fadeIn 200ms ease-in forwards ',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0%' },
-          '100%': { opacity: '100%' },
-        },
       },
     },
   },

@@ -1,7 +1,7 @@
 import { Formik, useField } from 'formik';
 import React from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import logo from '../assets/mrg.svg';
+
 import * as Yup from 'yup';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { AuthProvider } from '../contexts/AuthContext';
@@ -9,9 +9,9 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 import Select from 'react-select';
-import register from '../assets/register.jpg';
 import Language from '../components/NavbarComponents/Language';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
+import { DataProvider } from '../contexts/DataContext';
 const options = [
   { value: '+965', label: '+965' },
   { value: '+966', label: '+966' },
@@ -116,6 +116,7 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
 export default function Register() {
   const { formatMessage, locale } = useIntl();
   const { userRegisterMutation } = React.useContext(AuthProvider);
+  const { settings } = React.useContext(DataProvider);
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const [countryCode, setCountryCode] = React.useState(options[0]);
@@ -142,7 +143,7 @@ export default function Register() {
       <div
         className="h-full"
         style={{
-          backgroundImage: `url(${register})`,
+          backgroundImage: `url(${settings?.sign_up_background})`,
           backgroundPosition: 'center',
           backgroundSize: 'cover',
         }}
@@ -153,14 +154,17 @@ export default function Register() {
         )}
         <div className=" z-2  max-w-screen-xs w-5/6   overflow-hidden">
           <div className="flex items-center flex-col mb-2  rounded-lg ">
-            <Link to="/">
-              <img
-                src={logo}
-                alt="logo"
-                className=" mb-3"
-                style={{ width: '100px', height: '50px' }}
-              />
+            <Link to={`/${locale}/`}>
+              {settings && (
+                <img
+                  src={settings?.store_logo_color}
+                  alt="MRG-logo"
+                  style={{ width: '100px', height: '50px' }}
+                  className=" mb-3"
+                />
+              )}
             </Link>
+
             <h2 className="text-lg text-center">
               {formatMessage({ id: 'register-on-mrg' })}
             </h2>

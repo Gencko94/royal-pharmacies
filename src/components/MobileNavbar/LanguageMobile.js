@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function LanguageMobile() {
   const { locale } = useIntl();
@@ -12,20 +12,20 @@ export default function LanguageMobile() {
   return (
     <div className="p-1">
       {locale === 'en' && (
-        <Link
-          to={`/ar/${getCurrentPath(pathname)}`}
+        <a
+          href={`/ar/${getCurrentPath(pathname)}`}
           className="font-semibold font-cairo transition duration-100 hover:text-gray-300"
         >
           العربية
-        </Link>
+        </a>
       )}
       {locale === 'ar' && (
-        <Link
-          to={`/en/${getCurrentPath(pathname)}`}
+        <a
+          href={`/en/${getCurrentPath(pathname)}`}
           className="font-semibold font-cairo transition duration-100 hover:text-gray-300"
         >
           English
-        </Link>
+        </a>
       )}
     </div>
   );

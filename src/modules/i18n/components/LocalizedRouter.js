@@ -24,8 +24,9 @@ export const LocalizedRouter = ({
            * If language is not in route path, redirect to language root
            */
           const { pathname } = location;
-          if (!pathname.includes(`/${lang}/`)) {
-            return <Redirect to={`/${lang}/`} />;
+
+          if (!pathname.includes(`/${lang}`)) {
+            return <Redirect to={`/${lang}${pathname}`} />;
           }
 
           /**

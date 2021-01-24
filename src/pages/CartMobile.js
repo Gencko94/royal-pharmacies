@@ -12,6 +12,7 @@ import MobileGuestCart from '../components/CartMobile/MobileGuestCart/MobileGues
 import StaticSwiper from '../components/Swipers/StaticSwiper';
 import Layout from '../components/Layout';
 import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
+import { scrollTo } from 'scroll-js';
 
 export default function CartMobile() {
   const { formatMessage } = useIntl();
@@ -23,7 +24,9 @@ export default function CartMobile() {
     cartItemsLoading,
     isGetCartError,
   } = React.useContext(CartAndWishlistProvider);
-
+  const scrollToTop = () => {
+    scrollTo(window, { top: 0 });
+  };
   if (isGetCartError) {
     return (
       <Layout>
@@ -38,7 +41,7 @@ export default function CartMobile() {
   }
   return (
     <Layout>
-      <div className="py-1 px-2 relative">
+      <div className="py-1 px-2 relative text-body-text-light">
         <AnimatePresence>
           {checkoutPopupOpen && (
             <CheckoutPopupMobile setCheckOutPopupOpen={setCheckOutPopupOpen} />
@@ -58,19 +61,19 @@ export default function CartMobile() {
           !isGetCartError &&
           cartItems?.length !== 0 && (
             <>
+              <MobileCheckoutSection />
               <MobileCartContainer
                 cartItems={cartItems}
                 cartItemsLoading={cartItemsLoading}
                 cartMessage={cartMessage}
               />
-              <MobileCheckoutSection />
             </>
           )}
         {!authenticationLoading && !userId && (
           <MobileGuestCart setCheckOutPopupOpen={setCheckOutPopupOpen} />
         )}
 
-        <StaticSwiper type="electronics" />
+        <StaticSwiper type="perfumes" title="Perfumes" cb={scrollToTop} />
       </div>
     </Layout>
   );

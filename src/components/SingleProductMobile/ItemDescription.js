@@ -14,6 +14,8 @@ import { DataProvider } from '../../contexts/DataContext';
 import { MdLocationOn } from 'react-icons/md';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+import { Link } from 'react-router-dom';
+import RelatedItems from '../SingleProduct/RelatedItems';
 export default function ItemDescription({
   data,
   handleAddToCart,
@@ -77,23 +79,15 @@ export default function ItemDescription({
         );
       case 1:
         return (
-          <span className="mx-1 text-yellow-700">
+          <span className="text-yellow-700">
             {formatMessage({ id: 'one-item-left' })}
           </span>
         );
 
       case 2:
         return (
-          <span className="mx-1 text-yellow-700">
+          <span className="text-yellow-700">
             {formatMessage({ id: 'two-items-left' })}
-          </span>
-        );
-
-      case n > 10:
-        return (
-          <span className="mx-1  text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
           </span>
         );
 
@@ -113,19 +107,14 @@ export default function ItemDescription({
       await addToWishListMutation({ id: data.id, userId });
       setItemInWishList(true);
     } catch (error) {
-      console.clear();
       setItemInWishList(true);
-      console.log(error.response);
     }
   };
   const handleRemoveFromWishlist = async () => {
     try {
       await removeFromWishListMutation({ id: data.id, userId });
       setItemInWishList(false);
-    } catch (error) {
-      console.clear();
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   const handleSubstractQuantity = () => {
     if (parseInt(quantity) === 1) {
@@ -143,10 +132,29 @@ export default function ItemDescription({
       setQuantity(e.target.value);
     }
   };
+
   return (
     <div className="mb-3">
+      <div className="flex items-center">
+        {data.brand && (
+          <Link to={`/${locale}/brands/${data.brand?.slug}`}>
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/small/${data.brand?.logo?.link}`}
+              alt={data.brand?.translation[locale].name}
+              style={{ width: '70px', height: '63px' }}
+            />
+          </Link>
+        )}
+        <Link
+          to={`/${locale}/brands/${data.brand?.slug}`}
+          className="mx-3 hover:opacity-50 underline font-semibold text-sm text-gray-700 uppercase"
+        >
+          {data.brand?.translation[locale].name}
+        </Link>
+      </div>
+
       <h1 className="font-semibold text-xl">
-        {data.translation[locale].title}
+        {data.full_translation[locale].title}
       </h1>
       <div className="flex items-center ">
         <div className="flex items-center mb-1">
@@ -179,7 +187,7 @@ export default function ItemDescription({
       </div>
 
       <h1 className=" font-semibold mb-1">
-        {qty < 20 ? (
+        {qty < 5 ? (
           formatItemsPlural(qty)
         ) : (
           <span className="text-green-700">
@@ -188,13 +196,15 @@ export default function ItemDescription({
         )}
       </h1>
 
-      <hr />
-      <div className=" mb-2 font-bold">
+      <hr className="my-2" />
+      <div className=" my-2 " style={{ fontWeight: '900' }}>
         {isSale && (
           <div className="flex flex-wrap items-center">
             <h1 className=" ">{formatMessage({ id: 'price-before' })} :</h1>
             <h1 className=" italic mx-2 text-xl  line-through text-gray-700">
-              {data.simple_addons.price}{' '}
+              {(
+                data.simple_addons.price * deliveryCountry?.currency.value
+              ).toFixed(3)}{' '}
               {deliveryCountry?.currency.translation[locale].symbol}
             </h1>
           </div>
@@ -208,8 +218,13 @@ export default function ItemDescription({
           </h1>
           <h1 className=" text-xl mx-2 text-main-color">
             {isSale
-              ? data.simple_addons.promotion_price
-              : data.simple_addons.price}{' '}
+              ? (
+                  data.simple_addons.promotion_price *
+                  deliveryCountry?.currency.value
+                ).toFixed(3)
+              : (
+                  data.simple_addons.price * deliveryCountry?.currency.value
+                ).toFixed(3)}{' '}
             {deliveryCountry?.currency.translation[locale].symbol}
           </h1>
           <h1 className=" font-normal text-xs  text-gray-700 uppercase">
@@ -229,24 +244,20 @@ export default function ItemDescription({
           </h1>
         )}
       </div>
+
+      <hr className="my-2" />
       <div className="mb-2">
-        <div className="flex justify-between items-center font-semibold  ">
-          <div className="flex items-center ">
-            <div className="flex items-center">
-              <h1>{formatMessage({ id: 'deliver-to' })}</h1>
-              <h1 className="uppercase mx-2 text-sm">
-                {deliveryCountry?.translation[locale].name}
-              </h1>
-              <MdLocationOn className="w-5 h-5 text-main-color " />
-            </div>
+        <div className="flex items-center font-semibold ">
+          <div className="flex items-center">
+            <h1>{formatMessage({ id: 'deliver-to' })}</h1>
+            <h1 className="uppercase mx-1">
+              {deliveryCountry?.translation[locale].name}
+            </h1>
+            <MdLocationOn className="w-6 h-6 text-main-color " />
           </div>
-          <button
-            className={`px-2 text-xs uppercase bg-main-color text-main-text rounded`}
-          >
-            {formatMessage({ id: 'change' })}
-          </button>
         </div>
-        <div className="flex items-center">
+
+        <div className="flex items-center mb-2">
           <h1 className="text-gray-700">
             {formatMessage({ id: 'estimated-delivery' })} :
           </h1>
@@ -286,6 +297,7 @@ export default function ItemDescription({
               handleAddToCart();
             }
           }}
+          disabled={qty === 0}
           className={`${
             qty === 0 ? 'bg-main-color ' : 'bg-green-700'
           } text-main-text text-sm  p-2 mx-1 rounded uppercase whitespace-no-wrap flex-1 flex items-center justify-center font-semibold`}
@@ -326,13 +338,12 @@ export default function ItemDescription({
         <button
           onClick={() => {
             if (itemInWishList) {
-              handleAddToWishlist();
-            } else {
               handleRemoveFromWishlist();
+            } else {
+              handleAddToWishlist();
             }
           }}
-          className={`
-              border
+          className={`border
             text-sm p-2 rounded-full uppercase bg-gray-100  flex items-center justify-center font-semibold`}
         >
           {itemInWishList ? (
@@ -346,6 +357,10 @@ export default function ItemDescription({
           )}
         </button>
       </div>
+      <hr className="my-2" />
+      {data?.related_products.length > 0 && (
+        <RelatedItems data={data.related_products} />
+      )}
     </div>
   );
 }

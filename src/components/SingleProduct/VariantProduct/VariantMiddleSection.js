@@ -6,8 +6,9 @@ import Variants from './Variants';
 import Options from './Options';
 import VariantsOnly from './VariantsOnly';
 import { Link } from 'react-router-dom';
-
 import { DataProvider } from '../../../contexts/DataContext';
+import { calculateDiscountPrice } from '../../../helpers/calculateDiscountPrice';
+import RelatedItems from '../RelatedItems';
 export default function VariantMiddleSection({
   data,
   selectedVariation,
@@ -76,14 +77,6 @@ export default function VariantMiddleSection({
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className="mx-1  text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="mx-1  text-yellow-700">
@@ -97,12 +90,14 @@ export default function VariantMiddleSection({
     if (data.new_variation_addons[selectedVariation].options) {
       arr.push(
         <Options
+          key="options"
           options={data.new_variation_addons[selectedVariation].options}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
           selectedVariation={selectedVariation}
         />,
         <Variants
+          key="variants"
           variants={data.new_variation_addons}
           setSelectedVariant={setSelectedVariant}
           selectedOption={selectedOption}
@@ -114,6 +109,7 @@ export default function VariantMiddleSection({
     } else {
       arr.push(
         <VariantsOnly
+          key="variants only"
           variants={data.new_variation_addons}
           setSelectedVariant={setSelectedVariant}
           selectedVariation={selectedVariation}
@@ -136,9 +132,11 @@ export default function VariantMiddleSection({
       >
         {data.brand?.translation[locale].name}
       </Link>
-      <h1 className="font-bold text-2xl">{data.translation[locale].title}</h1>
+      <h1 className="font-bold text-2xl">
+        {data.full_translation[locale].title}
+      </h1>
       <h1 className=" font-semibold mb-1">
-        {option.quantity < 20 ? (
+        {option.quantity < 5 ? (
           formatItemsPlural(option.quantity)
         ) : (
           <span className="text-green-700">
@@ -176,12 +174,12 @@ export default function VariantMiddleSection({
       </div>
       <hr className="my-2" />
       <div className="py-1">
-        <div className="font-bold">
+        <div style={{ fontWeight: '900' }}>
           {isSale && (
             <div className=" flex items-center ">
               <h1>{formatMessage({ id: 'price-before' })} :</h1>
               <h1 className=" mx-2 text-base italic  line-through text-gray-700">
-                {option.price}
+                {(option.price * deliveryCountry?.currency.value).toFixed(3)}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
@@ -189,26 +187,32 @@ export default function VariantMiddleSection({
             </div>
           )}
           <div className="">
-            <div className="flex items-center flex-1">
+            <div className="flex items-center flex-1 flex-wrap">
               <h1 className="    ">
                 {isSale
                   ? formatMessage({ id: 'price-now' })
                   : formatMessage({ id: 'price' })}
               </h1>
               <h1 className=" text-xl mx-2  text-red-700">
-                {isSale ? option.promotion_price : option.price}
+                {isSale
+                  ? (
+                      option.promition_price * deliveryCountry?.currency.value
+                    ).toFixed(3)
+                  : (option.price * deliveryCountry?.currency.value).toFixed(3)}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
               </h1>
-              <h1 className=" font-normal uppercase  text-gray-700">
+              <h1 className=" font-normal uppercase text-sm  text-gray-700">
                 ({formatMessage({ id: 'vat-inclusive' })})
               </h1>
             </div>
             {isSale && (
               <div className="flex items-center   ">
                 <h1>{formatMessage({ id: 'you-save' })} :</h1>
-                <h1 className="text-base text-red-700 mx-2">18%</h1>
+                <span className=" font-bold mx-1 text-main-color">
+                  {calculateDiscountPrice(option.price, option.promotion_price)}
+                </span>
               </div>
             )}
           </div>
@@ -220,6 +224,10 @@ export default function VariantMiddleSection({
 
         <hr className="my-2" />
       </div>
+
+      {data?.related_products?.length > 0 && (
+        <RelatedItems data={data.related_products} />
+      )}
     </div>
   );
 }

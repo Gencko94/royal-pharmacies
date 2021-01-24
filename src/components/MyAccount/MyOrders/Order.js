@@ -4,71 +4,235 @@ import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import moment from 'moment';
-export default function Order({ order }) {
+import knet from '../../../assets/paymentLogos/knet.png';
+import mastercard from '../../../assets/paymentLogos/mastercard.png';
+
+import cod from '../../../assets/paymentLogos/cod.png';
+import amex from '../../../assets/paymentLogos/amex.png';
+import { DataProvider } from '../../../contexts/DataContext';
+export default function Order({ order, handleShowAddReviews, index }) {
   const { formatMessage } = useIntl();
   const [isOpen, setOpen] = React.useState(false);
   const toggleOpen = () => {
     setOpen(!isOpen);
   };
+  const status = order.status;
+  const resolvePayment = () => {
+    if (order.payment_method === 'knet') {
+      return (
+        <div
+          className={`  flex  items-center justify-start  p-2 font-semibold`}
+        >
+          <img src={knet} alt={order.payment_method} />
+          <div className="flex-1 mx-3 text-left">K-net</div>
+        </div>
+      );
+    }
+    if (order.payment_method === 'credit') {
+      return (
+        <div
+          className={`  flex  items-center justify-start  p-2 font-semibold`}
+        >
+          <img src={mastercard} alt={order.payment_method} />
+          <div className="flex-1 mx-3 text-left">Credit Card</div>
+        </div>
+      );
+    }
+
+    if (order.payment_method === 'amex') {
+      return (
+        <div className={` flex  items-center justify-start  p-2 font-semibold`}>
+          <img src={amex} alt={order.payment_method} />
+          <div className="flex-1 mx-3 text-left">American Express</div>
+        </div>
+      );
+    }
+    if (order.payment_method === 'cod') {
+      return (
+        <div
+          className={`  flex  items-center justify-start  p-2 font-semibold`}
+        >
+          <img src={cod} alt={order.payment_method} />
+          <div className="flex-1 mx-3 text-left">
+            {formatMessage({ id: 'cash-on-delivery' })}
+          </div>
+        </div>
+      );
+    }
+  };
+  const resolveStatus = () => {
+    switch (status) {
+      case 'completed':
+        return (
+          <motion.div
+            layout
+            className={` text-body-text-dark flex items-center  px-3 py-2 font-semibold bg-green-700  `}
+          >
+            <h1>{formatMessage({ id: 'order-status' })}</h1>:
+            <h1 className="mx-1">{formatMessage({ id: 'order-completed' })}</h1>
+          </motion.div>
+        );
+
+      case 'canceled':
+        return (
+          <motion.div
+            layout
+            className={` text-body-text-dark flex items-center px-3 py-2 font-semibold bg-main-color  `}
+          >
+            <h1>{formatMessage({ id: 'order-status' })}</h1>:
+            <h1 className="mx-1">{formatMessage({ id: 'order-cancelled' })}</h1>
+          </motion.div>
+        );
+      case 'pending':
+        return (
+          <motion.div
+            layout
+            className={` text-body-text-dark  flex items-center px-3 py-2 font-semibold bg-yellow-600  `}
+          >
+            <h1>{formatMessage({ id: 'order-status' })}</h1>:
+            <h1 className="mx-1">{formatMessage({ id: 'order-pending' })}</h1>
+          </motion.div>
+        );
+      case 'delivery':
+        return (
+          <motion.div
+            layout
+            className={` text-body-text-dark  flex items-center px-3 py-2 font-semibold bg-blue-600  `}
+          >
+            <h1>{formatMessage({ id: 'order-status' })}</h1>:
+            <h1 className="mx-1">{formatMessage({ id: 'order-delivery' })}</h1>
+          </motion.div>
+        );
+      case 'waiting_for_payment':
+        return (
+          <motion.div
+            layout
+            className={` text-body-text-dark flex items-center px-3 py-2 font-semibold bg-yellow-600  `}
+          >
+            <h1>{formatMessage({ id: 'order-status' })}</h1>:
+            <h1 className="mx-1">
+              {formatMessage({ id: 'order-waiting-for-payment' })}
+            </h1>
+          </motion.div>
+        );
+      case 'confirmed':
+        return (
+          <motion.div
+            layout
+            className={` text-body-text-dark flex items-center px-3 py-2 font-semibold bg-blue-600  `}
+          >
+            <h1>{formatMessage({ id: 'order-status' })}</h1>:
+            <h1 className="mx-1">{formatMessage({ id: 'order-confirmed' })}</h1>
+          </motion.div>
+        );
+      case 'new':
+        return (
+          <motion.div
+            layout
+            className={` text-body-text-dark flex items-center px-3 py-2 font-semibold bg-blue-600  `}
+          >
+            <h1>{formatMessage({ id: 'order-status' })}</h1>:
+            <h1 className="mx-1">{formatMessage({ id: 'order-new' })}</h1>
+          </motion.div>
+        );
+
+      default:
+        break;
+    }
+  };
+
   return (
     <motion.div layout className="rounded border">
+      {resolveStatus()}
+
       <motion.div
         layout
-        className={` text-body-text-dark  px-2 py-1 font-semibold  ${
-          order.delivered ? 'bg-green-700 ' : 'bg-orange-500 '
-        }`}
+        className="my-orders-grid__desktop p-3 bg-gray-900 text-main-text"
       >
-        <h1>
-          {formatMessage({ id: 'status' })} : {order.status}
-          {/* ? formatMessage({ id: 'delivered' })
-             : formatMessage({ id: 'pending' })} */}
-        </h1>
-      </motion.div>
-      <motion.div layout className="my-orders-grid__desktop text-sm p-2">
         <motion.div layout>
-          <h1 className="font-semibold ">
-            {formatMessage({ id: 'order-number' })} : {order.id}
-          </h1>
-          <div className="flex items-center">
-            <h1 className="">{formatMessage({ id: 'order-date' })} :</h1>
-            <h1 className="text-gray-600 mx-1">
-              {' '}
-              {moment(order.created_at).format('DD/MM/YYYY-HH:MM')}
+          <div className="font-semibold">
+            <h1 className="text-gray-500">
+              {formatMessage({ id: 'order-date' })} :
             </h1>
+            <h1> {moment(order.created_at).format('DD/MM/YYYY - HH:MM')}</h1>
           </div>
-          <div className="flex items-center">
-            <h1 className="">
-              {order.status === 'delivered'
-                ? formatMessage({ id: 'delivered-at' })
-                : formatMessage({ id: 'expected-delivery' })}{' '}
-              :
+
+          <div>
+            <h1 className="text-gray-500 font-semibold">
+              {formatMessage({ id: 'payment-method' })}:
             </h1>
-            <h1 className="mx-1 text-gray-600">
-              {order.status === 'delivered' ? order.deliveryDate : 'soon'}
-            </h1>
+            {resolvePayment()}
           </div>
-          <div className="flex items-center">
-            <h1 className="">
-              {order.status === 'delivered'
-                ? formatMessage({ id: 'delivered-to' })
-                : formatMessage({ id: 'deliver-to' })}
-              :
-            </h1>
-            <h1 className="mx-1 text-gray-600">
-              {' '}
-              {order.address.marked_address}
-            </h1>
-          </div>
-          <div className="flex items-center">
-            <h1>{formatMessage({ id: 'payment-method' })}:</h1>
-            <h1 className="text-gray-600 mx-1">{order.payment_method}</h1>
-          </div>
+          {status !== 'canceled' && (
+            <button
+              onClick={() => handleShowAddReviews(index)}
+              className="rounded text-main-text p-2 font-semibold bg-green-700"
+            >
+              {formatMessage({ id: 'add-reviews' })}
+            </button>
+          )}
         </motion.div>
-        <motion.div layout>
-          {/* <img src={order.orderItems[0].photos.small} alt={order.id} /> */}
+        <motion.div className="flex justify-between" layout>
+          <div className="mx-1">
+            <h1 className="font-bold text-lg">
+              {formatMessage({ id: 'delivery-address' })}
+            </h1>
+            <div className=" font-semibold">
+              <h1 className="text-gray-500 ">
+                {formatMessage({
+                  id: 'location',
+                })}
+              </h1>
+              <h1>{`${
+                order.address.type === 'map'
+                  ? order.address.marked_address
+                  : order.address.userTyped_address
+              }`}</h1>
+            </div>
+            <div className="font-semibold">
+              <h1 className="text-gray-500 ">
+                {formatMessage({
+                  id: 'maps-detailed-address-apartment',
+                })}
+              </h1>
+              <h1>{order.address.apartment_house_number}</h1>
+            </div>
+            {order.address.building_tower_number && (
+              <div className="font-semibold">
+                <h1 className="text-gray-500 ">
+                  {formatMessage({
+                    id: 'maps-detailed-address-building',
+                  })}
+                </h1>
+                <h1>{order.address.building_tower_number}</h1>
+              </div>
+            )}
+            {order.address.addition_direction && (
+              <div className="font-semibold">
+                <h1 className="text-gray-500 ">
+                  {formatMessage({
+                    id: 'maps-details-extra-details',
+                  })}
+                </h1>
+                <h1>{order.address.addition_direction}</h1>
+              </div>
+            )}
+          </div>
+          <motion.div layout>
+            {order.address.type === 'map' && order.address.lat && (
+              <img
+                src={`https://maps.googleapis.com/maps/api/staticmap?center=${order.address.lat},${order.address.lng}&zoom=15&size=150x150&
+              markers=color:blue%7C${order.address.lat}-${order.address.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+                alt="map"
+              />
+            )}
+          </motion.div>
         </motion.div>
       </motion.div>
-      <motion.div layout className="p-2 flex items-center ">
+      <motion.div
+        layout
+        className="p-2 font-semibold flex items-center bg-gray-200 "
+      >
         <h1>{formatMessage({ id: 'show-order-receipt' })}</h1>
         <button
           onClick={toggleOpen}
@@ -89,6 +253,8 @@ export default function Order({ order }) {
             orderSubtotal={order.subtotal}
             orderTotal={order.total}
             shippingCost={order.shipping_cost}
+            coupon={order.coupon}
+            couponCost={order.coupon_cost}
           />
         )}
       </AnimatePresence>
@@ -96,8 +262,16 @@ export default function Order({ order }) {
   );
 }
 
-const Content = ({ orderItems, orderTotal, orderSubtotal, shippingCost }) => {
+const Content = ({
+  orderItems,
+  orderTotal,
+  orderSubtotal,
+  shippingCost,
+  coupon,
+  couponCost,
+}) => {
   const { locale, formatMessage } = useIntl();
+  const { deliveryCountry } = React.useContext(DataProvider);
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -117,50 +291,85 @@ const Content = ({ orderItems, orderTotal, orderSubtotal, shippingCost }) => {
       exit="exited"
       className="my-orders-items__grid-desktop p-2"
     >
-      <div className="my-orders-items__table-desktop font-semibold ">
+      <div className="my-orders-items__table-desktop font-semibold text-center mb-1">
         <h1>#</h1>
         <h1>{formatMessage({ id: 'the-item' })}</h1>
         <h1>{formatMessage({ id: 'quantity' })}</h1>
         <h1>{formatMessage({ id: 'price' })}</h1>
+        <h1>{formatMessage({ id: 'total' })}</h1>
       </div>
-      <br />
+
       {orderItems.map((orderItem, i) => {
         return (
-          <div key={orderItem.id} className="my-orders-item-desktop text-sm">
+          <div
+            key={orderItem.id}
+            className="my-orders-item-desktop text-sm text-center"
+          >
             <div className="">
               <h1 className="">{i + 1}</h1>
             </div>
             <Link
-              to={`/${locale}/c/${orderItem.id}`}
-              className="hover:underline"
+              to={`/${locale}/products/${orderItem.product.slug}/${orderItem.id}`}
+              className="hover:underline truncate uppercase font-semibold block"
             >
-              <h1 className="truncate  semibold">
-                {orderItem.product.translation[locale].title}
-              </h1>
+              {orderItem.product.translation[locale].title}
             </Link>
             <div className="">
               <h1 className="">{orderItem.qty}</h1>
             </div>
-            <div className="">
-              <h1 className="">{orderItem.price}</h1>
+            <div style={{ fontWeight: 900 }}>
+              <h1 className="">{orderItem.price} </h1>
+            </div>
+            <div style={{ fontWeight: 900 }} className="text-green-700">
+              <h1 className="">
+                {(orderItem.price * orderItem.qty).toFixed(3)}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </h1>
             </div>
           </div>
         );
       })}
       <hr className="my-1" />
-      <div className="my-orders-receipt-summary font-bold text-sm">
+      <div className="my-orders-receipt-summary font-bold">
         <h1>{formatMessage({ id: 'cart-total' })}</h1>
-        <h1>{orderSubtotal}</h1>
+        <h1 className="text-center">
+          {orderSubtotal}{' '}
+          <span className="mx-1">
+            {deliveryCountry?.currency.translation[locale].symbol}
+          </span>
+        </h1>
         <h1>{formatMessage({ id: 'cart-delivery-cost' })}</h1>
-        <h1 className="mb-2">
+        <h1 className="text-center">
           {shippingCost === '0'
             ? formatMessage({ id: 'cart-free' })
-            : shippingCost}
+            : shippingCost}{' '}
+          <span className="mx-1">
+            {deliveryCountry?.currency.translation[locale].symbol}
+          </span>
         </h1>
-        <h1 className="text-green-700 text-base">
+        {coupon && (
+          <h1 className="mb-2">{formatMessage({ id: 'coupon-sale' })}</h1>
+        )}
+        {coupon && (
+          <h1 className="mb-2 text-center">
+            {couponCost}
+            <span className="mx-1">
+              {deliveryCountry?.currency.translation[locale].symbol}
+            </span>
+          </h1>
+        )}
+        <h1
+          className="text-green-700 text-lg font-bold"
+          style={{ fontWeight: 900 }}
+        >
           {formatMessage({ id: 'subtotal' })}
         </h1>
-        <h1 className="text-green-700 text-base">{orderTotal}</h1>
+        <h1
+          className="text-green-700 text-lg font-bold text-center"
+          style={{ fontWeight: 900 }}
+        >
+          {orderTotal} {deliveryCountry?.currency.translation[locale].symbol}
+        </h1>
       </div>
     </motion.div>
   );

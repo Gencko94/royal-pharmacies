@@ -13,7 +13,8 @@ const baseStrings = {
   // general
 
   'shop-on-mrg': 'Shop on MRG Mall',
-
+  'shop-brands': 'Shop',
+  'at-mrg': 'at MRG Mall',
   home: 'Home',
   cart: 'Cart',
   wishlist: 'Wishlist',
@@ -81,6 +82,7 @@ const baseStrings = {
   'two-reviews': 'Two Reviews',
   'secure-transaction': 'Secure transaction',
   quantity: 'Quantity',
+  qty: 'Qty',
   'one-item-left': 'One Item Left',
   'two-items-left': 'Two Items Left',
   'more-than-10-items-left': 'Items Left',
@@ -99,21 +101,23 @@ const baseStrings = {
   'we-have-found': 'We have found',
   addresses: 'addresses ',
   'one-address': 'address',
-  'show-order-receipt': 'Show order receipt',
+  'show-order-receipt': 'Order Receipt',
   'order-receipt': 'Order Receipt',
   'not-found-title': "We can't seem to find the page you're looking for. ",
   'back-to-home': 'Back to Homepage',
   oops: 'Oops !',
   'press-enter-to-search': 'Press Enter to search ',
-  'something-went-wrong-snackbar': 'Something went wrong, Please try again',
+  'something-went-wrong-snackbar': 'Something went wrong , Please try again',
   'hello-signin': 'Hello,Sign in',
   hello: 'Hello',
   off: 'OFF',
   'loading-reviews': 'Loading Reviews...',
   'welcome-user': 'Welcome',
+  'delivery-status': 'Delivery Status',
   'one-day': 'One Day',
   'two-days': 'Two Days',
   days: 'Days',
+  soon: 'Soon',
   'more-than-10-days': 'Days',
   'delivery-cost': 'Delivery Cost',
   'accepted-payments': 'Accepted Payment Methods',
@@ -121,6 +125,8 @@ const baseStrings = {
   'update-btn': 'Update',
   'coupon-expired': 'Expired Coupon',
   'coupon-invalid': 'Invalid Coupon',
+  'coupon-conditions-not-met': 'Coupon Conditions were not met',
+  'coupon-limit-reached': 'Coupon Limit Reached',
   'one-search-result': 'One Search Result for',
   'two-search-results': 'Two Search Results for',
   'more-than-10-search-results': 'Search Results for',
@@ -129,6 +135,8 @@ const baseStrings = {
   'see-all-search-results': 'See all Search Results for',
   'cart-combined':
     'Your items that you have added as a guest has been combined with your current Cart, Happy Shopping !',
+  price_changed:
+    'This Product Price has been changed since the last time you added it',
   'Price (Low to High)': 'Price (Low to High)',
   'Price (High to Low)': 'Price (High to Low)',
   Newest: 'Newest',
@@ -142,9 +150,13 @@ const baseStrings = {
   'nav.shipTo': 'Deliver To',
   'nav.search.placeholder': 'What are you looking for ?',
   'nav.account': 'My Account',
+  'nav.track': 'Track Order',
+  'nav.history': 'Browse History',
   categories: 'Categories',
   allCategories: 'All Categories ',
   seeAll: 'See all',
+  sections: 'Sections',
+  'see-all-nav': 'All Sections',
   bestSellers: 'Best Sellers',
   mobilesElectronics: 'Mobiles & Electronics',
   // credential forms
@@ -163,6 +175,9 @@ const baseStrings = {
   'login-welcome-back': 'Welcome Back !',
   'register-on-mrg': 'Register on MRG ',
   'invalid-credentials': 'Phone number or password are not correct',
+  'invalid-phone': 'Invalid Phone Number ',
+  'track-order-no-orders':
+    'No Orders were Linked to this Phone number, Please check the Phone number and try again',
   'new-to-family': 'Are you new to the family ? ',
   'join-us-here': 'Join us here',
   'forgot-password': 'Forgot password ?',
@@ -185,6 +200,7 @@ const baseStrings = {
   //end of credentials forms
   //start of cart items
   price: 'Price',
+  Price: 'Price',
   'the-item': 'Item',
   'the-items': 'Items',
   'one-item': 'Item',
@@ -193,8 +209,9 @@ const baseStrings = {
   'multiple-items': 'Items',
 
   'cart-tos':
-    'The price and availability of items at mrg.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
+    'The price and availability of items at mrg-mall.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
   subtotal: 'Subtotal',
+  total: 'Total',
   'cart-total': 'Cart Total',
   'cart-enter-code-or-coupon': 'Enter Code or Coupon',
   'cart-code-button': 'Enter',
@@ -210,7 +227,7 @@ const baseStrings = {
   address: 'Address',
   'personal-information': 'Personal Information',
   'edit-personal-information': 'Edit Personal information',
-  'order-placed': 'Order Placed',
+  'order-placement': 'Order Placement',
   'search-for': 'Search For',
   'btn-back-to-addresses': 'Back to Select Address',
   'select-address-header': 'Select a previously added Address or add new one ',
@@ -219,10 +236,24 @@ const baseStrings = {
   submit: 'Submit',
   'selected-btn': 'Selected',
   'btn-proceed': 'Proceed',
+  'proceed-to-payment': 'Proceed to payment',
+  'payment-page': 'Payment Page',
+  'go-to-payment':
+    'Please click on link below to transfer you to the payment gateway. We will place your order as soon as the payment is successful',
+  'thank-you-for-shopping-msg': 'Thank you for shopping at our Website',
+  'expected-delivery-msg': 'We expect that your order will be delivered in',
   'order-placed-msg': 'Congratulations, Your Order has been Placed !',
+
+  'order-failed-msg': 'Sorry, Your Order was not completed , Please try again',
+  'checkout-help-center-msg':
+    'If you have any question please do not hesitate to contact us',
   // maps
   'find-my-position': 'Find my position',
   'location-details': 'Location Details',
+  'delivery-location': 'Delivery Location',
+  'delivery-address': 'Delivery Address',
+  'delivery-details': 'Delivery Details',
+  location: 'Location',
   'maps-detailed-address-apartment-short': 'House/Apt No',
   'maps-detailed-address-building-short': 'Build/Tower No',
   'maps-detailed-address-phone-short': 'Associated Phone No',
@@ -246,14 +277,18 @@ const baseStrings = {
   'number-only': 'Please enter a valid number',
   'name-empty': 'Please enter an Address name',
   'required-field': 'Required Field',
+  'error-loading-maps': 'Something went Wrong, please try again',
+  'geolocation-not-supported': 'Geolocation is not supported by this browser',
+  'geolocation-permission': 'Permission to get the location was not granted',
 
   // checkout modal
   'not-signed-in': 'You are not signed in',
   'you-can': 'you can',
   'guest-checkout': 'Checkout as guest',
   'checkout-modal-tos':
-    'Having an account at mrg.com help us make a better user experience for you and other customers.',
+    'Having an account at mrg-mall.com help us make a better user experience for you and other customers.',
   'confirm-location': 'Confirm Location',
+  'confirm-btn': 'Confirm',
   'remove-location': 'Remove',
   'mark-as-default': 'Mark as Default location',
 
@@ -269,7 +304,7 @@ const baseStrings = {
    */
 
   'order-number': 'Order Number',
-  status: 'Status',
+  'order-status': 'Order status',
   'ordered-at': 'Ordered at',
   'delivered-at': 'Delivered at',
   'order-details': 'Order Details',
@@ -299,12 +334,14 @@ const baseStrings = {
     'There are no Ratings for this Product yet, Be the first to Rate ',
   'how-to-rate': 'How do i rate this Product ?',
   'rating-guide':
-    'If you have Purchased this item, you can Rate and Leave a Feedback at <link>My Orders</link>',
+    'If you are a MRG user and have Purchased this item, you can Rate and Leave a Feedback at <link>My Orders</link>',
   /**
    * Viewed Items Page
    *
    */
   'your-viewed-items': 'Your Browsing history',
+  'no-viewed-items':
+    'Your Viewed Items list is Empty, Viewed Products will be shown here',
   /**
    * Footer
    */
@@ -328,6 +365,50 @@ const baseStrings = {
   'no-products': 'No Products or Data Available',
   'no-filter-results': 'No Results for this criteria',
   'featured-items': 'Featured Items',
+  'double-click-zoom': 'Double Click to Zoom in',
+  'number-per-page': 'Results per Page',
+  'related-products': 'Related Products',
+  'more-from': 'More from this category',
+  'back-to-top': 'Back to top',
+  'new-arrivals': 'New Arrivals',
+  'latest-products': 'New Arrivals',
+  'log-in-to-add': 'Please Log in to add',
+  'shop-by-category': 'Shop by Category',
+  none: 'None',
+  'by-category': 'by Category',
+  shop: 'Shop ',
+  clear: 'Clear',
+  'track-my-order': 'Track Order',
+  'btn-track': 'Track',
+  'track-order-enter-your-phone':
+    'Enter the phone number associated with your Order to track your order ',
+  'order-cancelled': 'Cancelled',
+  'order-pending': 'Pending',
+  'order-completed': 'Completed',
+  'order-waiting-for-payment': 'Waiting for payment',
+  'order-confirmed': 'Confirmed',
+  'order-new': 'New',
+  'cash-on-delivery': 'Cash on Delivery',
+  knet: 'K-net',
+  credit: 'Credit Card (Visa, Mastercard)',
+  amex: 'American Express',
+  'checkout-cart-empty':
+    'You Cannot Checkout with an Empty Cart, Please put at least one product before checking out',
+  no_quantity: 'Out of Stock',
+  'guest-checkout-login':
+    'This phone number is already linked to an account , Please Sign in first ',
+  'select-order-to-display': 'Select an Order to display details',
+  delivery: 'Delivery',
+  'add-reviews': 'Add Reviews',
+  'add-review': 'Add Review for ',
+  'select-product-to-review': 'Select a Product that you want to review',
+  'what-is-your-rating': 'How did you like this Product ?',
+  'add-feedback': 'Express your feedback to other customers',
+  'review-added': 'Review Added Successfully',
+  'show-more': 'Show More',
+  'developed-by': 'Developed by',
+  'mrg-mall-kuwait': 'MRG Mall Kuwait',
+  'on-mrg-mall-kuwait': 'On MRG Mall Kuwait',
 };
 
 export const en = baseStrings;

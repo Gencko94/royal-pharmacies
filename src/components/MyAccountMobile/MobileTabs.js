@@ -19,12 +19,8 @@ export default function MobileTabs() {
             <li key={option.name} className="inline-block mx-1  ">
               <NavLink
                 exact
-                className="w-full p-3 rounded inline-block text-center "
-                activeClassName={`
-                
-                    bg-btn-primary-light text-btn-secondary-light font-semibold
-                   
-                `}
+                className="w-full font-semibold p-3 rounded inline-block text-center "
+                activeClassName={`font-bold bg-main-color text-main-text `}
                 to={`${url}${option.url}`}
               >
                 {formatMessage({ id: option.name })}

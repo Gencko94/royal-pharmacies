@@ -4,9 +4,39 @@ import { useIntl } from 'react-intl';
 import CategoryChildren from './CategoryChildren';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-import LazyImage from '../../helpers/LazyImage';
+import BannerLazyImage from '../../helpers/BannerLazyImage';
+
 export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
-  const { locale } = useIntl();
+  const { locale, formatMessage } = useIntl();
+  const breakpoints = {
+    // when window width is >= 320px
+    320: {
+      slidesPerView: 2,
+      spaceBetween: 20,
+    },
+    // when window width is >= 480px
+    480: {
+      slidesPerView: 3,
+      spaceBetween: 20,
+    },
+    // when window width is >= 640px
+    640: {
+      slidesPerView: 4,
+      spaceBetween: 20,
+    },
+    860: {
+      slidesPerView: 5,
+      spaceBetween: 20,
+    },
+    1100: {
+      slidesPerView: 6,
+      spaceBetween: 20,
+    },
+    1440: {
+      slidesPerView: 7,
+      spaceBetween: 20,
+    },
+  };
   if (categoryInfoLoading) {
     return (
       <>
@@ -24,7 +54,7 @@ export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
           slidesPerView={7}
           spaceBetween={15}
           className="my-3"
-          // breakpoints={breakpoints}
+          breakpoints={breakpoints}
         >
           {[0, 1, 2, 3, 4, 5, 6].map(i => {
             return (
@@ -52,14 +82,24 @@ export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
     );
   }
   return (
-    <div>
-      <LazyImage
-        src={`${process.env.REACT_APP_IMAGES_URL}/original/${categoryInfo.cover_desktop?.link}`}
-        alt={categoryInfo.translation[locale].name}
+    <div className="mb-4">
+      <BannerLazyImage
+        src={categoryInfo.coverDesktop?.link}
+        origin="original"
+        alt={categoryInfo?.title[locale].name}
         pb="calc(100% * 300/1440)"
       />
+      <div className="mt-2">
+        <h1 className="text-4xl font-bold text-center ">
+          {`${formatMessage({ id: 'shop' })}  ${
+            categoryInfo?.title[locale].name
+          } `}
+          {categoryInfo?.children.length > 0 &&
+            formatMessage({ id: 'by-category' })}
+        </h1>
+      </div>
       {categoryInfo.children.length !== 0 && (
-        <CategoryChildren categoryInfo={categoryInfo} />
+        <CategoryChildren children={categoryInfo?.children} />
       )}
     </div>
   );

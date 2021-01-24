@@ -1,9 +1,10 @@
 import React from 'react';
 import { AiFillShopping } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import shoppingLost from '../../../assets/illustrations/shoppingLost.svg';
 export default function NoOrders() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   return (
     <div className="flex flex-col justify-center items-center h-full">
       <img
@@ -13,21 +14,19 @@ export default function NoOrders() {
         style={{ height: '200px' }}
       />
       <div className="flex flex-col items-center ">
-        <h1 className="text-lg text-center font-semibold">
+        <h1 className="text-lg text-center font-bold">
           {formatMessage({ id: 'no-orders-placed' })}
         </h1>
-        <button
+        <Link
+          to={`/${locale}/`}
           className={` mt-3  font-semibold flex items-center rounded px-4 py-2  
-            
-            'bg-btn-primary-light text-btn-secondary-light
-            
-           `}
+            bg-main-color text-main-text`}
         >
           <h1 className="mx-2 uppercase">
             {formatMessage({ id: 'start-shopping-now' })}
           </h1>
           <AiFillShopping className="w-20p h-20p" />
-        </button>
+        </Link>
       </div>
     </div>
   );

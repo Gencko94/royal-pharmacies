@@ -5,7 +5,7 @@ import CategoryRightSide from '../components/Category/CategoryRightSide';
 
 import Layout from '../components/Layout';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams, useHistory } from 'react-router-dom';
 import {
   getCategoryProducts,
   getSingleCategoryInfo,
@@ -15,73 +15,115 @@ import CategoryHeader from '../components/Category/CategoryHeader';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
+import { scrollTo } from 'scroll-js';
 
 export default function Category() {
+  const history = useHistory();
   const { category } = useParams();
   const { locale, formatMessage } = useIntl();
-  const [brandFilters, setBrandFilters] = React.useState(null);
+  const [brandFilters, setBrandFilters] = React.useState([]);
+
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
-    label: 'Newest',
+    label: formatMessage({ id: 'Newest' }),
   });
-  const [page, setPage] = React.useState(1);
-  const [resultsPerPage, setResultsPerPage] = React.useState(10);
+  const [productsPage, setProductsPage] = React.useState(() => {
+    return history.location.state?.page || 1;
+  });
+  const [filteredPage, setFilteredPage] = React.useState(1);
+  const [resultsPerPage, setResultsPerPage] = React.useState({
+    label: 30,
+    value: 30,
+  });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
-  const [priceFilters, setPriceFilters] = React.useState([10000]);
-  const [filters, setFilters] = React.useState([]);
+  const [priceFilters, setPriceFilters] = React.useState([500]);
+  const [filters, setFilters] = React.useState(() => {
+    return [];
+  });
   const [cartMenuOpen, setCartMenu] = React.useState(false);
 
   /**
    * Main Fetch
    */
 
-  const { data: products, isLoading: productsLoading } = useQuery(
-    ['category-products', category],
+  const { data, isLoading: productsLoading, error: productsError } = useQuery(
+    ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
-    { retry: true, refetchOnWindowFocus: false }
+    {
+      refetchOnWindowFocus: false,
+    }
   );
+
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
     getSingleCategoryInfo,
-    { retry: true, refetchOnWindowFocus: false }
+    {
+      retry: true,
+      refetchOnWindowFocus: false,
+    }
   );
-  const {
-    data: filteredProducts,
-    isLoading: filteredProductsLoading,
-  } = useQuery(
+  const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
     [
       'filtered-products',
       {
         category: categoryInfo?.id,
-        brandFilters: brandFilters?.id,
+        brandFilters,
         sortBy,
-        page,
+        page: filteredPage,
         resultsPerPage,
-        locale,
         priceFilters,
       },
     ],
     filterProducts,
-    { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
+    {
+      retry: true,
+      refetchOnWindowFocus: false,
+      enabled: filtersApplied,
+    }
   );
 
-  const handleRemoveFilters = type => {
-    setFilters(prev => {
-      return prev.filter(i => i.type !== type);
+  const handleResultPerPageChange = selectedValue => {
+    setResultsPerPage(selectedValue);
+  };
+  React.useEffect(() => {
+    return () => {
+      setProductsPage(1);
+      setFilteredPage(1);
+    };
+  }, [history.location.pathname]);
+  const handleProductChangePage = data => {
+    scrollTo(window, { top: 660, behavior: 'smooth' });
+
+    history.push({
+      state: {
+        page: data.selected + 1,
+      },
     });
-    if (type === 'Brand') {
-      setBrandFilters(null);
-    }
-    if (type === 'Sort') {
-      setSortBy({
-        value: 'newest',
-        label: 'Newest',
+    setProductsPage(data.selected + 1);
+  };
+  const handleFilteredChangePage = data => {
+    scrollTo(window, { top: 660, behavior: 'smooth' });
+    history.push({
+      state: {
+        page: data.selected + 1,
+      },
+    });
+    setFilteredPage(data.selected + 1);
+  };
+  const handleRemoveFilters = filter => {
+    setFilters(prev => {
+      return prev.filter(i => i.value !== filter.value);
+    });
+    if (filter.type === 'Brand') {
+      setBrandFilters(prev => {
+        return prev.filter(i => i.label !== filter.value);
       });
     }
-    if (type === 'Price') {
-      setFilters(prev => {
-        return prev.filter(i => i.type !== 'Price');
-      });
+    if (filter.type === 'Sort') {
+      setSortBy({ value: 'newest', label: formatMessage({ id: 'Newest' }) });
+    }
+    if (filter.type === 'Price') {
+      setPriceFilters([1000]);
     }
   };
 
@@ -90,7 +132,7 @@ export default function Category() {
   };
   const handleChangePriceInput = e => {
     if (e.target.value < 0) return;
-    if (e.target.value > 10000) return;
+    if (e.target.value > 1000) return;
     setPriceFilters([e.target.value]);
   };
   const handleSubmitPrice = () => {
@@ -117,21 +159,25 @@ export default function Category() {
     setSortBy(selectedValue);
   };
   const handleBrandChange = brand => {
-    if (brandFilters === brand) {
-      setBrandFilters(null);
+    const isAvailable = brandFilters.find(i => i.id === brand.id);
+    // if available
+    if (isAvailable) {
+      setBrandFilters(prev => {
+        return prev.filter(i => i.id !== brand.id);
+      });
       setFilters(prev => {
-        return prev.filter(i => i.type !== 'Brand');
+        return prev.filter(i => i.value !== brand.label);
       });
     } else {
       setFilters(prev => {
-        let newArr = prev.filter(i => i.type !== 'Brand');
-        newArr.push({ type: 'Brand', value: brand.label });
-
-        return newArr;
+        return [...prev, { type: 'Brand', value: brand.label }];
       });
-      setBrandFilters(brand);
+      setBrandFilters(prev => {
+        return [...prev, { ...brand }];
+      });
     }
   };
+
   React.useEffect(() => {
     if (filters.length === 0) {
       setFiltersApplied(false);
@@ -139,13 +185,21 @@ export default function Category() {
       setFiltersApplied(true);
     }
   }, [filters]);
+
+  if (productsError) {
+    if (productsError.response.data.message === 'Category not founded') {
+      return <Redirect to={`/${locale}/page/404`} />;
+    }
+  }
   return (
     <Layout>
       <Helmet>
         <title>
           {categoryInfo
-            ? categoryInfo.translation[locale].name
-            : formatMessage({ id: 'shop-on-mrg' })}
+            ? `${formatMessage({ id: 'shop' })} ${
+                categoryInfo?.title[locale].name
+              } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+            : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
         </title>
       </Helmet>
       <AnimatePresence>
@@ -171,12 +225,11 @@ export default function Category() {
           categoryInfo={categoryInfo}
           categoryInfoLoading={categoryInfoLoading}
         />
-        {/* <Breadcrumbs data={categories} /> */}
+
         <div className="search-page__container">
           <CategoryLeftSide
-            categoryInfo={categoryInfo}
             categoryInfoLoading={categoryInfoLoading}
-            products={products}
+            products={data?.products}
             productsLoading={productsLoading}
             brandFilters={brandFilters}
             setBrandFilters={setBrandFilters}
@@ -185,21 +238,30 @@ export default function Category() {
             handlePriceChange={handlePriceChange}
             handleChangePriceInput={handleChangePriceInput}
             handleSubmitPrice={handleSubmitPrice}
+            brands={categoryInfo?.brands}
           />
 
           <CategoryRightSide
-            products={products}
+            products={data?.products}
             productsLoading={productsLoading}
             sortBy={sortBy}
-            setPage={setPage}
             setResultsPerPage={setResultsPerPage}
-            filteredProducts={filteredProducts}
-            filteredProductsLoading={filteredProductsLoading}
             filtersApplied={filtersApplied}
             filters={filters}
             handleRemoveFilters={handleRemoveFilters}
             handleSortByChange={handleSortByChange}
             setCartMenuOpen={setCartMenu}
+            resultsPerPage={resultsPerPage}
+            handleResultPerPageChange={handleResultPerPageChange}
+            productsPageCount={data?.lastPage}
+            filteredPageCount={filteredData?.lastPage}
+            handleProductChangePage={handleProductChangePage}
+            handleFilteredChangePage={handleFilteredChangePage}
+            filteredPage={filteredPage}
+            category={category}
+            productsPage={productsPage}
+            filteredProducts={filteredData?.filteredProducts}
+            filteredProductsLoading={filteredProductsLoading}
           />
         </div>
       </div>

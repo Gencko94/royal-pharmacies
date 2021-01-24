@@ -1,14 +1,8 @@
 export const ar = {
-  // 'routes.home': '/',
-  // 'routes.cart': '/cart',
-  // 'routes.register': '/app/register',
-  // 'routes.login': '/app/login',
-  // 'routes.singleProduct': '/products/:category/:name/:id',
-  /** Page content */
-  // general
-
   'shop-on-mrg': 'تسوق على MRG Mall',
-
+  shop: 'تسوق',
+  'shop-brands': 'تسوق منتجات',
+  'at-mrg': 'على موقعنا',
   home: 'الرئيسية',
   cart: 'عربة التسوق',
   wishlist: 'قائمتي المفضلة',
@@ -19,7 +13,8 @@ export const ar = {
   login: 'سجل الدخول',
   logout: 'تسجيل الخروج',
   'order-history': 'طلباتي السابقة',
-  'viewed-items': 'العناصر التي قمت بزيارتها مسبقا',
+  'viewed-items': 'المنتجات التي قمت بزيارتها ',
+
   'my-orders': 'طلباتي',
   'my-profile': 'ملفي الشخصي',
   'my-addresses': 'عناويني',
@@ -50,6 +45,9 @@ export const ar = {
   'in-stock': 'متوفرة',
   'price-before': 'السعر قبل',
   'price-now': 'السعر الآن',
+  'delivery-status': 'وضع التوصيل',
+  delivery: 'التوصيل',
+
   'free-delivery': 'توصيل مجاني',
   'free-delivery-to': 'توصيل مجاني إلى',
   'you-save': 'توفير ',
@@ -69,13 +67,14 @@ export const ar = {
   'two-reviews': 'مراجعتان',
   'secure-transaction': 'دفع آمن',
   quantity: 'الكمية',
+  qty: 'الكمية',
   'one-item-left': 'قطعة واحدة متبقية',
   'two-items-left': 'قطعان متبقيتان',
   'more-than-10-items-left': 'قطعة متبقية',
   'items-left': 'قطع متبقية',
   'no-items-left': 'لا يوجد قطع متبقية من هذا المنتج',
   'out-of-stock': 'الكمية منتهية',
-  'estimated-delivery': 'زمن التوصيل التقريبي',
+  'estimated-delivery': 'زمن التوصيل (وسطيا)',
   'fastest-delivery': 'اسرع توصيل',
   change: 'تغيير',
   'search-for': 'إبحث عن ',
@@ -97,7 +96,7 @@ export const ar = {
   'no-orders-placed': 'لم تقم بطلب اي منتج حتى الآن',
   'start-shopping-now': 'ابدأ التسوق الآن',
   'search-for-an-area': 'ابحث عن منطقة ...',
-  'show-order-receipt': 'إظهار فاتورة الطلبية',
+  'show-order-receipt': 'فاتورة الطلبية',
   'order-receipt': 'فاتورة الطلبية',
   'not-found-title': 'يبدو اننا لم نجد ما تبحث عنه.',
   'back-to-home': 'العودة إلى الرئيسية',
@@ -119,14 +118,17 @@ export const ar = {
   'update-btn': 'تحديث',
   'coupon-expired': 'الكوبون منتهي الصلاحية',
   'coupon-invalid': 'الرجاء التأكد من الكوبون',
+  'coupon-conditions-not-met': 'شروط الكوبون لم تحقق',
+  'coupon-limit-reached': 'تجاوز الحد المسموح لاستخدام الكوبون',
   'one-search-result': 'نتيجة بحث واحدة ل',
   'two-search-results': 'نتيجتا بحث ل',
-  'more-than-10-search-results': 'نتيجة بحث ل ',
+  'more-than-10-search-results': 'نتيجة بحث  ل',
   'search-results': 'نتائج بحث ل',
   'no-search-results': 'لا يوجد نتائج بحث ل ',
   'see-all-search-results': 'إظهار كافة نتائج البحث ل ',
   'cart-combined':
     'تم دمج المنتجات التي قمت بإضافتها كزائر مع عربتك الحالية , تسوق ممتع !',
+  price_changed: 'إن سعر هذا المنتج قد تغير منذ اخر مرة قمت بإضافته',
   'Price (Low to High)': 'السعر (الأخفض إلى الأعلى)',
   'Price (High to Low)': 'السعر (الأعلى إلى الأخفض)',
   Newest: 'الأجدد',
@@ -139,9 +141,13 @@ export const ar = {
   'nav.shipTo': 'توصيل الى',
   'nav.search.placeholder': 'ما الذي تبحث عنه ؟',
   'nav.account': 'حسابي',
+  'nav.track': 'متابعة الطلب',
+  'nav.history': 'المنتجات المزارة',
   categories: 'الفئات',
   allCategories: 'جميع الفئات',
   seeAll: 'الكل',
+  sections: 'الأقسام',
+  'see-all-nav': 'جميع الاقسام',
   bestSellers: 'الأكثر مبيعا',
   mobilesElectronics: 'الموبايلات والإلكترونيات',
   // credential forms
@@ -161,6 +167,9 @@ export const ar = {
   'login-welcome-back': 'اهلا بك مجددا !',
   'register-on-mrg': 'اشترك في MRG',
   'invalid-credentials': 'رقم الهاتف او كلمة المرور غير صحيحين',
+  'invalid-phone': 'تأكد من رقم الهاتف ',
+  'track-order-no-orders':
+    'ليس هناك طلبات مربوطة بهذا الرقم , الرجاء التاكد والمحاولة مرة اخرى',
   'new-to-family': 'هل انت مستخدم جديد ؟',
   'join-us-here': ' اشترك معنا الآن',
   'forgot-password': 'هل نسيت كلمة المرور ؟',
@@ -185,6 +194,7 @@ export const ar = {
   // end of credential forms
   // start of cart  items
   price: 'السعر',
+  Price: 'السعر',
   'the-items': 'القطع',
   'the-item': 'القطعة',
   'one-item': 'قطعة واحدة',
@@ -192,12 +202,13 @@ export const ar = {
   'more-than-10-items': 'قطعة',
   'multiple-items': 'قطع',
   'cart-tos':
-    'إن سعر وتوافر العناصر على mrg.com عرضة للتغيير. تعتبر عربة التسوق مكانًا مؤقتًا لتخزين قائمة بالعناصر الخاصة بك وتعكس أحدث سعر لكل عنصر.',
+    'إن سعر وتوافر العناصر على mrg-mall.com عرضة للتغيير. تعتبر عربة التسوق مكانًا مؤقتًا لتخزين قائمة بالعناصر الخاصة بك وتعكس أحدث سعر لكل عنصر.',
   subtotal: 'المبلغ الإجمالي',
+  total: 'المجموع',
   'cart-total': 'إجمالي العربة',
   'cart-enter-code-or-coupon': 'أدخل الكود او رقم الكوبون',
   'cart-code-button': 'إدخال',
-  'cart-empty': 'إن عربة التسوق الخاصة بك فارغة !',
+  'cart-empty': 'لا يوجد منتجات في عربة التسوق',
   'cart-delivery-cost': 'كلفة التوصيل',
   'cart-free': 'مجانا',
   'check-today-deals': 'إلق نظرة على عروض اليوم',
@@ -209,13 +220,25 @@ export const ar = {
   address: 'العنوان',
   'personal-information': 'المعلومات الشخصية',
   'edit-personal-information': 'تعديل المعلومات الشخصية',
-  'order-placed': 'وضع الطلب',
+  'order-placement': 'وضع الطلب',
   'btn-back-to-addresses': 'العودة الى اختيار العنوان',
   'btn-proceed': 'التالي',
-  'order-placed-msg': 'تهانينا , تم وضع الطلب !',
+  'proceed-to-payment': 'الذهاب الى عملية الدفع',
+  'payment-page': 'صفحة الدفع',
+  'go-to-payment':
+    'قم بالضغط على الرابط ادناه لتحويلك الى بوابة الدفع, سنقوم بوضع الطلب فور نجاح عملية الدفع !',
+  'order-placed-msg': 'تهانينا ! , تم وضع طلبك. ',
+  'order-failed-msg': 'عذرا , لم يتم استكمال الطلب , الرجاء اعادة المحاولة ',
+  'expected-delivery-msg': 'نتوقع وصول طلبك خلال',
+  'checkout-help-center-msg':
+    'اذا كان لديك اي استفسار الرجاء الاتصال بنا عبر قنوات التواصل التالية',
+  'thank-you-for-shopping-msg': 'شكرا لتسوقك من موقعنا !',
   // maps
   'find-my-position': 'حدد مكاني',
   'location-details': 'تفاصيل الموقع',
+  'delivery-location': 'عنوان التوصيل',
+  'delivery-address': 'عنوان التوصيل',
+  'delivery-details': 'تفاصيل التوصيل',
   'maps-detailed-address-apartment-short': 'رقم المنزل/الشقة',
   'maps-detailed-address-building-short': 'رقم البناء/البرج',
   'maps-detailed-address-phone-short': 'رقم الهاتف/الجوال',
@@ -238,15 +261,21 @@ export const ar = {
   'number-only': 'الرجاء التأكد من رقم الهاتف/الجوال',
   'name-empty': 'الرجاء ادخال اسم الموقع',
   'required-field': 'حقل مطلوب',
+  'error-loading-maps':
+    'حصل خطا ما خلال تحميل الخرائط , الرجاء المحاولة مرة اخرى',
+  'geolocation-not-supported': 'تحديد المواقع غير مدعوم من قبل هذا المتصفح',
+  'geolocation-permission': 'لم يتم منح الاذن لإستخدام الموقع',
 
   // checkout modal
   'not-signed-in': 'لم تقم بتسجيل الدخول ',
   'you-can': 'بإمكانك',
   'guest-checkout': 'إتمام الدفع كزائر',
   'checkout-modal-tos':
-    'يساعدنا امتلاكك لحساب على mrg.com على تقديم افضل الخدمات لك ولعملائنا الآخرين .',
+    'يساعدنا امتلاكك لحساب على mrg-mall.com على تقديم افضل الخدمات لك ولعملائنا الآخرين .',
   'confirm-location': 'تأكيد الموقع',
+  'confirm-btn': 'تأكيد',
   'remove-location': 'إزالة الموقع',
+  location: 'الموقع',
   'mark-as-default': 'التعيين كموقع افتراضي',
 
   // category nav bar
@@ -259,16 +288,18 @@ export const ar = {
    * orders
    */
 
-  'order-number': 'رقم الطلبية',
-  status: 'الحالة',
+  'order-number': 'رقم الطلب',
+  'order-status': 'حالة الطلب',
   'ordered-at': 'تم الطلب في',
   'delivered-at': 'تم التوصيل في',
-  'order-details': 'تفاصيل الطلبية',
+
+  soon: 'قريبا',
+  'order-details': 'تفاصيل الطلب',
   'delivered-to': 'تم التوصيل إلى',
   'payment-method': 'طريقة الدفع',
   'select-payment-method': 'اختر طريقة الدفع',
 
-  'order-date': 'تاريخ الطلبية',
+  'order-date': 'تاريخ الطلب',
   delivered: 'تم التوصيل',
   pending: 'قيد الإنتظار',
   'expected-delivery': 'وقت التوصيل المتوقع',
@@ -291,7 +322,7 @@ export const ar = {
   'no-ratings': 'لا يوجد تقييمات بعد , كن اول من يقيم هذا المنتج ',
   'how-to-rate': 'كيف يمكنني ان اقيم منتج ؟',
   'rating-guide':
-    'إن قمت بشراء هذا المنتج يمكنك التقييم والتعليق من خلال صفحة <link>طلباتي</link>',
+    'إن كان لديك حساب وقمت بشراء هذا المنتج يمكنك التقييم والتعليق من خلال صفحة <link>طلباتي</link>',
   /**
    * Footer
    */
@@ -306,6 +337,8 @@ export const ar = {
    *
    */
   'your-viewed-items': 'المنتجات التي قمت بزيارتها',
+  'no-viewed-items':
+    'إن قائمة المنتجات المزارة فارغة , ستظهر المنتجات التي تقوم بزيارتها هنا',
 
   'filtered-by': 'مفرزة حسب',
   'filter-by': 'فرز حسب',
@@ -320,4 +353,46 @@ export const ar = {
   'no-products': 'لا يوجد بيانات او منتجات',
   'no-filter-results': 'لا تتواجد منتجات بالمواصفات المحددة',
   'featured-items': 'اخترنا لك',
+  'double-click-zoom': 'انقر نقرة مزدوجة للتكبير',
+  'number-per-page': 'عدد النتائج بالصفحة',
+  'related-products': 'المنتجات المشابهة',
+  'more-from': ' المزيد من هذه الفئة ',
+  'back-to-top': 'العودة الى الأعلى',
+  'new-arrivals': 'جديدنا من المنتجات',
+  'latest-products': 'جديدنا من المنتجات',
+  'log-in-to-add': 'الرجاء تسجيل الدخول للإضافة',
+  'shop-by-category': 'تسوق حسب الفئة',
+  none: 'لا يوجد',
+  'by-category': 'حسب الفئة',
+  clear: 'مسح',
+  'track-my-order': 'متابعة طلب سابق',
+  'btn-track': 'متابعة',
+  'track-order-enter-your-phone':
+    'ادخل رقم الهاتف المرافق للطلب الذي قمت بطلبه للتأكد من حالة الطلب',
+  'order-cancelled': 'ملغى',
+  'order-pending': 'قيد الانتظار',
+  'order-completed': 'تم بنجاح',
+  'order-waiting-for-payment': 'بانتظار الدفع',
+  'order-confirmed': 'مؤكد',
+  'order-new': 'جديد',
+  'cash-on-delivery': 'الدفع عند التوصيل',
+  knet: 'كي نت',
+  credit: 'بطاقة الإئتمان (فيزا - ماستر كارد)',
+  amex: 'أميركان اكسبريس',
+  'checkout-cart-empty':
+    'عذرا , لا يمكنك اتمام الشراء عندما تكون عربة التسوق فارغة , الرجاء وضع منتج واحد على الاقل',
+  no_quantity: 'الكمية منتهية',
+  'guest-checkout-login':
+    'إن هذا الرقم مسجل بحساب مسبق , الرجاء تسجيل الدخول اولا',
+  'select-order-to-display': 'اختر طلبا لمشاهدة التفاصيل',
+  'add-reviews': 'إضافة مراجعات',
+  'add-review': 'إضافة مراجعة إلى',
+  'select-product-to-review': 'اختر المنتج الذي تود بإضافة مراجعة له',
+  'what-is-your-rating': 'ما هو تقييمك لهذا المنتج ؟',
+  'add-feedback': 'عبر عن رأيك بهذا المنتج واخبر الاخرين عنه ',
+  'review-added': 'تم إضافة المراجعة بنجاح',
+  'show-more': 'إظهار المزيد',
+  'developed-by': 'طور من قبل',
+  'mrg-mall-kuwait': 'متجر إم آر جي الكويت',
+  'on-mrg-mall-kuwait': ' على متجر إم آر جي الكويت',
 };

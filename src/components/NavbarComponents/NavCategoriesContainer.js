@@ -21,22 +21,20 @@ export default function NavCategoriesContainer({
   }, [isHovering]);
   if (isLoading) {
     return (
-      <div className="w-full bg-nav-cat-light" style={{ height: '37px' }}></div>
+      <div className="w-full bg-nav-cat-light" style={{ height: '40px' }}></div>
     );
   }
   return (
     <div id="menu-trigger" className="w-full  ">
       <div className={`flex items-center`}>
         {!isLoading &&
-          data
-            .slice(0, 8)
-            .map(item => (
-              <CategoryButton
-                key={item.id}
-                item={item}
-                handleDropDownOpen={handleDropDownOpen}
-              />
-            ))}
+          data.map(item => (
+            <CategoryButton
+              key={item.id}
+              item={item}
+              handleDropDownOpen={handleDropDownOpen}
+            />
+          ))}
       </div>
     </div>
   );

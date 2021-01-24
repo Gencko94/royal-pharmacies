@@ -20,11 +20,12 @@ export default function SortInfoPanelMobile({
   brandFilters,
   handleBrandChange,
   handlePriceChange,
+  brands,
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const variant = {
     initial: {
-      y: 42,
+      y: 58,
     },
     firstAnimation: {
       y: 0,
@@ -39,17 +40,27 @@ export default function SortInfoPanelMobile({
       },
     },
     containerExited: {
-      y: 42,
+      y: 58,
     },
   };
   const buttonVariants = {
     start: {
-      backgroundColor: '#f7f7fa',
+      backgroundColor: '#edf2f7',
       color: '#252525',
+      justifyContent: 'center',
+      padding: '1rem',
+      transition: {
+        type: 'tween',
+      },
     },
     animation: {
       backgroundColor: '#b72b2b',
       color: '#fff',
+      justifyContent: 'start',
+      padding: '0.5rem',
+      transition: {
+        type: 'tween',
+      },
     },
   };
   const closeButtonVariant = {
@@ -59,14 +70,17 @@ export default function SortInfoPanelMobile({
     },
     closeAnimate: {
       opacity: 1,
-      y: 0,
+      y: '-50%',
+      type: 'tween',
       transition: {
         delay: 0.5,
+        type: 'tween',
       },
     },
     closeExited: {
       opacity: 0,
       y: '-100%',
+      type: 'tween',
     },
   };
   const [options, setOptions] = React.useState(['filter', 'sort']);
@@ -117,7 +131,7 @@ export default function SortInfoPanelMobile({
                   initial="start"
                   animate={filtersOpen || sortByOpen ? 'animation' : 'start'}
                   onClick={() => handleChangeView(option)}
-                  className={` p-2 flex font-semibold items-center border w-full`}
+                  className={`flex font-semibold items-center border w-full`}
                 >
                   <motion.span layout>
                     {option === 'filter'
@@ -125,7 +139,7 @@ export default function SortInfoPanelMobile({
                       : formatMessage({ id: 'sort-by' })}
                   </motion.span>
                   <motion.span layout className="mx-3">
-                    {options === 'filter' ? (
+                    {option === 'filter' ? (
                       <BiFilterAlt className="w-5 h-5" />
                     ) : (
                       <BiFilter className="w-6 h-6" />
@@ -137,17 +151,19 @@ export default function SortInfoPanelMobile({
 
             <AnimatePresence>
               {showCloseButton && (
-                <motion.div
+                <motion.button
                   variants={closeButtonVariant}
                   initial="closeInitial"
                   animate="closeAnimate"
                   exit="closeExited"
-                  className="absolute right-10 top-10"
+                  className={`absolute ${
+                    locale === 'ar' ? 'left-10' : 'right-10'
+                  }`}
+                  style={{ top: '50%' }}
+                  onClick={handleClose}
                 >
-                  <button onClick={handleClose}>
-                    <MdClose className="w-6 h-6 text-main-text" />
-                  </button>
-                </motion.div>
+                  <MdClose className="w-6 h-6 text-main-text" />
+                </motion.button>
               )}
             </AnimatePresence>
           </motion.div>
@@ -170,6 +186,7 @@ export default function SortInfoPanelMobile({
             handleBrandChange={handleBrandChange}
             handlePriceChange={handlePriceChange}
             handleClose={handleClose}
+            brands={brands}
           />
         )}
       </motion.div>

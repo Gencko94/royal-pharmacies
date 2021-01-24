@@ -4,9 +4,18 @@ import MobileIcons from './MobileNavbar/MobileIcons';
 import MobileSearchbar from './MobileNavbar/MobileSearchbar';
 import NavLogoMobile from './MobileNavbar/NavLogoMobile';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 export default function MobileNavbar({ toggleSideMenu }) {
   const [windowScrolled, setWindowScrolled] = React.useState(false);
+  const { pathname } = useLocation();
+  const specialPages =
+    pathname.includes('/user/account') ||
+    pathname.includes('/checkout/guest-checkout') ||
+    pathname.includes('/checkout/user-checkout') ||
+    pathname.includes('/checkout') ||
+    pathname.includes('/order/track') ||
+    pathname.includes('/cart');
 
   React.useEffect(() => {
     const checkScrolling = () => {
@@ -38,7 +47,7 @@ export default function MobileNavbar({ toggleSideMenu }) {
       </div>
 
       <AnimatePresence>
-        {windowScrolled && (
+        {windowScrolled && !specialPages && (
           <motion.div
             key={65789}
             initial={{ y: '-100%' }}

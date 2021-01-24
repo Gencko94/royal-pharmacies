@@ -49,17 +49,36 @@
 - [x] Complete Item Reviews
 - [x] Add Delivery Country Page to side menu
 - [x] Add React Query & Localizations to the Search page.
-- [ ] Add Scroll Pagination to SingleProduct Pages.
-- [ ] Complete the Checkout Page.(2hrs)
-- [ ] Search Engine optimization.
+- [x] Add Scroll Pagination to SingleProduct Pages.
+- [x] Complete the Checkout Page.(2hrs)
+- [x] Search Engine optimization.
 - [ ] Add auto detect locale and localstorage language.(1hr)
 - [x] Add delivery country context.(1hr)
-- [ ] Nest Lazyloading deep (3hrs)
-- [ ] login and register number and password validation (discuss)
-- [ ] Single Product
+- [x] Nest Lazyloading deep (3hrs)
+- [x] login and register number and password validation (discuss)
+- [x] Single Product
 
 - [ ] single product quantity input number validation
 - [x] look into fixing home loaders
+
+- [x] show error snackbar
+- [x] handle no products
+- [x] make a default product photo
+- [x] fix checkout
+- [x] fix footer nav
+- [x] fix side menu categories
+- [x] look into changing single product layout
+- [x] add sale indicators to swipers
+- [ ] fix image zoom
+- [x] add pagination to search, category,singleproduct
+- [x] breadcrumbs
+- [x] fix viewed items
+- [x] send item slug with cart
+- [x] send category info (slug and name and stuff) with products by category api
+- [ ] make brands page
+- [x] set up settings api
+
+- [ ] attention to out of stock products in checkout
 
       **API BUGS** userInfo Update, how the hell should i send a post body with a params supported api url -- NO ERROR HANDLING WHEN EMAIL EXISTS
 
@@ -74,384 +93,38 @@
 
 **NOTES**
 
-- [ ] filter product api doesn't send images with filtered products.
+- [x] filter product api doesn't send images with filtered products.
 - [ ] filter by price error with variation products.
-- [ ] need a desktop and mobile category cover photo for category section.
-- [ ] increase quantity when item added in cart twice instead of rejecting.
-- [ ] make guest cart api behave same as regular cart, with the same parameters.
-- [ ] Product api , send variation symbol (S for Small, L for Large), also need a is_size or is_color confirmation.
-- [ ] Remove check cart api , the cart should be checked automatically while sending the data, if there is a change send a message along with the cart.
-- [ ] i need a way to show the best brands on navbar categories, we make a new api or just find another way.
-- [ ] need api for about us (if there is any).
-- [ ] need api for FAQ (if there is any).
-- [ ] need api for return policy page (if there is any).
-- [ ] refresh token explanation, as i know they should live much longer than regular tokens.
-- [ ] Please Explain how many item types we do have ? what is a simple product with addons vs variant product with addons ?
+- [x] need a desktop and mobile category cover photo for category section.
+- [x] increase quantity when item added in cart twice instead of rejecting.
+- [x] make guest cart api behave same as regular cart, with the same parameters.
+- [x] Product api , send variation symbol (S for Small, L for Large), also need a is_size or is_color confirmation.
+- [x] Remove check cart api , the cart should be checked automatically while sending the data, if there is a change send a message along with the cart.
+- [x] i need a way to show the best brands on navbar categories, we make a new api or just find another way.
+- [x] need api for about us (if there is any).
+- [x] need api for FAQ (if there is any).
+- [x] need api for return policy page (if there is any).
+- [x] refresh token explanation, as i know they should live much longer than regular tokens.
+- [x] Please Explain how many item types we do have ? what is a simple product with addons vs variant product with addons ?
 
+- [x] SORTING IN ARABIC LANGUAGE DOESN'T WORK || HOW DO I KNOW WHICH LANGUAGE THE USER TYPES INTO SEARCH BAR ?
+
+- [x] Clean Cart
+- [x] Brands Page
+- [x] sort panel mobile
+- [x] Deliver To Desktop
+- [x] Add Product Comment
+- [ ] Category Children
+- [ ] Add Currency exchange Support
+- [ ] Maps invalid location support
+- [ ] fix inner html shitty google translate background
+- [ ] look into single product mobile loader
+- [x] swiper item sale indicator
+- [x] fix side cart menu
+- [x] set selective pages for mobile nav bar
+- [x] fix checkout mobile layout
+- [x] fix snackbar width
+- [x] Remove Viewed Items fix
+- [x] fix side menu height
 - [ ] add country code to combine cart api
-
-- [ ] SORTING IN ARABIC LANGUAGE DOESN'T WORK || HOW DO I KNOW WHICH LANGUAGE THE USER TYPES INTO SEARCH BAR ?
-
-# MRG API Structure :
-
-## 1. Single Product
-
-```
-{
-  id: item.id,
-  slug: item.slug,
-  brand: {
-    brand_id: item.brand_id,
-    brand_slug: item.brand_slug,
-    en_name: item.brand.en_name,
-    ar_name: item.brand.ar_name,
-  },
-  category: {  // i need the category for the breadcrumbs (the mini category tree on the top)
-    category_id: item.category_id,
-    category_slug: item.category_slug,
-    category_en_name: item.category.en_name,
-    category_ar_name: item.category.ar_name,
-    // i don't know how to deal with this when the product belongs to a sub-category
-  },
-  type: item.type,
-  delivery: item.delivery,
-  simple: {  // if the product has no options (color,size)
-
-    name_en: item.name_en,
-    name_ar: item.name_ar,
-    sku: item.sku, // sku or model number
-    is_promotion: Boolean, // if item has sale
-    price: item.price, // regular price
-    sale_price: item.sale_price, // sale price
-    promotion_end: item.promotion_end, // date of the promotion end so i can parse it
-    availableQuantity: item.availableQuantity, // available quantity of the product
-    maxQuantity: item.maxQuantity, // maximum quantity per order
-    images: [ // the Images to be shown in the slider
-
-      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-    ],
-    gallery: [ // the Images to be shown below the after the product details(big images like noon.com) (optional)
-
-      { id: 'id', url: 'imageUrl' },
-      { id: 'id', url: 'imageUrl' },
-      { id: 'id', url: 'imageUrl' },
-      ],
-  },
-
- product_options: [  // variation_addons (if the product has multiple options)
-              // variation 1 - example : blue shoes
-
-    {
-      variation_id: 'variation_id',
-      sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
-      name_en: item.name_en,
-      name_ar: item.name_ar,
-      is_promotion: Boolean, // if item has sale
-      price: item.price, // regular price
-      sale_price: item.sale_price, // sale price
-      promotion_end: item.promotion_end, // date of the promotion end so i can parse it
-      maxQuantity: item.maxQuantity, // maximum quantity per order
-
-      sizes: [ // i will conditionally render the sizes based on quantity left
-
-      { id: 'size_id', value: 'S', quantity: 5 },
-      { id: 'size_id', value: 'M', quantity: 2 },
-      { id: 'size_id', value: 'L', quantity: 0 },
-      ],
-
-      images: [ // the Images to be shown in the slider
-
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-      ],
-      gallery: [
-        // the Images to be shown below the after the product details(big images like noon.com) (optional)
-        { id: 'id', url: 'imageUrl' },
-        { id: 'id', url: 'imageUrl' },
-        { id: 'id', url: 'imageUrl' },
-      ],
-      // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-      rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-      numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-    },
-    {
-      // variation 2 - example : red shoes
-      variation_id: 'variation_id',
-      sku: item.sku, // sku or model number // i will send this,and the size_id when adding to cart
-      name_en: item.name_en,
-      name_ar: item.name_ar,
-      is_promotion: Boolean, // if item has sale
-      price: item.price, // regular price
-      sale_price: item.sale_price, // sale price
-      promotion_end: item.promotion_end, // date of the promotion end so i can parse it
-      maxQuantity: item.maxQuantity, // maximum quantity per order
-
-      sizes: [
-        // i will conditionally render the sizes based on quantity left
-        { id: 'size_id', value: 'S', quantity: 5 },
-        { id: 'size_id', value: 'M', quantity: 2 },
-        { id: 'size_id', value: 'L', quantity: 0 },
-      ],
-
-      images: [
-        // the Images to be shown in the slider
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-      ],
-      gallery: [
-        // the Images to be shown below the after the product details(big images like noon.com) (optional)
-        { id: 'id', url: 'imageUrl' },
-        { id: 'id', url: 'imageUrl' },
-        { id: 'id', url: 'imageUrl' },
-      ],
-      // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-      rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-      numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-    },
-  ],
-
-  details: {
-    // we either have one details for the whole product || or each variation has its own details, here i implenemented the whole product version
-    en: {
-      // please dont send me html , it's a pain the ass
-      description: 'a short or long description of the product', // the product description
-      features: ['feature 1', 'feature 2'],
-      // product features need to be a list of features
-      specifications: {
-        // any specifications like size and materials
-        width: '',
-        height: '',
-        size: '',
-        weight: '',
-        materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
-      },
-    },
-    ar: {
-      // please dont send me html , it's a pain the ass
-      description: 'a short or long description of the product', // the product description
-      features: ['feature 1', 'feature 2'],
-      // product features need to be a list of features
-      specifications: {
-        // any specifications like size and materials
-        width: '',
-        height: '',
-        size: '',
-        weight: '',
-        materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
-      },
-    },
-  },
-}
-```
-
-## 2. Single Product Example
-
-```
-{
-id: 1,
-slug: adidas-blouse,
-brand: {
-brand_id: 1,
-brand_slug: adidas,
-en_name: Adidas,
-ar_name: أديداس,
-},
-category: { // i need the category for the breadcrumbs (the mini category tree on the top)
-category_id: 1,
-category_slug: men-clothing,
-category_en_name: Men Clothing,
-category_ar_name: ملابس رجالية,
-// i don't know how to deal with this when the product belongs to a sub-category
-},
-type: simple or multi // check below ,
-delivery: {
-local:true,
-international:true
-
-},
-simple: { // if the product has no options (color,size)
-
-    name_en: Adidas Blouse,
-    name_ar: كنزة اديداس,
-    sku: item.68742, // sku or model number
-    is_promotion: true || false, // if item has sale
-    price: 100, // regular price
-    sale_price: 80, // sale price,
-    sale_percent:20%,
-    promotion_end: 1/1/2021 // date of the promotion end so i can parse it
-    availableQuantity: 20, // available quantity of the product
-    maxQuantity: 2, // maximum quantity per order
-    images: [ // the Images to be shown in the slider
-
-      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-      { id: 'id', url: 'imageUrl', zoomedImageUrl: 'zoomedImageUrl' },
-    ],
-    gallery: [ // the Images to be shown below the after the product details(big images like noon.com) (optional)
-
-      { id: 'id', url: 'imageUrl' },
-      { id: 'id', url: 'imageUrl' },
-      { id: 'id', url: 'imageUrl' },
-      ],
-
-},
-
-product_options: [ // multi (if the product has multiple options)
-// variation 1 - example : blue blouse
-
-    {
-
-      is_promotion: true || false, // if item has sale
-      price: 200, // regular price
-      sale_price: 150, // sale price
-      promotion_end: 1/1/2021, // date of the promotion end so i can parse it
-      maxQuantity: 5, // maximum quantity per order
-
-      sizes: [ // i will conditionally render the sizes based on quantity left
-
-      { id: '1', value: 'S', quantity: 5 },
-      { id: '2', value: 'M', quantity: 2 },
-      { id: '3', value: 'L', quantity: 0 },
-      ],
-
-      images: [ // the Images to be shown in the slider
-
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-      ],
-      gallery: [
-        // the Images to be shown below the after the product details(big images like noon.com) (optional)
-        { id: 'id', url: 'imageUrl' },
-        { id: 'id', url: 'imageUrl' },
-        { id: 'id', url: 'imageUrl' },
-      ],
-      // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-      rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-      numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-    },
-    {
-      // variation 2 - example : red shoes
-
-      is_promotion: true || false, // if item has sale
-      price: 100, // regular price
-      sale_price: null, // sale price
-      promotion_end: 1/1/2021, // date of the promotion end so i can parse it
-      maxQuantity: 5, // maximum quantity per order
-
-      sizes: [
-        // i will conditionally render the sizes based on quantity left
-        { id: 'size_id', value: 'S', quantity: 5 },
-        { id: 'size_id', value: 'M', quantity: 2 },
-        { id: 'size_id', value: 'L', quantity: 0 },
-      ],
-
-      images: [
-        // the Images to be shown in the slider
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-        {
-          id: 'id',
-          url: 'imageUrl',
-          zoomedImageUrl: 'zoomedImageUrl',
-        },
-      ],
-      gallery: [
-        // the Images to be shown below the after the product details(big images like noon.com) (optional)
-        { id: 'id', url: 'imageUrl' },
-        { id: 'id', url: 'imageUrl' },
-        { id: 'id', url: 'imageUrl' },
-      ],
-      // we either have one rating for the whole product || or each variation has its own rating and reviews, here i'm implementing the variation version
-      rating: 2.5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-      numberOfReviews: 5, // adding those to prevent making another request to the server and fetch the reviews, the user may not see the reviews
-    },
-
-],
-
-details: {
-// we either have one details for the whole product || or each variation has its own details, here i implenemented the whole product version
-en: {
-// please dont send me html , it's a pain the ass
-description: 'a short or long description of the product', // the product description
-features: ['feature 1', 'feature 2'],
-// product features need to be a list of features
-specifications: {
-// any specifications like size and materials
-width: '',
-height: '',
-size: '',
-weight: '',
-materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
-},
-},
-ar: {
-// please dont send me html , it's a pain the ass
-description: 'a short or long description of the product', // the product description
-features: ['feature 1', 'feature 2'],
-// product features need to be a list of features
-specifications: {
-// any specifications like size and materials
-width: '',
-height: '',
-size: '',
-weight: '',
-materials: ['wood', 'glass', 'cotton 100%'], // a list of materials
-},
-},
-},
-}
-
-```
-
-```
-
-```
+- [ ] add country code to clean cart api

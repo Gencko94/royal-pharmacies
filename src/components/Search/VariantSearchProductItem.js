@@ -55,7 +55,6 @@ export default function VariantSearchProductItem({ item, setCartMenuOpen }) {
       setLoadingButton(false);
     } catch (error) {
       setLoadingButton(false);
-      console.error(error.response);
     }
   };
   const handleSubmitToCart = async () => {
@@ -86,7 +85,6 @@ export default function VariantSearchProductItem({ item, setCartMenuOpen }) {
       setLoadingButton(false);
     } catch (error) {
       setLoadingButton(false);
-      console.error(error.response);
     }
   };
 

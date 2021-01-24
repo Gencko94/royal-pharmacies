@@ -1,43 +1,48 @@
 import React from 'react';
-import ReactImageMagnify from 'react-image-magnify';
-// import 'react-inner-image-zoom/lib/InnerImageZoom/styles.css';
-// import Zoom from 'react-medium-image-zoom';
-// import 'react-medium-image-zoom/dist/styles.css';
+
 import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { useIntl } from 'react-intl';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
+
 export default function ImageZoom({ data }) {
+  const { formatMessage } = useIntl();
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const { locale } = useIntl();
+  const [doubleClicked, setDoubleClicked] = React.useState(false);
 
   return (
     <div className="sticky" style={{ alignSelf: 'self-start', top: '130px' }}>
       <div className={`${locale === 'ar' ? 'mr-16' : 'ml-16'}`}>
-        <Swiper id="main" slidesPerView={1} thumbs={{ swiper: thumbsSwiper }}>
+        <Swiper
+          zoom
+          id="main"
+          slidesPerView={1}
+          onDoubleClick={() => setDoubleClicked(true)}
+          thumbs={{ swiper: thumbsSwiper }}
+        >
           {[data.image, ...data.gallery].map(item => {
             return (
-              <SwiperSlide key={item?.id}>
-                <ReactImageMagnify
-                  {...{
-                    smallImage: {
-                      alt: 'Wristwatch by Ted Baker London',
-                      isFluidWidth: true,
-                      src: `${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`,
-                    },
-                    largeImage: {
-                      src: `${process.env.REACT_APP_IMAGES_URL}/medium/${item?.link}`,
-                      width: 600,
-                      height: 600,
-                    },
-                    enlargedImagePosition: 'over',
-                  }}
-                />
-                {/* <img
+              <SwiperSlide
+                className="relative"
+                id="slide"
+                zoom
+                key={item?.link}
+              >
+                <img
                   src={`${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`}
-                  alt={data.translation[locale].title}
-                /> */}
+                  alt={data.full_translation[locale].title}
+                  style={{ maxHeight: '400px', width: 'auto' }}
+                />
+                {!doubleClicked && (
+                  <div
+                    className="absolute bottom-10 p-2 shadow rounded font-semibold"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.7)' }}
+                  >
+                    {formatMessage({ id: 'double-click-zoom' })}
+                  </div>
+                )}
               </SwiperSlide>
             );
           })}
@@ -56,12 +61,12 @@ export default function ImageZoom({ data }) {
           watchSlidesVisibility
           watchSlidesProgress
         >
-          {[data.image, ...data.gallery].map((item, i) => {
+          {[data.image, ...data.gallery].map(item => {
             return (
-              <SwiperSlide key={item?.id}>
+              <SwiperSlide key={item?.link}>
                 <img
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`}
-                  alt={data.translation[locale].title}
+                  src={`${process.env.REACT_APP_IMAGES_URL}/small/${item?.link}`}
+                  alt={data.full_translation[locale].title}
                   style={{ width: '50px', height: '50px' }}
                 />
               </SwiperSlide>

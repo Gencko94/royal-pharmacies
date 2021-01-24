@@ -1,15 +1,17 @@
 import React from 'react';
 import { useMediaQuery } from 'react-responsive';
-import LazyImage from '../../helpers/LazyImage';
+import BannerLazyImage from '../../helpers/BannerLazyImage';
+
 export default function Banner({ url }) {
-  const isTabletOrAbove = useMediaQuery({ query: '(min-width: 668px)' });
+  const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   return (
-    <LazyImage
-      src={`${process.env.REACT_APP_IMAGES_URL}/original/${url}`}
-      alt="banner"
-      pb={`${
-        isTabletOrAbove ? 'calc(100% * 250/1440)' : 'calc(100% * 720/1342)'
-      }`}
-    />
+    <div className="">
+      <BannerLazyImage
+        src={url}
+        origin="original"
+        alt="banner"
+        pb={isTabletOrAbove ? 'calc(100% * 300/1440)' : 'calc(100% * 300/800)'}
+      />
+    </div>
   );
 }

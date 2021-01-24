@@ -7,9 +7,8 @@ import { useIntl } from 'react-intl';
 export default function AvailableAddressesMobile({
   userAddresses,
   setShowMap,
-  selectedAddress,
-  setSelectedAddress,
-  handleStepForward,
+
+  handleSelectAddress,
 }) {
   const { formatMessage } = useIntl();
   const [infoTabOpen, setInfoTabOpen] = React.useState(null);
@@ -28,13 +27,7 @@ export default function AvailableAddressesMobile({
       width: '100%',
     },
   };
-  const handleAddressSelection = address => {
-    if (selectedAddress?.id === address.id) {
-      setSelectedAddress(null);
-    } else {
-      setSelectedAddress(address);
-    }
-  };
+
   const handleInfoTabOpen = id => {
     if (infoTabOpen === id) {
       setInfoTabOpen(null);
@@ -48,17 +41,6 @@ export default function AvailableAddressesMobile({
         <h1 className="text-sm font-semibold">
           {formatMessage({ id: 'select-address-header' })}
         </h1>
-        <button
-          onClick={handleStepForward}
-          className={`${
-            selectedAddress
-              ? 'bg-body-light text-main-color'
-              : 'bg-gray-600 cursor-not-allowed'
-          } rounded p-1 text-xs uppercase font-semibold `}
-          disabled={!selectedAddress}
-        >
-          {formatMessage({ id: 'btn-proceed' })}
-        </button>
       </div>
       <AnimateSharedLayout>
         <motion.div layout className="p-2 locations-grid__mobile">
@@ -67,10 +49,7 @@ export default function AvailableAddressesMobile({
               <motion.div
                 layout
                 key={address.id}
-                className={`${
-                  selectedAddress?.id === address.id &&
-                  'shadow-itemsSlider-shallow'
-                } rounded border relative  bg-body-light`}
+                className={` rounded border relative  bg-body-light`}
               >
                 <motion.div layout>
                   <div style={{ position: 'relative' }}>
@@ -133,23 +112,25 @@ export default function AvailableAddressesMobile({
                     </motion.div>
                   </div>
                   <div className="p-1">
+                    <div className="text-xs text-gray-600 font-semibold">
+                      <h1>{address.address_name}</h1>
+                    </div>
                     <div
                       className="text-xs mb-2 font-semibold"
                       style={{ height: '50px' }}
                     >
-                      <h1>{address.marked_address}</h1>
+                      <h1>
+                        {address.marked_address || address.userTyped_addres}
+                      </h1>
+                      <h1>{address.addition_direction}</h1>
                     </div>
                     <button
-                      onClick={() => handleAddressSelection(address)}
-                      className={`w-full text-sm p-1 rounded uppercase ${
-                        selectedAddress?.id === address.id
-                          ? 'bg-green-700 shadow'
-                          : 'bg-main-color'
+                      onClick={() => handleSelectAddress(address)}
+                      className={`w-full text-sm p-1 rounded uppercase 
+                          bg-main-color
                       } text-main-text`}
                     >
-                      {selectedAddress?.id === address.id
-                        ? formatMessage({ id: 'selected-btn' })
-                        : formatMessage({ id: 'select-btn' })}
+                      {formatMessage({ id: 'select-btn' })}
                     </button>
                   </div>
                 </motion.div>

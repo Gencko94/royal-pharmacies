@@ -3,13 +3,13 @@ import React from 'react';
 import { AiOutlineInfoCircle, AiOutlinePlus } from 'react-icons/ai';
 import Ink from 'react-ink';
 import { useIntl } from 'react-intl';
+import MapLazyImage from '../../helpers/MapLazyImage';
 
 export default function AvailableAddresses({
   setShowMap,
   userAddresses,
-  setSelectedAddress,
-  selectedAddress,
-  handleStepForward,
+
+  handleSelectAddress,
 }) {
   const { formatMessage } = useIntl();
   const [infoTabOpen, setInfoTabOpen] = React.useState(null);
@@ -28,13 +28,7 @@ export default function AvailableAddresses({
       width: '100%',
     },
   };
-  const handleAddressSelection = address => {
-    if (selectedAddress?.id === address.id) {
-      setSelectedAddress(null);
-    } else {
-      setSelectedAddress(address);
-    }
-  };
+
   const handleInfoTabOpen = id => {
     if (infoTabOpen === id) {
       setInfoTabOpen(null);
@@ -48,36 +42,24 @@ export default function AvailableAddresses({
         <h1 className="text-lg">
           {formatMessage({ id: 'select-address-header' })}
         </h1>
-        <button
-          onClick={handleStepForward}
-          className={`${
-            selectedAddress
-              ? 'bg-body-light text-main-color'
-              : 'bg-gray-600 cursor-not-allowed'
-          } rounded p-2 uppercase font-semibold `}
-          disabled={!selectedAddress}
-        >
-          {formatMessage({ id: 'btn-proceed' })}
-        </button>
       </div>
       <AnimateSharedLayout>
         <motion.div layout className="p-3 locations-grid__desktop">
           {userAddresses.map(address => {
-            console.log(address);
             return (
               <motion.div
                 layout
                 key={address.id}
-                className={`${
-                  selectedAddress?.id === address.id &&
-                  'shadow-itemsSlider-shallow'
-                } rounded border relative  bg-body-light`}
+                className={`rounded border relative  bg-body-light`}
               >
                 <motion.div layout>
                   <div style={{ minHeight: '150px', position: 'relative' }}>
-                    <img
-                      src={`https://maps.googleapis.com/maps/api/staticmap?center=${address.lat},${address.lng}&zoom=15&size=200x200&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-                      alt="thumbnail"
+                    <MapLazyImage
+                      height={150}
+                      width={200}
+                      lat={address.lat}
+                      lng={address.lng}
+                      alt={address.address_name}
                     />
                     <motion.div
                       variants={infoVariants}
@@ -134,23 +116,23 @@ export default function AvailableAddresses({
                     </motion.div>
                   </div>
                   <div className="p-2">
+                    <div className="text-xs text-gray-600 font-semibold">
+                      <h1>{address.address_name}</h1>
+                    </div>
                     <div
                       className="text-sm mb-2 font-semibold"
                       style={{ height: '65px' }}
                     >
-                      <h1>{address.marked_address}</h1>
+                      <h1>
+                        {address.marked_address || address.userTyped_addres}
+                      </h1>
+                      <h1>{address.addition_direction}</h1>
                     </div>
                     <button
-                      onClick={() => handleAddressSelection(address)}
-                      className={`w-full p-1 rounded uppercase ${
-                        selectedAddress?.id === address.id
-                          ? 'bg-green-700 shadow'
-                          : 'bg-main-color'
-                      } text-main-text`}
+                      onClick={() => handleSelectAddress(address)}
+                      className={`w-full p-1 rounded uppercase bg-main-color text-main-text`}
                     >
-                      {selectedAddress?.id === address.id
-                        ? formatMessage({ id: 'selected-btn' })
-                        : formatMessage({ id: 'select-btn' })}
+                      {formatMessage({ id: 'select-btn' })}
                     </button>
                   </div>
                 </motion.div>

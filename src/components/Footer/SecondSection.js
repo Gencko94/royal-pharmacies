@@ -1,30 +1,40 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { useQuery } from 'react-query';
-import { getFooterCategories } from '../../Queries/Queries';
+import { Link } from 'react-router-dom';
 
-export default function SecondSection() {
+export default function SecondSection({ categories }) {
   const { locale } = useIntl();
-  const { data } = useQuery('footerCategories', getFooterCategories);
+
   return (
     <div
       className={`px-4 py-2 footer-site-map bg-first-nav-light text-first-nav-text-light `}
     >
-      {data &&
-        data.slice(0, 5).map(item => {
+      {categories &&
+        categories.map(category => {
           return (
-            <div key={item.id} className="grid mt-2  gap-1">
-              <button className="text-lg font-semibold">
-                {item.translation[locale].name}
-              </button>
-              {item.children.map(sub => {
-                return (
-                  <button key={sub.id} className="text-sm">
-                    {sub.translation[locale].name}
-                  </button>
-                );
-              })}
-            </div>
+            category.type === 'category' && (
+              <div key={category.id} className="grid mt-2  gap-1">
+                <Link
+                  to={`/${locale}/${category.category?.slug}`}
+                  className="text-lg  text-center font-semibold inline-block"
+                >
+                  {category.translation[locale].name}
+                </Link>
+                {category.children?.map(child => {
+                  return (
+                    child.type === 'category' && (
+                      <Link
+                        to={`/${locale}/${child.category?.slug}`}
+                        key={child.id}
+                        className="text-sm  text-center inline-block"
+                      >
+                        {child.translation[locale].name}
+                      </Link>
+                    )
+                  );
+                })}
+              </div>
+            )
           );
         })}
     </div>

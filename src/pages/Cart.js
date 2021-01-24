@@ -40,7 +40,7 @@ export default function Cart() {
         <title>{formatMessage({ id: 'cart' })} | MRG</title>
       </Helmet>
 
-      <div className="px-4 py-2 max-w-default mx-auto">
+      <div className="px-4 py-2 max-w-default mx-auto text-body-text-light">
         <AnimatePresence>
           {checkoutModalOpen && (
             <CheckoutModal setCheckOutModalOpen={setCheckOutModalOpen} />
@@ -56,7 +56,7 @@ export default function Cart() {
         {!authenticationLoading && !userId && (
           <GuestCart setCheckOutModalOpen={setCheckOutModalOpen} />
         )}
-        <StaticSwiper type="electronics" cb={scrollToTop} />
+        <StaticSwiper title="Perfumes" type="perfumes" cb={scrollToTop} />
       </div>
     </Layout>
   );

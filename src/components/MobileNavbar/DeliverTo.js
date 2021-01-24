@@ -91,9 +91,7 @@ export default function DeliverTo() {
             exit="exited"
             ref={countryListRef}
             className={`${locale}-deliver-to__mobile rounded font-semibold 
-              
                bg-second-nav-text-light text-second-nav-dark
-               
             `}
           >
             <h1 className="p-2 text-center text-sm">

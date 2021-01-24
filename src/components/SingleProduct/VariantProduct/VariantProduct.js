@@ -19,6 +19,7 @@ export default function VariantProduct({
     addToCartMutation,
     addToWishListMutation,
     addToGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const { userId } = React.useContext(AuthProvider);
@@ -46,7 +47,7 @@ export default function VariantProduct({
     });
     return keys;
   });
-  const variantOnly = data.new_variation_addons[selectedVariation].options
+  const variantOnly = data?.new_variation_addons?.[selectedVariation]?.options
     ? false
     : true;
   const option = variantOnly
@@ -86,18 +87,11 @@ export default function VariantProduct({
               ].addon_item_id,
           },
         };
-        await addToCartMutation({ newItem, userId, deliveryCountry });
+        await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error);
-        console.log(error.response);
-        // if (error.response.data.message === 'Item founded on the Cart') {
-        //   setItemInCart(true);
-        // }
         setAddToCartButtonLoading(false);
       }
     } else {
@@ -126,13 +120,11 @@ export default function VariantProduct({
           sku,
         };
 
-        await addToGuestCartMutation({ newItem, deliveryCountry });
+        await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
-      } catch (error) {
-        console.log(error.response);
-      }
+      } catch (error) {}
     }
   };
   const handleAddToWishList = async () => {
@@ -142,12 +134,10 @@ export default function VariantProduct({
       setAddToWishListButtonLoading(false);
       setItemInWishList(true);
     } catch (error) {
-      console.clear();
       if (error.response.data.message === 'Item founded on the Wishlist') {
         setItemInWishList(true);
       }
       setAddToWishListButtonLoading(false);
-      console.log(error.response);
     }
   };
 
@@ -181,6 +171,7 @@ export default function VariantProduct({
         itemInCart={itemInCart}
         itemInWishList={itemInWishList}
         userId={userId}
+        qty={option.quantity}
       />
     </div>
   );

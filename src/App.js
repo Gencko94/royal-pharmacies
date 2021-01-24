@@ -39,6 +39,13 @@ const SearchResults = React.lazy(() => import('./pages/SearchResults'));
 const SearchResultsMobile = React.lazy(() =>
   import('./pages/SearchResultsMobile')
 );
+const SingleBrand = React.lazy(() => import('./pages/SingleBrand'));
+const SingleBrandMobile = React.lazy(() => import('./pages/SingleBrandMobile'));
+const StaticPage = React.lazy(() => import('./pages/StaticPage'));
+const TrackOrder = React.lazy(() => import('./pages/TrackOrder'));
+const TrackOrderMobile = React.lazy(() => import('./pages/TrackOrderMobile'));
+const OrderSuccess = React.lazy(() => import('./pages/OrderSuccess'));
+const OrderFailed = React.lazy(() => import('./pages/OrderFailed'));
 
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -63,6 +70,16 @@ function App() {
             }}
           />
           <Route
+            path="/site/:page"
+            render={props => {
+              // if (isTabletOrAbove) {
+              return <StaticPage {...props} />;
+              // } else {
+              // return <LoginMobile {...props} />;
+              // }
+            }}
+          />
+          <Route
             path="/app/login"
             render={props => {
               if (isTabletOrAbove) {
@@ -75,6 +92,8 @@ function App() {
 
           <Route exact path="/app/password-reset" component={PasswordReset} />
           <Route exact path="/" component={Home} />
+          <Route exact path="/order-failed" component={OrderFailed} />
+          <Route exact path="/order-success" component={OrderSuccess} />
 
           <ProtectedRoute
             path="/user/account"
@@ -108,9 +127,21 @@ function App() {
               }
             }}
           />
+          <Route
+            exact
+            path="/brands/:slug"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <SingleBrand {...props} />;
+              } else {
+                return <SingleBrandMobile {...props} />;
+              }
+            }}
+          />
 
           <Route
-            path="/categories/:category"
+            exact
+            path="/:category"
             render={props => {
               if (isTabletOrAbove) {
                 return <Category {...props} />;
@@ -119,6 +150,7 @@ function App() {
               }
             }}
           />
+
           <Route
             exact
             path="/search/q=:query"
@@ -132,6 +164,7 @@ function App() {
           />
 
           <Route
+            exact
             path="/checkout/guest-checkout"
             render={props => {
               if (isTabletOrAbove) {
@@ -143,17 +176,39 @@ function App() {
           />
 
           <ProtectedRoute
-            path="/checkout"
+            path="/checkout/user-checkout"
             Component={isTabletOrAbove ? Checkout : CheckoutMobile}
           />
           <Route
             exact
-            path="/:category/:id/:addons?"
+            path="/products/:slug/:id/:addons?"
             render={props => {
               if (isTabletOrAbove) {
                 return <SingleProduct {...props} />;
               } else {
                 return <SingleProductMobile {...props} />;
+              }
+            }}
+          />
+          <Route
+            exact
+            path="/order/track"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <TrackOrder {...props} />;
+              } else {
+                return <TrackOrderMobile {...props} />;
+              }
+            }}
+          />
+          <Route
+            exact
+            path="/page/404"
+            render={props => {
+              if (isTabletOrAbove) {
+                return <NotFound {...props} />;
+              } else {
+                return <NotFoundMobile {...props} />;
               }
             }}
           />

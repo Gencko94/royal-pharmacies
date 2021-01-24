@@ -53,36 +53,31 @@ export default function FeaturedItemsVertical() {
       </div>
     );
   return (
-    <div className="border rounded p-2 bg-gray-100 border-b">
-      <div className="flex items-center justify-between">
-        <h1 className="">{formatMessage({ id: 'featured-items' })}</h1>
-        {/* <Link
-          className="p-1 text-xs rounded bg-main-color text-main-text"
-          to={`/${locale}/vieweditems`}
-        >
-          {formatMessage({ id: 'seeAll' })}
-        </Link> */}
+    <div className="border rounded  bg-gray-100 border-b font-semibold">
+      <div className="p-2 border-b font-semibold text-center">
+        <h1 className="">{formatMessage({ id: 'bestSellers' })}</h1>
       </div>
-      {/* <hr /> */}
-      <div className="pt-2">
+
+      <div className="p-2">
         {data.slice(0, 5).map(item => {
           return (
-            <div key={item.id} className="recent-items__container mb-1">
-              <Link to={`/${locale}/c/${item.id}`}>
+            <div key={item.id} className="recent-items__container mb-1 ">
+              <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
                 <LazyImage
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image?.link}`}
+                  src={item.image?.link}
                   alt={item.translation[locale].title}
                   pb="calc(100% * 286/210)"
+                  origin="small"
                 />
               </Link>
               <div className="text-sm">
-                <Link to={`/${locale}/c/${item.id}`}>
-                  <h1 className="text-clamp-2">
+                <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
+                  <h1 className="text-clamp-2 ">
                     {item.translation[locale].title}
                   </h1>
                 </Link>
                 <Rating
-                  initialRating={Math.round(Math.random() * 5)}
+                  initialRating={item.rating_avg}
                   emptySymbol={<AiOutlineStar className="text-main-color" />}
                   fullSymbol={<AiFillStar className="text-main-color" />}
                   className="pt-1"

@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
+import LazyImage from '../../helpers/LazyImage';
 
 export default function CartItemMobile({ item }) {
   const [
@@ -54,14 +55,6 @@ export default function CartItemMobile({ item }) {
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className=" text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="text-yellow-700">
@@ -80,7 +73,6 @@ export default function CartItemMobile({ item }) {
     setQuantity(parseInt(quantity) + 1);
   };
   const handleChangeQuantity = e => {
-    console.log(e.target.value);
     if (e.target.value < 1) {
       return;
     } else {
@@ -98,7 +90,6 @@ export default function CartItemMobile({ item }) {
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
-      console.log(error.response);
     }
   };
   const handleEditItemFromCart = async (cartId, itemId, quantity) => {
@@ -114,7 +105,6 @@ export default function CartItemMobile({ item }) {
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
-      console.log(error.response);
     }
   };
   const handleRemoveItemFromWishlist = async id => {
@@ -122,17 +112,13 @@ export default function CartItemMobile({ item }) {
       await removeFromWishListMutation({ id, userId });
 
       setItemInWishlist(false);
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   const handleAddItemToWishlist = async item => {
     try {
       await addToWishListMutation({ id: item.id, userId });
       setItemInWishlist(true);
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   const variant = {
     hidden: {
@@ -160,15 +146,16 @@ export default function CartItemMobile({ item }) {
       className="border-b "
     >
       <div className="py-2 cart__item-mobile">
-        <Link to={`/${locale}/item/${item.id}}`}>
-          <img
-            className=""
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
+        <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
+          <LazyImage
+            src={item.image}
+            origin="small"
             alt={item[`name_${locale}`]}
+            pb="calc(100% * 286/210)"
           />
         </Link>
         <div className="text-sm">
-          <Link to={`/${locale}/item/${item.id}}`}>
+          <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
             <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
               item.options.addons
                 ? ` - ${Object.keys(item.options.addons)
@@ -178,7 +165,7 @@ export default function CartItemMobile({ item }) {
             }`}</h1>
           </Link>
           <h1 className=" font-semibold">
-            {item.options.max_quantity < 20 ? (
+            {item.options.max_quantity < 5 ? (
               formatItemsPlural(item.options.max_quantity)
             ) : (
               <span className="text-green-700">
@@ -186,10 +173,28 @@ export default function CartItemMobile({ item }) {
               </span>
             )}
           </h1>
-          <div className="text-main0color font-bold text-base">
-            {item.total} {deliveryCountry?.currency.translation[locale].symbol}
+          <div className="" style={{ fontWeight: '900' }}>
+            <div className="flex items-center">
+              <h1>{formatMessage({ id: 'price' })} </h1>
+              <span className="mx-1">
+                {item.price}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </span>
+            </div>
           </div>
-          <div className=" flex items-center flex-wrap ">
+          <div
+            className="text-green-700 text-base"
+            style={{ fontWeight: '900' }}
+          >
+            <div className="flex items-center">
+              <h1>{formatMessage({ id: 'total' })} </h1>
+              <span className="mx-1">
+                {item.total}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
+              </span>
+            </div>
+          </div>
+          <div className=" flex items-center flex-wrap text-base ">
             <h1 className=" font-semibold">
               {formatMessage({ id: 'quantity' })} :{' '}
             </h1>

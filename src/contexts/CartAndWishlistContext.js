@@ -19,6 +19,7 @@ import { DataProvider } from './DataContext';
 export const CartAndWishlistProvider = React.createContext();
 export default function CartAndWishlistContext({ children }) {
   const { deliveryCountry } = React.useContext(DataProvider);
+  const [coupon, setCoupon] = React.useState('');
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   /**
    * Cart Main Fetch
@@ -29,26 +30,30 @@ export default function CartAndWishlistContext({ children }) {
     isError: isGetCartError,
     error: getCartError,
     isIdle: cartIdle,
-  } = useQuery(['cartItems', userId, deliveryCountry], getCartItems, {
+    isFetching: cartItemsFetching,
+  } = useQuery(['cartItems', userId, deliveryCountry, coupon], getCartItems, {
     refetchOnWindowFocus: false,
     enabled: !authenticationLoading && userId,
     retry: true,
+    keepPreviousData: true,
   });
   const {
     data: guestCartData,
     isLoading: guestCartItemsLoading,
     isError: isGuestGetCartError,
     error: getGuestCartError,
-  } = useQuery(['guestCartItems', deliveryCountry], getGuestCartItems, {
+    isFetching: guestCartItemsFetching,
+  } = useQuery(['guestCartItems', deliveryCountry, coupon], getGuestCartItems, {
     refetchOnWindowFocus: false,
     enabled: !authenticationLoading && !userId,
     retry: true,
+    keepPreviousData: true,
   });
 
   const [addToCartMutation] = useMutation(addToCart, {
     onSuccess: data => {
       queryCache.setQueryData(
-        ['cartItems', userId, deliveryCountry],
+        ['cartItems', userId, deliveryCountry, coupon],
         () => data
       );
     },
@@ -56,14 +61,17 @@ export default function CartAndWishlistContext({ children }) {
   });
   const [addToGuestCartMutation] = useMutation(addToGuestCart, {
     onSuccess: data => {
-      queryCache.setQueryData(['guestCartItems', deliveryCountry], () => data);
+      queryCache.setQueryData(
+        ['guestCartItems', deliveryCountry, coupon],
+        () => data
+      );
     },
     throwOnError: true,
   });
   const [removeFromCartMutation] = useMutation(removeFromCart, {
     onSuccess: data => {
       queryCache.setQueryData(
-        ['cartItems', userId, deliveryCountry],
+        ['cartItems', userId, deliveryCountry, coupon],
         () => data
       );
     },
@@ -71,18 +79,27 @@ export default function CartAndWishlistContext({ children }) {
   });
   const [removeFromGuestCartMutation] = useMutation(removeFromGuestCart, {
     onSuccess: data => {
-      queryCache.setQueryData(['guestCartItems', deliveryCountry], () => data);
+      queryCache.setQueryData(
+        ['guestCartItems', deliveryCountry, coupon],
+        () => data
+      );
     },
   });
   const [editCartMutation] = useMutation(editCart, {
-    onSuccess: () => {
-      queryCache.invalidateQueries(['cartItems', userId, deliveryCountry]);
+    onSuccess: data => {
+      queryCache.setQueryData(
+        ['cartItems', userId, deliveryCountry, coupon],
+        () => data
+      );
     },
     throwOnError: true,
   });
   const [editGuestCartMutation] = useMutation(editGuestCart, {
     onSuccess: data => {
-      queryCache.setQueryData(['guestCartItems', deliveryCountry], () => data);
+      queryCache.setQueryData(
+        ['guestCartItems', deliveryCountry, coupon],
+        () => data
+      );
     },
     throwOnError: true,
   });
@@ -100,13 +117,9 @@ export default function CartAndWishlistContext({ children }) {
     retry: true,
   });
 
-  // const [combineCartsMutation] = useMutation(combineCarts, {
-  //   throwOnError:true
-  // })
   const [addToWishListMutation] = useMutation(addToWishlist, {
     onSuccess: data => {
       queryCache.setQueryData(['wishlistItems', userId], data);
-      // queryCache.invalidateQueries(['wishlistItems', userId]);
     },
     throwOnError: true,
   });
@@ -114,7 +127,6 @@ export default function CartAndWishlistContext({ children }) {
   const [removeFromWishListMutation] = useMutation(removeFromWishlist, {
     onSuccess: data => {
       queryCache.setQueryData(['wishlistItems', userId], prev => {
-        console.log(prev);
         const updated = prev.wishlistItems.filter(i => i.id !== data);
         return {
           wishlistItems: [...updated],
@@ -126,7 +138,11 @@ export default function CartAndWishlistContext({ children }) {
   });
   const [checkCouponMutation, { isLoading: isCheckingCoupon }] = useMutation(
     checkCoupon,
+
     {
+      onSuccess: data => {
+        setCoupon(data.code);
+      },
       throwOnError: true,
     }
   );
@@ -165,10 +181,18 @@ export default function CartAndWishlistContext({ children }) {
         checkCouponMutation,
         isCheckingCoupon,
         editCartMutation,
+        cartItemsFetching,
+        guestCartItemsFetching,
         sideCartItems: userId ? cartData?.cartItems : guestCartData?.cartItems,
         sideCartSubTotal: userId
           ? cartData?.cartSubtotal
           : guestCartData?.cartSubtotal,
+        sideCartCouponCost: userId
+          ? cartData?.couponCost
+          : guestCartData?.coupon_cost,
+        coupon,
+        setCoupon,
+        note: cartData?.note,
       }}
     >
       {children}

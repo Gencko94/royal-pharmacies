@@ -4,12 +4,19 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import knet from '../../../assets/paymentLogos/knet.png';
+import mastercard from '../../../assets/paymentLogos/mastercard.png';
+
+import cod from '../../../assets/paymentLogos/cod.png';
+import amex from '../../../assets/paymentLogos/amex.png';
+import { DataProvider } from '../../../contexts/DataContext';
 export default function OrderDetailsMobile({
   orderDetailsOpen,
   selectedOrder,
   handleOrderDetailsClose,
 }) {
   const { formatMessage, locale } = useIntl();
+  const { deliveryCountry } = React.useContext(DataProvider);
   React.useEffect(() => {
     if (orderDetailsOpen) {
       document.body.style.overflow = 'hidden';
@@ -36,13 +43,122 @@ export default function OrderDetailsMobile({
       },
     },
   };
+  const resolvePayment = () => {
+    if (selectedOrder.payment_method === 'knet') {
+      return (
+        <div
+          className={`  flex  items-center justify-start  p-2 font-semibold`}
+        >
+          <img src={knet} alt={selectedOrder.payment_method} />
+          <div className="flex-1 mx-3 text-left">K-net</div>
+        </div>
+      );
+    }
+    if (selectedOrder.payment_method === 'credit') {
+      return (
+        <div
+          className={`  flex  items-center justify-start  p-2 font-semibold`}
+        >
+          <img src={mastercard} alt={selectedOrder.payment_method} />
+          <div className="flex-1 mx-3 text-left">Credit Card</div>
+        </div>
+      );
+    }
+
+    if (selectedOrder.payment_method === 'amex') {
+      return (
+        <div className={` flex  items-center justify-start  p-2 font-semibold`}>
+          <img src={amex} alt={selectedOrder.payment_method} />
+          <div className="flex-1 mx-3 text-left">American Express</div>
+        </div>
+      );
+    }
+    if (selectedOrder.payment_method === 'cod') {
+      return (
+        <div
+          className={`  flex  items-center justify-start  p-2 font-semibold`}
+        >
+          <img src={cod} alt={selectedOrder.payment_method} />
+          <div className="flex-1 mx-3 text-left">
+            {formatMessage({ id: 'cash-on-delivery' })}
+          </div>
+        </div>
+      );
+    }
+  };
+  const resolveStatus = () => {
+    switch (selectedOrder.status) {
+      case 'completed':
+        return (
+          <div
+            className={` uppercase text-body-text-dark flex justify-center items-center rounded    px-2 py-1 font-semibold bg-green-700  `}
+          >
+            <h1 className="mx-1">{formatMessage({ id: 'order-completed' })}</h1>
+          </div>
+        );
+
+      case 'canceled':
+        return (
+          <div
+            className={`uppercase text-body-text-dark flex justify-center items-center rounded    px-2 py-1 font-semibold bg-main-color  `}
+          >
+            <h1 className="mx-1">{formatMessage({ id: 'order-cancelled' })}</h1>
+          </div>
+        );
+      case 'pending':
+        return (
+          <div
+            className={` uppercase text-body-text-dark flex justify-center items-center rounded    px-2 py-1 font-semibold bg-yellow-600  `}
+          >
+            <h1 className="mx-1">{formatMessage({ id: 'order-pending' })}</h1>
+          </div>
+        );
+      case 'delivery':
+        return (
+          <div
+            className={` uppercase text-body-text-dark flex justify-center items-center rounded    px-2 py-1 font-semibold bg-blue-600  `}
+          >
+            <h1 className="mx-1">{formatMessage({ id: 'order-delivery' })}</h1>
+          </div>
+        );
+      case 'waiting_for_payment':
+        return (
+          <div
+            className={` uppercase text-body-text-dark flex justify-center items-center rounded    px-2 py-1 font-semibold bg-yellow-600  `}
+          >
+            <h1 className="mx-1">
+              {formatMessage({ id: 'order-waiting-for-payment' })}
+            </h1>
+          </div>
+        );
+      case 'confirmed':
+        return (
+          <div
+            className={` uppercase text-body-text-dark flex justify-center items-center rounded    px-2 py-1 font-semibold bg-blue-600  `}
+          >
+            <h1 className="mx-1">{formatMessage({ id: 'order-confirmed' })}</h1>
+          </div>
+        );
+      case 'new':
+        return (
+          <div
+            className={`uppercase text-body-text-dark flex justify-center items-center rounded    px-2 py-1 font-semibold  bg-blue-600  `}
+          >
+            <h1 className="mx-1">{formatMessage({ id: 'order-new' })}</h1>
+          </div>
+        );
+
+      default:
+        break;
+    }
+  };
   return (
     <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="fixed top-0 left-0 right-0 bottom-0 overflow-y-scroll bg-body-light z-30 h-screen"
+      className="fixed top-0 left-0 right-0 bottom-0 overflow-y-auto bg-body-light z-30 h-screen"
     >
       <div className=" sticky top-0 p-3 flex items-center bg-main-color text-main-text z-1">
         <button
@@ -72,53 +188,54 @@ export default function OrderDetailsMobile({
                   {formatMessage({ id: 'order-date' })} :
                 </h1>
                 <h1 className="mx-1">
-                  {moment(selectedOrder.created_at).format('DD/MM/YYYY-HH:MM')}
+                  {' '}
+                  {moment(selectedOrder.created_at).format(
+                    'DD/MM/YYYY - HH:MM'
+                  )}
                 </h1>
               </div>
               <div className="flex items-center text-sm">
                 <h1 className="text-gray-600">
-                  {selectedOrder.status === 'delivered'
+                  {selectedOrder.status === 'completed'
                     ? formatMessage({ id: 'delivered-at' })
                     : formatMessage({ id: 'expected-delivery' })}{' '}
                   :
                 </h1>
                 <h1 className="mx-1">
-                  {selectedOrder.status === 'delivered'
+                  {selectedOrder.status === 'completed'
                     ? selectedOrder.deliveryDate
                     : 'Soon'}
                 </h1>
               </div>
-              <div className="flex items-center text-sm">
+              <div className=" text-sm">
                 <h1 className="text-gray-600 ">
-                  {selectedOrder.status === 'delivered'
+                  {selectedOrder.status === 'completed'
                     ? formatMessage({ id: 'delivered-to' })
                     : formatMessage({ id: 'deliver-to' })}
                   :{' '}
                 </h1>
-                <h1 className="mx-1">{selectedOrder.address.marked_address}</h1>
+                <h1 className="mx-1">
+                  {selectedOrder.address.type === 'map'
+                    ? selectedOrder.address.marked_address
+                    : selectedOrder.address.userTyped_address}
+                </h1>
               </div>
-              <div className="flex items-center text-sm">
+              <div className="text-sm">
                 <h1 className="text-gray-600">
                   {formatMessage({ id: 'payment-method' })} :
                 </h1>
-                <h1 className="mx-1">K-net</h1>
+                {resolvePayment()}
               </div>
             </div>
             <div className=" text-sm flex flex-col justify-center font-semibold">
-              <div
-                className={` text-center uppercase px-2 py-1 rounded ${
-                  selectedOrder.status === 'delivered'
-                    ? 'bg-green-700'
-                    : 'bg-orange-600'
-                }`}
-              >
-                {selectedOrder.status === 'delivered'
-                  ? formatMessage({ id: 'delivered' })
-                  : formatMessage({ id: 'pending' })}
-              </div>
-              <div className="mt-auto text-center">
+              {resolveStatus()}
+
+              <div className="mt-auto text-center font-bold">
                 <h1>{formatMessage({ id: 'subtotal' })}</h1>
-                <h1 className="text-green-700">{selectedOrder.subtotal}</h1>
+                <h1 className="text-green-700">
+                  {selectedOrder.subtotal}{' '}
+                  {deliveryCountry?.currency.translation[locale].symbol}
+                </h1>
               </div>
             </div>
           </div>
@@ -132,31 +249,36 @@ export default function OrderDetailsMobile({
             <div className="my-orders-items__table-mobile font-semibold ">
               <h1>#</h1>
               <h1>{formatMessage({ id: 'the-item' })}</h1>
-              <h1>{formatMessage({ id: 'quantity' })}</h1>
+              <h1>{formatMessage({ id: 'qty' })}</h1>
               <h1>{formatMessage({ id: 'price' })}</h1>
+              <h1>{formatMessage({ id: 'total' })}</h1>
             </div>
             {selectedOrder.items.map((orderItem, i) => {
               return (
                 <div
                   key={orderItem.id}
-                  className="my-orders-item-mobile px-2 text-sm"
+                  className="my-orders-item-mobile text-sm"
                 >
-                  <div className="">
+                  <div className="text-center ">
                     <h1 className="">{i + 1}</h1>
                   </div>
                   <Link
-                    to={`/${locale}/c/${orderItem.id}`}
-                    className="hover:underline"
+                    to={`/${locale}/products/${orderItem.product.slug}/${orderItem.id}`}
+                    className="hover:underline truncate uppercase text-center font-semibold block text-xs"
                   >
-                    <h1 className="text-clamp-1  semibold">
-                      {orderItem.product.translation[locale].title}
-                    </h1>
+                    {orderItem.product.translation[locale].title}
                   </Link>
-                  <div className="">
+                  <div className="text-center">
                     <h1 className="">{orderItem.qty}</h1>
                   </div>
-                  <div className="">
-                    <h1 className="">{orderItem.price}</h1>
+                  <div style={{ fontWeight: 900 }}>
+                    <h1 className="text-center">{orderItem.price} </h1>
+                  </div>
+                  <div style={{ fontWeight: 900 }} className="text-green-700">
+                    <h1 className="text-center">
+                      {(orderItem.price * orderItem.qty).toFixed(3)}{' '}
+                      {deliveryCountry?.currency.translation[locale].symbol}
+                    </h1>
                   </div>
                 </div>
               );
@@ -172,11 +294,25 @@ export default function OrderDetailsMobile({
                   ? formatMessage({ id: 'cart-free' })
                   : selectedOrder.shipping_cost}
               </h1>
+              {selectedOrder.coupon && (
+                <h1 className="mb-2 text-center">
+                  {formatMessage({ id: 'coupon-sale' })}
+                </h1>
+              )}
+              {selectedOrder.coupon && (
+                <h1 className="mb-2 text-center">
+                  {selectedOrder.coupon_cost}
+                  <span className="mx-1">
+                    {deliveryCountry?.currency.translation[locale].symbol}
+                  </span>
+                </h1>
+              )}
               <h1 className="text-green-700 text-base">
                 {formatMessage({ id: 'subtotal' })}
               </h1>
               <h1 className="text-green-700 text-base">
-                {selectedOrder.subtotal}
+                {selectedOrder.subtotal}{' '}
+                {deliveryCountry?.currency.translation[locale].symbol}
               </h1>
             </div>
           </div>

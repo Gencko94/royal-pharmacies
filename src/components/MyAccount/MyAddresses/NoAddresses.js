@@ -16,15 +16,13 @@ export default function NoAddresses({ setShowMap }) {
         className="mb-6"
       />
       <div className="flex flex-col items-center">
-        <h1 className="text-lg text-center font-semibold">
+        <h1 className="text-lg text-center font-bold">
           {formatMessage({ id: 'no-addresses-yet' })}
         </h1>
         <button
           onClick={() => setShowMap(true)}
           className={` mt-3  font-semibold flex items-center rounded px-4 py-2 
-           
-             bg-btn-primary-light text-btn-secondary-light
-            
+             bg-main-color text-main-text
            `}
         >
           <h1 className="mx-2 uppercase">

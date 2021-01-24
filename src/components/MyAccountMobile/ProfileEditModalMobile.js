@@ -2,9 +2,7 @@ import { Formik, useField } from 'formik';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
-// import { BiChevronDown } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
-// import useClickAway from '../../hooks/useClickAway';
 import * as Yup from 'yup';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -29,9 +27,6 @@ export default function ProfileEditModalMobile({
     email: Yup.string().email(formatMessage({ id: 'email-validation' })),
 
     name: Yup.string().required(formatMessage({ id: 'fullname-empty' })),
-    // phoneNumber: Yup.string()
-    //   .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
-    //   .required(formatMessage({ id: 'phone-empty' })),
   });
 
   const containerVariants = {
@@ -106,12 +101,6 @@ export default function ProfileEditModalMobile({
                 value={values.name}
                 type="text"
               />
-              {/* <PhoneNumberCustomInput
-                label={formatMessage({ id: 'phone-number' })}
-                name="phoneNumber"
-                value={values.phoneNumber}
-                type="text"
-              /> */}
 
               <CustomTextInput
                 label={formatMessage({ id: 'email-address' })}
@@ -123,16 +112,12 @@ export default function ProfileEditModalMobile({
               <div className="mt-1">
                 <button
                   type="submit"
-                  className={`${
-                    isSubmitting
-                      ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
-                  } w-full rounded flex items-center justify-center text-sm  p-2 font-semibold  transition duration-150 uppercase `}
+                  className={` bg-main-color text-main-text hover:bg-red-800 w-full rounded flex items-center justify-center text-sm  p-2 font-semibold  transition duration-150 uppercase `}
                 >
                   {isSubmitting && (
                     <Loader
                       type="ThreeDots"
-                      color="#b72b2b"
+                      color="#fff"
                       height={20}
                       width={20}
                       visible={isSubmitting}
@@ -173,56 +158,3 @@ const CustomTextInput = ({ label, value, name, ...props }) => {
     </div>
   );
 };
-// const PhoneNumberCustomInput = ({ label, value, name, ...props }) => {
-//   const [menuOpen, setMenuOpen] = React.useState(false);
-//   const menuRef = React.useRef();
-//   useClickAway(menuRef, () => {
-//     if (menuRef.current) {
-//       setMenuOpen(false);
-//     }
-//   });
-//   const [field, meta] = useField(name);
-//   return (
-//     <div className="mb-2">
-//       <label htmlFor={name} className={`font-semibold `}>
-//         {label}
-//       </label>
-//       <div className="flex rounded-lg border items-center relative  overflow-hidden mt-1 ">
-//         <div
-//           ref={menuRef}
-//           onClick={() => setMenuOpen(!menuOpen)}
-//           className="  cursor-pointer flex items-center p-1 border-r"
-//           style={{ width: '74px' }}
-//         >
-//           <span>+965</span>
-//           <BiChevronDown className="mx-1 w-5 h-5" />
-//           {menuOpen && (
-//             <div
-//               className="absolute top-100 left-0 w-full border z-1 bg-body-light"
-//               style={{ width: '74px' }}
-//             >
-//               <div className="hover:bg-main-color px-1 py-2 hover:text-main-text flex justify-start items-center">
-//                 +965
-//               </div>
-//             </div>
-//           )}
-//         </div>
-//         <input
-//           {...field}
-//           {...props}
-//           onBlur={e => {
-//             field.onBlur(e);
-//           }}
-//           className=" w-full  p-2"
-//         />
-//       </div>
-//       {meta.touched && meta.error ? (
-//         <h1 className="text-xs text-main-color mt-1">{meta.error}</h1>
-//       ) : (
-//         <h1 className="text-xs text-main-color mt-1" style={{ height: '18px' }}>
-//           {' '}
-//         </h1>
-//       )}
-//     </div>
-//   );
-// };

@@ -1,31 +1,34 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { useIntl } from 'react-intl';
 import CartLoader from '../components/Cart/loaders/CartLoader';
 import Layout from '../components/Layout';
+import SideCartMenu from '../components/SingleProduct/SideCartMenu';
+import StaticSwiper from '../components/Swipers/StaticSwiper';
 import WishlistContainer from '../components/Wishlist/WishlistContainer';
 import WishlistRightSide from '../components/Wishlist/WishlistRightSide';
 import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
-// import { DataProvider } from '../contexts/DataContext';
 
 export default function Wishlist({ userId }) {
+  const { formatMessage } = useIntl();
   const [
     removeFromWishListButtonLoading,
     setRemoveFromWishListButtonLoading,
   ] = React.useState(null);
-  // const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
-  //   null
-  // );
-  // const { deliveryCountry } = React.useContext(DataProvider);
+  const [cartMenuOpen, setCartMenu] = React.useState(false);
+  const setCartMenuOpen = () => {
+    setCartMenu(true);
+  };
+
   const { authenticationLoading } = React.useContext(AuthProvider);
-  // const [cartItems, setCartItems] = React.useState([]);
+
   const {
     wishlistItems,
     wishlistItemsLoading,
     isGetWishlistError,
     removeFromWishListMutation,
-    // addToCartMutation,
-    // removeFromCartMutation,
   } = React.useContext(CartAndWishlistProvider);
 
   const handleRemoveItemFromWishList = async id => {
@@ -35,44 +38,29 @@ export default function Wishlist({ userId }) {
       setRemoveFromWishListButtonLoading(null);
     } catch (error) {
       setRemoveFromWishListButtonLoading(null);
-      console.log(error.response);
     }
   };
-  // const handleAddToCart = async item => {
-  //   setAddToCartButtonLoading(item.id);
-  //   const newItem = {
-  //     id: item.id,
-  //     quantity: 1,
-  //   };
-  //   try {
-  //     await addToCartMutation({ newItem, userId, deliveryCountry });
-  //     setAddToCartButtonLoading(null);
-  //     setCartItems(prev => {
-  //       return [...prev, item.id];
-  //     });
-  //   } catch (error) {
-  //     setAddToCartButtonLoading(null);
-  //     console.log(error.response);
-  //   }
-  // };
-  // const handleRemoveFromCart = async id => {
-  //   setAddToCartButtonLoading(id);
-  //   try {
-  //     await removeFromCartMutation({ id, userId });
-  //     setAddToCartButtonLoading(null);
-  //     setCartItems(prev => {
-  //       return prev.filter(i => i !== id);
-  //     });
-  //   } catch (error) {
-  //     setAddToCartButtonLoading(null);
-  //     console.log(error.response);
-  //   }
-  // };
+
   return (
     <Layout>
       <Helmet>
-        <title>Wishlist | MRG</title>
+        <title>{formatMessage({ id: 'wishlist' })} | MRG</title>
       </Helmet>
+      <AnimatePresence>
+        {cartMenuOpen && (
+          <SideCartMenu key="side-cart" setSideMenuOpen={setCartMenu} />
+        )}
+        {cartMenuOpen && (
+          <motion.div
+            key="sidecart-bg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setCartMenu(false)}
+            className="side__addCart-bg"
+          ></motion.div>
+        )}
+      </AnimatePresence>
       <div className="px-4 py-2 max-w-default mx-auto">
         {authenticationLoading && <CartLoader />}
         {!authenticationLoading && userId && !isGetWishlistError && (
@@ -82,17 +70,16 @@ export default function Wishlist({ userId }) {
               wishlistItems={wishlistItems}
               handleRemoveItemFromWishList={handleRemoveItemFromWishList}
               removeFromWishListButtonLoading={removeFromWishListButtonLoading}
-              // addToCartButtonLoading={addToCartButtonLoading}
-              // handleAddToCart={handleAddToCart}
-              // handleRemoveFromCart={handleRemoveFromCart}
-              // cartItems={cartItems}
             />
-            <WishlistRightSide
-              wishlistItems={wishlistItems}
-              wishlistItemsLoading={wishlistItemsLoading}
-            />
+            <WishlistRightSide />
           </div>
         )}
+        <hr className="my-4" />
+        <StaticSwiper
+          type="latest_products"
+          title={'New Arrivals'}
+          cb={setCartMenuOpen}
+        />
       </div>
     </Layout>
   );

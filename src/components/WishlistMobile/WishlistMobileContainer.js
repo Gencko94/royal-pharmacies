@@ -1,19 +1,15 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
-import CartEmptyMobile from '../CartMobile/CartEmptyMobile';
 import MainContentLoader from '../CartMobile/ContentLoaders/MainContentLoader';
+import NoWishlistItemsMobile from './NoWishlistItemsMobile';
 import WishlistMobileItem from './WishlistMobileItem';
 
 export default function WishlistMobileContainer({
   wishlistItemsLoading,
   wishlistItems,
-  // itemInCart,
-  // handleRemoveItemFromCart,
-  // handleAddToCart,
   handleRemoveItemFromWishList,
   removeFromWishListButtonLoading,
-  // addToCartButtonLoading,
 }) {
   const { formatMessage } = useIntl();
   if (wishlistItemsLoading) {
@@ -23,7 +19,7 @@ export default function WishlistMobileContainer({
     <div>
       {wishlistItems.length === 0 && (
         <AnimatePresence>
-          {wishlistItems.length === 0 && <CartEmptyMobile />}
+          {wishlistItems.length === 0 && <NoWishlistItemsMobile />}
         </AnimatePresence>
       )}
       {wishlistItems.length !== 0 && (
@@ -39,14 +35,10 @@ export default function WishlistMobileContainer({
                 <WishlistMobileItem
                   key={item.id}
                   item={item}
-                  // handleAddToCart={handleAddToCart}
-                  // handleRemoveItemFromCart={handleRemoveItemFromCart}
                   handleRemoveItemFromWishList={handleRemoveItemFromWishList}
                   removeFromWishListButtonLoading={
                     removeFromWishListButtonLoading
                   }
-                  // itemInCart={itemInCart}
-                  // addToCartButtonLoading={addToCartButtonLoading}
                   wishlistItemsLoading={wishlistItemsLoading}
                 />
               ))}

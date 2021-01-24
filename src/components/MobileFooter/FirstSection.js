@@ -2,9 +2,11 @@ import React from 'react';
 import { IoMdCall } from 'react-icons/io';
 import { MdEmail } from 'react-icons/md';
 import { useIntl } from 'react-intl';
+import { DataProvider } from '../../contexts/DataContext';
 
 export default function FirstSection() {
   const { formatMessage } = useIntl();
+  const { settings } = React.useContext(DataProvider);
   return (
     <div
       className={`grid grid-cols-1 gap-2 px-4 py-4 bg-main-color text-main-text  `}
@@ -24,7 +26,7 @@ export default function FirstSection() {
             {formatMessage({ id: 'footer-help-center' })}
           </h1>
           <h1 className="text-sm">
-            {formatMessage({ id: 'footer-call' })} +123456789
+            {formatMessage({ id: 'footer-call' })} {settings?.store_mobile}
           </h1>
         </div>
       </div>
@@ -36,7 +38,7 @@ export default function FirstSection() {
           <h1 className="text-sm">
             {formatMessage({ id: 'footer-contact-email' })}
           </h1>
-          <h1 className="text-base">help@mrg-mall.com</h1>
+          <h1 className="text-base">{settings?.store_email}</h1>
         </div>
       </div>
     </div>

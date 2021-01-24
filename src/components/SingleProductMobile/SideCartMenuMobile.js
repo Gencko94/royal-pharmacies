@@ -9,9 +9,11 @@ import { DataProvider } from '../../contexts/DataContext';
 
 import SideCartMenuItemMobile from './SideCartMenuItemMobile';
 export default function SideCartMenuMobile({ setSideMenuOpen }) {
-  const { sideCartItems, sideCartSubTotal } = React.useContext(
-    CartAndWishlistProvider
-  );
+  const {
+    sideCartItems,
+    sideCartSubTotal,
+    sideCartCouponCost,
+  } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const handleCloseMenu = () => {
     setSideMenuOpen(false);
@@ -38,7 +40,12 @@ export default function SideCartMenuMobile({ setSideMenuOpen }) {
       },
     },
   };
-
+  React.useEffect(() => {
+    // if (orderDetailsOpen) {
+    document.body.style.overflow = 'hidden';
+    // }
+    return () => (document.body.style.overflow = 'unset');
+  }, []);
   return (
     <motion.div
       variants={sideMenuVariants}
@@ -74,14 +81,15 @@ export default function SideCartMenuMobile({ setSideMenuOpen }) {
           </div>
         )}
         {sideCartItems.length !== 0 && (
-          <div
-            className="flex-1 overflow-y-auto overflow-x-hidden"
-            style={{ maxHeight: 'calc(-110px + 100vh)' }}
-          >
+          <div className="flex-1 overflow-y-auto overflow-x-hidden">
             <AnimatePresence>
               {sideCartItems.map(item => {
                 return (
-                  <SideCartMenuItemMobile key={item.options.sku} item={item} />
+                  <SideCartMenuItemMobile
+                    key={item.options.sku}
+                    item={item}
+                    setSideMenuOpen={setSideMenuOpen}
+                  />
                 );
               })}
             </AnimatePresence>
@@ -90,18 +98,29 @@ export default function SideCartMenuMobile({ setSideMenuOpen }) {
         <hr className="my-1" />
         {sideCartItems.length !== 0 && (
           <div>
+            {sideCartCouponCost !== '0.000' && (
+              <div className="flex text-green-700 justify-between semibold items-center  my-2">
+                <h1 className="font-bold ">
+                  {formatMessage({ id: 'coupon-sale' })}
+                </h1>
+                <h1 className=" font-bold">
+                  {sideCartCouponCost}{' '}
+                  {deliveryCountry?.currency.translation[locale].symbol}
+                </h1>
+              </div>
+            )}
             <div className="flex justify-between semibold items-center  my-2">
-              <h1 className="">{formatMessage({ id: 'subtotal' })}</h1>
-              <h1 className=" font-semibold">
+              <h1 className="font-bold">{formatMessage({ id: 'subtotal' })}</h1>
+              <h1 className=" font-bold">
                 {sideCartSubTotal}{' '}
                 {deliveryCountry?.currency.translation[locale].symbol}
               </h1>
             </div>
             <hr className="my-1" />
-            <div className=" my-2">
+            <div className=" flex items-center my-2 text-center text-main-text ">
               <Link
                 to={`/${locale}/cart`}
-                className={` py-2 block text-center uppercase px-3 text-main-color mx-1 border-main-color border   rounded`}
+                className={`flex-1 py-2 px-3 border font-semibold border-main-color text-main-color mx-1 hover:bg-main-color hover:text-main-text uppercase transition duration-150   rounded`}
               >
                 {formatMessage({ id: 'go-to-cart' })}
               </Link>

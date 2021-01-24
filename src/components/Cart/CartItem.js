@@ -25,6 +25,7 @@ export default function CartItem({ item }) {
     addToWishListMutation,
     removeFromWishListMutation,
     removeFromCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -46,11 +47,16 @@ export default function CartItem({ item }) {
   const handleRemoveItemFromCart = async (id, cart_id) => {
     setRemoveFromCartButtonLoading(id);
     try {
-      await removeFromCartMutation({ id, userId, cart_id, deliveryCountry });
+      await removeFromCartMutation({
+        id,
+        userId,
+        cart_id,
+        deliveryCountry,
+        coupon,
+      });
       setRemoveFromCartButtonLoading(null);
     } catch (error) {
       setRemoveFromCartButtonLoading(null);
-      console.log(error.response);
     }
   };
   const handleChangeQuantity = e => {
@@ -73,11 +79,10 @@ export default function CartItem({ item }) {
       return;
     setEditLoading(true);
     try {
-      await editCartMutation({ cartId, itemId, userId, quantity });
+      await editCartMutation({ cartId, itemId, userId, quantity, coupon });
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
-      console.log(error.response);
     }
   };
   const handleRemoveItemFromWishlist = async id => {
@@ -85,17 +90,13 @@ export default function CartItem({ item }) {
       await removeFromWishListMutation({ id, userId });
 
       setItemInWishlist(false);
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   const handleAddItemToWishlist = async item => {
     try {
       await addToWishListMutation({ id: item.id, userId });
       setItemInWishlist(true);
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   const formatItemsPlural = n => {
     switch (n) {
@@ -116,14 +117,6 @@ export default function CartItem({ item }) {
         return (
           <span className="text-yellow-700">
             {formatMessage({ id: 'two-items-left' })}
-          </span>
-        );
-
-      case n > 10:
-        return (
-          <span className="  text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
           </span>
         );
 
@@ -160,15 +153,16 @@ export default function CartItem({ item }) {
       exit="exited"
       className="cart-item py-2 border-b"
     >
-      <Link to={`/${locale}/c/${item.id}`}>
+      <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
         <LazyImage
-          src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.image}`}
+          src={item.image}
+          origin="original"
           alt={item[`name_${locale}`]}
           pb="calc(100% * 286/210)"
         />
       </Link>
       <div className="">
-        <Link to={`/${locale}/c/${item.id}`}>
+        <Link to={`/${locale}/products/${item.slug}/${item.id}`}>
           <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
             item.options.addons
               ? ` - ${Object.keys(item.options.addons)
@@ -178,7 +172,7 @@ export default function CartItem({ item }) {
           }`}</h1>
         </Link>
         <h1 className=" font-semibold text-sm mb-1">
-          {item.options.max_quantity < 20 ? (
+          {item.options.max_quantity < 5 ? (
             formatItemsPlural(item.options.max_quantity)
           ) : (
             <span className="text-green-700">
@@ -233,7 +227,7 @@ export default function CartItem({ item }) {
                 color="#fff"
                 height={18}
                 width={18}
-                visible={true}
+                visible
               />
             ) : (
               formatMessage({ id: 'update-btn' })
@@ -257,7 +251,7 @@ export default function CartItem({ item }) {
                 color="#fff"
                 height={21}
                 width={21}
-                visible={true}
+                visible
               />
             ) : (
               <>
@@ -291,7 +285,15 @@ export default function CartItem({ item }) {
           </button>
         </div>
       </div>
-      <div className="text-center font-bold">
+      <div className="text-center" style={{ fontWeight: '900' }}>
+        {item.price} {deliveryCountry?.currency.translation[locale].symbol}
+        {item.message && (
+          <h1 className="text-main-color text-xs">
+            ({formatMessage({ id: item.message })})
+          </h1>
+        )}
+      </div>
+      <div className="text-center text-green-700" style={{ fontWeight: '900' }}>
         {item.total} {deliveryCountry?.currency.translation[locale].symbol}
       </div>
     </motion.div>

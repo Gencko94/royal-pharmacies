@@ -12,21 +12,25 @@ import { AnimatePresence, motion } from 'framer-motion';
 import SingleProductMobileLoader from '../components/SingleProductMobile/SingleProductMobileLoader';
 import AdditionalDetailsMobile from '../components/SingleProductMobile/AdditionalDetailsMobile';
 import { getProductReviews, getSingleItem } from '../Queries/Queries';
-import { useParams } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
 
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import Layout from '../components/Layout';
 import VariantProductMobile from '../components/SingleProductMobile/VariantProductMobile/VariantProductMobile';
+import MoreFrom from '../components/MoreFrom/MoreFrom';
+import { useIntl } from 'react-intl';
 
 export default function SingleProductMobile() {
   const { id } = useParams();
   const { addViewedItems, deliveryCountry } = React.useContext(DataProvider);
-
+  const { locale, formatMessage } = useIntl();
   const { userId } = React.useContext(AuthProvider);
-  const { addToCartMutation, addToGuestCartMutation } = React.useContext(
-    CartAndWishlistProvider
-  );
+  const {
+    addToCartMutation,
+    addToGuestCartMutation,
+    coupon,
+  } = React.useContext(CartAndWishlistProvider);
   const [itemInCart, setItemInCart] = React.useState(false);
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
@@ -43,33 +47,36 @@ export default function SingleProductMobile() {
   /**
    * Main Fetch
    */
-  const { data, isLoading } = useQuery(['singleProduct', id], getSingleItem, {
-    refetchOnWindowFocus: false,
-    retry: true,
-    onSuccess: async () => {
-      // add Item to localStorage
-      return await addViewedItems(id);
-    },
-  });
+  const { data, isLoading, error } = useQuery(
+    ['singleProduct', id],
+    getSingleItem,
+    {
+      refetchOnWindowFocus: false,
+      retry: true,
+      onSuccess: async () => {
+        // add Item to localStorage
+        return await addViewedItems(id);
+      },
+    }
+  );
   const { data: reviewsData, isLoading: reviewsLoading } = useQuery(
     ['product-reviews', id],
     getProductReviews,
     { retry: true, enabled: data }
   );
-
+  React.useEffect(() => {
+    return () => setItemInCart(false);
+  }, [id]);
   const handleAddToCart = async () => {
     setAddToCartButtonLoading(true);
     if (userId) {
       try {
         const newItem = { id: data.id, quantity };
-        await addToCartMutation({ newItem, userId, deliveryCountry });
+        await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        // console.clear();
-
-        console.log(error.response);
         if (error.response.data.message === 'Item founded on the Cart') {
           setItemInCart(true);
         }
@@ -82,24 +89,60 @@ export default function SingleProductMobile() {
           : data.simple_addons.price;
         const sku = data.simple_addons.sku;
         const newItem = { id: data.id, quantity, price, sku };
-        await addToGuestCartMutation({ newItem, deliveryCountry });
+        await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
         setItemInCart(true);
       } catch (error) {
-        console.log(error.response);
+        setAddToCartButtonLoading(false);
       }
     }
   };
-
+  if (error) {
+    if (error.response.data.message === 'Product not founded') {
+      return <Redirect to={`/${locale}/page/404`} />;
+    }
+  }
   return (
     <Layout>
       <Helmet>
-        {/* <title>{` Shop ${name.split('-').join(' ')} on MRG`} </title>
+        <title>
+          {data
+            ? `${formatMessage({ id: 'shop' })} ${
+                data?.full_translation?.[locale].title
+              } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+            : 'MRG Mall Kuwait Online Shop |  متجر إم آر جي الإلكتروني الكويت'}
+        </title>
         <meta
           name="description"
-          content={`${name.split('-').join(' ')} | MRG`}
-        /> */}
+          content={
+            data
+              ? `${formatMessage({ id: 'shop' })} ${
+                  data?.full_translation?.[locale].title
+                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+          }
+        />
+        <meta
+          property="og:title"
+          content={
+            data
+              ? `${formatMessage({ id: 'shop' })} ${
+                  data?.full_translation?.[locale].title
+                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+          }
+        />
+        <meta
+          property="og:description"
+          content={
+            data
+              ? `${formatMessage({ id: 'shop' })} ${
+                  data?.full_translation?.[locale].title
+                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
+              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+          }
+        />
       </Helmet>
       <div className="overflow-hidden">
         <AnimatePresence>
@@ -120,7 +163,19 @@ export default function SingleProductMobile() {
 
         {isLoading && <SingleProductMobileLoader />}
         {!isLoading &&
-          (data.type === 'simple' ? (
+          (data.type === 'variation' &&
+          Object.entries(data.new_variation_addons).length > 0 ? (
+            <VariantProductMobile
+              data={data}
+              quantity={quantity}
+              setQuantity={setQuantity}
+              reviews={reviewsData}
+              reviewsLoading={reviewsLoading}
+              setSideMenuOpen={setSideMenuOpen}
+              setDetailsTab={setDetailsTab}
+              inView={inView}
+            />
+          ) : (
             <div className="">
               <ImageZoomMobile data={data} />
 
@@ -143,17 +198,6 @@ export default function SingleProductMobile() {
                 <hr />
               </div>
             </div>
-          ) : (
-            <VariantProductMobile
-              data={data}
-              quantity={quantity}
-              setQuantity={setQuantity}
-              reviews={reviewsData}
-              reviewsLoading={reviewsLoading}
-              setSideMenuOpen={setSideMenuOpen}
-              setDetailsTab={setDetailsTab}
-              inView={inView}
-            />
           ))}
         {!isLoading && (
           <AdditionalDetailsMobile
@@ -183,6 +227,14 @@ export default function SingleProductMobile() {
         </AnimatePresence>
 
         <hr />
+        {!isLoading && (
+          <div className="px-3">
+            <MoreFrom
+              categories={data?.categories}
+              setSideMenuOpen={setSideMenuOpen}
+            />
+          </div>
+        )}
       </div>
     </Layout>
   );

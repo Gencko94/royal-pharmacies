@@ -1,7 +1,13 @@
 import React from 'react';
 
 import { queryCache, useQuery } from 'react-query';
-import { getAllCategories, getDeliveryCountries } from '../Queries/Queries';
+import {
+  getAllCategories,
+  getDeliveryCountries,
+  getNavCategories,
+  getSiteSettings,
+} from '../Queries/Queries';
+
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
   const localDeliveryCountry = localStorage.getItem('deliveryCountry');
@@ -23,30 +29,40 @@ export default function DataContextProvider({ children }) {
   };
 
   const addViewedItems = id => {
-    const visitedItems = JSON.parse(localStorage.getItem('visitedItems'));
+    const visitedItems = JSON.parse(localStorage.getItem('browse-history'));
     const isItemInHistory = visitedItems.find(item => item.id === id);
     if (!isItemInHistory) {
       visitedItems.unshift({ id });
-      localStorage.setItem('visitedItems', JSON.stringify(visitedItems));
+      localStorage.setItem('browse-history', JSON.stringify(visitedItems));
     }
   };
 
   const removeViewedItems = id => {
-    let localVisited = localStorage.getItem('visitedItems');
+    let localVisited = localStorage.getItem('browse-history');
     let parsed = JSON.parse(localVisited);
+
     localVisited = parsed.filter(i => {
       return i.id !== id.toString();
     });
-    localStorage.setItem('visitedItems', JSON.stringify(localVisited));
+
+    localStorage.setItem('browse-history', JSON.stringify(localVisited));
 
     queryCache.setQueryData('viewedItems', prev => {
-      return prev.filter(i => i.id !== id.toString());
+      return prev.filter(i => i.id !== id);
     });
   };
 
   const { data: categories, isLoading: categoriesLoading } = useQuery(
     'categories',
     getAllCategories,
+    {
+      retry: true,
+      refetchOnWindowFocus: false,
+    }
+  );
+  const { data: navCategories, isLoading: navCategoriesLoading } = useQuery(
+    'nav-categories',
+    getNavCategories,
     {
       retry: true,
       refetchOnWindowFocus: false,
@@ -68,12 +84,19 @@ export default function DataContextProvider({ children }) {
       );
     },
   });
+  const { data: settings } = useQuery('settings', getSiteSettings, {
+    retry: true,
+    refetchOnWindowFocus: false,
+  });
   return (
     <DataProvider.Provider
       value={{
-        categories: categories,
-        categoriesLoading: categoriesLoading,
-        deliveryCountry: deliveryCountry,
+        categories,
+        navCategories,
+
+        categoriesLoading,
+        navCategoriesLoading,
+        deliveryCountry,
         deliveryCountries,
         deliveryCountriesLoading,
         setDeliveryCountry,
@@ -83,6 +106,7 @@ export default function DataContextProvider({ children }) {
         removeViewedItems,
         searchBarValue,
         setSearchBarValue,
+        settings,
       }}
     >
       {children}

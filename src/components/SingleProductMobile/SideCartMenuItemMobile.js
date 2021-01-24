@@ -8,10 +8,12 @@ import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
-export default function SideCartMenuItemMobile({ item }) {
+
+export default function SideCartMenuItemMobile({ item, setSideMenuOpen }) {
   const {
     removeFromCartMutation,
     removeFromGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const [
     removeFromCartButtonLoading,
@@ -26,16 +28,21 @@ export default function SideCartMenuItemMobile({ item }) {
       if (userId) {
         const id = item.id;
         const cart_id = item.cart_id;
-        await removeFromCartMutation({ id, cart_id, userId, deliveryCountry });
+        await removeFromCartMutation({
+          id,
+          cart_id,
+          userId,
+          deliveryCountry,
+          coupon,
+        });
         setRemoveFromCartButtonLoading(false);
       } else {
         const sku = item.options.sku;
-        await removeFromGuestCartMutation({ sku, deliveryCountry });
+        await removeFromGuestCartMutation({ sku, deliveryCountry, coupon });
         setRemoveFromCartButtonLoading(false);
       }
     } catch (error) {
       setRemoveFromCartButtonLoading(false);
-      console.log(error.response);
     }
   };
 
@@ -60,46 +67,60 @@ export default function SideCartMenuItemMobile({ item }) {
     >
       <div className="">
         <Link
-          title={`${item[`name_${locale}`]}`}
+          title={item[`name_${locale}`]}
           className="hover:underline"
-          to={`/${locale}/c/${item.id}`}
+          to={`/${locale}/products/${item.slug}/${item.id}`}
+          onClick={() => setSideMenuOpen(false)}
         >
           <LazyImage
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
-            pb="calc(100% * 204/150)"
-            alt={`${item[`name_${locale}`]}`}
+            src={item?.image}
+            origin="small"
+            pb="calc(100% * 150/150)"
+            alt={item[`name_${locale}`]}
           ></LazyImage>
         </Link>
       </div>
       <div className="">
         <Link
-          title={`${item[`name_${locale}`]}`}
+          title={item[`name_${locale}`]}
           className="hover:underline"
-          to={`/${locale}/c/${item.id}`}
+          to={`/${locale}/products/${item.slug}/${item.id}`}
+          onClick={() => setSideMenuOpen(false)}
         >
-          <h1 className="text-clamp-2 text-xs font-semibold">
-            {`${item[`name_${locale}`]}`}
+          <h1 className="text-clamp-2 text-sm font-bold">
+            {item[`name_${locale}`]}
           </h1>
         </Link>
 
-        <h1 className="text-xs rounded p-1 font-bold  bg-gray-200 inline">
-          {item.total} {deliveryCountry?.currency.translation[locale].symbol}
-        </h1>
+        <div className="flex items-center text-gray-700">
+          <div className="flex items-center">
+            <h1 className="text-xs font-semibold">
+              {formatMessage({ id: 'price' })}
+            </h1>
+            <h1 className="text-xs font-bold mx-1">
+              {item.total}{' '}
+              {deliveryCountry?.currency.translation[locale].symbol}
+            </h1>
+          </div>
+          <div className="flex items-center text-xs mx-2">
+            <h1 className="font-semibold">{formatMessage({ id: 'qty' })} :</h1>
+            <h1 className="mx-1 font-bold">{item.qty}</h1>
+          </div>
+        </div>
         <div>
           <button
             className={`
-             
-                
               bg-main-color text-main-text
-             text-xs rounded p-1 my-1 uppercase`}
+             text-xs rounded p-1 my-1 flex items-center justify-center font-semibold uppercase`}
             onClick={handleRemoveFromCart}
+            style={{ width: '140px' }}
           >
             {removeFromCartButtonLoading ? (
               <Loader
                 type="ThreeDots"
                 color="#fff"
-                height={20}
-                width={20}
+                height={18}
+                width={18}
                 visible={true}
               />
             ) : (

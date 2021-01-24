@@ -5,18 +5,18 @@ import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
 import { Link } from 'react-router-dom';
 import LazyImage from '../../helpers/LazyImage';
-export default function CategoryChildrenMobile({ categoryInfo }) {
+export default function CategoryChildrenMobile({ children }) {
   const { locale } = useIntl();
   SwiperCore.use([Navigation]);
   const breakpoints = {
     // when window width is >= 320px
     320: {
-      slidesPerView: 2,
+      slidesPerView: 3,
       spaceBetween: 20,
     },
     // when window width is >= 480px
     480: {
-      slidesPerView: 3,
+      slidesPerView: 4,
       spaceBetween: 20,
     },
     // when window width is >= 640px
@@ -26,24 +26,24 @@ export default function CategoryChildrenMobile({ categoryInfo }) {
     },
   };
   return (
-    <Swiper navigation id="main" className="my-1" breakpoints={breakpoints}>
-      {categoryInfo.children.map(child => {
+    <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
+      {children.map(child => {
         return (
           <SwiperSlide
             key={child.id}
-            className={`overflow-hidden border my-2  relative bg-gray-100
-             shadow
-            rounded`}
+            className={`overflow-hidden  rounded-lg my-2  relative 
+             
+            `}
           >
-            <Link to={`/${locale}/categories/${child.slug}`}>
-              <div className="p-2">
-                <LazyImage
-                  src={`${process.env.REACT_APP_IMAGES_URL}/original/${child.translation[locale].image?.link}`}
-                  alt={child.translation[locale].name}
-                  pb="calc(100% * 286/210)"
-                />
-              </div>
-              <h1 className="font-semibold text-center p-1">
+            <Link to={`/${locale}/${child.slug}`}>
+              <LazyImage
+                src={child.translation[locale].image?.link}
+                alt={child.translation[locale].name}
+                pb="calc(100% * 210/210)"
+                origin="original"
+              />
+
+              <h1 className="text-center mt-4 text-lg font-bold">
                 {child.translation[locale].name}
               </h1>
             </Link>

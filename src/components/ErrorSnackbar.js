@@ -23,7 +23,7 @@ export default function ErrorSnackbar({ message, closeFunction }) {
       initial="hidden"
       animate="visible"
       exit="exited"
-      className="snackbar bg-main-color text-main-text rounded font-semibold flex text-sm"
+      className={`snackbar whitespace-no-wrap  bg-main-color text-main-text rounded font-semibold flex text-sm max-w-screen-xs md:max-w-screen-sm`}
     >
       <h1 className="mx-3">{message}</h1>
       <button onClick={closeFunction} className="mx-3">

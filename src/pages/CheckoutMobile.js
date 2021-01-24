@@ -7,16 +7,27 @@ import SelectAddressMobile from '../components/MobileCheckout/SelectAddressMobil
 import { DataProvider } from '../contexts/DataContext';
 import { checkout } from '../Queries/Queries';
 import { useMutation } from 'react-query';
-
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
+import { useIntl } from 'react-intl';
+import ErrorSnackbar from '../components/ErrorSnackbar';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function CheckoutMobile() {
   const { deliveryCountry } = React.useContext(DataProvider);
   const [selectedStep, setSelectedStep] = React.useState(0);
-
   const [selectedAddress, setSelectedAddress] = React.useState(null);
-  const [personalInfo, setPersonalInfo] = React.useState({
-    fullName: '',
-    phoneNumber: '',
-  });
+  const [paymentMethod, setPaymentMethod] = React.useState(null);
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const { cartItems, cartItemsLoading, coupon } = React.useContext(
+    CartAndWishlistProvider
+  );
+  const { authenticationLoading } = React.useContext(DataProvider);
+  const { formatMessage } = useIntl();
+  const closeError = () => {
+    setErrorOpen(false);
+  };
+
   const [
     checkoutMutation,
     { isLoading: checkoutLoading },
@@ -38,53 +49,99 @@ export default function CheckoutMobile() {
     }
   };
   const handleStepForward = () => {
-    if (selectedStep === 2) {
-      return;
-    } else {
-      setSelectedStep(selectedStep + 1);
-      setStepDone({
-        ...stepDone,
-        [selectedStep]: true,
-      });
-    }
+    setSelectedStep(selectedStep + 1);
+    setStepDone({
+      ...stepDone,
+      [selectedStep]: true,
+    });
+  };
+  const handleSelectAddress = address => {
+    setSelectedAddress(address);
+    handleStepForward();
   };
   const handleCheckout = async () => {
     const order = {
       address: selectedAddress.id,
-      payment_method: 'knet',
-      order_type: 'local',
+      payment_method: paymentMethod,
+      order_type:
+        deliveryCountry?.translation.en.name === 'Kuwait'
+          ? 'local'
+          : 'international',
     };
     try {
-      await checkoutMutation({
+      const res = await checkoutMutation({
         deliveryCountry,
         order,
+        coupon,
       });
-      setSelectedStep(2);
+      setStepDone({
+        ...stepDone,
+        1: true,
+      });
+
+      if (paymentMethod === 'cod') {
+        setSelectedStep(2);
+      } else {
+        window.location.href = res.payment;
+      }
     } catch (error) {
-      console.log(error.response);
+      setErrorOpen(true);
+      if (
+        error.response?.data?.message ===
+        'Coupon already used by this customer.'
+      ) {
+        return setErrorMessage(formatMessage({ id: 'coupon-limit-reached' }));
+      }
+      setErrorMessage(formatMessage({ id: 'something-went-wrong-snackbar' }));
     }
   };
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [selectedStep]);
+  if (cartItemsLoading || authenticationLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader
+          type="ThreeDots"
+          color="#b72b2b"
+          height={50}
+          width={50}
+          visible={true}
+        />
+      </div>
+    );
+  }
+  if (!cartItemsLoading && cartItems.length === 0) {
+    return (
+      <Layout>
+        <div
+          className="flex items-center justify-center mx-auto text-center"
+          style={{ height: 'calc(100vh - 110px)', maxWidth: '360px' }}
+        >
+          <h1 className="text-lg font-semibold">
+            {formatMessage({ id: 'checkout-cart-empty' })}
+          </h1>
+        </div>
+      </Layout>
+    );
+  }
   return (
     <Layout>
+      {errorOpen && (
+        <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
+      )}
       <div className="xxl:max-w-default md:max-w-screen-xl mx-auto">
         <StepperMobile selectedStep={selectedStep} stepDone={stepDone} />
-        <div className="mb-3" style={{ minHeight: 'calc(100vh - 150px)' }}>
+        <div className="mb-3" style={{ minHeight: 'calc(100vh - 231px)' }}>
           {selectedStep === 0 && (
-            <SelectAddressMobile
-              handleStepForward={handleStepForward}
-              selectedAddress={selectedAddress}
-              setSelectedAddress={setSelectedAddress}
-            />
+            <SelectAddressMobile handleSelectAddress={handleSelectAddress} />
           )}
           {selectedStep === 1 && (
             <PersonalInformationMobile
               handleStepBack={handleStepBack}
               selectedAddress={selectedAddress}
-              personalInfo={personalInfo}
-              setPersonalInfo={setPersonalInfo}
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
               handleCheckout={handleCheckout}
               checkoutLoading={checkoutLoading}
             />

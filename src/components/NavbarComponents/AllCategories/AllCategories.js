@@ -5,11 +5,17 @@ import { useIntl } from 'react-intl';
 import { DataProvider } from '../../../contexts/DataContext';
 import AllCategoriesMegaMenu from '../AllCategoriesMegaMenu';
 import AllCategoriesMenu from '../AllCategoriesMenu';
-export default function AllCategories() {
-  const { formatMessage } = useIntl();
-  const { allCategories } = React.useContext(DataProvider);
-  const [categories, setCategories] = React.useState([]);
-  const [selectedCategory, setSelectedCategory] = React.useState({});
+export default function AllCategories({ navCategories }) {
+  const { formatMessage, locale } = useIntl();
+  const { categories } = React.useContext(DataProvider);
+
+  const [selectedCategory, setSelectedCategory] = React.useState(() => {
+    if (categories) {
+      return categories[0];
+    } else {
+      return {};
+    }
+  });
   const [categoriesOpen, setCategoriesOpen] = React.useState(false);
   const [subCategoriesOpen, setSubCategoriesOpen] = React.useState(false);
 
@@ -21,45 +27,47 @@ export default function AllCategories() {
     setSubCategoriesOpen(false);
     setSelectedCategory({});
   };
-  const handleMegaMenuOpen = categoryName => {
+  const handleMegaMenuOpen = categoryId => {
     setSubCategoriesOpen(true);
-    setSelectedCategory(categories.find(cat => cat.category === categoryName));
+    setSelectedCategory(categories.find(cat => cat.id === categoryId));
   };
 
-  React.useEffect(() => {
-    setCategories(allCategories);
-    setSelectedCategory(allCategories[0]);
-  }, [allCategories]);
-
+  if (!navCategories) {
+    return null;
+  }
   return (
-    <>
-      <div
-        onMouseEnter={handleMenuOpen}
-        onMouseLeave={handleMenuClose}
-        className="font-semibold  flex  justify-between py-2 px-4 border-r relative"
-        style={{ flexBasis: '250px' }}
-      >
-        <span className="">{formatMessage({ id: 'all-categories' })}</span>
-        <BiCaretDown className="w-5 h-5" />
-        <AnimatePresence>
-          {categoriesOpen && (
-            <AllCategoriesMenu
-              categories={categories}
-              selectedCategory={selectedCategory}
-              handleMegaMenuOpen={handleMegaMenuOpen}
-              subCategoriesOpen={subCategoriesOpen}
-            />
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {subCategoriesOpen && (
-            <AllCategoriesMegaMenu
-              selectedCategory={selectedCategory}
-              subCategoriesOpen={subCategoriesOpen}
-            />
-          )}
-        </AnimatePresence>
-      </div>
-    </>
+    <div
+      onMouseEnter={() => categories && handleMenuOpen()}
+      onMouseLeave={handleMenuClose}
+      className={`font-semibold items-center cursor-pointer flex  justify-between py-2 px-4 ${
+        locale === 'ar' ? 'border-l' : 'border-r'
+      } relative`}
+      style={{ flexBasis: '250px' }}
+    >
+      <span className="uppercase " style={{ fontWeight: '900' }}>
+        {formatMessage({ id: 'all-categories' })}
+      </span>
+      <BiCaretDown className="w-5 h-5" />
+      <AnimatePresence>
+        {categoriesOpen && (
+          <AllCategoriesMenu
+            categories={categories}
+            selectedCategory={selectedCategory}
+            handleMegaMenuOpen={handleMegaMenuOpen}
+            subCategoriesOpen={subCategoriesOpen}
+            handleMenuClose={handleMenuClose}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {subCategoriesOpen && (
+          <AllCategoriesMegaMenu
+            selectedCategory={selectedCategory}
+            subCategoriesOpen={subCategoriesOpen}
+            handleMenuClose={handleMenuClose}
+          />
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

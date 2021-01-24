@@ -8,10 +8,12 @@ import { DataProvider } from '../../../contexts/DataContext';
 import { CartAndWishlistProvider } from '../../../contexts/CartAndWishlistContext';
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai';
 import Ink from 'react-ink';
+import LazyImage from '../../../helpers/LazyImage';
 export default function GuestCartItemMobile({ item }) {
   const {
     removeFromGuestCartMutation,
     editGuestCartMutation,
+    coupon,
   } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
   const [quantity, setQuantity] = React.useState(item.qty);
@@ -59,14 +61,6 @@ export default function GuestCartItemMobile({ item }) {
           </span>
         );
 
-      case n > 10:
-        return (
-          <span className=" text-yellow-700">
-            {' '}
-            {n} {formatMessage({ id: 'more-than-10-items-left' })}
-          </span>
-        );
-
       default:
         return (
           <span className="  text-yellow-700">
@@ -99,11 +93,10 @@ export default function GuestCartItemMobile({ item }) {
   const handleRemoveItemFromCart = async sku => {
     setRemoveFromCartButtonLoading(true);
     try {
-      await removeFromGuestCartMutation({ sku, deliveryCountry });
+      await removeFromGuestCartMutation({ sku, deliveryCountry, coupon });
       setRemoveFromCartButtonLoading(false);
     } catch (error) {
       setRemoveFromCartButtonLoading(false);
-      console.log(error.response);
     }
   };
   const handleEditItemFromCart = async (sku, price) => {
@@ -115,11 +108,16 @@ export default function GuestCartItemMobile({ item }) {
       return;
     setEditLoading(true);
     try {
-      await editGuestCartMutation({ sku, quantity, price, deliveryCountry });
+      await editGuestCartMutation({
+        sku,
+        quantity,
+        price,
+        deliveryCountry,
+        coupon,
+      });
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
-      console.log(error.response);
     }
   };
   return (
@@ -132,17 +130,18 @@ export default function GuestCartItemMobile({ item }) {
       className="border-b "
     >
       <div className="py-2 cart__item-mobile">
-        <Link to={`/${locale}/item/${item.id}}`}>
-          <img
-            className=""
-            src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.image}`}
+        <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
+          <LazyImage
+            src={item.image}
+            origin="small"
             alt={item[`name_${locale}`]}
+            pb="calc(100% * 286/210)"
           />
         </Link>
         <div className="text-sm">
-          <Link to={`/${locale}/item/${item.id}}`}>
+          <Link to={`/${locale}/products/${item.slug}/${item.id}}`}>
             <h1 className="font-semibold ">{`${item[`name_${locale}`]}${
-              item.options.addons.length !== 0
+              item.options.addons
                 ? ` - ${Object.keys(item.options.addons)
                     .map(variation => item.options.addons[variation])
                     .join(' - ')}`
@@ -150,7 +149,7 @@ export default function GuestCartItemMobile({ item }) {
             }`}</h1>
           </Link>
           <h1 className=" font-semibold">
-            {item.options.max_quantity < 20 ? (
+            {item.options.max_quantity < 5 ? (
               formatItemsPlural(item.options.max_quantity)
             ) : (
               <span className="text-green-700">
@@ -158,7 +157,10 @@ export default function GuestCartItemMobile({ item }) {
               </span>
             )}
           </h1>
-          <div className="text-main0color font-bold text-base">
+          <div
+            className="text-main-color text-base"
+            style={{ fontWeight: '900' }}
+          >
             {item.total} {deliveryCountry?.currency.translation[locale].symbol}
           </div>
           <div className=" flex items-center flex-wrap ">
@@ -184,35 +186,38 @@ export default function GuestCartItemMobile({ item }) {
                 <AiOutlinePlusCircle className={`w-6 h-6 text-blue-700`} />
               </button>
             </div>
+
+            <button
+              onClick={() =>
+                handleEditItemFromCart(item.options.sku, item.price)
+              }
+              style={{ width: '50px' }}
+              disabled={
+                quantity > item.options.max_quantity ||
+                quantity === 0 ||
+                item.qty === quantity
+              }
+              className={`p-1 flex items-center justify-center text-xs rounded mt-1 ${
+                quantity > item.options.max_quantity ||
+                quantity === 0 ||
+                item.qty === quantity
+                  ? 'bg-gray-600 text-gray-400'
+                  : 'bg-main-color text-main-text'
+              }`}
+            >
+              {editLoading ? (
+                <Loader
+                  type="ThreeDots"
+                  color="#fff"
+                  height={18}
+                  width={18}
+                  visible={true}
+                />
+              ) : (
+                formatMessage({ id: 'update-btn' })
+              )}
+            </button>
           </div>
-          <button
-            onClick={() => handleEditItemFromCart(item.options.sku, item.price)}
-            style={{ width: '50px' }}
-            disabled={
-              quantity > item.options.max_quantity ||
-              quantity === 0 ||
-              item.qty === quantity
-            }
-            className={`p-1 flex items-center justify-center text-xs rounded mt-1 ${
-              quantity > item.options.max_quantity ||
-              quantity === 0 ||
-              item.qty === quantity
-                ? 'bg-gray-600 text-gray-400'
-                : 'bg-main-color text-main-text'
-            }`}
-          >
-            {editLoading ? (
-              <Loader
-                type="ThreeDots"
-                color="#fff"
-                height={18}
-                width={18}
-                visible={true}
-              />
-            ) : (
-              formatMessage({ id: 'update-btn' })
-            )}
-          </button>
         </div>
       </div>
       <div className="flex justify-center text-sm  items-center my-2 ">
@@ -220,16 +225,14 @@ export default function GuestCartItemMobile({ item }) {
           onClick={() => {
             handleRemoveItemFromCart(item.options.sku);
           }}
-          className={`${
-            removefromCartButtonLoading === item.id
-              ? 'bg-gray-300'
-              : 'bg-main-color'
-          }  text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
+          className={`
+              bg-main-color
+            text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
         >
           {removefromCartButtonLoading === item.id ? (
             <Loader
               type="ThreeDots"
-              color="#b72b2b"
+              color="#fff"
               height={22}
               width={22}
               visible={true}

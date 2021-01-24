@@ -25,7 +25,6 @@ import SideMenuCustomerService from '../SideMenu/SideMenuCustomerService';
 export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   const { userId, userLogoutMutation } = React.useContext(AuthProvider);
   const {
-    categories,
     categoriesLoading,
     deliveryCountry,
     deliveryCountries,
@@ -39,8 +38,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
   );
   const [showCustomerService, setShowCustomerService] = React.useState(false);
   const [page, setPage] = React.useState(0);
-  const [subCategory, setSubCategory] = React.useState(0);
-  const [secondSubPage, setSecondSubPage] = React.useState(0);
+
   const innerRef = React.useRef(null);
   const { locale, formatMessage } = useIntl();
 
@@ -50,10 +48,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
       setShowCategories(false);
     }, 400);
   };
-  const handleClickBackSecond = i => {
-    setPage(page - 1);
-    setSecondSubPage(i);
-  };
+
   const handleShowCategories = () => {
     if (categoriesLoading) {
       return;
@@ -94,14 +89,6 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
       setShowCustomerService(false);
     }, 400);
   };
-  const handleClickNextFirst = i => {
-    setPage(page + 1);
-    setSubCategory(i);
-  };
-  const handleClickNextSecond = i => {
-    setPage(page + 1);
-    setSecondSubPage(i);
-  };
 
   React.useEffect(() => {
     if (innerRef.current) {
@@ -129,7 +116,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
       transition: {
         duration: 0.2,
         when: 'beforeChildren',
-        staggerChildren: 0.1,
+        staggerChildren: 0.05,
         delayChildren: -0.1,
       },
     },
@@ -159,13 +146,11 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
       exit="exited"
       ref={sideMenuRef}
       className={`
-        
-         bg-side-light text-side-light-text
-         
+         bg-body-light text-side-light-text
         z-30  fixed top-0 ${
           locale === 'ar' ? 'right-0' : 'left-0'
-        } min-w-75p h-screen sm:text-lg overflow-hidden`}
-      style={{ maxWidth: '75%' }}
+        }  h-screen sm:text-lg overflow-y-hidden`}
+      style={{ maxWidth: '80%', minWidth: '80%' }}
     >
       <TopSection toggleSideMenu={toggleSideMenu} />
 
@@ -230,19 +215,42 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
                 </Link>
               </motion.button>
             )}
-            <motion.button
-              key="orderHistory"
-              variants={childVariants}
-              onClick={toggleSideMenu}
-              className="p-3"
-            >
-              <div className=" flex items-center">
-                <AiOutlineHistory className=" w-25p h-25p" />
-                <h1 className="mx-2">
-                  {formatMessage({ id: 'order-history' })}
-                </h1>
-              </div>
-            </motion.button>
+            {userId && (
+              <motion.button
+                key="orderHistory"
+                variants={childVariants}
+                onClick={toggleSideMenu}
+                className="p-3"
+              >
+                <Link
+                  to={`/${locale}/user/account/orders`}
+                  className="flex items-center"
+                >
+                  <AiOutlineHistory className=" w-25p h-25p" />
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'order-history' })}
+                  </h1>
+                </Link>
+              </motion.button>
+            )}
+            {!userId && (
+              <motion.button
+                key="guestorderHistory"
+                variants={childVariants}
+                onClick={toggleSideMenu}
+                className="p-3"
+              >
+                <Link
+                  to={`/${locale}/order/track`}
+                  className="flex items-center"
+                >
+                  <AiOutlineHistory className=" w-25p h-25p" />
+                  <h1 className="mx-2">
+                    {formatMessage({ id: 'track-my-order' })}
+                  </h1>
+                </Link>
+              </motion.button>
+            )}
             <hr />
             {userId && (
               <motion.button
@@ -342,16 +350,16 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
           {showCategories && (
             <SideMenuCategories
               handleHideCategories={handleHideCategories}
-              handleClickBackSecond={handleClickBackSecond}
-              handleClickNextFirst={handleClickNextFirst}
-              handleClickNextSecond={handleClickNextSecond}
-              secondSubPage={secondSubPage}
-              subCategory={subCategory}
-              categories={categories}
+              page={page}
+              setPage={setPage}
+              toggleSideMenu={toggleSideMenu}
             />
           )}
           {showLanguages && (
-            <SideMenuLanguages handleHideLanguages={handleHideLanguages} />
+            <SideMenuLanguages
+              handleHideLanguages={handleHideLanguages}
+              toggleSideMenu={toggleSideMenu}
+            />
           )}
           {showDeliveryCountries && (
             <SideMenuDeliveryCountries
@@ -359,6 +367,7 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
               deliveryCountries={deliveryCountries}
               deliveryCountry={deliveryCountry}
               setDeliveryCountry={setDeliveryCountry}
+              toggleSideMenu={toggleSideMenu}
             />
           )}
           {showCustomerService && (

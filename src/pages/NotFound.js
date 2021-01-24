@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import bg from '../assets/404.jpg';
@@ -13,6 +14,9 @@ export default function NotFound() {
         backgroundPosition: 'center',
       }}
     >
+      <Helmet>
+        <title>404 | MRG</title>
+      </Helmet>
       <div className=" not-found-title-desktop">
         <div className="flex justify-center items-center">
           <h1 style={{ fontSize: '150px', fontWeight: '500' }}>

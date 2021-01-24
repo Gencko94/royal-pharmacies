@@ -66,6 +66,14 @@ export default function HelloUser() {
                 {formatMessage({ id: 'nav.account' })}
               </Link>
             </div>
+            <div className="  font-normal hover:bg-main-color hover:text-main-text">
+              <Link
+                className=" p-2 w-full inline-block text-center"
+                to={`/${locale}/vieweditems`}
+              >
+                {formatMessage({ id: 'nav.history' })}
+              </Link>
+            </div>
             <div className=" hover:bg-main-color hover:text-main-text">
               <button
                 className=" w-full p-2 inline-block  "

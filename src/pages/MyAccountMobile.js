@@ -1,6 +1,7 @@
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { useIntl } from 'react-intl';
 import { Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import Layout from '../components/Layout';
 import MobileTabs from '../components/MyAccountMobile/MobileTabs';
@@ -8,13 +9,14 @@ import MyAddressesMobile from '../components/MyAccountMobile/MyAddressesMobile';
 import MyOrdersMobile from '../components/MyAccountMobile/MyOrdersMobile';
 import MyProfileMobile from '../components/MyAccountMobile/MyProfileMobile';
 export default function MyAccountMobile() {
+  const { formatMessage } = useIntl();
   const location = useLocation();
   const { path } = useRouteMatch();
 
   return (
     <Layout>
       <Helmet>
-        <title>My Account | MRG</title>
+        <title>{formatMessage({ id: 'my-account' })}| MRG</title>
       </Helmet>
       <div className="relative">
         <MobileTabs />

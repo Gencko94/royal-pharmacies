@@ -9,10 +9,16 @@ import { useQuery } from 'react-query';
 import SwiperLoader from '../Home/SwiperLoader';
 import SwiperItem from './SwiperItem';
 import VariantSwiperItem from './VariantSwiperItem';
+import { Link } from 'react-router-dom';
+import ErrorSnackbar from '../ErrorSnackbar';
 SwiperCore.use([Navigation]);
 export default function StaticSwiper({ type, cb, title }) {
-  const { formatMessage } = useIntl();
-
+  const { formatMessage, locale } = useIntl();
+  const [errorOpen, setErrorOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const closeError = () => {
+    setErrorOpen(false);
+  };
   const { data, isLoading } = useQuery(
     ['staticSwiper', type],
     getStaticSwiperData,
@@ -35,7 +41,7 @@ export default function StaticSwiper({ type, cb, title }) {
       slidesPerView: 4,
       spaceBetween: 20,
     },
-    860: {
+    768: {
       slidesPerView: 5,
       spaceBetween: 20,
     },
@@ -48,16 +54,28 @@ export default function StaticSwiper({ type, cb, title }) {
       spaceBetween: 20,
     },
   };
+
   return (
     <div className="my-8">
+      {errorOpen && (
+        <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
+      )}
       {isLoading && <div className="mb-4 " style={{ height: '30px' }}></div>}
       {isLoading && <SwiperLoader />}
       {!isLoading && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl font-bold flex-1 ">{title}</h1>
-          <button className="py-1 px-2  bg-main-color text-second-nav-text-light rounded whitespace-no-wrap">
-            {formatMessage({ id: 'seeAll' })}
-          </button>
+          <h1 className="text-xl md:text-2xl flex-1 font-bold ">
+            {data?.title[locale]?.name}
+          </h1>
+          {type !== 'latest_products' && type !== 'best_seller' && (
+            <Link
+              to={`/${locale}/${data?.slug}`}
+              className="py-1 px-2  bg-main-color text-second-nav-text-light rounded whitespace-no-wrap"
+              style={{ fontWeight: '900' }}
+            >
+              {formatMessage({ id: 'seeAll' })}
+            </Link>
+          )}
         </div>
       )}
       {!isLoading && (
@@ -67,16 +85,27 @@ export default function StaticSwiper({ type, cb, title }) {
           spaceBetween={10}
           breakpoints={breakpoints}
         >
-          {data.map(item => {
+          {data.products.map(item => {
             return (
               <SwiperSlide
                 key={item.id}
-                className={`overflow-hidden   relative my-1 rounded`}
+                className={`overflow-hidden   relative my-2 rounded`}
               >
-                {item.type === 'simple' ? (
-                  <SwiperItem item={item} setCartMenuOpen={cb} />
+                {item.type === 'variation' &&
+                Object.entries(item.new_variation_addons).length > 0 ? (
+                  <VariantSwiperItem
+                    item={item}
+                    setCartMenuOpen={cb}
+                    setErrorMessage={setErrorMessage}
+                    setErrorOpen={setErrorOpen}
+                  />
                 ) : (
-                  <VariantSwiperItem item={item} setCartMenuOpen={cb} />
+                  <SwiperItem
+                    item={item}
+                    setCartMenuOpen={cb}
+                    setErrorMessage={setErrorMessage}
+                    setErrorOpen={setErrorOpen}
+                  />
                 )}
               </SwiperSlide>
             );

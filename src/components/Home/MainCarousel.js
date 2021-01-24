@@ -6,10 +6,10 @@ import { useQuery } from 'react-query';
 import { getMainCarouselItems } from '../../Queries/Queries';
 import { useIntl } from 'react-intl';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Pagination } from 'swiper';
+import SwiperCore, { Pagination, Autoplay } from 'swiper';
 import 'swiper/swiper-bundle.css';
-import LazyImage from '../../helpers/LazyImage';
-SwiperCore.use([Pagination]);
+import BannerLazyImage from '../../helpers/BannerLazyImage';
+SwiperCore.use([Pagination, Autoplay]);
 const MainCarousel = () => {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 668px)' });
   const { locale } = useIntl();
@@ -21,6 +21,7 @@ const MainCarousel = () => {
   return (
     <div className="my-6 bg-body-light">
       <Swiper
+        autoplay={{ delay: 5000 }}
         pagination={{ clickable: true, dynamicBullets: true }}
         id="main"
         spaceBetween={0}
@@ -53,10 +54,11 @@ const MainCarousel = () => {
           data.map(item => {
             return (
               <SwiperSlide key={item.id}>
-                <a href={`/categories/${item.category?.slug}`} className="">
-                  <LazyImage
-                    src={`${process.env.REACT_APP_IMAGES_URL}/original/${item.translation[locale].image?.link}`}
+                <a href={`/${locale}/${item.category?.slug}`} className="">
+                  <BannerLazyImage
+                    src={item.translation[locale].image?.link}
                     alt="something"
+                    origin="original"
                     pb={`${
                       isTabletOrAbove
                         ? 'calc(100% * 300/1440)'

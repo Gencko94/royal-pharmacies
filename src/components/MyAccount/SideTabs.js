@@ -3,7 +3,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import { NavLink, useRouteMatch } from 'react-router-dom';
 import Avatar from './Avatar';
-export default function SideTabs({ isLightTheme }) {
+export default function SideTabs() {
   const { formatMessage } = useIntl();
 
   const options = [
@@ -18,22 +18,14 @@ export default function SideTabs({ isLightTheme }) {
       <Avatar />
 
       <div
-        className={`flex flex-col rounded-lg   overflow-hidden ${
-          isLightTheme
-            ? 'shadow-itemsSlider-shallow'
-            : 'shadow-itemsSlider-wide'
-        }`}
+        className={`flex flex-col rounded-lg overflow-hidden shadow-itemsSlider-shallow `}
       >
         {options.map(option => (
           <div key={option.name}>
             <NavLink
               exact
-              className="w-full px-6 py-4 inline-block text-center "
-              activeClassName={`${
-                isLightTheme
-                  ? 'bg-btn-primary-light text-btn-secondary-light font-semibold'
-                  : 'bg-btn-primary-dark text-btn-secondary-dark '
-              }`}
+              className="w-full text-lg font-semibold px-6 py-4 inline-block text-center "
+              activeClassName={`font-bold bg-main-color text-main-text transition duration-100 `}
               to={`${url}${option.url}`}
             >
               {formatMessage({ id: option.name })}

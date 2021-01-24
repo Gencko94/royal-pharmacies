@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import CategoryChildrenMobile from './CategoryChildrenMobile';
+import BannerLazyImage from '../../helpers/BannerLazyImage';
 export default function CategoryHeaderMobile({
   categoryInfo,
   categoryInfoLoading,
@@ -37,7 +38,7 @@ export default function CategoryHeaderMobile({
       spaceBetween: 20,
     },
   };
-  const { locale } = useIntl();
+  const { locale, formatMessage } = useIntl();
   if (categoryInfoLoading) {
     return (
       <>
@@ -83,19 +84,24 @@ export default function CategoryHeaderMobile({
     );
   }
   return (
-    <div>
-      <div
-        className="h-64 flex items-center justify-center text-6xl"
-        style={{
-          backgroundImage: `url(${process.env.REACT_APP_IMAGES_URL}/original/${categoryInfo.cover_mobile?.link})`,
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-        }}
-      >
-        {categoryInfo.translation[locale].name}
+    <div className="mb-4">
+      <BannerLazyImage
+        src={categoryInfo.coverMobile?.link}
+        origin="original"
+        alt={categoryInfo.title[locale].name}
+        pb="calc(100% * 300/800)"
+      />
+      <div className="mt-8 px-2">
+        <h1 className="text-2xl font-bold text-center ">
+          {`${formatMessage({ id: 'shop' })}  ${
+            categoryInfo?.title?.[locale].name
+          } `}
+          {categoryInfo?.children.length > 0 &&
+            formatMessage({ id: 'by-category' })}
+        </h1>
       </div>
       {categoryInfo.children.length !== 0 && (
-        <CategoryChildrenMobile categoryInfo={categoryInfo} />
+        <CategoryChildrenMobile children={categoryInfo?.children} />
       )}
     </div>
   );

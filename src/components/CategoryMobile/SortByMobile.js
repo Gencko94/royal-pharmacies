@@ -11,11 +11,17 @@ export default function SortByMobile({
   const { formatMessage } = useIntl();
   const sortByOptions = React.useMemo(
     () => [
-      { value: 'newest', label: 'Newest' },
-      { label: 'Price (Low to High)', value: 'price-asc' },
-      { label: 'Price (High to Low)', value: 'price-desc' },
+      { value: 'newest', label: formatMessage({ id: 'Newest' }) },
+      {
+        label: formatMessage({ id: 'Price (Low to High)' }),
+        value: 'price-asc',
+      },
+      {
+        label: formatMessage({ id: 'Price (High to Low)' }),
+        value: 'price-desc',
+      },
     ],
-    []
+    [formatMessage]
   );
 
   return (
@@ -39,9 +45,9 @@ export default function SortByMobile({
           >
             <span>{formatMessage({ id: option.label })}</span>
             {sortBy.label === option.label ? (
-              <CgRadioChecked />
+              <CgRadioChecked className="text-main-color" />
             ) : (
-              <CgRadioCheck />
+              <CgRadioCheck className="text-main-color" />
             )}
           </button>
         );
