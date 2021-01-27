@@ -92,7 +92,7 @@ export default function StaticSwiper({ type, cb, title }) {
                 className={`overflow-hidden   relative my-2 rounded`}
               >
                 {item.type === 'variation' &&
-                Object.entries(item.new_variation_addons).length > 0 ? (
+                Object.keys(item.new_variation_addons).length > 0 ? (
                   <VariantSwiperItem
                     item={item}
                     setCartMenuOpen={cb}

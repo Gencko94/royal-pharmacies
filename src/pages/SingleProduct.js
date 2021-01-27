@@ -45,7 +45,7 @@ export default function SingleProduct() {
         // add Item to localStorage
         addViewedItems(id);
       },
-      retry: 2,
+      retry: true,
     }
   );
   const { data: reviews, isLoading: reviewsLoading } = useQuery(

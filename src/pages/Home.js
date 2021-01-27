@@ -39,7 +39,7 @@ export default function Home() {
             once={true}
             key={index}
             height="calc(100% * 1285/492.92)"
-            offset={600}
+            offset={500}
           >
             <StaticSwiper
               type={item.type}
@@ -53,7 +53,7 @@ export default function Home() {
           <LazyLoad
             once={true}
             key={index}
-            offset={600}
+            offset={500}
             height="calc(100% * 1285/492.92)"
           >
             <StaticSwiper
@@ -68,7 +68,7 @@ export default function Home() {
           <LazyLoad
             once={true}
             key={index}
-            offset={600}
+            offset={500}
             height="calc(100% * 1285/492.92)"
           >
             <StaticSwiper
@@ -83,7 +83,7 @@ export default function Home() {
           <LazyLoad
             once={true}
             key={index}
-            offset={600}
+            offset={500}
             height="calc(100% * 1285/492.92)"
           >
             <StaticSwiper
@@ -95,7 +95,7 @@ export default function Home() {
         );
       case 'banner':
         return (
-          <LazyLoad offset={600} key={index}>
+          <LazyLoad offset={500} key={index}>
             <div className="my-16">
               <Banner
                 url={

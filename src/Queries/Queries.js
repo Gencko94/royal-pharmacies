@@ -251,6 +251,7 @@ export const getSingleItem = async (k, id) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product/${id}`
   );
+  console.log(res.data,'product')
   if (res.data.status === true) {
     return res.data.data;
   }
@@ -601,7 +602,7 @@ export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
   });
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
-    { cart: JSON.stringify(items), coupon },
+    { cart: JSON.stringify(items, null, 4), coupon },
     config
   );
   if (res.data.status === true) {

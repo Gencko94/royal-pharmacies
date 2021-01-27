@@ -82,7 +82,7 @@ export default function MegaMenu({ data }) {
 
             <div className="nav-category-brands__grid">
               {data.category.list_brands.map(brand => (
-                <div>
+                <div key={brand.id}>
                   <Link
                     className="overflow-hidden rounded-full border-2 block"
                     to={`/${locale}/brands/${brand?.slug}`}

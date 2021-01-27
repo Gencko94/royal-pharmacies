@@ -15,6 +15,8 @@ export default function SwiperItem({
   setErrorOpen,
   setErrorMessage,
 }) {
+  console.log(item);
+
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const [showAddButton, setShowAddButton] = React.useState(false);
@@ -30,7 +32,7 @@ export default function SwiperItem({
     coupon,
   } = React.useContext(CartAndWishlistProvider);
   const handleAddToCart = async () => {
-    if (item.simple_addons.quantity < 1) {
+    if (item.simple_addons?.quantity < 1) {
       setMessage(formatMessage({ id: 'out-of-stock' }));
       return;
     }
@@ -115,7 +117,7 @@ export default function SwiperItem({
                 {formatMessage({ id: 'off' })}
               </div>
             )}
-          {item.simple_addons.quantity < 1 && (
+          {item.simple_addons?.quantity < 1 && (
             <div
               className={`absolute bg-main-color  text-main-text font-bold top-0   uppercase text-xs right-0 left-0 text-center`}
             >
@@ -124,7 +126,7 @@ export default function SwiperItem({
           )}
         </a>
         <AnimatePresence>
-          {showAddButton && item.simple_addons.quantity > 0 && (
+          {showAddButton && item.simple_addons?.quantity > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
