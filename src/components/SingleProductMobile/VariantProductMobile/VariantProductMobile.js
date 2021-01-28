@@ -26,7 +26,7 @@ export default function VariantProductMobile({
   } = React.useContext(CartAndWishlistProvider);
   const { userId } = React.useContext(AuthProvider);
   const { deliveryCountry } = React.useContext(DataProvider);
-  const [itemInCart, setItemInCart] = React.useState(false);
+  const [itemInCart, setItemInCart] = React.useState([]);
   const [itemInWishList, setItemInWishList] = React.useState(false);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
@@ -41,6 +41,14 @@ export default function VariantProductMobile({
     });
     return keys;
   });
+  const variantOnly = data?.new_variation_addons?.[selectedVariation]?.options
+    ? false
+    : true;
+  const option = variantOnly
+    ? data.new_variation_addons[selectedVariation]
+    : data.new_variation_addons[selectedVariation].options[
+        selectedOption[selectedVariation]
+      ];
   const handleAddToWishList = async () => {
     try {
       await addToWishListMutation({ id: data.id, userId });
@@ -82,7 +90,7 @@ export default function VariantProductMobile({
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
-        setItemInCart(true);
+        setItemInCart(prev => [...prev, option.sku]);
       } catch (error) {
         setAddToCartButtonLoading(false);
       }
@@ -113,7 +121,7 @@ export default function VariantProductMobile({
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
-        setItemInCart(true);
+        setItemInCart(prev => [...prev, option.sku]);
       } catch (error) {}
     }
   };
@@ -148,6 +156,7 @@ export default function VariantProductMobile({
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
             setSelectedVariant={setSelectedVariant}
+            sku={option.sku}
           />
 
           <hr />
@@ -164,6 +173,7 @@ export default function VariantProductMobile({
             itemInCart={itemInCart}
             selectedOption={selectedOption}
             selectedVariation={selectedVariation}
+            sku={option.sku}
           />
         )}
       </AnimatePresence>

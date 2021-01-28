@@ -16,6 +16,7 @@ export default function VariantFloatingAddToCart({
   addToCartButtonLoading,
   selectedOption,
   selectedVariation,
+  sku,
 }) {
   const { deliveryCountry } = React.useContext(DataProvider);
 
@@ -98,7 +99,7 @@ export default function VariantFloatingAddToCart({
       <button
         disabled={option.quantity === 0}
         onClick={() => {
-          if (itemInCart) {
+          if (itemInCart.includes(sku)) {
             return;
           } else {
             handleAddToCart(quantity, option.sku, currentPrice);
@@ -116,7 +117,7 @@ export default function VariantFloatingAddToCart({
             width={25}
             visible={true}
           />
-        ) : itemInCart ? (
+        ) : itemInCart.includes(sku) ? (
           <>
             <span>
               <TiShoppingCart className="w-25p h-25p " />

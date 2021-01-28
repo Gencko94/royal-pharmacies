@@ -22,6 +22,7 @@ export default function VariantRightSection({
   itemInCart,
   userId,
   qty,
+  sku,
 }) {
   const formatDaysPlural = () => {
     switch (parseInt(deliveryCountry?.delivery_time)) {
@@ -138,7 +139,7 @@ export default function VariantRightSection({
       <div className="flex flex-col relative">
         <button
           onClick={() => {
-            if (itemInCart) {
+            if (itemInCart.includes(sku)) {
               return;
             } else {
               handleAddToCart(quantity);
@@ -161,7 +162,7 @@ export default function VariantRightSection({
               width={25}
               visible={addToCartButtonLoading}
             />
-          ) : itemInCart ? (
+          ) : itemInCart.includes(sku) ? (
             <>
               <span>
                 <TiShoppingCart className="w-25p h-25p " />

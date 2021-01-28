@@ -26,7 +26,7 @@ export default function VariantProduct({
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
-  const [itemInCart, setItemInCart] = React.useState(false);
+  const [itemInCart, setItemInCart] = React.useState([]);
   const [itemInWishList, setItemInWishList] = React.useState(false);
   const [
     addToWishListButtonLoading,
@@ -90,7 +90,7 @@ export default function VariantProduct({
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
-        setItemInCart(true);
+        setItemInCart(prev => [...prev, option.sku]);
       } catch (error) {
         setAddToCartButtonLoading(false);
       }
@@ -123,7 +123,7 @@ export default function VariantProduct({
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
-        setItemInCart(true);
+        setItemInCart(prev => [...prev, option.sku]);
       } catch (error) {}
     }
   };
@@ -172,6 +172,7 @@ export default function VariantProduct({
         itemInWishList={itemInWishList}
         userId={userId}
         qty={option.quantity}
+        sku={option.sku}
       />
     </div>
   );
