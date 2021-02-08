@@ -221,7 +221,7 @@ export default function VariantSwiperItem({
               selectedOption[selectedVariation]
             ]?.image || item.image?.link
           }
-          origin="original"
+          origin="small"
           alt={item.translation[locale].title}
           pb="calc(100% * 266/210)"
         />
@@ -233,7 +233,7 @@ export default function VariantSwiperItem({
             item.new_variation_addons[selectedVariation].image ||
             item.image?.link
           }
-          origin="original"
+          origin="small"
           alt={item.translation[locale].title}
           pb="calc(100% * 266/210)"
         />

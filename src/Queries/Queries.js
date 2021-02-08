@@ -251,7 +251,6 @@ export const getSingleItem = async (k, id) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product/${id}`
   );
-  console.log(res.data,'product')
   if (res.data.status === true) {
     return res.data.data;
   }

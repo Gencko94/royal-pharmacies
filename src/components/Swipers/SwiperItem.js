@@ -15,8 +15,6 @@ export default function SwiperItem({
   setErrorOpen,
   setErrorMessage,
 }) {
-  console.log(item);
-
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
   const [showAddButton, setShowAddButton] = React.useState(false);
@@ -95,7 +93,7 @@ export default function SwiperItem({
             src={item.image?.link}
             alt={item.translation[locale].title}
             pb="calc(100% * 266/210)"
-            origin="original"
+            origin="small"
           />
           {item.simple_addons?.promotion_price &&
             item.simple_addons.quantity > 0 && (
