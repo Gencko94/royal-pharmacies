@@ -470,7 +470,6 @@ export const checkCoupon = async ({ code, subtotal }) => {
  */
 
 export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
-  console.log('trigger');
   const config = {
     headers: { country: deliveryCountry.code },
   };

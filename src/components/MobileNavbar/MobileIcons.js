@@ -14,14 +14,22 @@ export default function MobileIcons({
   withoutLanguage = false,
   withoutFlag = false,
 }) {
-  const { cartItemsLoading, cartItems, guestCartItems } = React.useContext(
-    CartAndWishlistProvider
-  );
+  const {
+    cartItemsLoading,
+    cartItems,
+    guestCartItems,
+    guestCartItemsLoading,
+  } = React.useContext(CartAndWishlistProvider);
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const { deliveryCountriesLoading } = React.useContext(DataProvider);
   const { locale } = useIntl();
   const resolveCartLength = () => {
-    if (authenticationLoading || cartItemsLoading || deliveryCountriesLoading) {
+    if (
+      authenticationLoading ||
+      cartItemsLoading ||
+      deliveryCountriesLoading ||
+      guestCartItemsLoading
+    ) {
       return <Loader type="TailSpin" color="#b72b2b" height={12} width={12} />;
     } else if (!authenticationLoading && userId) {
       return cartItems.length;
@@ -30,14 +38,14 @@ export default function MobileIcons({
     }
   };
   return (
-    <div className="flex text-nav-secondary items-center">
+    <div className="flex items-center">
       {!withoutFlag && <DeliverTo />}
       <Link to={`/${locale}/cart`} className="p-1 flex mx-1  relative">
         <HiOutlineShoppingBag className="w-25p h-25p" />
         <span
           className={`${
             locale === 'ar' ? 'rtl-cart-icon ' : 'right-0'
-          } h-4 w-4 text-nav-secondary font-bold rounded-full absolute top-0 text-xs flex items-center justify-center 
+          } h-4 w-4  font-bold rounded-full absolute top-0 text-xs flex items-center justify-center 
             bg-body-light text-main-color
              `}
         >
