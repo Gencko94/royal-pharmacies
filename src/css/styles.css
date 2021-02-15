@@ -421,15 +421,9 @@ input {
   display: grid;
   grid-template-columns: 0.5fr 1fr;
   gap: 0.5em;
-  /* min-height: calc(-100vh + 140px); */
   height: calc(100vh - 140px);
-  /* overflow: hidden; */
 }
-/* .guest-orders-grid__mobile {
-  display: grid;
-  grid-template-columns: 0.3fr 0.fr;
-  gap: 0.5em;
-} */
+
 .btn-disabled {
   background-color: gray;
   color: gainsboro;

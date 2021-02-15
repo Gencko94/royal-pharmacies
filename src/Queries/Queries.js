@@ -470,6 +470,7 @@ export const checkCoupon = async ({ code, subtotal }) => {
  */
 
 export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
+  console.log('trigger');
   const config = {
     headers: { country: deliveryCountry.code },
   };
@@ -780,15 +781,15 @@ export const filterProducts = async (
     priceFilters,
   }
 ) => {
-  let brand = brandFilters?.map(i => i.id);
+  let brands = brandFilters?.map(i => i.id);
   const query = {
     category,
-    brand: brandFilters.length !== 0 ? brand : undefined,
+    brand: brandFilters.length !== 0 ? brands : undefined,
     sort_by: sortBy ? sortBy.value : undefined,
     page,
     number: resultsPerPage?.value,
     search,
-    range_price: priceFilters[0],
+    range_price: priceFilters ? priceFilters : undefined,
   };
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/filter-products`,

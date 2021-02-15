@@ -38,7 +38,7 @@ export default function VariantsOnly({
   return (
     <div>
       <h1 className="font-semibold mb-2">
-        {variants[selectedVariation][`name_${locale}`]}
+        {variants[selectedVariation]?.[`name_${locale}`]}
       </h1>
 
       {Object.keys(variants).length > 6 ? (

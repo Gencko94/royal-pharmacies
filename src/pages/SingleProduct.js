@@ -36,7 +36,7 @@ export default function SingleProduct() {
   /**
    * Main Fetch
    */
-  const { data, isLoading, error } = useQuery(
+  const { data, isLoading, isFetching, error } = useQuery(
     ['singleProduct', id],
     getSingleItem,
     {
@@ -180,8 +180,9 @@ export default function SingleProduct() {
         className=" p-4 mx-auto max-w-default"
         style={{ minHeight: 'calc(-150px + 100vh)' }}
       >
-        {isLoading && <SingleProductLoader />}
+        {(isLoading || isFetching) && <SingleProductLoader />}
         {!isLoading &&
+          !isFetching &&
           (data?.type === 'variation' &&
           Object.entries(data.new_variation_addons).length > 0 ? (
             <VariantProduct
@@ -217,7 +218,7 @@ export default function SingleProduct() {
             </div>
           ))}
         <div id="details" className="py-2 mb-2">
-          {!isLoading && (
+          {!isLoading && !isFetching && (
             <AdditionalDetails
               reviews={reviews?.reviews}
               averageRating={reviews?.averageRating}

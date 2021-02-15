@@ -7,6 +7,7 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import { AuthProvider } from '../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
+import { DataProvider } from '../../contexts/DataContext';
 
 export default function NavIcons({ color = 'nav-secondary' }) {
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
@@ -18,9 +19,15 @@ export default function NavIcons({ color = 'nav-secondary' }) {
     wishlistItems,
     wishlistItemsLoading,
   } = React.useContext(CartAndWishlistProvider);
+  const { deliveryCountriesLoading } = React.useContext(DataProvider);
   const { formatMessage, locale } = useIntl();
   const resolveCartLength = () => {
-    if (authenticationLoading || cartItemsLoading || guestCartItemsLoading) {
+    if (
+      authenticationLoading ||
+      cartItemsLoading ||
+      guestCartItemsLoading ||
+      deliveryCountriesLoading
+    ) {
       return <Loader type="TailSpin" color="#b72b2b" height={12} width={12} />;
     } else if (!authenticationLoading && userId) {
       return cartItems.length;

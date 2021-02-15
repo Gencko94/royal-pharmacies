@@ -47,7 +47,7 @@ export default function SingleProductMobile() {
   /**
    * Main Fetch
    */
-  const { data, isLoading, error } = useQuery(
+  const { data, isLoading, error, isFetching } = useQuery(
     ['singleProduct', id],
     getSingleItem,
     {
@@ -161,8 +161,9 @@ export default function SingleProductMobile() {
           )}
         </AnimatePresence>
 
-        {isLoading && <SingleProductMobileLoader />}
+        {(isLoading || isFetching) && <SingleProductMobileLoader />}
         {!isLoading &&
+          !isFetching &&
           (data.type === 'variation' &&
           Object.entries(data.new_variation_addons).length > 0 ? (
             <VariantProductMobile
@@ -199,7 +200,7 @@ export default function SingleProductMobile() {
               </div>
             </div>
           ))}
-        {!isLoading && (
+        {!isLoading && !isFetching && (
           <AdditionalDetailsMobile
             data={data}
             detailsTab={detailsTab}
@@ -212,22 +213,26 @@ export default function SingleProductMobile() {
         )}
         <br ref={triggerRef} />
         <AnimatePresence>
-          {inView && !itemInCart && !isLoading && data.type === 'simple' && (
-            <FloatingAddToCart
-              quantity={quantity}
-              setQuantity={setQuantity}
-              handleAddToCart={handleAddToCart}
-              id={data.id}
-              addToCartButtonLoading={addToCartButtonLoading}
-              itemInCart={itemInCart}
-              price={data.simple_addons.price}
-              qty={data.simple_addons.quantity}
-            />
-          )}
+          {inView &&
+            !itemInCart &&
+            !isLoading &&
+            !isFetching &&
+            data.type === 'simple' && (
+              <FloatingAddToCart
+                quantity={quantity}
+                setQuantity={setQuantity}
+                handleAddToCart={handleAddToCart}
+                id={data.id}
+                addToCartButtonLoading={addToCartButtonLoading}
+                itemInCart={itemInCart}
+                price={data.simple_addons.price}
+                qty={data.simple_addons.quantity}
+              />
+            )}
         </AnimatePresence>
 
         <hr />
-        {!isLoading && (
+        {!isLoading && !isFetching && (
           <div className="px-3">
             <MoreFrom
               categories={data?.categories}

@@ -1,42 +1,68 @@
 import React from 'react';
+import { useIntl } from 'react-intl';
 import LeftSideBrands from './LeftSideBrands';
 import LeftSidePrice from './LeftSidePrice';
 
 export default function CategoryLeftSide({
-  handlePriceChange,
-
   categoryInfoLoading,
   brandFilters,
-  handleChangePriceInput,
-  handleBrandChange,
   priceFilters,
-  handleSubmitPrice,
   productsLoading,
   products,
   brands,
+  handleSubmitFilters,
 }) {
+  const { formatMessage } = useIntl();
+  const [selectedBrands, setSelectedBrands] = React.useState(() => {
+    if (brandFilters.length > 0) return brandFilters;
+    return [];
+  });
+  const [selectedPrice, setSelectedPrice] = React.useState(() => {
+    if (priceFilters) return priceFilters;
+    return null;
+  });
+  React.useState(() => {
+    setSelectedBrands(() => {
+      if (brandFilters.length > 0) return brandFilters;
+      return [];
+    });
+    setSelectedPrice(() => {
+      if (priceFilters) return priceFilters;
+      return null;
+    });
+  }, [priceFilters, brandFilters]);
   return (
-    <div>
+    <div className="self-start sticky top-0">
       {/* Category tree */}
 
       <LeftSideBrands
         brands={brands}
-        brandFilters={brandFilters}
-        handleBrandChange={handleBrandChange}
         categoryInfoLoading={categoryInfoLoading}
         productsLoading={productsLoading}
+        setSelectedBrands={setSelectedBrands}
+        selectedBrands={selectedBrands}
       />
 
       {/* Price */}
       <LeftSidePrice
-        priceFilters={priceFilters}
-        handlePriceChange={handlePriceChange}
-        handleChangePriceInput={handleChangePriceInput}
-        handleSubmitPrice={handleSubmitPrice}
         productsLoading={productsLoading}
         productsLength={products?.length}
         categoryInfoLoading={categoryInfoLoading}
+        setSelectedPrice={setSelectedPrice}
+        selectedPrice={selectedPrice}
       />
+      {!productsLoading && !categoryInfoLoading && (
+        <div className="p-2">
+          <button
+            className="p-2 uppercase bg-green-700 text-main-text rounded w-full"
+            onClick={() => {
+              handleSubmitFilters(selectedPrice, selectedBrands);
+            }}
+          >
+            {formatMessage({ id: 'submit' })}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

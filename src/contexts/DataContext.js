@@ -1,12 +1,14 @@
 import React from 'react';
 
 import { queryCache, useQuery } from 'react-query';
+import { useMediaQuery } from 'react-responsive';
 import {
   getAllCategories,
   getDeliveryCountries,
   getNavCategories,
   getSiteSettings,
 } from '../Queries/Queries';
+import { AuthProvider } from './AuthContext';
 
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
@@ -14,7 +16,9 @@ export default function DataContextProvider({ children }) {
   const [deliveryCountry, setDeliveryCountry] = React.useState(null);
   const [searchBarValue, setSearchBarValue] = React.useState('');
   const prefferedLanguage = localStorage.getItem('prefferedLanguage');
-
+  const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
+  const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
+  const { authenticationLoading } = React.useContext(AuthProvider);
   const [language, setLanguage] = React.useState(() => {
     if (prefferedLanguage) {
       return prefferedLanguage;
@@ -58,6 +62,7 @@ export default function DataContextProvider({ children }) {
     {
       retry: true,
       refetchOnWindowFocus: false,
+      // enabled: !isTabletOrAbove,
     }
   );
   const { data: navCategories, isLoading: navCategoriesLoading } = useQuery(
@@ -66,11 +71,13 @@ export default function DataContextProvider({ children }) {
     {
       retry: true,
       refetchOnWindowFocus: false,
+      enabled: isTabletOrAbove,
     }
   );
   const {
     data: deliveryCountries,
     isLoading: deliveryCountriesLoading,
+    isIdle: deliveryCountriesIdle,
   } = useQuery('delivery-countries', getDeliveryCountries, {
     retry: true,
     refetchOnWindowFocus: false,
@@ -83,6 +90,7 @@ export default function DataContextProvider({ children }) {
         )
       );
     },
+    enabled: !authenticationLoading,
   });
   const { data: settings } = useQuery('settings', getSiteSettings, {
     retry: true,
@@ -99,6 +107,7 @@ export default function DataContextProvider({ children }) {
         deliveryCountry,
         deliveryCountries,
         deliveryCountriesLoading,
+        deliveryCountriesIdle,
         setDeliveryCountry,
         language,
         handleLanguageChange,
@@ -107,6 +116,8 @@ export default function DataContextProvider({ children }) {
         searchBarValue,
         setSearchBarValue,
         settings,
+        sideMenuOpen,
+        setSideMenuOpen,
       }}
     >
       {children}

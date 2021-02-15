@@ -13,14 +13,11 @@ export default function SortInfoPanelMobile({
   handleSortByChange,
   sortBy,
   products,
-  productsLoading,
-  handleSubmitPrice,
   handleChangePriceInput,
   priceFilters,
   brandFilters,
-  handleBrandChange,
-  handlePriceChange,
   brands,
+  handleSubmitFilters,
 }) {
   const { formatMessage, locale } = useIntl();
   const variant = {
@@ -133,11 +130,11 @@ export default function SortInfoPanelMobile({
                   onClick={() => handleChangeView(option)}
                   className={`flex font-semibold items-center border w-full`}
                 >
-                  <motion.span layout>
+                  <motion.p className="text-lg" layout>
                     {option === 'filter'
                       ? formatMessage({ id: 'filter-by' })
                       : formatMessage({ id: 'sort-by' })}
-                  </motion.span>
+                  </motion.p>
                   <motion.span layout className="mx-3">
                     {option === 'filter' ? (
                       <BiFilterAlt className="w-5 h-5" />
@@ -178,15 +175,12 @@ export default function SortInfoPanelMobile({
         {filtersOpen && (
           <FiltersMobile
             products={products}
-            productsLoading={productsLoading}
-            handleSubmitPrice={handleSubmitPrice}
             handleChangePriceInput={handleChangePriceInput}
             priceFilters={priceFilters}
             brandFilters={brandFilters}
-            handleBrandChange={handleBrandChange}
-            handlePriceChange={handlePriceChange}
             handleClose={handleClose}
             brands={brands}
+            handleSubmitFilters={handleSubmitFilters}
           />
         )}
       </motion.div>

@@ -19,11 +19,13 @@ import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { scrollIntoView, scrollTo } from 'scroll-js';
 import { Helmet } from 'react-helmet';
+import { DataProvider } from '../contexts/DataContext';
 
 export default function CategoryMobile() {
   const { category } = useParams();
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
+  const { deliveryCountry, sideMenuOpen } = React.useContext(DataProvider);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
@@ -32,7 +34,7 @@ export default function CategoryMobile() {
   const [filteredPage, setFilteredPage] = React.useState(1);
 
   const [filtersApplied, setFiltersApplied] = React.useState(false);
-  const [priceFilters, setPriceFilters] = React.useState([500]);
+  const [priceFilters, setPriceFilters] = React.useState(null);
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 30,
     value: 30,
@@ -59,7 +61,7 @@ export default function CategoryMobile() {
     if (sortByOpen) setTimeout(() => setSortByOpen(false), 100);
     if (filtersOpen) setTimeout(() => setFiltersOpen(false), 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
+  }, [inView, sideMenuOpen]);
   const { data, isLoading: productsLoading, error: productsError } = useQuery(
     ['category-products', { category, page: productsPage, resultsPerPage }],
     getCategoryProducts,
@@ -106,9 +108,7 @@ export default function CategoryMobile() {
       });
     }
     if (filter.type === 'Price') {
-      setFilters(prev => {
-        return prev.filter(i => i.type !== 'Price');
-      });
+      setPriceFilters(null);
     }
   };
   const history = useHistory();
@@ -142,21 +142,6 @@ export default function CategoryMobile() {
     });
     setFilteredPage(data.selected + 1);
   };
-  const handlePriceChange = values => {
-    setPriceFilters(values);
-  };
-  const handleChangePriceInput = e => {
-    if (e.target.value < 0) return;
-    if (e.target.value > 1000) return;
-    setPriceFilters([e.target.value]);
-  };
-  const handleSubmitPrice = () => {
-    setFilters(prev => {
-      let newArr = prev.filter(i => i.type !== 'Price');
-      newArr.push({ type: 'Price', value: `Max ${priceFilters[0]}` });
-      return newArr;
-    });
-  };
 
   const handleSortByChange = selectedValue => {
     if (selectedValue.value === 'newest') {
@@ -172,28 +157,48 @@ export default function CategoryMobile() {
       return newArr;
     });
     setSortBy(selectedValue);
-    scrollTo(window, { top: 500, behavior: 'smooth' });
+    scrollTo(window, { top: 450, behavior: 'smooth' });
   };
-  const handleBrandChange = brand => {
-    const isAvailable = brandFilters.find(i => i.id === brand.id);
-    // if available
-    if (isAvailable) {
-      setBrandFilters(prev => {
-        return prev.filter(i => i.id !== brand.id);
-      });
-      setFilters(prev => {
-        return prev.filter(i => i.value !== brand.label);
-      });
-    } else {
-      setFilters(prev => {
-        return [...prev, { type: 'Brand', value: brand.label }];
-      });
-      setBrandFilters(prev => {
-        return [...prev, { ...brand }];
-      });
-    }
-    scrollTo(window, { top: 500, behavior: 'smooth' });
+  const handleSubmitFilters = (selectedPrice, selectedBrands) => {
+    setBrandFilters(selectedBrands);
+    setPriceFilters(selectedPrice);
+    scrollTo(window, { top: 300, behavior: 'smooth' });
+    setFilters(() => {
+      if (selectedPrice && !selectedBrands.length > 0) {
+        //if only price
+        const priceFilter = {
+          type: 'Price',
+          value: `${formatMessage({ id: 'less-than' })} ${selectedPrice} ${
+            deliveryCountry?.currency.translation[locale].symbol
+          }`,
+        };
+        return [priceFilter];
+      } else if (!selectedPrice && selectedBrands.length > 0) {
+        // if only brands
+        const brandsFilters = [];
+
+        selectedBrands.forEach(brand =>
+          brandsFilters.push({ type: 'Brand', value: brand.label })
+        );
+        console.log([...brandFilters], 'brand filters new');
+        return [...brandsFilters];
+      } else {
+        const priceFilter = {
+          type: 'Price',
+          value: `${formatMessage({ id: 'less-than' })} ${selectedPrice} ${
+            deliveryCountry?.currency.translation[locale].symbol
+          }`,
+        };
+        const brandsFilters = [];
+
+        selectedBrands.forEach(brand =>
+          brandsFilters.push({ type: 'Brand', value: brand.label })
+        );
+        return [priceFilter, ...brandsFilters];
+      }
+    });
   };
+
   React.useEffect(() => {
     if (filters.length === 0) {
       setFiltersApplied(false);
@@ -323,26 +328,27 @@ export default function CategoryMobile() {
         ) : null}
       </div>
       <AnimatePresence>
-        {inView && !cartMenuOpen && data?.products.length !== 0 && (
-          <SortInfoPanelMobile
-            productsLoading={productsLoading}
-            products={data?.products}
-            brandFilters={brandFilters}
-            handleBrandChange={handleBrandChange}
-            filtersApplied={filtersApplied}
-            setSortByOpen={setSortByOpen}
-            setFiltersOpen={setFiltersOpen}
-            filtersOpen={filtersOpen}
-            sortByOpen={sortByOpen}
-            sortBy={sortBy}
-            handleSortByChange={handleSortByChange}
-            handleChangePriceInput={handleChangePriceInput}
-            handlePriceChange={handlePriceChange}
-            handleSubmitPrice={handleSubmitPrice}
-            priceFilters={priceFilters}
-            brands={categoryInfo?.brands}
-          />
-        )}
+        {inView &&
+          !cartMenuOpen &&
+          !productsLoading &&
+          !sideMenuOpen &&
+          data?.products.length !== 0 && (
+            <SortInfoPanelMobile
+              productsLoading={productsLoading}
+              products={data?.products}
+              brandFilters={brandFilters}
+              filtersApplied={filtersApplied}
+              setSortByOpen={setSortByOpen}
+              setFiltersOpen={setFiltersOpen}
+              filtersOpen={filtersOpen}
+              sortByOpen={sortByOpen}
+              sortBy={sortBy}
+              handleSortByChange={handleSortByChange}
+              priceFilters={priceFilters}
+              brands={categoryInfo?.brands}
+              handleSubmitFilters={handleSubmitFilters}
+            />
+          )}
       </AnimatePresence>
     </Layout>
   );

@@ -17,11 +17,11 @@ export default function VariantImageZoom({
 
   const { locale } = useIntl();
   const resolveImage = () => {
-    if (data.new_variation_addons[selectedVariation].options) {
+    if (data.new_variation_addons[selectedVariation]?.options) {
       return (
         <img
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${
-            data.new_variation_addons[selectedVariation].options[
+            data.new_variation_addons[selectedVariation]?.options[
               selectedOption[selectedVariation]
             ]?.image || data.image?.link
           }`}
@@ -33,7 +33,7 @@ export default function VariantImageZoom({
       return (
         <img
           src={`${process.env.REACT_APP_IMAGES_URL}/original/${
-            data.new_variation_addons[selectedVariation].image ||
+            data.new_variation_addons[selectedVariation]?.image ||
             data.image?.link
           }`}
           alt={data.full_translation[locale].title}
@@ -43,11 +43,11 @@ export default function VariantImageZoom({
     }
   };
   const resolveThumbnail = () => {
-    if (data.new_variation_addons[selectedVariation].options) {
+    if (data.new_variation_addons[selectedVariation]?.options) {
       return (
         <LazyImage
           src={
-            data.new_variation_addons[selectedVariation].options[
+            data.new_variation_addons[selectedVariation]?.options[
               selectedOption[selectedVariation]
             ]?.image || data.image?.link
           }
@@ -60,7 +60,7 @@ export default function VariantImageZoom({
       return (
         <LazyImage
           src={
-            data.new_variation_addons[selectedVariation].image ||
+            data.new_variation_addons[selectedVariation]?.image ||
             data.image?.link
           }
           origin="small"

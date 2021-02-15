@@ -13,6 +13,7 @@ export default function ShipTo() {
     deliveryCountry,
     deliveryCountries,
     deliveryCountriesLoading,
+    deliveryCountriesIdle,
     setDeliveryCountry,
   } = React.useContext(DataProvider);
 
@@ -57,12 +58,10 @@ export default function ShipTo() {
     );
     setDeliveryCountry(country);
   };
-  if (deliveryCountriesLoading) {
-    return null;
-  }
+
   return (
     <div className="relative">
-      {deliveryCountriesLoading && (
+      {(deliveryCountriesLoading || deliveryCountriesIdle) && (
         <div className="p-1">
           <Loader
             type="ThreeDots"
@@ -74,7 +73,7 @@ export default function ShipTo() {
           />
         </div>
       )}
-      {!deliveryCountriesLoading && (
+      {!deliveryCountriesLoading && !deliveryCountriesIdle && (
         <button
           onClick={toggleCountryList}
           className=" p-1 flex items-center rounded hover:bg-main-color  transition duration-100"

@@ -8,21 +8,20 @@ import DeliverTo from './DeliverTo';
 import LanguageMobile from './LanguageMobile';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { DataProvider } from '../../contexts/DataContext';
 
 export default function MobileIcons({
   withoutLanguage = false,
   withoutFlag = false,
 }) {
-  const {
-    cartItemsLoading,
-    guestCartItemsLoading,
-    cartItems,
-    guestCartItems,
-  } = React.useContext(CartAndWishlistProvider);
+  const { cartItemsLoading, cartItems, guestCartItems } = React.useContext(
+    CartAndWishlistProvider
+  );
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
+  const { deliveryCountriesLoading } = React.useContext(DataProvider);
   const { locale } = useIntl();
   const resolveCartLength = () => {
-    if (authenticationLoading || cartItemsLoading || guestCartItemsLoading) {
+    if (authenticationLoading || cartItemsLoading || deliveryCountriesLoading) {
       return <Loader type="TailSpin" color="#b72b2b" height={12} width={12} />;
     } else if (!authenticationLoading && userId) {
       return cartItems.length;

@@ -16,10 +16,12 @@ import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { scrollTo } from 'scroll-js';
+import { DataProvider } from '../contexts/DataContext';
 
 export default function Category() {
   const history = useHistory();
   const { category } = useParams();
+  const { deliveryCountry } = React.useContext(DataProvider);
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
 
@@ -36,7 +38,7 @@ export default function Category() {
     value: 30,
   });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
-  const [priceFilters, setPriceFilters] = React.useState([500]);
+  const [priceFilters, setPriceFilters] = React.useState(null);
   const [filters, setFilters] = React.useState(() => {
     return [];
   });
@@ -123,23 +125,46 @@ export default function Category() {
       setSortBy({ value: 'newest', label: formatMessage({ id: 'Newest' }) });
     }
     if (filter.type === 'Price') {
-      setPriceFilters([1000]);
+      setPriceFilters(null);
     }
   };
+  const handleSubmitFilters = (selectedPrice, selectedBrands) => {
+    setBrandFilters(selectedBrands);
+    setPriceFilters(selectedPrice);
+    scrollTo(window, { top: 500, behavior: 'smooth' });
+    setFilters(() => {
+      if (selectedPrice && !selectedBrands.length > 0) {
+        //if only price
+        const priceFilter = {
+          type: 'Price',
+          value: `${formatMessage({ id: 'less-than' })} ${selectedPrice} ${
+            deliveryCountry?.currency.translation[locale].symbol
+          }`,
+        };
+        return [priceFilter];
+      } else if (!selectedPrice && selectedBrands.length > 0) {
+        // if only brands
+        const brandsFilters = [];
 
-  const handlePriceChange = values => {
-    setPriceFilters(values);
-  };
-  const handleChangePriceInput = e => {
-    if (e.target.value < 0) return;
-    if (e.target.value > 1000) return;
-    setPriceFilters([e.target.value]);
-  };
-  const handleSubmitPrice = () => {
-    setFilters(prev => {
-      let newArr = prev.filter(i => i.type !== 'Price');
-      newArr.push({ type: 'Price', value: `Max ${priceFilters[0]}` });
-      return newArr;
+        selectedBrands.forEach(brand =>
+          brandsFilters.push({ type: 'Brand', value: brand.label })
+        );
+        console.log([...brandFilters], 'brand filters new');
+        return [...brandsFilters];
+      } else {
+        const priceFilter = {
+          type: 'Price',
+          value: `${formatMessage({ id: 'less-than' })} ${selectedPrice} ${
+            deliveryCountry?.currency.translation[locale].symbol
+          }`,
+        };
+        const brandsFilters = [];
+
+        selectedBrands.forEach(brand =>
+          brandsFilters.push({ type: 'Brand', value: brand.label })
+        );
+        return [priceFilter, ...brandsFilters];
+      }
     });
   };
 
@@ -157,25 +182,6 @@ export default function Category() {
       return newArr;
     });
     setSortBy(selectedValue);
-  };
-  const handleBrandChange = brand => {
-    const isAvailable = brandFilters.find(i => i.id === brand.id);
-    // if available
-    if (isAvailable) {
-      setBrandFilters(prev => {
-        return prev.filter(i => i.id !== brand.id);
-      });
-      setFilters(prev => {
-        return prev.filter(i => i.value !== brand.label);
-      });
-    } else {
-      setFilters(prev => {
-        return [...prev, { type: 'Brand', value: brand.label }];
-      });
-      setBrandFilters(prev => {
-        return [...prev, { ...brand }];
-      });
-    }
   };
 
   React.useEffect(() => {
@@ -233,12 +239,9 @@ export default function Category() {
             productsLoading={productsLoading}
             brandFilters={brandFilters}
             setBrandFilters={setBrandFilters}
-            handleBrandChange={handleBrandChange}
             priceFilters={priceFilters}
-            handlePriceChange={handlePriceChange}
-            handleChangePriceInput={handleChangePriceInput}
-            handleSubmitPrice={handleSubmitPrice}
             brands={categoryInfo?.brands}
+            handleSubmitFilters={handleSubmitFilters}
           />
 
           <CategoryRightSide

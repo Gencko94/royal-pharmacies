@@ -5,18 +5,16 @@ import { useIntl } from 'react-intl';
 import { Range } from 'react-range';
 import { DataProvider } from '../../contexts/DataContext';
 export default function LeftSidePrice({
-  handlePriceChange,
-  priceFilters,
-  handleChangePriceInput,
-  handleSubmitPrice,
   productsLoading,
   categoryInfoLoading,
   productsLength,
+  setSelectedPrice,
+  selectedPrice,
 }) {
   const { locale, formatMessage } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
-  const min = 0;
-  const max = 1000;
+  const prices = React.useMemo(() => [1, 5, 10, 20, 50, 100], []);
+
   if (productsLoading || categoryInfoLoading) {
     return (
       <div className="py-2">
@@ -45,64 +43,27 @@ export default function LeftSidePrice({
         {deliveryCountry?.currency.translation[locale].symbol})
       </h1>
       <hr />
-      <div className="p-3">
-        <Range
-          step={0.1}
-          min={min}
-          rtl={locale === 'ar'}
-          max={max}
-          values={priceFilters}
-          onChange={handlePriceChange}
-          renderTrack={({ props, children }) => (
-            <div
-              {...props}
-              style={{
-                ...props.style,
-                height: '6px',
-                width: '100%',
-                backgroundColor: '#ccc',
+      {prices.map(price => {
+        const selected = selectedPrice === price;
+        return (
+          <div key={price} className="flex items-center my-1">
+            <input
+              id={price}
+              type="radio"
+              className="border-gray-600 text-main-color"
+              onChange={() => {
+                setSelectedPrice(price);
               }}
-            >
-              {children}
-            </div>
-          )}
-          renderThumb={({ props }) => (
-            <div
-              {...props}
-              style={{
-                ...props.style,
-                height: '15px',
-                width: '15px',
-                borderRadius: '50%',
-                backgroundColor: '#999',
-              }}
+              checked={selected ? true : false}
             />
-          )}
-        />
-      </div>
-      <div
-        className="mb-3"
-        style={{ display: 'grid', gridTemplateColumns: '0.5fr 1fr 0.5fr' }}
-      >
-        <div className="text-center">{min}</div>
-        <div className="text-center">
-          <input
-            type="number"
-            value={priceFilters[0]}
-            onChange={handleChangePriceInput}
-            className="p-1 text-center border rounded-lg min-w-0"
-          />
-        </div>
-        <div className="text-center">{max}</div>
-      </div>
-      <div className="flex items-center justify-center">
-        <button
-          className="px-2 py-1 bg-green-700 text-main-text rounded"
-          onClick={handleSubmitPrice}
-        >
-          {formatMessage({ id: 'submit' })}
-        </button>
-      </div>
+            <label htmlFor={price} className=" mx-5">
+              {`${formatMessage({ id: 'less-than' })} ${price} ${
+                deliveryCountry?.currency.translation[locale].symbol
+              }`}
+            </label>
+          </div>
+        );
+      })}
     </motion.div>
   );
 }

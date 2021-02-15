@@ -127,9 +127,8 @@ export default function RegisterMobile() {
   };
   const history = useHistory();
   const validationSchema = Yup.object({
-    email: Yup.string()
-      .email(formatMessage({ id: 'email-validation' }))
-      .required(formatMessage({ id: 'email-empty' })),
+    email: Yup.string().email(formatMessage({ id: 'email-validation' })),
+    // .required(formatMessage({ id: 'email-empty' }))
     password: Yup.string()
       .required(formatMessage({ id: 'password-empty' }))
       .min(6, formatMessage({ id: 'password-min-6' }))

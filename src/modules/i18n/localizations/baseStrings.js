@@ -119,6 +119,7 @@ const baseStrings = {
   days: 'Days',
   soon: 'Soon',
   'more-than-10-days': 'Days',
+  'less-than': 'Less than',
   'delivery-cost': 'Delivery Cost',
   'accepted-payments': 'Accepted Payment Methods',
   'coupon-sale': 'Coupon Discount',

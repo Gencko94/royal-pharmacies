@@ -298,7 +298,7 @@ export const ar = {
   'delivered-to': 'تم التوصيل إلى',
   'payment-method': 'طريقة الدفع',
   'select-payment-method': 'اختر طريقة الدفع',
-
+  'less-than': 'أقل من ',
   'order-date': 'تاريخ الطلب',
   delivered: 'تم التوصيل',
   pending: 'قيد الإنتظار',

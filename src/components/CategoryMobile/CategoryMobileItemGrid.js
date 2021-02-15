@@ -34,7 +34,7 @@ export default function CategoryMobileItemGrid({
     );
   }
   return (
-    <div id="products_grid-mobile" className="mb-4">
+    <div id="products_grid-mobile" className="mb-4 px-2">
       {products.length !== 0 && (
         <div className="search-page-items-mobile__grid my-1">
           {!filtersApplied &&

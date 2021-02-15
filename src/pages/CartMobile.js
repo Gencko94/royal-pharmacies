@@ -13,17 +13,20 @@ import StaticSwiper from '../components/Swipers/StaticSwiper';
 import Layout from '../components/Layout';
 import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
 import { scrollTo } from 'scroll-js';
+import { DataProvider } from '../contexts/DataContext';
 
 export default function CartMobile() {
   const { formatMessage } = useIntl();
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const [checkoutPopupOpen, setCheckOutPopupOpen] = React.useState(false);
+
   const {
     cartItems,
     cartMessage,
     cartItemsLoading,
     isGetCartError,
   } = React.useContext(CartAndWishlistProvider);
+  const { deliveryCountriesLoading } = React.useContext(DataProvider);
   const scrollToTop = () => {
     scrollTo(window, { top: 0 });
   };
@@ -48,16 +51,20 @@ export default function CartMobile() {
           )}
         </AnimatePresence>
 
-        {authenticationLoading && <MobileCartLoader />}
+        {(authenticationLoading || deliveryCountriesLoading) && (
+          <MobileCartLoader />
+        )}
         <AnimatePresence>
           {!authenticationLoading &&
             userId &&
             !cartItemsLoading &&
+            !deliveryCountriesLoading &&
             !isGetCartError &&
             cartItems.length === 0 && <CartEmptyMobile />}
         </AnimatePresence>
         {!authenticationLoading &&
           userId &&
+          !deliveryCountriesLoading &&
           !isGetCartError &&
           cartItems?.length !== 0 && (
             <>
@@ -69,7 +76,7 @@ export default function CartMobile() {
               />
             </>
           )}
-        {!authenticationLoading && !userId && (
+        {!authenticationLoading && !deliveryCountriesLoading && !userId && (
           <MobileGuestCart setCheckOutPopupOpen={setCheckOutPopupOpen} />
         )}
 
