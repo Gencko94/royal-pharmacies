@@ -12,7 +12,7 @@ export default function VariantsOnly({
   const breakpoints = {
     // when window width is >= 640px
     320: {
-      slidesPerView: 2,
+      slidesPerView: 3,
       spaceBetween: 20,
     },
     // when window width is >= 480px
@@ -37,7 +37,7 @@ export default function VariantsOnly({
   const { locale } = useIntl();
   return (
     <div>
-      <h1 className="font-semibold mb-2">
+      <h1 className="font-semibold mb-2 text-lg">
         {variants[selectedVariation]?.[`name_${locale}`]}
       </h1>
 
@@ -53,7 +53,7 @@ export default function VariantsOnly({
                   <button
                     className={`${
                       selectedVariation === variation &&
-                      'border shadow border-main-color'
+                      'border overflow-hidden rounded shadow border-main-color'
                     }`}
                     onClick={() => setSelectedVariant(variation)}
                   >
@@ -88,7 +88,7 @@ export default function VariantsOnly({
                 key={variation}
                 className={`${
                   selectedVariation === variation &&
-                  'border shadow border-main-color'
+                  'border shadow rounded overflow-hidden border-main-color'
                 }`}
                 onClick={() => setSelectedVariant(variation)}
               >

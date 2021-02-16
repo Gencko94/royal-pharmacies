@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
-import { Range } from 'react-range';
 import { DataProvider } from '../../contexts/DataContext';
 export default function LeftSidePrice({
   productsLoading,
@@ -12,10 +11,19 @@ export default function LeftSidePrice({
   selectedPrice,
 }) {
   const { locale, formatMessage } = useIntl();
-  const { deliveryCountry } = React.useContext(DataProvider);
+  const {
+    deliveryCountry,
+    deliveryCountriesLoading,
+    deliveryCountriesIdle,
+  } = React.useContext(DataProvider);
   const prices = React.useMemo(() => [1, 5, 10, 20, 50, 100], []);
 
-  if (productsLoading || categoryInfoLoading) {
+  if (
+    productsLoading ||
+    categoryInfoLoading ||
+    deliveryCountriesLoading ||
+    deliveryCountriesIdle
+  ) {
     return (
       <div className="py-2">
         <ContentLoader
@@ -46,7 +54,7 @@ export default function LeftSidePrice({
       {prices.map(price => {
         const selected = selectedPrice === price;
         return (
-          <div key={price} className="flex items-center my-1">
+          <div key={price} className="flex items-center my-1 text-lg">
             <input
               id={price}
               type="radio"

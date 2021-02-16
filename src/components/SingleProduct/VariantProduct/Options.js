@@ -38,7 +38,7 @@ export default function Options({
   const { locale } = useIntl();
   return (
     <div>
-      <h1 className="font-semibold mb-2">
+      <h1 className="font-semibold mb-2 text-lg">
         {options[selectedOption[selectedVariation]][`name_${locale}`]}
       </h1>
       {options.length > 6 ? (
@@ -60,15 +60,11 @@ export default function Options({
                     })
                   }
                   key={option.addon_item_id}
-                  className={`
-                
-                 hover:bg-main-color hover:text-main-text transition duration-150
-              
-              } p-2 uppercase border text-sm text-center ${
-                selected
-                  ? 'bg-main-color text-main-text'
-                  : 'text-body-text-light'
-              } `}
+                  className={`hover:bg-main-color hover:text-main-text transition duration-150  p-2 uppercase border text-sm text-center ${
+                    selected
+                      ? 'bg-main-color text-main-text'
+                      : 'text-body-text-light'
+                  } `}
                 >
                   {option.addon_item_value}
                 </button>

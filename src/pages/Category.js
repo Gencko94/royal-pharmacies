@@ -149,7 +149,6 @@ export default function Category() {
         selectedBrands.forEach(brand =>
           brandsFilters.push({ type: 'Brand', value: brand.label })
         );
-        console.log([...brandFilters], 'brand filters new');
         return [...brandsFilters];
       } else {
         const priceFilter = {

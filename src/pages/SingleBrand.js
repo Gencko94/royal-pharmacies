@@ -12,6 +12,7 @@ import CategoryProductItem from '../components/Category/CategoryProductItem';
 import VariantCategoryProductItem from '../components/Category/VariantCategoryProductItem';
 import Layout from '../components/Layout';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
+import { DataProvider } from '../contexts/DataContext';
 import { getSingleBrandProducts } from '../Queries/Queries';
 
 export default function SingleBrand() {
@@ -23,6 +24,9 @@ export default function SingleBrand() {
     scrollTo(window, { top: 500 });
     setPage(data.selected + 1);
   };
+  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
+    DataProvider
+  );
   const { data, isLoading: productsLoading } = useQuery(
     ['single-brand', { slug, page, number: 42 }],
     getSingleBrandProducts,
@@ -106,7 +110,9 @@ export default function SingleBrand() {
           </div>
         )}
 
-        {productsLoading && (
+        {(productsLoading ||
+          deliveryCountriesLoading ||
+          deliveryCountriesIdle) && (
           <div className="brand-grid__desktop py-2 ">
             {[
               0,

@@ -41,7 +41,7 @@ export default function AllCategoriesMegaMenu({
       animate="visible"
       initial="hidden"
       exit="exit"
-      className={`all-categories__megamenu  bg-white text-nav-cat-text-light ${
+      className={`all-categories__megamenu border-b  bg-white text-nav-cat-text-light ${
         locale === 'ar' ? 'right-100' : 'left-100'
       }  `}
     >

@@ -9,6 +9,7 @@ import CategoryProductItem from '../Category/CategoryProductItem';
 import VariantCategoryProductItem from '../Category/VariantCategoryProductItem';
 import SearchSortInfoPanel from './SearchSortInfoPanel';
 import placeholder from '../../assets/illustrationplaceholder.png';
+import { DataProvider } from '../../contexts/DataContext';
 export default function SearchRightSide({
   products,
   productsLoading,
@@ -31,7 +32,10 @@ export default function SearchRightSide({
   filteredPageCount,
 }) {
   const { formatMessage, locale } = useIntl();
-  if (productsLoading) {
+  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
+    DataProvider
+  );
+  if (productsLoading || deliveryCountriesLoading || deliveryCountriesIdle) {
     return (
       <div className="py-2">
         <ContentLoader

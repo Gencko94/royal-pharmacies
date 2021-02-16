@@ -38,7 +38,7 @@ export default function Variants({
   const { locale } = useIntl();
   return (
     <div>
-      <h1 className="font-semibold mb-2">
+      <h1 className="font-semibold mb-2 text-lg">
         {variants[selectedVariation][`name_${locale}`]}
       </h1>
       {Object.keys(variants).length > 6 ? (
@@ -52,15 +52,21 @@ export default function Variants({
                 <button
                   onClick={() => setSelectedVariant(variation)}
                   key={variants[variation].addon_item_id}
+                  className={`${
+                    selectedVariation === variation &&
+                    'border border-main-color shadow-lg rounded overflow-hidden'
+                  }`}
                 >
                   <img
                     alt={variants[variation].id}
-                    className={`${selectedVariation === variation && 'border'}`}
                     src={`${process.env.REACT_APP_IMAGES_URL}/small/${
                       variants[variation].options[selectedOption[variation]]
                         ?.image
                     }`}
                   />
+                  <h1 className="mt-1 text-sm font-semibold">
+                    {variants[variation].addon_item_value}
+                  </h1>
                 </button>
               </SwiperSlide>
             );
@@ -73,15 +79,21 @@ export default function Variants({
               <button
                 onClick={() => setSelectedVariant(variation)}
                 key={variants[variation].addon_item_id}
+                className={`${
+                  selectedVariation === variation &&
+                  'border border-main-color shadow-lg rounded overflow-hidden'
+                }`}
               >
                 <img
                   alt={variants[variation].id}
-                  className={`${selectedVariation === variation && 'border'}`}
                   src={`${process.env.REACT_APP_IMAGES_URL}/small/${
                     variants[variation].options[selectedOption[variation]]
                       ?.image
                   }`}
                 />
+                <h1 className="mt-1 text-sm font-semibold">
+                  {variants[variation].addon_item_value}
+                </h1>
               </button>
             );
           })}

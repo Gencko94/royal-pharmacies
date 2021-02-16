@@ -5,6 +5,7 @@ import CategoryItemLoader from '../Category/CategoryItemLoader';
 import ContentLoader from 'react-content-loader';
 import VariantCategoryProductItem from '../Category/VariantCategoryProductItem';
 import { useIntl } from 'react-intl';
+import { DataProvider } from '../../contexts/DataContext';
 export default function CategoryMobileItemGrid({
   productsLoading,
   products,
@@ -14,7 +15,15 @@ export default function CategoryMobileItemGrid({
   filtersApplied,
 }) {
   const { formatMessage } = useIntl();
-  if (productsLoading || filteredProductsLoading) {
+  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
+    DataProvider
+  );
+  if (
+    productsLoading ||
+    filteredProductsLoading ||
+    deliveryCountriesLoading ||
+    deliveryCountriesIdle
+  ) {
     return (
       <div className="p-2 min-h-screen">
         <ContentLoader

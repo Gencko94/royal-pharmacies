@@ -533,13 +533,14 @@ input {
 /* single product sizes */
 .single-product-variants__container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 80px);
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   gap: 0.5em;
 }
 /* single product colors */
 .single-product-colors__container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.5em;
 }
 .color-disabled {
   position: relative;

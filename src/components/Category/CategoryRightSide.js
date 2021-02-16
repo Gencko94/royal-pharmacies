@@ -9,6 +9,7 @@ import VariantCategoryProductItem from './VariantCategoryProductItem';
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import placeholder from '../../assets/illustrationplaceholder.png';
+import { DataProvider } from '../../contexts/DataContext';
 export default function CategoryRightSide({
   products,
   productsLoading,
@@ -31,9 +32,12 @@ export default function CategoryRightSide({
   category,
 }) {
   const { formatMessage, locale } = useIntl();
+  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
+    DataProvider
+  );
   if (
     !['best-seller', 'latest-products'].includes(category) &&
-    productsLoading
+    (productsLoading || deliveryCountriesLoading || deliveryCountriesIdle)
   ) {
     return (
       <div className="py-2">

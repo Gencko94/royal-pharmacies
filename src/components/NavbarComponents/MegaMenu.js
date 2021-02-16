@@ -39,7 +39,7 @@ export default function MegaMenu({ data }) {
       animate="visible"
       initial="hidden"
       exit="exited"
-      className={`absolute z-20  top-100 left-0 w-full max-w-default overflow-hidden shadow-lg  cursor-default bg-body-light text-body-text-light
+      className={`absolute z-20  border-b  top-100 left-0 w-full max-w-default overflow-hidden shadow-lg  cursor-default bg-body-light text-body-text-light
        `}
     >
       <div className="p-3 pt-4 max-w-screen-xl mx-auto">
