@@ -177,7 +177,7 @@ export default function SingleProductMobile() {
               inView={inView}
             />
           ) : (
-            <div className="">
+            <div>
               <ImageZoomMobile data={data} />
 
               <hr />

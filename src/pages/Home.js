@@ -35,63 +35,39 @@ export default function Home() {
     switch (item.type) {
       case 'best_seller':
         return (
-          <LazyLoad
-            once={true}
+          <StaticSwiper
             key={index}
-            height="calc(100% * 1285/492.92)"
-            offset={500}
-          >
-            <StaticSwiper
-              type={item.type}
-              title={item[`title_${locale}`]}
-              cb={setCartMenuOpen}
-            />
-          </LazyLoad>
+            type={item.type}
+            title={item[`title_${locale}`]}
+            cb={setCartMenuOpen}
+          />
         );
       case 'product_by_category':
         return (
-          <LazyLoad
-            once={true}
+          <StaticSwiper
             key={index}
-            offset={500}
-            height="calc(100% * 1285/492.92)"
-          >
-            <StaticSwiper
-              type={item.key}
-              title={item[`title_${locale}`]}
-              cb={setCartMenuOpen}
-            />
-          </LazyLoad>
+            type={item.key}
+            title={item[`title_${locale}`]}
+            cb={setCartMenuOpen}
+          />
         );
       case 'categories':
         return (
-          <LazyLoad
-            once={true}
+          <StaticSwiper
             key={index}
-            offset={500}
-            height="calc(100% * 1285/492.92)"
-          >
-            <StaticSwiper
-              type={item.slug}
-              title={item[`title_${locale}`]}
-              cb={setCartMenuOpen}
-            />
-          </LazyLoad>
+            type={item.slug}
+            title={item[`title_${locale}`]}
+            cb={setCartMenuOpen}
+          />
         );
       case 'latest_products':
         return (
-          <LazyLoad
-            once={true}
+          <StaticSwiper
             key={index}
-            offset={500}
-            height="calc(100% * 1285/492.92)"
-          >
-            <StaticSwiper
-              type={item.type}
-              title={item[`title_${locale}`]}
-              cb={setCartMenuOpen}
-            />
-          </LazyLoad>
+            type={item.type}
+            title={item[`title_${locale}`]}
+            cb={setCartMenuOpen}
+          />
         );
       case 'banner':
         return (

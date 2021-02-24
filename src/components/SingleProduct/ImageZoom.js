@@ -4,6 +4,7 @@ import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { useIntl } from 'react-intl';
+import LazyImage from '../../helpers/LazyImage';
 SwiperCore.use([Thumbs, Navigation, Zoom]);
 
 export default function ImageZoom({ data }) {
@@ -63,13 +64,19 @@ export default function ImageZoom({ data }) {
         >
           {[data.image, ...data.gallery].map(item => {
             return (
-              <SwiperSlide key={item?.link}>
-                <img
+              <div style={{ width: '50px' }}>
+                <LazyImage
+                  src={`${item?.link}`}
+                  origin="small"
+                  pb="100%"
+                  alt={data.full_translation[locale].title}
+                />
+                {/* <img
                   src={`${process.env.REACT_APP_IMAGES_URL}/small/${item?.link}`}
                   alt={data.full_translation[locale].title}
-                  style={{ width: '50px', height: '50px' }}
-                />
-              </SwiperSlide>
+                  style={{ width: '50px' }}
+                /> */}
+              </div>
             );
           })}
         </Swiper>

@@ -18,11 +18,9 @@ import { AuthProvider } from './AuthContext';
 import { DataProvider } from './DataContext';
 export const CartAndWishlistProvider = React.createContext();
 export default function CartAndWishlistContext({ children }) {
-  const {
-    deliveryCountry,
-    deliveryCountriesIdle,
-    deliveryCountriesLoading,
-  } = React.useContext(DataProvider);
+  const { deliveryCountry, deliveryCountriesLoading } = React.useContext(
+    DataProvider
+  );
   const [coupon, setCoupon] = React.useState('');
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   /**

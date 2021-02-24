@@ -46,6 +46,7 @@ const TrackOrder = React.lazy(() => import('./pages/TrackOrder'));
 const TrackOrderMobile = React.lazy(() => import('./pages/TrackOrderMobile'));
 const OrderSuccess = React.lazy(() => import('./pages/OrderSuccess'));
 const OrderFailed = React.lazy(() => import('./pages/OrderFailed'));
+const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
 
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -90,6 +91,11 @@ function App() {
             }}
           />
 
+          <Route
+            exact
+            path="/reset-password/:token"
+            component={ResetPassword}
+          />
           <Route exact path="/app/password-reset" component={PasswordReset} />
           <Route exact path="/" component={Home} />
           <Route exact path="/order-failed" component={OrderFailed} />

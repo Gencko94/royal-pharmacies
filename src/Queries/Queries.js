@@ -177,6 +177,35 @@ export const changeUserPassword = async data => {
     return { message: 'Password Changed' };
   }
 };
+export const requestPasswordReset = async ({ phoneNumber }) => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/customer-forgot-password`,
+    {
+      mobile: phoneNumber,
+    }
+  );
+  if (res.data.status === true) {
+    return { message: 'success' };
+  }
+};
+export const resetUserPassword = async ({
+  phoneNumber,
+  token,
+  newPassword,
+}) => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/customer-reset-password`,
+    {
+      token,
+      mobile: phoneNumber,
+      password: newPassword,
+      password_confirmation: newPassword,
+    }
+  );
+  if (res.data.status === true) {
+    return { message: 'your password has been successfully changed' };
+  }
+};
 
 /**
  * End of User Profile
@@ -322,27 +351,29 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
         },
       });
     });
-    await axios.post(
+    const combined = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/cart/combine/${userId}`,
       { products: JSON.stringify(items), coupon },
       config
     );
-    const res = await axios.post(
-      `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
-      { coupon },
-      config
-    );
-    if (res.data.status === true) {
-      localStorage.setItem('localCart', JSON.stringify([]));
-      return {
-        cartItems: res.data.data.items,
-        cartTotal: res.data.data.total,
-        shippingCost: res.data.data.shipping_cost,
-        cartSubtotal: res.data.data.subtotal,
-        couponCost: res.data.data.coupon_cost,
-        message: 'cart-combined',
-        note: res.data.data.note,
-      };
+    if (combined.data) {
+      const res = await axios.post(
+        `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
+        { coupon },
+        config
+      );
+      if (res.data.status === true) {
+        localStorage.setItem('localCart', JSON.stringify([]));
+        return {
+          cartItems: res.data.data.items,
+          cartTotal: res.data.data.total,
+          shippingCost: res.data.data.shipping_cost,
+          cartSubtotal: res.data.data.subtotal,
+          couponCost: res.data.data.coupon_cost,
+          message: 'cart-combined',
+          note: res.data.data.note,
+        };
+      }
     }
   }
 };
@@ -501,6 +532,7 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
         },
       });
     });
+
     const res = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
       { cart: JSON.stringify(items), coupon },

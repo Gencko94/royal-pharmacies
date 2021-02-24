@@ -52,7 +52,7 @@ export default function VariantImageZoom({
             ]?.image || data.image?.link
           }
           origin="small"
-          pb="calc(100% * 286/210)"
+          pb="100%"
           alt={data.full_translation[locale].title}
         />
       );
@@ -64,7 +64,7 @@ export default function VariantImageZoom({
             data.image?.link
           }
           origin="small"
-          pb="calc(100% * 286/210)"
+          pb="100%"
           alt={data.full_translation[locale].title}
         />
       );
@@ -109,9 +109,7 @@ export default function VariantImageZoom({
           watchSlidesVisibility
           watchSlidesProgress
         >
-          <div style={{ width: '50px', height: '50px' }}>
-            {resolveThumbnail()}
-          </div>
+          <div style={{ width: '50px' }}>{resolveThumbnail()}</div>
         </Swiper>
       </div>
     </div>

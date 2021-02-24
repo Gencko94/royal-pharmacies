@@ -160,6 +160,7 @@ export const ar = {
   'fullname-empty': 'الرجاء إدخال اسم الكامل',
   'email-label': 'البريد الإلكتروني',
   'password-label': 'كلمة المرور',
+  'new-password-label': 'كلمة المرور الجديدة',
   'fullname-label': 'الإسم الكامل',
   'phone-label': 'رقم الهاتف ',
   'login-button': 'تسجيل الدخول',
@@ -179,9 +180,13 @@ export const ar = {
 
   'one-address': 'عنوان',
   'password-reset': 'إعادة تعيين كلمة المرور',
+  'password-reset-success': 'تم تعيين كلمة المرور الجديد بنجاح',
   'password-reset-send-button': 'إرسال الكود',
   'change-password': 'تغيير كلمة المرور',
-  'password-change-success': 'تم تغيير كلمة المرور بنجاح',
+  'password-change-success':
+    'تم تغيير كلمة المرور بنجاح, يمكنك الآن <link> تسجيل الدخول</link> بكلمة المرور الجديدة',
+  'password-reset-check-email':
+    'تم إرسال ايميل الى البريد الالكتروني المربوط بالحساب, الرجاء قم بفتح الايميل والضغط على الرابط المرسل ليتم إعادة تعيين كلمة المرور',
   'old-password': 'كلمة المرور القديمة',
   'new-password': 'كلمة المرور الجديدة',
   'confirm-password': 'تأكيد كلمة المرور',
@@ -189,8 +194,11 @@ export const ar = {
     'هل لديك حساب مسبق ؟ <link>سجل الدخول الآن </link>',
   'terms-of-service':
     'بالنقر على زر انشاء الحساب , فأنت توافق على <tos>شروط الخدمة</tos>  و <link>سياسة الخصوصية</link> , سوف نقوم ايضا بإرسال ايميلات متعلقة بالحساب من حين إلى اخر.',
-  'password-reset-enter-your-email':
-    'ادخل رقم الهاتف ليتم ارسال كود إعادة تعيين كلمة المرور',
+  'password-reset-enter-your-phone':
+    'ادخل رقم الهاتف ليتم ارسال ايميل الى بريدك الإلكتروني المسجل متضمنا تعليمات إعادة تعيين كلمة المرور',
+  'set-up-new-password': 'تعيين كلمة المرور الجديدة',
+  'password-reset-enter-new-password':
+    'الرجاء إدخال رقم الهاتف وكلمة المرور الجديدة , والتأكد من تعيين كلمة مرور قوية',
   // end of credential forms
   // start of cart  items
   price: 'السعر',
@@ -395,4 +403,5 @@ export const ar = {
   'developed-by': 'طور من قبل',
   'mrg-mall-kuwait': 'متجر إم آر جي الكويت',
   'on-mrg-mall-kuwait': ' على متجر إم آر جي الكويت',
+  'out-of-border': 'عذرا لا يمكننا التوصيل هنا',
 };

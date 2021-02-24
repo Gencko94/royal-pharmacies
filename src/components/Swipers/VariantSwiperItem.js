@@ -363,13 +363,13 @@ export default function VariantSwiperItem({
                           })
                         }
                         key={option.addon_item_id}
-                        className={`hover:bg-main-color hover:text-main-text transition duration-150 p-2 uppercase border text-sm text-center ${
+                        className={`hover:bg-main-color hover:text-main-text transition duration-150 p-2 uppercase border text-xs flex items-center justify-center ${
                           selected
                             ? 'bg-main-color text-main-text'
                             : 'text-body-text-light'
                         } `}
                       >
-                        {option.addon_item_value.substr(0, 1)}
+                        {option.addon_item_value.substr(0, 4)}
                       </button>
                     );
                   }
