@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { setConsole } from 'react-query';
 
 export const getItemsByType = async () => {
   // const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/`);
