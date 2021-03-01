@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { setConsole } from 'react-query';
 
 export const getItemsByType = async () => {
   // const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/`);
@@ -542,13 +543,14 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
       // if an item is out of stock remove it from local cart
       //or its not founded in the db
       const cartItems = res.data.data.items;
+
       let outofStockItems = [];
       cartItems.forEach(cartItem => {
-        if (cartItem.options.max_quantity === 0) {
-          outofStockItems.push(cartItem.options.sku);
-        }
-        if (cartItem.message === 'Product not founded') {
-          outofStockItems.push(cartItem.sku);
+        if (
+          cartItem.options?.max_quantity === 0 ||
+          cartItem.message === 'Product not founded'
+        ) {
+          outofStockItems.push(cartItem.options?.sku || cartItem.sku);
         }
       });
       if (outofStockItems.length > 0) {
