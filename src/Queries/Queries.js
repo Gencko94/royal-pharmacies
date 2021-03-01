@@ -540,11 +540,15 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
     );
     if (res.data.status === true) {
       // if an item is out of stock remove it from local cart
+      //or its not founded in the db
       const cartItems = res.data.data.items;
       let outofStockItems = [];
       cartItems.forEach(cartItem => {
         if (cartItem.options.max_quantity === 0) {
           outofStockItems.push(cartItem.options.sku);
+        }
+        if (cartItem.message === 'Product not founded') {
+          outofStockItems.push(cartItem.sku);
         }
       });
       if (outofStockItems.length > 0) {
