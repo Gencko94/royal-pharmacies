@@ -74,7 +74,7 @@ export default function VariantSwiperItem({
           variation: {
             id: item.new_variation_addons?.[selectedVariation].id,
             item_id:
-              item.new_variation_addons?.[selectedVariation].addon_item_id,
+              item.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -84,7 +84,7 @@ export default function VariantSwiperItem({
             item_id:
               item.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
         };
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
@@ -113,7 +113,7 @@ export default function VariantSwiperItem({
           variation: {
             id: item.new_variation_addons?.[selectedVariation].id,
             item_id:
-              item.new_variation_addons?.[selectedVariation].addon_item_id,
+              item.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -123,7 +123,7 @@ export default function VariantSwiperItem({
             item_id:
               item.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
           price,
           sku,
@@ -362,7 +362,7 @@ export default function VariantSwiperItem({
                             };
                           })
                         }
-                        key={option.addon_item_id}
+                        key={option.addon_item_value}
                         className={`hover:bg-main-color hover:text-main-text transition duration-150 p-2 uppercase border text-xs flex items-center justify-center ${
                           selected
                             ? 'bg-main-color text-main-text'

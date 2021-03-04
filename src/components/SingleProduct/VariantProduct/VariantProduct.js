@@ -83,7 +83,7 @@ export default function VariantProduct({
           variation: {
             id: data.new_variation_addons?.[selectedVariation].id,
             item_id:
-              data.new_variation_addons?.[selectedVariation].addon_item_id,
+              data.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -93,7 +93,7 @@ export default function VariantProduct({
             item_id:
               data.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
         };
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
@@ -113,7 +113,7 @@ export default function VariantProduct({
           variation: {
             id: data.new_variation_addons?.[selectedVariation].id,
             item_id:
-              data.new_variation_addons?.[selectedVariation].addon_item_id,
+              data.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -123,7 +123,7 @@ export default function VariantProduct({
             item_id:
               data.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
           price,
           sku,

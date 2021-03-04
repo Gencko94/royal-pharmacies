@@ -10,9 +10,9 @@ import SearchContext from './contexts/SearchContext';
 import AuthContext from './contexts/AuthContext';
 import CartAndWishlistContext from './contexts/CartAndWishlistContext';
 
-const localCart = localStorage.getItem('localCart');
+const localCart = localStorage.getItem('lclc');
 if (!localCart) {
-  localStorage.setItem('localCart', JSON.stringify([]));
+  localStorage.setItem('lclc', JSON.stringify([]));
 }
 const localWish = localStorage.getItem('localWish');
 if (!localWish) {

@@ -312,10 +312,10 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
       country: deliveryCountry?.code,
     },
   };
-  if (!localStorage.getItem('localCart')) {
-    localStorage.setItem('localCart', JSON.stringify([]));
+  if (!localStorage.getItem('lclc')) {
+    localStorage.setItem('lclc', JSON.stringify([]));
   }
-  const localCart = JSON.parse(localStorage.getItem('localCart'));
+  const localCart = JSON.parse(localStorage.getItem('lclc'));
   if (localCart.length === 0) {
     const res = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
@@ -363,7 +363,7 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
         config
       );
       if (res.data.status === true) {
-        localStorage.setItem('localCart', JSON.stringify([]));
+        localStorage.setItem('lclc', JSON.stringify([]));
         return {
           cartItems: res.data.data.items,
           cartTotal: res.data.data.total,
@@ -504,10 +504,10 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
   const config = {
     headers: { country: deliveryCountry.code },
   };
-  if (!localStorage.getItem('localCart')) {
-    localStorage.setItem('localCart', JSON.stringify([]));
+  if (!localStorage.getItem('lclc')) {
+    localStorage.setItem('lclc', JSON.stringify([]));
   }
-  const localCart = JSON.parse(localStorage.getItem('localCart'));
+  const localCart = JSON.parse(localStorage.getItem('lclc'));
   if (localCart.length === 0) {
     return {
       cartItems: [],
@@ -571,7 +571,7 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
             },
           });
         });
-        localStorage.setItem('localCart', JSON.stringify(newLocal));
+        localStorage.setItem('lclc', JSON.stringify(newLocal));
         const res = await axios.post(
           `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
           { cart: JSON.stringify(items), coupon },
@@ -601,9 +601,9 @@ export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('localCart');
+  const localCart = localStorage.getItem('lclc');
   if (!localCart) {
-    localStorage.setItem('localCart', JSON.stringify([]));
+    localStorage.setItem('lclc', JSON.stringify([]));
   }
   const parsed = JSON.parse(localCart);
   const isAvailable = item => {
@@ -615,10 +615,10 @@ export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
   const foundIndex = parsed.findIndex(isAvailable);
   if (foundIndex !== -1) {
     parsed[foundIndex].quantity = parsed[foundIndex].quantity + 1;
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
   } else {
     parsed.push(newItem);
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
   }
 
   let items = [];
@@ -657,7 +657,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('localCart');
+  const localCart = localStorage.getItem('lclc');
   let parsed = JSON.parse(localCart);
   const isAvailable = item => {
     if (item.sku === sku) {
@@ -667,7 +667,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
   };
   parsed = parsed.filter(isAvailable);
   if (parsed.length === 0) {
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
     return {
       cartItems: [],
       cartTotal: 0,
@@ -697,7 +697,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
     config
   );
   if (res.data.status === true) {
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
     return {
       cartItems: res.data.data.items,
       cartTotal: res.data.data.total,
@@ -718,7 +718,7 @@ export const editGuestCart = async ({
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('localCart');
+  const localCart = localStorage.getItem('lclc');
   let parsed = JSON.parse(localCart);
   const isAvailable = item => {
     if (item.sku === sku) {
@@ -753,7 +753,7 @@ export const editGuestCart = async ({
     config
   );
   if (res.data.status === true) {
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
     return {
       cartItems: res.data.data.items,
       cartTotal: res.data.data.total,

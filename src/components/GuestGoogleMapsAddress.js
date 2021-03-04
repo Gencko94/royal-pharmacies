@@ -73,10 +73,9 @@ export default function GuestGoogleMapsAddress({
             return;
           }
           if (
-            res.data.results[res.data.results.length - 1].address_components[
-              res.data.results[res.data.results.length - 1].address_components
-                .length - 1
-            ].short_name !== 'KW' ||
+            res.data.results[0].address_components.find(address =>
+              address.types.includes('country')
+            ).short_name !== 'KW' ||
             res.data.results.length === 0
           ) {
             setOutOfBorder(true);
