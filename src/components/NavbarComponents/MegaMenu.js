@@ -53,15 +53,16 @@ export default function MegaMenu({ data }) {
             </h1>
             <div className="nav-category__grid p-3 ">
               {data.children.map(item => {
+                if (!item.category) return null;
                 return (
                   <Link
-                    to={`/${locale}/${item.category.slug}`}
+                    to={`/${locale}/${item.category?.slug}`}
                     key={item.id}
                     className="px-2 py-1 flex flex-col justify-center items-center text-sm hover:text-main-color"
                   >
                     <LazyImage
-                      src={item.category.translation[locale].image?.link}
-                      alt={item.category.translation[locale].name}
+                      src={item.category?.translation[locale].image?.link}
+                      alt={item.category?.translation[locale].name}
                       pb={'100%'}
                     />
                     <h1
@@ -81,7 +82,7 @@ export default function MegaMenu({ data }) {
             </h1>
 
             <div className="nav-category-brands__grid">
-              {data.category.list_brands.map(brand => (
+              {data.category?.list_brands.map(brand => (
                 <div key={brand.id}>
                   <Link
                     className="overflow-hidden rounded-full border-2 block"
