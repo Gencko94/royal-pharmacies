@@ -228,6 +228,7 @@ const baseStrings = {
   'cart-delivery-cost': 'Delivery Cost',
   'cart-free': 'Free',
   'check-today-deals': 'Check today deals',
+  deals: 'Deals',
   'shopping-cart': 'Shopping cart',
   'wishlist-empty': 'Your Wishlist is Empty !',
   single: '1',

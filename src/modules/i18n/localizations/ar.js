@@ -220,6 +220,7 @@ export const ar = {
   'cart-delivery-cost': 'كلفة التوصيل',
   'cart-free': 'مجانا',
   'check-today-deals': 'إلق نظرة على عروض اليوم',
+  deals: 'العروض',
   'shopping-cart': 'عربة التسوق',
   'wishlist-empty': 'إن قائمة المفضلة الخاصة بك فارغة !',
   single: 'واحدة',

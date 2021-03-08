@@ -15,6 +15,7 @@ import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 import { useIntl } from 'react-intl';
 import { Helmet } from 'react-helmet';
+import DealsSwiper from '../components/Swipers/DealsSwiper';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
@@ -120,6 +121,7 @@ export default function Home() {
         >
           <MainCarousel />
           <Categories />
+          <DealsSwiper />
           <StaticSwiper
             type="latest_products"
             title={'New Arrivals'}

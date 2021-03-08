@@ -840,7 +840,12 @@ export const filterProducts = async (
     };
   }
 };
-
+export const getDeals = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/deals`);
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
 export const getNavCategories = async () => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/menu/navigation`
