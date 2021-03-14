@@ -19,30 +19,13 @@ export default function VariantMiddleSection({
   setDetailsTab,
   selectedOption,
   setSelectedOption,
-  variantOnly,
+
   option,
   isSale,
 }) {
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
 
-  // const variantOnly = data.new_variation_addons[selectedVariation].options
-  //   ? false
-  //   : true;
-  // const option = variantOnly
-  //   ? data.new_variation_addons[selectedVariation]
-  //   : data.new_variation_addons[selectedVariation].options[
-  //       selectedOption[selectedVariation]
-  //     ];
-  // const isSale = data.new_variation_addons[selectedVariation].options
-  //   ? data.new_variation_addons[selectedVariation].options[
-  //       selectedOption[selectedVariation]
-  //     ].promotion_price
-  //     ? true
-  //     : false
-  //   : data.new_variation_addons[selectedVariation].promotion_price
-  //   ? true
-  //   : false;
   const resolvePlural = () => {
     switch (ratingCount) {
       case 1:
@@ -90,6 +73,7 @@ export default function VariantMiddleSection({
   };
   const resolveOptions = React.useCallback(() => {
     let arr = [];
+
     if (data.new_variation_addons[selectedVariation]?.options) {
       arr.push(
         <Options

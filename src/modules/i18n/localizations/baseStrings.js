@@ -420,6 +420,7 @@ const baseStrings = {
   'mrg-mall-kuwait': 'MRG Mall Kuwait',
   'on-mrg-mall-kuwait': 'On MRG Mall Kuwait',
   'out-of-border': 'Sorry we do not deliver here',
+  'zoom-reset': 'Reset Zoom',
 };
 
 export const en = baseStrings;

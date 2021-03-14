@@ -34,8 +34,8 @@ export default function Category() {
   });
   const [filteredPage, setFilteredPage] = React.useState(1);
   const [resultsPerPage, setResultsPerPage] = React.useState({
-    label: 30,
-    value: 30,
+    label: 20,
+    value: 20,
   });
   const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState(null);

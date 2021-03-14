@@ -172,7 +172,6 @@ export default function VariantProduct({
         setSelectedOption={setSelectedOption}
         setDetailsTab={setDetailsTab}
         isSale={isSale}
-        variantOnly={variantOnly}
         option={option}
       />
       <VariantRightSection

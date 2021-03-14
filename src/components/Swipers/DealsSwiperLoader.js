@@ -17,15 +17,15 @@ export default function DealsSwiperLoader() {
     },
     // when window width is >= 640px
     640: {
-      slidesPerView: 4,
-      spaceBetween: 20,
-    },
-    860: {
       slidesPerView: 5,
       spaceBetween: 20,
     },
+    860: {
+      slidesPerView: 6,
+      spaceBetween: 20,
+    },
     1100: {
-      slidesPerView: 8,
+      slidesPerView: 7,
       spaceBetween: 20,
     },
     1440: {

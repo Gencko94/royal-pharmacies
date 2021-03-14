@@ -221,7 +221,7 @@ export default function ResetPassword() {
                   values={{
                     link: word => (
                       <Link
-                        to={`/${locale}/app-login`}
+                        to={`/${locale}/app/login`}
                         className="text-green-700 hover:underline"
                       >
                         {word}

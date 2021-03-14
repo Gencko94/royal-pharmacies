@@ -41,11 +41,11 @@ export default function DealsSwiper() {
       spaceBetween: 20,
     },
     768: {
-      slidesPerView: 5,
+      slidesPerView: 6,
       spaceBetween: 20,
     },
     1100: {
-      slidesPerView: 8,
+      slidesPerView: 7,
       spaceBetween: 20,
     },
     1440: {
@@ -76,6 +76,9 @@ export default function DealsSwiper() {
           navigation
           id="main"
           spaceBetween={10}
+          // centeredSlides
+          // centeredSlidesBounds
+          centerInsufficientSlides
           breakpoints={breakpoints}
         >
           {data.map(item => {

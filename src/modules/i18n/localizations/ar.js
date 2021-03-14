@@ -405,4 +405,5 @@ export const ar = {
   'mrg-mall-kuwait': 'متجر إم آر جي الكويت',
   'on-mrg-mall-kuwait': ' على متجر إم آر جي الكويت',
   'out-of-border': 'عذرا لا يمكننا التوصيل هنا',
+  'zoom-reset': 'إعادة الزوم',
 };

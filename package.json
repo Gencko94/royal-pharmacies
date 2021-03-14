@@ -30,6 +30,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-select": "^3.1.0",
+    "react-zoom-pan-pinch": "^1.6.1",
     "scroll-js": "^3.3.0",
     "swiper": "^6.3.5",
     "use-places-autocomplete": "^1.5.9",

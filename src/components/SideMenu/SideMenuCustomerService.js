@@ -26,7 +26,7 @@ export default function SideMenuCustomerService({ handleHideCustomerService }) {
         </h1>
       </div>
       <hr />
-      <div className="flex  items-center justify-center mt-2 mb-4 ">
+      <div className="flex  px-2  items-center justify-center mt-2 mb-4 ">
         <div className="p-1  rounded-full bg-main-color ">
           <IoMdCall className=" h-25p w-25p text-main-text" />
         </div>
@@ -37,7 +37,7 @@ export default function SideMenuCustomerService({ handleHideCustomerService }) {
           </h1>
         </div>
       </div>
-      <div className="flex items-center justify-center mt-2">
+      <div className="flex  px-2 items-center justify-center mt-2">
         <div className="p-1  rounded-full bg-main-color">
           <MdEmail className=" h-25p w-25p text-main-text" />
         </div>
