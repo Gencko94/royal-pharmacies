@@ -17,7 +17,7 @@ export default function ThirdSection({ pages }) {
   const { settings } = React.useContext(DataProvider);
   return (
     <div
-      className={`pt-4 px-8 pb-2 bg-first-nav-light text-main-text  flex items-center justify-between  `}
+      className={`pt-4 px-8 pb-2 bg-first-nav-light text-main-text   flex items-center justify-between  `}
     >
       <div className="flex items-center ">
         <Link to={`/${locale}/`}>
@@ -43,7 +43,7 @@ export default function ThirdSection({ pages }) {
       </div>
 
       {pages && (
-        <div className="flex text-sm justify-evenly">
+        <div className="flex text-sm justify-evenly flex-wrap">
           {pages.map(page => {
             return (
               page.type === 'page' && (

@@ -23,6 +23,9 @@ export default function SortInfoPanelMobile({
   const variant = {
     initial: {
       y: 58,
+      transition: {
+        type: 'tween',
+      },
     },
     firstAnimation: {
       y: 0,
@@ -38,6 +41,9 @@ export default function SortInfoPanelMobile({
     },
     containerExited: {
       y: 58,
+      transition: {
+        type: 'tween',
+      },
     },
   };
   const buttonVariants = {

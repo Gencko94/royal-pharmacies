@@ -2,15 +2,11 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import CategoryLeftSide from '../components/Category/CategoryLeftSide';
 import CategoryRightSide from '../components/Category/CategoryRightSide';
-
+import placeholder from '../assets/illustrationplaceholder.png';
 import Layout from '../components/Layout';
 import { useQuery } from 'react-query';
-import { Redirect, useParams, useHistory } from 'react-router-dom';
-import {
-  getCategoryProducts,
-  getSingleCategoryInfo,
-  filterProducts,
-} from '../Queries/Queries';
+import { Redirect, useParams, useHistory, useLocation } from 'react-router-dom';
+import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
 import CategoryHeader from '../components/Category/CategoryHeader';
 import { useIntl } from 'react-intl';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -20,11 +16,13 @@ import { DataProvider } from '../contexts/DataContext';
 
 export default function Category() {
   const history = useHistory();
-  const { category } = useParams();
+  const { category, id } = useParams();
   const { deliveryCountry } = React.useContext(DataProvider);
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
-
+  const location = useLocation();
+  const offers = new URLSearchParams(location.search).get('offers');
+  console.log(offers);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
@@ -32,12 +30,12 @@ export default function Category() {
   const [productsPage, setProductsPage] = React.useState(() => {
     return history.location.state?.page || 1;
   });
-  const [filteredPage, setFilteredPage] = React.useState(1);
+
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 20,
     value: 20,
   });
-  const [filtersApplied, setFiltersApplied] = React.useState(false);
+
   const [priceFilters, setPriceFilters] = React.useState(null);
   const [filters, setFilters] = React.useState(() => {
     return [];
@@ -49,11 +47,20 @@ export default function Category() {
    */
 
   const { data, isLoading: productsLoading, error: productsError } = useQuery(
-    ['category-products', { category, page: productsPage, resultsPerPage }],
+    [
+      'category-products',
+      {
+        page: productsPage,
+        resultsPerPage,
+        id,
+        brandFilters,
+        priceFilters,
+        sortBy,
+        offers: offers === 't',
+      },
+    ],
     getCategoryProducts,
-    {
-      refetchOnWindowFocus: false,
-    }
+    { retry: true, refetchOnWindowFocus: false }
   );
 
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
@@ -64,25 +71,6 @@ export default function Category() {
       refetchOnWindowFocus: false,
     }
   );
-  const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
-    [
-      'filtered-products',
-      {
-        category: categoryInfo?.id,
-        brandFilters,
-        sortBy,
-        page: filteredPage,
-        resultsPerPage,
-        priceFilters,
-      },
-    ],
-    filterProducts,
-    {
-      retry: true,
-      refetchOnWindowFocus: false,
-      enabled: filtersApplied,
-    }
-  );
 
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
@@ -90,7 +78,6 @@ export default function Category() {
   React.useEffect(() => {
     return () => {
       setProductsPage(1);
-      setFilteredPage(1);
     };
   }, [history.location.pathname]);
   const handleProductChangePage = data => {
@@ -103,15 +90,7 @@ export default function Category() {
     });
     setProductsPage(data.selected + 1);
   };
-  const handleFilteredChangePage = data => {
-    scrollTo(window, { top: 660, behavior: 'smooth' });
-    history.push({
-      state: {
-        page: data.selected + 1,
-      },
-    });
-    setFilteredPage(data.selected + 1);
-  };
+
   const handleRemoveFilters = filter => {
     setFilters(prev => {
       return prev.filter(i => i.value !== filter.value);
@@ -183,14 +162,6 @@ export default function Category() {
     setSortBy(selectedValue);
   };
 
-  React.useEffect(() => {
-    if (filters.length === 0) {
-      setFiltersApplied(false);
-    } else {
-      setFiltersApplied(true);
-    }
-  }, [filters]);
-
   if (productsError) {
     if (productsError.response.data.message === 'Category not founded') {
       return <Redirect to={`/${locale}/page/404`} />;
@@ -229,6 +200,7 @@ export default function Category() {
         <CategoryHeader
           categoryInfo={categoryInfo}
           categoryInfoLoading={categoryInfoLoading}
+          offers={offers}
         />
 
         <div className="search-page__container">
@@ -248,7 +220,6 @@ export default function Category() {
             productsLoading={productsLoading}
             sortBy={sortBy}
             setResultsPerPage={setResultsPerPage}
-            filtersApplied={filtersApplied}
             filters={filters}
             handleRemoveFilters={handleRemoveFilters}
             handleSortByChange={handleSortByChange}
@@ -256,16 +227,35 @@ export default function Category() {
             resultsPerPage={resultsPerPage}
             handleResultPerPageChange={handleResultPerPageChange}
             productsPageCount={data?.lastPage}
-            filteredPageCount={filteredData?.lastPage}
             handleProductChangePage={handleProductChangePage}
-            handleFilteredChangePage={handleFilteredChangePage}
-            filteredPage={filteredPage}
             category={category}
             productsPage={productsPage}
-            filteredProducts={filteredData?.filteredProducts}
-            filteredProductsLoading={filteredProductsLoading}
           />
         </div>
+        {data?.products.length === 0 && offers !== 't' && (
+          <div className="p-6 flex flex-col items-center justify-center text-xl h-full">
+            <img src={placeholder} alt="No products" className="mb-4" />
+            {formatMessage({ id: 'no-products' })}
+          </div>
+        )}
+        {data?.products.length === 0 && offers === 't' && (
+          <div className="p-6 flex flex-col items-center justify-center  h-full">
+            <h1 className="text-2xl font-bold text-center">
+              {formatMessage({ id: 'no-offers' })}
+            </h1>
+            <h1 className="text-xl text-center">
+              {formatMessage({ id: 'comeback-later' })}
+            </h1>
+            <button
+              onClick={() =>
+                history.push(`/${locale}/category/${category}/${id}`)
+              }
+              className="p-2 bg-main-color mt-2 text-main-text rounded text-lg "
+            >
+              {formatMessage({ id: 'go-to-products' })}
+            </button>
+          </div>
+        )}
       </div>
     </Layout>
   );

@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import ErrorSnackbar from '../ErrorSnackbar';
 import { useInView } from 'react-intersection-observer';
 SwiperCore.use([Navigation]);
-export default function StaticSwiper({ type, cb, title }) {
+export default function StaticSwiper({ type, cb, title, id }) {
   const { formatMessage, locale } = useIntl();
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -73,7 +73,7 @@ export default function StaticSwiper({ type, cb, title }) {
           </h1>
           {type !== 'latest_products' && type !== 'best_seller' && (
             <Link
-              to={`/${locale}/${data?.slug}`}
+              to={`/${locale}/category/${data?.slug}/${id}`}
               className="py-1 px-2  bg-main-color text-second-nav-text-light rounded whitespace-no-wrap"
               style={{ fontWeight: '900' }}
             >

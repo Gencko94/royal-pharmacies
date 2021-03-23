@@ -48,6 +48,7 @@ export default function Home() {
           <StaticSwiper
             key={index}
             type={item.key}
+            id={item.id}
             title={item[`title_${locale}`]}
             cb={setCartMenuOpen}
           />
@@ -56,6 +57,7 @@ export default function Home() {
         return (
           <StaticSwiper
             key={index}
+            id={item.id}
             type={item.slug}
             title={item[`title_${locale}`]}
             cb={setCartMenuOpen}

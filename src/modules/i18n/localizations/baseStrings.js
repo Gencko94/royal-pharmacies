@@ -421,6 +421,11 @@ const baseStrings = {
   'on-mrg-mall-kuwait': 'On MRG Mall Kuwait',
   'out-of-border': 'Sorry we do not deliver here',
   'zoom-reset': 'Reset Zoom',
+  offers: 'Offers',
+  'no-offers': 'There are Currently no offers for this category :(',
+  'comeback-later': 'Come Back later to see out latest offers !',
+  'go-to-products': 'Explore our Products from this category',
+  'download-apps': 'Download Our Apps on your Mobile',
 };
 
 export const en = baseStrings;

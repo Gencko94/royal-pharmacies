@@ -147,7 +147,7 @@ function App() {
 
           <Route
             exact
-            path="/:category"
+            path="/category/:category/:id"
             render={props => {
               if (isTabletOrAbove) {
                 return <Category {...props} />;

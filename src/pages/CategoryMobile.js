@@ -1,17 +1,13 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
-import { Redirect, useHistory, useParams } from 'react-router-dom';
+import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
 import CategoryHeaderMobile from '../components/CategoryMobile/CategoryHeaderMobile';
 import CategoryMobileItemGrid from '../components/CategoryMobile/CategoryMobileItemGrid';
 import SortInfoPanelMobile from '../components/CategoryMobile/SortInfoPanelMobile';
 import Layout from '../components/Layout';
 
-import {
-  filterProducts,
-  getCategoryProducts,
-  getSingleCategoryInfo,
-} from '../Queries/Queries';
+import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 
@@ -22,7 +18,7 @@ import { Helmet } from 'react-helmet';
 import { DataProvider } from '../contexts/DataContext';
 
 export default function CategoryMobile() {
-  const { category } = useParams();
+  const { category, id } = useParams();
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
   const { deliveryCountry, sideMenuOpen } = React.useContext(DataProvider);
@@ -31,9 +27,8 @@ export default function CategoryMobile() {
     label: formatMessage({ id: 'Newest' }),
   });
   const [productsPage, setProductsPage] = React.useState(1);
-  const [filteredPage, setFilteredPage] = React.useState(1);
 
-  const [filtersApplied, setFiltersApplied] = React.useState(false);
+  // const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState(null);
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 30,
@@ -44,6 +39,8 @@ export default function CategoryMobile() {
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
   const [inView, setInView] = React.useState(false);
+  const location = useLocation();
+  const offers = new URLSearchParams(location.search).get('offers');
   React.useEffect(() => {
     const checkScrolling = () => {
       if (window.scrollY >= 200) {
@@ -63,30 +60,25 @@ export default function CategoryMobile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView, sideMenuOpen]);
   const { data, isLoading: productsLoading, error: productsError } = useQuery(
-    ['category-products', { category, page: productsPage, resultsPerPage }],
+    [
+      'category-products',
+      {
+        page: productsPage,
+        resultsPerPage,
+        id,
+        brandFilters,
+        priceFilters,
+        sortBy,
+        offers: offers === 't',
+      },
+    ],
     getCategoryProducts,
-    { refetchOnWindowFocus: false }
+    { retry: true, refetchOnWindowFocus: false }
   );
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
     getSingleCategoryInfo,
     { retry: true, refetchOnWindowFocus: false }
-  );
-  const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
-    [
-      'filtered-products',
-      {
-        category: categoryInfo?.id,
-        brandFilters,
-        sortBy,
-        page: filteredPage,
-        resultsPerPage,
-        locale,
-        priceFilters,
-      },
-    ],
-    filterProducts,
-    { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
   );
 
   const handleResultPerPageChange = selectedValue => {
@@ -115,32 +107,16 @@ export default function CategoryMobile() {
   React.useEffect(() => {
     return () => {
       setProductsPage(1);
-      setFilteredPage(1);
     };
   }, [history.location.pathname]);
   const handleProductChangePage = data => {
-    scrollIntoView(
-      document.getElementById('products_grid-mobile'),
-      document.body
-    );
+    scrollTo(window, { top: 350, behavior: 'smooth' });
     history.push({
       state: {
         page: data.selected + 1,
       },
     });
     setProductsPage(data.selected + 1);
-  };
-  const handleFilteredChangePage = data => {
-    scrollIntoView(
-      document.getElementById('products_grid-mobile'),
-      document.body
-    );
-    history.push({
-      state: {
-        page: data.selected + 1,
-      },
-    });
-    setFilteredPage(data.selected + 1);
   };
 
   const handleSortByChange = selectedValue => {
@@ -162,7 +138,7 @@ export default function CategoryMobile() {
   const handleSubmitFilters = (selectedPrice, selectedBrands) => {
     setBrandFilters(selectedBrands);
     setPriceFilters(selectedPrice);
-    scrollTo(window, { top: 300, behavior: 'smooth' });
+    scrollTo(window, { top: 350, behavior: 'smooth' });
     setFilters(() => {
       if (selectedPrice && !selectedBrands.length > 0) {
         //if only price
@@ -197,14 +173,6 @@ export default function CategoryMobile() {
       }
     });
   };
-
-  React.useEffect(() => {
-    if (filters.length === 0) {
-      setFiltersApplied(false);
-    } else {
-      setFiltersApplied(true);
-    }
-  }, [filters]);
 
   if (productsError) {
     if (productsError.response.data.message === 'Category not founded') {
@@ -244,6 +212,7 @@ export default function CategoryMobile() {
         <CategoryHeaderMobile
           categoryInfo={categoryInfo}
           categoryInfoLoading={categoryInfoLoading}
+          offers={offers}
         />
         <hr className="my-4" />
 
@@ -278,16 +247,10 @@ export default function CategoryMobile() {
           products={data?.products}
           productsLoading={productsLoading}
           setCartMenuOpen={setCartMenuOpen}
-          filteredProducts={filteredData?.filteredProducts}
-          filteredProductsLoading={filteredProductsLoading}
           setProductsPage={setProductsPage}
-          filtersApplied={filtersApplied}
           handleResultPerPageChange={handleResultPerPageChange}
         />
-        {(!filtersApplied && data?.products?.length > 0 && !productsLoading) ||
-        (filtersApplied &&
-          filteredData?.filteredProducts?.length > 0 &&
-          !filteredProductsLoading) ? (
+        {data?.products?.length > 0 && !productsLoading && (
           <ReactPaginate
             previousLabel={
               locale === 'ar' ? (
@@ -305,16 +268,12 @@ export default function CategoryMobile() {
             }
             breakLabel={'...'}
             breakClassName={'inline'}
-            pageCount={filtersApplied ? filteredData?.lastPage : data?.lastPage}
+            pageCount={data?.lastPage}
             marginPagesDisplayed={2}
             pageRangeDisplayed={2}
-            initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
+            initialPage={productsPage - 1}
             disableInitialCallback={true}
-            onPageChange={
-              filtersApplied
-                ? handleFilteredChangePage
-                : handleProductChangePage
-            }
+            onPageChange={handleProductChangePage}
             containerClassName={'text-center my-2'}
             subContainerClassName={'p-3 inline'}
             pageLinkClassName="p-3"
@@ -324,7 +283,30 @@ export default function CategoryMobile() {
             nextClassName="p-3 inline font-bold"
             disabledClassName="text-gray-500"
           />
-        ) : null}
+        )}
+        {data?.products.length === 0 && offers !== 't' && (
+          <div className="p-6 flex flex-col items-center justify-center text-xl h-full">
+            {formatMessage({ id: 'no-products' })}
+          </div>
+        )}
+        {data?.products.length === 0 && offers === 't' && (
+          <div className="p-6 flex flex-col items-center justify-center  h-full">
+            <h1 className="text-xl font-bold text-center">
+              {formatMessage({ id: 'no-offers' })}
+            </h1>
+            <h1 className="text-lg text-center">
+              {formatMessage({ id: 'comeback-later' })}
+            </h1>
+            <button
+              onClick={() =>
+                history.push(`/${locale}/category/${category}/${id}`)
+              }
+              className="p-2 bg-main-color mt-2 text-main-text rounded text-sm "
+            >
+              {formatMessage({ id: 'go-to-products' })}
+            </button>
+          </div>
+        )}
       </div>
       <AnimatePresence>
         {inView &&
@@ -336,7 +318,6 @@ export default function CategoryMobile() {
               productsLoading={productsLoading}
               products={data?.products}
               brandFilters={brandFilters}
-              filtersApplied={filtersApplied}
               setSortByOpen={setSortByOpen}
               setFiltersOpen={setFiltersOpen}
               filtersOpen={filtersOpen}

@@ -27,7 +27,7 @@ export default function DealsSwiper() {
   const breakpoints = {
     // when window width is >= 320px
     320: {
-      slidesPerView: 2,
+      slidesPerView: 3,
       spaceBetween: 20,
     },
     // when window width is >= 480px
@@ -87,7 +87,9 @@ export default function DealsSwiper() {
                 key={item.id}
                 className={`overflow-hidden   relative my-2 rounded`}
               >
-                <Link to={`/${locale}/${item.category?.slug}`}>
+                <Link
+                  to={`/${locale}/category/${item.category?.slug}/${item.category?.id}?offers=t`}
+                >
                   <img
                     src={item.banner_mobile.small_image}
                     alt={`${item.category?.translation.en.name} Deals`}

@@ -25,7 +25,7 @@ export default function CategoryLeftSide({
     if (priceFilters) return priceFilters;
     return null;
   });
-  React.useState(() => {
+  React.useEffect(() => {
     setSelectedBrands(() => {
       if (brandFilters.length > 0) return brandFilters;
       return [];

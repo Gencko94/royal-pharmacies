@@ -56,7 +56,7 @@ export default function MegaMenu({ data }) {
                 if (!item.category) return null;
                 return (
                   <Link
-                    to={`/${locale}/${item.category?.slug}`}
+                    to={`/${locale}/category/${item.category?.slug}/${item?.category.id}`}
                     key={item.id}
                     className="px-2 py-1 flex flex-col justify-center items-center text-sm hover:text-main-color"
                   >

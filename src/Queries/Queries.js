@@ -791,10 +791,34 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
  */
 export const getCategoryProducts = async (
   k,
-  { category, page, resultsPerPage }
+  {
+    page,
+    id,
+    resultsPerPage,
+    brandFilters,
+    sortBy,
+    search,
+    priceFilters,
+    offers,
+  }
 ) => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/category-products/${category}?page=${page}&number=${resultsPerPage?.value}`
+  let brands = brandFilters?.map(i => i.id);
+  const query = {
+    category: id,
+    brand: brandFilters.length !== 0 ? brands : undefined,
+    sort_by: sortBy ? sortBy.value : undefined,
+    page,
+    number: resultsPerPage?.value,
+    search,
+    offers: offers && 'true',
+    range_price: priceFilters ? priceFilters : undefined,
+  };
+  // const res = await axios.get(
+  //   `${process.env.REACT_APP_MAIN_URL}/category-products/${category}?page=${page}&number=${resultsPerPage?.value}`
+  // );
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/filter-products`,
+    query
   );
   if (res.data.status === true) {
     return {

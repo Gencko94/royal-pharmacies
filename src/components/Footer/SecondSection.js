@@ -15,7 +15,7 @@ export default function SecondSection({ categories }) {
             category.type === 'category' && (
               <div key={category.id} className="grid mt-2  gap-1">
                 <Link
-                  to={`/${locale}/${category.category?.slug}`}
+                  to={`/${locale}/category/${category.category?.slug}/${category.category?.id}`}
                   className="text-lg  text-center font-semibold inline-block"
                 >
                   {category.translation[locale].name}
@@ -24,7 +24,7 @@ export default function SecondSection({ categories }) {
                   return (
                     child.type === 'category' && (
                       <Link
-                        to={`/${locale}/${child.category?.slug}`}
+                        to={`/${locale}/category/${child.category?.slug}/${child.category?.id}`}
                         key={child.id}
                         className="text-sm  text-center inline-block"
                       >

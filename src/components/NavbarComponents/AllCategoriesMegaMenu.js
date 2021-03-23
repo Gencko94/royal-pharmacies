@@ -51,7 +51,7 @@ export default function AllCategoriesMegaMenu({
             {selectedCategory.translation[locale].name}
           </h1>
           <Link
-            to={`/${locale}/${selectedCategory.slug}`}
+            to={`/${locale}/category/${selectedCategory.slug}/${selectedCategory.id}`}
             onClick={() => handleMenuClose()}
             className="text-sm font-normal hover:text-main-color underline flex items-center transition duration-75 "
           >
@@ -67,7 +67,7 @@ export default function AllCategoriesMegaMenu({
           {selectedCategory.children.map(item => {
             return (
               <Link
-                to={`/${locale}/${item.slug}`}
+                to={`/${locale}/category/${item.slug}/${item.id}`}
                 onClick={() => handleMenuClose()}
                 key={item.id}
                 className="px-2 py-1 flex flex-col justify-center items-center text-sm hover:text-main-color"

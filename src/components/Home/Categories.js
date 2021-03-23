@@ -67,7 +67,7 @@ export default function Categories() {
             return (
               <SwiperSlide key={item.id} className="rounded-full">
                 <div className="  overflow-hidden  relative ">
-                  <a href={`/${locale}/${item.slug}`}>
+                  <a href={`/${locale}/category/${item.slug}/${item.id}`}>
                     <LazyImage
                       src={item.translation[locale].image?.link}
                       alt={item.translation[locale].name}
