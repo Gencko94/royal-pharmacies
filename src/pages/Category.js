@@ -22,7 +22,6 @@ export default function Category() {
   const [brandFilters, setBrandFilters] = React.useState([]);
   const location = useLocation();
   const offers = new URLSearchParams(location.search).get('offers');
-  console.log(offers);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),

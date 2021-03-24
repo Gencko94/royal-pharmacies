@@ -45,10 +45,10 @@ export default function OrderSuccess() {
           {formatMessage({ id: 'order-placed-msg' })}
         </h1>
 
-        <h1 className="font-semibold text-xl text-center mb-2">
+        {/* <h1 className="font-semibold text-xl text-center mb-2">
           {formatMessage({ id: 'expected-delivery-msg' })}{' '}
           <strong>{formatDaysPlural()}</strong>
-        </h1>
+        </h1> */}
         <div className="flex  items-center justify-center mt-2 mb-4 ">
           <div className="p-1  rounded-full bg-main-color ">
             <IoMdCall className=" h-25p w-25p text-main-text" />

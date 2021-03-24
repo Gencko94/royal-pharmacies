@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
 
 import CategoryMobile from './pages/CategoryMobile';
 import GuestCheckOut from './pages/GuestCheckOut';
@@ -73,11 +73,7 @@ function App() {
           <Route
             path="/site/:page"
             render={props => {
-              // if (isTabletOrAbove) {
               return <StaticPage {...props} />;
-              // } else {
-              // return <LoginMobile {...props} />;
-              // }
             }}
           />
           <Route
@@ -98,8 +94,23 @@ function App() {
           />
           <Route exact path="/app/password-reset" component={PasswordReset} />
           <Route exact path="/" component={Home} />
-          <Route exact path="/order-failed" component={OrderFailed} />
-          <Route exact path="/order-success" component={OrderSuccess} />
+          <Route
+            exact
+            path="/order-failed"
+            render={() => {
+              return <Redirect to="/order/failure" />;
+            }}
+          />
+          <Route
+            exact
+            path="/order-success"
+            render={() => {
+              return <Redirect to="/order/success" />;
+            }}
+          />
+          {/* <Route exact path="/order-success" component={OrderSuccess} /> */}
+          <Route exact path="/order/success" component={OrderFailed} />
+          <Route exact path="/order/failure" component={OrderSuccess} />
 
           <ProtectedRoute
             path="/user/account"
