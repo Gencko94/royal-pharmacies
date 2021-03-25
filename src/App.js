@@ -123,8 +123,8 @@ function App() {
             }}
           />
           {/* <Route exact path="/order-success" component={OrderSuccess} /> */}
-          <Route exact path="/order/success" component={OrderFailed} />
-          <Route exact path="/order/failure" component={OrderSuccess} />
+          <Route exact path="/order/success" component={OrderSuccess} />
+          <Route exact path="/order/failure" component={OrderFailed} />
 
           <ProtectedRoute
             path="/user/account"
