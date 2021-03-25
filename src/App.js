@@ -96,6 +96,20 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route
             exact
+            path="/order-mobile-failed"
+            render={() => {
+              return <div />;
+            }}
+          />
+          <Route
+            exact
+            path="/order-mobile-success"
+            render={() => {
+              return <div />;
+            }}
+          />
+          <Route
+            exact
             path="/order-failed"
             render={() => {
               return <Redirect to="/order/failure" />;
