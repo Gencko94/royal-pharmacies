@@ -17,16 +17,16 @@ export default function RelatedItems({ data }) {
     },
     // when window width is >= 480px
     480: {
-      slidesPerView: 3,
+      slidesPerView: 2.5,
       spaceBetween: 20,
     },
     // when window width is >= 640px
     640: {
-      slidesPerView: 3,
+      slidesPerView: 1.5,
       spaceBetween: 20,
     },
     860: {
-      slidesPerView: 3,
+      slidesPerView: 2.5,
       spaceBetween: 20,
     },
     1100: {
@@ -39,7 +39,13 @@ export default function RelatedItems({ data }) {
       <h1 className="font-bold py-2 border-b">
         {formatMessage({ id: 'related-products' })} :
       </h1>
-      <Swiper navigation id="main" spaceBetween={3} breakpoints={breakpoints}>
+      <Swiper
+        freeMode
+        navigation
+        id="main"
+        spaceBetween={3}
+        breakpoints={breakpoints}
+      >
         {data.map(item => {
           return (
             <SwiperSlide

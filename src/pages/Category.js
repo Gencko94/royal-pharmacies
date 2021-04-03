@@ -206,6 +206,7 @@ export default function Category() {
           <CategoryLeftSide
             categoryInfoLoading={categoryInfoLoading}
             products={data?.products}
+            offers={offers}
             productsLoading={productsLoading}
             brandFilters={brandFilters}
             setBrandFilters={setBrandFilters}

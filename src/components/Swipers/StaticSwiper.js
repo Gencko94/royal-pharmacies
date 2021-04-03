@@ -68,7 +68,7 @@ export default function StaticSwiper({ type, cb, title, id }) {
       {(isLoading || isIdle) && <SwiperLoader />}
       {!isLoading && !isIdle && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl md:text-2xl flex-1 font-bold ">
+          <h1 className="text-2xl  flex-1 font-bold ">
             {data?.title[locale]?.name}
           </h1>
           {type !== 'latest_products' && type !== 'best_seller' && (
@@ -84,9 +84,10 @@ export default function StaticSwiper({ type, cb, title, id }) {
       )}
       {!isLoading && !isIdle && (
         <Swiper
+          freeMode
           navigation
           id="main"
-          spaceBetween={10}
+          spaceBetween={5}
           breakpoints={breakpoints}
         >
           {data.products.map(item => {

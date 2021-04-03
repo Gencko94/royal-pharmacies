@@ -8,6 +8,7 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+import { Link } from 'react-router-dom';
 
 export default function SwiperItem({
   item,
@@ -85,9 +86,9 @@ export default function SwiperItem({
       }}
     >
       <div className="relative">
-        <a
+        <Link
           className="block relative"
-          href={`/${locale}/products/${item.slug}/${item.id}`}
+          to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           <LazyImage
             src={item.image?.link}
@@ -122,7 +123,7 @@ export default function SwiperItem({
               {formatMessage({ id: 'out-of-stock' })}
             </div>
           )}
-        </a>
+        </Link>
         <AnimatePresence>
           {showAddButton && item.simple_addons?.quantity > 0 && (
             <motion.div

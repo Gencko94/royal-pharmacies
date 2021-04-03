@@ -6,6 +6,7 @@ import 'swiper/swiper-bundle.css';
 import ContentLoader from 'react-content-loader';
 import { useIntl } from 'react-intl';
 import LazyImage from '../../helpers/LazyImage';
+import { Link } from 'react-router-dom';
 SwiperCore.use([Navigation]);
 export default function Categories() {
   const { categories, categoriesLoading } = React.useContext(DataProvider);
@@ -46,7 +47,13 @@ export default function Categories() {
           {formatMessage({ id: 'shop-by-category' })}
         </h1>
       </div>
-      <Swiper navigation id="main" spaceBetween={10} breakpoints={breakpoints}>
+      <Swiper
+        freeMode
+        navigation
+        id="main"
+        spaceBetween={10}
+        breakpoints={breakpoints}
+      >
         {categoriesLoading &&
           [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
             return (
@@ -67,7 +74,7 @@ export default function Categories() {
             return (
               <SwiperSlide key={item.id} className="rounded-full">
                 <div className="  overflow-hidden  relative ">
-                  <a href={`/${locale}/category/${item.slug}/${item.id}`}>
+                  <Link to={`/${locale}/category/${item.slug}/${item.id}`}>
                     <LazyImage
                       src={item.translation[locale].image?.link}
                       alt={item.translation[locale].name}
@@ -77,7 +84,7 @@ export default function Categories() {
                     <h1 className="text-lg md:text-xl mt-4 text-center font-bold">
                       {item.translation[locale].name}
                     </h1>
-                  </a>
+                  </Link>
                 </div>
               </SwiperSlide>
             );

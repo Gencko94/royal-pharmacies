@@ -9,7 +9,7 @@ import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
 import { BiListPlus } from 'react-icons/bi';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 export default function VariantSwiperItem({
   item,
   setCartMenuOpen,
@@ -257,9 +257,9 @@ export default function VariantSwiperItem({
       }}
     >
       <div className="relative">
-        <a
+        <Link
           className="block relative"
-          href={`/${locale}/products/${item.slug}/${item.id}`}
+          to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           {resolveImage()}
           {isSale && option.quantity > 0 && (
@@ -285,7 +285,7 @@ export default function VariantSwiperItem({
               {formatMessage({ id: 'out-of-stock' })}
             </div>
           )}
-        </a>
+        </Link>
 
         <AnimatePresence>
           {showAddButton && option.quantity > 0 && (

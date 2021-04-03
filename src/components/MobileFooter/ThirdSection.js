@@ -33,7 +33,7 @@ export default function ThirdSection({ pages }) {
         {settings?.sm_facebook && (
           <a
             rel="noopener noreferrer"
-            href={`${settings?.sm_facebook}`}
+            href={`https://facebook.com/${settings?.sm_facebook}`}
             target="_blank"
             className="mr-4"
           >
@@ -43,7 +43,7 @@ export default function ThirdSection({ pages }) {
         {settings?.sm_twitter && (
           <a
             rel="noopener noreferrer"
-            href={`${settings?.sm_twitter}`}
+            href={`https://twitter.com/${settings?.sm_twitter}`}
             target="_blank"
             className="mr-4"
           >
@@ -53,7 +53,7 @@ export default function ThirdSection({ pages }) {
         {settings?.sm_instagram && (
           <a
             rel="noopener noreferrer"
-            href={`${settings?.sm_instagram}`}
+            href={`https://instagram.com/${settings?.sm_instagram}`}
             target="_blank"
             className="mr-4"
           >
@@ -63,7 +63,7 @@ export default function ThirdSection({ pages }) {
         {settings?.sm_linkedin && (
           <a
             rel="noopener noreferrer"
-            href={`${settings?.sm_linkedin}`}
+            href={`https://linkedin.com/${settings?.sm_linkedin}`}
             target="_blank"
             className="mr-4"
           >

@@ -12,6 +12,7 @@ export default function CategoryLeftSide({
   products,
   brands,
   handleSubmitFilters,
+  offers,
 }) {
   const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
     DataProvider
@@ -39,13 +40,15 @@ export default function CategoryLeftSide({
     <div className="self-start sticky top-0">
       {/* Category tree */}
 
-      <LeftSideBrands
-        brands={brands}
-        categoryInfoLoading={categoryInfoLoading}
-        productsLoading={productsLoading}
-        setSelectedBrands={setSelectedBrands}
-        selectedBrands={selectedBrands}
-      />
+      {products?.length === 0 && offers !== 't' && (
+        <LeftSideBrands
+          brands={brands}
+          categoryInfoLoading={categoryInfoLoading}
+          productsLoading={productsLoading}
+          setSelectedBrands={setSelectedBrands}
+          selectedBrands={selectedBrands}
+        />
+      )}
 
       {/* Price */}
       <LeftSidePrice

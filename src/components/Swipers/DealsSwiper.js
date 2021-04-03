@@ -27,7 +27,7 @@ export default function DealsSwiper() {
   const breakpoints = {
     // when window width is >= 320px
     320: {
-      slidesPerView: 3,
+      slidesPerView: 1.75,
       spaceBetween: 20,
     },
     // when window width is >= 480px
@@ -37,19 +37,19 @@ export default function DealsSwiper() {
     },
     // when window width is >= 640px
     640: {
-      slidesPerView: 4,
+      slidesPerView: 3.5,
       spaceBetween: 20,
     },
     768: {
-      slidesPerView: 6,
+      slidesPerView: 4.5,
       spaceBetween: 20,
     },
     1100: {
-      slidesPerView: 7,
+      slidesPerView: 5.5,
       spaceBetween: 20,
     },
     1440: {
-      slidesPerView: 8,
+      slidesPerView: 6.5,
       spaceBetween: 20,
     },
   };
@@ -66,7 +66,7 @@ export default function DealsSwiper() {
       {/* <DealsSwiperLoader /> */}
       {!isLoading && !isIdle && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl md:text-2xl flex-1 font-bold ">
+          <h1 className="text-2xl  flex-1 font-bold ">
             {formatMessage({ id: 'deals' })}
           </h1>
         </div>
@@ -74,6 +74,7 @@ export default function DealsSwiper() {
       {!isLoading && !isIdle && (
         <Swiper
           navigation
+          freeMode
           id="main"
           spaceBetween={10}
           // centeredSlides
@@ -91,7 +92,7 @@ export default function DealsSwiper() {
                   to={`/${locale}/category/${item.category?.slug}/${item.category?.id}?offers=t`}
                 >
                   <img
-                    src={item.banner_mobile.small_image}
+                    src={item.banner_mobile.medium_image}
                     alt={`${item.category?.translation.en.name} Deals`}
                   />
                 </Link>
