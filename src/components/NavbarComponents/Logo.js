@@ -14,8 +14,8 @@ export default function Logo() {
       <Link style={{ width: '100px' }} to={`/${locale}/`} className="-m-2">
         {settings && (
           <img
-            src={settings?.store_logo}
-            alt="MRG-logo"
+            src="/logo.png"
+            alt="Royal Pharmacies"
             style={{ width: 'auto', maxHeight: '40px' }}
           />
         )}

@@ -11,8 +11,8 @@ export default function NavLogoMobile() {
       <Link to={`/${locale}/`} className="-my-2">
         {settings && (
           <img
-            src={settings?.store_logo}
-            alt="MRG-logo"
+            src="/logo.png"
+            alt="Royal Pharmacies"
             style={{ width: '90px' }}
           />
         )}

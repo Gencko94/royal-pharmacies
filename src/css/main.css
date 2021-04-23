@@ -944,8 +944,8 @@ video {
 
 .bg-main-color{
   --bg-opacity: 1;
-  background-color: #b72b2b;
-  background-color: rgba(183, 43, 43, var(--bg-opacity));
+  background-color: #791314;
+  background-color: rgba(121, 19, 20, var(--bg-opacity));
 }
 
 .bg-body-light{
@@ -968,8 +968,8 @@ video {
 
 .bg-second-nav-light{
   --bg-opacity: 1;
-  background-color: #b72b2b;
-  background-color: rgba(183, 43, 43, var(--bg-opacity));
+  background-color: #791314;
+  background-color: rgba(121, 19, 20, var(--bg-opacity));
 }
 
 .bg-second-nav-text-light{
@@ -1016,8 +1016,8 @@ video {
 
 .hover\:bg-main-color:hover{
   --bg-opacity: 1;
-  background-color: #b72b2b;
-  background-color: rgba(183, 43, 43, var(--bg-opacity));
+  background-color: #791314;
+  background-color: rgba(121, 19, 20, var(--bg-opacity));
 }
 
 .hover\:bg-body-light:hover{
@@ -1052,8 +1052,8 @@ video {
 
 .border-main-color{
   --border-opacity: 1;
-  border-color: #b72b2b;
-  border-color: rgba(183, 43, 43, var(--border-opacity));
+  border-color: #791314;
+  border-color: rgba(121, 19, 20, var(--border-opacity));
 }
 
 .rounded-sm{
@@ -1950,8 +1950,8 @@ video {
 
 .text-main-color{
   --text-opacity: 1;
-  color: #b72b2b;
-  color: rgba(183, 43, 43, var(--text-opacity));
+  color: #791314;
+  color: rgba(121, 19, 20, var(--text-opacity));
 }
 
 .text-main-text{
@@ -1986,8 +1986,8 @@ video {
 
 .text-second-nav-light{
   --text-opacity: 1;
-  color: #b72b2b;
-  color: rgba(183, 43, 43, var(--text-opacity));
+  color: #791314;
+  color: rgba(121, 19, 20, var(--text-opacity));
 }
 
 .text-second-nav-text-light{
@@ -2010,8 +2010,8 @@ video {
 
 .text-btn-primary-light{
   --text-opacity: 1;
-  color: #b72b2b;
-  color: rgba(183, 43, 43, var(--text-opacity));
+  color: #791314;
+  color: rgba(121, 19, 20, var(--text-opacity));
 }
 
 .text-btn-secondary-light{
@@ -2040,8 +2040,8 @@ video {
 
 .hover\:text-main-color:hover{
   --text-opacity: 1;
-  color: #b72b2b;
-  color: rgba(183, 43, 43, var(--text-opacity));
+  color: #791314;
+  color: rgba(121, 19, 20, var(--text-opacity));
 }
 
 .hover\:text-main-text:hover{
