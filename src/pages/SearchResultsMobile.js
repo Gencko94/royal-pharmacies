@@ -9,9 +9,10 @@ import { filterProducts, searchProducts } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuItemMobile';
 
-import { scrollIntoView } from 'scroll-js';
+import { scrollIntoView, scrollTo } from 'scroll-js';
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
+import { DataProvider } from '../contexts/DataContext';
 
 export default function SearchResultsMobile() {
   const { query } = useParams();
@@ -25,7 +26,7 @@ export default function SearchResultsMobile() {
   const [filteredPage, setFilteredPage] = React.useState(1);
 
   const [filtersApplied, setFiltersApplied] = React.useState(false);
-  const [priceFilters, setPriceFilters] = React.useState([500]);
+  const [priceFilters, setPriceFilters] = React.useState(null);
   const [filters, setFilters] = React.useState([]);
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 20,
@@ -35,6 +36,7 @@ export default function SearchResultsMobile() {
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
   const [inView, setInView] = React.useState(false);
+  const { deliveryCountry, sideMenuOpen } = React.useContext(DataProvider);
   React.useEffect(() => {
     const checkScrolling = () => {
       if (window.scrollY >= 200) {
@@ -108,21 +110,6 @@ export default function SearchResultsMobile() {
       });
     }
   };
-  const handlePriceChange = values => {
-    setPriceFilters(values);
-  };
-  const handleChangePriceInput = e => {
-    if (e.target.value < 0) return;
-    if (e.target.value > 10000) return;
-    setPriceFilters([e.target.value]);
-  };
-  const handleSubmitPrice = () => {
-    setFilters(prev => {
-      let newArr = prev.filter(i => i.type !== 'Price');
-      newArr.push({ type: 'Price', value: `Max ${priceFilters[0]}` });
-      return newArr;
-    });
-  };
 
   const handleSortByChange = selectedValue => {
     if (selectedValue.value === 'newest') {
@@ -139,24 +126,44 @@ export default function SearchResultsMobile() {
     });
     setSortBy(selectedValue);
   };
-  const handleBrandChange = brand => {
-    const isAvailable = brandFilters.find(i => i.id === brand.id);
-    // if available
-    if (isAvailable) {
-      setBrandFilters(prev => {
-        return prev.filter(i => i.id !== brand.id);
-      });
-      setFilters(prev => {
-        return prev.filter(i => i.value !== brand.label);
-      });
-    } else {
-      setFilters(prev => {
-        return [...prev, { type: 'Brand', value: brand.label }];
-      });
-      setBrandFilters(prev => {
-        return [...prev, { ...brand }];
-      });
-    }
+
+  const handleSubmitFilters = (selectedPrice, selectedBrands) => {
+    setBrandFilters(selectedBrands);
+    setPriceFilters(selectedPrice);
+    scrollTo(window, { top: 300, behavior: 'smooth' });
+    setFilters(() => {
+      if (selectedPrice && !selectedBrands.length > 0) {
+        //if only price
+        const priceFilter = {
+          type: 'Price',
+          value: `${formatMessage({ id: 'less-than' })} ${selectedPrice} ${
+            deliveryCountry?.currency.translation[locale].symbol
+          }`,
+        };
+        return [priceFilter];
+      } else if (!selectedPrice && selectedBrands.length > 0) {
+        // if only brands
+        const brandsFilters = [];
+
+        selectedBrands.forEach(brand =>
+          brandsFilters.push({ type: 'Brand', value: brand.label })
+        );
+        return [...brandsFilters];
+      } else {
+        const priceFilter = {
+          type: 'Price',
+          value: `${formatMessage({ id: 'less-than' })} ${selectedPrice} ${
+            deliveryCountry?.currency.translation[locale].symbol
+          }`,
+        };
+        const brandsFilters = [];
+
+        selectedBrands.forEach(brand =>
+          brandsFilters.push({ type: 'Brand', value: brand.label })
+        );
+        return [priceFilter, ...brandsFilters];
+      }
+    });
   };
   React.useEffect(() => {
     if (filters.length === 0) {
@@ -168,12 +175,12 @@ export default function SearchResultsMobile() {
   const resolvePlural = () => {
     switch (products?.products.length) {
       case 1:
-        return formatMessage({ id: 'one-search-results' });
+        return formatMessage({ id: 'one-search-result' });
 
       case 2:
         return formatMessage({ id: 'two-search-results' });
 
-      case products?.products.length > 10:
+      case products?.products.length > 10 && products.products.length:
         return formatMessage({ id: 'more-than-10-search-results' });
       default:
         return formatMessage({ id: 'search-results' });
@@ -299,12 +306,11 @@ export default function SearchResultsMobile() {
           />
         ) : null}
         <AnimatePresence>
-          {inView && products?.products.length !== 0 && (
+          {inView && !sideMenuOpen && products?.products.length !== 0 && (
             <SortInfoPanelMobile
               productsLoading={productsLoading}
               products={products?.products}
               brandFilters={brandFilters}
-              handleBrandChange={handleBrandChange}
               filtersApplied={filtersApplied}
               setSortByOpen={setSortByOpen}
               setFiltersOpen={setFiltersOpen}
@@ -312,10 +318,8 @@ export default function SearchResultsMobile() {
               sortByOpen={sortByOpen}
               sortBy={sortBy}
               handleSortByChange={handleSortByChange}
-              handleChangePriceInput={handleChangePriceInput}
-              handlePriceChange={handlePriceChange}
-              handleSubmitPrice={handleSubmitPrice}
               priceFilters={priceFilters}
+              handleSubmitFilters={handleSubmitFilters}
             />
           )}
         </AnimatePresence>

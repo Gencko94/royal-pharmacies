@@ -119,6 +119,7 @@ const baseStrings = {
   days: 'Days',
   soon: 'Soon',
   'more-than-10-days': 'Days',
+  'less-than': 'Less than',
   'delivery-cost': 'Delivery Cost',
   'accepted-payments': 'Accepted Payment Methods',
   'coupon-sale': 'Coupon Discount',
@@ -168,6 +169,7 @@ const baseStrings = {
   'fullname-empty': 'Please enter a Full Name',
   'email-label': 'Email',
   'password-label': 'Password',
+  'new-password-label': 'New Password',
   'fullname-label': 'Full Name',
   'phone-label': 'Phone Number',
   'login-button': 'Login',
@@ -184,9 +186,13 @@ const baseStrings = {
   'save-button': 'Save',
   'password-reset': 'Password Reset',
   'password-reset-send-button': 'Send Code',
+  'password-reset-success':
+    'Your Password has been reset successfully, You can <link>Sign in</link> with your new credentials now',
 
   'change-password': 'Change your password',
   'password-change-success': 'Password has been changed successfully',
+  'password-reset-check-email':
+    'An Email has been sent to your Email Address associated with this phone number, Please follow the steps inside your E-mail',
   'old-password': 'Old Password',
   'new-password': 'New Password',
   'same-password': 'Both password need to be the same',
@@ -195,8 +201,11 @@ const baseStrings = {
     'Already have an account ? <link>Log in instead</link>',
   'terms-of-service':
     'By clicking “Create an account”, you agree to our <link>Terms of Service</link> and <link>Privacy Statement</link>. We’ll occasionally send you account related emails',
-  'password-reset-enter-your-email':
-    "Enter your phone number and we'll send you a code to reset your password ",
+  'password-reset-enter-your-phone':
+    "Enter your phone number and we'll send you an email to your associated Email Address in order to reset your password ",
+  'set-up-new-password': 'Setting up your new password',
+  'password-reset-enter-new-password':
+    'Please enter your phone number along with the new password, Make sure to pick a strong password',
   //end of credentials forms
   //start of cart items
   price: 'Price',
@@ -219,6 +228,7 @@ const baseStrings = {
   'cart-delivery-cost': 'Delivery Cost',
   'cart-free': 'Free',
   'check-today-deals': 'Check today deals',
+  deals: 'Deals',
   'shopping-cart': 'Shopping cart',
   'wishlist-empty': 'Your Wishlist is Empty !',
   single: '1',
@@ -409,6 +419,13 @@ const baseStrings = {
   'developed-by': 'Developed by',
   'mrg-mall-kuwait': 'MRG Mall Kuwait',
   'on-mrg-mall-kuwait': 'On MRG Mall Kuwait',
+  'out-of-border': 'Sorry we do not deliver here',
+  'zoom-reset': 'Reset Zoom',
+  offers: 'Offers',
+  'no-offers': 'There are Currently no offers for this category :(',
+  'comeback-later': 'Come Back later to see out latest offers !',
+  'go-to-products': 'Explore our Products from this category',
+  'download-apps': 'Download Our Apps on your Mobile',
 };
 
 export const en = baseStrings;

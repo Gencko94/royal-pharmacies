@@ -14,10 +14,12 @@ import CartLoader from '../components/Cart/loaders/CartLoader';
 import { useIntl } from 'react-intl';
 import StaticSwiper from '../components/Swipers/StaticSwiper';
 import { scrollTo } from 'scroll-js';
+import { DataProvider } from '../contexts/DataContext';
 export default function Cart() {
   const { cartItemsLoading, isGetCartError } = React.useContext(
     CartAndWishlistProvider
   );
+  const { deliveryCountriesLoading } = React.useContext(DataProvider);
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
   const scrollToTop = () => {
@@ -46,14 +48,17 @@ export default function Cart() {
             <CheckoutModal setCheckOutModalOpen={setCheckOutModalOpen} />
           )}
         </AnimatePresence>
-        {authenticationLoading && <CartLoader />}
-        {!authenticationLoading && userId && !isGetCartError && (
-          <div className="cart-main-grid">
-            <CartContainer />
-            <CartRightSide setCheckOutModalOpen={setCheckOutModalOpen} />
-          </div>
-        )}
-        {!authenticationLoading && !userId && (
+        {(authenticationLoading || deliveryCountriesLoading) && <CartLoader />}
+        {!authenticationLoading &&
+          userId &&
+          !isGetCartError &&
+          !deliveryCountriesLoading && (
+            <div className="cart-main-grid">
+              <CartContainer />
+              <CartRightSide setCheckOutModalOpen={setCheckOutModalOpen} />
+            </div>
+          )}
+        {!authenticationLoading && !userId && !deliveryCountriesLoading && (
           <GuestCart setCheckOutModalOpen={setCheckOutModalOpen} />
         )}
         <StaticSwiper title="Perfumes" type="perfumes" cb={scrollToTop} />

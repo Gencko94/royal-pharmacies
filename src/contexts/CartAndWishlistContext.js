@@ -18,7 +18,9 @@ import { AuthProvider } from './AuthContext';
 import { DataProvider } from './DataContext';
 export const CartAndWishlistProvider = React.createContext();
 export default function CartAndWishlistContext({ children }) {
-  const { deliveryCountry } = React.useContext(DataProvider);
+  const { deliveryCountry, deliveryCountriesLoading } = React.useContext(
+    DataProvider
+  );
   const [coupon, setCoupon] = React.useState('');
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   /**
@@ -43,9 +45,14 @@ export default function CartAndWishlistContext({ children }) {
     isError: isGuestGetCartError,
     error: getGuestCartError,
     isFetching: guestCartItemsFetching,
+    isIdle: guestCartItemsIdle,
   } = useQuery(['guestCartItems', deliveryCountry, coupon], getGuestCartItems, {
     refetchOnWindowFocus: false,
-    enabled: !authenticationLoading && !userId,
+    enabled:
+      !authenticationLoading &&
+      !userId &&
+      // !deliveryCountriesIdle &&
+      !deliveryCountriesLoading,
     retry: true,
     keepPreviousData: true,
   });
@@ -167,6 +174,7 @@ export default function CartAndWishlistContext({ children }) {
         wishlistItemsLoading,
         isGuestGetCartError,
         getGuestCartError,
+        guestCartItemsIdle,
         isGetCartError,
         isGetWishlistError,
         getCartError,

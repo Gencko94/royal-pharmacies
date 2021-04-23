@@ -39,7 +39,7 @@ export default function MegaMenu({ data }) {
       animate="visible"
       initial="hidden"
       exit="exited"
-      className={`absolute z-20  top-100 left-0 w-full max-w-default overflow-hidden shadow-lg  cursor-default bg-body-light text-body-text-light
+      className={`absolute z-20  border-b  top-100 left-0 w-full max-w-default overflow-hidden shadow-lg  cursor-default bg-body-light text-body-text-light
        `}
     >
       <div className="p-3 pt-4 max-w-screen-xl mx-auto">
@@ -53,15 +53,16 @@ export default function MegaMenu({ data }) {
             </h1>
             <div className="nav-category__grid p-3 ">
               {data.children.map(item => {
+                if (!item.category) return null;
                 return (
                   <Link
-                    to={`/${locale}/${item.category.slug}`}
+                    to={`/${locale}/category/${item.category?.slug}/${item?.category.id}`}
                     key={item.id}
                     className="px-2 py-1 flex flex-col justify-center items-center text-sm hover:text-main-color"
                   >
                     <LazyImage
-                      src={item.category.translation[locale].image?.link}
-                      alt={item.category.translation[locale].name}
+                      src={item.category?.translation[locale].image?.link}
+                      alt={item.category?.translation[locale].name}
                       pb={'100%'}
                     />
                     <h1
@@ -81,8 +82,8 @@ export default function MegaMenu({ data }) {
             </h1>
 
             <div className="nav-category-brands__grid">
-              {data.category.list_brands.map(brand => (
-                <div>
+              {data.category?.list_brands.map(brand => (
+                <div key={brand.id}>
                   <Link
                     className="overflow-hidden rounded-full border-2 block"
                     to={`/${locale}/brands/${brand?.slug}`}

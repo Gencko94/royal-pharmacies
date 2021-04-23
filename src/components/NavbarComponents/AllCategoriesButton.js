@@ -13,15 +13,12 @@ export default function AllCategoriesButton({
   React.useEffect(() => {
     if (isHovering) {
       handleMegaMenuOpen(item.id);
-    } else {
-      // setDropDownOpen(false);
-      // setCatData(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHovering]);
   return (
     <Link
-      to={`/${locale}/${item.slug}`}
+      to={`/${locale}/category/${item.slug}/${item.id}`}
       onClick={() => handleMenuClose()}
       onMouseEnter={() => handleMegaMenuOpen(item.id)}
       className={`px-4 py-2  block ${

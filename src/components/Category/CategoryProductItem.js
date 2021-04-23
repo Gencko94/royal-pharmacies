@@ -80,7 +80,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
         >
           <LazyImage
             src={item.image?.link}
-            origin="original"
+            origin="small"
             alt={item.translation[locale].title}
             pb="calc(100% * 266/210)"
           />

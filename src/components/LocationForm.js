@@ -17,6 +17,7 @@ export default function LocationForm({
   setShowMap,
   marker,
   setMarker,
+  outOfBorder,
 }) {
   const [countryCode, setCountryCode] = React.useState(options[0]);
   const { addAddressMutation } = React.useContext(AuthProvider);
@@ -57,7 +58,6 @@ export default function LocationForm({
           />
         )}
       </AnimatePresence>
-
       <div className="font-bold p-2">
         <h1>{formatMessage({ id: 'location-details' })}</h1>
       </div>
@@ -173,9 +173,11 @@ export default function LocationForm({
                   </div>
                   <button
                     type="submit"
-                    disabled={!markerAddress && !userTypedLocation}
+                    disabled={
+                      (!markerAddress && !userTypedLocation) || outOfBorder
+                    }
                     className={`  ${
-                      !markerAddress && !userTypedLocation
+                      (!markerAddress && !userTypedLocation) || outOfBorder
                         ? 'bg-gray-500 text-gray-300'
                         : 'bg-main-color text-main-text'
                     } p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}

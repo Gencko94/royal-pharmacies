@@ -17,7 +17,7 @@ export default function ThirdSection({ pages }) {
   const { settings } = React.useContext(DataProvider);
   return (
     <div
-      className={`pt-4 px-8 pb-2 bg-first-nav-light text-main-text  flex items-center justify-between  `}
+      className={`pt-4 px-8 pb-2 bg-first-nav-light text-main-text   flex items-center justify-between  `}
     >
       <div className="flex items-center ">
         <Link to={`/${locale}/`}>
@@ -43,7 +43,7 @@ export default function ThirdSection({ pages }) {
       </div>
 
       {pages && (
-        <div className="flex text-sm justify-evenly">
+        <div className="flex text-sm justify-evenly flex-wrap">
           {pages.map(page => {
             return (
               page.type === 'page' && (
@@ -61,46 +61,56 @@ export default function ThirdSection({ pages }) {
       )}
       {settings && (
         <div className="flex justify-evenly">
-          <a
-            rel="noopener noreferrer"
-            href={`${settings?.sm_facebook}`}
-            target="_blank"
-            className="mr-4"
-          >
-            <FaFacebook className=" text-blue-600 h-25p w-25p" />
-          </a>
-          <a
-            rel="noopener noreferrer"
-            href={`${settings?.sm_twitter}`}
-            target="_blank"
-            className="mr-4"
-          >
-            <FaTwitter className=" text-blue-400 h-25p w-25p" />
-          </a>
-          <a
-            rel="noopener noreferrer"
-            href={`${settings?.sm_instagram}`}
-            target="_blank"
-            className="mr-4"
-          >
-            <FaInstagram className="h-25p w-25p text-red-400" />
-          </a>
-          <a
-            rel="noopener noreferrer"
-            href={`${settings?.sm_linkedin}`}
-            target="_blank"
-            className="mr-4"
-          >
-            <FaLinkedin className="h-25p w-25p text-blue-600" />
-          </a>
-          <a
-            rel="noopener noreferrer"
-            href={`${settings?.sm_whatsapp}`}
-            target="_blank"
-            className="mr-4"
-          >
-            <FaWhatsapp className="h-25p w-25p text-green-600" />
-          </a>
+          {settings?.sm_facebook && (
+            <a
+              rel="noopener noreferrer"
+              href={`https://facebook.com/${settings?.sm_facebook}`}
+              target="_blank"
+              className="mr-4"
+            >
+              <FaFacebook className=" text-blue-600 h-25p w-25p" />
+            </a>
+          )}
+          {settings?.sm_twitter && (
+            <a
+              rel="noopener noreferrer"
+              href={`https://twitter.com/${settings?.sm_twitter}`}
+              target="_blank"
+              className="mr-4"
+            >
+              <FaTwitter className=" text-blue-400 h-25p w-25p" />
+            </a>
+          )}
+          {settings?.sm_instagram && (
+            <a
+              rel="noopener noreferrer"
+              href={`https://instagram.com/${settings?.sm_instagram}`}
+              target="_blank"
+              className="mr-4"
+            >
+              <FaInstagram className="h-25p w-25p text-red-400" />
+            </a>
+          )}
+          {settings?.sm_linkedin && (
+            <a
+              rel="noopener noreferrer"
+              href={`https://linkedin.com/${settings?.sm_linkedin}`}
+              target="_blank"
+              className="mr-4"
+            >
+              <FaLinkedin className="h-25p w-25p text-blue-600" />
+            </a>
+          )}
+          {settings?.sm_whatsapp && (
+            <a
+              rel="noopener noreferrer"
+              href={`https://wa.me/${settings?.sm_whatsapp}`}
+              target="_blank"
+              className="mr-4"
+            >
+              <FaWhatsapp className="h-25p w-25p text-green-600" />
+            </a>
+          )}
         </div>
       )}
     </div>

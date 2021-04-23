@@ -25,7 +25,7 @@ export default function MobileGuestCartContainer({
           <motion.div initial={false} layout className="mb-2">
             <AnimatePresence>
               {cartItems.map(item => (
-                <GuestCartItemMobile key={item.id} item={item} />
+                <GuestCartItemMobile key={item.options?.sku} item={item} />
               ))}
             </AnimatePresence>
           </motion.div>

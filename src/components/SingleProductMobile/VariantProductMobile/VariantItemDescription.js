@@ -39,6 +39,7 @@ export default function VariantItemDescription({
   ratingCount,
   averageRating,
   handleRemoveFromWishList,
+  sku,
 }) {
   const variantOnly = data.new_variation_addons[selectedVariation].options
     ? false
@@ -331,7 +332,7 @@ export default function VariantItemDescription({
         <button
           disabled={option.quantity === 0}
           onClick={() => {
-            if (itemInCart) {
+            if (itemInCart.includes(sku)) {
               return;
             } else {
               handleAddToCart(quantity, option.sku, currentPrice);
@@ -349,7 +350,7 @@ export default function VariantItemDescription({
               width={25}
               visible={addToCartButtonLoading}
             />
-          ) : itemInCart ? (
+          ) : itemInCart.includes(sku) ? (
             <>
               <span>
                 <TiShoppingCart className="w-25p h-25p " />

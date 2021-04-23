@@ -5,16 +5,17 @@ import CategoryItemLoader from '../Category/CategoryItemLoader';
 import ContentLoader from 'react-content-loader';
 import VariantCategoryProductItem from '../Category/VariantCategoryProductItem';
 import { useIntl } from 'react-intl';
+import { DataProvider } from '../../contexts/DataContext';
 export default function CategoryMobileItemGrid({
   productsLoading,
   products,
   setCartMenuOpen,
-  filteredProducts,
-  filteredProductsLoading,
-  filtersApplied,
 }) {
   const { formatMessage } = useIntl();
-  if (productsLoading || filteredProductsLoading) {
+  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
+    DataProvider
+  );
+  if (productsLoading || deliveryCountriesLoading || deliveryCountriesIdle) {
     return (
       <div className="p-2 min-h-screen">
         <ContentLoader
@@ -34,59 +35,27 @@ export default function CategoryMobileItemGrid({
     );
   }
   return (
-    <div id="products_grid-mobile" className="mb-4">
+    <div id="products_grid-mobile" className="mb-4 px-2">
       {products.length !== 0 && (
         <div className="search-page-items-mobile__grid my-1">
-          {!filtersApplied &&
-            products.map(item => {
-              return item.type === 'variation' &&
-                Object.entries(item.new_variation_addons).length > 0 ? (
-                <VariantCategoryProductItem
-                  key={item.id}
-                  setCartMenuOpen={setCartMenuOpen}
-                  item={item}
-                />
-              ) : (
-                <CategoryProductItem
-                  key={item.id}
-                  setCartMenuOpen={setCartMenuOpen}
-                  item={item}
-                />
-              );
-            })}
-          {filtersApplied &&
-            !filteredProductsLoading &&
-            filteredProducts &&
-            filteredProducts.map(item => {
-              return item.type === 'variation' &&
-                Object.entries(item.new_variation_addons).length > 0 ? (
-                <VariantCategoryProductItem
-                  key={item.id}
-                  setCartMenuOpen={setCartMenuOpen}
-                  item={item}
-                />
-              ) : (
-                <CategoryProductItem
-                  key={item.id}
-                  setCartMenuOpen={setCartMenuOpen}
-                  item={item}
-                />
-              );
-            })}
+          {products.map(item => {
+            return item.type === 'variation' &&
+              Object.entries(item.new_variation_addons).length > 0 ? (
+              <VariantCategoryProductItem
+                key={item.id}
+                setCartMenuOpen={setCartMenuOpen}
+                item={item}
+              />
+            ) : (
+              <CategoryProductItem
+                key={item.id}
+                setCartMenuOpen={setCartMenuOpen}
+                item={item}
+              />
+            );
+          })}
         </div>
       )}
-      {products.length === 0 && (
-        <div className="p-6 flex items-center justify-center text-xl">
-          {formatMessage({ id: 'no-products' })}
-        </div>
-      )}
-      {filtersApplied &&
-        !filteredProductsLoading &&
-        filteredProducts.length === 0 && (
-          <div className="p-6 flex items-center justify-center text-xl">
-            {formatMessage({ id: 'no-filter-results' })}
-          </div>
-        )}
     </div>
   );
 }

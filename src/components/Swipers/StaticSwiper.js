@@ -11,18 +11,20 @@ import SwiperItem from './SwiperItem';
 import VariantSwiperItem from './VariantSwiperItem';
 import { Link } from 'react-router-dom';
 import ErrorSnackbar from '../ErrorSnackbar';
+import { useInView } from 'react-intersection-observer';
 SwiperCore.use([Navigation]);
-export default function StaticSwiper({ type, cb, title }) {
+export default function StaticSwiper({ type, cb, title, id }) {
   const { formatMessage, locale } = useIntl();
   const [errorOpen, setErrorOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const { inView, ref } = useInView({ threshold: 0.1 });
   const closeError = () => {
     setErrorOpen(false);
   };
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isIdle } = useQuery(
     ['staticSwiper', type],
     getStaticSwiperData,
-    { retry: true, refetchOnWindowFocus: false }
+    { retry: true, refetchOnWindowFocus: false, enabled: inView }
   );
 
   const breakpoints = {
@@ -56,20 +58,22 @@ export default function StaticSwiper({ type, cb, title }) {
   };
 
   return (
-    <div className="my-8">
+    <div ref={ref} className="my-8">
       {errorOpen && (
         <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
       )}
-      {isLoading && <div className="mb-4 " style={{ height: '30px' }}></div>}
-      {isLoading && <SwiperLoader />}
-      {!isLoading && (
+      {(isLoading || isIdle) && (
+        <div className="mb-4 " style={{ height: '30px' }}></div>
+      )}
+      {(isLoading || isIdle) && <SwiperLoader />}
+      {!isLoading && !isIdle && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl md:text-2xl flex-1 font-bold ">
+          <h1 className="text-2xl  flex-1 font-bold ">
             {data?.title[locale]?.name}
           </h1>
           {type !== 'latest_products' && type !== 'best_seller' && (
             <Link
-              to={`/${locale}/${data?.slug}`}
+              to={`/${locale}/category/${data?.slug}/${id}`}
               className="py-1 px-2  bg-main-color text-second-nav-text-light rounded whitespace-no-wrap"
               style={{ fontWeight: '900' }}
             >
@@ -78,11 +82,12 @@ export default function StaticSwiper({ type, cb, title }) {
           )}
         </div>
       )}
-      {!isLoading && (
+      {!isLoading && !isIdle && (
         <Swiper
+          freeMode
           navigation
           id="main"
-          spaceBetween={10}
+          spaceBetween={5}
           breakpoints={breakpoints}
         >
           {data.products.map(item => {
@@ -92,7 +97,7 @@ export default function StaticSwiper({ type, cb, title }) {
                 className={`overflow-hidden   relative my-2 rounded`}
               >
                 {item.type === 'variation' &&
-                Object.entries(item.new_variation_addons).length > 0 ? (
+                Object.keys(item.new_variation_addons).length > 0 ? (
                   <VariantSwiperItem
                     item={item}
                     setCartMenuOpen={cb}

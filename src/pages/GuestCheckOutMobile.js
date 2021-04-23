@@ -109,7 +109,6 @@ export default function GuestCheckOutMobile() {
           guestAddress.addressDetails.userTyped_location || null,
         type: guestAddress.lat ? 'map' : 'text',
       },
-      coupon,
       payment_method: paymentMethod,
       order_type:
         deliveryCountry?.translation.en.name === 'Kuwait'
@@ -120,6 +119,7 @@ export default function GuestCheckOutMobile() {
       const res = await guestCheckoutMutation({
         deliveryCountry,
         order,
+        coupon,
       });
       setStepDone({
         ...stepDone,

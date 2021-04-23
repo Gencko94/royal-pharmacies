@@ -87,9 +87,15 @@ export default function SideCartMenuItemMobile({ item, setSideMenuOpen }) {
           to={`/${locale}/products/${item.slug}/${item.id}`}
           onClick={() => setSideMenuOpen(false)}
         >
-          <h1 className="text-clamp-2 text-sm font-bold">
-            {item[`name_${locale}`]}
-          </h1>
+          <h1 className="font-semibold text-clamp-2 text-sm uppercase ">{`${
+            item[`name_${locale}`]
+          }${
+            item.options.addons
+              ? ` - ${Object.keys(item.options.addons)
+                  .map(variation => item.options.addons[variation])
+                  .join(' - ')}`
+              : ''
+          }`}</h1>
         </Link>
 
         <div className="flex items-center text-gray-700">

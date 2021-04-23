@@ -10,10 +10,11 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Select from 'react-select';
 import * as Yup from 'yup';
 import ErrorSnackbar from '../components/ErrorSnackbar';
-import { AuthProvider } from '../contexts/AuthContext';
 import Language from '../components/NavbarComponents/Language';
 import { useMediaQuery } from 'react-responsive';
 import { DataProvider } from '../contexts/DataContext';
+import { requestPasswordReset } from '../Queries/Queries';
+import { AnimatePresence, motion } from 'framer-motion';
 const options = [
   { value: '+965', label: '+965' },
   { value: '+966', label: '+966' },
@@ -86,30 +87,28 @@ const PhoneNumberCustomInput = ({
 };
 
 export default function PasswordReset() {
-  const { userLogin } = React.useContext(AuthProvider);
   const { settings } = React.useContext(DataProvider);
   const [countryCode, setCountryCode] = React.useState(options[0]);
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
   const { formatMessage } = useIntl();
   const [errorOpen, setErrorOpen] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
   const history = useHistory();
   const closeError = () => {
     setErrorOpen(false);
   };
   const validationSchema = Yup.object({
-    email: Yup.string().email(formatMessage({ id: 'email-validation' })),
     phoneNumber: Yup.string()
       .matches(/^\d+$/, formatMessage({ id: 'number-only' }))
       .required(formatMessage({ id: 'phone-empty' })),
-    password: Yup.string().required(formatMessage({ id: 'password-empty' })),
   });
   return (
-    <div className=" text-gray-900 px-2 flex justify-center items-center   h-screen relative">
+    <div className=" text-gray-900 px-2 flex justify-center items-center    h-screen relative">
       {errorOpen && (
         <ErrorSnackbar message={errorMessage} closeFunction={closeError} />
       )}
-      <div className=" z-2  max-w-screen-sm overflow-hidden">
+      <div className=" relative z-2  max-w-screen-sm ">
         <div className="flex items-center flex-col mb-4  rounded-lg text-center ">
           <Link to="/">
             <img
@@ -122,7 +121,7 @@ export default function PasswordReset() {
           <h2 className="text-xl mb-2 text-center font-semibold">
             {formatMessage({ id: 'password-reset' })}
           </h2>
-          <h1>{formatMessage({ id: 'password-reset-enter-your-email' })}</h1>
+          <h1>{formatMessage({ id: 'password-reset-enter-your-phone' })}</h1>
         </div>
         <div className="rounded-lg border bg-gray-100 mb-2">
           <Formik
@@ -133,16 +132,26 @@ export default function PasswordReset() {
             onSubmit={async (values, actions) => {
               setErrorOpen(false);
               try {
-                const res = await userLogin({
+                const res = await requestPasswordReset({
                   phoneNumber: `${countryCode.value}${values.phoneNumber}`,
                 });
-                if (res === 'ok') {
+                if (res.message === 'success') {
+                  setSuccess(true);
                 } else {
                   actions.setSubmitting(false);
                 }
               } catch (error) {
-                setErrorOpen(true);
-                setErrorMessage('Something went wrong, Please try again');
+                if (
+                  error.response.data.message ===
+                  'Cannot find a user with this mobile'
+                ) {
+                  actions.setErrors({
+                    phoneNumber: formatMessage({ id: 'invalid-phone' }),
+                  });
+                } else {
+                  setErrorOpen(true);
+                  setErrorMessage('Something went wrong, Please try again');
+                }
               }
             }}
           >
@@ -165,13 +174,13 @@ export default function PasswordReset() {
                         isSubmitting
                           ? 'bg-main-color cursor-not-allowed'
                           : 'bg-main-color text-second-nav-text-light hover:bg-red-800'
-                      } w-full rounded uppercase  p-2 font-semibold  transition duration-150 `}
+                      } w-full rounded uppercase  flex items-center justify-center p-2 font-semibold  transition duration-150 `}
                     >
                       <Loader
                         type="ThreeDots"
                         color="#fff"
-                        height={20}
-                        width={20}
+                        height={25}
+                        width={25}
                         visible={isSubmitting}
                       />
                       {!isSubmitting &&
@@ -183,6 +192,18 @@ export default function PasswordReset() {
             }}
           </Formik>
         </div>
+        <AnimatePresence>
+          {success && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="px-3 py-2  mx-auto top-100 text-center w-full  text-sm absolute text-main-text rounded font-semibold bg-green-700"
+            >
+              <p>{formatMessage({ id: 'password-reset-check-email' })}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       <div
         className={`${

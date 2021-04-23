@@ -59,9 +59,7 @@ export default function TopSection({ toggleSideMenu }) {
   return (
     <div
       className={`
-        bg-second-nav-light text-second-nav-text-light
-         
-       p-1`}
+        bg-main-color text-main-text p-1`}
     >
       <div className={`p-1 flex items-center `}>
         <Hamburger toggleSideMenu={toggleSideMenu} />
@@ -79,7 +77,7 @@ export default function TopSection({ toggleSideMenu }) {
           animate="visible"
           initial="hidden"
         >
-          <button className="  ">
+          <button onClick={() => toggleSideMenu()}>
             <Link
               to={`/${locale}`}
               className="flex flex-col justify-center items-center"
@@ -92,7 +90,7 @@ export default function TopSection({ toggleSideMenu }) {
               </h1>
             </Link>
           </button>
-          <button className="">
+          <button onClick={() => toggleSideMenu()}>
             <Link
               to={`/${locale}/cart`}
               className="flex flex-col justify-center items-center"
@@ -105,9 +103,9 @@ export default function TopSection({ toggleSideMenu }) {
               </h1>
             </Link>
           </button>
-          <button className="">
+          <button onClick={() => toggleSideMenu()}>
             <Link
-              to={`/${locale}/wishlist/`}
+              to={`/${locale}/wishlist`}
               className="flex flex-col justify-center items-center"
             >
               <div className=" rounded  shadow p-2 mb-1">

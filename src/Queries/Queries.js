@@ -177,6 +177,35 @@ export const changeUserPassword = async data => {
     return { message: 'Password Changed' };
   }
 };
+export const requestPasswordReset = async ({ phoneNumber }) => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/customer-forgot-password`,
+    {
+      mobile: phoneNumber,
+    }
+  );
+  if (res.data.status === true) {
+    return { message: 'success' };
+  }
+};
+export const resetUserPassword = async ({
+  phoneNumber,
+  token,
+  newPassword,
+}) => {
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/customer-reset-password`,
+    {
+      token,
+      mobile: phoneNumber,
+      password: newPassword,
+      password_confirmation: newPassword,
+    }
+  );
+  if (res.data.status === true) {
+    return { message: 'your password has been successfully changed' };
+  }
+};
 
 /**
  * End of User Profile
@@ -283,10 +312,10 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
       country: deliveryCountry?.code,
     },
   };
-  if (!localStorage.getItem('localCart')) {
-    localStorage.setItem('localCart', JSON.stringify([]));
+  if (!localStorage.getItem('lclc')) {
+    localStorage.setItem('lclc', JSON.stringify([]));
   }
-  const localCart = JSON.parse(localStorage.getItem('localCart'));
+  const localCart = JSON.parse(localStorage.getItem('lclc'));
   if (localCart.length === 0) {
     const res = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
@@ -322,27 +351,29 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
         },
       });
     });
-    await axios.post(
+    const combined = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/cart/combine/${userId}`,
       { products: JSON.stringify(items), coupon },
       config
     );
-    const res = await axios.post(
-      `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
-      { coupon },
-      config
-    );
-    if (res.data.status === true) {
-      localStorage.setItem('localCart', JSON.stringify([]));
-      return {
-        cartItems: res.data.data.items,
-        cartTotal: res.data.data.total,
-        shippingCost: res.data.data.shipping_cost,
-        cartSubtotal: res.data.data.subtotal,
-        couponCost: res.data.data.coupon_cost,
-        message: 'cart-combined',
-        note: res.data.data.note,
-      };
+    if (combined.data) {
+      const res = await axios.post(
+        `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
+        { coupon },
+        config
+      );
+      if (res.data.status === true) {
+        localStorage.setItem('lclc', JSON.stringify([]));
+        return {
+          cartItems: res.data.data.items,
+          cartTotal: res.data.data.total,
+          shippingCost: res.data.data.shipping_cost,
+          cartSubtotal: res.data.data.subtotal,
+          couponCost: res.data.data.coupon_cost,
+          message: 'cart-combined',
+          note: res.data.data.note,
+        };
+      }
     }
   }
 };
@@ -473,10 +504,10 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
   const config = {
     headers: { country: deliveryCountry.code },
   };
-  if (!localStorage.getItem('localCart')) {
-    localStorage.setItem('localCart', JSON.stringify([]));
+  if (!localStorage.getItem('lclc')) {
+    localStorage.setItem('lclc', JSON.stringify([]));
   }
-  const localCart = JSON.parse(localStorage.getItem('localCart'));
+  const localCart = JSON.parse(localStorage.getItem('lclc'));
   if (localCart.length === 0) {
     return {
       cartItems: [],
@@ -501,6 +532,7 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
         },
       });
     });
+
     const res = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
       { cart: JSON.stringify(items), coupon },
@@ -508,11 +540,16 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
     );
     if (res.data.status === true) {
       // if an item is out of stock remove it from local cart
+      //or its not founded in the db
       const cartItems = res.data.data.items;
+
       let outofStockItems = [];
       cartItems.forEach(cartItem => {
-        if (cartItem.options.max_quantity === 0) {
-          outofStockItems.push(cartItem.options.sku);
+        if (
+          cartItem.options?.max_quantity === 0 ||
+          cartItem.message === 'Product not founded'
+        ) {
+          outofStockItems.push(cartItem.options?.sku || cartItem.sku);
         }
       });
       if (outofStockItems.length > 0) {
@@ -534,7 +571,7 @@ export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
             },
           });
         });
-        localStorage.setItem('localCart', JSON.stringify(newLocal));
+        localStorage.setItem('lclc', JSON.stringify(newLocal));
         const res = await axios.post(
           `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
           { cart: JSON.stringify(items), coupon },
@@ -564,9 +601,9 @@ export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('localCart');
+  const localCart = localStorage.getItem('lclc');
   if (!localCart) {
-    localStorage.setItem('localCart', JSON.stringify([]));
+    localStorage.setItem('lclc', JSON.stringify([]));
   }
   const parsed = JSON.parse(localCart);
   const isAvailable = item => {
@@ -578,10 +615,10 @@ export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
   const foundIndex = parsed.findIndex(isAvailable);
   if (foundIndex !== -1) {
     parsed[foundIndex].quantity = parsed[foundIndex].quantity + 1;
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
   } else {
     parsed.push(newItem);
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
   }
 
   let items = [];
@@ -601,7 +638,7 @@ export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
   });
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
-    { cart: JSON.stringify(items), coupon },
+    { cart: JSON.stringify(items, null, 4), coupon },
     config
   );
   if (res.data.status === true) {
@@ -620,7 +657,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('localCart');
+  const localCart = localStorage.getItem('lclc');
   let parsed = JSON.parse(localCart);
   const isAvailable = item => {
     if (item.sku === sku) {
@@ -630,7 +667,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
   };
   parsed = parsed.filter(isAvailable);
   if (parsed.length === 0) {
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
     return {
       cartItems: [],
       cartTotal: 0,
@@ -660,7 +697,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
     config
   );
   if (res.data.status === true) {
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
     return {
       cartItems: res.data.data.items,
       cartTotal: res.data.data.total,
@@ -681,7 +718,7 @@ export const editGuestCart = async ({
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('localCart');
+  const localCart = localStorage.getItem('lclc');
   let parsed = JSON.parse(localCart);
   const isAvailable = item => {
     if (item.sku === sku) {
@@ -716,7 +753,7 @@ export const editGuestCart = async ({
     config
   );
   if (res.data.status === true) {
-    localStorage.setItem('localCart', JSON.stringify(parsed));
+    localStorage.setItem('lclc', JSON.stringify(parsed));
     return {
       cartItems: res.data.data.items,
       cartTotal: res.data.data.total,
@@ -754,10 +791,34 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
  */
 export const getCategoryProducts = async (
   k,
-  { category, page, resultsPerPage }
+  {
+    page,
+    id,
+    resultsPerPage,
+    brandFilters,
+    sortBy,
+    search,
+    priceFilters,
+    offers,
+  }
 ) => {
-  const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/category-products/${category}?page=${page}&number=${resultsPerPage?.value}`
+  let brands = brandFilters?.map(i => i.id);
+  const query = {
+    category: id,
+    brand: brandFilters.length !== 0 ? brands : undefined,
+    sort_by: sortBy ? sortBy.value : undefined,
+    page,
+    number: resultsPerPage?.value,
+    search,
+    offers: offers && 'true',
+    range_price: priceFilters ? priceFilters : undefined,
+  };
+  // const res = await axios.get(
+  //   `${process.env.REACT_APP_MAIN_URL}/category-products/${category}?page=${page}&number=${resultsPerPage?.value}`
+  // );
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/filter-products`,
+    query
   );
   if (res.data.status === true) {
     return {
@@ -780,15 +841,15 @@ export const filterProducts = async (
     priceFilters,
   }
 ) => {
-  let brand = brandFilters?.map(i => i.id);
+  let brands = brandFilters?.map(i => i.id);
   const query = {
     category,
-    brand: brandFilters.length !== 0 ? brand : undefined,
+    brand: brandFilters.length !== 0 ? brands : undefined,
     sort_by: sortBy ? sortBy.value : undefined,
     page,
     number: resultsPerPage?.value,
     search,
-    range_price: priceFilters[0],
+    range_price: priceFilters ? priceFilters : undefined,
   };
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/filter-products`,
@@ -803,7 +864,12 @@ export const filterProducts = async (
     };
   }
 };
-
+export const getDeals = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/deals`);
+  if (res.data.status === true) {
+    return res.data.data;
+  }
+};
 export const getNavCategories = async () => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/menu/navigation`

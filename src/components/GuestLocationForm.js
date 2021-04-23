@@ -19,6 +19,7 @@ export default function GuestLocationForm({
   email,
   countryCode,
   setCountryCode,
+  outOfBorder,
 }) {
   const { formatMessage } = useIntl();
 
@@ -158,11 +159,13 @@ export default function GuestLocationForm({
 
                 <div className=" ">
                   <button
-                    disabled={!markerAddress && !userTypedLocation}
+                    disabled={
+                      (!markerAddress && !userTypedLocation) || outOfBorder
+                    }
                     type="submit"
                     className={`
                        ${
-                         !markerAddress && !userTypedLocation
+                         (!markerAddress && !userTypedLocation) || outOfBorder
                            ? 'bg-gray-500 text-gray-300'
                            : 'bg-main-color text-main-text'
                        } p-2 rounded  w-full  flex items-center uppercase justify-center font-semibold`}

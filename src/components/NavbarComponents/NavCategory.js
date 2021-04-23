@@ -35,6 +35,7 @@ export default function NavCategory() {
               <NavCategoriesContainer
                 data={navCategories}
                 isLoading={navCategoriesLoading}
+                nv
                 handleDropDownOpen={handleDropDownOpen}
                 setCatData={setCatData}
                 setDropDownOpen={setDropDownOpen}

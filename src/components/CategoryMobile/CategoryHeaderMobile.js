@@ -8,6 +8,7 @@ import BannerLazyImage from '../../helpers/BannerLazyImage';
 export default function CategoryHeaderMobile({
   categoryInfo,
   categoryInfoLoading,
+  offers,
 }) {
   const breakpoints = {
     // when window width is >= 320px
@@ -96,11 +97,17 @@ export default function CategoryHeaderMobile({
           {`${formatMessage({ id: 'shop' })}  ${
             categoryInfo?.title?.[locale].name
           } `}
-          {categoryInfo?.children.length > 0 &&
+          {!offers &&
+            categoryInfo?.children.length > 0 &&
             formatMessage({ id: 'by-category' })}
         </h1>
+        {offers && (
+          <h1 className="text-2xl font-bold text-center ">
+            {formatMessage({ id: 'offers' })}
+          </h1>
+        )}
       </div>
-      {categoryInfo.children.length !== 0 && (
+      {!offers && categoryInfo.children.length !== 0 && (
         <CategoryChildrenMobile children={categoryInfo?.children} />
       )}
     </div>

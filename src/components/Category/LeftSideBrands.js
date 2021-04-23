@@ -4,12 +4,25 @@ import { useIntl } from 'react-intl';
 
 export default function LeftSideBrands({
   brands,
-  handleBrandChange,
-  brandFilters,
   categoryInfoLoading,
   productsLoading,
+  selectedBrands,
+  setSelectedBrands,
 }) {
   const { formatMessage, locale } = useIntl();
+  const handleBrandsChange = brand => {
+    const isAvailable = selectedBrands.find(i => i.id === brand.id);
+    // if available
+    if (isAvailable) {
+      setSelectedBrands(prev => {
+        return prev.filter(i => i.id !== brand.id);
+      });
+    } else {
+      setSelectedBrands(prev => {
+        return [...prev, brand];
+      });
+    }
+  };
 
   if (categoryInfoLoading || productsLoading) {
     return (
@@ -34,14 +47,17 @@ export default function LeftSideBrands({
   }
 
   return (
-    <div className="mb-4">
+    <div className="mb-4 px-2">
       <h1 className="text-lg py-2 font-bold">
         {formatMessage({ id: 'filter-by-brand' })}
       </h1>
       <hr />
-      <div className="flex flex-col justify-center">
+      <div
+        className="flex flex-col justify-center"
+        style={{ maxHeight: '300px', overflow: 'auto' }}
+      >
         {brands?.map(brand => {
-          const isAvailable = brandFilters.find(i => i.id === brand.id);
+          const isAvailable = selectedBrands.find(i => i.id === brand.id);
 
           return (
             <div key={brand.id} className="flex items-center my-2">
@@ -50,7 +66,7 @@ export default function LeftSideBrands({
                 type="checkbox"
                 className="form-checkbox border-gray-600 text-main-color"
                 onChange={() =>
-                  handleBrandChange({
+                  handleBrandsChange({
                     id: brand.id,
                     label: brand.translation[locale].name,
                   })

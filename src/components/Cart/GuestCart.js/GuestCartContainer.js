@@ -47,11 +47,7 @@ export default function GuestCartContainer() {
           </div>
           <hr />
           <AnimateSharedLayout>
-            <motion.div
-              initial={false}
-              layout
-              className=" grid grid-cols-1 gap-2"
-            >
+            <motion.div initial={false} layout>
               <AnimatePresence>
                 {guestCartItems.map(item => {
                   return <GuestCartItem key={item.options.sku} item={item} />;

@@ -1610,10 +1610,6 @@ video {
   padding: 1.5rem;
 }
 
-.p-8{
-  padding: 2rem;
-}
-
 .p-10{
   padding: 2.5rem;
 }
@@ -1790,6 +1786,10 @@ video {
 
 .right-n25{
   right: -25px;
+}
+
+.shadow-xs{
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .shadow-sm{

@@ -15,6 +15,7 @@ import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 import { useIntl } from 'react-intl';
 import { Helmet } from 'react-helmet';
+import DealsSwiper from '../components/Swipers/DealsSwiper';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
@@ -35,67 +36,45 @@ export default function Home() {
     switch (item.type) {
       case 'best_seller':
         return (
-          <LazyLoad
-            once={true}
+          <StaticSwiper
             key={index}
-            height="calc(100% * 1285/492.92)"
-            offset={600}
-          >
-            <StaticSwiper
-              type={item.type}
-              title={item[`title_${locale}`]}
-              cb={setCartMenuOpen}
-            />
-          </LazyLoad>
+            type={item.type}
+            title={item[`title_${locale}`]}
+            cb={setCartMenuOpen}
+          />
         );
       case 'product_by_category':
         return (
-          <LazyLoad
-            once={true}
+          <StaticSwiper
             key={index}
-            offset={600}
-            height="calc(100% * 1285/492.92)"
-          >
-            <StaticSwiper
-              type={item.key}
-              title={item[`title_${locale}`]}
-              cb={setCartMenuOpen}
-            />
-          </LazyLoad>
+            type={item.key}
+            id={item.id}
+            title={item[`title_${locale}`]}
+            cb={setCartMenuOpen}
+          />
         );
       case 'categories':
         return (
-          <LazyLoad
-            once={true}
+          <StaticSwiper
             key={index}
-            offset={600}
-            height="calc(100% * 1285/492.92)"
-          >
-            <StaticSwiper
-              type={item.slug}
-              title={item[`title_${locale}`]}
-              cb={setCartMenuOpen}
-            />
-          </LazyLoad>
+            id={item.id}
+            type={item.slug}
+            title={item[`title_${locale}`]}
+            cb={setCartMenuOpen}
+          />
         );
       case 'latest_products':
         return (
-          <LazyLoad
-            once={true}
+          <StaticSwiper
             key={index}
-            offset={600}
-            height="calc(100% * 1285/492.92)"
-          >
-            <StaticSwiper
-              type={item.type}
-              title={item[`title_${locale}`]}
-              cb={setCartMenuOpen}
-            />
-          </LazyLoad>
+            type={item.type}
+            title={item[`title_${locale}`]}
+            cb={setCartMenuOpen}
+          />
         );
       case 'banner':
         return (
-          <LazyLoad offset={600} key={index}>
+          <LazyLoad offset={500} key={index}>
             <div className="my-16">
               <Banner
                 url={
@@ -144,6 +123,7 @@ export default function Home() {
         >
           <MainCarousel />
           <Categories />
+          <DealsSwiper />
           <StaticSwiper
             type="latest_products"
             title={'New Arrivals'}

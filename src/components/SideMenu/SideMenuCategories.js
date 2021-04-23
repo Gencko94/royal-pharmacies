@@ -64,7 +64,9 @@ export default function SideMenuCategories({
                 if (hasChildren) {
                   handleClickNextFirst(i);
                 } else {
-                  history.push(`/${locale}/${category.slug}`);
+                  history.push(
+                    `/${locale}/category/${category.slug}/${category.id}`
+                  );
                   toggleSideMenu();
                 }
               }}
@@ -112,7 +114,9 @@ export default function SideMenuCategories({
                 if (hasChildren) {
                   handleClickNextSecond(i);
                 } else {
-                  history.push(`/${locale}/${subCategory.slug}`);
+                  history.push(
+                    `/${locale}/category/${subCategory.slug}/${subCategory.id}`
+                  );
                   toggleSideMenu();
                 }
               }}
@@ -165,7 +169,9 @@ export default function SideMenuCategories({
                     handleClickNextThird(i);
                   } else {
                     toggleSideMenu();
-                    history.push(`/${locale}/${secondsubCategory.slug}`);
+                    history.push(
+                      `/${locale}/category/${secondsubCategory.slug}/${secondSubCategory.id}`
+                    );
                   }
                 }}
                 className="p-3 flex items-center   justify-between"
@@ -212,7 +218,7 @@ export default function SideMenuCategories({
         ]?.children?.map(subCategory => {
           return (
             <Link
-              to={`/${locale}/${subCategory.slug}`}
+              to={`/${locale}/category/${subCategory.slug}/${subCategory.id}`}
               key={subCategory.id}
               className="p-3"
               onClick={toggleSideMenu}

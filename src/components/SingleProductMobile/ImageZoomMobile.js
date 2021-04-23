@@ -1,67 +1,110 @@
 import React from 'react';
+import { GrPowerReset } from 'react-icons/gr';
 import { useIntl } from 'react-intl';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
+import LazyImage from '../../helpers/LazyImage';
 
-import SwiperCore, { Thumbs, Navigation, Zoom } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css';
-SwiperCore.use([Thumbs, Navigation, Zoom]);
 export default function ImageZoomMobile({ data }) {
   const { locale } = useIntl();
-  const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const { formatMessage } = useIntl();
   const [doubleClicked, setDoubleClicked] = React.useState(false);
-
+  const [image, setImage] = React.useState(() => {
+    return `${process.env.REACT_APP_IMAGES_URL}/original/${data?.image.link}`;
+  });
+  const [showReset, setShowReset] = React.useState(false);
+  React.useEffect(() => {
+    setImage(
+      `${process.env.REACT_APP_IMAGES_URL}/original/${data?.image.link}`
+    );
+    return () => {
+      setImage(
+        `${process.env.REACT_APP_IMAGES_URL}/original/${data?.image.link}`
+      );
+    };
+  }, [data]);
   return (
-    <div className="mb-2">
-      <Swiper
-        zoom
-        id="main"
-        slidesPerView={1}
-        thumbs={{ swiper: thumbsSwiper }}
-        onDoubleClick={() => setDoubleClicked(true)}
-        className="mb-4"
+    <div className="mb-2 relative">
+      <TransformWrapper
+        onPinching={() => {
+          setShowReset(true);
+          setDoubleClicked(true);
+        }}
+        onPanning={() => {
+          setDoubleClicked(true);
+          setShowReset(true);
+        }}
       >
-        {[data.image, ...data.gallery].map(item => {
-          return (
-            <SwiperSlide className="relative" zoom key={item?.link}>
+        {({ resetTransform }) => (
+          <>
+            {showReset && (
+              <button
+                onClick={() => resetTransform()}
+                className={`absolute flex items-center ${
+                  locale === 'ar' ? 'left-0' : 'right-0'
+                } text-center z-50 mx-auto top-0 p-1 shadow rounded font-semibold`}
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.7)',
+                }}
+              >
+                <GrPowerReset size={15} />
+                <span className="mx-2 text-xs">
+                  {formatMessage({ id: 'zoom-reset' })}
+                </span>
+              </button>
+            )}
+            <TransformComponent>
               <img
-                src={`${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`}
+                src={image}
                 alt={data.full_translation[locale].title}
-                style={{ maxHeight: '400px', width: 'auto' }}
+                style={{
+                  maxHeight: '350px',
+                  height: '350px',
+                  objectFit: 'contain',
+                  objectPosition: 'center center',
+                  width: '100%',
+                }}
               />
               {!doubleClicked && (
                 <div
-                  className="absolute bottom-10 p-2 shadow rounded font-semibold"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.7)' }}
+                  className="absolute right-0 left-0 text-sm mx-auto bottom-10 text-center p-2 shadow rounded font-semibold"
+                  style={{
+                    backgroundColor: 'rgba(255,255,255,0.7)',
+                    width: '80%',
+                  }}
                 >
                   {formatMessage({ id: 'double-click-zoom' })}
                 </div>
               )}
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-      <Swiper
-        id="thumbs"
-        onSwiper={setThumbsSwiper}
-        slidesPerView={5}
-        freeMode={true}
-        spaceBetween={10}
-        watchSlidesVisibility
-        watchSlidesProgress
-      >
+            </TransformComponent>
+          </>
+        )}
+      </TransformWrapper>
+      <div className="flex items-center mt-2">
         {[data.image, ...data.gallery].map(item => {
           return (
-            <SwiperSlide className="px-2" key={item.link}>
-              <img
-                src={`${process.env.REACT_APP_IMAGES_URL}/small/${item.link}`}
+            <div
+              className="relative rounded overflow-hidden shadow-xs border cursor-pointer mb-2 mx-2"
+              onClick={() =>
+                setImage(
+                  `${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`
+                )
+              }
+              style={{ width: '50px' }}
+            >
+              <LazyImage
+                src={item?.link}
+                origin="small"
+                pb="100%"
                 alt={data.full_translation[locale].title}
-                style={{ width: '50px', height: '50px' }}
               />
-            </SwiperSlide>
+              {image ===
+                `${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}` && (
+                <div className="absolute top-0 right-0 left-0 bottom-0 opacity-50 z-3 bg-white" />
+              )}
+            </div>
           );
         })}
-      </Swiper>
+      </div>
     </div>
   );
 }

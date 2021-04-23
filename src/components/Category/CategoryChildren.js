@@ -42,7 +42,7 @@ export default function CategoryChildren({ children }) {
              
             `}
             >
-              <Link to={`/${locale}/${child.slug}`}>
+              <Link to={`/${locale}/category/${child.slug}/${child.id}`}>
                 <LazyImage
                   src={child.translation[locale].image?.link}
                   alt={child.translation[locale].name}

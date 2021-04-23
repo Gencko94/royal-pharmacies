@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
 
 import CategoryMobile from './pages/CategoryMobile';
 import GuestCheckOut from './pages/GuestCheckOut';
@@ -46,6 +46,7 @@ const TrackOrder = React.lazy(() => import('./pages/TrackOrder'));
 const TrackOrderMobile = React.lazy(() => import('./pages/TrackOrderMobile'));
 const OrderSuccess = React.lazy(() => import('./pages/OrderSuccess'));
 const OrderFailed = React.lazy(() => import('./pages/OrderFailed'));
+const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
 
 function App() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
@@ -72,11 +73,7 @@ function App() {
           <Route
             path="/site/:page"
             render={props => {
-              // if (isTabletOrAbove) {
               return <StaticPage {...props} />;
-              // } else {
-              // return <LoginMobile {...props} />;
-              // }
             }}
           />
           <Route
@@ -90,10 +87,44 @@ function App() {
             }}
           />
 
+          <Route
+            exact
+            path="/reset-password/:token"
+            component={ResetPassword}
+          />
           <Route exact path="/app/password-reset" component={PasswordReset} />
           <Route exact path="/" component={Home} />
-          <Route exact path="/order-failed" component={OrderFailed} />
-          <Route exact path="/order-success" component={OrderSuccess} />
+          <Route
+            exact
+            path="/order-mobile-failed"
+            render={() => {
+              return <div />;
+            }}
+          />
+          <Route
+            exact
+            path="/order-mobile-success"
+            render={() => {
+              return <div />;
+            }}
+          />
+          <Route
+            exact
+            path="/order-failed"
+            render={() => {
+              return <Redirect to="/order/failure" />;
+            }}
+          />
+          <Route
+            exact
+            path="/order-success"
+            render={() => {
+              return <Redirect to="/order/success" />;
+            }}
+          />
+          {/* <Route exact path="/order-success" component={OrderSuccess} /> */}
+          <Route exact path="/order/success" component={OrderSuccess} />
+          <Route exact path="/order/failure" component={OrderFailed} />
 
           <ProtectedRoute
             path="/user/account"
@@ -141,7 +172,7 @@ function App() {
 
           <Route
             exact
-            path="/:category"
+            path="/category/:category/:id"
             render={props => {
               if (isTabletOrAbove) {
                 return <Category {...props} />;

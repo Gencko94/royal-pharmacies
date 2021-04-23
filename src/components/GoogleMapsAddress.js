@@ -26,6 +26,7 @@ const options = {
 };
 export default function GoogleMapsAddress({ setShowMap }) {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
+  const [outOfBorder, setOutOfBorder] = React.useState(false);
   const { formatMessage, locale } = useIntl();
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -56,6 +57,24 @@ export default function GoogleMapsAddress({ setShowMap }) {
           `https://maps.googleapis.com/maps/api/geocode/json?latlng=${marker.lat},${marker.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&language=${locale}`
         )
         .then(res => {
+          if (res.data.results.length === 0) {
+            setMarkerAddress(null);
+            setMarkerInfoWindowDetails(null);
+            setOutOfBorder(true);
+            return;
+          }
+          if (
+            res.data.results[0].address_components.find(address =>
+              address.types.includes('country')
+            ).short_name !== 'KW' ||
+            res.data.results.length === 0
+          ) {
+            setOutOfBorder(true);
+          } else {
+            if (outOfBorder === true) {
+              setOutOfBorder(false);
+            }
+          }
           setMarkerAddress(`${res.data.results[0].formatted_address}`);
           setMarkerInfoWindowDetails(
             `${res.data.results[0].address_components
@@ -119,6 +138,16 @@ export default function GoogleMapsAddress({ setShowMap }) {
           {marker && (
             <Marker position={{ lat: marker?.lat, lng: marker?.lng }} />
           )}
+          {outOfBorder && (
+            <div
+              className="absolute mx-2 rounded p-2  bg-main-color text-main-text text-center"
+              style={{ top: '110px', left: '2%', right: '2%', width: '94%' }}
+            >
+              <h1 className="text-sm">
+                {formatMessage({ id: 'out-of-border' })}
+              </h1>
+            </div>
+          )}
           {markerInfoWindowDetails && (
             <InfoWindow
               onCloseClick={() => setMarkerInfoWindowDetails(null)}
@@ -141,6 +170,7 @@ export default function GoogleMapsAddress({ setShowMap }) {
         marker={marker}
         setShowMap={setShowMap}
         setMarker={setMarker}
+        outOfBorder={outOfBorder}
       />
     </div>
   );

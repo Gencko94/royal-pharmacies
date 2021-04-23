@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import placeholder from '../../assets/illustrationplaceholder.png';
 import { AuthProvider } from '../../contexts/AuthContext';
 export default function CartEmpty() {
   const { userId } = React.useContext(AuthProvider);
@@ -27,14 +26,11 @@ export default function CartEmpty() {
       className=" flex flex-col items-center justify-center h-full"
     >
       <div className="flex items-center justify-center flex-col">
-        <div>
-          <img src={placeholder} alt="No Cart Items" className="" />
-        </div>
         <div className="text-center">
           <h1 className="text-2xl font-bold p-2">
             {formatMessage({ id: 'cart-empty' })}
           </h1>
-          <Link to="/" className="text-blue-600 hover:underline">
+          <Link to={`/${locale}/`} className="text-blue-600 hover:underline">
             {formatMessage({ id: 'check-today-deals' })}
           </Link>
         </div>

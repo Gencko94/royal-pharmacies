@@ -27,12 +27,12 @@ export default function SortInfoPanel({
   const resultsPerPageOptions = React.useMemo(
     () => [
       {
-        label: 30,
-        value: 30,
+        label: 20,
+        value: 20,
       },
       {
-        label: 60,
-        value: 60,
+        label: 30,
+        value: 30,
       },
     ],
     []

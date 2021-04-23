@@ -12,12 +12,16 @@ import CategoryProductItem from '../components/Category/CategoryProductItem';
 import VariantCategoryProductItem from '../components/Category/VariantCategoryProductItem';
 import Layout from '../components/Layout';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
+import { DataProvider } from '../contexts/DataContext';
 import { getSingleBrandProducts } from '../Queries/Queries';
 
 export default function SingleBrandMobile() {
   const { formatMessage, locale } = useIntl();
   const { slug } = useParams();
   const [page, setPage] = React.useState(1);
+  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
+    DataProvider
+  );
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const handlePageChange = data => {
     scrollTo(window, { top: 100 });
@@ -32,7 +36,7 @@ export default function SingleBrandMobile() {
       keepPreviousData: true,
     }
   );
-  if (productsLoading) {
+  if (productsLoading || deliveryCountriesLoading || deliveryCountriesIdle) {
     return (
       <div
         key="loader"

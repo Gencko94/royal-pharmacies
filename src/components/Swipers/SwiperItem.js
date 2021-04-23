@@ -8,6 +8,7 @@ import { CartAndWishlistProvider } from '../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+import { Link } from 'react-router-dom';
 
 export default function SwiperItem({
   item,
@@ -30,7 +31,7 @@ export default function SwiperItem({
     coupon,
   } = React.useContext(CartAndWishlistProvider);
   const handleAddToCart = async () => {
-    if (item.simple_addons.quantity < 1) {
+    if (item.simple_addons?.quantity < 1) {
       setMessage(formatMessage({ id: 'out-of-stock' }));
       return;
     }
@@ -85,15 +86,15 @@ export default function SwiperItem({
       }}
     >
       <div className="relative">
-        <a
+        <Link
           className="block relative"
-          href={`/${locale}/products/${item.slug}/${item.id}`}
+          to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           <LazyImage
             src={item.image?.link}
             alt={item.translation[locale].title}
             pb="calc(100% * 266/210)"
-            origin="original"
+            origin="small"
           />
           {item.simple_addons?.promotion_price &&
             item.simple_addons.quantity > 0 && (
@@ -115,16 +116,16 @@ export default function SwiperItem({
                 {formatMessage({ id: 'off' })}
               </div>
             )}
-          {item.simple_addons.quantity < 1 && (
+          {item.simple_addons?.quantity < 1 && (
             <div
               className={`absolute bg-main-color  text-main-text font-bold top-0   uppercase text-xs right-0 left-0 text-center`}
             >
               {formatMessage({ id: 'out-of-stock' })}
             </div>
           )}
-        </a>
+        </Link>
         <AnimatePresence>
-          {showAddButton && item.simple_addons.quantity > 0 && (
+          {showAddButton && item.simple_addons?.quantity > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

@@ -6,7 +6,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import BannerLazyImage from '../../helpers/BannerLazyImage';
 
-export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
+export default function CategoryHeader({
+  categoryInfo,
+  categoryInfoLoading,
+  offers,
+}) {
   const { locale, formatMessage } = useIntl();
   const breakpoints = {
     // when window width is >= 320px
@@ -97,8 +101,13 @@ export default function CategoryHeader({ categoryInfo, categoryInfoLoading }) {
           {categoryInfo?.children.length > 0 &&
             formatMessage({ id: 'by-category' })}
         </h1>
+        {offers && (
+          <h1 className="text-2xl font-bold text-center ">
+            {formatMessage({ id: 'offers' })}
+          </h1>
+        )}
       </div>
-      {categoryInfo.children.length !== 0 && (
+      {!offers && categoryInfo.children.length !== 0 && (
         <CategoryChildren children={categoryInfo?.children} />
       )}
     </div>

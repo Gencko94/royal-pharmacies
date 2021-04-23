@@ -41,9 +41,7 @@ export default function SideCartMenuMobile({ setSideMenuOpen }) {
     },
   };
   React.useEffect(() => {
-    // if (orderDetailsOpen) {
     document.body.style.overflow = 'hidden';
-    // }
     return () => (document.body.style.overflow = 'unset');
   }, []);
   return (

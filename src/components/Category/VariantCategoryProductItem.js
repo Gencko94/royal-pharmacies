@@ -68,7 +68,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
           variation: {
             id: item.new_variation_addons?.[selectedVariation].id,
             item_id:
-              item.new_variation_addons?.[selectedVariation].addon_item_id,
+              item.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -78,7 +78,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
             item_id:
               item.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
         };
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
@@ -101,7 +101,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
           variation: {
             id: item.new_variation_addons?.[selectedVariation].id,
             item_id:
-              item.new_variation_addons?.[selectedVariation].addon_item_id,
+              item.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -111,7 +111,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
             item_id:
               item.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
           price,
           sku,
@@ -208,7 +208,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
               selectedOption[selectedVariation]
             ]?.image || item.image.link
           }
-          origin="original"
+          origin="small"
           alt={item.translation[locale].title}
           pb="calc(100% * 266/210)"
         />
@@ -220,7 +220,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
             item.new_variation_addons[selectedVariation].image ||
             item.image.link
           }
-          origin="original"
+          origin="small"
           alt={item.translation[locale].title}
           pb="calc(100% * 266/210)"
         />
@@ -349,14 +349,14 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
                             };
                           })
                         }
-                        key={option.addon_item_id}
-                        className={`hover:bg-main-color hover:text-main-text transition duration-150 p-2 uppercase border text-sm text-center ${
+                        key={option.addon_item_value}
+                        className={`hover:bg-main-color hover:text-main-text transition duration-150 p-2 flex items-center justify-center uppercase border text-sm text-center ${
                           selected
                             ? 'bg-main-color text-main-text'
                             : 'text-body-text-light'
                         } `}
                       >
-                        {option.addon_item_value.substr(0, 1)}
+                        {option.addon_item_value.substr(0, 4)}
                       </button>
                     );
                   }

@@ -229,7 +229,7 @@ export default function GuestCartItemMobile({ item }) {
               bg-main-color
             text-main-text text-sm flex items-center relative justify-center flex-1 p-2 rounded uppercase  font-semibold`}
         >
-          {removefromCartButtonLoading === item.id ? (
+          {removefromCartButtonLoading ? (
             <Loader
               type="ThreeDots"
               color="#fff"

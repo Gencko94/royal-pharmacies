@@ -19,27 +19,13 @@ export default function VariantMiddleSection({
   setDetailsTab,
   selectedOption,
   setSelectedOption,
+
+  option,
+  isSale,
 }) {
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
 
-  const variantOnly = data.new_variation_addons[selectedVariation].options
-    ? false
-    : true;
-  const option = variantOnly
-    ? data.new_variation_addons[selectedVariation]
-    : data.new_variation_addons[selectedVariation].options[
-        selectedOption[selectedVariation]
-      ];
-  const isSale = data.new_variation_addons[selectedVariation].options
-    ? data.new_variation_addons[selectedVariation].options[
-        selectedOption[selectedVariation]
-      ].promotion_price
-      ? true
-      : false
-    : data.new_variation_addons[selectedVariation].promotion_price
-    ? true
-    : false;
   const resolvePlural = () => {
     switch (ratingCount) {
       case 1:
@@ -87,11 +73,12 @@ export default function VariantMiddleSection({
   };
   const resolveOptions = React.useCallback(() => {
     let arr = [];
-    if (data.new_variation_addons[selectedVariation].options) {
+
+    if (data.new_variation_addons[selectedVariation]?.options) {
       arr.push(
         <Options
           key="options"
-          options={data.new_variation_addons[selectedVariation].options}
+          options={data.new_variation_addons[selectedVariation]?.options}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
           selectedVariation={selectedVariation}
@@ -136,7 +123,7 @@ export default function VariantMiddleSection({
         {data.full_translation[locale].title}
       </h1>
       <h1 className=" font-semibold mb-1">
-        {option.quantity < 5 ? (
+        {option?.quantity < 5 ? (
           formatItemsPlural(option.quantity)
         ) : (
           <span className="text-green-700">
@@ -150,7 +137,7 @@ export default function VariantMiddleSection({
           <h1 className="text-gray-600 text-sm">
             {formatMessage({ id: 'model-number' })} :
           </h1>
-          <h1 className="mx-1">{option.sku}</h1>
+          <h1 className="mx-1">{option?.sku}</h1>
         </div>
         {!reviewsLoading && ratingCount !== 0 && (
           <div
@@ -179,7 +166,7 @@ export default function VariantMiddleSection({
             <div className=" flex items-center ">
               <h1>{formatMessage({ id: 'price-before' })} :</h1>
               <h1 className=" mx-2 text-base italic  line-through text-gray-700">
-                {(option.price * deliveryCountry?.currency.value).toFixed(3)}
+                {(option?.price * deliveryCountry?.currency.value).toFixed(3)}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
@@ -196,9 +183,11 @@ export default function VariantMiddleSection({
               <h1 className=" text-xl mx-2  text-red-700">
                 {isSale
                   ? (
-                      option.promition_price * deliveryCountry?.currency.value
+                      option?.promition_price * deliveryCountry?.currency.value
                     ).toFixed(3)
-                  : (option.price * deliveryCountry?.currency.value).toFixed(3)}
+                  : (option?.price * deliveryCountry?.currency.value).toFixed(
+                      3
+                    )}
                 <span className="mx-1">
                   {deliveryCountry?.currency.translation[locale].symbol}
                 </span>
@@ -211,7 +200,10 @@ export default function VariantMiddleSection({
               <div className="flex items-center   ">
                 <h1>{formatMessage({ id: 'you-save' })} :</h1>
                 <span className=" font-bold mx-1 text-main-color">
-                  {calculateDiscountPrice(option.price, option.promotion_price)}
+                  {calculateDiscountPrice(
+                    option?.price,
+                    option?.promotion_price
+                  )}
                 </span>
               </div>
             )}

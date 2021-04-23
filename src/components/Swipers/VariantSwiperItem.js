@@ -9,7 +9,7 @@ import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
 import { BiListPlus } from 'react-icons/bi';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 export default function VariantSwiperItem({
   item,
   setCartMenuOpen,
@@ -74,7 +74,7 @@ export default function VariantSwiperItem({
           variation: {
             id: item.new_variation_addons?.[selectedVariation].id,
             item_id:
-              item.new_variation_addons?.[selectedVariation].addon_item_id,
+              item.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -84,7 +84,7 @@ export default function VariantSwiperItem({
             item_id:
               item.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
         };
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
@@ -113,7 +113,7 @@ export default function VariantSwiperItem({
           variation: {
             id: item.new_variation_addons?.[selectedVariation].id,
             item_id:
-              item.new_variation_addons?.[selectedVariation].addon_item_id,
+              item.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -123,7 +123,7 @@ export default function VariantSwiperItem({
             item_id:
               item.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
           price,
           sku,
@@ -221,7 +221,7 @@ export default function VariantSwiperItem({
               selectedOption[selectedVariation]
             ]?.image || item.image?.link
           }
-          origin="original"
+          origin="small"
           alt={item.translation[locale].title}
           pb="calc(100% * 266/210)"
         />
@@ -233,7 +233,7 @@ export default function VariantSwiperItem({
             item.new_variation_addons[selectedVariation].image ||
             item.image?.link
           }
-          origin="original"
+          origin="small"
           alt={item.translation[locale].title}
           pb="calc(100% * 266/210)"
         />
@@ -257,9 +257,9 @@ export default function VariantSwiperItem({
       }}
     >
       <div className="relative">
-        <a
+        <Link
           className="block relative"
-          href={`/${locale}/products/${item.slug}/${item.id}`}
+          to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           {resolveImage()}
           {isSale && option.quantity > 0 && (
@@ -285,7 +285,7 @@ export default function VariantSwiperItem({
               {formatMessage({ id: 'out-of-stock' })}
             </div>
           )}
-        </a>
+        </Link>
 
         <AnimatePresence>
           {showAddButton && option.quantity > 0 && (
@@ -362,14 +362,14 @@ export default function VariantSwiperItem({
                             };
                           })
                         }
-                        key={option.addon_item_id}
-                        className={`hover:bg-main-color hover:text-main-text transition duration-150 p-2 uppercase border text-sm text-center ${
+                        key={option.addon_item_value}
+                        className={`hover:bg-main-color hover:text-main-text transition duration-150 p-2 uppercase border text-xs flex items-center justify-center ${
                           selected
                             ? 'bg-main-color text-main-text'
                             : 'text-body-text-light'
                         } `}
                       >
-                        {option.addon_item_value.substr(0, 1)}
+                        {option.addon_item_value.substr(0, 4)}
                       </button>
                     );
                   }

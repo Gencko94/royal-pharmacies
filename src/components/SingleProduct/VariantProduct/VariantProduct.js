@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { AuthProvider } from '../../../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../../../contexts/CartAndWishlistContext';
 import { DataProvider } from '../../../contexts/DataContext';
@@ -14,7 +13,6 @@ export default function VariantProduct({
   setSideMenuOpen,
   setDetailsTab,
 }) {
-  const { addons } = useParams();
   const {
     addToCartMutation,
     addToWishListMutation,
@@ -26,7 +24,7 @@ export default function VariantProduct({
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
-  const [itemInCart, setItemInCart] = React.useState(false);
+  const [itemInCart, setItemInCart] = React.useState([]);
   const [itemInWishList, setItemInWishList] = React.useState(false);
   const [
     addToWishListButtonLoading,
@@ -34,12 +32,9 @@ export default function VariantProduct({
   ] = React.useState(false);
 
   const [selectedVariation, setSelectedVariant] = React.useState(() => {
-    if (!addons) {
-      return Object.keys(data.new_variation_addons)[0];
-    } else {
-      return addons;
-    }
+    return Object.keys(data.new_variation_addons)[0];
   });
+
   const [selectedOption, setSelectedOption] = React.useState(() => {
     let keys = {};
     Object.keys(data.new_variation_addons).forEach(variation => {
@@ -47,23 +42,37 @@ export default function VariantProduct({
     });
     return keys;
   });
-  const variantOnly = data?.new_variation_addons?.[selectedVariation]?.options
-    ? false
-    : true;
-  const option = variantOnly
-    ? data.new_variation_addons[selectedVariation]
-    : data.new_variation_addons[selectedVariation].options[
-        selectedOption[selectedVariation]
-      ];
-  const isSale = data.new_variation_addons[selectedVariation].options
-    ? data.new_variation_addons[selectedVariation].options[
-        selectedOption[selectedVariation]
-      ].promotion_price
-      ? true
-      : false
-    : data.new_variation_addons[selectedVariation].promotion_price
-    ? true
-    : false;
+
+  const variantOnly = React.useMemo(
+    () =>
+      data?.new_variation_addons?.[selectedVariation]?.options ? false : true,
+    [data, selectedVariation]
+  );
+
+  const option = React.useMemo(
+    () =>
+      variantOnly
+        ? data.new_variation_addons[selectedVariation]
+        : data.new_variation_addons[selectedVariation]?.options[
+            selectedOption[selectedVariation]
+          ],
+    [data.new_variation_addons, selectedOption, selectedVariation, variantOnly]
+  );
+
+  const isSale = React.useMemo(
+    () =>
+      variantOnly
+        ? data.new_variation_addons[selectedVariation]?.promotion_price
+          ? true
+          : false
+        : data.new_variation_addons[selectedVariation]?.options[
+            selectedOption[selectedVariation]
+          ].promotion_price
+        ? true
+        : false,
+    [data.new_variation_addons, selectedOption, selectedVariation, variantOnly]
+  );
+
   const handleAddToCart = async quantity => {
     setAddToCartButtonLoading(true);
     if (userId) {
@@ -74,7 +83,7 @@ export default function VariantProduct({
           variation: {
             id: data.new_variation_addons?.[selectedVariation].id,
             item_id:
-              data.new_variation_addons?.[selectedVariation].addon_item_id,
+              data.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -84,13 +93,13 @@ export default function VariantProduct({
             item_id:
               data.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
         };
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
-        setItemInCart(true);
+        setItemInCart(prev => [...prev, option.sku]);
       } catch (error) {
         setAddToCartButtonLoading(false);
       }
@@ -104,7 +113,7 @@ export default function VariantProduct({
           variation: {
             id: data.new_variation_addons?.[selectedVariation].id,
             item_id:
-              data.new_variation_addons?.[selectedVariation].addon_item_id,
+              data.new_variation_addons?.[selectedVariation].addon_item_value,
           },
           option: {
             id:
@@ -114,7 +123,7 @@ export default function VariantProduct({
             item_id:
               data.new_variation_addons?.[selectedVariation].options?.[
                 selectedOption[selectedVariation]
-              ].addon_item_id,
+              ].addon_item_value,
           },
           price,
           sku,
@@ -123,7 +132,7 @@ export default function VariantProduct({
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setSideMenuOpen(true);
-        setItemInCart(true);
+        setItemInCart(prev => [...prev, option.sku]);
       } catch (error) {}
     }
   };
@@ -162,6 +171,8 @@ export default function VariantProduct({
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
         setDetailsTab={setDetailsTab}
+        isSale={isSale}
+        option={option}
       />
       <VariantRightSection
         handleAddToCart={handleAddToCart}
@@ -171,7 +182,8 @@ export default function VariantProduct({
         itemInCart={itemInCart}
         itemInWishList={itemInWishList}
         userId={userId}
-        qty={option.quantity}
+        qty={option?.quantity}
+        sku={option?.sku}
       />
     </div>
   );
