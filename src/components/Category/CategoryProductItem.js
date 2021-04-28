@@ -9,6 +9,7 @@ import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { Link } from 'react-router-dom';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 export default function CategoryProductItem({ item, setCartMenuOpen }) {
   const { formatMessage, locale } = useIntl();
   const { deliveryCountry } = React.useContext(DataProvider);
@@ -18,12 +19,28 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
   );
   const { userId } = React.useContext(AuthProvider);
   const [message, setMessage] = React.useState('');
+  const [quantity, setQuantity] = React.useState(0);
+
   const {
     addToGuestCartMutation,
     addToCartMutation,
     coupon,
   } = React.useContext(CartAndWishlistProvider);
+  const handleSubstractQuantity = () => {
+    if (quantity === 1 || quantity === 0) {
+      return;
+    }
+    setQuantity(parseInt(quantity) - 1);
+  };
+  const handleAddQuantity = () => {
+    console.log(item.simple_addons.quantity, 'q');
+    console.log(quantity, 'qq');
+    if (item.simple_addons.quantity !== quantity) {
+      setQuantity(parseInt(quantity) + 1);
+    }
+  };
   const handleAddToCart = async () => {
+    if (quantity === 0) return;
     if (item.simple_addons?.quantity < 1) {
       setMessage(formatMessage({ id: 'out-of-stock' }));
       return;
@@ -198,6 +215,23 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
               </span>
             </h1>
           )}
+        </div>
+        <div className="flex w-full">
+          <button
+            onClick={handleSubstractQuantity}
+            className=" flex-1 p-2 border flex items-center justify-center"
+          >
+            <AiOutlineMinus />
+          </button>
+          <p className="p-2 flex-1 border-t border-b flex items-center justify-center">
+            {quantity}
+          </p>
+          <button
+            onClick={handleAddQuantity}
+            className="p-2 flex-1 border flex items-center justify-center"
+          >
+            <AiOutlinePlus />
+          </button>
         </div>
       </div>
     </div>

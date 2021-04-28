@@ -15,8 +15,8 @@ export default function Categories() {
   const breakpoints = {
     // when window width is >= 320px
     320: {
-      slidesPerView: 3,
-      spaceBetween: 20,
+      slidesPerView: 2.25,
+      spaceBetween: 0,
     },
     // when window width is >= 480px
     480: {
@@ -49,7 +49,7 @@ export default function Categories() {
       </div>
       <Swiper
         freeMode
-        navigation
+        // navigation
         id="main"
         spaceBetween={10}
         breakpoints={breakpoints}

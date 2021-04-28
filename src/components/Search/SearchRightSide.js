@@ -8,7 +8,6 @@ import CategoryItemLoader from '../Category/CategoryItemLoader';
 import CategoryProductItem from '../Category/CategoryProductItem';
 import VariantCategoryProductItem from '../Category/VariantCategoryProductItem';
 import SearchSortInfoPanel from './SearchSortInfoPanel';
-import placeholder from '../../assets/illustrationplaceholder.png';
 import { DataProvider } from '../../contexts/DataContext';
 export default function SearchRightSide({
   products,
@@ -186,7 +185,6 @@ export default function SearchRightSide({
       ) : null}
       {products.length === 0 && (
         <div className="p-6 flex items-center justify-center text-xl flex-col h-full">
-          <img src={placeholder} alt="No products" className="mb-4" />
           {formatMessage({ id: 'no-products' })}
         </div>
       )}
@@ -194,7 +192,6 @@ export default function SearchRightSide({
         !filteredProductsLoading &&
         filteredProducts.length === 0 && (
           <div className="p-6 flex items-center justify-center text-xl flex-col h-full">
-            <img src={placeholder} alt="No products" className="mb-4" />
             {formatMessage({ id: 'no-filter-results' })}
           </div>
         )}

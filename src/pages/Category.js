@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import CategoryLeftSide from '../components/Category/CategoryLeftSide';
 import CategoryRightSide from '../components/Category/CategoryRightSide';
-import placeholder from '../assets/illustrationplaceholder.png';
 import Layout from '../components/Layout';
 import { useQuery } from 'react-query';
 import { Redirect, useParams, useHistory, useLocation } from 'react-router-dom';
@@ -17,7 +16,7 @@ import { DataProvider } from '../contexts/DataContext';
 export default function Category() {
   const history = useHistory();
   const { category, id } = useParams();
-  const { deliveryCountry } = React.useContext(DataProvider);
+  const { deliveryCountry, settings } = React.useContext(DataProvider);
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
   const location = useLocation();
@@ -173,8 +172,8 @@ export default function Category() {
           {categoryInfo
             ? `${formatMessage({ id: 'shop' })} ${
                 categoryInfo?.title[locale].name
-              } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-            : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
+              }`
+            : settings?.store_name_en}
         </title>
       </Helmet>
       <AnimatePresence>
@@ -234,7 +233,7 @@ export default function Category() {
         </div>
         {data?.products.length === 0 && offers !== 't' && (
           <div className="p-6 flex flex-col items-center justify-center text-xl h-full">
-            <img src={placeholder} alt="No products" className="mb-4" />
+            {/* <img src={placeholder} alt="No products" className="mb-4" /> */}
             {formatMessage({ id: 'no-products' })}
           </div>
         )}

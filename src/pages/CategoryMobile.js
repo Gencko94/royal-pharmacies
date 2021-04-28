@@ -21,7 +21,9 @@ export default function CategoryMobile() {
   const { category, id } = useParams();
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
-  const { deliveryCountry, sideMenuOpen } = React.useContext(DataProvider);
+  const { deliveryCountry, sideMenuOpen, settings } = React.useContext(
+    DataProvider
+  );
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
@@ -125,7 +127,6 @@ export default function CategoryMobile() {
         return prev.filter(i => i.type !== 'Sort');
       });
       setSortBy(selectedValue);
-      return;
     }
     setFilters(prev => {
       let newArr = prev.filter(i => i.type !== 'Sort');
@@ -186,8 +187,8 @@ export default function CategoryMobile() {
           {categoryInfo
             ? `${formatMessage({ id: 'shop' })} ${
                 categoryInfo?.title[locale].name
-              } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-            : 'MRG Mall Online Shop | متجر إم آر جي الإلكتروني'}
+              }`
+            : settings?.store_name_en}
         </title>
       </Helmet>
       <div className="min-h-screen relative">

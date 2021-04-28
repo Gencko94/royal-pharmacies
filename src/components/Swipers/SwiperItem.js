@@ -22,17 +22,18 @@ export default function SwiperItem({
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
   );
+
   const { userId } = React.useContext(AuthProvider);
 
   const [message, setMessage] = React.useState('');
-  const [quantity, setQuantity] = React.useState(1);
+  const [quantity, setQuantity] = React.useState(0);
   const {
     addToGuestCartMutation,
     addToCartMutation,
     coupon,
   } = React.useContext(CartAndWishlistProvider);
   const handleSubstractQuantity = () => {
-    if (parseInt(quantity) === 1) {
+    if (quantity === 1 || quantity === 0) {
       return;
     }
     setQuantity(parseInt(quantity) - 1);
@@ -45,6 +46,7 @@ export default function SwiperItem({
     }
   };
   const handleAddToCart = async () => {
+    if (quantity === 0) return;
     if (item.simple_addons?.quantity < 1) {
       setMessage(formatMessage({ id: 'out-of-stock' }));
       return;

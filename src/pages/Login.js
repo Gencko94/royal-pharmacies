@@ -155,7 +155,7 @@ export default function Login() {
               {settings && (
                 <img
                   src={settings?.store_logo_color}
-                  alt="MRG-logo"
+                  alt={`${settings?.store_name_en} Logo`}
                   style={{ width: '100px', height: '50px' }}
                   className=" mb-3"
                 />

@@ -22,7 +22,9 @@ import { scrollTo } from 'scroll-js';
 export default function SingleProduct() {
   const { id } = useParams();
 
-  const { deliveryCountry, addViewedItems } = React.useContext(DataProvider);
+  const { deliveryCountry, addViewedItems, settings } = React.useContext(
+    DataProvider
+  );
   const { locale, formatMessage } = useIntl();
   const {
     addToCartMutation,
@@ -125,8 +127,8 @@ export default function SingleProduct() {
           {data
             ? `${formatMessage({ id: 'shop' })} ${
                 data?.full_translation?.[locale].title
-              } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-            : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'}
+              }`
+            : settings?.store_name_en}
         </title>
         <meta
           name="description"
@@ -134,8 +136,8 @@ export default function SingleProduct() {
             data
               ? `${formatMessage({ id: 'shop' })} ${
                   data?.full_translation?.[locale].title
-                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+                }`
+              : settings?.store_name_en
           }
         />
         <meta
@@ -144,8 +146,8 @@ export default function SingleProduct() {
             data
               ? `${formatMessage({ id: 'shop' })} ${
                   data?.full_translation?.[locale].title
-                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+                }`
+              : settings?.store_name_en
           }
         />
         <meta
@@ -154,8 +156,8 @@ export default function SingleProduct() {
             data
               ? `${formatMessage({ id: 'shop' })} ${
                   data?.full_translation?.[locale].title
-                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+                } `
+              : settings?.store_name_en
           }
         />
       </Helmet>
