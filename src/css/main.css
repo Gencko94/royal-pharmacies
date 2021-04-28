@@ -2502,10 +2502,6 @@ div::-webkit-scrollbar-thumb:hover {
     font-size: 0.875rem;
   }
 
-  .md\:text-xl{
-    font-size: 1.25rem;
-  }
-
   .md\:text-2xl{
     font-size: 1.5rem;
   }

@@ -12,7 +12,7 @@ export default function NavLogoMobile() {
         {settings && (
           <img
             src="/logo.png"
-            alt="Royal Pharmacies"
+            alt={`${settings?.store_name_en} Logo`}
             style={{ width: '90px' }}
           />
         )}

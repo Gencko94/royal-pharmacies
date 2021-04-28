@@ -15,7 +15,7 @@ export default function Logo() {
         {settings && (
           <img
             src="/logo.png"
-            alt="Royal Pharmacies"
+            alt={`${settings?.store_name_en} Logo`}
             style={{ width: 'auto', maxHeight: '40px' }}
           />
         )}

@@ -145,7 +145,7 @@ export default function Home() {
               <SwiperLoader />
             </div>
           )}
-          {!isLoading && data.map((i, index) => resolveSwiper(i, index))}
+          {!isLoading && data?.map((i, index) => resolveSwiper(i, index))}
         </div>
       </div>
     </Layout>

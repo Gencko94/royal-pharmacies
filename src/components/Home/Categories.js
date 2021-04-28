@@ -81,9 +81,9 @@ export default function Categories() {
                       origin="small"
                       pb="calc(100% * 260/260)"
                     />
-                    <h1 className="text-lg md:text-xl mt-4 text-center font-bold">
-                      {item.translation[locale].name}
-                    </h1>
+                    {/* <div className="flex items-center justify-center p-2 text-sm text-center border-t">
+                      <h1 className="">{item.translation[locale].name}</h1>
+                    </div> */}
                   </Link>
                 </div>
               </SwiperSlide>

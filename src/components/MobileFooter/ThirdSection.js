@@ -86,7 +86,7 @@ export default function ThirdSection({ pages }) {
           {settings && (
             <img
               src={settings?.store_logo}
-              alt="MRG-logo"
+              alt={`${settings?.store_name_en} Logo`}
               style={{ maxHeight: '40px' }}
             />
           )}
@@ -94,7 +94,11 @@ export default function ThirdSection({ pages }) {
 
         <div className="flex items-center flex-col mx-2 text-sm justify-center">
           <h1 className=" font-semibold mb-1 ">
-            &copy; 2021 MRG . {formatMessage({ id: 'footer-all-rights' })}
+            &copy; 2021
+            {locale === 'en'
+              ? settings?.store_name_en
+              : settings?.store_name_ar}
+            . {formatMessage({ id: 'footer-all-rights' })}
           </h1>
           <div>
             Developed By

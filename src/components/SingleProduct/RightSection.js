@@ -30,12 +30,14 @@ export default function RightSection({
     setQuantity(parseInt(quantity) - 1);
   };
   const handleAddQuantity = () => {
-    setQuantity(parseInt(quantity) + 1);
+    if (qty === quantity) {
+      setQuantity(parseInt(quantity) + 1);
+    }
   };
   const handleChangeQuantity = e => {
     if (e.target.value < 1) {
       return;
-    } else {
+    } else if (!e.target.value > qty) {
       setQuantity(e.target.value);
     }
   };

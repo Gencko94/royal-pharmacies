@@ -232,14 +232,16 @@ export default function SingleProductMobile() {
         </AnimatePresence>
 
         <hr />
-        {!isLoading && !isFetching && (
-          <div className="px-3">
-            <MoreFrom
-              categories={data?.categories}
-              setSideMenuOpen={setSideMenuOpen}
-            />
-          </div>
-        )}
+        {!isLoading &&
+          !isFetching &&
+          (data?.categories[0]?.parent_slug || data?.categories[0]?.slug) && (
+            <div className="px-3">
+              <MoreFrom
+                categories={data?.categories}
+                setSideMenuOpen={setSideMenuOpen}
+              />
+            </div>
+          )}
       </div>
     </Layout>
   );

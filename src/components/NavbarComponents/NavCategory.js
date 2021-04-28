@@ -27,7 +27,7 @@ export default function NavCategory() {
         style={{ top: '56px' }}
       >
         <div className="max-w-default mx-auto  px-4 ">
-          <div className="relative flex justify-center">
+          <div className="relative flex">
             {hideAllCategories && (
               <AllCategories navCategories={navCategories} />
             )}

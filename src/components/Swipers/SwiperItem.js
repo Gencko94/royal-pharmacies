@@ -9,7 +9,7 @@ import { DataProvider } from '../../contexts/DataContext';
 import LazyImage from '../../helpers/LazyImage';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
 import { Link } from 'react-router-dom';
-
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 export default function SwiperItem({
   item,
   setCartMenuOpen,
@@ -25,11 +25,25 @@ export default function SwiperItem({
   const { userId } = React.useContext(AuthProvider);
 
   const [message, setMessage] = React.useState('');
+  const [quantity, setQuantity] = React.useState(1);
   const {
     addToGuestCartMutation,
     addToCartMutation,
     coupon,
   } = React.useContext(CartAndWishlistProvider);
+  const handleSubstractQuantity = () => {
+    if (parseInt(quantity) === 1) {
+      return;
+    }
+    setQuantity(parseInt(quantity) - 1);
+  };
+  const handleAddQuantity = () => {
+    console.log(item.simple_addons.quantity, 'q');
+    console.log(quantity, 'qq');
+    if (item.simple_addons.quantity !== quantity) {
+      setQuantity(parseInt(quantity) + 1);
+    }
+  };
   const handleAddToCart = async () => {
     if (item.simple_addons?.quantity < 1) {
       setMessage(formatMessage({ id: 'out-of-stock' }));
@@ -38,7 +52,7 @@ export default function SwiperItem({
     setAddToCartButtonLoading(true);
     if (userId) {
       try {
-        const newItem = { id: item.id, quantity: 1 };
+        const newItem = { id: item.id, quantity };
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
@@ -61,7 +75,7 @@ export default function SwiperItem({
           ? item.simple_addons.promotion_price
           : item.simple_addons.price;
         const sku = item.simple_addons.sku;
-        const newItem = { id: item.id, quantity: 1, price, sku };
+        const newItem = { id: item.id, quantity, price, sku };
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
         setCartMenuOpen(true);
@@ -210,6 +224,23 @@ export default function SwiperItem({
               </span>
             </h1>
           )}
+        </div>
+        <div className="flex w-full">
+          <button
+            onClick={handleSubstractQuantity}
+            className=" flex-1 p-2 border flex items-center justify-center"
+          >
+            <AiOutlineMinus />
+          </button>
+          <p className="p-2 flex-1 border-t border-b flex items-center justify-center">
+            {quantity}
+          </p>
+          <button
+            onClick={handleAddQuantity}
+            className="p-2 flex-1 border flex items-center justify-center"
+          >
+            <AiOutlinePlus />
+          </button>
         </div>
       </div>
     </div>
