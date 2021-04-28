@@ -12,8 +12,6 @@ import { AuthProvider } from '../contexts/AuthContext';
 import GuestCart from '../components/Cart/GuestCart.js/GuestCart';
 import CartLoader from '../components/Cart/loaders/CartLoader';
 import { useIntl } from 'react-intl';
-import StaticSwiper from '../components/Swipers/StaticSwiper';
-import { scrollTo } from 'scroll-js';
 import { DataProvider } from '../contexts/DataContext';
 export default function Cart() {
   const { cartItemsLoading, isGetCartError } = React.useContext(
@@ -22,9 +20,7 @@ export default function Cart() {
   const { deliveryCountriesLoading } = React.useContext(DataProvider);
   const { userId, authenticationLoading } = React.useContext(AuthProvider);
   const [checkoutModalOpen, setCheckOutModalOpen] = React.useState(false);
-  const scrollToTop = () => {
-    scrollTo(window, { top: 0 });
-  };
+
   const { formatMessage } = useIntl();
 
   if (!cartItemsLoading && isGetCartError) {
@@ -39,10 +35,13 @@ export default function Cart() {
   return (
     <Layout>
       <Helmet>
-        <title>{formatMessage({ id: 'cart' })} | MRG</title>
+        <title>{formatMessage({ id: 'cart' })}</title>
       </Helmet>
 
-      <div className="px-4 py-2 max-w-default mx-auto text-body-text-light">
+      <div
+        className="px-4 py-2 max-w-default mx-auto text-body-text-light"
+        style={{ minHeight: 'calc(-150px + 100vh)' }}
+      >
         <AnimatePresence>
           {checkoutModalOpen && (
             <CheckoutModal setCheckOutModalOpen={setCheckOutModalOpen} />
@@ -61,7 +60,6 @@ export default function Cart() {
         {!authenticationLoading && !userId && !deliveryCountriesLoading && (
           <GuestCart setCheckOutModalOpen={setCheckOutModalOpen} />
         )}
-        <StaticSwiper title="Perfumes" type="perfumes" cb={scrollToTop} />
       </div>
     </Layout>
   );

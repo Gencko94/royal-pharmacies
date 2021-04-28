@@ -19,9 +19,11 @@ export default function SingleBrandMobile() {
   const { formatMessage, locale } = useIntl();
   const { slug } = useParams();
   const [page, setPage] = React.useState(1);
-  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
-    DataProvider
-  );
+  const {
+    deliveryCountriesLoading,
+    deliveryCountriesIdle,
+    settings,
+  } = React.useContext(DataProvider);
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const handlePageChange = data => {
     scrollTo(window, { top: 100 });
@@ -54,11 +56,7 @@ export default function SingleBrandMobile() {
       <div className="min-h-screen p-3">
         <Helmet>
           <title>
-            {data
-              ? `${data.brandName[locale].name} | ${formatMessage({
-                  id: 'mrg-mall-kuwait',
-                })}`
-              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'}
+            {data ? `${data.brandName[locale].name}` : settings?.store_name_en}
           </title>
           <meta
             name="description"
@@ -66,18 +64,16 @@ export default function SingleBrandMobile() {
               data
                 ? `${formatMessage({ id: 'shop' })} ${
                     data?.brandName?.[locale].name
-                  } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-                : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+                  }`
+                : settings?.store_name_en
             }
           />
           <meta
             property="og:title"
             content={
               data
-                ? `${data.brandName[locale].name} | ${formatMessage({
-                    id: 'mrg-mall-kuwait',
-                  })}`
-                : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+                ? `${data.brandName[locale].name} }`
+                : settings?.store_name_en
             }
           />
           <meta
@@ -86,8 +82,8 @@ export default function SingleBrandMobile() {
               data
                 ? `${formatMessage({ id: 'shop' })} ${
                     data?.full_translation?.[locale].title
-                  }  ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-                : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+                  }`
+                : settings?.store_name_en
             }
           />
         </Helmet>

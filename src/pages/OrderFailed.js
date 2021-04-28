@@ -17,7 +17,7 @@ export default function OrderFailed() {
         <Link to={`/${locale}/`}>
           <img
             src={settings?.store_logo_color}
-            alt="logo"
+            alt={`${settings?.store_name_en} Logo`}
             className=" mb-5"
             style={{ width: '100px', height: '50px' }}
           />

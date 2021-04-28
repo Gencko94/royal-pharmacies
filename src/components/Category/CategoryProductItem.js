@@ -99,7 +99,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
             src={item.image?.link}
             origin="small"
             alt={item.translation[locale].title}
-            pb="calc(100% * 266/210)"
+            height="175px"
           />
           {item.simple_addons?.promotion_price &&
             item.simple_addons.quantity > 0 && (

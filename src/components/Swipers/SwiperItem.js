@@ -109,7 +109,7 @@ export default function SwiperItem({
           <LazyImage
             src={item.image?.link}
             alt={item.translation[locale].title}
-            pb="calc(100% * 266/210)"
+            height="175px"
             origin="small"
           />
           {item.simple_addons?.promotion_price &&

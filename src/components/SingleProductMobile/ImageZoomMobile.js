@@ -2,7 +2,6 @@ import React from 'react';
 import { GrPowerReset } from 'react-icons/gr';
 import { useIntl } from 'react-intl';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-import LazyImage from '../../helpers/LazyImage';
 
 export default function ImageZoomMobile({ data }) {
   const { locale } = useIntl();
@@ -83,19 +82,19 @@ export default function ImageZoomMobile({ data }) {
         {[data.image, ...data.gallery].map(item => {
           return (
             <div
+              key={item?.link}
               className="relative rounded overflow-hidden shadow-xs border cursor-pointer mb-2 mx-2"
               onClick={() =>
                 setImage(
                   `${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`
                 )
               }
-              style={{ width: '50px' }}
+              style={{ width: '60px', height: '60px' }}
             >
-              <LazyImage
-                src={item?.link}
-                origin="small"
-                pb="100%"
+              <img
+                src={`${process.env.REACT_APP_IMAGES_URL}/small/${item?.link}`}
                 alt={data.full_translation[locale].title}
+                style={{ objectFit: 'contain' }}
               />
               {image ===
                 `${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}` && (

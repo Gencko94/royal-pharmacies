@@ -20,6 +20,7 @@ import Layout from '../components/Layout';
 import VariantProductMobile from '../components/SingleProductMobile/VariantProductMobile/VariantProductMobile';
 import MoreFrom from '../components/MoreFrom/MoreFrom';
 import { useIntl } from 'react-intl';
+import RelatedItems from '../components/SingleProduct/RelatedItems';
 
 export default function SingleProductMobile() {
   const { id } = useParams();
@@ -214,6 +215,9 @@ export default function SingleProductMobile() {
           />
         )}
         <br ref={triggerRef} />
+        {data?.related_products.length > 0 && (
+          <RelatedItems data={data.related_products} />
+        )}
         <AnimatePresence>
           {inView &&
             !itemInCart &&
@@ -234,7 +238,7 @@ export default function SingleProductMobile() {
         </AnimatePresence>
 
         <hr />
-        {!isLoading &&
+        {/* {!isLoading &&
           !isFetching &&
           (data?.categories[0]?.parent_slug || data?.categories[0]?.slug) && (
             <div className="px-3">
@@ -243,7 +247,7 @@ export default function SingleProductMobile() {
                 setSideMenuOpen={setSideMenuOpen}
               />
             </div>
-          )}
+          )} */}
       </div>
     </Layout>
   );

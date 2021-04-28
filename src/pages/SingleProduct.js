@@ -233,13 +233,13 @@ export default function SingleProduct() {
           )}
         </div>
         <hr className="my-8" />
-        {!isLoading &&
+        {/* {!isLoading &&
           (data?.categories[0]?.parent_slug || data?.categories[0]?.slug) && (
             <MoreFrom
               categories={data?.categories}
               setSideMenuOpen={setSideMenuOpen}
             />
-          )}
+          )} */}
       </div>
       <div className="flex items-center justify-center mt-8 mb-4">
         <button

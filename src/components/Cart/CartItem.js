@@ -158,7 +158,7 @@ export default function CartItem({ item }) {
           src={item.image}
           origin="original"
           alt={item[`name_${locale}`]}
-          pb="calc(100% * 286/210)"
+          height="125px"
         />
       </Link>
       <div className="">

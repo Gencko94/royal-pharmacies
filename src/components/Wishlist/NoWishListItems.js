@@ -23,6 +23,7 @@ export default function NoWishListItems() {
       animate="visible"
       exit="exited"
       className=" flex items-center justify-center h-full"
+      style={{ minHeight: 'calc(-150px + 100vh)' }}
     >
       <div className="p-2 flex flex-col items-center justify-center ">
         <div style={{ width: '275px' }}>

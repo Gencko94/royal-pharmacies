@@ -2,7 +2,6 @@ import React from 'react';
 import { GrPowerReset } from 'react-icons/gr';
 import { useIntl } from 'react-intl';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
-import LazyImage from '../../../helpers/LazyImage';
 export default function VariantImageZoomMobile({
   data,
   selectedVariation,
@@ -90,14 +89,14 @@ export default function VariantImageZoomMobile({
             )
           }
         >
-          <LazyImage
-            src={
+          <img
+            style={{ objectFit: 'contain' }}
+            src={`${process.env.REACT_APP_IMAGES_URL}/original/${
               data.new_variation_addons[selectedVariation]?.options[
                 selectedOption[selectedVariation]
               ]?.image || data.image?.link
             }
-            origin="small"
-            pb="100%"
+           `}
             alt={data.full_translation[locale].title}
           />
           {image ===
@@ -120,10 +119,9 @@ export default function VariantImageZoomMobile({
               )
             }
           >
-            <LazyImage
-              src={image.link}
-              origin="small"
-              pb="100%"
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/original/${image.link}`}
+              style={{ objectFit: 'contain' }}
               alt={data.full_translation[locale].title}
             />
             {image ===
@@ -147,13 +145,13 @@ export default function VariantImageZoomMobile({
             )
           }
         >
-          <LazyImage
-            src={
+          <img
+            style={{ objectFit: 'contain' }}
+            src={`${process.env.REACT_APP_IMAGES_URL}/original/${
               data.new_variation_addons[selectedVariation]?.image ||
               data.image?.link
             }
-            origin="small"
-            pb="100%"
+            `}
             alt={data.full_translation[locale].title}
           />
           {image ===
@@ -174,10 +172,9 @@ export default function VariantImageZoomMobile({
               )
             }
           >
-            <LazyImage
-              src={image.link}
-              origin="small"
-              pb="100%"
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/original/${image.link}`}
+              style={{ objectFit: 'contain' }}
               alt={data.full_translation[locale].title}
             />
             {image ===

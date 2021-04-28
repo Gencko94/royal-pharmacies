@@ -1,11 +1,11 @@
 import React from 'react';
 import LazyLoad from 'react-lazyload';
 import itemplaceholder from '../assets/imgplaceholder.png';
-export default function LazyImage({ src, pb, alt, origin, placeholder }) {
+export default function LazyImage({ src, height, alt, origin, placeholder }) {
   return (
     <LazyLoad
       offset={300}
-      style={{ backgroundColor: '#fff', height: '175px' }}
+      style={{ backgroundColor: '#fff', height }}
       placeholder={
         <img src={placeholder ? placeholder : itemplaceholder} alt={alt} />
       }

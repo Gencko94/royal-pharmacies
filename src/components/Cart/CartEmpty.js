@@ -24,28 +24,26 @@ export default function CartEmpty() {
       animate="visible"
       exit="exited"
       className=" flex flex-col items-center justify-center h-full"
+      style={{ minHeight: 'calc(-110px + 100vh)' }}
     >
       <div className="flex items-center justify-center flex-col">
         <div className="text-center">
           <h1 className="text-2xl font-bold p-2">
             {formatMessage({ id: 'cart-empty' })}
           </h1>
-          <Link to={`/${locale}/`} className="text-blue-600 hover:underline">
-            {formatMessage({ id: 'check-today-deals' })}
-          </Link>
         </div>
       </div>
       {!userId && (
         <div className="flex flex-col justify-center p-2 font-semibold">
           <Link
             to={`/${locale}/app/login`}
-            className={`  text-center rounded py-2 px-3 bg-green-700 text-main-text uppercase `}
+            className={`  text-center rounded py-2 px-4 bg-green-700 text-main-text uppercase `}
           >
             {formatMessage({ id: 'login' })}
           </Link>
           <Link
             to={`/${locale}/app/register`}
-            className={` text-center  rounded py-2 px-3 bg-blue-700 text-main-text mt-2 uppercase `}
+            className={` text-center  rounded py-2 px-4 bg-blue-700 text-main-text mt-2 uppercase `}
           >
             {formatMessage({ id: 'register' })}
           </Link>

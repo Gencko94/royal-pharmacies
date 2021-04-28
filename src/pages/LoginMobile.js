@@ -145,7 +145,7 @@ export default function LoginMobile() {
             {settings && (
               <img
                 src={settings?.store_logo_color}
-                alt="MRG-logo"
+                alt="logo"
                 style={{ width: '100px', height: '50px' }}
                 className=" mb-3"
               />

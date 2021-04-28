@@ -24,9 +24,11 @@ export default function SingleBrand() {
     scrollTo(window, { top: 500 });
     setPage(data.selected + 1);
   };
-  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
-    DataProvider
-  );
+  const {
+    deliveryCountriesLoading,
+    deliveryCountriesIdle,
+    settings,
+  } = React.useContext(DataProvider);
   const { data, isLoading: productsLoading } = useQuery(
     ['single-brand', { slug, page, number: 42 }],
     getSingleBrandProducts,
@@ -40,11 +42,7 @@ export default function SingleBrand() {
     <Layout>
       <Helmet>
         <title>
-          {data
-            ? `${data.brandName[locale].name} | ${formatMessage({
-                id: 'mrg-mall-kuwait',
-              })}`
-            : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'}
+          {data ? `${data.brandName[locale].name}` : settings?.store_name_en}
         </title>
         <meta
           name="description"
@@ -52,18 +50,14 @@ export default function SingleBrand() {
             data
               ? `${formatMessage({ id: 'shop' })} ${
                   data?.brandName?.[locale].name
-                } ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+                }`
+              : settings?.store_name_en
           }
         />
         <meta
           property="og:title"
           content={
-            data
-              ? `${data.brandName[locale].name} | ${formatMessage({
-                  id: 'mrg-mall-kuwait',
-                })}`
-              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+            data ? `${data.brandName[locale].name} }` : settings?.store_name_en
           }
         />
         <meta
@@ -72,8 +66,8 @@ export default function SingleBrand() {
             data
               ? `${formatMessage({ id: 'shop' })} ${
                   data?.full_translation?.[locale].title
-                }  ${formatMessage({ id: 'on-mrg-mall-kuwait' })}`
-              : 'MRG Mall Kuwait Online Shop | متجر إم آر جي الإلكتروني الكويت'
+                }`
+              : settings?.store_name_en
           }
         />
       </Helmet>
@@ -100,7 +94,7 @@ export default function SingleBrand() {
           <div className="flex justify-center flex-col items-center">
             <h1 className="font-bold text-2xl mb-3">
               {formatMessage({ id: 'shop-brands' })}{' '}
-              {data?.brandName?.[locale].name} {formatMessage({ id: 'at-mrg' })}
+              {data?.brandName?.[locale].name}
             </h1>
             <img
               src={`${process.env.REACT_APP_IMAGES_URL}/original/${data?.brandLogo}`}

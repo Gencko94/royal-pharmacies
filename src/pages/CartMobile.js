@@ -9,10 +9,8 @@ import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import MobileCartLoader from '../components/CartMobile/ContentLoaders/MobileCartLoader';
 import MobileCartContainer from '../components/CartMobile/MobileCartContainer';
 import MobileGuestCart from '../components/CartMobile/MobileGuestCart/MobileGuestCart';
-import StaticSwiper from '../components/Swipers/StaticSwiper';
 import Layout from '../components/Layout';
 import CartEmptyMobile from '../components/CartMobile/CartEmptyMobile';
-import { scrollTo } from 'scroll-js';
 import { DataProvider } from '../contexts/DataContext';
 
 export default function CartMobile() {
@@ -27,9 +25,6 @@ export default function CartMobile() {
     isGetCartError,
   } = React.useContext(CartAndWishlistProvider);
   const { deliveryCountriesLoading } = React.useContext(DataProvider);
-  const scrollToTop = () => {
-    scrollTo(window, { top: 0 });
-  };
   if (isGetCartError) {
     return (
       <Layout>
@@ -44,7 +39,10 @@ export default function CartMobile() {
   }
   return (
     <Layout>
-      <div className="py-1 px-2 relative text-body-text-light">
+      <div
+        className="py-1 px-2 relative text-body-text-light"
+        style={{ minHeight: 'calc(-120px + 100vh)' }}
+      >
         <AnimatePresence>
           {checkoutPopupOpen && (
             <CheckoutPopupMobile setCheckOutPopupOpen={setCheckOutPopupOpen} />
@@ -79,8 +77,6 @@ export default function CartMobile() {
         {!authenticationLoading && !deliveryCountriesLoading && !userId && (
           <MobileGuestCart setCheckOutPopupOpen={setCheckOutPopupOpen} />
         )}
-
-        <StaticSwiper type="perfumes" title="Perfumes" cb={scrollToTop} />
       </div>
     </Layout>
   );

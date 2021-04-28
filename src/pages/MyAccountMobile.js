@@ -16,7 +16,7 @@ export default function MyAccountMobile() {
   return (
     <Layout>
       <Helmet>
-        <title>{formatMessage({ id: 'my-account' })}| MRG</title>
+        <title>{formatMessage({ id: 'my-account' })}</title>
       </Helmet>
       <div className="relative">
         <MobileTabs />

@@ -358,9 +358,6 @@ export default function ItemDescription({
         </button>
       </div>
       <hr className="my-2" />
-      {data?.related_products.length > 0 && (
-        <RelatedItems data={data.related_products} />
-      )}
     </div>
   );
 }

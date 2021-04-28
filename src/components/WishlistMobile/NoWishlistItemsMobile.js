@@ -24,6 +24,8 @@ export default function NoWishlistItemsMobile() {
       initial="hidden"
       animate="visible"
       exit="exited"
+      style={{ minHeight: 'calc(-120px + 100vh)' }}
+      className="flex flex-col items-center justify-center"
     >
       <div className="p-2">
         <div

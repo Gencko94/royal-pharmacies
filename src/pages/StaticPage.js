@@ -19,7 +19,7 @@ export default function StaticPage() {
     return (
       <div className="min-h-screen px-4 py-2 flex items-center justify-center">
         <Helmet>
-          <title>Welcome To MRG | أهلا بكم في MRG</title>
+          <title>Royal Pharmacies</title>
         </Helmet>
         <Loader
           type="ThreeDots"

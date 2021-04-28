@@ -6,7 +6,6 @@ import MobileCartLoader from '../components/CartMobile/ContentLoaders/MobileCart
 import { AuthProvider } from '../contexts/AuthContext';
 import WishlistMobileContainer from '../components/WishlistMobile/WishlistMobileContainer';
 import Layout from '../components/Layout';
-import StaticSwiper from '../components/Swipers/StaticSwiper';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 export default function WishlistMobile({ userId }) {
@@ -24,9 +23,7 @@ export default function WishlistMobile({ userId }) {
   } = React.useContext(CartAndWishlistProvider);
   const { authenticationLoading } = React.useContext(AuthProvider);
   const [cartMenuOpen, setCartMenu] = React.useState(false);
-  const setCartMenuOpen = () => {
-    setCartMenu(true);
-  };
+
   const handleRemoveItemFromWishList = async id => {
     setRemoveFromWishListButtonLoading(id);
     try {
@@ -66,7 +63,7 @@ export default function WishlistMobile({ userId }) {
           ></motion.div>
         )}
       </AnimatePresence>
-      <div className=" py-1 px-2">
+      <div className=" py-1 px-2" style={{ minHeight: 'calc(-120px + 100vh)' }}>
         {authenticationLoading && <MobileCartLoader />}
         {wishlistItemsLoading && <MainContentLoader />}
 
@@ -78,13 +75,6 @@ export default function WishlistMobile({ userId }) {
             wishlistItemsLoading={wishlistItemsLoading}
           />
         )}
-
-        <hr />
-        <StaticSwiper
-          type="latest_products"
-          title={'New Arrivals'}
-          cb={setCartMenuOpen}
-        />
       </div>
     </Layout>
   );

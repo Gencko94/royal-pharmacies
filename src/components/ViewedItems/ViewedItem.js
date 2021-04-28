@@ -41,7 +41,7 @@ export default function ViewedItem({ item }) {
           src={item.image?.link}
           origin="original"
           alt={item.translation[locale].title}
-          pb="calc(100% * 286/210)"
+          height="110px"
         />
       </Link>
       <div className="">

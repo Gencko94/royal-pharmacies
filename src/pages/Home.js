@@ -94,7 +94,7 @@ export default function Home() {
   return (
     <Layout>
       <Helmet>
-        <title>MRG Mall Online Shop | متجر إم آر جي الإلكتروني</title>
+        <title>Royal Pharmacies | صيدليات رويال</title>
       </Helmet>
       <div
         className={`mb-5 overflow-hidden bg-body-light text-body-text-light`}

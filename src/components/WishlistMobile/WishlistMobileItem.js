@@ -44,7 +44,7 @@ export default function WishlistMobileItem({
             src={item.image}
             origin="small"
             alt={item[`name_${locale}`]}
-            pb="calc(100% * 286/210)"
+            height="125px"
           />
         </Link>
         <div className="">

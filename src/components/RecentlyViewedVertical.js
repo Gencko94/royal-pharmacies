@@ -75,7 +75,7 @@ export default function RecentlyViewedVertical() {
                   src={item.image?.link}
                   origin="small"
                   alt={item.translation[locale].title}
-                  pb="calc(100% * 210/210)"
+                  height="50px"
                 />
               </Link>
               <div className="text-sm">

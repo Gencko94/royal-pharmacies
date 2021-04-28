@@ -210,7 +210,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
           }
           origin="small"
           alt={item.translation[locale].title}
-          pb="calc(100% * 266/210)"
+          height="175px"
         />
       );
     } else {
@@ -222,7 +222,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
           }
           origin="small"
           alt={item.translation[locale].title}
-          pb="calc(100% * 266/210)"
+          height="175px"
         />
       );
     }

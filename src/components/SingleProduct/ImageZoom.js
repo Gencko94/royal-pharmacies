@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { useIntl } from 'react-intl';
-import LazyImage from '../../helpers/LazyImage';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { GrPowerReset } from 'react-icons/gr';
 
@@ -79,18 +78,18 @@ export default function ImageZoom({ data }) {
         {[data.image, ...data.gallery].map(item => {
           return (
             <div
+              key={item?.link}
               className="relative rounded overflow-hidden shadow-xs border cursor-pointer mb-2"
               onClick={() =>
                 setImage(
                   `${process.env.REACT_APP_IMAGES_URL}/original/${item?.link}`
                 )
               }
-              style={{ width: '50px' }}
+              style={{ width: '60px', height: '60px' }}
             >
-              <LazyImage
-                src={item?.link}
-                origin="small"
-                pb="100%"
+              <img
+                src={`${process.env.REACT_APP_IMAGES_URL}/small/${item?.link}`}
+                style={{ objectFit: 'contain' }}
                 alt={data.full_translation[locale].title}
               />
               {image ===

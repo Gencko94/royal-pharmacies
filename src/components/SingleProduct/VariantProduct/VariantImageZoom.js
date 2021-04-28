@@ -3,7 +3,6 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { GrPowerReset } from 'react-icons/gr';
 
 import { useIntl } from 'react-intl';
-import LazyImage from '../../../helpers/LazyImage';
 export default function VariantImageZoom({
   data,
   selectedVariation,
@@ -84,14 +83,14 @@ export default function VariantImageZoom({
             )
           }
         >
-          <LazyImage
-            src={
+          <img
+            style={{ objectFit: 'contain' }}
+            src={`${process.env.REACT_APP_IMAGES_URL}/original/${
               data.new_variation_addons[selectedVariation]?.options[
                 selectedOption[selectedVariation]
               ]?.image || data.image?.link
             }
-            origin="small"
-            pb="100%"
+            `}
             alt={data.full_translation[locale].title}
           />
           {image ===
@@ -113,10 +112,9 @@ export default function VariantImageZoom({
               )
             }
           >
-            <LazyImage
-              src={image.link}
-              origin="small"
-              pb="100%"
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/original/${image.link}`}
+              style={{ objectFit: 'contain' }}
               alt={data.full_translation[locale].title}
             />
             {image ===
@@ -139,13 +137,13 @@ export default function VariantImageZoom({
             )
           }
         >
-          <LazyImage
-            src={
+          <img
+            src={`${process.env.REACT_APP_IMAGES_URL}/original/${
               data.new_variation_addons[selectedVariation]?.image ||
               data.image?.link
             }
-            origin="small"
-            pb="100%"
+            `}
+            style={{ objectFit: 'contain' }}
             alt={data.full_translation[locale].title}
           />
           {image ===
@@ -165,10 +163,9 @@ export default function VariantImageZoom({
               )
             }
           >
-            <LazyImage
-              src={image.link}
-              origin="small"
-              pb="100%"
+            <img
+              src={`${process.env.REACT_APP_IMAGES_URL}/original/${image.link}`}
+              style={{ objectFit: 'contain' }}
               alt={data.full_translation[locale].title}
             />
             {image ===
@@ -230,7 +227,9 @@ export default function VariantImageZoom({
       <div
         className={`absolute top-0  ${locale === 'ar' ? 'right-0' : 'left-0'}`}
       >
-        <div style={{ width: '50px' }}>{resolveThumbnail()}</div>
+        <div style={{ width: '60px', height: '60px' }}>
+          {resolveThumbnail()}
+        </div>
       </div>
     </div>
   );

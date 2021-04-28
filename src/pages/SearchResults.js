@@ -160,7 +160,7 @@ export default function SearchResults() {
     <Layout>
       <Helmet>
         <title>
-          {formatMessage({ id: 'search-for' })} {query} | MRG
+          {formatMessage({ id: 'search-for' })} {query}
         </title>
       </Helmet>
       <AnimatePresence>
