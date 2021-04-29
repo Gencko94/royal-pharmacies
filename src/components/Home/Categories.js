@@ -16,28 +16,28 @@ export default function Categories() {
     // when window width is >= 320px
     320: {
       slidesPerView: 2.25,
-      spaceBetween: 0,
+      spaceBetween: 10,
     },
     // when window width is >= 480px
     480: {
-      slidesPerView: 4,
-      spaceBetween: 20,
+      slidesPerView: 3.5,
+      spaceBetween: 15,
     },
     640: {
-      slidesPerView: 5,
-      spaceBetween: 20,
+      slidesPerView: 4.5,
+      spaceBetween: 15,
     },
     860: {
-      slidesPerView: 7,
-      spaceBetween: 20,
+      slidesPerView: 6,
+      spaceBetween: 15,
     },
     1100: {
       slidesPerView: 8,
-      spaceBetween: 20,
+      spaceBetween: 15,
     },
     1440: {
       slidesPerView: 10,
-      spaceBetween: 20,
+      spaceBetween: 15,
     },
   };
   return (

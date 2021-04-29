@@ -144,7 +144,7 @@ export default function LoginMobile() {
           <Link to={`/${locale}/`}>
             {settings && (
               <img
-                src={settings?.store_logo_color}
+                src={settings?.store_logo}
                 alt="logo"
                 style={{ width: '100px', height: '50px' }}
                 className=" mb-3"

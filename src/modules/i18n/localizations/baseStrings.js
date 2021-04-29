@@ -175,7 +175,6 @@ const baseStrings = {
   'login-button': 'Login',
   'register-button': 'Create an account',
   'login-welcome-back': 'Welcome Back !',
-  'register-on-mrg': 'Register on MRG ',
   'invalid-credentials': 'Phone number or password are not correct',
   'invalid-phone': 'Invalid Phone Number ',
   'track-order-no-orders':
@@ -218,7 +217,7 @@ const baseStrings = {
   'multiple-items': 'Items',
 
   'cart-tos':
-    'The price and availability of items at mrg-mall.com are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
+    'The price and availability of items are subject to change. The Cart is a temporary place to store a list of your items and reflects each item most recent price.',
   subtotal: 'Subtotal',
   total: 'Total',
   'cart-total': 'Cart Total',
@@ -296,7 +295,7 @@ const baseStrings = {
   'you-can': 'you can',
   'guest-checkout': 'Checkout as guest',
   'checkout-modal-tos':
-    'Having an account at mrg-mall.com help us make a better user experience for you and other customers.',
+    'Having an account helps us make a better user experience for you and other customers.',
   'confirm-location': 'Confirm Location',
   'confirm-btn': 'Confirm',
   'remove-location': 'Remove',
@@ -344,7 +343,7 @@ const baseStrings = {
     'There are no Ratings for this Product yet, Be the first to Rate ',
   'how-to-rate': 'How do i rate this Product ?',
   'rating-guide':
-    'If you are a MRG user and have Purchased this item, you can Rate and Leave a Feedback at <link>My Orders</link>',
+    'If you are a registered user and have Purchased this item, you can Rate and Leave a Feedback at <link>My Orders</link>',
   /**
    * Viewed Items Page
    *

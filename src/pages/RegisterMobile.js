@@ -149,8 +149,8 @@ export default function RegisterMobile() {
           <Link to={`/${locale}/`}>
             {settings && (
               <img
-                src={settings?.store_logo_color}
-                alt="MRG-logo"
+                src={settings?.store_logo}
+                alt="logo"
                 style={{ width: '100px', height: '50px' }}
                 className=" mb-3"
               />

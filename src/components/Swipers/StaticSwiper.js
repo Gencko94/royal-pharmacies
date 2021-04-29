@@ -44,15 +44,15 @@ export default function StaticSwiper({ type, cb, title, id }) {
       spaceBetween: 20,
     },
     768: {
-      slidesPerView: 5,
+      slidesPerView: 4,
       spaceBetween: 20,
     },
     1100: {
-      slidesPerView: 7,
+      slidesPerView: 4,
       spaceBetween: 20,
     },
     1440: {
-      slidesPerView: 8,
+      slidesPerView: 4,
       spaceBetween: 20,
     },
   };

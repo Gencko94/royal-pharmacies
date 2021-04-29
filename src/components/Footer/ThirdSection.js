@@ -25,7 +25,12 @@ export default function ThirdSection({ pages }) {
             <img
               src={settings?.store_logo}
               alt={`${settings?.store_name_en} Logo`}
-              style={{ height: '44px' }}
+              style={{
+                height: '44px',
+                '-webkit-filter': 'grayscale(0%) brightness(0) contrast(0)',
+                filter: 'grayscale(0%) brightness(0) contrast(0)',
+                opacity: '0.6',
+              }}
             />
           )}
         </Link>

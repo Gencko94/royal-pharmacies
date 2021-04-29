@@ -112,7 +112,7 @@ export default function PasswordReset() {
         <div className="flex items-center flex-col mb-4  rounded-lg text-center ">
           <Link to="/">
             <img
-              src={settings?.store_logo_color}
+              src={settings?.store_logo}
               alt="logo"
               className=" mb-3"
               style={{ width: '100px', height: '50px' }}

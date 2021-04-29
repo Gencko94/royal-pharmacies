@@ -158,17 +158,17 @@ export default function Register() {
             <Link to={`/${locale}/`}>
               {settings && (
                 <img
-                  src={settings?.store_logo_color}
+                  src={settings?.store_logo}
                   alt={`${settings?.store_name_en} Logo`}
-                  style={{ width: '100px', height: '50px' }}
+                  style={{ width: '100px', height: '40px' }}
                   className=" mb-3"
                 />
               )}
             </Link>
 
-            <h2 className="text-lg text-center">
-              {formatMessage({ id: 'register-on-mrg' })}
-            </h2>
+            {/* <h2 className="text-lg text-center">
+              {formatMessage({ id: 'register' })}
+            </h2> */}
           </div>
           <div className="rounded-lg border bg-gray-100 mb-2">
             <Formik
