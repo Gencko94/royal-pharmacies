@@ -45,14 +45,14 @@ export default function CategoryHeaderMobile({
       <>
         <ContentLoader
           speed={4}
-          viewBox="0 0 800 300"
+          viewBox="0 0 800 200"
           backgroundColor="#f3f3f3"
           foregroundColor="#ecebeb"
         >
           <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
         </ContentLoader>
         <Swiper
-          navigation
+          // navigation
           id="main"
           slidesPerView={7}
           spaceBetween={15}
@@ -86,20 +86,15 @@ export default function CategoryHeaderMobile({
   }
   return (
     <div className="mb-4">
-      <BannerLazyImage
+      {/* <BannerLazyImage
         src={categoryInfo.coverMobile?.link}
         origin="original"
         alt={categoryInfo.title[locale].name}
         pb="calc(100% * 300/800)"
-      />
+      /> */}
       <div className="mt-8 px-2">
         <h1 className="text-2xl font-bold text-center ">
-          {`${formatMessage({ id: 'shop' })}  ${
-            categoryInfo?.title?.[locale].name
-          } `}
-          {!offers &&
-            categoryInfo?.children.length > 0 &&
-            formatMessage({ id: 'by-category' })}
+          {`${categoryInfo?.title?.[locale].name} `}
         </h1>
         {offers && (
           <h1 className="text-2xl font-bold text-center ">
@@ -107,9 +102,11 @@ export default function CategoryHeaderMobile({
           </h1>
         )}
       </div>
-      {!offers && categoryInfo.children.length !== 0 && (
-        <CategoryChildrenMobile children={categoryInfo?.children} />
-      )}
+      {!offers &&
+        !categoryInfoLoading &&
+        categoryInfo?.children?.length !== 0 && (
+          <CategoryChildrenMobile children={categoryInfo?.children} />
+        )}
     </div>
   );
 }

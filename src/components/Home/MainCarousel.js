@@ -25,7 +25,9 @@ const MainCarousel = () => {
         autoplay={{ delay: 5000 }}
         pagination={{ clickable: true, dynamicBullets: true }}
         id="main"
-        spaceBetween={0}
+        slidesPerView={1}
+        spaceBetween={10}
+        centeredSlides
       >
         {isLoading &&
           [0, 1, 2].map(i => {
@@ -34,7 +36,7 @@ const MainCarousel = () => {
                 <ContentLoader
                   speed={4}
                   viewBox={`0 0 ${isTabletOrAbove ? '1440' : '800'} ${
-                    isTabletOrAbove ? '300' : '300'
+                    isTabletOrAbove ? '300' : '500'
                   }`}
                   backgroundColor="#f3f3f3"
                   foregroundColor="#ecebeb"
@@ -45,7 +47,7 @@ const MainCarousel = () => {
                     rx="5"
                     ry="5"
                     width="100%"
-                    height={`${isTabletOrAbove ? '300' : '300'}`}
+                    height={`${isTabletOrAbove ? '300' : '500'}`}
                   />
                 </ContentLoader>
               </SwiperSlide>
@@ -65,7 +67,7 @@ const MainCarousel = () => {
                     pb={`${
                       isTabletOrAbove
                         ? 'calc(100% * 300/1440)'
-                        : 'calc(100% * 300/800)'
+                        : 'calc(100% * 500/800)'
                     }`}
                   />
                 </a>

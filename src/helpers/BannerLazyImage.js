@@ -12,6 +12,8 @@ export default function BannerLazyImage({ src, pb, alt, origin }) {
         backgroundColor: '#fff',
         paddingBottom: pb,
         width: '100%',
+        borderRadius: !isTabletOrAbove && '12px',
+        overflow: 'hidden',
       }}
     >
       <LazyLoad

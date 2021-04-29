@@ -5,7 +5,12 @@ export default function LazyImage({ src, height, alt, origin, placeholder }) {
   return (
     <LazyLoad
       offset={300}
-      style={{ backgroundColor: '#fff', height }}
+      style={{
+        backgroundColor: '#fff',
+        height,
+        borderRadius: '12px',
+        overflow: 'hidden',
+      }}
       placeholder={
         <img src={placeholder ? placeholder : itemplaceholder} alt={alt} />
       }

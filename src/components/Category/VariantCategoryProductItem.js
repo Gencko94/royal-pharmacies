@@ -245,7 +245,7 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
     >
       <div className="relative">
         <Link
-          className="block relative"
+          className="block relative rounded border"
           to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           {resolveImage()}

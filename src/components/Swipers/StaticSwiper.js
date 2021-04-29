@@ -30,7 +30,7 @@ export default function StaticSwiper({ type, cb, title, id }) {
   const breakpoints = {
     // when window width is >= 320px
     320: {
-      slidesPerView: 2,
+      slidesPerView: 2.25,
       spaceBetween: 20,
     },
     // when window width is >= 480px
@@ -68,7 +68,7 @@ export default function StaticSwiper({ type, cb, title, id }) {
       {(isLoading || isIdle) && <SwiperLoader />}
       {!isLoading && !isIdle && (
         <div className="flex items-center mb-4">
-          <h1 className="text-2xl  flex-1 font-bold ">
+          <h1 className="text-xl  flex-1 font-bold ">
             {data?.title[locale]?.name}
           </h1>
           {type !== 'latest_products' && type !== 'best_seller' && (
@@ -85,7 +85,7 @@ export default function StaticSwiper({ type, cb, title, id }) {
       {!isLoading && !isIdle && (
         <Swiper
           freeMode
-          navigation
+          // navigation
           id="main"
           spaceBetween={5}
           breakpoints={breakpoints}

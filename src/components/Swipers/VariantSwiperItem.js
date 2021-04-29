@@ -258,7 +258,7 @@ export default function VariantSwiperItem({
     >
       <div className="relative">
         <Link
-          className="block relative"
+          className="block relative border rounded"
           to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           {resolveImage()}

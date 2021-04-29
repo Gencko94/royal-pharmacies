@@ -26,7 +26,7 @@ export default function CategoryChildrenMobile({ children }) {
     },
   };
   return (
-    <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
+    <Swiper id="main" className="m-3 " breakpoints={breakpoints}>
       {children.map(child => {
         return (
           <SwiperSlide
@@ -43,7 +43,7 @@ export default function CategoryChildrenMobile({ children }) {
                 origin="original"
               />
 
-              <h1 className="text-center mt-4 text-lg font-bold">
+              <h1 className="text-center mt-4  font-semibold">
                 {child.translation[locale].name}
               </h1>
             </Link>

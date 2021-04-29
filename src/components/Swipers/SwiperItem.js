@@ -103,7 +103,7 @@ export default function SwiperItem({
     >
       <div className="relative">
         <Link
-          className="block relative"
+          className="block relative border rounded"
           to={`/${locale}/products/${item.slug}/${item.id}`}
         >
           <LazyImage
@@ -189,7 +189,7 @@ export default function SwiperItem({
             className="hover:underline inline-block"
             href={`/${locale}/products/${item.slug}/${item.id}`}
           >
-            <h1 className="text-clamp-2 text-xs uppercase font-semibold">
+            <h1 className="text-clamp-2 text-sm text-center uppercase font-semibold">
               {item.translation[locale].title}
             </h1>
           </a>

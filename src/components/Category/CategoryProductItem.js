@@ -93,7 +93,7 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
           to={{
             pathname: `/${locale}/products/${item.slug}/${item.id}`,
           }}
-          className="block relative rounded overflow-hidden"
+          className="block relative rounded overflow-hidden border"
         >
           <LazyImage
             src={item.image?.link}

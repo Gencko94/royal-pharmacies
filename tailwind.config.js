@@ -27,8 +27,8 @@ module.exports = {
         xxl: '1440px',
       },
       fontFamily: {
-        body: ['Lato'],
-        cairo: ['Cairo'],
+        body: ['Nunito'],
+        cairo: ['Tajawal'],
       },
       colors: {
         'main-color': '#791314',
