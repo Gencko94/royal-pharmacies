@@ -40,7 +40,7 @@ export default function StaticPage() {
     <Layout>
       <div className="min-h-screen px-4 py-2 overflow-hidden">
         <Helmet>
-          <title>{`${data[locale].title} | MRG`}</title>
+          <title>{`${data[locale].title}`}</title>
         </Helmet>
         <div className="p-10">
           <h1 className="text-3xl text-center">{data[locale].title}</h1>

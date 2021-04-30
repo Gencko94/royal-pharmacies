@@ -53,7 +53,6 @@ export default function CategoryHeader({
           <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
         </ContentLoader>
         <Swiper
-          navigation
           id="main"
           slidesPerView={7}
           spaceBetween={15}

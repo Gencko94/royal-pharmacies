@@ -112,8 +112,7 @@ export default function SingleBrandMobile() {
             >
               <h1 className="font-bold text-xl mb-3">
                 {formatMessage({ id: 'shop-brands' })}{' '}
-                {data?.brandName?.[locale].name}{' '}
-                {formatMessage({ id: 'at-mrg' })}
+                {data?.brandName?.[locale].name}
               </h1>
               <img
                 src={`${process.env.REACT_APP_IMAGES_URL}/original/${data?.brandLogo}`}

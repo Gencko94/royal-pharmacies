@@ -157,7 +157,7 @@ export default function RegisterMobile() {
             )}
           </Link>
           <h2 className="text-lg text-center">
-            {formatMessage({ id: 'register-on-mrg' })}
+            {formatMessage({ id: 'register' })}
           </h2>
         </div>
         <div className="rounded-lg border bg-gray-100 mb-2 shadow">

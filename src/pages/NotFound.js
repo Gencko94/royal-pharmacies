@@ -15,7 +15,7 @@ export default function NotFound() {
       }}
     >
       <Helmet>
-        <title>404 | MRG</title>
+        <title>404</title>
       </Helmet>
       <div className=" not-found-title-desktop">
         <div className="flex justify-center items-center">

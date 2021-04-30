@@ -7,7 +7,7 @@ export default function NotFoundMobile() {
   return (
     <div className="not-found-page__container-desktop">
       <Helmet>
-        <title>404 | MRG</title>
+        <title>404</title>
       </Helmet>
       <div className=" not-found-title-desktop">
         <div className="justify-center items-center flex mb-4">

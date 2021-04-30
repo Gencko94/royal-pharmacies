@@ -3,11 +3,9 @@ import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/swiper-bundle.css';
 import LazyImage from '../../helpers/LazyImage';
 
-SwiperCore.use([Navigation]);
 export default function CategoryChildren({ children }) {
   const { locale } = useIntl();
   const breakpoints = {
@@ -22,7 +20,7 @@ export default function CategoryChildren({ children }) {
       spaceBetween: 20,
     },
     1100: {
-      slidesPerView: children?.length < 6 ? 5 : 6,
+      slidesPerView: 8.25,
       spaceBetween: 20,
     },
     1440: {
@@ -33,27 +31,29 @@ export default function CategoryChildren({ children }) {
 
   return (
     <div>
-      <Swiper navigation id="main" className="my-3" breakpoints={breakpoints}>
+      <Swiper id="main" className="my-3" breakpoints={breakpoints}>
         {children.map(child => {
           return (
             <SwiperSlide
               key={child.id}
-              className={`overflow-hidden  rounded-lg my-2  relative 
+              className={`overflow-hidden  rounded-lg m-2  relative 
              
             `}
             >
-              <Link to={`/${locale}/category/${child.slug}/${child.id}`}>
+              <Link
+                to={`/${locale}/category/${child.slug}/${child.id}`}
+                className="block rounded-lg overflow-hidden shadow-lg m-2"
+              >
                 <LazyImage
                   src={child.translation[locale].image?.link}
                   alt={child.translation[locale].name}
                   pb="calc(100% * 210/210)"
                   origin="original"
                 />
-
-                <h1 className="text-center mt-4 text-lg font-bold">
-                  {child.translation[locale].name}
-                </h1>
               </Link>
+              <h1 className="text-center mt-4 text-lg font-semibold">
+                {child.translation[locale].name}
+              </h1>
             </SwiperSlide>
           );
         })}
