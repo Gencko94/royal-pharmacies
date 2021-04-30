@@ -398,13 +398,24 @@ export default function VariantCategoryProductItem({ item, setCartMenuOpen }) {
         </AnimatePresence>
       </div>
       <div className={`bg-body-light text-body-text-light`}>
+        <div className="p-2" style={{ height: '18px' }}>
+          <Link
+            title={item.translation[locale].title}
+            className="hover:underline inline-block text-main-color underline"
+            to={`/${locale}/brands/${item.brand?.slug}`}
+          >
+            <h1 className="text-clamp-1 text-xs uppercase font-bold">
+              {item.brand?.translation[locale].name}
+            </h1>
+          </Link>
+        </div>
         <div className="p-2" style={{ height: '55px' }}>
           <Link
             title={item.translation[locale].title}
             className="hover:underline inline-block"
             to={`/${locale}/products/${item.slug}/${item.id}`}
           >
-            <h1 className="font-semibold text-xs text-clamp-2">
+            <h1 className="font-semibold text-sm text-clamp-2">
               {resolveName()}
             </h1>
           </Link>

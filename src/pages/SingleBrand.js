@@ -29,7 +29,7 @@ export default function SingleBrand() {
     deliveryCountriesIdle,
     settings,
   } = React.useContext(DataProvider);
-  const { data, isLoading: productsLoading } = useQuery(
+  const { data, isLoading: productsLoading, status } = useQuery(
     ['single-brand', { slug, page, number: 42 }],
     getSingleBrandProducts,
     {
@@ -38,6 +38,9 @@ export default function SingleBrand() {
       keepPreviousData: true,
     }
   );
+  console.log(data);
+  console.log(productsLoading);
+  console.log(status);
   return (
     <Layout>
       <Helmet>

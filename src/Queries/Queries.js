@@ -1072,11 +1072,13 @@ export const getSingleBrandProducts = async (k, { slug, page, number }) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/brand/${slug}?page=${page}&number=${number}`
   );
-  if (res.data.status === true) {
+  console.log(res.data);
+  if (res.data.status) {
+    console.log('ok');
     return {
       products: res.data.data.products.data,
       brandName: res.data.data.translation,
-      brandLogo: res.data.data.logo.link,
+      brandLogo: res.data.data.logo?.link,
       pageCount: res.data.data.products.last_page,
     };
   }

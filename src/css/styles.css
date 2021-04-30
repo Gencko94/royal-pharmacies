@@ -732,11 +732,11 @@ input {
 }
 .brand-grid__desktop {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 210px));
-  gap: 0.5em;
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+  gap: 2rem;
 }
 .brand-grid__mobile {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 0.5em;
+  gap: 1.5em;
 }

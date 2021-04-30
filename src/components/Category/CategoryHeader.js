@@ -95,11 +95,7 @@ export default function CategoryHeader({
       />
       <div className="mt-2">
         <h1 className="text-4xl font-bold text-center ">
-          {`${formatMessage({ id: 'shop' })}  ${
-            categoryInfo?.title[locale].name
-          } `}
-          {categoryInfo?.children.length > 0 &&
-            formatMessage({ id: 'by-category' })}
+          {`${categoryInfo?.title[locale].name} `}
         </h1>
         {offers && (
           <h1 className="text-2xl font-bold text-center ">
