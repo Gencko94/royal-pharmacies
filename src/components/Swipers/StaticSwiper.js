@@ -23,8 +23,8 @@ export default function StaticSwiper({ type, cb, title, id }) {
   };
   const { data, isLoading, isIdle } = useQuery(
     ['staticSwiper', type],
-    getStaticSwiperData,
-    { retry: true, refetchOnWindowFocus: false, enabled: inView }
+    () => getStaticSwiperData(type),
+    { retry: true, enabled: inView }
   );
 
   const breakpoints = {

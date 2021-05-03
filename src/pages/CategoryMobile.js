@@ -13,7 +13,7 @@ import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMo
 
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
-import { scrollIntoView, scrollTo } from 'scroll-js';
+import { scrollTo } from 'scroll-js';
 import { Helmet } from 'react-helmet';
 import { DataProvider } from '../contexts/DataContext';
 
@@ -74,13 +74,22 @@ export default function CategoryMobile() {
         offers: offers === 't',
       },
     ],
-    getCategoryProducts,
-    { retry: true, refetchOnWindowFocus: false }
+    () =>
+      getCategoryProducts({
+        page: productsPage,
+        resultsPerPage,
+        id,
+        brandFilters,
+        priceFilters,
+        sortBy,
+        offers: offers === 't',
+      }),
+    { retry: true }
   );
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
-    getSingleCategoryInfo,
-    { retry: true, refetchOnWindowFocus: false }
+    () => getSingleCategoryInfo(category),
+    { retry: true, keepPreviousData: true }
   );
 
   const handleResultPerPageChange = selectedValue => {

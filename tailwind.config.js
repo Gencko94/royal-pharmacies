@@ -4,7 +4,8 @@ module.exports = {
     // purgeLayersByDefault: true,
   },
   purge: {
-    enabled: true,
+    // enabled: process.env.NODE_ENV !== 'production',
+    enabled: false,
     content: ['src/**/*.js', 'src/**/*.jsx', 'public/**/*.html'],
   },
   theme: {

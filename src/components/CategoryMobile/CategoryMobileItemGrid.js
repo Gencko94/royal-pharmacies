@@ -4,14 +4,12 @@ import CategoryProductItem from '../Category/CategoryProductItem';
 import CategoryItemLoader from '../Category/CategoryItemLoader';
 import ContentLoader from 'react-content-loader';
 import VariantCategoryProductItem from '../Category/VariantCategoryProductItem';
-import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
 export default function CategoryMobileItemGrid({
   productsLoading,
   products,
   setCartMenuOpen,
 }) {
-  const { formatMessage } = useIntl();
   const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
     DataProvider
   );
@@ -36,7 +34,7 @@ export default function CategoryMobileItemGrid({
   }
   return (
     <div id="products_grid-mobile" className="mb-4 px-2">
-      {products.length !== 0 && (
+      {products?.length !== 0 && (
         <div className="search-page-items-mobile__grid my-1">
           {products.map(item => {
             return item.type === 'variation' &&

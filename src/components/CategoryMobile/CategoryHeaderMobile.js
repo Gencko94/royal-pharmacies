@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import CategoryChildrenMobile from './CategoryChildrenMobile';
-import BannerLazyImage from '../../helpers/BannerLazyImage';
 export default function CategoryHeaderMobile({
   categoryInfo,
   categoryInfoLoading,
@@ -104,9 +103,9 @@ export default function CategoryHeaderMobile({
           </h1>
         )}
       </div>
-      {!offers && !categoryInfoLoading && categoryInfo?.children?.length !== 0 && (
+      {!offers && !categoryInfoLoading && (
         <div className="mx-2">
-          <CategoryChildrenMobile children={categoryInfo?.children} />
+          <CategoryChildrenMobile categoryInfo={categoryInfo} />
         </div>
       )}
     </div>

@@ -9,9 +9,8 @@ import { Helmet } from 'react-helmet';
 import Layout from '../components/Layout';
 export default function StaticPage() {
   const { page } = useParams();
-  const { data, isLoading, error } = useQuery(
-    ['static-page', page],
-    getStaticPage
+  const { data, isLoading, error } = useQuery(['static-page', page], () =>
+    getStaticPage(page)
   );
 
   const { locale } = useIntl();

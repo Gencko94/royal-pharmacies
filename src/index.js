@@ -39,15 +39,7 @@ if (!deliveryCountry) {
 }
 
 ReactDOM.render(
-  <AuthContext>
-    <DataContextProvider>
-      <CartAndWishlistContext>
-        <SearchContext>
-          <App />
-        </SearchContext>
-      </CartAndWishlistContext>
-    </DataContextProvider>
-  </AuthContext>,
+  <App />,
 
   document.getElementById('root')
 );

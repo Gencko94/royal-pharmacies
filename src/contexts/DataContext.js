@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { queryCache, useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useMediaQuery } from 'react-responsive';
 import {
   getAllCategories,
@@ -12,6 +12,8 @@ import { AuthProvider } from './AuthContext';
 
 export const DataProvider = React.createContext();
 export default function DataContextProvider({ children }) {
+  const queryClient = useQueryClient();
+
   const localDeliveryCountry = localStorage.getItem('deliveryCountry');
   const [deliveryCountry, setDeliveryCountry] = React.useState(null);
   const [searchBarValue, setSearchBarValue] = React.useState('');
@@ -51,7 +53,7 @@ export default function DataContextProvider({ children }) {
 
     localStorage.setItem('browse-history', JSON.stringify(localVisited));
 
-    queryCache.setQueryData('viewedItems', prev => {
+    queryClient.setQueryData('viewedItems', prev => {
       return prev.filter(i => i.id !== id);
     });
   };
@@ -70,8 +72,7 @@ export default function DataContextProvider({ children }) {
     getNavCategories,
     {
       retry: true,
-      refetchOnWindowFocus: false,
-      enabled: isTabletOrAbove,
+      enabled: Boolean(isTabletOrAbove),
     }
   );
   const {
@@ -90,7 +91,7 @@ export default function DataContextProvider({ children }) {
         )
       );
     },
-    enabled: !authenticationLoading,
+    enabled: Boolean(!authenticationLoading),
   });
   const { data: settings } = useQuery('settings', getSiteSettings, {
     retry: true,

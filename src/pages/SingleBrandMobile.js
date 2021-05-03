@@ -31,10 +31,10 @@ export default function SingleBrandMobile() {
   };
   const { data, isLoading: productsLoading } = useQuery(
     ['single-brand', { slug, page, number: 42 }],
-    getSingleBrandProducts,
+    () => getSingleBrandProducts({ slug, page, number: 42 }),
     {
       retry: true,
-      refetchOnWindowFocus: false,
+
       keepPreviousData: true,
     }
   );

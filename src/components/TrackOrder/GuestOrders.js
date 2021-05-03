@@ -252,7 +252,7 @@ const Content = ({ id }) => {
   };
   const { data, isLoading } = useQuery(
     ['single-guest-order', id],
-    getSingleGuestOrder,
+    () => getSingleGuestOrder(id),
     { retry: true, refetchOnWindowFocus: false }
   );
   if (isLoading) {

@@ -145,6 +145,7 @@ export const ar = {
   'nav.history': 'المنتجات المزارة',
   categories: 'الفئات',
   allCategories: 'جميع الفئات',
+  all: 'الكل',
   seeAll: 'الكل',
   sections: 'الأقسام',
   'see-all-nav': 'جميع الاقسام',

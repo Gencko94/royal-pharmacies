@@ -57,16 +57,25 @@ export default function Category() {
         offers: offers === 't',
       },
     ],
-    getCategoryProducts,
-    { retry: true, refetchOnWindowFocus: false }
+    () =>
+      getCategoryProducts({
+        page: productsPage,
+        resultsPerPage,
+        id,
+        brandFilters,
+        priceFilters,
+        sortBy,
+        offers: offers === 't',
+      }),
+    { retry: true }
   );
 
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
-    getSingleCategoryInfo,
+    () => getSingleCategoryInfo(category),
     {
       retry: true,
-      refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   );
 

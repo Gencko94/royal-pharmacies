@@ -31,7 +31,7 @@ export default function SingleBrand() {
   } = React.useContext(DataProvider);
   const { data, isLoading: productsLoading, status } = useQuery(
     ['single-brand', { slug, page, number: 42 }],
-    getSingleBrandProducts,
+    () => getSingleBrandProducts({ slug, page, number: 42 }),
     {
       retry: true,
       refetchOnWindowFocus: false,

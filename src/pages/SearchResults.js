@@ -42,8 +42,8 @@ export default function SearchResults() {
     isFetching: productsFetching,
   } = useQuery(
     ['searchProducts', { query, page: productsPage, resultsPerPage }],
-    searchProducts,
-    { retry: true, refetchOnWindowFocus: false }
+    () => searchProducts({ query, page: productsPage, resultsPerPage }),
+    { retry: true }
   );
 
   const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
@@ -58,8 +58,16 @@ export default function SearchResults() {
         priceFilters,
       },
     ],
-    filterProducts,
-    { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
+    () =>
+      filterProducts({
+        search: query,
+        brandFilters,
+        sortBy,
+        page: filteredPage,
+        resultsPerPage,
+        priceFilters,
+      }),
+    { retry: true, enabled: filtersApplied }
   );
 
   const handleResultPerPageChange = selectedValue => {

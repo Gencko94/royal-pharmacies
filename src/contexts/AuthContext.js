@@ -1,5 +1,5 @@
 import React from 'react';
-import { queryCache, useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   changeUserPassword,
   checkAuth,
@@ -13,6 +13,8 @@ import {
 } from '../Queries/Queries';
 export const AuthProvider = React.createContext();
 export default function AuthContext({ children }) {
+  const queryClient = useQueryClient();
+
   const {
     data,
     isLoading: authenticationLoading,
@@ -20,14 +22,13 @@ export default function AuthContext({ children }) {
     isFetching: authenticationFetching,
   } = useQuery('authentication', checkAuth, {
     retry: 0,
-    refetchOnWindowFocus: false,
   });
   /**
    * Edit user Info
    */
-  const [editMutation] = useMutation(editUserProfileInfo, {
+  const { mutateAsync: editMutation } = useMutation(editUserProfileInfo, {
     onSuccess: data => {
-      queryCache.setQueryData('authentication', prev => {
+      queryClient.setQueryData('authentication', prev => {
         return {
           ...prev,
           userData: data.userData,
@@ -40,14 +41,17 @@ export default function AuthContext({ children }) {
   /**
    * Change Password
    */
-  const [changePasswordMutation] = useMutation(changeUserPassword, {
-    throwOnError: true,
-  });
+  const { mutateAsync: changePasswordMutation } = useMutation(
+    changeUserPassword,
+    {
+      throwOnError: true,
+    }
+  );
 
   /**
    * User Login
    */
-  const [userLoginMutation] = useMutation(
+  const { mutateAsync: userLoginMutation } = useMutation(
     async data => {
       const res = await userLogin({
         mobile: data.phoneNumber,
@@ -59,7 +63,7 @@ export default function AuthContext({ children }) {
     },
     {
       onSuccess: () => {
-        queryCache.invalidateQueries('authentication');
+        queryClient.invalidateQueries('authentication');
       },
       throwOnError: true,
     }
@@ -68,7 +72,7 @@ export default function AuthContext({ children }) {
   /**
    * User Register
    */
-  const [userRegisterMutation] = useMutation(
+  const { mutateAsync: userRegisterMutation } = useMutation(
     async data => {
       const res = await userRegister({
         email: data.email,
@@ -83,7 +87,7 @@ export default function AuthContext({ children }) {
     },
     {
       onSuccess: () => {
-        queryCache.invalidateQueries('authentication');
+        queryClient.invalidateQueries('authentication');
       },
       throwOnError: true,
     }
@@ -92,8 +96,8 @@ export default function AuthContext({ children }) {
   /**
    * User Logout
    */
-  const [userLogoutMutation] = useMutation(() => {
-    queryCache.setQueryData('authentication', () => {
+  const { mutateAsync: userLogoutMutation } = useMutation(() => {
+    queryClient.setQueryData('authentication', () => {
       return { userData: { userId: null } };
     });
     localStorage.removeItem('mrgAuthToken');
@@ -109,31 +113,34 @@ export default function AuthContext({ children }) {
     {
       refetchOnWindowFocus: false,
       retry: true,
-      enabled: data?.userData?.id,
+      enabled: Boolean(data?.userData?.id),
     }
   );
-  const [addAddressMutation] = useMutation(
+  const { mutateAsync: addAddressMutation } = useMutation(
     addUserAddress,
 
     {
       onSuccess: data => {
-        queryCache.setQueryData('addresses', () => {
+        queryClient.setQueryData('addresses', () => {
           return data;
         });
       },
       throwOnError: true,
     }
   );
-  const [deleteAddressMutation] = useMutation(removeUserAddress, {
-    onSuccess: data => {
-      queryCache.setQueryData('addresses', () => {
-        return data;
-      });
-    },
-    throwOnError: true,
-  });
+  const { mutateAsync: deleteAddressMutation } = useMutation(
+    removeUserAddress,
+    {
+      onSuccess: data => {
+        queryClient.setQueryData('addresses', () => {
+          return data;
+        });
+      },
+      throwOnError: true,
+    }
+  );
 
-  const [addReviewMutation] = useMutation(addProductReview, {
+  const { mutateAsync: addReviewMutation } = useMutation(addProductReview, {
     throwOnError: true,
   });
 
