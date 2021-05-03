@@ -123,7 +123,6 @@ export default function Home() {
         >
           <MainCarousel />
           <Categories />
-          {/* <DealsSwiper /> */}
           <StaticSwiper
             type="latest_products"
             title={'New Arrivals'}

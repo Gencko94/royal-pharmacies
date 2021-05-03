@@ -22,6 +22,7 @@ export default function AuthContext({ children }) {
     isFetching: authenticationFetching,
   } = useQuery('authentication', checkAuth, {
     retry: 0,
+    suspense: true,
   });
   /**
    * Edit user Info

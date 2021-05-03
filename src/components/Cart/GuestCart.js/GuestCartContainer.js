@@ -50,6 +50,7 @@ export default function GuestCartContainer() {
             <motion.div initial={false} layout>
               <AnimatePresence>
                 {guestCartItems.map(item => {
+                  console.log(item);
                   return <GuestCartItem key={item.options.sku} item={item} />;
                 })}
               </AnimatePresence>

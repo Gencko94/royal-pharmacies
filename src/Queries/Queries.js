@@ -110,11 +110,16 @@ export const userLogin = async data => {
   }
 };
 export const checkAuth = async () => {
+  const instance = axios.create({
+    validateStatus: status => {
+      return status === 200 || status === 400;
+    },
+  });
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
-  const res = await axios.get(
+  const res = await instance.get(
     `${process.env.REACT_APP_MAIN_URL}/customer-informations`,
     config
   );

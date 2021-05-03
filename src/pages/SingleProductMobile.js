@@ -18,7 +18,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import Layout from '../components/Layout';
 import VariantProductMobile from '../components/SingleProductMobile/VariantProductMobile/VariantProductMobile';
-import MoreFrom from '../components/MoreFrom/MoreFrom';
+// import MoreFrom from '../components/MoreFrom/MoreFrom';
 import { useIntl } from 'react-intl';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
 

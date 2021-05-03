@@ -94,6 +94,7 @@ const baseStrings = {
   change: 'Change',
   'deliver-to': 'Deliver to',
   'go-to-cart': 'Go to Cart',
+
   checkout: 'Checkout',
   'all-categories': 'All Categories',
   all: 'All',

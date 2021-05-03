@@ -5,6 +5,7 @@ export const ar = {
   'at-mrg': 'على موقعنا',
   home: 'الرئيسية',
   cart: 'عربة التسوق',
+
   wishlist: 'قائمتي المفضلة',
   'wishlist-short': 'المفضلة',
   'short-login': 'سجل الدخول',

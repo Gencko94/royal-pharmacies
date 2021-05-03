@@ -286,7 +286,6 @@ function App() {
               </CartAndWishlistContext>
             </DataContextProvider>
           </AuthContext>
-          ,
         </QueryClientProvider>
       </Suspense>
     </LocalizedRouter>

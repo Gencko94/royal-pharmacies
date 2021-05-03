@@ -34,6 +34,7 @@
     "react-zoom-pan-pinch": "^1.6.1",
     "scroll-js": "^3.3.0",
     "swiper": "^6.5.9",
+    "use-debounce": "^6.0.1",
     "use-places-autocomplete": "^1.9.1",
     "yup": "^0.32.9"
   },

@@ -10,14 +10,21 @@ import LazyImage from '../../helpers/LazyImage';
 import { calculateDiscountPrice } from '../../helpers/calculateDiscountPrice';
 import { Link } from 'react-router-dom';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+import { useMediaQuery } from 'react-responsive';
+import { useQueryClient } from 'react-query';
+import { useDebouncedCallback, useThrottledCallback } from 'use-debounce';
+
 export default function SwiperItem({
   item,
   setCartMenuOpen,
   setErrorOpen,
   setErrorMessage,
 }) {
+  const queryClient = useQueryClient();
   const { formatMessage, locale } = useIntl();
-  const { deliveryCountry } = React.useContext(DataProvider);
+  const { deliveryCountry, setMobileCartPopupOpen } = React.useContext(
+    DataProvider
+  );
   const [showAddButton, setShowAddButton] = React.useState(false);
   const [addToCartButtonLoading, setAddToCartButtonLoading] = React.useState(
     false
@@ -27,6 +34,9 @@ export default function SwiperItem({
 
   const [message, setMessage] = React.useState('');
   const [quantity, setQuantity] = React.useState(0);
+
+  const isTabletOrAbove = useMediaQuery({ query: '(min-width: 768px)' });
+
   const {
     addToGuestCartMutation,
     addToCartMutation,
@@ -38,11 +48,128 @@ export default function SwiperItem({
     }
     setQuantity(parseInt(quantity) - 1);
   };
-  const handleAddQuantity = () => {
-    console.log(item.simple_addons.quantity, 'q');
-    console.log(quantity, 'qq');
+  const debouncedAddToGuestCart = useDebouncedCallback(
+    async ({ newItem, deliveryCountry, coupon }) => {
+      await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
+      if (isTabletOrAbove) {
+        setCartMenuOpen(true);
+        setMessage(formatMessage({ id: 'added-to-cart' }));
+      }
+    },
+    1000
+  );
+
+  const handleAddQuantity = async () => {
     if (item.simple_addons.quantity !== quantity) {
       setQuantity(parseInt(quantity) + 1);
+      if (!isTabletOrAbove) {
+        setMobileCartPopupOpen(true);
+      }
+      if (userId) {
+        const price = item.simple_addons.promotion_price
+          ? item.simple_addons.promotion_price
+          : item.simple_addons.price;
+        try {
+          const newItem = { id: item.id, quantity: quantity + 1 };
+          queryClient.setQueryData(
+            ['cartItems', userId, deliveryCountry, coupon],
+            prev => {
+              return {
+                ...prev,
+                cartItems: [
+                  ...prev.cartItems,
+                  {
+                    id: item.id,
+                    image: item.image,
+                    message: null,
+                    name_ar: item.translation.ar.title,
+                    name_en: item.translation.en.title,
+                    options: {
+                      max_quantity: item.max_quantity,
+                      addons: null,
+                      sku: item.simple_addons.sku,
+                    },
+                    price,
+                    qty: quantity + 1,
+                    slug: item.slug,
+                    status: true,
+                  },
+                ],
+                cartSubtotal: (
+                  parseFloat(prev.cartSubtotal) + parseFloat(price)
+                ).toFixed(3),
+              };
+            }
+          );
+          await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
+          setAddToCartButtonLoading(false);
+          if (isTabletOrAbove) {
+            setCartMenuOpen(true);
+            setMessage(formatMessage({ id: 'added-to-cart' }));
+          }
+        } catch (error) {
+          if (error.response?.data?.message === 'Item founded on the Cart') {
+            setMessage(formatMessage({ id: 'added-to-cart' }));
+            setAddToCartButtonLoading(false);
+          } else {
+            setAddToCartButtonLoading(false);
+            setErrorOpen(true);
+            setErrorMessage(
+              formatMessage({ id: 'something-went-wrong-snackbar' })
+            );
+          }
+        }
+      } else {
+        try {
+          const price = item.simple_addons.promotion_price
+            ? item.simple_addons.promotion_price
+            : item.simple_addons.price;
+          const sku = item.simple_addons.sku;
+          const newItem = { id: item.id, quantity: quantity + 1, price, sku };
+          queryClient.setQueryData(
+            ['guestCartItems', deliveryCountry, coupon],
+            prev => {
+              return {
+                ...prev,
+                cartItems: [
+                  ...prev.cartItems,
+                  {
+                    id: item.id,
+                    image: item.image,
+                    message: null,
+                    name_ar: item.translation.ar.title,
+                    name_en: item.translation.en.title,
+                    options: {
+                      max_quantity: item.max_quantity,
+                      addons: null,
+                      sku: item.sku,
+                    },
+                    price: item.simple_addons.promotion_price
+                      ? item.simple_addons.promotion_price
+                      : item.simple_addons.price,
+                    qty: quantity + 1,
+                    slug: item.slug,
+                    status: true,
+                  },
+                ],
+                cartSubtotal: (
+                  parseFloat(prev.cartSubtotal) + parseFloat(price)
+                ).toFixed(3),
+              };
+            }
+          );
+
+          // await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
+          debouncedAddToGuestCart({ newItem, deliveryCountry, coupon });
+          setAddToCartButtonLoading(false);
+        } catch (error) {
+          setErrorOpen(true);
+          setErrorMessage(
+            formatMessage({ id: 'something-went-wrong-snckbar' })
+          );
+          setAddToCartButtonLoading(false);
+        }
+      }
     }
   };
   const handleAddToCart = async () => {
@@ -57,8 +184,10 @@ export default function SwiperItem({
         const newItem = { id: item.id, quantity };
         await addToCartMutation({ newItem, userId, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
-        setCartMenuOpen(true);
-        setMessage(formatMessage({ id: 'added-to-cart' }));
+        if (isTabletOrAbove) {
+          setCartMenuOpen(true);
+          setMessage(formatMessage({ id: 'added-to-cart' }));
+        }
       } catch (error) {
         if (error.response?.data?.message === 'Item founded on the Cart') {
           setMessage(formatMessage({ id: 'added-to-cart' }));
@@ -77,11 +206,13 @@ export default function SwiperItem({
           ? item.simple_addons.promotion_price
           : item.simple_addons.price;
         const sku = item.simple_addons.sku;
-        const newItem = { id: item.id, quantity, price, sku };
+        const newItem = { id: item.id, quantity: quantity + 1, price, sku };
         await addToGuestCartMutation({ newItem, deliveryCountry, coupon });
         setAddToCartButtonLoading(false);
-        setCartMenuOpen(true);
-        setMessage(formatMessage({ id: 'added-to-cart' }));
+        if (isTabletOrAbove) {
+          setCartMenuOpen(true);
+          setMessage(formatMessage({ id: 'added-to-cart' }));
+        }
       } catch (error) {
         setErrorOpen(true);
         setErrorMessage(formatMessage({ id: 'something-went-wrong-snckbar' }));
@@ -93,12 +224,14 @@ export default function SwiperItem({
   return (
     <div
       onMouseEnter={() => {
-        if (!message) {
+        if (!message && isTabletOrAbove) {
           setShowAddButton(true);
         }
       }}
       onMouseLeave={() => {
-        setShowAddButton(false);
+        if (isTabletOrAbove) {
+          setShowAddButton(false);
+        }
       }}
     >
       <div className="relative">

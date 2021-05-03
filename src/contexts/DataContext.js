@@ -19,6 +19,7 @@ export default function DataContextProvider({ children }) {
   const [searchBarValue, setSearchBarValue] = React.useState('');
   const prefferedLanguage = localStorage.getItem('prefferedLanguage');
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);
+  const [mobileCartPopupOpen, setMobileCartPopupOpen] = React.useState(false);
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
   const { authenticationLoading } = React.useContext(AuthProvider);
   const [language, setLanguage] = React.useState(() => {
@@ -119,6 +120,8 @@ export default function DataContextProvider({ children }) {
         settings,
         sideMenuOpen,
         setSideMenuOpen,
+        mobileCartPopupOpen,
+        setMobileCartPopupOpen,
       }}
     >
       {children}
