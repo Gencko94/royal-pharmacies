@@ -1,18 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { DataProvider } from '../../contexts/DataContext';
-import MobileCartPopup from '../MobileCartPopup/MobileCartPopup';
 import MobileFooter from '../MobileFooter';
 import MobileNavbar from '../MobileNavbar';
 import SideMenu from '../NavbarComponents/SideMenu';
 
 export default function Mobile({ children }) {
   const sideMenuRef = React.useRef(null);
-  const {
-    sideMenuOpen,
-    setSideMenuOpen,
-    mobileCartPopupOpen,
-  } = React.useContext(DataProvider);
+  const { sideMenuOpen, setSideMenuOpen } = React.useContext(DataProvider);
   const toggleSideMenu = () => {
     if (sideMenuOpen) {
       setSideMenuOpen(false);
@@ -54,9 +49,7 @@ export default function Mobile({ children }) {
           />
         )}
       </AnimatePresence>
-      <AnimatePresence>
-        {mobileCartPopupOpen && <MobileCartPopup />}
-      </AnimatePresence>
+
       <MobileFooter />
     </>
   );

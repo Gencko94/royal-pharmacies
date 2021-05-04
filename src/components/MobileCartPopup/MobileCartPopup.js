@@ -9,6 +9,10 @@ import { DataProvider } from '../../contexts/DataContext';
 const variants = {
   hidden: {
     y: '100%',
+    transition: {
+      type: 'tween',
+      // duration: 200,
+    },
   },
   visible: {
     y: 0,
@@ -19,6 +23,10 @@ const variants = {
   },
   exited: {
     y: '100%',
+    transition: {
+      type: 'tween',
+      // duration: 200,
+    },
   },
 };
 const MobileCartPopup = () => {
@@ -35,7 +43,7 @@ const MobileCartPopup = () => {
       initial="hidden"
       animate="visible"
       exit="exited"
-      className={`mobile-cart-popup border-t bg-main-color text-main-text`}
+      className={`mobile-cart-popup border-t bg-green-700 text-main-text`}
     >
       <div className="flex items-center justify-center">
         {formatMessage({ id: 'cart-total' })}:

@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
+import ClickAwayListener from 'react-click-away-listener';
 
 import { BiCaretDown } from 'react-icons/bi';
 import { useIntl } from 'react-intl';
 import { DataProvider } from '../../contexts/DataContext';
-import useClickAway from '../../hooks/useClickAway';
 import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import LazyLoad from 'react-lazyload';
@@ -18,12 +18,7 @@ export default function ShipTo() {
   } = React.useContext(DataProvider);
 
   const [countryListOpen, setCountryListOpen] = React.useState(false);
-  const countryListRef = React.useRef(null);
-  useClickAway(countryListRef, () => {
-    if (countryListOpen) {
-      setCountryListOpen(false);
-    }
-  });
+
   const toggleCountryList = () => {
     setCountryListOpen(!countryListOpen);
   };
@@ -107,60 +102,61 @@ export default function ShipTo() {
 
       <AnimatePresence>
         {countryListOpen && (
-          <motion.div
-            variants={countryListVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exited"
-            ref={countryListRef}
-            className="deliver-to__desktop text-body-text-light font-semibold   bg-gray-100"
-          >
-            {deliveryCountries.map(country => {
-              return (
-                <button
-                  key={country.id}
-                  onClick={() => {
-                    handleChangeDeliveryCountry(country);
-                    toggleCountryList();
-                  }}
-                  className={`p-4 text-xs flex w-full uppercase items-center font-semibold  text-nav-primary hover:bg-main-color hover:text-main-text`}
-                >
-                  <input
-                    type="checkbox"
-                    className="form-checkbox rounded-full text-main-color mx-1"
-                    checked={
-                      deliveryCountry.translation[locale].name ===
-                      country.translation[locale].name
-                    }
-                    readOnly={true}
-                  />
-                  <div className="flex">
-                    <LazyLoad>
-                      <div
-                        className="mx-2"
-                        style={{
-                          position: 'relative',
-                          backgroundColor: '#f7f7fa',
-                          paddingBottom: '20px',
-                          width: '20px',
-                          borderRadius: '50%',
-                        }}
-                      >
-                        <div className="absolute top-0 left-0">
-                          <img
-                            src={`${process.env.REACT_APP_IMAGES_URL}/small/${country.flag.link}`}
-                            alt={country.code}
-                          />
+          <ClickAwayListener onClickAway={() => setCountryListOpen(false)}>
+            <motion.div
+              variants={countryListVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exited"
+              className="deliver-to__desktop text-body-text-light font-semibold   bg-gray-100"
+            >
+              {deliveryCountries.map(country => {
+                return (
+                  <button
+                    key={country.id}
+                    onClick={() => {
+                      handleChangeDeliveryCountry(country);
+                      toggleCountryList();
+                    }}
+                    className={`p-4 text-xs flex w-full uppercase items-center font-semibold  text-nav-primary hover:bg-main-color hover:text-main-text`}
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-checkbox rounded-full text-main-color mx-1"
+                      checked={
+                        deliveryCountry.translation[locale].name ===
+                        country.translation[locale].name
+                      }
+                      readOnly={true}
+                    />
+                    <div className="flex">
+                      <LazyLoad>
+                        <div
+                          className="mx-2"
+                          style={{
+                            position: 'relative',
+                            backgroundColor: '#f7f7fa',
+                            paddingBottom: '20px',
+                            width: '20px',
+                            borderRadius: '50%',
+                          }}
+                        >
+                          <div className="absolute top-0 left-0">
+                            <img
+                              src={`${process.env.REACT_APP_IMAGES_URL}/small/${country.flag.link}`}
+                              alt={country.code}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    </LazyLoad>
+                      </LazyLoad>
 
-                    <h1>{country.translation[locale].name}</h1>
-                  </div>
-                </button>
-              );
-            })}
-          </motion.div>
+                      <h1>{country.translation[locale].name}</h1>
+                    </div>
+                  </button>
+                );
+              })}
+            </motion.div>
+          </ClickAwayListener>
         )}
       </AnimatePresence>
     </div>

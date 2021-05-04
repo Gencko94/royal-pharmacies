@@ -328,7 +328,7 @@ export const getCartItems = async (userId, deliveryCountry, coupon) => {
       config
     );
 
-    if (res.data.status === true && res.data.data.items) {
+    if (res.data.status === true && res.data.data.items.length > 0) {
       return {
         cartItems: res.data.data.items,
         cartTotal: res.data.data.total,
@@ -337,7 +337,7 @@ export const getCartItems = async (userId, deliveryCountry, coupon) => {
         couponCost: res.data.data.coupon_cost,
         note: res.data.data.note,
       };
-    } else if (res.data.status === true && res.data.data) {
+    } else if (res.data.status === true && res.data.data.items.length === 0) {
       return { cartItems: [], cartTotal: 0 };
     }
   } else {

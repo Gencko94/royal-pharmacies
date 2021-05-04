@@ -10098,6 +10098,11 @@
     "section-iterator" "^2.0.0"
     "shallow-equal" "^1.2.1"
 
+"react-click-away-listener@^2.0.2":
+  "integrity" "sha512-v0Qo9mhvf+0jVGDEY6LzxrYiWyzWBYRCTq3eg70t9nh4RCP23xtZY7xhNc33dBETf+UYcIUtPGbRl31YzmBaHw=="
+  "resolved" "https://registry.npmjs.org/react-click-away-listener/-/react-click-away-listener-2.0.2.tgz"
+  "version" "2.0.2"
+
 "react-content-loader@^6.0.3":
   "integrity" "sha512-CIRgTHze+ls+jGDIfCitw27YkW2XcaMpsYORTUdBxsMFiKuUYMnlvY76dZE4Lsaa9vFXVw+41ieBEK7SJt0nug=="
   "resolved" "https://registry.npmjs.org/react-content-loader/-/react-content-loader-6.0.3.tgz"

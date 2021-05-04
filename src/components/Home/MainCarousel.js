@@ -18,7 +18,6 @@ const MainCarousel = () => {
     getMainCarouselItems,
     { refetchOnWindowFocus: false, retry: true }
   );
-  console.log(data);
   return (
     <div className="mb-6 bg-body-light">
       <Swiper

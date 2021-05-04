@@ -44,6 +44,7 @@ export default function TopSection({ toggleSideMenu }) {
         <Link
           to={`/${locale}/app/login`}
           className="font-semibold inline-block"
+          onClick={() => toggleSideMenu()}
         >
           {formatMessage({ id: 'hello-signin' })}
         </Link>

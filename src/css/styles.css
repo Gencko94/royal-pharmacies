@@ -218,19 +218,17 @@ input {
   z-index: 999;
 }
 .mobile-cart-popup {
-  /* display: grid; */
   display: flex;
   justify-content: space-around;
-  /* grid-template-columns: 0.5fr 0.5fr 1fr; */
   align-items: center;
   position: fixed;
   right: 0;
   left: 0;
   bottom: 0px;
   padding: 0.5em;
-
+  padding-top: 1.2em;
   padding-bottom: 1.2em;
-  z-index: 999;
+  z-index: 51;
 }
 
 /* after add to cart div */

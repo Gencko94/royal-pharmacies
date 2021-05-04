@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useIntl } from 'react-intl';
 import { useQuery } from 'react-query';
 import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
@@ -9,21 +9,28 @@ import Layout from '../components/Layout';
 
 import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
-import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 
 import ReactPaginate from 'react-paginate';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { scrollTo } from 'scroll-js';
 import { Helmet } from 'react-helmet';
 import { DataProvider } from '../contexts/DataContext';
+import MobileCartPopup from '../components/MobileCartPopup/MobileCartPopup';
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
+import { AuthProvider } from '../contexts/AuthContext';
 
 export default function CategoryMobile() {
+  const { userId } = useContext(AuthProvider);
+  const { cartItems, guestCartItems } = useContext(CartAndWishlistProvider);
   const { category, id } = useParams();
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
-  const { deliveryCountry, sideMenuOpen, settings } = React.useContext(
-    DataProvider
-  );
+  const {
+    deliveryCountry,
+    sideMenuOpen,
+    settings,
+    mobileCartPopupOpen,
+  } = React.useContext(DataProvider);
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
@@ -43,6 +50,21 @@ export default function CategoryMobile() {
   const [inView, setInView] = React.useState(false);
   const location = useLocation();
   const offers = new URLSearchParams(location.search).get('offers');
+  const checkShowCondition = () => {
+    if (sideMenuOpen) return false;
+    if (userId) {
+      if (cartItems?.length > 0) {
+        return true;
+      }
+    } else {
+      if (guestCartItems?.length > 0) {
+        return true;
+      } else if (mobileCartPopupOpen) {
+        return true;
+      }
+    }
+    return false;
+  };
   React.useEffect(() => {
     const checkScrolling = () => {
       if (window.scrollY >= 200) {
@@ -60,7 +82,7 @@ export default function CategoryMobile() {
     if (sortByOpen) setTimeout(() => setSortByOpen(false), 100);
     if (filtersOpen) setTimeout(() => setFiltersOpen(false), 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView, sideMenuOpen]);
+  }, [inView]);
   const { data, isLoading: productsLoading, error: productsError } = useQuery(
     [
       'category-products',
@@ -203,12 +225,6 @@ export default function CategoryMobile() {
       <div className="min-h-screen relative">
         <AnimatePresence>
           {cartMenuOpen && (
-            <SideCartMenuMobile
-              key="side-cart-mobile"
-              setSideMenuOpen={setCartMenuOpen}
-            />
-          )}
-          {cartMenuOpen && (
             <motion.div
               key="sidecart-bg"
               initial={{ opacity: 0 }}
@@ -339,6 +355,9 @@ export default function CategoryMobile() {
               handleSubmitFilters={handleSubmitFilters}
             />
           )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {checkShowCondition() && <MobileCartPopup />}
       </AnimatePresence>
     </Layout>
   );

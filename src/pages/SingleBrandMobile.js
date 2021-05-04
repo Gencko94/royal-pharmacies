@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet';
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
@@ -11,11 +11,15 @@ import CategoryItemLoader from '../components/Category/CategoryItemLoader';
 import CategoryProductItem from '../components/Category/CategoryProductItem';
 import VariantCategoryProductItem from '../components/Category/VariantCategoryProductItem';
 import Layout from '../components/Layout';
-import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
+import MobileCartPopup from '../components/MobileCartPopup/MobileCartPopup';
+import { AuthProvider } from '../contexts/AuthContext';
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import { DataProvider } from '../contexts/DataContext';
 import { getSingleBrandProducts } from '../Queries/Queries';
 
 export default function SingleBrandMobile() {
+  const { userId } = useContext(AuthProvider);
+  const { cartItems, guestCartItems } = useContext(CartAndWishlistProvider);
   const { formatMessage, locale } = useIntl();
   const { slug } = useParams();
   const [page, setPage] = React.useState(1);
@@ -23,8 +27,25 @@ export default function SingleBrandMobile() {
     deliveryCountriesLoading,
     deliveryCountriesIdle,
     settings,
+    mobileCartPopupOpen,
+    sideMenuOpen,
   } = React.useContext(DataProvider);
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
+  const checkShowCondition = () => {
+    if (sideMenuOpen) return false;
+    if (userId) {
+      if (cartItems?.length > 0) {
+        return true;
+      }
+    } else {
+      if (guestCartItems?.length > 0) {
+        return true;
+      } else if (mobileCartPopupOpen) {
+        return true;
+      }
+    }
+    return false;
+  };
   const handlePageChange = data => {
     scrollTo(window, { top: 100 });
     setPage(data.selected + 1);
@@ -51,6 +72,7 @@ export default function SingleBrandMobile() {
       </div>
     );
   }
+
   return (
     <Layout>
       <div className="min-h-screen p-3">
@@ -88,12 +110,6 @@ export default function SingleBrandMobile() {
           />
         </Helmet>
         <AnimatePresence>
-          {cartMenuOpen && (
-            <SideCartMenuMobile
-              key="side-cart"
-              setSideMenuOpen={setCartMenuOpen}
-            />
-          )}
           {cartMenuOpen && (
             <motion.div
               key="sidecart-bg"
@@ -165,6 +181,9 @@ export default function SingleBrandMobile() {
           disabledClassName="text-gray-500"
         />
       </div>
+      <AnimatePresence>
+        {checkShowCondition() && <MobileCartPopup />}
+      </AnimatePresence>
     </Layout>
   );
 }
