@@ -5,6 +5,7 @@ import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import ReactPaginate from 'react-paginate';
 import { useQuery } from 'react-query';
+import { useMediaQuery } from 'react-responsive';
 import { useParams } from 'react-router-dom';
 import { scrollTo } from 'scroll-js';
 import CategoryItemLoader from '../components/Category/CategoryItemLoader';
@@ -31,7 +32,10 @@ export default function SingleBrandMobile() {
     sideMenuOpen,
   } = React.useContext(DataProvider);
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
+  const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
+
   const checkShowCondition = () => {
+    if (isTabletOrAbove) return false;
     if (sideMenuOpen) return false;
     if (userId) {
       if (cartItems?.length > 0) {

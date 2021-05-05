@@ -142,22 +142,18 @@ export default function GuestPersonalInformationMobile({
   };
   return (
     <>
-      <div className="quick-checkout-personal-info-mobile__container">
-        <div className="flex flex-col justify-center font-semibold text-sm px-2 ">
+      <div className="py-2">
+        <div className="flex flex-col justify-center font-semibold  px-2 ">
           {/* Order Items */}
           <div className="">
             <div className="p-2 border-b">
-              <h1
-                className=" text-center text-base"
-                style={{ fontWeight: 900 }}
-              >
+              <h1 className=" text-center text-2xl font-semibold">
                 {formatMessage({ id: 'order-receipt' })}
               </h1>
             </div>
-            <div className="my-orders-items__table-mobile font-semibold text-center mb-1 py-2">
-              <h1>#</h1>
+            <div className="text-xl  my-orders-items__table-mobile font-normal border-b mb-1 py-2">
               <h1>{formatMessage({ id: 'the-item' })}</h1>
-              <h1>{formatMessage({ id: 'quantity' })}</h1>
+              <h1>{formatMessage({ id: 'qty' })}</h1>
               <h1>{formatMessage({ id: 'price' })}</h1>
               <h1>{formatMessage({ id: 'total' })}</h1>
             </div>
@@ -165,21 +161,20 @@ export default function GuestPersonalInformationMobile({
               return (
                 <div
                   key={orderItem.id}
-                  className="my-orders-item-mobile text-sm text-center mb-1"
+                  className={`my-orders-item-mobile  ${
+                    i % 2 !== 0 ? 'bg-nav-cat-light' : ''
+                  } py-4 text-center`}
                 >
-                  <div className="">
-                    <h1 className="">{i + 1}</h1>
-                  </div>
                   <Link
                     to={`/${locale}/products/${orderItem.slug}/${orderItem.id}`}
-                    className="hover:underline block truncate font-semibold"
+                    className="hover:underline block text-clamp-2 text-normal  font-semibold"
                   >
                     {orderItem[`name_${locale}`]}
                   </Link>
                   <div className="">
                     <h1 className="">{orderItem.qty}</h1>
                   </div>
-                  <div style={{ fontWeight: 900 }}>
+                  <div>
                     <h1 className="">
                       {orderItem.price}{' '}
                       {deliveryCountry?.currency.translation[locale].symbol}
@@ -195,8 +190,8 @@ export default function GuestPersonalInformationMobile({
               );
             })}
             <hr className="my-3" />
-            <div className="my-orders-receipt-summary font-bold">
-              <h1>{formatMessage({ id: 'cart-total' })}</h1>
+            <div className="my-orders-receipt-summary font-semibold py-2 text-lg">
+              <h1 className="mb-2">{formatMessage({ id: 'cart-total' })}</h1>
               <h1 className="text-center">
                 {guestCartSubtotal}
                 <span className="mx-1">
@@ -232,20 +227,30 @@ export default function GuestPersonalInformationMobile({
               </h1>
             </div>
           </div>
+          <hr />
           <div className="">
             <div className="p-2 border-b">
-              <h1 style={{ fontWeight: 900 }} className="text-center">
+              <h1 className="text-center text-2xl font-semibold">
                 {formatMessage({
                   id: 'delivery-address',
                 })}
               </h1>
             </div>
             <div
-              className="p-2"
-              style={{ display: 'grid', gridTemplateColumns: '1fr 0.7fr' }}
+              className=""
+              style={{ display: 'grid', gridTemplateColumns: '1fr' }}
             >
+              {guestAddress?.lat && (
+                <div className="mb-4 border-b">
+                  <img
+                    src={`https://maps.googleapis.com/maps/api/staticmap?center=${guestAddress.lat},${guestAddress.lng}&zoom=18&size=600x400&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
+                    alt="map"
+                    className="self-start"
+                  />
+                </div>
+              )}
               <div className="">
-                <div className="mb-2">
+                <div className="p-2 border-b bg-nav-cat-light">
                   <h1 className=" text-gray-700">
                     {formatMessage({
                       id: 'full-name',
@@ -253,7 +258,7 @@ export default function GuestPersonalInformationMobile({
                   </h1>
                   <h1>{name}</h1>
                 </div>
-                <div className="mb-2">
+                <div className=" p-2 border-b">
                   <h1 className=" text-gray-700">
                     {formatMessage({
                       id: 'phone-number',
@@ -261,7 +266,7 @@ export default function GuestPersonalInformationMobile({
                   </h1>
                   <h1>{phoneNumber}</h1>
                 </div>
-                <div className="mb-2">
+                <div className="p-2 bg-nav-cat-light border-b">
                   <h1 className=" text-gray-700">
                     {formatMessage({
                       id: 'delivery-location',
@@ -273,8 +278,8 @@ export default function GuestPersonalInformationMobile({
                       guestAddress.addressDetails.userTyped_location}
                   </h1>
                 </div>
-                <div className=" mb-2">
-                  <div>
+                <div>
+                  <div className="p-2 border-b">
                     <h1 className=" text-gray-700">
                       {formatMessage({
                         id: 'maps-detailed-address-apartment',
@@ -286,7 +291,7 @@ export default function GuestPersonalInformationMobile({
                       {guestAddress?.addressDetails.apartmentOrHouseNumber}
                     </h1>
                   </div>
-                  <div>
+                  <div className="p-2 bg-nav-cat-light border-b">
                     <h1 className="font-semibold text-gray-700">
                       {formatMessage({
                         id: 'maps-detailed-address-building',
@@ -297,8 +302,8 @@ export default function GuestPersonalInformationMobile({
                     </h1>
                   </div>
                 </div>
-                <div className="">
-                  <div>
+                <div>
+                  <div className="p-2">
                     <h1 className="font-semibold text-gray-700">
                       {formatMessage({
                         id: 'maps-details-extra-details',
@@ -312,20 +317,13 @@ export default function GuestPersonalInformationMobile({
                   </div>
                 </div>
               </div>
-              {guestAddress?.lat && (
-                <img
-                  src={`https://maps.googleapis.com/maps/api/staticmap?center=${guestAddress.lat},${guestAddress.lng}&zoom=15&size=200x200&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`}
-                  alt="map"
-                  className="self-start"
-                />
-              )}
             </div>
           </div>
         </div>
         <hr className="my-5" />
         <div className=" mb-2 relative font-semibold  ">
           <div className="mb-1">
-            <h1 className="text-center" style={{ fontWeight: 900 }}>
+            <h1 className="text-center text-2xl font-semibold">
               {formatMessage({ id: 'select-payment-method' })}
             </h1>
           </div>
@@ -337,7 +335,7 @@ export default function GuestPersonalInformationMobile({
 
       <div className="flex justify-end items-center">
         <button
-          className="px-3 py-1 text-sm uppercase bg-main-color text-main-text rounded font-semibold"
+          className="px-3 py-2  uppercase bg-main-color text-main-text rounded font-semibold"
           onClick={handleStepBack}
         >
           {formatMessage({ id: 'btn-back-to-addresses' })}
@@ -349,7 +347,7 @@ export default function GuestPersonalInformationMobile({
                 paymentMethod
                   ? 'bg-main-color text-main-text'
                   : 'bg-gray-600 text-gray-100'
-              } flex items-center text-sm justify-center uppercase px-3 py-1 mx-2  rounded font-semibold`}
+              } flex items-center  justify-center uppercase px-3 py-2 mx-2  rounded font-semibold`}
           onClick={handleGuestCheckout}
           style={{ width: '90px' }}
         >

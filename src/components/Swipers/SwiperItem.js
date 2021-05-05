@@ -254,6 +254,8 @@ export default function SwiperItem({
             );
           }
         }
+      } else {
+        setQuantity(parseInt(quantity) + 1);
       }
     }
   };

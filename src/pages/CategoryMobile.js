@@ -18,6 +18,7 @@ import { DataProvider } from '../contexts/DataContext';
 import MobileCartPopup from '../components/MobileCartPopup/MobileCartPopup';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import { AuthProvider } from '../contexts/AuthContext';
+import { useMediaQuery } from 'react-responsive';
 
 export default function CategoryMobile() {
   const { userId } = useContext(AuthProvider);
@@ -50,7 +51,10 @@ export default function CategoryMobile() {
   const [inView, setInView] = React.useState(false);
   const location = useLocation();
   const offers = new URLSearchParams(location.search).get('offers');
+  const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
+
   const checkShowCondition = () => {
+    if (isTabletOrAbove) return false;
     if (sideMenuOpen) return false;
     if (userId) {
       if (cartItems?.length > 0) {

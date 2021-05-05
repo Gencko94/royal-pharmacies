@@ -28,10 +28,10 @@ export default function CheckoutMobile() {
     setErrorOpen(false);
   };
 
-  const [
-    checkoutMutation,
-    { isLoading: checkoutLoading },
-  ] = useMutation(checkout, { throwOnError: true });
+  const {
+    mutateAsync: checkoutMutation,
+    isLoading: checkoutLoading,
+  } = useMutation(checkout, { throwOnError: true });
   const [stepDone, setStepDone] = React.useState({
     0: false,
     1: false,

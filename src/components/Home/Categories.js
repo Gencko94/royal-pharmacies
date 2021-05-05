@@ -42,8 +42,8 @@ export default function Categories() {
   };
   return (
     <div className="my-3 text-body-text-light">
-      <div className="flex items-center mb-8">
-        <h1 className="text-xl md:text-2xl flex-1 font-bold">
+      <div className="flex items-center mb-4">
+        <h1 className="text-2xl flex-1 font-bold">
           {formatMessage({ id: 'shop-by-category' })}
         </h1>
       </div>

@@ -13,12 +13,12 @@ import Loader from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import ErrorSnackbar from '../components/ErrorSnackbar';
 export default function Checkout() {
-  const [checkoutMutation, { isLoading: checkoutLoading }] = useMutation(
-    checkout,
-    {
-      throwOnError: true,
-    }
-  );
+  const {
+    mutateAsync: checkoutMutation,
+    isLoading: checkoutLoading,
+  } = useMutation(checkout, {
+    throwOnError: true,
+  });
 
   const { cartItems, cartItemsLoading, coupon } = React.useContext(
     CartAndWishlistProvider

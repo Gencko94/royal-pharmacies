@@ -97,6 +97,7 @@ export default function Home() {
     }
   };
   const checkShowCondition = () => {
+    if (isTabletOrAbove) return false;
     if (sideMenuOpen) return false;
     if (userId) {
       if (cartItems?.length > 0) {

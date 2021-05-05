@@ -26,10 +26,10 @@ export default function GuestCheckOut() {
     { value: '+966', label: '+966' },
   ];
   const [countryCode, setCountryCode] = React.useState(options[0]);
-  const [
-    guestCheckoutMutation,
-    { isLoading: checkoutLoading },
-  ] = useMutation(guestCheckout, { throwOnError: true });
+  const {
+    mutateAsync: guestCheckoutMutation,
+    isLoading: checkoutLoading,
+  } = useMutation(guestCheckout, { throwOnError: true });
   const [guestAddress, setGuestAddress] = React.useState({
     lat: '',
     lng: '',

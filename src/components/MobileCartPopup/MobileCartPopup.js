@@ -45,16 +45,16 @@ const MobileCartPopup = () => {
       exit="exited"
       className={`mobile-cart-popup border-t bg-green-700 text-main-text`}
     >
-      <div className="flex items-center justify-center">
-        {formatMessage({ id: 'cart-total' })}:
-        <p className="mx-3 py-1 px-2 text-sm rounded-full border-main-text border flex items-center justify-center">
+      <div className="flex  items-center justify-center">
+        <p className="text-lg">{formatMessage({ id: 'cart-total' })} :</p>
+        <p className="mx-3 py-1 px-2  rounded-full border-main-text border flex items-center justify-center">
           {userId ? cartSubtotal : guestCartSubtotal}{' '}
           {deliveryCountry?.currency.translation[locale].symbol}
         </p>
       </div>
       <Link
         to={`/${locale}/cart`}
-        className="border border-main-text rounded py-1 px-2"
+        className="border border-main-text rounded py-1 text-lg font-semibold px-2"
       >
         {formatMessage({ id: 'go-to-cart' })}
       </Link>

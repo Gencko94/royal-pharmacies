@@ -248,6 +248,8 @@ export default function CategoryProductItem({ item, setCartMenuOpen }) {
             // );
           }
         }
+      } else {
+        setQuantity(parseInt(quantity) + 1);
       }
     }
   };
