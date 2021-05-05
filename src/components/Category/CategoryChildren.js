@@ -32,8 +32,10 @@ export default function CategoryChildren({ categoryInfo }) {
   const resolveChildren = () => {
     if (categoryInfo?.children.length > 0) {
       return categoryInfo.children;
-    } else {
+    } else if (categoryInfo?.parentChildren?.length > 0) {
       return categoryInfo?.parentChildren;
+    } else {
+      return [];
     }
   };
   return (

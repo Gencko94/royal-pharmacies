@@ -7,7 +7,7 @@ import VariantCategoryProductItem from '../Category/VariantCategoryProductItem';
 import { DataProvider } from '../../contexts/DataContext';
 export default function CategoryMobileItemGrid({
   productsLoading,
-  products,
+  data,
   setCartMenuOpen,
 }) {
   const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
@@ -34,9 +34,9 @@ export default function CategoryMobileItemGrid({
   }
   return (
     <div id="products_grid-mobile" className="mb-4 px-2">
-      {products?.length !== 0 && (
-        <div className="search-page-items-mobile__grid my-1">
-          {products.map(item => {
+      {data?.pages.map((group, i) => (
+        <div key={i} className="search-page-items-mobile__grid my-1">
+          {group.products.map(item => {
             return item.type === 'variation' &&
               Object.entries(item.new_variation_addons).length > 0 ? (
               <VariantCategoryProductItem
@@ -53,7 +53,7 @@ export default function CategoryMobileItemGrid({
             );
           })}
         </div>
-      )}
+      ))}
     </div>
   );
 }

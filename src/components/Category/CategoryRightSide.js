@@ -6,12 +6,10 @@ import CategoryItemLoader from './CategoryItemLoader';
 import CategoryProductItem from './CategoryProductItem';
 import SortInfoPanel from './SortInfoPanel';
 import VariantCategoryProductItem from './VariantCategoryProductItem';
-import ReactPaginate from 'react-paginate';
-import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 
 import { DataProvider } from '../../contexts/DataContext';
 export default function CategoryRightSide({
-  products,
+  data,
   productsLoading,
   resultsPerPage,
   sortBy,
@@ -20,12 +18,10 @@ export default function CategoryRightSide({
   filters,
   setCartMenuOpen,
   handleResultPerPageChange,
-  productsPageCount,
-  handleProductChangePage,
-  productsPage,
+
   category,
 }) {
-  const { formatMessage, locale } = useIntl();
+  const { formatMessage } = useIntl();
   const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
     DataProvider
   );
@@ -100,7 +96,7 @@ export default function CategoryRightSide({
 
   return (
     <div className="h-full relative">
-      {products?.length > 0 && (
+      {data?.pages[0].products?.length > 0 && (
         <SortInfoPanel
           category={category}
           sortBy={sortBy}
@@ -135,62 +131,34 @@ export default function CategoryRightSide({
         </motion.div>
       </AnimateSharedLayout>
 
-      {products?.length > 0 && !productsLoading && (
+      {data?.pages[0].products?.length > 0 && !productsLoading && (
         <div
           className="category-page-items__grid py-2 min-h-full relative"
           style={{ minHeight: 'calc(100vh - 150px)' }}
         >
-          {products?.map(item => {
-            return item.type === 'variation' &&
-              Object.keys(item.new_variation_addons).length > 0 ? (
-              <VariantCategoryProductItem
-                key={item.id}
-                setCartMenuOpen={setCartMenuOpen}
-                item={item}
-              />
-            ) : (
-              <CategoryProductItem
-                key={item.id}
-                setCartMenuOpen={setCartMenuOpen}
-                item={item}
-              />
+          {data?.pages.map((group, i) => {
+            return (
+              <React.Fragment key={i}>
+                {group?.products.map(item => {
+                  return item.type === 'variation' &&
+                    Object.keys(item.new_variation_addons).length > 0 ? (
+                    <VariantCategoryProductItem
+                      key={item.id}
+                      setCartMenuOpen={setCartMenuOpen}
+                      item={item}
+                    />
+                  ) : (
+                    <CategoryProductItem
+                      key={item.id}
+                      setCartMenuOpen={setCartMenuOpen}
+                      item={item}
+                    />
+                  );
+                })}
+              </React.Fragment>
             );
           })}
         </div>
-      )}
-      {products?.length > 0 && !productsLoading && (
-        <ReactPaginate
-          previousLabel={
-            locale === 'ar' ? (
-              <GoChevronRight className="w-6 h-6 inline" />
-            ) : (
-              <GoChevronLeft className="w-6 h-6 inline" />
-            )
-          }
-          nextLabel={
-            locale === 'ar' ? (
-              <GoChevronLeft className="w-6 h-6 inline" />
-            ) : (
-              <GoChevronRight className="w-6 h-6 inline" />
-            )
-          }
-          breakLabel={'...'}
-          breakClassName={'inline'}
-          pageCount={productsPageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={2}
-          initialPage={productsPage - 1}
-          disableInitialCallback={true}
-          onPageChange={handleProductChangePage}
-          containerClassName={'my-2 w-full text-center'}
-          subContainerClassName={'p-3 inline'}
-          pageLinkClassName="p-3"
-          activeClassName={'bg-main-color font-bold text-main-text'}
-          pageClassName=" inline-block mx-2 rounded-full text-lg"
-          previousClassName="p-3 inline font-bold"
-          nextClassName="p-3 inline font-bold"
-          disabledClassName="text-gray-500"
-        />
       )}
     </div>
   );

@@ -1,10 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet';
-import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
-import ReactPaginate from 'react-paginate';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { useMediaQuery } from 'react-responsive';
 import { useParams } from 'react-router-dom';
 import { scrollTo } from 'scroll-js';
@@ -17,13 +15,14 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import { DataProvider } from '../contexts/DataContext';
 import { getSingleBrandProducts } from '../Queries/Queries';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 export default function SingleBrandMobile() {
   const { userId } = useContext(AuthProvider);
   const { cartItems, guestCartItems } = useContext(CartAndWishlistProvider);
   const { formatMessage, locale } = useIntl();
   const { slug } = useParams();
-  const [page, setPage] = React.useState(1);
   const {
     deliveryCountriesLoading,
     deliveryCountriesIdle,
@@ -50,19 +49,29 @@ export default function SingleBrandMobile() {
     }
     return false;
   };
-  const handlePageChange = data => {
-    scrollTo(window, { top: 100 });
-    setPage(data.selected + 1);
-  };
-  const { data, isLoading: productsLoading } = useQuery(
-    ['single-brand', { slug, page, number: 42 }],
-    () => getSingleBrandProducts({ slug, page, number: 42 }),
+
+  const {
+    data,
+    isLoading: productsLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
+    ['single-brand', { slug, number: 42 }],
+    ({ pageParam }) => getSingleBrandProducts({ slug, number: 42, pageParam }),
     {
       retry: true,
 
-      keepPreviousData: true,
+      getNextPageParam: lastPage => {
+        if (lastPage.currentPage < lastPage.pageCount) {
+          return lastPage.currentPage + 1;
+        } else {
+          return undefined;
+        }
+      },
     }
   );
+  console.log(hasNextPage);
   if (productsLoading || deliveryCountriesLoading || deliveryCountriesIdle) {
     return (
       <div
@@ -82,14 +91,16 @@ export default function SingleBrandMobile() {
       <div className="min-h-screen p-3">
         <Helmet>
           <title>
-            {data ? `${data.brandName[locale].name}` : settings?.store_name_en}
+            {data
+              ? `${data.pages[0].brandName[locale].name}`
+              : settings?.store_name_en}
           </title>
           <meta
             name="description"
             content={
               data
                 ? `${formatMessage({ id: 'shop' })} ${
-                    data?.brandName?.[locale].name
+                    data.pages[0]?.brandName?.[locale].name
                   }`
                 : settings?.store_name_en
             }
@@ -98,7 +109,7 @@ export default function SingleBrandMobile() {
             property="og:title"
             content={
               data
-                ? `${data.brandName[locale].name} }`
+                ? `${data.pages[0].brandName[locale].name} }`
                 : settings?.store_name_en
             }
           />
@@ -107,7 +118,7 @@ export default function SingleBrandMobile() {
             content={
               data
                 ? `${formatMessage({ id: 'shop' })} ${
-                    data?.full_translation?.[locale].title
+                    data.pages[0]?.brandName?.[locale].name
                   }`
                 : settings?.store_name_en
             }
@@ -132,11 +143,11 @@ export default function SingleBrandMobile() {
             >
               <h1 className="font-bold text-xl mb-3">
                 {formatMessage({ id: 'shop-brands' })}{' '}
-                {data?.brandName?.[locale].name}
+                {data?.pages[0].brandName?.[locale].name}
               </h1>
               <img
-                src={`${process.env.REACT_APP_IMAGES_URL}/original/${data?.brandLogo}`}
-                alt={data?.brandName?.[locale].name}
+                src={`${process.env.REACT_APP_IMAGES_URL}/original/${data?.pages[0].brandLogo}`}
+                alt={data?.pages[0].brandName?.[locale].name}
                 style={{ maxHeight: '150px', width: 'auto' }}
               />
             </div>
@@ -146,45 +157,53 @@ export default function SingleBrandMobile() {
             className="brand-grid__mobile py-2 min-h-full"
             style={{ minHeight: 'calc(100vh - 150px)' }}
           >
-            {data?.products?.map(item => {
-              return item.type === 'variation' &&
-                Object.entries(item.new_variation_addons).length > 0 ? (
-                <VariantCategoryProductItem
-                  key={item.id}
-                  setCartMenuOpen={setCartMenuOpen}
-                  item={item}
-                />
-              ) : (
-                <CategoryProductItem
-                  key={item.id}
-                  setCartMenuOpen={setCartMenuOpen}
-                  item={item}
-                />
+            {data?.pages.map((group, i) => {
+              return (
+                <React.Fragment key={i}>
+                  {group?.products.map(item => {
+                    return item.type === 'variation' &&
+                      Object.keys(item.new_variation_addons).length > 0 ? (
+                      <VariantCategoryProductItem
+                        key={item.id}
+                        setCartMenuOpen={setCartMenuOpen}
+                        item={item}
+                      />
+                    ) : (
+                      <CategoryProductItem
+                        key={item.id}
+                        setCartMenuOpen={setCartMenuOpen}
+                        item={item}
+                      />
+                    );
+                  })}
+                </React.Fragment>
               );
             })}
           </div>
         </AnimatePresence>
-        <ReactPaginate
-          previousLabel={<GoChevronLeft className="w-6 h-6 inline" />}
-          nextLabel={<GoChevronRight className="w-6 h-6 inline" />}
-          breakLabel={'...'}
-          breakClassName={'inline'}
-          pageCount={data?.pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={2}
-          initialPage={page - 1}
-          disableInitialCallback={true}
-          onPageChange={handlePageChange}
-          containerClassName={'my-2 w-full text-center'}
-          subContainerClassName={'p-3 inline'}
-          pageLinkClassName="p-3"
-          activeClassName={'bg-main-color font-bold text-main-text'}
-          pageClassName=" inline-block mx-2 rounded-full text-lg"
-          previousClassName="p-3 inline font-bold"
-          nextClassName="p-3 inline font-bold"
-          disabledClassName="text-gray-500"
-        />
       </div>
+      {data && hasNextPage && (
+        <div className="flex my-2 justify-center">
+          <button
+            className="p-2 w-40 text-lg font-semibold flex items-center justify-center rounded bg-main-color text-main-text"
+            onClick={() => {
+              fetchNextPage();
+            }}
+          >
+            {isFetchingNextPage ? (
+              <Loader
+                type="ThreeDots"
+                color="#fff"
+                height={27}
+                width={27}
+                visible={true}
+              />
+            ) : (
+              formatMessage({ id: 'show-more' })
+            )}
+          </button>
+        </div>
+      )}
       <AnimatePresence>
         {checkShowCondition() && <MobileCartPopup />}
       </AnimatePresence>

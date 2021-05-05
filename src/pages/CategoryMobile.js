@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useIntl } from 'react-intl';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom';
 import CategoryHeaderMobile from '../components/CategoryMobile/CategoryHeaderMobile';
 import CategoryMobileItemGrid from '../components/CategoryMobile/CategoryMobileItemGrid';
@@ -10,8 +10,6 @@ import Layout from '../components/Layout';
 import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 
-import ReactPaginate from 'react-paginate';
-import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
 import { scrollTo } from 'scroll-js';
 import { Helmet } from 'react-helmet';
 import { DataProvider } from '../contexts/DataContext';
@@ -19,7 +17,8 @@ import MobileCartPopup from '../components/MobileCartPopup/MobileCartPopup';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import { AuthProvider } from '../contexts/AuthContext';
 import { useMediaQuery } from 'react-responsive';
-
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function CategoryMobile() {
   const { userId } = useContext(AuthProvider);
   const { cartItems, guestCartItems } = useContext(CartAndWishlistProvider);
@@ -36,9 +35,7 @@ export default function CategoryMobile() {
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
   });
-  const [productsPage, setProductsPage] = React.useState(1);
 
-  // const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState(null);
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 30,
@@ -87,11 +84,17 @@ export default function CategoryMobile() {
     if (filtersOpen) setTimeout(() => setFiltersOpen(false), 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
-  const { data, isLoading: productsLoading, error: productsError } = useQuery(
+  const {
+    data,
+    isLoading: productsLoading,
+    error: productsError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
     [
       'category-products',
       {
-        page: productsPage,
         resultsPerPage,
         id,
         brandFilters,
@@ -100,18 +103,29 @@ export default function CategoryMobile() {
         offers: offers === 't',
       },
     ],
-    () =>
-      getCategoryProducts({
-        page: productsPage,
+    ({ pageParam }) => {
+      return getCategoryProducts({
         resultsPerPage,
         id,
         brandFilters,
         priceFilters,
         sortBy,
         offers: offers === 't',
-      }),
-    { retry: true }
+        pageParam,
+      });
+    },
+    {
+      retry: true,
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.currentPage < lastPage.lastPage) {
+          return lastPage.currentPage + 1;
+        } else {
+          return undefined;
+        }
+      },
+    }
   );
+  console.log(data);
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
     () => getSingleCategoryInfo(category),
@@ -141,20 +155,6 @@ export default function CategoryMobile() {
     }
   };
   const history = useHistory();
-  React.useEffect(() => {
-    return () => {
-      setProductsPage(1);
-    };
-  }, [history.location.pathname]);
-  const handleProductChangePage = data => {
-    scrollTo(window, { top: 350, behavior: 'smooth' });
-    history.push({
-      state: {
-        page: data.selected + 1,
-      },
-    });
-    setProductsPage(data.selected + 1);
-  };
 
   const handleSortByChange = selectedValue => {
     if (selectedValue.value === 'newest') {
@@ -274,52 +274,41 @@ export default function CategoryMobile() {
         </AnimateSharedLayout>
 
         <CategoryMobileItemGrid
-          products={data?.products}
+          data={data}
           productsLoading={productsLoading}
           setCartMenuOpen={setCartMenuOpen}
-          setProductsPage={setProductsPage}
           handleResultPerPageChange={handleResultPerPageChange}
         />
-        {data?.products?.length > 0 && !productsLoading && (
-          <ReactPaginate
-            previousLabel={
-              locale === 'ar' ? (
-                <GoChevronRight className="w-6 h-6 inline" />
+
+        <hr className="my-2" />
+        {data && hasNextPage && (
+          <div className="flex my-2 justify-center">
+            <button
+              className="p-2 w-40 text-lg font-semibold flex items-center justify-center rounded bg-main-color text-main-text"
+              onClick={() => {
+                fetchNextPage();
+              }}
+            >
+              {isFetchingNextPage ? (
+                <Loader
+                  type="ThreeDots"
+                  color="#fff"
+                  height={27}
+                  width={27}
+                  visible={true}
+                />
               ) : (
-                <GoChevronLeft className="w-6 h-6 inline" />
-              )
-            }
-            nextLabel={
-              locale === 'ar' ? (
-                <GoChevronLeft className="w-6 h-6 inline" />
-              ) : (
-                <GoChevronRight className="w-6 h-6 inline" />
-              )
-            }
-            breakLabel={'...'}
-            breakClassName={'inline'}
-            pageCount={data?.lastPage}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={2}
-            initialPage={productsPage - 1}
-            disableInitialCallback={true}
-            onPageChange={handleProductChangePage}
-            containerClassName={'text-center my-2'}
-            subContainerClassName={'p-3 inline'}
-            pageLinkClassName="p-3"
-            activeClassName={'bg-main-color font-bold text-main-text'}
-            pageClassName=" inline-block mx-2 rounded-full text-lg"
-            previousClassName="p-3 inline font-bold"
-            nextClassName="p-3 inline font-bold"
-            disabledClassName="text-gray-500"
-          />
+                formatMessage({ id: 'show-more' })
+              )}
+            </button>
+          </div>
         )}
-        {data?.products.length === 0 && offers !== 't' && (
+        {data?.pages[0].products?.length === 0 && offers !== 't' && (
           <div className="p-6 flex flex-col items-center justify-center text-xl h-full">
             {formatMessage({ id: 'no-products' })}
           </div>
         )}
-        {data?.products.length === 0 && offers === 't' && (
+        {data?.pages[0].products?.length === 0 && offers === 't' && (
           <div className="p-6 flex flex-col items-center justify-center  h-full">
             <h1 className="text-xl font-bold text-center">
               {formatMessage({ id: 'no-offers' })}
@@ -343,7 +332,7 @@ export default function CategoryMobile() {
           !cartMenuOpen &&
           !productsLoading &&
           !sideMenuOpen &&
-          data?.products.length !== 0 && (
+          data?.pages[0].products.length !== 0 && (
             <SortInfoPanelMobile
               productsLoading={productsLoading}
               products={data?.products}

@@ -89,7 +89,9 @@ export default function NavIcons({ color = 'nav-secondary' }) {
         to={`/${locale}/cart`}
         className="flex p-1  items-center font-semibold   relative"
       >
-        <h1 className=" text-sm ">{formatMessage({ id: 'nav.cart' })}</h1>
+        <h1 className=" text-sm whitespace-no-wrap">
+          {formatMessage({ id: 'nav.cart' })}
+        </h1>
         <HiOutlineShoppingBag className="w-30p h-30p mx-1 " />
         <span
           className={`absolute ${

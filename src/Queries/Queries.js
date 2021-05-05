@@ -810,7 +810,7 @@ export const getSingleCategoryInfo = async categorySlug => {
  * Category Products
  */
 export const getCategoryProducts = async ({
-  page,
+  // page,
   id,
   resultsPerPage,
   brandFilters,
@@ -818,13 +818,15 @@ export const getCategoryProducts = async ({
   search,
   priceFilters,
   offers,
+  pageParam = 1,
 }) => {
   let brands = brandFilters?.map(i => i.id);
   const query = {
     category: id,
     brand: brandFilters.length !== 0 ? brands : undefined,
     sort_by: sortBy ? sortBy.value : undefined,
-    page,
+    // page,
+    page: pageParam,
     number: resultsPerPage?.value,
     search,
     offers: offers && 'true',
@@ -1082,18 +1084,21 @@ export const getCustomCategoriesData = async () => {
     return res.data.data.data;
   }
 };
-export const getSingleBrandProducts = async ({ slug, page, number }) => {
+export const getSingleBrandProducts = async ({
+  slug,
+  number,
+  pageParam = 1,
+}) => {
   const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/brand/${slug}?page=${page}&number=${number}`
+    `${process.env.REACT_APP_MAIN_URL}/brand/${slug}?page=${pageParam}&number=${number}`
   );
-  console.log(res.data);
   if (res.data.status) {
-    console.log('ok');
     return {
       products: res.data.data.products.data,
       brandName: res.data.data.translation,
       brandLogo: res.data.data.logo?.link,
       pageCount: res.data.data.products.last_page,
+      currentPage: res.data.data.products.current_page,
     };
   }
 };

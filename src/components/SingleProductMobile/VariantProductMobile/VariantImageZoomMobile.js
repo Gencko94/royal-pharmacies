@@ -190,6 +190,9 @@ export default function VariantImageZoomMobile({
     <div className="mb-2 relative">
       <div className="relative">
         <TransformWrapper
+          pan={{
+            disabled: true,
+          }}
           onPinching={() => {
             setShowReset(true);
             setDoubleClicked(true);
