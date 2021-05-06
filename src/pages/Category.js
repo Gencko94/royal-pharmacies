@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import CategoryLeftSide from '../components/Category/CategoryLeftSide';
 import CategoryRightSide from '../components/Category/CategoryRightSide';
 import Layout from '../components/Layout';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { Redirect, useParams, useHistory, useLocation } from 'react-router-dom';
 import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
 import CategoryHeader from '../components/Category/CategoryHeader';
@@ -12,7 +12,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { scrollTo } from 'scroll-js';
 import { DataProvider } from '../contexts/DataContext';
-
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function Category() {
   const history = useHistory();
   const { category, id } = useParams();
@@ -24,9 +25,6 @@ export default function Category() {
   const [sortBy, setSortBy] = React.useState({
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
-  });
-  const [productsPage, setProductsPage] = React.useState(() => {
-    return history.location.state?.page || 1;
   });
 
   const [resultsPerPage, setResultsPerPage] = React.useState({
@@ -44,11 +42,18 @@ export default function Category() {
    * Main Fetch
    */
 
-  const { data, isLoading: productsLoading, error: productsError } = useQuery(
+  const {
+    data,
+    isLoading: productsLoading,
+    error: productsError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
     [
       'category-products',
       {
-        page: productsPage,
+        // page: productsPage,
         resultsPerPage,
         id,
         brandFilters,
@@ -57,36 +62,40 @@ export default function Category() {
         offers: offers === 't',
       },
     ],
-    getCategoryProducts,
-    { retry: true, refetchOnWindowFocus: false }
+    ({ pageParam }) =>
+      getCategoryProducts({
+        // page: productsPage,
+        resultsPerPage,
+        id,
+        brandFilters,
+        priceFilters,
+        sortBy,
+        offers: offers === 't',
+        pageParam,
+      }),
+    {
+      retry: true,
+      getNextPageParam: lastPage => {
+        if (lastPage.currentPage < lastPage.lastPage) {
+          return lastPage.currentPage + 1;
+        } else {
+          return undefined;
+        }
+      },
+    }
   );
 
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
     ['categoryInfo', category],
-    getSingleCategoryInfo,
+    () => getSingleCategoryInfo(category),
     {
       retry: true,
-      refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   );
 
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
-  };
-  React.useEffect(() => {
-    return () => {
-      setProductsPage(1);
-    };
-  }, [history.location.pathname]);
-  const handleProductChangePage = data => {
-    scrollTo(window, { top: 660, behavior: 'smooth' });
-
-    history.push({
-      state: {
-        page: data.selected + 1,
-      },
-    });
-    setProductsPage(data.selected + 1);
   };
 
   const handleRemoveFilters = filter => {
@@ -108,7 +117,7 @@ export default function Category() {
   const handleSubmitFilters = (selectedPrice, selectedBrands) => {
     setBrandFilters(selectedBrands);
     setPriceFilters(selectedPrice);
-    scrollTo(window, { top: 500, behavior: 'smooth' });
+    scrollTo(window, { top: 600, behavior: 'smooth' });
     setFilters(() => {
       if (selectedPrice && !selectedBrands.length > 0) {
         //if only price
@@ -204,7 +213,7 @@ export default function Category() {
         <div className="search-page__container">
           <CategoryLeftSide
             categoryInfoLoading={categoryInfoLoading}
-            products={data?.products}
+            products={data?.pages[0].products}
             offers={offers}
             productsLoading={productsLoading}
             brandFilters={brandFilters}
@@ -215,7 +224,7 @@ export default function Category() {
           />
 
           <CategoryRightSide
-            products={data?.products}
+            data={data}
             productsLoading={productsLoading}
             sortBy={sortBy}
             setResultsPerPage={setResultsPerPage}
@@ -225,19 +234,37 @@ export default function Category() {
             setCartMenuOpen={setCartMenu}
             resultsPerPage={resultsPerPage}
             handleResultPerPageChange={handleResultPerPageChange}
-            productsPageCount={data?.lastPage}
-            handleProductChangePage={handleProductChangePage}
             category={category}
-            productsPage={productsPage}
           />
         </div>
-        {data?.products.length === 0 && offers !== 't' && (
+        {data?.pages[0].products.length === 0 && offers !== 't' && (
           <div className="p-6 flex flex-col items-center justify-center text-xl h-full">
-            {/* <img src={placeholder} alt="No products" className="mb-4" /> */}
             {formatMessage({ id: 'no-products' })}
           </div>
         )}
-        {data?.products.length === 0 && offers === 't' && (
+        {data && hasNextPage && (
+          <div className="flex my-2 justify-center">
+            <button
+              className="p-2 w-40 text-lg font-semibold flex items-center justify-center rounded bg-main-color text-main-text"
+              onClick={() => {
+                fetchNextPage();
+              }}
+            >
+              {isFetchingNextPage ? (
+                <Loader
+                  type="ThreeDots"
+                  color="#fff"
+                  height={27}
+                  width={27}
+                  visible={true}
+                />
+              ) : (
+                formatMessage({ id: 'show-more' })
+              )}
+            </button>
+          </div>
+        )}
+        {data?.pages[0].products.length === 0 && offers === 't' && (
           <div className="p-6 flex flex-col items-center justify-center  h-full">
             <h1 className="text-2xl font-bold text-center">
               {formatMessage({ id: 'no-offers' })}

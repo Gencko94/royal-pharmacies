@@ -40,9 +40,8 @@ export default function SingleProduct() {
    */
   const { data, isLoading, isFetching, error } = useQuery(
     ['singleProduct', id],
-    getSingleItem,
+    () => getSingleItem(id),
     {
-      refetchOnWindowFocus: false,
       onSuccess: () => {
         // add Item to localStorage
         addViewedItems(id);
@@ -52,8 +51,8 @@ export default function SingleProduct() {
   );
   const { data: reviews, isLoading: reviewsLoading } = useQuery(
     ['product-reviews', id],
-    getProductReviews,
-    { retry: true, enabled: data, refetchOnWindowFocus: false }
+    () => getProductReviews(id),
+    { retry: true, enabled: Boolean(data) }
   );
 
   const [sideMenuOpen, setSideMenuOpen] = React.useState(false);

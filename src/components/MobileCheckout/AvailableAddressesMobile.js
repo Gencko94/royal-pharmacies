@@ -37,8 +37,8 @@ export default function AvailableAddressesMobile({
   };
   return (
     <div className="min-h-full">
-      <div className=" p-2 flex items-center justify-between bg-main-color text-main-text">
-        <h1 className="text-sm font-semibold">
+      <div className=" p-3 flex items-center justify-between bg-main-color text-main-text">
+        <h1 className=" font-semibold">
           {formatMessage({ id: 'select-address-header' })}
         </h1>
       </div>
@@ -112,11 +112,11 @@ export default function AvailableAddressesMobile({
                     </motion.div>
                   </div>
                   <div className="p-1">
-                    <div className="text-xs text-gray-600 font-semibold">
+                    <div className="text-sm text-gray-600 font-semibold">
                       <h1>{address.address_name}</h1>
                     </div>
                     <div
-                      className="text-xs mb-2 font-semibold"
+                      className="mb-2 font-semibold"
                       style={{ height: '50px' }}
                     >
                       <h1>
@@ -126,7 +126,7 @@ export default function AvailableAddressesMobile({
                     </div>
                     <button
                       onClick={() => handleSelectAddress(address)}
-                      className={`w-full text-sm p-1 rounded uppercase 
+                      className={`w-full  p-2 rounded uppercase 
                           bg-main-color
                       } text-main-text`}
                     >

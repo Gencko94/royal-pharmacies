@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import LazyLoad from 'react-lazyload';
 import MainCarousel from '../components/Home/MainCarousel';
 
@@ -12,10 +12,12 @@ import StaticSwiper from '../components/Swipers/StaticSwiper';
 import SwiperLoader from '../components/Home/SwiperLoader';
 import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
-import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuMobile';
 import { useIntl } from 'react-intl';
 import { Helmet } from 'react-helmet';
-import DealsSwiper from '../components/Swipers/DealsSwiper';
+import { DataProvider } from '../contexts/DataContext';
+import MobileCartPopup from '../components/MobileCartPopup/MobileCartPopup';
+import { AuthProvider } from '../contexts/AuthContext';
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 
 export default function Home() {
   const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
@@ -32,6 +34,9 @@ export default function Home() {
   const setCartMenuOpen = () => {
     setCartMenu(true);
   };
+  const { mobileCartPopupOpen, sideMenuOpen } = useContext(DataProvider);
+  const { userId } = useContext(AuthProvider);
+  const { cartItems, guestCartItems } = useContext(CartAndWishlistProvider);
   const resolveSwiper = (item, index) => {
     switch (item.type) {
       case 'best_seller':
@@ -91,6 +96,22 @@ export default function Home() {
         return null;
     }
   };
+  const checkShowCondition = () => {
+    if (isTabletOrAbove) return false;
+    if (sideMenuOpen) return false;
+    if (userId) {
+      if (cartItems?.length > 0) {
+        return true;
+      }
+    } else {
+      if (guestCartItems?.length > 0) {
+        return true;
+      } else if (mobileCartPopupOpen) {
+        return true;
+      }
+    }
+    return false;
+  };
   return (
     <Layout>
       <Helmet>
@@ -101,12 +122,9 @@ export default function Home() {
         style={{ minHeight: 'calc(100vh - 140px)' }}
       >
         <AnimatePresence>
-          {cartMenuOpen &&
-            (isTabletOrAbove ? (
-              <SideCartMenu key="side-cart" setSideMenuOpen={setCartMenu} />
-            ) : (
-              <SideCartMenuMobile key={998} setSideMenuOpen={setCartMenu} />
-            ))}
+          {cartMenuOpen && (
+            <SideCartMenu key="side-cart" setSideMenuOpen={setCartMenu} />
+          )}
           {cartMenuOpen && (
             <motion.div
               key="sidecart-bg"
@@ -123,12 +141,6 @@ export default function Home() {
         >
           <MainCarousel />
           <Categories />
-          {/* <DealsSwiper /> */}
-          <StaticSwiper
-            type="latest_products"
-            title={'New Arrivals'}
-            cb={setCartMenuOpen}
-          />
 
           {isLoading && (
             <div className="my-8">
@@ -147,6 +159,9 @@ export default function Home() {
           )}
           {!isLoading && data?.map((i, index) => resolveSwiper(i, index))}
         </div>
+        <AnimatePresence>
+          {checkShowCondition() && <MobileCartPopup />}
+        </AnimatePresence>
       </div>
     </Layout>
   );

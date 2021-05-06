@@ -23,8 +23,8 @@ export default function StaticSwiper({ type, cb, title, id }) {
   };
   const { data, isLoading, isIdle } = useQuery(
     ['staticSwiper', type],
-    getStaticSwiperData,
-    { retry: true, refetchOnWindowFocus: false, enabled: inView }
+    () => getStaticSwiperData(type),
+    { retry: true, enabled: inView }
   );
 
   const breakpoints = {
@@ -68,7 +68,7 @@ export default function StaticSwiper({ type, cb, title, id }) {
       {(isLoading || isIdle) && <SwiperLoader />}
       {!isLoading && !isIdle && (
         <div className="flex items-center mb-4">
-          <h1 className="text-xl  flex-1 font-bold ">
+          <h1 className=" xs:text-2xl md:text-xl  flex-1 font-bold ">
             {data?.title[locale]?.name}
           </h1>
           {type !== 'latest_products' && type !== 'best_seller' && (

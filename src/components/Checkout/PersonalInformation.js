@@ -153,7 +153,6 @@ export default function PersonalInformation({
               </h1>
             </div>
             <div className="my-orders-items__table-desktop font-semibold text-center mb-1 py-2">
-              <h1>#</h1>
               <h1>{formatMessage({ id: 'the-item' })}</h1>
               <h1>{formatMessage({ id: 'quantity' })}</h1>
               <h1>{formatMessage({ id: 'price' })}</h1>
@@ -165,9 +164,6 @@ export default function PersonalInformation({
                   key={orderItem.id}
                   className="my-orders-item-desktop text-sm text-center mb-1"
                 >
-                  <div className="">
-                    <h1 className="">{i + 1}</h1>
-                  </div>
                   <Link
                     to={`/${locale}/products/${orderItem.slug}/${orderItem.id}`}
                     className="hover:underline font-semibold truncate"

@@ -5,6 +5,7 @@ export const ar = {
   'at-mrg': 'على موقعنا',
   home: 'الرئيسية',
   cart: 'عربة التسوق',
+
   wishlist: 'قائمتي المفضلة',
   'wishlist-short': 'المفضلة',
   'short-login': 'سجل الدخول',
@@ -145,6 +146,7 @@ export const ar = {
   'nav.history': 'المنتجات المزارة',
   categories: 'الفئات',
   allCategories: 'جميع الفئات',
+  all: 'الكل',
   seeAll: 'الكل',
   sections: 'الأقسام',
   'see-all-nav': 'جميع الاقسام',

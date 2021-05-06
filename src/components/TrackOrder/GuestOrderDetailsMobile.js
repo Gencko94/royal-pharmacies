@@ -44,7 +44,7 @@ export default function GuestOrderDetailsMobile({
   }, [isOpen]);
   const { data, isLoading } = useQuery(
     ['single-guest-order', id],
-    getSingleGuestOrder,
+    () => getSingleGuestOrder(id),
     { retry: true, refetchOnWindowFocus: false }
   );
 

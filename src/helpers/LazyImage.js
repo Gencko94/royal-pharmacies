@@ -8,7 +8,7 @@ export default function LazyImage({ src, height, alt, origin, placeholder }) {
       style={{
         backgroundColor: '#fff',
         height,
-        borderRadius: '12px',
+        borderRadius: '0.5em',
         overflow: 'hidden',
       }}
       placeholder={

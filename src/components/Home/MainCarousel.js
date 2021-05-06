@@ -18,9 +18,8 @@ const MainCarousel = () => {
     getMainCarouselItems,
     { refetchOnWindowFocus: false, retry: true }
   );
-  console.log(data);
   return (
-    <div className="my-6 bg-body-light">
+    <div className="mb-6 bg-body-light">
       <Swiper
         autoplay={{ delay: 5000 }}
         pagination={{ clickable: true, dynamicBullets: true }}

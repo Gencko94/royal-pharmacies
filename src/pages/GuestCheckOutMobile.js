@@ -25,10 +25,10 @@ export default function GuestCheckOutMobile() {
   const { guestCartItems, coupon, guestCartItemsLoading } = React.useContext(
     CartAndWishlistProvider
   );
-  const [
-    guestCheckoutMutation,
-    { isLoading: checkoutLoading },
-  ] = useMutation(guestCheckout, { throwOnError: true });
+  const {
+    mutateAsync: guestCheckoutMutation,
+    isLoading: checkoutLoading,
+  } = useMutation(guestCheckout, { throwOnError: true });
   const { authenticationLoading, userId } = React.useContext(AuthProvider);
   const [guestAddress, setGuestAddress] = React.useState({
     lat: '',

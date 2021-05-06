@@ -87,14 +87,14 @@ export default function CategoryHeader({
   return (
     <div className="mb-4">
       <BannerLazyImage
-        src={categoryInfo.coverDesktop?.link}
+        src={categoryInfo.landscape_image}
         origin="original"
         alt={categoryInfo?.title[locale].name}
         pb="calc(100% * 300/1440)"
       />
       <div className="mt-2">
         <h1 className="text-4xl font-bold text-center ">
-          {`${categoryInfo?.title[locale].name} `}
+          {categoryInfo?.title[locale].name}
         </h1>
         {offers && (
           <h1 className="text-2xl font-bold text-center ">
@@ -102,9 +102,7 @@ export default function CategoryHeader({
           </h1>
         )}
       </div>
-      {!offers && categoryInfo.children.length !== 0 && (
-        <CategoryChildren children={categoryInfo?.children} />
-      )}
+      {!offers && <CategoryChildren categoryInfo={categoryInfo} />}
     </div>
   );
 }

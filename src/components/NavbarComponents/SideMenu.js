@@ -147,10 +147,10 @@ export default function SideMenu({ toggleSideMenu, sideMenuRef }) {
       ref={sideMenuRef}
       className={`
          bg-body-light text-side-light-text
-        z-30  fixed top-0 ${
-          locale === 'ar' ? 'right-0' : 'left-0'
-        }  h-screen sm:text-lg overflow-y-hidden`}
-      style={{ maxWidth: '80%', minWidth: '80%' }}
+          fixed top-0 ${
+            locale === 'ar' ? 'right-0' : 'left-0'
+          }  h-screen sm:text-lg overflow-y-hidden`}
+      style={{ maxWidth: '80%', minWidth: '80%', zIndex: 52 }}
     >
       <TopSection toggleSideMenu={toggleSideMenu} />
 

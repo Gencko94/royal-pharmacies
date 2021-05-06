@@ -49,6 +49,7 @@ export default function Mobile({ children }) {
           />
         )}
       </AnimatePresence>
+
       <MobileFooter />
     </>
   );

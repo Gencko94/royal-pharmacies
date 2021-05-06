@@ -121,7 +121,7 @@ export default function GoogleMapsAddress({ setShowMap }) {
         <GoogleMap
           mapContainerStyle={{
             width: '100%',
-            height: isTabletOrAbove ? '100%' : '400px',
+            height: isTabletOrAbove ? '100%' : '300px',
           }}
           zoom={15}
           center={center}

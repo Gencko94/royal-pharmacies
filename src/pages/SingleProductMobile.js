@@ -18,7 +18,7 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
 import Layout from '../components/Layout';
 import VariantProductMobile from '../components/SingleProductMobile/VariantProductMobile/VariantProductMobile';
-import MoreFrom from '../components/MoreFrom/MoreFrom';
+// import MoreFrom from '../components/MoreFrom/MoreFrom';
 import { useIntl } from 'react-intl';
 import RelatedItems from '../components/SingleProduct/RelatedItems';
 
@@ -52,9 +52,8 @@ export default function SingleProductMobile() {
    */
   const { data, isLoading, error, isFetching } = useQuery(
     ['singleProduct', id],
-    getSingleItem,
+    () => getSingleItem(id),
     {
-      refetchOnWindowFocus: false,
       retry: true,
       onSuccess: async () => {
         // add Item to localStorage
@@ -64,8 +63,8 @@ export default function SingleProductMobile() {
   );
   const { data: reviewsData, isLoading: reviewsLoading } = useQuery(
     ['product-reviews', id],
-    getProductReviews,
-    { retry: true, enabled: data }
+    () => getProductReviews(id),
+    { retry: true, enabled: Boolean(data) }
   );
   React.useEffect(() => {
     return () => setItemInCart(false);

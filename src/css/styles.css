@@ -119,22 +119,22 @@ input {
 }
 .my-orders-item-desktop {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.3fr 0.4fr 0.4fr;
+  grid-template-columns: 1fr 0.3fr 0.4fr 0.4fr;
   gap: 0.3em;
 }
 .my-orders-item-mobile {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.3fr 0.3fr 0.3fr;
+  grid-template-columns: 0.9fr 0.3fr 0.4fr 0.4fr;
   gap: 0.3em;
 }
 .my-orders-items__table-desktop {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.3fr 0.4fr 0.4fr;
+  grid-template-columns: 1fr 0.3fr 0.4fr 0.4fr;
   gap: 0.3em;
 }
 .my-orders-items__table-mobile {
   display: grid;
-  grid-template-columns: 0.1fr 1fr 0.3fr 0.3fr 0.3fr;
+  grid-template-columns: 0.9fr 0.3fr 0.4fr 0.4fr;
   gap: 0.3em;
   text-align: center;
 }
@@ -216,6 +216,19 @@ input {
 
   padding-bottom: 1.2em;
   z-index: 999;
+}
+.mobile-cart-popup {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0px;
+  padding: 0.5em;
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  z-index: 51;
 }
 
 /* after add to cart div */

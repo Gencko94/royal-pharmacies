@@ -1,5 +1,5 @@
 import React from 'react';
-import { queryCache, useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   addToCart,
   addToWishlist,
@@ -18,6 +18,8 @@ import { AuthProvider } from './AuthContext';
 import { DataProvider } from './DataContext';
 export const CartAndWishlistProvider = React.createContext();
 export default function CartAndWishlistContext({ children }) {
+  const queryClient = useQueryClient();
+
   const { deliveryCountry, deliveryCountriesLoading } = React.useContext(
     DataProvider
   );
@@ -33,12 +35,15 @@ export default function CartAndWishlistContext({ children }) {
     error: getCartError,
     isIdle: cartIdle,
     isFetching: cartItemsFetching,
-  } = useQuery(['cartItems', userId, deliveryCountry, coupon], getCartItems, {
-    refetchOnWindowFocus: false,
-    enabled: !authenticationLoading && userId,
-    retry: true,
-    keepPreviousData: true,
-  });
+  } = useQuery(
+    ['cartItems', userId, deliveryCountry, coupon],
+    () => getCartItems(userId, deliveryCountry, coupon),
+    {
+      enabled: Boolean(!authenticationLoading) && Boolean(userId),
+      retry: true,
+      keepPreviousData: true,
+    }
+  );
   const {
     data: guestCartData,
     isLoading: guestCartItemsLoading,
@@ -46,64 +51,69 @@ export default function CartAndWishlistContext({ children }) {
     error: getGuestCartError,
     isFetching: guestCartItemsFetching,
     isIdle: guestCartItemsIdle,
-  } = useQuery(['guestCartItems', deliveryCountry, coupon], getGuestCartItems, {
-    refetchOnWindowFocus: false,
-    enabled:
-      !authenticationLoading &&
-      !userId &&
-      // !deliveryCountriesIdle &&
-      !deliveryCountriesLoading,
-    retry: true,
-    keepPreviousData: true,
-  });
+  } = useQuery(
+    ['guestCartItems', deliveryCountry, coupon],
+    () => getGuestCartItems(deliveryCountry, coupon),
+    {
+      enabled:
+        Boolean(!authenticationLoading) &&
+        Boolean(!userId) &&
+        Boolean(!deliveryCountriesLoading),
+      retry: true,
+      keepPreviousData: true,
+    }
+  );
 
-  const [addToCartMutation] = useMutation(addToCart, {
+  const { mutateAsync: addToCartMutation } = useMutation(addToCart, {
     onSuccess: data => {
-      queryCache.setQueryData(
+      queryClient.setQueryData(
         ['cartItems', userId, deliveryCountry, coupon],
         () => data
       );
     },
     throwOnError: true,
   });
-  const [addToGuestCartMutation] = useMutation(addToGuestCart, {
+  const { mutateAsync: addToGuestCartMutation } = useMutation(addToGuestCart, {
     onSuccess: data => {
-      queryCache.setQueryData(
+      queryClient.setQueryData(
         ['guestCartItems', deliveryCountry, coupon],
         () => data
       );
     },
     throwOnError: true,
   });
-  const [removeFromCartMutation] = useMutation(removeFromCart, {
+  const { mutateAsync: removeFromCartMutation } = useMutation(removeFromCart, {
     onSuccess: data => {
-      queryCache.setQueryData(
+      queryClient.setQueryData(
         ['cartItems', userId, deliveryCountry, coupon],
         () => data
       );
     },
     throwOnError: true,
   });
-  const [removeFromGuestCartMutation] = useMutation(removeFromGuestCart, {
+  const { mutateAsync: removeFromGuestCartMutation } = useMutation(
+    removeFromGuestCart,
+    {
+      onSuccess: data => {
+        queryClient.setQueryData(
+          ['guestCartItems', deliveryCountry, coupon],
+          () => data
+        );
+      },
+    }
+  );
+  const { mutateAsync: editCartMutation } = useMutation(editCart, {
     onSuccess: data => {
-      queryCache.setQueryData(
-        ['guestCartItems', deliveryCountry, coupon],
-        () => data
-      );
-    },
-  });
-  const [editCartMutation] = useMutation(editCart, {
-    onSuccess: data => {
-      queryCache.setQueryData(
+      queryClient.setQueryData(
         ['cartItems', userId, deliveryCountry, coupon],
         () => data
       );
     },
     throwOnError: true,
   });
-  const [editGuestCartMutation] = useMutation(editGuestCart, {
+  const { mutateAsync: editGuestCartMutation } = useMutation(editGuestCart, {
     onSuccess: data => {
-      queryCache.setQueryData(
+      queryClient.setQueryData(
         ['guestCartItems', deliveryCountry, coupon],
         () => data
       );
@@ -118,32 +128,38 @@ export default function CartAndWishlistContext({ children }) {
     isLoading: wishlistItemsLoading,
     isGetWishlistError,
     getWishlistError,
-  } = useQuery(['wishlistItems', userId], getWishlistItems, {
+  } = useQuery(['wishlistItems', userId], () => getWishlistItems(userId), {
     refetchOnWindowFocus: false,
-    enabled: userId,
+    enabled: Boolean(userId),
     retry: true,
   });
 
-  const [addToWishListMutation] = useMutation(addToWishlist, {
+  const { mutateAsync: addToWishListMutation } = useMutation(addToWishlist, {
     onSuccess: data => {
-      queryCache.setQueryData(['wishlistItems', userId], data);
+      queryClient.setQueryData(['wishlistItems', userId], data);
     },
     throwOnError: true,
   });
 
-  const [removeFromWishListMutation] = useMutation(removeFromWishlist, {
-    onSuccess: data => {
-      queryCache.setQueryData(['wishlistItems', userId], prev => {
-        const updated = prev.wishlistItems.filter(i => i.id !== data);
-        return {
-          wishlistItems: [...updated],
-        };
-      });
-    },
+  const { mutateAsync: removeFromWishListMutation } = useMutation(
+    removeFromWishlist,
+    {
+      onSuccess: data => {
+        queryClient.setQueryData(['wishlistItems', userId], prev => {
+          const updated = prev.wishlistItems.filter(i => i.id !== data);
+          return {
+            wishlistItems: [...updated],
+          };
+        });
+      },
 
-    throwOnError: true,
-  });
-  const [checkCouponMutation, { isLoading: isCheckingCoupon }] = useMutation(
+      throwOnError: true,
+    }
+  );
+  const {
+    mutateAsync: checkCouponMutation,
+    isLoading: isCheckingCoupon,
+  } = useMutation(
     checkCoupon,
 
     {

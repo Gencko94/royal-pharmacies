@@ -26,7 +26,7 @@ export const getHomeItems = async () => {
     return res.data.data;
   }
 };
-export const getStaticSwiperData = async (k, type) => {
+export const getStaticSwiperData = async type => {
   if (type === 'latest_products') {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/new-arrival`
@@ -110,11 +110,16 @@ export const userLogin = async data => {
   }
 };
 export const checkAuth = async () => {
+  const instance = axios.create({
+    validateStatus: status => {
+      return status === 200 || status === 400;
+    },
+  });
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
-  const res = await axios.get(
+  const res = await instance.get(
     `${process.env.REACT_APP_MAIN_URL}/customer-informations`,
     config
   );
@@ -276,7 +281,7 @@ export const removeUserAddress = async id => {
 /**
  * Single Product
  */
-export const getSingleItem = async (k, id) => {
+export const getSingleItem = async id => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product/${id}`
   );
@@ -284,7 +289,7 @@ export const getSingleItem = async (k, id) => {
     return res.data.data;
   }
 };
-export const getProductReviews = async (k, id) => {
+export const getProductReviews = async id => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product-reviews/${id}`
   );
@@ -304,7 +309,7 @@ export const getProductReviews = async (k, id) => {
  * Cart Methods
  */
 
-export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
+export const getCartItems = async (userId, deliveryCountry, coupon) => {
   const mrgAuthToken = localStorage.getItem('mrgAuthToken');
   const config = {
     headers: {
@@ -323,7 +328,7 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
       config
     );
 
-    if (res.data.status === true && res.data.data.items) {
+    if (res.data.status === true && res.data.data.items.length > 0) {
       return {
         cartItems: res.data.data.items,
         cartTotal: res.data.data.total,
@@ -332,7 +337,7 @@ export const getCartItems = async (k, userId, deliveryCountry, coupon) => {
         couponCost: res.data.data.coupon_cost,
         note: res.data.data.note,
       };
-    } else if (res.data.status === true && res.data.data) {
+    } else if (res.data.status === true && res.data.data.items.length === 0) {
       return { cartItems: [], cartTotal: 0 };
     }
   } else {
@@ -500,7 +505,7 @@ export const checkCoupon = async ({ code, subtotal }) => {
  * Guest Cart Methods
  */
 
-export const getGuestCartItems = async (k, deliveryCountry, coupon) => {
+export const getGuestCartItems = async (deliveryCountry, coupon) => {
   const config = {
     headers: { country: deliveryCountry.code },
   };
@@ -767,11 +772,26 @@ export const editGuestCart = async ({
 /**
  * Single Category info
  */
-export const getSingleCategoryInfo = async (k, categorySlug) => {
+export const getSingleCategoryInfo = async categorySlug => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
   );
   if (res.data.status === true) {
+    if (res.data.data.parent_slug) {
+      const parentRes = await axios.get(
+        `${process.env.REACT_APP_MAIN_URL}/category/${res.data.data.parent_slug}`
+      );
+      return {
+        id: res.data.data.id,
+        brands: res.data.data.brands,
+        children: res.data.data.children,
+        title: res.data.data.translation,
+        slug: res.data.data.slug,
+        coverDesktop: res.data.data.cover_desktop,
+        coverMobile: res.data.data.cover_mobile,
+        parentChildren: parentRes.data.data.children,
+      };
+    }
     return {
       id: res.data.data.id,
       brands: res.data.data.brands,
@@ -789,25 +809,24 @@ export const getSingleCategoryInfo = async (k, categorySlug) => {
 /**
  * Category Products
  */
-export const getCategoryProducts = async (
-  k,
-  {
-    page,
-    id,
-    resultsPerPage,
-    brandFilters,
-    sortBy,
-    search,
-    priceFilters,
-    offers,
-  }
-) => {
+export const getCategoryProducts = async ({
+  // page,
+  id,
+  resultsPerPage,
+  brandFilters,
+  sortBy,
+  search,
+  priceFilters,
+  offers,
+  pageParam = 1,
+}) => {
   let brands = brandFilters?.map(i => i.id);
   const query = {
     category: id,
     brand: brandFilters.length !== 0 ? brands : undefined,
     sort_by: sortBy ? sortBy.value : undefined,
-    page,
+    // page,
+    page: pageParam,
     number: resultsPerPage?.value,
     search,
     offers: offers && 'true',
@@ -828,19 +847,16 @@ export const getCategoryProducts = async (
     };
   }
 };
-export const filterProducts = async (
-  k,
-  {
-    category,
-    brandFilters,
-    sortBy,
-    search,
-    page,
-    resultsPerPage,
-    locale,
-    priceFilters,
-  }
-) => {
+export const filterProducts = async ({
+  category,
+  brandFilters,
+  sortBy,
+  search,
+  page,
+  resultsPerPage,
+  locale,
+  priceFilters,
+}) => {
   let brands = brandFilters?.map(i => i.id);
   const query = {
     category,
@@ -902,7 +918,7 @@ export const sortCategories = async ({ query }) => {
 /**
  * WishList
  */
-export const getWishlistItems = async (k, userId) => {
+export const getWishlistItems = async userId => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/wishlist/${userId}`
   );
@@ -1036,17 +1052,32 @@ export const getVisitedItems = async () => {
  * Search Products
  */
 
-export const searchProducts = async (k, { query, page, resultsPerPage }) => {
-  const res = await axios({
-    method: 'GET',
-    url: `${process.env.REACT_APP_MAIN_URL}/search-products`,
-    params: { value: query, page, number: resultsPerPage?.value },
-  });
+export const searchProducts = async ({
+  query,
+  pageParam,
+  brandFilters,
+  sortBy,
+  resultsPerPage,
+  priceFilters,
+}) => {
+  const q = {
+    brand: brandFilters.length !== 0 ? brandFilters : undefined,
+    sort_by: sortBy ? sortBy.value : undefined,
+    page: pageParam,
+    number: resultsPerPage?.value,
+    search: query,
+    range_price: priceFilters ? priceFilters : undefined,
+  };
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/filter-products`,
+    q
+  );
+
   if (res.data.status === true) {
     return {
-      products: res.data.data.data,
-      currentPage: res.data.data.current_page,
-      lastPage: res.data.data.last_page,
+      products: res.data.data.products.data,
+      currentPage: res.data.data.products.current_page,
+      lastPage: res.data.data.products.last_page,
     };
   }
 };
@@ -1068,23 +1099,26 @@ export const getCustomCategoriesData = async () => {
     return res.data.data.data;
   }
 };
-export const getSingleBrandProducts = async (k, { slug, page, number }) => {
+export const getSingleBrandProducts = async ({
+  slug,
+  number,
+  pageParam = 1,
+}) => {
   const res = await axios.get(
-    `${process.env.REACT_APP_MAIN_URL}/brand/${slug}?page=${page}&number=${number}`
+    `${process.env.REACT_APP_MAIN_URL}/brand/${slug}?page=${pageParam}&number=${number}`
   );
-  console.log(res.data);
   if (res.data.status) {
-    console.log('ok');
     return {
       products: res.data.data.products.data,
       brandName: res.data.data.translation,
       brandLogo: res.data.data.logo?.link,
       pageCount: res.data.data.products.last_page,
+      currentPage: res.data.data.products.current_page,
     };
   }
 };
 
-export const getStaticPage = async (k, page) => {
+export const getStaticPage = async page => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/page/${page}`);
   if (res.data.status === true) {
     return res.data.data.translation;
@@ -1103,7 +1137,7 @@ export const trackGuestOrder = async ({ phoneNumber }) => {
     };
   }
 };
-export const getSingleGuestOrder = async (k, id) => {
+export const getSingleGuestOrder = async id => {
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-single-order`,
     { id }

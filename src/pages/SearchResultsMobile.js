@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useIntl } from 'react-intl';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import CategoryMobileItemGrid from '../components/CategoryMobile/CategoryMobileItemGrid';
 import SortInfoPanelMobile from '../components/CategoryMobile/SortInfoPanelMobile';
 import Layout from '../components/Layout';
-import { filterProducts, searchProducts } from '../Queries/Queries';
+import { searchProducts } from '../Queries/Queries';
 import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
 import SideCartMenuMobile from '../components/SingleProductMobile/SideCartMenuItemMobile';
-
-import { scrollIntoView, scrollTo } from 'scroll-js';
-import ReactPaginate from 'react-paginate';
-import { GoChevronLeft, GoChevronRight } from 'react-icons/go';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { scrollTo } from 'scroll-js';
 import { DataProvider } from '../contexts/DataContext';
+import MobileCartPopup from '../components/MobileCartPopup/MobileCartPopup';
+import { CartAndWishlistProvider } from '../contexts/CartAndWishlistContext';
+import { AuthProvider } from '../contexts/AuthContext';
+import { useMediaQuery } from 'react-responsive';
 
 export default function SearchResultsMobile() {
   const { query } = useParams();
@@ -22,21 +25,26 @@ export default function SearchResultsMobile() {
     value: 'newest',
     label: 'Newest',
   });
-  const [productsPage, setProductsPage] = React.useState(1);
-  const [filteredPage, setFilteredPage] = React.useState(1);
 
-  const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState(null);
   const [filters, setFilters] = React.useState([]);
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 20,
     value: 20,
   });
+  const { userId } = useContext(AuthProvider);
+  const { cartItems, guestCartItems } = useContext(CartAndWishlistProvider);
   const [cartMenuOpen, setCartMenuOpen] = React.useState(false);
   const [sortByOpen, setSortByOpen] = React.useState(false);
   const [filtersOpen, setFiltersOpen] = React.useState(false);
   const [inView, setInView] = React.useState(false);
-  const { deliveryCountry, sideMenuOpen } = React.useContext(DataProvider);
+  const {
+    deliveryCountry,
+    sideMenuOpen,
+    mobileCartPopupOpen,
+  } = React.useContext(DataProvider);
+  const isTabletOrAbove = useMediaQuery({ query: '(min-width:768px)' });
+
   React.useEffect(() => {
     const checkScrolling = () => {
       if (window.scrollY >= 200) {
@@ -55,39 +63,58 @@ export default function SearchResultsMobile() {
     if (filtersOpen) setTimeout(() => setFiltersOpen(false), 100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
-  const { data: products, isLoading: productsLoading } = useQuery(
-    ['searchProducts', { query, page: productsPage, resultsPerPage }],
-    searchProducts,
-    { retry: true, refetchOnWindowFocus: false }
-  );
 
-  const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
+  const {
+    data,
+    isLoading: productsLoading,
+
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
     [
-      'filtered-products',
-      {
-        search: query,
-        brandFilters,
-        sortBy,
-        page: filteredPage,
-        resultsPerPage,
-        locale,
-        priceFilters,
-      },
+      'searchProducts',
+      { query, resultsPerPage, priceFilters, brandFilters, sortBy },
     ],
-    filterProducts,
-    { retry: true, refetchOnWindowFocus: false, enabled: filtersApplied }
+    ({ pageParam }) =>
+      searchProducts({
+        query,
+        resultsPerPage,
+        pageParam,
+        brandFilters,
+        priceFilters,
+        sortBy,
+      }),
+    {
+      retry: true,
+      getNextPageParam: lastPage => {
+        if (lastPage.currentPage < lastPage.lastPage) {
+          return lastPage.currentPage + 1;
+        } else {
+          return undefined;
+        }
+      },
+    }
   );
 
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
-  const handleProductChangePage = data => {
-    scrollIntoView(document.getElementById('main'), document.body);
-    setProductsPage(data.selected + 1);
-  };
-  const handleFilteredChangePage = data => {
-    scrollIntoView(document.getElementById('main'), document.body);
-    setFilteredPage(data.selected + 1);
+  const checkShowCondition = () => {
+    if (isTabletOrAbove) return false;
+    if (sideMenuOpen) return false;
+    if (userId) {
+      if (cartItems?.length > 0) {
+        return true;
+      }
+    } else {
+      if (guestCartItems?.length > 0) {
+        return true;
+      } else if (mobileCartPopupOpen) {
+        return true;
+      }
+    }
+    return false;
   };
   const handleRemoveFilters = filter => {
     setFilters(prev => {
@@ -165,22 +192,17 @@ export default function SearchResultsMobile() {
       }
     });
   };
-  React.useEffect(() => {
-    if (filters.length === 0) {
-      setFiltersApplied(false);
-    } else {
-      setFiltersApplied(true);
-    }
-  }, [filters]);
+
   const resolvePlural = () => {
-    switch (products?.products.length) {
+    switch (data?.pages[0].products?.length) {
       case 1:
         return formatMessage({ id: 'one-search-result' });
 
       case 2:
         return formatMessage({ id: 'two-search-results' });
 
-      case products?.products.length > 10 && products.products.length:
+      case data?.pages[0].products?.length > 10 &&
+        data?.pages[0].products?.length:
         return formatMessage({ id: 'more-than-10-search-results' });
       default:
         return formatMessage({ id: 'search-results' });
@@ -208,16 +230,12 @@ export default function SearchResultsMobile() {
             ></motion.div>
           )}
         </AnimatePresence>
-        {(!filtersApplied &&
-          products?.products.length > 0 &&
-          !productsLoading) ||
-        (filtersApplied &&
-          filteredData?.filteredProducts.length > 0 &&
-          !filteredProductsLoading) ? (
+        {filters.length > 0 || data?.pages[0].products.length > 0 ? (
           <div className="mb-1">
             <div className="px-3 pt-3">
               <h1 className="font-semibold text-lg">
-                {products?.products.length > 2 && products?.products.length}{' '}
+                {data?.pages[0].products?.length > 2 &&
+                  data?.pages[0].products?.length}{' '}
                 {resolvePlural()} <strong>{query}</strong>
               </h1>
             </div>
@@ -251,67 +269,18 @@ export default function SearchResultsMobile() {
         </AnimateSharedLayout>
         <hr className="my-3" />
         <CategoryMobileItemGrid
-          products={products?.products}
+          data={data}
           productsLoading={productsLoading}
           setCartMenuOpen={setCartMenuOpen}
-          filteredProducts={filteredData?.filteredProducts}
-          filteredProductsLoading={filteredProductsLoading}
-          setProductsPage={setProductsPage}
-          filtersApplied={filtersApplied}
           handleResultPerPageChange={handleResultPerPageChange}
         />
-        {(!filtersApplied &&
-          products?.products?.length > 0 &&
-          !productsLoading) ||
-        (filtersApplied &&
-          filteredData?.filteredProducts?.length > 0 &&
-          !filteredProductsLoading) ? (
-          <ReactPaginate
-            previousLabel={
-              locale === 'ar' ? (
-                <GoChevronRight className="w-6 h-6 inline" />
-              ) : (
-                <GoChevronLeft className="w-6 h-6 inline" />
-              )
-            }
-            nextLabel={
-              locale === 'ar' ? (
-                <GoChevronLeft className="w-6 h-6 inline" />
-              ) : (
-                <GoChevronRight className="w-6 h-6 inline" />
-              )
-            }
-            breakLabel={'...'}
-            breakClassName={'inline'}
-            pageCount={
-              filtersApplied ? filteredData?.lastPage : products?.lastPage
-            }
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={2}
-            initialPage={filtersApplied ? filteredPage - 1 : productsPage - 1}
-            disableInitialCallback={true}
-            onPageChange={
-              filtersApplied
-                ? handleFilteredChangePage
-                : handleProductChangePage
-            }
-            containerClassName={'text-center my-2'}
-            subContainerClassName={'p-3 inline'}
-            pageLinkClassName="p-3"
-            activeClassName={'bg-main-color font-bold text-main-text'}
-            pageClassName=" inline-block mx-2 rounded-full text-lg"
-            previousClassName="p-3 inline font-bold"
-            nextClassName="p-3 inline font-bold"
-            disabledClassName="text-gray-500"
-          />
-        ) : null}
+
         <AnimatePresence>
-          {inView && !sideMenuOpen && products?.products.length !== 0 && (
+          {inView && !sideMenuOpen && data?.pages[0].products?.length !== 0 && (
             <SortInfoPanelMobile
               productsLoading={productsLoading}
-              products={products?.products}
+              products={data?.pages[0].products}
               brandFilters={brandFilters}
-              filtersApplied={filtersApplied}
               setSortByOpen={setSortByOpen}
               setFiltersOpen={setFiltersOpen}
               filtersOpen={filtersOpen}
@@ -324,6 +293,31 @@ export default function SearchResultsMobile() {
           )}
         </AnimatePresence>
       </div>
+      {data && hasNextPage && (
+        <div className="flex my-2 justify-center">
+          <button
+            className="p-2 w-40 text-lg font-semibold flex items-center justify-center rounded bg-main-color text-main-text"
+            onClick={() => {
+              fetchNextPage();
+            }}
+          >
+            {isFetchingNextPage ? (
+              <Loader
+                type="ThreeDots"
+                color="#fff"
+                height={27}
+                width={27}
+                visible={true}
+              />
+            ) : (
+              formatMessage({ id: 'show-more' })
+            )}
+          </button>
+        </div>
+      )}
+      <AnimatePresence>
+        {checkShowCondition() && <MobileCartPopup />}
+      </AnimatePresence>
     </Layout>
   );
 }

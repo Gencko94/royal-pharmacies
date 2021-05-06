@@ -101,7 +101,7 @@ export default function MobileSearchbar({ windowScrolled }) {
     return (
       <input
         {...inputProps}
-        className={`w-full p-2 bg-nav-cat-light text-nav-cat-text-light placeholder-gray-700`}
+        className={`w-full p-2 bg-nav-cat-light  text-nav-cat-text-light placeholder-gray-700`}
       />
     );
   };

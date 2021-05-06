@@ -7,7 +7,7 @@ import { useIntl } from 'react-intl';
 export default function StepperMobile({ selectedStep, stepDone }) {
   const { formatMessage, locale } = useIntl();
   return (
-    <div className="p-4 mb-8 md:max-w-screen-lg xxl:max-w-xl  mx-auto">
+    <div className="p-4 mb-12 md:max-w-screen-lg xxl:max-w-xl  mx-auto">
       <div className="">
         <div className="flex items-center ">
           <div className="   relative">
@@ -28,7 +28,9 @@ export default function StepperMobile({ selectedStep, stepDone }) {
             <div
               className={` absolute my-2 ${
                 locale === 'ar' && 'rtl-stepper-icon_1'
-              } ${selectedStep === 0 && 'font-bold'}  text-center text-xs   `}
+              } ${
+                selectedStep === 0 ? 'font-bold' : 'font-medium'
+              }  text-center    `}
               style={{ left: '-2px' }}
             >
               {formatMessage({ id: 'address' })}
@@ -53,8 +55,8 @@ export default function StepperMobile({ selectedStep, stepDone }) {
             <div
               className={`${
                 locale === 'ar' && 'rtl-stepper-icon_2'
-              } absolute text-center my-2 text-xs  ${
-                selectedStep === 1 && 'font-bold '
+              } absolute text-center my-2 ${
+                selectedStep === 1 ? 'font-bold' : 'font-medium'
               } `}
               style={{ left: '-2px' }}
             >
@@ -81,8 +83,8 @@ export default function StepperMobile({ selectedStep, stepDone }) {
             </div>
             <div
               className={`${locale === 'ar' && 'rtl-stepper-icon_3'} absolute ${
-                selectedStep === 2 && 'font-bold'
-              } text-center my-2 text-xs  `}
+                selectedStep === 2 ? 'font-bold' : 'font-medium'
+              } text-center my-2  `}
               style={{ left: '-9px' }}
             >
               {formatMessage({ id: 'order-placement' })}
