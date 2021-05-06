@@ -1052,17 +1052,32 @@ export const getVisitedItems = async () => {
  * Search Products
  */
 
-export const searchProducts = async ({ query, page, resultsPerPage }) => {
-  const res = await axios({
-    method: 'GET',
-    url: `${process.env.REACT_APP_MAIN_URL}/search-products`,
-    params: { value: query, page, number: resultsPerPage?.value },
-  });
+export const searchProducts = async ({
+  query,
+  pageParam,
+  brandFilters,
+  sortBy,
+  resultsPerPage,
+  priceFilters,
+}) => {
+  const q = {
+    brand: brandFilters.length !== 0 ? brandFilters : undefined,
+    sort_by: sortBy ? sortBy.value : undefined,
+    page: pageParam,
+    number: resultsPerPage?.value,
+    search: query,
+    range_price: priceFilters ? priceFilters : undefined,
+  };
+  const res = await axios.post(
+    `${process.env.REACT_APP_MAIN_URL}/filter-products`,
+    q
+  );
+
   if (res.data.status === true) {
     return {
-      products: res.data.data.data,
-      currentPage: res.data.data.current_page,
-      lastPage: res.data.data.last_page,
+      products: res.data.data.products.data,
+      currentPage: res.data.data.products.current_page,
+      lastPage: res.data.data.products.last_page,
     };
   }
 };

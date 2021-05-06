@@ -59,11 +59,11 @@ export default function SearchSortInfoPanel({
         gridTemplateColumns: '1fr 0.7fr 0.7fr',
         marginBottom: '0.5rem',
       }}
-      className="border-b"
+      className="border-b py-2"
     >
       <div layout className="flex items-center">
-        {productsCount && (
-          <div className="py-3 text-lg font-semibold">
+        {productsCount > 0 && (
+          <div className=" text-lg font-semibold">
             <h1>
               <strong>{productsCount > 2 && productsCount}</strong>{' '}
               {resolvePlural()} <strong>{query}</strong>

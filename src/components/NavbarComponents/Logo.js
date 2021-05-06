@@ -16,7 +16,10 @@ export default function Logo() {
           <img
             src="/logo.png"
             alt={`${settings?.store_name_en} Logo`}
-            style={{ width: 'auto', maxHeight: '40px' }}
+            style={{
+              width: 'auto',
+              maxHeight: '40px',
+            }}
           />
         )}
       </Link>

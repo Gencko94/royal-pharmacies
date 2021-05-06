@@ -2,9 +2,9 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import Layout from '../components/Layout';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
-import { filterProducts, searchProducts } from '../Queries/Queries';
+import { searchProducts } from '../Queries/Queries';
 import { useIntl } from 'react-intl';
 import SearchRightSide from '../components/Search/SearchRightSide';
 import SearchLeftSide from '../components/Search/SearchLeftSide';
@@ -12,6 +12,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import SideCartMenu from '../components/SingleProduct/SideCartMenu';
 import { scrollTo } from 'scroll-js';
 import { DataProvider } from '../contexts/DataContext';
+import Loader from 'react-loader-spinner';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export default function SearchResults() {
   const { query } = useParams();
   const { formatMessage, locale } = useIntl();
@@ -20,14 +22,12 @@ export default function SearchResults() {
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
   });
-  const [productsPage, setProductsPage] = React.useState(1);
-  const [filteredPage, setFilteredPage] = React.useState(1);
 
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 30,
     value: 60,
   });
-  const [filtersApplied, setFiltersApplied] = React.useState(false);
+  // const [filtersApplied, setFiltersApplied] = React.useState(false);
   const [priceFilters, setPriceFilters] = React.useState(null);
   const [filters, setFilters] = React.useState([]);
   const [cartMenuOpen, setCartMenu] = React.useState(false);
@@ -37,50 +37,42 @@ export default function SearchResults() {
    * Main Fetch
    */
   const {
-    data: products,
+    data,
     isLoading: productsLoading,
     isFetching: productsFetching,
-  } = useQuery(
-    ['searchProducts', { query, page: productsPage, resultsPerPage }],
-    () => searchProducts({ query, page: productsPage, resultsPerPage }),
-    { retry: true }
-  );
-
-  const { data: filteredData, isLoading: filteredProductsLoading } = useQuery(
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
     [
-      'search-filtered-products',
-      {
-        search: query,
-        brandFilters,
-        sortBy,
-        page: filteredPage,
-        resultsPerPage,
-        priceFilters,
-      },
+      'searchProducts',
+      { query, resultsPerPage, priceFilters, brandFilters, sortBy },
     ],
-    () =>
-      filterProducts({
-        search: query,
-        brandFilters,
-        sortBy,
-        page: filteredPage,
+    ({ pageParam }) =>
+      searchProducts({
+        query,
         resultsPerPage,
+        pageParam,
+        brandFilters,
         priceFilters,
+        sortBy,
       }),
-    { retry: true, enabled: filtersApplied }
+    {
+      retry: true,
+      getNextPageParam: lastPage => {
+        if (lastPage.currentPage < lastPage.lastPage) {
+          return lastPage.currentPage + 1;
+        } else {
+          return undefined;
+        }
+      },
+    }
   );
 
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
-  const handleProductChangePage = data => {
-    scrollTo(window, { top: 50, behavior: 'smooth' });
-    setProductsPage(data.selected + 1);
-  };
-  const handleFilteredChangePage = data => {
-    scrollTo(window, { top: 50, behavior: 'smooth' });
-    setFilteredPage(data.selected + 1);
-  };
+
   const handleRemoveFilters = filter => {
     setFilters(prev => {
       return prev.filter(i => i.value !== filter.value);
@@ -91,20 +83,16 @@ export default function SearchResults() {
       });
     }
     if (filter.type === 'Sort') {
-      setSortBy({
-        value: 'newest',
-        label: 'Newest',
-      });
+      setSortBy({ value: 'newest', label: formatMessage({ id: 'Newest' }) });
     }
     if (filter.type === 'Price') {
-      setPriceFilters([1000]);
+      setPriceFilters(null);
     }
   };
-
   const handleSubmitFilters = (selectedPrice, selectedBrands) => {
     setBrandFilters(selectedBrands);
     setPriceFilters(selectedPrice);
-    scrollTo(window, { top: 500, behavior: 'smooth' });
+    scrollTo(window, { top: 50, behavior: 'smooth' });
     setFilters(() => {
       if (selectedPrice && !selectedBrands.length > 0) {
         //if only price
@@ -156,14 +144,6 @@ export default function SearchResults() {
     setSortBy(selectedValue);
   };
 
-  React.useEffect(() => {
-    if (filters.length === 0) {
-      setFiltersApplied(false);
-    } else {
-      setFiltersApplied(true);
-    }
-  }, [filters]);
-
   return (
     <Layout>
       <Helmet>
@@ -192,41 +172,52 @@ export default function SearchResults() {
       >
         <div className="search-page__container">
           <SearchLeftSide
-            products={products?.products}
+            products={data?.pages[0].products}
             productsLoading={productsLoading}
             brandFilters={brandFilters}
             setBrandFilters={setBrandFilters}
             priceFilters={priceFilters}
             productsFetching={productsFetching}
-            filteredProductsLoading={filteredProductsLoading}
-            filtersApplied={filtersApplied}
-            filteredProducts={filteredData?.filteredProducts}
             handleSubmitFilters={handleSubmitFilters}
+            filters={filters}
           />
 
           <SearchRightSide
-            products={products?.products}
+            data={data}
             productsLoading={productsLoading}
             sortBy={sortBy}
             setResultsPerPage={setResultsPerPage}
-            filteredProducts={filteredData?.filteredProducts}
-            filteredProductsLoading={filteredProductsLoading}
-            filtersApplied={filtersApplied}
             filters={filters}
             handleRemoveFilters={handleRemoveFilters}
             handleSortByChange={handleSortByChange}
             setCartMenuOpen={setCartMenu}
             resultsPerPage={resultsPerPage}
             handleResultPerPageChange={handleResultPerPageChange}
-            handleFilteredChangePage={handleFilteredChangePage}
-            handleProductChangePage={handleProductChangePage}
-            filteredPage={filteredPage}
-            productsPage={productsPage}
-            productsPageCount={products?.lastPage}
-            filteredPageCount={filteredData?.lastPage}
             query={query}
           />
         </div>
+        {data && hasNextPage && (
+          <div className="flex my-2 justify-center">
+            <button
+              className="p-2 w-40 text-lg font-semibold flex items-center justify-center rounded bg-main-color text-main-text"
+              onClick={() => {
+                fetchNextPage();
+              }}
+            >
+              {isFetchingNextPage ? (
+                <Loader
+                  type="ThreeDots"
+                  color="#fff"
+                  height={27}
+                  width={27}
+                  visible={true}
+                />
+              ) : (
+                formatMessage({ id: 'show-more' })
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </Layout>
   );

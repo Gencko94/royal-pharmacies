@@ -26,9 +26,6 @@ export default function Category() {
     value: 'newest',
     label: formatMessage({ id: 'Newest' }),
   });
-  // const [productsPage, setProductsPage] = React.useState(() => {
-  //   return history.location.state?.page || 1;
-  // });
 
   const [resultsPerPage, setResultsPerPage] = React.useState({
     label: 20,
@@ -100,21 +97,6 @@ export default function Category() {
   const handleResultPerPageChange = selectedValue => {
     setResultsPerPage(selectedValue);
   };
-  // React.useEffect(() => {
-  //   return () => {
-  //     setProductsPage(1);
-  //   };
-  // }, [history.location.pathname]);
-  // const handleProductChangePage = data => {
-  //   scrollTo(window, { top: 660, behavior: 'smooth' });
-
-  //   history.push({
-  //     state: {
-  //       page: data.selected + 1,
-  //     },
-  //   });
-  //   setProductsPage(data.selected + 1);
-  // };
 
   const handleRemoveFilters = filter => {
     setFilters(prev => {
@@ -135,7 +117,7 @@ export default function Category() {
   const handleSubmitFilters = (selectedPrice, selectedBrands) => {
     setBrandFilters(selectedBrands);
     setPriceFilters(selectedPrice);
-    scrollTo(window, { top: 500, behavior: 'smooth' });
+    scrollTo(window, { top: 600, behavior: 'smooth' });
     setFilters(() => {
       if (selectedPrice && !selectedBrands.length > 0) {
         //if only price

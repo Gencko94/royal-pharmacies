@@ -38,7 +38,7 @@ export default function SortInfoPanel({
     []
   );
   return (
-    <div className="sm:grid sm:grid-cols-2 gap-2 mb-2 md:flex md:justify-end">
+    <div className="sm:grid sm:grid-cols-2 gap-2 mb-2 md:flex md:justify-end py-2">
       {/* <div /> */}
       <div className="flex items-center">
         <h1>{formatMessage({ id: 'number-per-page' })}</h1>

@@ -6,7 +6,7 @@ import { DataProvider } from '../../contexts/DataContext';
 export default function LeftSidePrice({
   productsLoading,
   categoryInfoLoading,
-  productsLength,
+  // productsLength,
   setSelectedPrice,
   selectedPrice,
 }) {
@@ -18,37 +18,36 @@ export default function LeftSidePrice({
   } = React.useContext(DataProvider);
   const prices = React.useMemo(() => [1, 5, 10, 20, 50, 100], []);
 
-  if (
-    productsLoading ||
-    categoryInfoLoading ||
-    deliveryCountriesLoading ||
-    deliveryCountriesIdle
-  ) {
-    return (
-      <div className="py-2">
-        <ContentLoader
-          speed={2}
-          viewBox="0 0 300 150"
-          backgroundColor="#f3f3f3"
-          foregroundColor="#ecebeb"
-        >
-          <rect x="0" y="0" rx="5" ry="5" width="100%" height="35" />
-          <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
-          <rect x="0" y="65" rx="5" ry="5" width="100%" height="15" />
-          <rect x="0" y="90" rx="5" ry="5" width="100%" height="15" />
-          <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
-        </ContentLoader>
-      </div>
-    );
-  }
-  if (!productsLoading && productsLength === 0) {
-    return null;
-  }
+  // if (
+  //   productsLoading ||
+  //   categoryInfoLoading ||
+  //   deliveryCountriesLoading ||
+  //   deliveryCountriesIdle
+  // ) {
+  //   return (
+  //     <div className="py-2">
+  //       <ContentLoader
+  //         speed={2}
+  //         viewBox="0 0 300 150"
+  //         backgroundColor="#f3f3f3"
+  //         foregroundColor="#ecebeb"
+  //       >
+  //         <rect x="0" y="0" rx="5" ry="5" width="100%" height="35" />
+  //         <rect x="0" y="40" rx="5" ry="5" width="100%" height="15" />
+  //         <rect x="0" y="65" rx="5" ry="5" width="100%" height="15" />
+  //         <rect x="0" y="90" rx="5" ry="5" width="100%" height="15" />
+  //         <rect x="0" y="115" rx="5" ry="5" width="100%" height="15" />
+  //       </ContentLoader>
+  //     </div>
+  //   );
+  // }
+  // if (!productsLoading && productsLength === 0) {
+  //   return null;
+  // }
   return (
     <motion.div layout className="mb-4">
       <h1 className="text-lg font-bold py-2">
-        {formatMessage({ id: 'filter-by-price' })} (
-        {deliveryCountry?.currency.translation[locale].symbol})
+        {formatMessage({ id: 'filter-by-price' })}
       </h1>
       <hr />
       {prices.map(price => {
