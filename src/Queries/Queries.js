@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const getItemsByType = async () => {
   // const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/`);
@@ -13,8 +13,8 @@ export const getFooterData = async () => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/footer-menus`);
   if (res.data.status === true) {
     return {
-      categories: res.data.data['footer-1'],
-      pages: res.data.data['footer-2'],
+      categories: res.data.data["footer-1"],
+      pages: res.data.data["footer-2"],
     };
   }
 };
@@ -26,8 +26,8 @@ export const getHomeItems = async () => {
     return res.data.data;
   }
 };
-export const getStaticSwiperData = async type => {
-  if (type === 'latest_products') {
+export const getStaticSwiperData = async (type) => {
+  if (type === "latest_products") {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/new-arrival`
     );
@@ -36,15 +36,15 @@ export const getStaticSwiperData = async type => {
         products: res.data.data.data,
         title: {
           en: {
-            name: 'New Arrivals',
+            name: "New Arrivals",
           },
           ar: {
-            name: 'جديدنا من المنتجات',
+            name: "جديدنا من المنتجات",
           },
         },
       };
     }
-  } else if (type === 'best_seller') {
+  } else if (type === "best_seller") {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/best-sellers`
     );
@@ -53,10 +53,10 @@ export const getStaticSwiperData = async type => {
         products: res.data.data.data,
         title: {
           en: {
-            name: 'Best Sellers',
+            name: "Best Sellers",
           },
           ar: {
-            name: 'الأكثر مبيعا',
+            name: "الأكثر مبيعا",
           },
         },
       };
@@ -74,8 +74,8 @@ export const getStaticSwiperData = async type => {
     }
   }
 };
-export const getMainCarouselItems = async (key, desktop) => {
-  let type = desktop ? 'desktop' : 'mobile';
+export const getMainCarouselItems = async (desktop) => {
+  let type = desktop ? "desktop" : "mobile";
   try {
     const res = await axios.get(
       `${process.env.REACT_APP_MAIN_URL}/slideshow-${type}`
@@ -91,7 +91,7 @@ export const getMainCarouselItems = async (key, desktop) => {
 /**
  * Authentication Queries
  */
-export const userRegister = async data => {
+export const userRegister = async (data) => {
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/customer-register`,
     data
@@ -100,7 +100,7 @@ export const userRegister = async data => {
     return res.data;
   }
 };
-export const userLogin = async data => {
+export const userLogin = async (data) => {
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/customer-login`,
     data
@@ -111,11 +111,11 @@ export const userLogin = async data => {
 };
 export const checkAuth = async () => {
   const instance = axios.create({
-    validateStatus: status => {
+    validateStatus: (status) => {
       return status === 200 || status === 400;
     },
   });
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
@@ -134,7 +134,7 @@ export const checkAuth = async () => {
  * UserProfile
  */
 export const getUserProfileInfo = async () => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
@@ -146,8 +146,8 @@ export const getUserProfileInfo = async () => {
     return { userData: res.data.data };
   }
 };
-export const editUserProfileInfo = async data => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+export const editUserProfileInfo = async (data) => {
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
@@ -164,8 +164,8 @@ export const editUserProfileInfo = async data => {
     return { userData: res.data.data };
   }
 };
-export const changeUserPassword = async data => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+export const changeUserPassword = async (data) => {
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
@@ -179,7 +179,7 @@ export const changeUserPassword = async data => {
     config
   );
   if (res.data.status === true) {
-    return { message: 'Password Changed' };
+    return { message: "Password Changed" };
   }
 };
 export const requestPasswordReset = async ({ phoneNumber }) => {
@@ -190,7 +190,7 @@ export const requestPasswordReset = async ({ phoneNumber }) => {
     }
   );
   if (res.data.status === true) {
-    return { message: 'success' };
+    return { message: "success" };
   }
 };
 export const resetUserPassword = async ({
@@ -208,7 +208,7 @@ export const resetUserPassword = async ({
     }
   );
   if (res.data.status === true) {
-    return { message: 'your password has been successfully changed' };
+    return { message: "your password has been successfully changed" };
   }
 };
 
@@ -219,7 +219,7 @@ export const resetUserPassword = async ({
  * Addresses
  */
 export const getUserAddresses = async () => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
@@ -232,15 +232,15 @@ export const getUserAddresses = async () => {
   }
 };
 
-export const addUserAddress = async newAddress => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+export const addUserAddress = async (newAddress) => {
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
   const address = {
     lat: newAddress.lat?.toString(),
     lng: newAddress.lng?.toString(),
-    marked_address: newAddress.addressDetails.markerAddress || '',
+    marked_address: newAddress.addressDetails.markerAddress || "",
     address_name: newAddress.addressDetails.addressName,
     apartment_house_number: newAddress.addressDetails.apartmentOrHouseNumber,
     building_tower_number: newAddress.addressDetails.buildingOrTowerNumber,
@@ -248,7 +248,7 @@ export const addUserAddress = async newAddress => {
     addition_direction: newAddress.addressDetails.additionalDetails,
     as_default: newAddress.defaultLocation ? 1 : 0,
     userTyped_address: newAddress.addressDetails.userTyped_address || null,
-    type: newAddress.lat ? 'map' : 'text',
+    type: newAddress.lat ? "map" : "text",
   };
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/customer-add-address`,
@@ -259,8 +259,8 @@ export const addUserAddress = async newAddress => {
     return res.data.data;
   }
 };
-export const removeUserAddress = async id => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+export const removeUserAddress = async (id) => {
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
@@ -281,7 +281,7 @@ export const removeUserAddress = async id => {
 /**
  * Single Product
  */
-export const getSingleItem = async id => {
+export const getSingleItem = async (id) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product/${id}`
   );
@@ -289,7 +289,7 @@ export const getSingleItem = async id => {
     return res.data.data;
   }
 };
-export const getProductReviews = async id => {
+export const getProductReviews = async (id) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/product-reviews/${id}`
   );
@@ -310,17 +310,17 @@ export const getProductReviews = async id => {
  */
 
 export const getCartItems = async (userId, deliveryCountry, coupon) => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: {
       Authorization: `Bearer ${mrgAuthToken}`,
       country: deliveryCountry?.code,
     },
   };
-  if (!localStorage.getItem('lclc')) {
-    localStorage.setItem('lclc', JSON.stringify([]));
+  if (!localStorage.getItem("lclc")) {
+    localStorage.setItem("lclc", JSON.stringify([]));
   }
-  const localCart = JSON.parse(localStorage.getItem('lclc'));
+  const localCart = JSON.parse(localStorage.getItem("lclc"));
   if (localCart.length === 0) {
     const res = await axios.post(
       `${process.env.REACT_APP_MAIN_URL}/cart/clean/${userId}`,
@@ -342,7 +342,7 @@ export const getCartItems = async (userId, deliveryCountry, coupon) => {
     }
   } else {
     let items = [];
-    localCart.forEach(item => {
+    localCart.forEach((item) => {
       items.push({
         id: item.id,
         qty: item.quantity,
@@ -368,14 +368,14 @@ export const getCartItems = async (userId, deliveryCountry, coupon) => {
         config
       );
       if (res.data.status === true) {
-        localStorage.setItem('lclc', JSON.stringify([]));
+        localStorage.setItem("lclc", JSON.stringify([]));
         return {
           cartItems: res.data.data.items,
           cartTotal: res.data.data.total,
           shippingCost: res.data.data.shipping_cost,
           cartSubtotal: res.data.data.subtotal,
           couponCost: res.data.data.coupon_cost,
-          message: 'cart-combined',
+          message: "cart-combined",
           note: res.data.data.note,
         };
       }
@@ -389,7 +389,7 @@ export const addToCart = async ({
   deliveryCountry,
   coupon,
 }) => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: {
       Authorization: `Bearer ${mrgAuthToken}`,
@@ -426,7 +426,7 @@ export const removeFromCart = async ({
   deliveryCountry,
   coupon,
 }) => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: {
       Authorization: `Bearer ${mrgAuthToken}`,
@@ -509,10 +509,10 @@ export const getGuestCartItems = async (deliveryCountry, coupon) => {
   const config = {
     headers: { country: deliveryCountry.code },
   };
-  if (!localStorage.getItem('lclc')) {
-    localStorage.setItem('lclc', JSON.stringify([]));
+  if (!localStorage.getItem("lclc")) {
+    localStorage.setItem("lclc", JSON.stringify([]));
   }
-  const localCart = JSON.parse(localStorage.getItem('lclc'));
+  const localCart = JSON.parse(localStorage.getItem("lclc"));
   if (localCart.length === 0) {
     return {
       cartItems: [],
@@ -523,7 +523,7 @@ export const getGuestCartItems = async (deliveryCountry, coupon) => {
     };
   } else {
     let items = [];
-    localCart.forEach(item => {
+    localCart.forEach((item) => {
       items.push({
         id: item.id,
         qty: item.quantity,
@@ -549,20 +549,20 @@ export const getGuestCartItems = async (deliveryCountry, coupon) => {
       const cartItems = res.data.data.items;
 
       let outofStockItems = [];
-      cartItems.forEach(cartItem => {
+      cartItems.forEach((cartItem) => {
         if (
           cartItem.options?.max_quantity === 0 ||
-          cartItem.message === 'Product not founded'
+          cartItem.message === "Product not founded"
         ) {
           outofStockItems.push(cartItem.options?.sku || cartItem.sku);
         }
       });
       if (outofStockItems.length > 0) {
         const newLocal = localCart.filter(
-          localItem => !outofStockItems.includes(localItem.sku)
+          (localItem) => !outofStockItems.includes(localItem.sku)
         );
         let items = [];
-        newLocal.forEach(item => {
+        newLocal.forEach((item) => {
           items.push({
             id: item.id,
             qty: item.quantity,
@@ -576,7 +576,7 @@ export const getGuestCartItems = async (deliveryCountry, coupon) => {
             },
           });
         });
-        localStorage.setItem('lclc', JSON.stringify(newLocal));
+        localStorage.setItem("lclc", JSON.stringify(newLocal));
         const res = await axios.post(
           `${process.env.REACT_APP_MAIN_URL}/guest-cart`,
           { cart: JSON.stringify(items), coupon },
@@ -606,12 +606,12 @@ export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('lclc');
+  const localCart = localStorage.getItem("lclc");
   if (!localCart) {
-    localStorage.setItem('lclc', JSON.stringify([]));
+    localStorage.setItem("lclc", JSON.stringify([]));
   }
   const parsed = JSON.parse(localCart);
-  const isAvailable = item => {
+  const isAvailable = (item) => {
     if (item.sku === newItem.sku) {
       return true;
     }
@@ -620,14 +620,14 @@ export const addToGuestCart = async ({ newItem, deliveryCountry, coupon }) => {
   const foundIndex = parsed.findIndex(isAvailable);
   if (foundIndex !== -1) {
     parsed[foundIndex].quantity = parsed[foundIndex].quantity + 1;
-    localStorage.setItem('lclc', JSON.stringify(parsed));
+    localStorage.setItem("lclc", JSON.stringify(parsed));
   } else {
     parsed.push(newItem);
-    localStorage.setItem('lclc', JSON.stringify(parsed));
+    localStorage.setItem("lclc", JSON.stringify(parsed));
   }
 
   let items = [];
-  parsed.forEach(item => {
+  parsed.forEach((item) => {
     items.push({
       id: item.id,
       qty: item.quantity,
@@ -662,9 +662,9 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('lclc');
+  const localCart = localStorage.getItem("lclc");
   let parsed = JSON.parse(localCart);
-  const isAvailable = item => {
+  const isAvailable = (item) => {
     if (item.sku === sku) {
       return false;
     }
@@ -672,7 +672,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
   };
   parsed = parsed.filter(isAvailable);
   if (parsed.length === 0) {
-    localStorage.setItem('lclc', JSON.stringify(parsed));
+    localStorage.setItem("lclc", JSON.stringify(parsed));
     return {
       cartItems: [],
       cartTotal: 0,
@@ -682,7 +682,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
     };
   }
   let items = [];
-  parsed.forEach(item => {
+  parsed.forEach((item) => {
     items.push({
       id: item.id,
       qty: item.quantity,
@@ -702,7 +702,7 @@ export const removeFromGuestCart = async ({ sku, deliveryCountry, coupon }) => {
     config
   );
   if (res.data.status === true) {
-    localStorage.setItem('lclc', JSON.stringify(parsed));
+    localStorage.setItem("lclc", JSON.stringify(parsed));
     return {
       cartItems: res.data.data.items,
       cartTotal: res.data.data.total,
@@ -723,9 +723,9 @@ export const editGuestCart = async ({
     headers: { country: deliveryCountry.code },
   };
 
-  const localCart = localStorage.getItem('lclc');
+  const localCart = localStorage.getItem("lclc");
   let parsed = JSON.parse(localCart);
-  const isAvailable = item => {
+  const isAvailable = (item) => {
     if (item.sku === sku) {
       return true;
     }
@@ -733,12 +733,12 @@ export const editGuestCart = async ({
   };
   let foundItemIndex = parsed.findIndex(isAvailable);
   if (foundItemIndex === -1) {
-    throw new Error('Something went wrong');
+    throw new Error("Something went wrong");
   }
   parsed[foundItemIndex].quantity = quantity;
   parsed[foundItemIndex].price = price * quantity;
   let items = [];
-  parsed.forEach(item => {
+  parsed.forEach((item) => {
     items.push({
       id: item.id,
       qty: item.quantity,
@@ -758,7 +758,7 @@ export const editGuestCart = async ({
     config
   );
   if (res.data.status === true) {
-    localStorage.setItem('lclc', JSON.stringify(parsed));
+    localStorage.setItem("lclc", JSON.stringify(parsed));
     return {
       cartItems: res.data.data.items,
       cartTotal: res.data.data.total,
@@ -772,7 +772,7 @@ export const editGuestCart = async ({
 /**
  * Single Category info
  */
-export const getSingleCategoryInfo = async categorySlug => {
+export const getSingleCategoryInfo = async (categorySlug) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/category/${categorySlug}`
   );
@@ -820,7 +820,7 @@ export const getCategoryProducts = async ({
   offers,
   pageParam = 1,
 }) => {
-  let brands = brandFilters?.map(i => i.id);
+  let brands = brandFilters?.map((i) => i.id);
   const query = {
     category: id,
     brand: brandFilters.length !== 0 ? brands : undefined,
@@ -829,7 +829,7 @@ export const getCategoryProducts = async ({
     page: pageParam,
     number: resultsPerPage?.value,
     search,
-    offers: offers && 'true',
+    offers: offers && "true",
     range_price: priceFilters ? priceFilters : undefined,
   };
   // const res = await axios.get(
@@ -857,7 +857,7 @@ export const filterProducts = async ({
   locale,
   priceFilters,
 }) => {
-  let brands = brandFilters?.map(i => i.id);
+  let brands = brandFilters?.map((i) => i.id);
   const query = {
     category,
     brand: brandFilters.length !== 0 ? brands : undefined,
@@ -918,7 +918,7 @@ export const sortCategories = async ({ query }) => {
 /**
  * WishList
  */
-export const getWishlistItems = async userId => {
+export const getWishlistItems = async (userId) => {
   const res = await axios.get(
     `${process.env.REACT_APP_MAIN_URL}/wishlist/${userId}`
   );
@@ -927,7 +927,7 @@ export const getWishlistItems = async userId => {
   }
 };
 export const addToWishlist = async ({ id, userId }) => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
@@ -942,10 +942,10 @@ export const addToWishlist = async ({ id, userId }) => {
   }
 };
 export const removeFromWishlist = async ({ id, userId }) => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
 
   const res = await axios({
-    method: 'GET',
+    method: "GET",
     url: `${process.env.REACT_APP_MAIN_URL}/wishlist/remove/${userId}`,
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
     params: {
@@ -983,7 +983,7 @@ export const getDeliveryCountries = async () => {
  */
 
 export const getUserOrders = async () => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: { Authorization: `Bearer ${mrgAuthToken}` },
   };
@@ -998,7 +998,7 @@ export const getUserOrders = async () => {
   }
 };
 export const checkout = async ({ deliveryCountry, order, coupon }) => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: {
       Authorization: `Bearer ${mrgAuthToken}`,
@@ -1015,7 +1015,7 @@ export const checkout = async ({ deliveryCountry, order, coupon }) => {
   }
 };
 export const guestCheckout = async ({ deliveryCountry, order, coupon }) => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: {
       Authorization: `Bearer ${mrgAuthToken}`,
@@ -1033,12 +1033,12 @@ export const guestCheckout = async ({ deliveryCountry, order, coupon }) => {
 };
 
 export const getVisitedItems = async () => {
-  let localVisited = localStorage.getItem('browse-history');
+  let localVisited = localStorage.getItem("browse-history");
   let parsed = JSON.parse(localVisited);
   if (parsed.length === 0) {
     return [];
   }
-  localVisited = parsed.map(i => i.id).slice(0, 25);
+  localVisited = parsed.map((i) => i.id).slice(0, 25);
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/multiple-product`,
     { products: localVisited }
@@ -1118,7 +1118,7 @@ export const getSingleBrandProducts = async ({
   }
 };
 
-export const getStaticPage = async page => {
+export const getStaticPage = async (page) => {
   const res = await axios.get(`${process.env.REACT_APP_MAIN_URL}/page/${page}`);
   if (res.data.status === true) {
     return res.data.data.translation;
@@ -1137,7 +1137,7 @@ export const trackGuestOrder = async ({ phoneNumber }) => {
     };
   }
 };
-export const getSingleGuestOrder = async id => {
+export const getSingleGuestOrder = async (id) => {
   const res = await axios.post(
     `${process.env.REACT_APP_MAIN_URL}/guest-single-order`,
     { id }
@@ -1147,7 +1147,7 @@ export const getSingleGuestOrder = async id => {
   }
 };
 export const addProductReview = async ({ id, rating, review }) => {
-  const mrgAuthToken = localStorage.getItem('mrgAuthToken');
+  const mrgAuthToken = localStorage.getItem("mrgAuthToken");
   const config = {
     headers: {
       Authorization: `Bearer ${mrgAuthToken}`,

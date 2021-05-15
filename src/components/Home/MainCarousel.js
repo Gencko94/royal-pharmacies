@@ -1,21 +1,21 @@
-import React from 'react';
+import React from "react";
 
-import { useMediaQuery } from 'react-responsive';
-import ContentLoader from 'react-content-loader';
-import { useQuery } from 'react-query';
-import { getMainCarouselItems } from '../../Queries/Queries';
-import { useIntl } from 'react-intl';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Pagination, Autoplay } from 'swiper';
-import 'swiper/swiper-bundle.css';
-import BannerLazyImage from '../../helpers/BannerLazyImage';
+import { useMediaQuery } from "react-responsive";
+import ContentLoader from "react-content-loader";
+import { useQuery } from "react-query";
+import { getMainCarouselItems } from "../../Queries/Queries";
+import { useIntl } from "react-intl";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Pagination, Autoplay } from "swiper";
+import "swiper/swiper-bundle.css";
+import BannerLazyImage from "../../helpers/BannerLazyImage";
 SwiperCore.use([Pagination, Autoplay]);
 const MainCarousel = () => {
-  const isTabletOrAbove = useMediaQuery({ query: '(min-width: 668px)' });
+  const isTabletOrAbove = useMediaQuery({ query: "(min-width: 668px)" });
   const { locale } = useIntl();
   const { data, isLoading } = useQuery(
-    ['mainCarousel', isTabletOrAbove],
-    getMainCarouselItems,
+    ["mainCarousel", isTabletOrAbove],
+    () => getMainCarouselItems(isTabletOrAbove),
     { refetchOnWindowFocus: false, retry: true }
   );
   return (
@@ -29,13 +29,13 @@ const MainCarousel = () => {
         centeredSlides
       >
         {isLoading &&
-          [0, 1, 2].map(i => {
+          [0, 1, 2].map((i) => {
             return (
               <SwiperSlide key={i} className="">
                 <ContentLoader
                   speed={4}
-                  viewBox={`0 0 ${isTabletOrAbove ? '1440' : '800'} ${
-                    isTabletOrAbove ? '300' : '500'
+                  viewBox={`0 0 ${isTabletOrAbove ? "1440" : "800"} ${
+                    isTabletOrAbove ? "500" : "500"
                   }`}
                   backgroundColor="#f3f3f3"
                   foregroundColor="#ecebeb"
@@ -46,14 +46,14 @@ const MainCarousel = () => {
                     rx="5"
                     ry="5"
                     width="100%"
-                    height={`${isTabletOrAbove ? '300' : '500'}`}
+                    height={`${isTabletOrAbove ? "500" : "500"}`}
                   />
                 </ContentLoader>
               </SwiperSlide>
             );
           })}
         {!isLoading &&
-          data.map(item => {
+          data.map((item) => {
             return (
               <SwiperSlide key={item.id}>
                 <a
@@ -65,8 +65,8 @@ const MainCarousel = () => {
                     origin="original"
                     pb={`${
                       isTabletOrAbove
-                        ? 'calc(100% * 300/1440)'
-                        : 'calc(100% * 500/800)'
+                        ? "calc(100% * 500/1440)"
+                        : "calc(100% * 500/800)"
                     }`}
                   />
                 </a>

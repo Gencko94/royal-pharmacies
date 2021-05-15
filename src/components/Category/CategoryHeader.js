@@ -1,10 +1,10 @@
-import React from 'react';
-import ContentLoader from 'react-content-loader';
-import { useIntl } from 'react-intl';
-import CategoryChildren from './CategoryChildren';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css';
-import BannerLazyImage from '../../helpers/BannerLazyImage';
+import React from "react";
+import ContentLoader from "react-content-loader";
+import { useIntl } from "react-intl";
+import CategoryChildren from "./CategoryChildren";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+import BannerLazyImage from "../../helpers/BannerLazyImage";
 
 export default function CategoryHeader({
   categoryInfo,
@@ -59,7 +59,7 @@ export default function CategoryHeader({
           className="my-3"
           breakpoints={breakpoints}
         >
-          {[0, 1, 2, 3, 4, 5, 6].map(i => {
+          {[0, 1, 2, 3, 4, 5, 6].map((i) => {
             return (
               <SwiperSlide key={i} className="my-2">
                 <ContentLoader
@@ -87,7 +87,7 @@ export default function CategoryHeader({
   return (
     <div className="mb-4">
       <BannerLazyImage
-        src={categoryInfo.landscape_image}
+        src={categoryInfo.title[locale].landscape}
         origin="original"
         alt={categoryInfo?.title[locale].name}
         pb="calc(100% * 300/1440)"
@@ -98,7 +98,7 @@ export default function CategoryHeader({
         </h1>
         {offers && (
           <h1 className="text-2xl font-bold text-center ">
-            {formatMessage({ id: 'offers' })}
+            {formatMessage({ id: "offers" })}
           </h1>
         )}
       </div>

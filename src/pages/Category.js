@@ -1,19 +1,19 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import CategoryLeftSide from '../components/Category/CategoryLeftSide';
-import CategoryRightSide from '../components/Category/CategoryRightSide';
-import Layout from '../components/Layout';
-import { useInfiniteQuery, useQuery } from 'react-query';
-import { Redirect, useParams, useHistory, useLocation } from 'react-router-dom';
-import { getCategoryProducts, getSingleCategoryInfo } from '../Queries/Queries';
-import CategoryHeader from '../components/Category/CategoryHeader';
-import { useIntl } from 'react-intl';
-import { AnimatePresence, motion } from 'framer-motion';
-import SideCartMenu from '../components/SingleProduct/SideCartMenu';
-import { scrollTo } from 'scroll-js';
-import { DataProvider } from '../contexts/DataContext';
-import Loader from 'react-loader-spinner';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import React from "react";
+import { Helmet } from "react-helmet";
+import CategoryLeftSide from "../components/Category/CategoryLeftSide";
+import CategoryRightSide from "../components/Category/CategoryRightSide";
+import Layout from "../components/Layout";
+import { useInfiniteQuery, useQuery } from "react-query";
+import { Redirect, useParams, useHistory, useLocation } from "react-router-dom";
+import { getCategoryProducts, getSingleCategoryInfo } from "../Queries/Queries";
+import CategoryHeader from "../components/Category/CategoryHeader";
+import { useIntl } from "react-intl";
+import { AnimatePresence, motion } from "framer-motion";
+import SideCartMenu from "../components/SingleProduct/SideCartMenu";
+import { scrollTo } from "scroll-js";
+import { DataProvider } from "../contexts/DataContext";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 export default function Category() {
   const history = useHistory();
   const { category, id } = useParams();
@@ -21,10 +21,10 @@ export default function Category() {
   const { locale, formatMessage } = useIntl();
   const [brandFilters, setBrandFilters] = React.useState([]);
   const location = useLocation();
-  const offers = new URLSearchParams(location.search).get('offers');
+  const offers = new URLSearchParams(location.search).get("offers");
   const [sortBy, setSortBy] = React.useState({
-    value: 'newest',
-    label: formatMessage({ id: 'Newest' }),
+    value: "newest",
+    label: formatMessage({ id: "Newest" }),
   });
 
   const [resultsPerPage, setResultsPerPage] = React.useState({
@@ -51,7 +51,7 @@ export default function Category() {
     isFetchingNextPage,
   } = useInfiniteQuery(
     [
-      'category-products',
+      "category-products",
       {
         // page: productsPage,
         resultsPerPage,
@@ -59,7 +59,7 @@ export default function Category() {
         brandFilters,
         priceFilters,
         sortBy,
-        offers: offers === 't',
+        offers: offers === "t",
       },
     ],
     ({ pageParam }) =>
@@ -70,12 +70,12 @@ export default function Category() {
         brandFilters,
         priceFilters,
         sortBy,
-        offers: offers === 't',
+        offers: offers === "t",
         pageParam,
       }),
     {
       retry: true,
-      getNextPageParam: lastPage => {
+      getNextPageParam: (lastPage) => {
         if (lastPage.currentPage < lastPage.lastPage) {
           return lastPage.currentPage + 1;
         } else {
@@ -86,7 +86,7 @@ export default function Category() {
   );
 
   const { data: categoryInfo, isLoading: categoryInfoLoading } = useQuery(
-    ['categoryInfo', category],
+    ["categoryInfo", category],
     () => getSingleCategoryInfo(category),
     {
       retry: true,
@@ -94,36 +94,36 @@ export default function Category() {
     }
   );
 
-  const handleResultPerPageChange = selectedValue => {
+  const handleResultPerPageChange = (selectedValue) => {
     setResultsPerPage(selectedValue);
   };
 
-  const handleRemoveFilters = filter => {
-    setFilters(prev => {
-      return prev.filter(i => i.value !== filter.value);
+  const handleRemoveFilters = (filter) => {
+    setFilters((prev) => {
+      return prev.filter((i) => i.value !== filter.value);
     });
-    if (filter.type === 'Brand') {
-      setBrandFilters(prev => {
-        return prev.filter(i => i.label !== filter.value);
+    if (filter.type === "Brand") {
+      setBrandFilters((prev) => {
+        return prev.filter((i) => i.label !== filter.value);
       });
     }
-    if (filter.type === 'Sort') {
-      setSortBy({ value: 'newest', label: formatMessage({ id: 'Newest' }) });
+    if (filter.type === "Sort") {
+      setSortBy({ value: "newest", label: formatMessage({ id: "Newest" }) });
     }
-    if (filter.type === 'Price') {
+    if (filter.type === "Price") {
       setPriceFilters(null);
     }
   };
   const handleSubmitFilters = (selectedPrice, selectedBrands) => {
     setBrandFilters(selectedBrands);
     setPriceFilters(selectedPrice);
-    scrollTo(window, { top: 600, behavior: 'smooth' });
+    scrollTo(window, { top: 600, behavior: "smooth" });
     setFilters(() => {
       if (selectedPrice && !selectedBrands.length > 0) {
         //if only price
         const priceFilter = {
-          type: 'Price',
-          value: `${formatMessage({ id: 'less-than' })} ${selectedPrice} ${
+          type: "Price",
+          value: `${formatMessage({ id: "less-than" })} ${selectedPrice} ${
             deliveryCountry?.currency.translation[locale].symbol
           }`,
         };
@@ -132,45 +132,45 @@ export default function Category() {
         // if only brands
         const brandsFilters = [];
 
-        selectedBrands.forEach(brand =>
-          brandsFilters.push({ type: 'Brand', value: brand.label })
+        selectedBrands.forEach((brand) =>
+          brandsFilters.push({ type: "Brand", value: brand.label })
         );
         return [...brandsFilters];
       } else {
         const priceFilter = {
-          type: 'Price',
-          value: `${formatMessage({ id: 'less-than' })} ${selectedPrice} ${
+          type: "Price",
+          value: `${formatMessage({ id: "less-than" })} ${selectedPrice} ${
             deliveryCountry?.currency.translation[locale].symbol
           }`,
         };
         const brandsFilters = [];
 
-        selectedBrands.forEach(brand =>
-          brandsFilters.push({ type: 'Brand', value: brand.label })
+        selectedBrands.forEach((brand) =>
+          brandsFilters.push({ type: "Brand", value: brand.label })
         );
         return [priceFilter, ...brandsFilters];
       }
     });
   };
 
-  const handleSortByChange = selectedValue => {
-    if (selectedValue.value === 'newest') {
-      setFilters(prev => {
-        return prev.filter(i => i.type !== 'Sort');
+  const handleSortByChange = (selectedValue) => {
+    if (selectedValue.value === "newest") {
+      setFilters((prev) => {
+        return prev.filter((i) => i.type !== "Sort");
       });
       setSortBy(selectedValue);
       return;
     }
-    setFilters(prev => {
-      let newArr = prev.filter(i => i.type !== 'Sort');
-      newArr.push({ type: 'Sort', value: selectedValue.label });
+    setFilters((prev) => {
+      let newArr = prev.filter((i) => i.type !== "Sort");
+      newArr.push({ type: "Sort", value: selectedValue.label });
       return newArr;
     });
     setSortBy(selectedValue);
   };
 
   if (productsError) {
-    if (productsError.response.data.message === 'Category not founded') {
+    if (productsError.response.data.message === "Category not founded") {
       return <Redirect to={`/${locale}/page/404`} />;
     }
   }
@@ -179,7 +179,7 @@ export default function Category() {
       <Helmet>
         <title>
           {categoryInfo
-            ? `${formatMessage({ id: 'shop' })} ${
+            ? `${formatMessage({ id: "shop" })} ${
                 categoryInfo?.title[locale].name
               }`
             : settings?.store_name_en}
@@ -202,7 +202,7 @@ export default function Category() {
       </AnimatePresence>
       <div
         className="max-w-default mx-auto p-4 overflow-hidden"
-        style={{ minHeight: 'calc(100vh - 150px)' }}
+        style={{ minHeight: "calc(100vh - 150px)" }}
       >
         <CategoryHeader
           categoryInfo={categoryInfo}
@@ -235,13 +235,10 @@ export default function Category() {
             resultsPerPage={resultsPerPage}
             handleResultPerPageChange={handleResultPerPageChange}
             category={category}
+            offers={offers}
           />
         </div>
-        {data?.pages[0].products.length === 0 && offers !== 't' && (
-          <div className="p-6 flex flex-col items-center justify-center text-xl h-full">
-            {formatMessage({ id: 'no-products' })}
-          </div>
-        )}
+
         {data && hasNextPage && (
           <div className="flex my-2 justify-center">
             <button
@@ -259,18 +256,18 @@ export default function Category() {
                   visible={true}
                 />
               ) : (
-                formatMessage({ id: 'show-more' })
+                formatMessage({ id: "show-more" })
               )}
             </button>
           </div>
         )}
-        {data?.pages[0].products.length === 0 && offers === 't' && (
+        {data?.pages[0].products.length === 0 && offers === "t" && (
           <div className="p-6 flex flex-col items-center justify-center  h-full">
             <h1 className="text-2xl font-bold text-center">
-              {formatMessage({ id: 'no-offers' })}
+              {formatMessage({ id: "no-offers" })}
             </h1>
             <h1 className="text-xl text-center">
-              {formatMessage({ id: 'comeback-later' })}
+              {formatMessage({ id: "comeback-later" })}
             </h1>
             <button
               onClick={() =>
@@ -278,7 +275,7 @@ export default function Category() {
               }
               className="p-2 bg-main-color mt-2 text-main-text rounded text-lg "
             >
-              {formatMessage({ id: 'go-to-products' })}
+              {formatMessage({ id: "go-to-products" })}
             </button>
           </div>
         )}

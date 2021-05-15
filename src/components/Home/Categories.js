@@ -1,12 +1,12 @@
-import React from 'react';
-import { DataProvider } from '../../contexts/DataContext';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation } from 'swiper';
-import 'swiper/swiper-bundle.css';
-import ContentLoader from 'react-content-loader';
-import { useIntl } from 'react-intl';
-import LazyImage from '../../helpers/LazyImage';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { DataProvider } from "../../contexts/DataContext";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Navigation } from "swiper";
+import "swiper/swiper-bundle.css";
+import ContentLoader from "react-content-loader";
+import { useIntl } from "react-intl";
+import LazyImage from "../../helpers/LazyImage";
+import { Link } from "react-router-dom";
 SwiperCore.use([Navigation]);
 export default function Categories() {
   const { categories, categoriesLoading } = React.useContext(DataProvider);
@@ -36,7 +36,7 @@ export default function Categories() {
       spaceBetween: 15,
     },
     1440: {
-      slidesPerView: 10,
+      slidesPerView: 8,
       spaceBetween: 15,
     },
   };
@@ -44,7 +44,7 @@ export default function Categories() {
     <div className="my-3 text-body-text-light">
       <div className="flex items-center mb-4">
         <h1 className="text-2xl flex-1 font-bold">
-          {formatMessage({ id: 'shop-by-category' })}
+          {formatMessage({ id: "shop-by-category" })}
         </h1>
       </div>
       <Swiper
@@ -55,7 +55,7 @@ export default function Categories() {
         breakpoints={breakpoints}
       >
         {categoriesLoading &&
-          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => {
+          [0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => {
             return (
               <SwiperSlide key={i} className="overflow-hidden ">
                 <ContentLoader
@@ -70,7 +70,7 @@ export default function Categories() {
             );
           })}
         {categories &&
-          categories.map(item => {
+          categories.map((item) => {
             return (
               <SwiperSlide key={item.id} className="rounded-full">
                 <div className="  overflow-hidden  relative ">

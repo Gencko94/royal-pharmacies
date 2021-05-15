@@ -1,13 +1,13 @@
-import { AnimateSharedLayout, motion } from 'framer-motion';
-import React from 'react';
-import ContentLoader from 'react-content-loader';
-import { useIntl } from 'react-intl';
-import CategoryItemLoader from './CategoryItemLoader';
-import CategoryProductItem from './CategoryProductItem';
-import SortInfoPanel from './SortInfoPanel';
-import VariantCategoryProductItem from './VariantCategoryProductItem';
+import { AnimateSharedLayout, motion } from "framer-motion";
+import React from "react";
+import ContentLoader from "react-content-loader";
+import { useIntl } from "react-intl";
+import CategoryItemLoader from "./CategoryItemLoader";
+import CategoryProductItem from "./CategoryProductItem";
+import SortInfoPanel from "./SortInfoPanel";
+import VariantCategoryProductItem from "./VariantCategoryProductItem";
 
-import { DataProvider } from '../../contexts/DataContext';
+import { DataProvider } from "../../contexts/DataContext";
 export default function CategoryRightSide({
   data,
   productsLoading,
@@ -18,13 +18,13 @@ export default function CategoryRightSide({
   filters,
   setCartMenuOpen,
   handleResultPerPageChange,
+  offers,
 
   category,
 }) {
   const { formatMessage } = useIntl();
-  const { deliveryCountriesLoading, deliveryCountriesIdle } = React.useContext(
-    DataProvider
-  );
+  const { deliveryCountriesLoading, deliveryCountriesIdle } =
+    React.useContext(DataProvider);
   // if (
   //   !['best-seller', 'latest-products'].includes(category) &&
   //   (productsLoading || deliveryCountriesLoading || deliveryCountriesIdle)
@@ -122,10 +122,10 @@ export default function CategoryRightSide({
           {filters.length !== 0 && (
             <>
               <motion.h1 layout className="text-lg font-semibold">
-                {formatMessage({ id: 'filtered-by' })}
+                {formatMessage({ id: "filtered-by" })}
               </motion.h1>
               <motion.div layout className="mx-1 flex items-center">
-                {filters.map(item => {
+                {filters.map((item) => {
                   return (
                     <motion.button
                       layout
@@ -145,30 +145,12 @@ export default function CategoryRightSide({
       {productsLoading && (
         <div
           className="category-page-items__grid py-2"
-          style={{ minHeight: 'calc(100vh - 150px)' }}
+          style={{ minHeight: "calc(100vh - 150px)" }}
         >
           {[
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
-            17,
-            18,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
             19,
-          ].map(i => {
+          ].map((i) => {
             return <CategoryItemLoader key={i} />;
           })}
         </div>
@@ -177,13 +159,13 @@ export default function CategoryRightSide({
       {data?.pages[0].products?.length > 0 && !productsLoading && (
         <div
           className="category-page-items__grid py-2 min-h-full relative"
-          style={{ minHeight: 'calc(100vh - 150px)' }}
+          style={{ minHeight: "calc(100vh - 150px)" }}
         >
           {data?.pages.map((group, i) => {
             return (
               <React.Fragment key={i}>
-                {group?.products.map(item => {
-                  return item.type === 'variation' &&
+                {group?.products.map((item) => {
+                  return item.type === "variation" &&
                     Object.keys(item.new_variation_addons).length > 0 ? (
                     <VariantCategoryProductItem
                       key={item.id}
@@ -201,6 +183,11 @@ export default function CategoryRightSide({
               </React.Fragment>
             );
           })}
+        </div>
+      )}
+      {data?.pages[0].products.length === 0 && offers !== "t" && (
+        <div className="p-6 flex flex-col items-center justify-center text-xl h-64">
+          {formatMessage({ id: "no-products" })}
         </div>
       )}
     </div>
